@@ -187,9 +187,16 @@ html:lang(en) .btoc .parts,html:lang(en) .btoc .tail{grid-template-columns:1fr} 
 .top nav .lang .fl{margin-right:6px;font:14px/1 "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;letter-spacing:0;vertical-align:-1px}  /* 언어 단추 국기(10/25 동원 "직관적으로") — 자간을 0으로(두 글자로 된 국기가 벌어져 갈라지지 않게). 윈도는 국기 대신 GB · KR 글자로 보임 */
 html:lang(en) .top nav{letter-spacing:.03em;gap:13px}  /* 영어 낱말은 한글 메뉴의 넓은 자간(.12em)이면 띠를 넘침 — 좁은 폭 규칙보다 앞에(10/25 마지막 점검 ①: 뒤에 있으면 374 · 359px 규칙을 덮어 'KO'가 두 줄) */
 @media (max-width:374px){.top nav{gap:7px;font-size:12.5px;letter-spacing:0}.top nav .lang{padding-left:8px}.top nav .lang .fl{margin-right:4px}}
-@media (max-width:389px){html:lang(en) .top nav{gap:7px;font-size:12.5px;letter-spacing:0}html:lang(en) .top nav .lang{padding-left:8px}html:lang(en) .top nav .lang .fl{margin-right:4px}}  /* 영어 메뉴는 389px까지 좁은 간격 — 375px에서 메뉴가 왼쪽 여백 7px까지 밀렸음(10/25 마지막 점검 ①) */
+@media (max-width:409px){html:lang(en) .top nav{gap:7px;font-size:12.5px;letter-spacing:0}html:lang(en) .top nav .lang{padding-left:8px}html:lang(en) .top nav .lang .fl{margin-right:4px}}  /* 영어 메뉴는 409px까지 좁은 간격 — 375px에서 메뉴가 왼쪽 여백 7px까지 밀렸음(10/25 마지막 점검 ①) · 돋보기를 구분선 뒤로 옮긴 뒤 390px에서 왼쪽으로 5px 넘쳐 389 → 409(10/26) */
 @media (max-width:359px){html:lang(en) .top nav{gap:6px;font-size:11px}html:lang(en) .top nav .lang{padding-left:7px}html:lang(en) .top nav .lang .lt{display:none}html:lang(en) .top nav .lang .fl{margin-right:0}}  /* 영어 메뉴가 가장 긴 아주 좁은 폰(320 · 340px)에서는 언어 단추를 국기 하나로(읽기 프로그램에는 '한국어') */  /* 메뉴가 인스타그램 · 유튜브(영어 Instagram · YouTube)로 길어져(10/25) 좁은 폰(320 · 360px)에서 간격 · 자간만 줄임 */
 @media (max-width:339px){html:lang(en) .top nav{gap:6px;font-size:11px}}  /* 320px 영어 메뉴가 화면 끝에 붙지 않게 */
+/* 돋보기는 구분선 뒤 언어 단추 옆(10/26 동원 "맨 위 막대는 돋보기 B 구분선 뒤 · 언어 A 지금 언어로 하자") — 메뉴 다섯 | 찾기 · 언어.
+   구분선을 돋보기 앞으로 옮김 — 자바스크립트가 꺼져 돋보기가 없으면 구분선은 언어 단추 앞 그대로. 위 좁은 폭 규칙보다 뒤에 두어야 이김(같은 무게) */
+html.js .top nav .sq{width:auto;margin:0;padding-left:13px;border-left:1px solid var(--line)}
+html.js .top nav .lang{padding-left:2px;border-left:0}
+@media (max-width:374px){html.js .top nav .sq{padding-left:8px}}
+@media (max-width:409px){html.js:lang(en) .top nav .sq{padding-left:8px}}
+@media (max-width:359px){html.js:lang(en) .top nav .sq{padding-left:7px}}
 html:lang(en) .label,html:lang(en) .sub{text-transform:uppercase;letter-spacing:.1em}  /* 영어 꼬리표는 대문자 + 자간 조금(Oui Non · Fitzcarraldo) */
 html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 작품 제목은 기울임, 짧은 제목은 한 줄에 */
 .buy2{justify-self:start;margin-top:14px;display:inline-flex;align-items:center;padding:12px 18px;border-radius:999px;background:var(--ink);color:#fff;font:600 12.5px/1 var(--sans);white-space:nowrap}

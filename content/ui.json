@@ -29,16 +29,16 @@
     ]
   },
   "switch": {
-    "ko": "EN",
-    "en": "KO"
+    "ko": "KO",
+    "en": "EN"
   },
   "switch_flag": {
-    "ko": "🇬🇧",
-    "en": "🇰🇷"
+    "ko": "🇰🇷",
+    "en": "🇬🇧"
   },
   "switch_label": {
-    "ko": "English",
-    "en": "한국어"
+    "ko": "KO — English",
+    "en": "EN — 한국어"
   },
   "home_label": {
     "ko": "첫 화면",

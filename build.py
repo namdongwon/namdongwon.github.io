@@ -492,16 +492,21 @@ def make_takbon(site, poem, src):
     im.save(ASSETS / "img" / "takbon.jpg", "JPEG", quality=90, optimize=True)
 
 
+ICON_V = 2  # 아이콘 주소 끝 ?v= — 아이콘 모양을 바꾸면 하나 올림(브라우저가 옛 탭 아이콘을 오래 기억해서, 10/26 동그라미)
+
+
 def make_icons():
-    # 찰칵 표시(■)에서 온 검은 네모
+    # 흰 바탕에 검은 동그라미(10/26 동원 "이거 웹페이지 키면 나오는 아이콘 검정색 동그라미로 하자" — 전엔 찰칵 표시에서 온 검은 네모 36/64).
+    # 지름 40/64 — 네모(36×36)와 먹 넓이가 거의 같게(원 1257 · 네모 1296). 흰 바탕은 그대로(어두운 탭 막대에서도 보이게)
     (DOCS / "favicon.svg").write_text(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#fff"/>'
-        '<rect x="14" y="14" width="36" height="36" fill="#111"/></svg>\n', encoding="utf-8")
+        '<circle cx="32" cy="32" r="20" fill="#111"/></svg>\n', encoding="utf-8")
     for size, name in ((32, "favicon-32.png"), (180, "apple-touch-icon.png")):
-        im = Image.new("RGB", (size, size), "white")
-        m = round(size * 14 / 64)
-        ImageDraw.Draw(im).rectangle((m, m, size - m - 1, size - m - 1), fill="#111111")
-        im.save(DOCS / name)
+        big = size * 8  # 8배로 그려 줄임 — 작은 크기에서도 가장자리가 매끈하게
+        im = Image.new("RGB", (big, big), "white")
+        m = big * 12 / 64
+        ImageDraw.Draw(im).ellipse((m, m, big - m, big - m), fill="#111111")
+        im.resize((size, size), Image.LANCZOS).save(DOCS / name)
 
 
 def render(site, poem, videos, photos, lang="ko"):
@@ -736,8 +741,8 @@ def render(site, poem, videos, photos, lang="ko"):
     secs = ("me", "poem", "photo", "video", "contact")
     nav = "".join(f'<a href="#{sid}">{e(x)}</a>' for sid, x in zip(secs, L["nav"]))  # 소개가 먼저(10/25 동원 "나를 알리는 게 먼저")
     other = "ko" if en else "en"
-    nav += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26) — 국기 단추 앞
-    nav += f'<a class="lang" href="{"../" if en else "en/"}" lang="{other}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 국기 이모지(10/25 동원 — 영어 🇬🇧 · 한국어 🇰🇷)
+    nav += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26) — 구분선 뒤 언어 단추 옆(10/26 B, 구분선은 CSS)
+    nav += f'<a class="lang" href="{"../" if en else "en/"}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 지금 언어를 보임(10/26 동원 "지금 현재 나라의 언어를 표시하는 게 더 좋을 거 같은데" — 한국어판 🇰🇷 KO · 영어판 🇬🇧 EN, 누르면 다른 판)
     preload = ("".join(f'<link rel="preload" href="{P}assets/fonts/{f}" as="font" type="font/woff2" crossorigin>\n' for f in
                        (("newsreader.woff2", "bon-myeongjo.woff2") if en else ("bon-myeongjo-light.woff2", "bon-myeongjo.woff2", "bon-myeongjo-bold.woff2"))))
     pgno = t("pgno", poem=poem_t, pages=e(S["poem"]["pages"])) + (f'<br>{t("translated")}' if L["translated"] else "")
@@ -852,9 +857,9 @@ def render(site, poem, videos, photos, lang="ko"):
 <meta property="og:locale:alternate" content="{ui["og_locale"][other]}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#ffffff">
-<link rel="icon" href="{P}favicon.svg" type="image/svg+xml">
-<link rel="icon" href="{P}favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="{P}apple-touch-icon.png">
+<link rel="icon" href="{P}favicon.svg?v={ICON_V}" type="image/svg+xml">
+<link rel="icon" href="{P}favicon-32.png?v={ICON_V}" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="{P}apple-touch-icon.png?v={ICON_V}">
 {HEAD_JS}
 {preload}<link rel="stylesheet" href="{P}assets/style.css">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
@@ -925,7 +930,7 @@ def page_404(site):
     return f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{k("nf_title")} — {e(site["name"])}</title><meta name="robots" content="noindex">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"></head>
+<link rel="icon" href="/favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"></head>
 <body><main style="min-height:100vh;display:grid;place-content:center;gap:18px;padding:28px;text-align:center">
 <p class="label" style="justify-content:center">404</p>
 <h1 class="h2" style="margin-top:0">{k("nf_title")}</h1>
