@@ -451,13 +451,19 @@
 
   // 게시물 열어 보기(10/25 ⑤ A) — 띠의 사진 가운데 여러 장짜리 게시물('20장' 표시)을 누르면 그 게시물 안 사진을 옆으로 넘겨 보는 흰 창.
   // 사진은 열 때만 받음 · 열면 나머지 쪽은 inert(Tab이 창 안에서만) · Esc나 '닫기'로 닫고 포커스는 누른 사진으로 · 화살표 키로 넘김
+  // 마우스로 보는 컴퓨터는 옆으로 밀 수 없어 양옆 넘기기 단추(10/26) — 끝 장에서는 흐리게(disabled를 쓰면 누르던 단추에서 포커스가 빠져 Esc가 안 먹음)
   const pv = document.querySelector(".pv"), postsEl = document.getElementById("posts");
   if (pv && postsEl) {
     const posts = JSON.parse(postsEl.textContent), view = pv.querySelector(".pvs"), cnt = pv.querySelector(".pvc"), foot = pv.querySelector(".pvf"), x = pv.querySelector(".pvx");
-    const pcaps = [...document.querySelectorAll("#photo .cap")];
+    const pcaps = [...document.querySelectorAll("#photo .cap")], prev = pv.querySelector(".pvp"), next = pv.querySelector(".pvn");
     let from = null, n = 0;
     const others = on => [...document.body.children].forEach(el => { if (el !== pv && el.tagName !== "SCRIPT") el.inert = on; });
-    const upd = () => { cnt.textContent = `${Math.min(n, Math.round(view.scrollLeft / Math.max(1, view.clientWidth)) + 1)} / ${n}`; };
+    const upd = () => {
+      const k = Math.min(n, Math.round(view.scrollLeft / Math.max(1, view.clientWidth)) + 1);
+      cnt.textContent = `${k} / ${n}`;
+      if (prev) { prev.setAttribute("aria-disabled", k <= 1); next.setAttribute("aria-disabled", k >= n); }
+    };
+    const step = d => view.scrollBy({ left: d * view.clientWidth, behavior: reduce ? "auto" : "smooth" });
     view.addEventListener("scroll", upd, { passive: true });
     const open = (i, btn) => {
       const list = posts[i] || [];
@@ -493,11 +499,12 @@
     };
     document.querySelectorAll("#photo .pop").forEach(b => b.addEventListener("click", () => open(+b.dataset.i, b)));
     x.addEventListener("click", shut);
+    if (prev) { prev.addEventListener("click", () => step(-1)); next.addEventListener("click", () => step(1)); }
     pv.addEventListener("keydown", ev => {
       if (ev.key === "Escape") shut();
       else if (ev.key === "ArrowRight" || ev.key === "ArrowLeft") {
         ev.preventDefault();
-        view.scrollBy({ left: (ev.key === "ArrowRight" ? 1 : -1) * view.clientWidth, behavior: reduce ? "auto" : "smooth" });
+        step(ev.key === "ArrowRight" ? 1 : -1);
       }
     });
   }
@@ -506,7 +513,7 @@
   // 띄어쓰기 · 부호 · 영문 대소문자 무시 · 초성만 쳐도(ㅌㅂ → 탁본). 검색어는 이 기기 밖으로 나가지 않음 · 열면 나머지 쪽은 inert · Esc나 '닫기'로 닫고 포커스는 돋보기로
   const sq = document.querySelector(".sq"), srch = document.querySelector(".srch"), sidx = document.getElementById("sidx");
   if (sq && srch && sidx) {
-    const items = JSON.parse(sidx.textContent);  // [갈래, 글, 자리, 갈 곳]
+    const items = JSON.parse(sidx.textContent);  // [갈래, 글, 자리, 갈 곳] · 칸 이름만 다섯째에 그 칸의 낱말(약력 · 차례 …)
     const inp = srch.querySelector("input"), res = srch.querySelector(".sr-res"), none = srch.querySelector(".sr-none");
     const cnt = srch.querySelector(".sr-n"), lab = srch.querySelector(".sr-lab"), sug = srch.querySelector(".sug");
     const K = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
@@ -521,11 +528,15 @@
       const ch = /^[ㄱ-ㅎ]+$/.test(nq), out = [];
       items.forEach(it => {
         const [nt, map] = norm(it[1]), at = (ch ? cho(nt) : nt).indexOf(nq);
-        if (at < 0) return;
+        if (at < 0) {  // 칸 이름은 그 칸의 낱말로도('약력' → 소개) — 굵게 할 글자가 없어 이름 그대로, 앞부분이 맞은 것과 함께 위로
+          // 낱말을 붙여 견줌('사는 곳'처럼 띄운 말도) · 초성만 쳤으면 낱말 첫머리만(ㅅㅈ → 사진은 맞고 메시지는 안 맞게)
+          if (it[4] && (ch ? it[4].split(" ").some(w => cho(norm(w)[0]).startsWith(nq)) : norm(it[4])[0].includes(nq))) out.push({ it, at: 0, html: esc(it[1]) });
+          return;
+        }
         const cs = [...it[1].normalize("NFC")], a = map[at], b = map[at + nq.length - 1] + 1;
         out.push({ it, at, html: esc(cs.slice(0, a).join("")) + "<b>" + esc(cs.slice(a, b).join("")) + "</b>" + esc(cs.slice(b).join("")) });
       });
-      return out.sort((x, y) => (x.at > 0) - (y.at > 0)).slice(0, 12);  // 앞부분이 맞는 것부터, 같으면 갈래 차례(시집 · 차례 · 시 · 소개 …)
+      return out.sort((x, y) => (x.at > 0) - (y.at > 0)).slice(0, 12);  // 앞부분이 맞는 것부터, 같으면 갈래 차례(칸 · 시집 · 차례 · 시 · 소개 …)
     };
     const run = () => {
       const q = inp.value, empty = !q.trim(), hits = empty ? [] : find(q);
@@ -718,6 +729,13 @@
   if (top) addEventListener("scroll", () => top.classList.toggle("sc", scrollY > 8), { passive: true });
 
   // 문의 폼: Formspree 주소가 들어가기 전에는 보내지 않고 안내만
+  // 메일(10/26) — 쪽 원본에는 뒤집은 두 조각만 있음(주소를 긁어 가는 프로그램 대비) → 여기서 주소와 mailto를 이어 붙임
+  document.querySelectorAll("a.ml[data-u]").forEach(a => {
+    const m = [...a.dataset.u].reverse().join("") + "@" + [...a.dataset.d].reverse().join("");
+    a.textContent = m;
+    a.href = "mailto:" + m;
+  });
+
   const form = document.querySelector("form.ask");
   // 아이폰 Safari는 터치 이벤트가 붙은 요소에만 누름(:active) 모양을 보여 줌[MDN 호환성 자료] — '보내기'를 누르는 동안 먹으로(10/24 ⑨ A)
   const send = form && form.querySelector(".send");

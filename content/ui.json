@@ -144,6 +144,10 @@
     "ko": "인스타그램 메시지로 남기기",
     "en": "Leave a message on Instagram"
   },
+  "mail": {
+    "ko": "메일",
+    "en": "Email"
+  },
   "many": {
     "ko": "{n}장",
     "en": "{n} photos"
@@ -155,6 +159,14 @@
   "pv_label": {
     "ko": "게시물 사진",
     "en": "Post photos"
+  },
+  "pv_prev": {
+    "ko": "이전 사진",
+    "en": "Previous photo"
+  },
+  "pv_next": {
+    "ko": "다음 사진",
+    "en": "Next photo"
   },
   "photo_alt": {
     "ko": "직접 찍은 사진",
@@ -300,17 +312,9 @@
     "ko": "지은이",
     "en": "Author"
   },
-  "colo_type": {
-    "ko": "글꼴",
-    "en": "Type"
-  },
   "colo_made": {
     "ko": "만든 곳",
     "en": "Made"
-  },
-  "colo_subset": {
-    "ko": "쓰인 글자만 담음 · 약 {kb}KB",
-    "en": "only the characters in use · about {kb} KB"
   },
   "colo_cookie": {
     "ko": "쿠키를 쓰지 않습니다.",
@@ -345,8 +349,16 @@
     "en": "Nothing found — try a suggestion."
   },
   "search_tags": {
-    "ko": "차례|「탁본」|시집|소개|소식|사진|영상|연락",
-    "en": "Contents|“Rubbing”|Book|About|News|Photo|Video|Contact"
+    "ko": "차례|「탁본」|시집|소개|소식|사진|영상|연락|칸",
+    "en": "Contents|“Rubbing”|Book|About|News|Photo|Video|Contact|Section"
+  },
+  "search_sec_where": {
+    "ko": "약력 · 연표 · 지금|「탁본」 · 책 · 차례|사진 · 게시물|영상 · 리뷰|메일 · 인스타그램 메시지",
+    "en": "Bio · timeline · now|“Rubbing” · book · contents|Photos · posts|Videos · reviews|Email · Instagram message"
+  },
+  "search_sec_keys": {
+    "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 사는 곳 소식|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지",
+    "en": "bio timeline now name|poem book contents rubbing kyobo buy news|photos instagram posts exhibitions|videos reviews film channel|email gmail mail message"
   },
   "search_toc_where": {
     "ko": "{part} · {page}쪽",

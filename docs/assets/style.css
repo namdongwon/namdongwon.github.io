@@ -118,8 +118,8 @@ html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spaci
   mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent),linear-gradient(transparent,#000 14%,#000 86%,transparent);mask-composite:intersect}
 #home .bk .win::before{content:"";position:absolute;left:-5.56%;top:-17.78%;width:83.33%;height:93.33%;border:calc(var(--w) * .08) solid rgba(17,17,17,.13);
   background:linear-gradient(90deg,transparent 46%,rgba(17,17,17,.16) 46% 54%,transparent 54%) border-box no-repeat,linear-gradient(0deg,transparent 47%,rgba(17,17,17,.16) 47% 53%,transparent 53%) border-box no-repeat;
-  filter:blur(calc(var(--w) * .04));transform-origin:66.67% 72.62%;transform:translate(3.33%,-1.43%) rotate(-14deg) skewX(-18deg)}  /* 창틀 + 십자 창살이 머문 자리 */
-@keyframes win-in{0%{opacity:0;transform:translate(-50%,9.52%) rotate(-14deg) skewX(-18deg)}22%{opacity:1}}
+  filter:blur(calc(var(--w) * .04));transform-origin:66.67% 72.62%;transform:translate(26%,-20%) rotate(-14deg) skewX(-18deg)}  /* 창틀 + 십자 창살이 머문 자리 — 교차점은 책 윗변 위(10/26 나3 A, 전에는 translate(3.33%,-1.43%)로 책 왼쪽 가운데에 떨어져 '†'처럼 보였음) */
+@keyframes win-in{0%{opacity:0;transform:translate(-27.33%,-9.05%) rotate(-14deg) skewX(-18deg)}22%{opacity:1}}  /* 들어오는 길이는 전과 같게(머문 자리에서 -53.33% · +10.95%) */
 @keyframes win-safe{from{opacity:0}to{opacity:1}}
 
 /* ② 시집 — 「탁본」 */
@@ -281,6 +281,10 @@ html.pv-on{overflow:hidden}
 .pvs::-webkit-scrollbar{display:none}
 .pvs figure{flex:0 0 100%;margin:0;display:flex;align-items:center;justify-content:center;padding:16px 20px;scroll-snap-align:start}
 .pvs img{display:block;max-width:100%;max-height:100%;object-fit:contain}
+/* 넘기기 단추(10/26 동원 "컴퓨터에서는 확대해도 안 넘어가는 거 같네") — 마우스로 보는 컴퓨터에서만(휴대폰 · 패드는 손으로 밀어 넘김) · 사진 양옆 빈자리에 둥근 선 단추 · 끝 장에서는 흐리게 */
+.pvw{flex:1;min-height:0;position:relative;display:flex}
+.pva{display:none}
+@media (hover:hover) and (pointer:fine){.pva{position:absolute;top:50%;z-index:1;display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin-top:-22px;padding:0;border:1px solid var(--rule);border-radius:50%;background:var(--bg);font:300 17px/1 var(--sans);color:var(--ink);cursor:pointer;transition:border-color .2s ease,opacity .2s ease}.pvp{left:10px}.pvn{right:10px}.pva:hover{border-color:var(--ink)}.pva[aria-disabled="true"]{opacity:.25;cursor:default;border-color:var(--rule)}}
 .pvf{flex:none;padding:14px 20px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--rule)}
 .pvf p{font:14px/1.5 var(--body)}
 .pvf .aw{display:block;margin-top:4px}
@@ -385,6 +389,10 @@ html.sr-on{overflow:hidden}
 .lead{margin-top:14px;font:15px/1.8 var(--body);color:var(--muted)}
 .ask{margin-top:26px;display:grid;gap:16px}
 .ask-off{margin-top:26px}
+/* 메일 한 줄(10/26) — 문의 단추 아래, 이름표는 옅은 고딕 · 주소는 문의 단추와 같은 밑줄 글(두 길이 나란한 무게) */
+.mail{margin-top:18px;display:flex;align-items:baseline;gap:12px}
+.mail > span{font:300 12.5px/1 var(--sans);color:var(--muted)}
+.mail .ml{display:inline-block}  /* 글 줄 그대로 — 자바스크립트가 꺼진 화면에서 베껴도 주소가 한 줄로 */
 .ask label{display:grid;gap:6px;font:600 11px/1 var(--sans);letter-spacing:.08em;color:var(--muted)}
 .ask input[type=text],.ask input[type=email],.ask textarea{font:300 16px/1.5 var(--sys);color:var(--ink);border:0;border-bottom:1px solid var(--line);padding:8px 0;background:transparent;border-radius:0;outline:none;width:100%}
 .ask textarea{min-height:120px;border:1px solid var(--line);padding:10px;resize:vertical}

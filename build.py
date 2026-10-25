@@ -42,7 +42,6 @@ FONTS = [
     ("Pretendard-SemiBold.otf", PTD_DIR, "", "ndw-sans-semibold.woff2", True),
 ]
 # 사이트 글자 말고도 늘 남겨 둘 것: 영문·숫자·기호(주소·계정 이름·숫자 세기)와 쓰는 문장부호
-FONTS_KB = {}  # 판권면 글꼴 줄의 용량(10/25 ⑧) — main()이 줄인 글꼴을 다 만든 뒤 채우고 쪽을 한 번 더 그림
 SEARCH_ICON = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false">'
                '<circle cx="8.5" cy="8.5" r="6"/><path d="M13 13l5 5" stroke-linecap="round"/></svg>')  # 맨 위 막대 · 찾기 창의 가는 선 돋보기(10/26)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
@@ -515,8 +514,8 @@ def render(site, poem, videos, photos, lang="ko"):
     S, PH = localize(site, lang), localize(photos, lang)
     tb = tables(site)
     # 사이트 안 찾기(10/26 검색 A)의 찾을 거리 — 칸을 그리면서 갈래마다 [갈래 이름, 글, 자리, 갈 곳]을 모아 쪽 안 JSON(#sidx)으로. 갈래 차례가 결과의 차례
-    ix = {k: [] for k in ("book", "toc", "poem", "me", "news", "photo", "video", "contact")}
-    tg = dict(zip(("toc", "poem", "book", "me", "news", "photo", "video", "contact"), L["search_tags"].split("|")))  # ui.json search_tags 차례대로
+    ix = {k: [] for k in ("sec", "book", "toc", "poem", "me", "news", "photo", "video", "contact")}  # 찾은 것이 같은 자리에서 맞으면 이 차례(칸 이름이 먼저)
+    tg = dict(zip(("toc", "poem", "book", "me", "news", "photo", "video", "contact", "sec"), L["search_tags"].split("|")))  # ui.json search_tags 차례대로
     plain = lambda s: re.sub(r"\*", "", s)  # noqa: E731 — 영어 원고의 *기울임* 표시는 찾기 글에서 뺌
     # 영상(videos.json — 다음 편 · 올린 편): 5절 규칙, 올린 편은 날짜로 최근 것부터(설계서 ④)
     V = {"upcoming": row_lang(videos.get("upcoming") or {}, lang),
@@ -657,7 +656,9 @@ def render(site, poem, videos, photos, lang="ko"):
              for p in PH["items"]]
     posts_js = json.dumps(posts).replace("</", "<\\/")
     pv = (f'<div class="pv" role="dialog" aria-modal="true" aria-label="{t("pv_label")}" hidden><div class="pvh"><p class="pvc" aria-live="polite"></p>'
-          f'<button type="button" class="pvx">{t("close")}</button></div><div class="pvs" tabindex="0" aria-label="{t("pv_label")}"></div><div class="pvf"></div></div>\n'
+          f'<button type="button" class="pvx">{t("close")}</button></div><div class="pvw"><div class="pvs" tabindex="0" aria-label="{t("pv_label")}"></div>'
+          f'<button type="button" class="pva pvp" aria-label="{t("pv_prev")}">←</button><button type="button" class="pva pvn" aria-label="{t("pv_next")}">→</button></div>'  # 넘기기 단추 — 마우스로 보는 컴퓨터에서만(10/26 동원 "컴퓨터에서는 확대해도 안 넘어가는 거 같네")
+          f'<div class="pvf"></div></div>\n'
           f'<script id="posts" type="application/json">{posts_js}</script>\n') if any(posts) else ""
     # 아래 작은 줄(보는 한 장만 색)과 '모아 보기' 격자(번호) — 가벼운 작은 사진(240px)을 따로 씀
     thumb = lambda p: f'{P}assets/img/photos/thumb/{e(Path(p["file"]).stem)}.jpg'
@@ -715,6 +716,12 @@ def render(site, poem, videos, photos, lang="ko"):
         <button class="send" type="submit">{t("send")}</button>
         <p class="msg" role="status"></p></form>''' if endpoint else
            f'<p class="ask-off"><a class="buy" href="{e(link_url(site, "instagram"))}" target="_blank" rel="noopener">{t("ask_off")} ↗</a></p>')
+    # 메일(10/26 동원 "나의 지메일 도 남기면 좋을 거 같아") — 문의 아래 한 줄 '메일 + 주소'(베껴 쓰기 쉽게 주소를 그대로 보임 · 누르면 메일 앱).
+    # 주소를 긁어 가는 프로그램 대비로 공개 저장소의 원고 · 쪽 원본 어디에도 주소를 한 덩어리로 두지 않음: site.json은 아이디 · 도메인을 나눠 두고,
+    # 쪽에는 뒤집은 두 조각(data-u · data-d)과 '@'를 따로 감싼 글만 → main.js가 화면에서 주소와 mailto를 이어 붙임. 찾을 거리 · 구조화 데이터에도 주소는 넣지 않음
+    em = c.get("email") or {}
+    mail = (f'<p class="mail"><span>{t("mail")}</span><a class="buy ml" href="#contact" data-u="{e(em["user"][::-1])}" data-d="{e(em["domain"][::-1])}">'
+            f'{e(em["user"])}<span>@</span>{e(em["domain"])}</a></p>') if em.get("user") and em.get("domain") else ""
     # 바닥글: 판권면(10/24 A) — 시집 판권면의 틀(제목 → 항목 줄 → ⓒ와 다시 쓰기 안내)만 빌림. 고친 날은 빌드한 날(서울 시간),
     # 판은 디자인을 크게 다시 할 때(site.json) · 쇄는 고쳐 올릴 때마다 저절로(printing_no — 올린 기록으로 셈, 10/25)
     co, today = S["colophon"], build_day()
@@ -723,11 +730,11 @@ def render(site, poem, videos, photos, lang="ko"):
     ed = (f'{ordinal(co["edition"])} edition, {ordinal(pr)} printing' if en else f'{co["edition"]}판 {pr}쇄')
     colo = (f'<div class="colo"><p class="t">{e(urlparse(base).netloc or base)}</p><dl>'
             f'<dt>{t("colo_updated")}</dt><dd><time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</dd>'
-            f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd><dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd>'
-            f'<dt>{t("colo_type")}</dt><dd>{e(co["fonts"])} — {t("colo_subset", kb=FONTS_KB.get(lang, 0))}</dd></dl>'
+            f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd><dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd></dl>'  # 글꼴 줄은 뺌(10/26 동원 "사이트에 내 글꼴 소개하지 않아도 되잖아 지워" — 라이선스 글은 글꼴 옆에 그대로)
             f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{t("colo_cookie")}</p></div>')
 
-    nav = "".join(f'<a href="#{sid}">{e(x)}</a>' for sid, x in zip(("me", "poem", "photo", "video", "contact"), L["nav"]))  # 소개가 먼저(10/25 동원 "나를 알리는 게 먼저")
+    secs = ("me", "poem", "photo", "video", "contact")
+    nav = "".join(f'<a href="#{sid}">{e(x)}</a>' for sid, x in zip(secs, L["nav"]))  # 소개가 먼저(10/25 동원 "나를 알리는 게 먼저")
     other = "ko" if en else "en"
     nav += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26) — 국기 단추 앞
     nav += f'<a class="lang" href="{"../" if en else "en/"}" lang="{other}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 국기 이모지(10/25 동원 — 영어 🇬🇧 · 한국어 🇰🇷)
@@ -790,6 +797,8 @@ def render(site, poem, videos, photos, lang="ko"):
     ui_js = json.dumps(L["js"], ensure_ascii=False).replace("</", "<\\/")
 
     # 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기 → 흰 한 장 · 추천 주제(content/search.json) · 찾을 거리(#sidx). 찾기는 main.js
+    # 칸 이름(10/26 동원 "소개나 시집 이런 대분류들도 검색될 수 있게") — 맨 위 막대의 다섯 칸. 다섯째 값은 그 칸에 든 것의 낱말(약력 · 차례 …) — 칸 이름에 없는 말로도 찾게
+    ix["sec"] = [(tg["sec"], x, w, f"#{sid}", k) for sid, x, w, k in zip(secs, L["nav"], L["search_sec_where"].split("|"), L["search_sec_keys"].split("|"))]
     ix["book"] += [(tg["book"], plain(book["title"]), book["spec"], "#poem"), (tg["book"], book["buy_label"], book["store_label"], book["buy_url"])]
     ix["me"][:0] = [(tg["me"], S["name"], "", "#me"), (tg["me"], S["tagline"], "", "#me")] + [
         (tg["me"], x, "", "#me") for x in re.split(r"(?<=[.!?다])\s+", plain(S["bio"])) if x]
@@ -799,13 +808,19 @@ def render(site, poem, videos, photos, lang="ko"):
     sidx_js = json.dumps([list(x) for k in ix for x in ix[k]], ensure_ascii=False).replace("</", "<\\/")
     sj = load("search.json") if (CONTENT / "search.json").exists() else {"suggest": []}
 
-    def sug_li(x):  # 추천 주제 한 줄 — go: 쪽 안 자리 · 'buy'(교보) / q: 그 말로 찾기
-        x = {**x, **(x.get("en") or {})} if en else x
+    def sug_li(x):  # 추천 주제 한 줄 — go: 쪽 안 자리 · 'buy'(교보) / q: 그 말로 찾기 · 줄마다 모든 칸, 안 쓰는 쪽은 ""(설계서 7절)
+        if en:  # 영어판은 en 칸으로 — en.label이 비었거나 찾을 말 줄인데 en.q가 비면 그 줄을 뺌(관리 화면 '영어 빔 — 영어판에서 숨겨짐'과 같은 규칙, 10/26)
+            o = x.get("en") or {}
+            if not o.get("label") or (x.get("q") and not o.get("q")):
+                return ""
+            x = {**x, **o}
+        if not x.get("label"):  # 이름이 빈 줄도 뺌(관리 화면이 막지만 원고를 손으로 고칠 때 대비)
+            return ""
         note = f'<i>{e(x.get("note", ""))}</i>'
         hang = ' class="hang"' if x["label"][:1] in "「『" else ""  # 여는 부호로 시작하면 내어 걸기(본명조 앞 빈 0.6em 안팎)
         if x.get("q"):
             return f'<li><button type="button"{hang} data-q="{e(x["q"])}">{e(x["label"])}{note}</button></li>'
-        href = book["buy_url"] if x.get("go") == "buy" else x.get("go", "#home")
+        href = book["buy_url"] if x.get("go") == "buy" else (x.get("go") or "#home")
         ext = href.startswith("http")
         return (f'<li><a{hang} href="{e(href)}"' + (' target="_blank" rel="noopener"' if ext else "") + f'>{e(x["label"])}{" ↗" if ext else ""}{note}</a></li>')
     srch = (f'<div class="srch" role="dialog" aria-modal="true" aria-label="{t("search_label")}" hidden><div class="in">'
@@ -890,7 +905,7 @@ def render(site, poem, videos, photos, lang="ko"):
   <section id="contact" aria-labelledby="contact-t">
     <p class="label">{t("label_contact")}</p>
     <div class="l"><h2 class="h2" id="contact-t">{t("label_contact")}</h2><p class="lead">{lead}</p></div>
-    <div class="r">{ask}
+    <div class="r">{ask}{mail}
       <p class="sns">{sns}</p>
       {colo}</div>
   </section>
@@ -974,12 +989,6 @@ def main():
         else:
             raise SystemExit(f"글꼴을 찾지 못함: {name}")
 
-    # 판권면 글꼴 줄의 용량(10/25 ⑧) — 줄인 글꼴을 다 만든 뒤 세어 두 쪽을 한 번 더 그림(바뀌는 글자는 숫자뿐이라 글꼴은 그대로)
-    def kb(outs):
-        return round(sum((ASSETS / "fonts" / o).stat().st_size for o in outs) / 10000) * 10
-    # 영어 쪽이 실제로 받는 것 — 본명조는 보통 굵기 하나(섞인 한글 원제 · 시), 굵기 300 · 700은 한국어 제목에만 쓰여 받지 않음(10/26 실측)
-    FONTS_KB.update(ko=kb([f[3] for f in FONTS]), en=kb([f[3] for f in FONTS if f[3] not in (LIGHT_ONLY, "bon-myeongjo-bold.woff2")] + [f[1] for f in EN_FONTS]))
-    index_html, en_html = render(site, poem, videos, photos), render(site, poem, videos, photos, "en")
 
     # 글꼴 라이선스 전문은 글꼴 옆에 함께 둔다(OFL·GPL 조건)
     for lic in sorted((CONTENT / "licenses").glob("*.txt")):
