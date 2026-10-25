@@ -565,7 +565,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 탁본 한 장 — 「탁본」을 길게 누르면 열리는 검은 먹 종이(움직임·간직하기는 main.js). 자바스크립트가 없으면 숨은 채로.
     # 영어판도 시는 한국어 원문 그대로(10/24 ③)
     ko_attr = ' lang="ko"' if en else ""
-    sheet_title = f"<i>{e(book['title'])}</i>" if en else f"『{e(book['title'])}』"
+    sheet_title = tt(e(book["title"]), not en)  # 출처의 시집 제목도 표지 줄 나눔 자리에서만 나뉘게(10/25 다듬기 가9 — '있다』'만 넘어가던 것)
     sheet = (f'<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t" hidden>'
              f'<p class="st" id="sheet-t"{ko_attr}>「{e(site["poem"]["title"])}」</p><div class="sp"{ko_attr}>{ko_html}</div>'
              f'<div class="sf"><span>{t("sheet_book", name=e(S["name"]))}<br>{sheet_title}</span>'
@@ -655,7 +655,17 @@ def render(site, poem, videos, photos, lang="ko"):
     c = S["contact"]
     endpoint = f'https://formspree.io/f/{c["formspree_id"]}' if c["formspree_id"] else ""
     lead = "<br>".join(e(x) for x in c["lead_lines"])
-    sns = "".join(f'<a href="{e(l["url"])}" target="_blank" rel="noopener">{e(l["name"])}</a>' for l in links)
+    sns = "".join(f'<a href="{e(l["url"])}" target="_blank" rel="noopener">{e(l["name"])} ↗</a>' for l in links)  # 밖으로 나가는 링크는 ↗(10/25 다듬기 가5)
+    # 문의 폼(Formspree)을 붙이기 전에는 폼을 접고 인스타그램으로 — 다 쓰고 보낸 뒤에야 '연결 전'을 알게 되지 않게(10/25 다듬기 가4)
+    ask = (f'''<form class="ask" data-endpoint="{e(endpoint)}" method="post">
+        <label>{t("form_name")}<input type="text" name="name" autocomplete="name"></label>
+        <label>{t("form_email")}<input type="email" name="email" autocomplete="email" required></label>
+        <label>{t("form_message")}<textarea name="message" required></textarea></label>
+        <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label class="agree"><input type="checkbox" name="agree" required>{t("agree", privacy=e(c["privacy"]))}</label>
+        <button class="send" type="submit">{t("send")}</button>
+        <p class="msg" role="status"></p></form>''' if endpoint else
+           f'<p class="ask-off"><a class="buy" href="{e(link_url(site, "instagram"))}" target="_blank" rel="noopener">{t("ask_off")} ↗</a></p>')
     # 바닥글: 판권면(10/24 A) — 시집 판권면의 틀(제목 → 항목 줄 → ⓒ와 다시 쓰기 안내)만 빌림. 고친 날은 빌드한 날(서울 시간),
     # 판은 디자인을 크게 다시 할 때 · 쇄는 고쳐 올릴 때마다(site.json — 올리는 흐름을 정하면 쇄는 자동으로 셀 수 있음)
     co, today = S["colophon"], build_day()
@@ -798,14 +808,7 @@ def render(site, poem, videos, photos, lang="ko"):
   <section id="contact" aria-labelledby="contact-t">
     <p class="label">{t("label_contact")}</p>
     <div class="l"><h2 class="h2" id="contact-t">{t("label_contact")}</h2><p class="lead">{lead}</p></div>
-    <div class="r"><form class="ask" data-endpoint="{e(endpoint)}" method="post">
-        <label>{t("form_name")}<input type="text" name="name" autocomplete="name"></label>
-        <label>{t("form_email")}<input type="email" name="email" autocomplete="email" required></label>
-        <label>{t("form_message")}<textarea name="message" required></textarea></label>
-        <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <label class="agree"><input type="checkbox" name="agree" required>{t("agree", privacy=e(c["privacy"]))}</label>
-        <button class="send" type="submit">{t("send")}</button>
-        <p class="msg" role="status"></p></form>
+    <div class="r">{ask}
       <p class="sns">{sns}</p>
       {colo}</div>
   </section>

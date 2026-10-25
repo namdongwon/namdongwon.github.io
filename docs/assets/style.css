@@ -58,7 +58,7 @@ button{font:inherit;color:inherit}
 .top nav .ul.on{opacity:1}
 
 /* 칸 */
-main>section{min-height:100vh;min-height:100svh;padding:12px 20px 64px;scroll-margin-top:var(--top)}  /* 휴대폰 좌우 여백 20px(10/24 ⑪ A — Le Cinéma Club · 타이포그래피 서울과 같은 값, 시집 제목 줄이 375px에서 한 줄). 컴퓨터는 64px */
+main>section{padding:12px 20px 64px;scroll-margin-top:var(--top)}  /* 칸 높이는 첫 화면만(#home) — 칸 맞춤을 끈 뒤 남은 화면 높이 때문에 칸 사이가 84–312px로 들쭉날쭉했음(10/25 다듬기 가2) */  /* 휴대폰 좌우 여백 20px(10/24 ⑪ A — Le Cinéma Club · 타이포그래피 서울과 같은 값, 시집 제목 줄이 375px에서 한 줄). 컴퓨터는 64px */
 .label{display:flex;align-items:center;gap:12px;margin-top:8px;font:600 11px/1 var(--sans);letter-spacing:.32em;color:var(--muted)}
 .label::after{content:"";flex:1;height:1px;background:var(--rule)}
 .h2{margin-top:36px;font:700 28px/1.2 var(--serif)}
@@ -83,7 +83,7 @@ html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spaci
 #home dt{font:300 11px/1.3 var(--sans);color:var(--muted)}
 #home dd{margin-top:3px;font:600 11px/1.55 var(--sans)}
 #home dd small{font:300 11px/1.5 var(--sans);color:var(--muted)}
-#home dd .buy{font-size:11px;padding-bottom:2px;border-bottom-width:1px}
+#home dd .buy{font-size:14px;padding-bottom:2px;border-bottom-width:1px}  /* 사는 길은 단추 몫 14px(10/25 다듬기 가1 — 11px라 '「탁본」 읽기'보다 작았음) */
 /* 첫 화면 시집: 서 있는 책(10/24 A) — 앞표지·책등·뒤표지로 된 3D 책, CSS만(라이브러리 없음). 레퍼런스 Stripe Press(책등이 보이는 3D 책).
    크기는 표지 폭 200px(컴퓨터 250px), 두께는 책등 9mm 비율(200×9/128 = 14px). 26°로 비스듬히 서서 책등이 보임 — 돌리기는 main.js */
 @property --ry{syntax:"<angle>";inherits:false;initial-value:26deg}
@@ -159,13 +159,14 @@ html:lang(en) .pbook .bk{grid-row:span 4}html:lang(en) .pbook .note{grid-column:
 .btext{margin-top:16px;font:15px/1.85 var(--body);word-break:keep-all;text-wrap:pretty}
 .btoc{margin-top:34px}
 .btoc h3{font:300 11px/1 var(--sans);letter-spacing:.14em;color:var(--faint)}
+html:lang(en) .btoc h3{letter-spacing:0}  /* 영어 소문자 문장에는 넓은 자간을 두지 않음(10/25 다듬기 가8) */
 .btoc .parts{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .btoc h4{margin-bottom:8px;font:600 11px/1 var(--sans);letter-spacing:.08em;color:var(--muted)}
 .btoc ol{list-style:none;margin:0;padding:0}
-.btoc li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font:13.5px/1.9 var(--body);color:var(--faint);word-break:keep-all}
+.btoc li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:.2em 0;font:13.5px/1.5 var(--body);color:var(--faint);word-break:keep-all}  /* 줄 높이 1.9 → 1.5 + 위아래 .2em — 한 줄 간격은 그대로, 넘어간 제목은 붙어 보이게(10/25 다듬기 가7) */
 .btoc li>span:last-child{flex:none;font:300 11px/1 var(--sans);font-variant-numeric:tabular-nums}
 .btoc li.on{color:var(--ink)}
-.btoc li>span:first-child{text-wrap:balance}  /* 좁은 단에서 꺾이는 제목은 두 줄을 고르게(「들렸으면 했던 / 작은 소리」) */
+.btoc li>span:first-child{text-wrap:balance;padding-left:1em;text-indent:-1em}  /* 좁은 단에서 꺾이는 제목은 두 줄을 고르게(「들렸으면 했던 / 작은 소리」) */
 .btoc li small{margin-left:5px;font:300 11px/1 var(--sans);color:var(--faint)}  /* 영어판: 옮긴 제목 곁의 한국어 원제 */
 .btoc li.on small{color:var(--muted)}  /* 먹 줄의 원제는 한 단계 진하게 — 책 카드 제목 · 원제와 같은 짝 */
 .btoc .tail{margin-top:18px;padding-top:12px;border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
@@ -345,6 +346,7 @@ html.pv-on{overflow:hidden}
 /* ⑥ 연락 — 문의 폼 */
 .lead{margin-top:14px;font:15px/1.8 var(--body);color:var(--muted)}
 .ask{margin-top:26px;display:grid;gap:16px}
+.ask-off{margin-top:26px}
 .ask label{display:grid;gap:6px;font:600 11px/1 var(--sans);letter-spacing:.08em;color:var(--muted)}
 .ask input[type=text],.ask input[type=email],.ask textarea{font:300 16px/1.5 var(--sys);color:var(--ink);border:0;border-bottom:1px solid var(--line);padding:8px 0;background:transparent;border-radius:0;outline:none;width:100%}
 .ask textarea{min-height:120px;border:1px solid var(--line);padding:10px;resize:vertical}
@@ -421,7 +423,7 @@ html.pv-on{overflow:hidden}
   /* 첫 화면 이름 — 커서와 함께 자모로 쳐 나감(10/24). 자바스크립트가 넘겨받기 전에는 이름을 감춰 한 번 깜빡이지 않게(3초 뒤엔 그냥 보임) */
   .js #home .name:not(.ty){color:transparent;animation:name-show 0s 3s forwards}
   .js .name .caret{display:inline-block;width:.06em;height:.8em;margin-left:.16em;background:currentColor;vertical-align:-.04em;animation:caret 1s steps(1) infinite}
-  .js .name .caret.off{opacity:0;transition:opacity .4s;animation:none}
+  .js .name .caret.off{opacity:0;width:0;margin-left:0;transition:opacity .4s,width 0s .4s,margin-left 0s .4s;animation:none}  /* 다 친 뒤엔 자리도 비움 — 이름 뒤 빈칸이 두 배였음(10/25 다듬기 가6) */
   .intro #home .book{opacity:0;transform:translateY(26px);filter:blur(3px);animation:intro-safe .8s var(--ease) 4s forwards}
   .intro .door{animation:door-safe .6s ease 4s forwards}  /* 문 안전장치(10/25 마지막 점검 A): main.js가 문을 못 걷으면 4초 뒤 스스로 — 정상이면 2.5초에 main.js가 문을 치움 */
   .opened #home .book{opacity:1;transform:none;filter:none;transition:opacity .8s var(--ease) .6s,transform .8s var(--ease) .6s,filter .8s var(--ease) .6s}  /* 문 열림 0.6초 뒤부터(10/24 B, 지금 1.1초 뒤 1초) */
@@ -469,11 +471,13 @@ html.pv-on{overflow:hidden}
   #home .bk{--w:250px;--h:367.2px;--t:17.6px}
   #home .lab{grid-column:1/-1;grid-row:3;margin-top:44px}
   #home dl{grid-template-columns:repeat(4,1fr);column-gap:28px}
-  #home dd,#home dd .buy{font-size:12.5px}
+  #home dd{font-size:12.5px}
   .bk{--w:250px;--h:367.2px;--t:17.6px}
   #poem{grid-template-columns:300px 1fr}
   #poem>.l,#poem>.r{align-self:start;margin-top:36px}
   #poem>.l{position:sticky;top:110px}
+  #me>.l,#me>.r{align-self:start;margin-top:36px}
+  #me>.l{position:sticky;top:110px}  /* 소개도 이름을 위에 붙이고 연표를 읽는 동안 따라옴 — 가운데 서서 이름 위가 438px 비었음(10/25 다듬기 가3) */
   #poem>.l{grid-row:2 / span 3}  /* 소식 · 소개 · 차례를 읽는 동안에도 책 카드가 왼쪽에 머묾(10/25) */
   #poem>.bnews{grid-column:2;grid-row:3;margin-top:64px;max-width:34em}  /* 소식은 오른쪽 칸 시 아래 — 왼쪽 책 카드가 낮은 화면(1280×720)보다 길어지지 않게 */
   #poem>.bintro{grid-column:2;grid-row:4;margin-top:64px}

@@ -54,7 +54,7 @@
   },
   "ex_kick": {
     "ko": "첫 시집 · 웹 전시",
-    "en": "· First poetry collection · a web exhibition"
+    "en": "· First poetry collection · A web exhibition"
   },
   "ex_tip": {
     "ko": "책을 옆으로 밀어 보세요 — 앞표지 · 책등 · 뒤표지",
@@ -139,6 +139,10 @@
   "strip": {
     "ko": "사진 {n}장, 옆으로 넘겨 보기",
     "en": "{n} photos — swipe to browse"
+  },
+  "ask_off": {
+    "ko": "인스타그램 메시지로 남기기",
+    "en": "Leave a message on Instagram"
   },
   "many": {
     "ko": "{n}장",
