@@ -583,7 +583,7 @@
     "edition": 2,
     "printing": 1,
     "edition_start": "04a926f",
-    "fonts": "나눔명조 · 은바탕 · Pretendard",
+    "fonts": "본명조 · Pretendard",
     "note": "글과 사진을 다시 쓰려면 먼저 물어 주세요.",
     "made": "서울에서 쓰고, 찍고, 엮음"
   },
@@ -638,7 +638,7 @@
     },
     "copyright": "© 2026 Dongwon Nam",
     "colophon": {
-      "fonts": "Newsreader · Nanum Myeongjo · Un Batang · Pretendard",
+      "fonts": "Newsreader · Bon Myeongjo · Pretendard",
       "note": "Please ask before reusing the text or photos.",
       "made": "Written, photographed and set in Seoul"
     }

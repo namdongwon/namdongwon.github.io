@@ -31,17 +31,19 @@ ASSETS = DOCS / "assets"
 POEM_DIR = Path.home() / "Downloads/남동원 시집"
 PTD_DIR = HERE.parent / "기준/폰트"
 
-# 원본 글꼴 → 사이트에서 쓰는 줄인 판(woff2). 라이선스(OFL)상 이름이 예약된 글꼴(나눔명조·Pretendard)은
-# 줄인 판에 다른 이름(NDW …)을 붙인다. 은바탕(GPL)은 이름을 두고 '줄인 판'이라는 표시를 남긴다
+# 원본 글꼴 → 사이트에서 쓰는 줄인 판(woff2). 라이선스(OFL)상 이름이 예약된 글꼴(Pretendard)은 줄인 판에 다른 이름(NDW …)을 붙인다.
+# 명조는 본명조 한 가족(10/26 동원 "응 바꿔" — 나눔명조 · 은바탕에서): 시집 작업 폴더의 BonMyeongjo KR(Noto Serif CJK KR을 TrueType으로 바꾸고
+# 이름을 바꾼 판 — 원본 예약 이름 'Source'를 쓰지 않음)이라 이름은 그대로 두고 '줄인 판' 표시만 남긴다. Light는 첫 화면 큰 제목 글자만(LIGHT_ONLY)
 FONTS = [
-    ("NanumMyeongjo.ttf", POEM_DIR, "작업 파일)/fonts", "ndw-myeongjo.woff2", True),
-    ("NanumMyeongjoBold.ttf", POEM_DIR, "작업 파일)/fonts", "ndw-myeongjo-bold.woff2", True),
-    ("UnBatang.ttf", POEM_DIR, "작업 파일)/fonts", "un-batang.woff2", False),
+    ("BonMyeongjoKR-Light.ttf", POEM_DIR, "작업 파일)/fonts/out", "bon-myeongjo-light.woff2", False),
+    ("BonMyeongjoKR-Regular.ttf", POEM_DIR, "작업 파일)/fonts/out", "bon-myeongjo.woff2", False),
+    ("BonMyeongjoKR-Bold.ttf", POEM_DIR, "작업 파일)/fonts/out", "bon-myeongjo-bold.woff2", False),
     ("Pretendard-Light.otf", PTD_DIR, "", "ndw-sans-light.woff2", True),
     ("Pretendard-SemiBold.otf", PTD_DIR, "", "ndw-sans-semibold.woff2", True),
 ]
 # 사이트 글자 말고도 늘 남겨 둘 것: 영문·숫자·기호(주소·계정 이름·숫자 세기)와 쓰는 문장부호
 FONTS_KB = {}  # 판권면 글꼴 줄의 용량(10/25 ⑧) — main()이 줄인 글꼴을 다 만든 뒤 채우고 쪽을 한 번 더 그림
+LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
 ALWAYS = "".join(chr(c) for c in range(0x20, 0x7F)) + "‘’“”『』「」〈〉《》—–·…→←↑↓↗©\u00a0"  # ↗: 밖으로 나가는 링크(10/24) · 줄 안 바뀜 공백(keep()) · 〈〉《》: 작품 이름 부호(marked())
 NOTE = "Subset for namdongwon.com (only the characters used on the site), 2026"
 # 영어판 글꼴(10/24 ⑤ B): Newsreader — 기준/폰트/Newsreader/(Google Fonts 저장소에서 내려받음, OFL)
@@ -365,7 +367,7 @@ def used_text(pages):
 
 
 def rename_font(font):
-    # OFL의 예약된 이름(Nanum…, NanumMyeongjo, Pretendard)을 줄인 판에서 쓰지 않게 이름표를 바꿈
+    # OFL의 예약된 이름(Pretendard · 지난 나눔명조)을 줄인 판에서 쓰지 않게 이름표를 바꿈
     for r in font["name"].names:
         s = r.toUnicode()
         if r.nameID in (3, 6):
@@ -395,6 +397,10 @@ def subset_font(src, dst, text, rename):
     sub = ftsubset.Subsetter(opts)
     sub.populate(text=text)
     sub.subset(f)
+    # 붙임 공백(U+00A0, keep()이 날짜 · 가운뎃점을 묶을 때 씀)을 보통 공백과 같은 글리프로 — 본명조는 붙임 공백이 보통 공백보다 넓어 묶은 자리만 벌어졌음(10/26)
+    for t in f["cmap"].tables:
+        if 0x20 in t.cmap and 0xA0 in t.cmap:
+            t.cmap[0xA0] = t.cmap[0x20]
     if rename:
         rename_font(f)
     # 바꾼 판이라는 표시(GPL 2(a) — 은바탕), 다른 글꼴에도 같은 표시 — 원래 설명 뒤에 덧붙임
@@ -420,8 +426,8 @@ def make_og(site, cover, src, lang="ko"):
     c = c.resize((round(c.width * ch / c.height), ch), Image.LANCZOS)
     x, y = W - c.width - 110, (H - ch) // 2
     if lang == "ko":
-        d.text((96, 232), site["name"], font=font(src["NanumMyeongjoBold.ttf"], 118), fill="#111111")
-        d.text((100, 392), site["tagline"], font=font(src["UnBatang.ttf"], 34), fill="#555555")  # 회색은 사이트 토큰과 같이(10/24 ⑨ --muted)
+        d.text((96, 232), site["name"], font=font(src["BonMyeongjoKR-Bold.ttf"], 118), fill="#111111")
+        d.text((100, 392), site["tagline"], font=font(src["BonMyeongjoKR-Regular.ttf"], 34), fill="#555555")  # 회색은 사이트 토큰과 같이(10/24 ⑨ --muted)
         d.text((100, 540), site["base_url"].replace("https://", ""), font=font(src["Pretendard-Light.otf"], 24), fill="#717171")  # --faint
         out = "og.jpg"
     else:
@@ -464,11 +470,11 @@ def make_takbon(site, poem, src):
     d = ImageDraw.Draw(im)
     d.rectangle((x0, y0, x1 - 1, y1 - 1), fill=(12, 12, 12))
     ink = (240, 240, 240)
-    d.text((x0 + 84, y0 + 96), f"「{site['poem']['title']}」", font=font(src["NanumMyeongjoBold.ttf"], 54), fill=ink)
+    d.text((x0 + 84, y0 + 96), f"「{site['poem']['title']}」", font=font(src["BonMyeongjoKR-Bold.ttf"], 54), fill=ink)
     stanzas = [s.split("\n") for s in poem.strip().split("\n\n")]
     size = 34
     while True:  # 시 전체가 판 안에 들어가는 크기
-        f, lh = font(src["UnBatang.ttf"], size), round(size * 1.72)
+        f, lh = font(src["BonMyeongjoKR-Regular.ttf"], size), round(size * 1.72)
         rows = sum(len(_wrap(d, ln, f, sw - 168 - size)) for st in stanzas for ln in st) + len(stanzas) - 1
         if 206 + rows * lh <= sh - 80 or size <= 24:
             break
@@ -698,7 +704,7 @@ def render(site, poem, videos, photos, lang="ko"):
     other = "ko" if en else "en"
     nav += f'<a class="lang" href="{"../" if en else "en/"}" lang="{other}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 국기 이모지(10/25 동원 — 영어 🇬🇧 · 한국어 🇰🇷)
     preload = ("".join(f'<link rel="preload" href="{P}assets/fonts/{f}" as="font" type="font/woff2" crossorigin>\n' for f in
-                       (("newsreader.woff2", "un-batang.woff2") if en else ("ndw-myeongjo.woff2", "ndw-myeongjo-bold.woff2", "un-batang.woff2"))))
+                       (("newsreader.woff2", "bon-myeongjo.woff2") if en else ("bon-myeongjo-light.woff2", "bon-myeongjo.woff2", "bon-myeongjo-bold.woff2"))))
     pgno = t("pgno", poem=poem_t, pages=e(S["poem"]["pages"])) + (f'<br>{t("translated")}' if L["translated"] else "")
     note = f'<p class="note">{t("ship_note")}</p>' if L["ship_note"] else ""
     # 시집 소개 · 차례(10/25 A 아래로 이어 쌓기) — 책 카드 다음에 머리 두 줄 → 소개 한 단락 → 차례(「탁본」 줄만 먹)
@@ -884,11 +890,12 @@ def main():
     index_html, en_html, page404 = render(site, poem, videos, photos), render(site, poem, videos, photos, "en"), page_404(site)
     text = used_text([index_html, en_html, page404])
     srcs = {}
+    title_text = unicodedata.normalize("NFC", "".join(site["book"]["display"]["big"]) + " " + ALWAYS[95:])  # 굵기 300 판에 담을 글자(큰 제목 + 빈칸 · 부호 — 영문 · 숫자는 빼고 가볍게)
     for name, root, must, out, rename in FONTS:
         src = find(root, name, must)
         if src:
             srcs[name] = src
-            subset_font(src, ASSETS / "fonts" / out, text, rename)
+            subset_font(src, ASSETS / "fonts" / out, title_text if out == LIGHT_ONLY else text, rename)
         elif out in keep:
             (ASSETS / "fonts" / out).write_bytes(keep[out])
             print(f"알림: 원본 {name}을 찾지 못해 지난 줄인 판을 씀 — 새로 생긴 글자는 빠질 수 있음")
@@ -911,8 +918,8 @@ def main():
     # 판권면 글꼴 줄의 용량(10/25 ⑧) — 줄인 글꼴을 다 만든 뒤 세어 두 쪽을 한 번 더 그림(바뀌는 글자는 숫자뿐이라 글꼴은 그대로)
     def kb(outs):
         return round(sum((ASSETS / "fonts" / o).stat().st_size for o in outs) / 10000) * 10
-    # 영어 쪽이 실제로 받는 다섯 — 나눔명조 둘은 한국어 제목에만 쓰여 영어 쪽은 받지 않음(10/25 마지막 점검 E, 실측 365,912B)
-    FONTS_KB.update(ko=kb([f[3] for f in FONTS]), en=kb([f[3] for f in FONTS if not f[3].startswith("ndw-myeongjo")] + [f[1] for f in EN_FONTS]))
+    # 영어 쪽이 실제로 받는 것 — 본명조는 보통 굵기 하나(섞인 한글 원제 · 시), 굵기 300 · 700은 한국어 제목에만 쓰여 받지 않음(10/26 실측)
+    FONTS_KB.update(ko=kb([f[3] for f in FONTS]), en=kb([f[3] for f in FONTS if f[3] not in (LIGHT_ONLY, "bon-myeongjo-bold.woff2")] + [f[1] for f in EN_FONTS]))
     index_html, en_html = render(site, poem, videos, photos), render(site, poem, videos, photos, "en")
 
     # 글꼴 라이선스 전문은 글꼴 옆에 함께 둔다(OFL·GPL 조건)
@@ -938,7 +945,7 @@ def main():
             (ASSETS / "img/photos/post").mkdir(parents=True, exist_ok=True)
             shutil.copy2(k, ASSETS / "img/photos/post" / Path(k).name)
 
-    if all(k in srcs for k in ("NanumMyeongjoBold.ttf", "UnBatang.ttf", "Pretendard-Light.otf")):
+    if all(k in srcs for k in ("BonMyeongjoKR-Bold.ttf", "BonMyeongjoKR-Regular.ttf", "Pretendard-Light.otf")):
         make_og(site, cover, srcs)
     elif "og.jpg" in keep:
         (ASSETS / "og.jpg").write_bytes(keep["og.jpg"])
