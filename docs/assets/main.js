@@ -502,6 +502,95 @@
     });
   }
 
+  // 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기(또는 '/' 키)로 흰 한 장을 열고, 빌드가 쪽에 넣은 찾을 거리(#sidx)에서 찾음.
+  // 띄어쓰기 · 부호 · 영문 대소문자 무시 · 초성만 쳐도(ㅌㅂ → 탁본). 검색어는 이 기기 밖으로 나가지 않음 · 열면 나머지 쪽은 inert · Esc나 '닫기'로 닫고 포커스는 돋보기로
+  const sq = document.querySelector(".sq"), srch = document.querySelector(".srch"), sidx = document.getElementById("sidx");
+  if (sq && srch && sidx) {
+    const items = JSON.parse(sidx.textContent);  // [갈래, 글, 자리, 갈 곳]
+    const inp = srch.querySelector("input"), res = srch.querySelector(".sr-res"), none = srch.querySelector(".sr-none");
+    const cnt = srch.querySelector(".sr-n"), lab = srch.querySelector(".sr-lab"), sug = srch.querySelector(".sug");
+    const K = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+    const cho = s => [...s].map(c => { const k = c.charCodeAt(0) - 0xac00; return k >= 0 && k < 11172 ? K[Math.floor(k / 588)] : c; }).join("");
+    const skip = /[\s·「」『』〈〉《》,.!?'"“”‘’\-—–()]/;
+    // 견줄 글(빈칸 · 부호를 뺀 소문자) + 원래 글의 자리 — 찾은 낱말을 원래 글에서 굵게 감쌀 때 씀
+    const norm = s => { const o = [], m = []; [...s.normalize("NFC")].forEach((c, i) => { if (!skip.test(c)) { o.push(c.toLowerCase()); m.push(i); } }); return [o.join(""), m]; };
+    const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    const find = q => {
+      const [nq] = norm(q);
+      if (!nq) return [];
+      const ch = /^[ㄱ-ㅎ]+$/.test(nq), out = [];
+      items.forEach(it => {
+        const [nt, map] = norm(it[1]), at = (ch ? cho(nt) : nt).indexOf(nq);
+        if (at < 0) return;
+        const cs = [...it[1].normalize("NFC")], a = map[at], b = map[at + nq.length - 1] + 1;
+        out.push({ it, at, html: esc(cs.slice(0, a).join("")) + "<b>" + esc(cs.slice(a, b).join("")) + "</b>" + esc(cs.slice(b).join("")) });
+      });
+      return out.sort((x, y) => (x.at > 0) - (y.at > 0)).slice(0, 12);  // 앞부분이 맞는 것부터, 같으면 갈래 차례(시집 · 차례 · 시 · 소개 …)
+    };
+    const run = () => {
+      const q = inp.value, empty = !q.trim(), hits = empty ? [] : find(q);
+      lab.hidden = sug.hidden = !empty;
+      cnt.hidden = empty || !hits.length;
+      cnt.textContent = uiText("search_count", "찾은 것 {n}", { n: hits.length });
+      res.innerHTML = hits.map(h => {
+        const ext = /^https?:/.test(h.it[3]);
+        return `<li><a href="${esc(h.it[3])}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="tg">${esc(h.it[0])}</span>` +
+          `<span class="tx">${h.html}</span><span class="wh">${esc(h.it[2])}</span></a></li>`;
+      }).join("");
+      none.hidden = empty || hits.length > 0;
+    };
+    let from = null;
+    const others = on => [...document.body.children].forEach(el => { if (el !== srch && el.tagName !== "SCRIPT") el.inert = on; });
+    const open = () => {
+      if (!srch.hidden) return;
+      from = document.activeElement;
+      srch.hidden = false;
+      H.classList.add("sr-on");
+      others(true);
+      inp.value = "";
+      run();
+      inp.focus();
+    };
+    const shut = back => {
+      if (srch.hidden) return;
+      srch.hidden = true;
+      H.classList.remove("sr-on");
+      others(false);
+      if (back && from) from.focus();
+    };
+    // 결과로 가기 — 사진은 그 장으로 넘기고, 나머지는 그 줄을 화면 가운데에 두고 잠깐 옅은 바탕
+    const goTo = href => {
+      const p = /^#p(\d+)$/.exec(href);
+      const el = document.querySelector(p ? "#photo" : href);
+      if (!el) return;
+      const sec = el.matches("section"), big = el.offsetHeight > innerHeight * 0.6;  // 칸 · 큰 덩어리(차례 전체)는 머리를 위에, 한 줄은 화면 가운데에
+      el.scrollIntoView({ block: sec || big ? "start" : "center", behavior: reduce ? "auto" : "smooth" });
+      if (p) { const b = document.querySelectorAll(".thumbs button")[+p[1]]; if (b) b.click(); return; }
+      if (!sec && !big) { el.classList.add("hit"); setTimeout(() => el.classList.remove("hit"), 1600); }
+      if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
+      el.focus({ preventScroll: true });
+    };
+    sq.addEventListener("click", open);
+    srch.querySelector(".x").addEventListener("click", () => shut(true));
+    srch.addEventListener("keydown", ev => { if (ev.key === "Escape") shut(true); });
+    inp.addEventListener("input", run);
+    srch.addEventListener("click", ev => {
+      const a = ev.target.closest("a, button[data-q]");
+      if (!a) return;
+      if (a.dataset.q) { inp.value = a.dataset.q; run(); inp.focus(); return; }
+      const href = a.getAttribute("href") || "";
+      if (!href.startsWith("#")) { shut(false); return; }  // 밖으로 나가는 링크(교보 · 유튜브)는 새 창 그대로
+      ev.preventDefault();
+      shut(false);
+      goTo(href);
+    });
+    document.addEventListener("keydown", ev => {
+      const a = document.activeElement;
+      if (ev.key === "/" && !ev.metaKey && !ev.ctrlKey && !ev.altKey && srch.hidden &&
+          !(a && (/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) || a.isContentEditable))) { ev.preventDefault(); open(); }
+    });
+  }
+
   // 「탁본」 한 장 — 시를 길게 누르면(2.2초) 검은 먹 종이가 올라오고 흰 글자로 전문이 한 줄씩 찍힘. 그 전에 떼면 되돌아감.
   // 안내 문구를 누르면(키보드·화면 읽기 프로그램도) 바로 열림 · Esc나 '닫기'로 닫음 · '동작 줄이기'면 움직임 없이 바로
   const poemBox = document.querySelector(".poem"), hint = document.querySelector(".hint"), sheet = document.querySelector(".sheet");

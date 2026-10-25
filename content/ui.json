@@ -328,6 +328,42 @@
     "ko": "닫기",
     "en": "Close"
   },
+  "search_label": {
+    "ko": "사이트 안 찾기",
+    "en": "Search this site"
+  },
+  "search_ph": {
+    "ko": "시 제목, 작품, 전시",
+    "en": "Poems, works, exhibitions"
+  },
+  "search_suggest": {
+    "ko": "추천",
+    "en": "Suggested"
+  },
+  "search_none": {
+    "ko": "찾는 글이 없습니다 — 추천 주제를 눌러 보세요.",
+    "en": "Nothing found — try a suggestion."
+  },
+  "search_tags": {
+    "ko": "차례|「탁본」|시집|소개|소식|사진|영상|연락",
+    "en": "Contents|“Rubbing”|Book|About|News|Photo|Video|Contact"
+  },
+  "search_toc_where": {
+    "ko": "{part} · {page}쪽",
+    "en": "{part} · p. {page}"
+  },
+  "search_page": {
+    "ko": "{page}쪽",
+    "en": "p. {page}"
+  },
+  "search_timeline": {
+    "ko": "연표",
+    "en": "Timeline"
+  },
+  "search_soon": {
+    "ko": "준비 중",
+    "en": "Coming soon"
+  },
   "nf_title": {
     "ko": "지금 찾으신 쪽은 없는 쪽입니다",
     "en": "The page you have dialed is not in service"
@@ -351,7 +387,8 @@
       "form_off": "아직 연결 전입니다. 인스타그램으로 연락해 주세요.",
       "sending": "보내는 중…",
       "sent": "잘 받았습니다. 답장 드리겠습니다.",
-      "failed": "보내지 못했습니다. 잠시 뒤 다시 해 주세요."
+      "failed": "보내지 못했습니다. 잠시 뒤 다시 해 주세요.",
+      "search_count": "찾은 것 {n}"
     },
     "en": {
       "play": "Play {title}",
@@ -363,7 +400,8 @@
       "form_off": "Not connected yet — please message me on Instagram.",
       "sending": "Sending…",
       "sent": "Received. I’ll write back soon.",
-      "failed": "Couldn’t send. Please try again in a moment."
+      "failed": "Couldn’t send. Please try again in a moment.",
+      "search_count": "{n} found"
     }
   }
 }

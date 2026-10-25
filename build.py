@@ -43,6 +43,8 @@ FONTS = [
 ]
 # 사이트 글자 말고도 늘 남겨 둘 것: 영문·숫자·기호(주소·계정 이름·숫자 세기)와 쓰는 문장부호
 FONTS_KB = {}  # 판권면 글꼴 줄의 용량(10/25 ⑧) — main()이 줄인 글꼴을 다 만든 뒤 채우고 쪽을 한 번 더 그림
+SEARCH_ICON = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false">'
+               '<circle cx="8.5" cy="8.5" r="6"/><path d="M13 13l5 5" stroke-linecap="round"/></svg>')  # 맨 위 막대 · 찾기 창의 가는 선 돋보기(10/26)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
 ALWAYS = "".join(chr(c) for c in range(0x20, 0x7F)) + "‘’“”『』「」〈〉《》—–·…→←↑↓↗©\u00a0"  # ↗: 밖으로 나가는 링크(10/24) · 줄 안 바뀜 공백(keep()) · 〈〉《》: 작품 이름 부호(marked())
 NOTE = "Subset for namdongwon.com (only the characters used on the site), 2026"
@@ -512,6 +514,10 @@ def render(site, poem, videos, photos, lang="ko"):
         return e(L[key]).format(**kw)
     S, PH = localize(site, lang), localize(photos, lang)
     tb = tables(site)
+    # 사이트 안 찾기(10/26 검색 A)의 찾을 거리 — 칸을 그리면서 갈래마다 [갈래 이름, 글, 자리, 갈 곳]을 모아 쪽 안 JSON(#sidx)으로. 갈래 차례가 결과의 차례
+    ix = {k: [] for k in ("book", "toc", "poem", "me", "news", "photo", "video", "contact")}
+    tg = dict(zip(("toc", "poem", "book", "me", "news", "photo", "video", "contact"), L["search_tags"].split("|")))  # ui.json search_tags 차례대로
+    plain = lambda s: re.sub(r"\*", "", s)  # noqa: E731 — 영어 원고의 *기울임* 표시는 찾기 글에서 뺌
     # 영상(videos.json — 다음 편 · 올린 편): 5절 규칙, 올린 편은 날짜로 최근 것부터(설계서 ④)
     V = {"upcoming": row_lang(videos.get("upcoming") or {}, lang),
          "items": sorted((row_lang(x, lang) for x in videos.get("items", [])), key=lambda x: x.get("date", ""), reverse=True)}
@@ -554,7 +560,8 @@ def render(site, poem, videos, photos, lang="ko"):
             continue
         if r["note"]:
             notes.append(r["note"])
-        lis.append(f'<li><b>{e(r["year"])}</b><span>{names(e(r["text"]))}' + (f'<sup class="fr">{len(notes)}</sup>' if r["note"] else '') + '</span></li>')
+        lis.append(f'<li id="y{len(lis) + 1}"><b>{e(r["year"])}</b><span>{names(e(r["text"]))}' + (f'<sup class="fr">{len(notes)}</sup>' if r["note"] else '') + '</span></li>')
+        ix["me"].append((tg["me"], f'{r["year"]} {plain(r["text"])}', L["search_timeline"], f"#y{len(lis)}"))
     years = "".join(lis)
     fnb = ('<ol class="fn">' + "".join(f'<li><b>{i}</b><span>{note_html(x, en)}</span></li>' for i, x in enumerate(notes, 1)) + '</ol>') if notes else ""
     # 소개 칸의 지금(10/25 ⑥ A — William Jansson 'Now'식): 연표 아래 읽는 책 · 편집 중인 편 · 쓰는 시 + 고친 날(손으로 적는 날). 빈 줄은 안 보임
@@ -570,15 +577,24 @@ def render(site, poem, videos, photos, lang="ko"):
     # 「탁본」: 연은 문단, 행은 한 줄씩 — 화면이 좁아 행이 넘어가면 넘어간 부분만 한 글자 들여씀(style.css).
     # 영어판(10/24 ③)은 행마다 원문(.ln)과 번역(.le)을 한 쌍으로 — 휴대폰은 위아래, 컴퓨터는 두 단(style.css)
     ko_st = stanzas_of(poem)
-    ko_html = "".join("<p>" + "".join(f'<span class="ln">{e(x)}</span>' for x in st) + "</p>" for st in ko_st)
-    if en:
-        tr = stanzas_of((CONTENT / S["poem"]["file"]).read_text(encoding="utf-8"))
-        if [len(x) for x in tr] != [len(x) for x in ko_st]:
-            raise SystemExit(f"번역의 연 · 행 수가 원문과 다름: 원문 {[len(x) for x in ko_st]} · 번역 {[len(x) for x in tr]}")
-        poem_html = "".join("<p>" + "".join(f'<span class="pair"><span class="ln" lang="ko">{e(a)}</span><span class="le">{e(b)}</span></span>'
-                                            for a, b in zip(st, tt)) + "</p>" for st, tt in zip(ko_st, tr))
-    else:
-        poem_html = ko_html
+    ko_html = "".join("<p>" + "".join(f'<span class="ln">{e(x)}</span>' for x in st) + "</p>" for st in ko_st)  # 탁본 한 장에도 씀(id 없이)
+    # 시 칸의 행마다 id(l1, l2 …) — 찾기 결과가 그 행으로 감
+    tr = stanzas_of((CONTENT / S["poem"]["file"]).read_text(encoding="utf-8")) if en else ko_st
+    if [len(x) for x in tr] != [len(x) for x in ko_st]:
+        raise SystemExit(f"번역의 연 · 행 수가 원문과 다름: 원문 {[len(x) for x in ko_st]} · 번역 {[len(x) for x in tr]}")
+    stz, ln_no = [], 0
+    for st, tl in zip(ko_st, tr):
+        spans = []
+        for a, b in zip(st, tl):
+            ln_no += 1
+            if en:
+                spans.append(f'<span class="pair" id="l{ln_no}"><span class="ln" lang="ko">{e(a)}</span><span class="le">{e(b)}</span></span>')
+                ix["poem"] += [(tg["poem"], b, "", f"#l{ln_no}"), (tg["poem"], a, "", f"#l{ln_no}")]
+            else:
+                spans.append(f'<span class="ln" id="l{ln_no}">{e(a)}</span>')
+                ix["poem"].append((tg["poem"], a, "", f"#l{ln_no}"))
+        stz.append("<p>" + "".join(spans) + "</p>")
+    poem_html = "".join(stz)
 
     # 첫 방문의 문 — 시집 제목 첫 줄이 두 문짝에 걸쳐 적힘(움직임은 main.js)
     door_t = e(book.get("door", book["title_lines"][0]))
@@ -628,6 +644,11 @@ def render(site, poem, videos, photos, lang="ko"):
         line = (f'<p>{wtxt}{aw}' + (f'<small>{small}</small>' if small else "") + "</p>"
                 if words or small or aw else f'<p class="ph">{keep(L["cap_where"])}<small>{cap_art}</small></p>')
         caps.append(f'<div class="cap"{"" if i == 0 else " hidden"}>{line}</div>')
+    for i, p in enumerate(PH["items"]):  # 찾기: 캡션 첫 줄 · 작가 · 작품 → 그 사진으로(#p번호 — main.js가 띠를 넘김)
+        a = p["art"] if is_art(p) else {}
+        txt = " · ".join(x for x in (p["where"], a.get("artist", ""), a.get("title", "")) if x)
+        if txt:
+            ix["photo"].append((tg["photo"], txt, p.get("date") or "", f"#p{i}"))
     n = len(PH["items"])
     iu = link_url(site, PH["account"].get("link", "instagram"))
     acc = {**PH["account"], "url": iu, "handle": iu.rstrip("/").rsplit("/", 1)[-1]}  # 계정 이름은 links 인스타 주소 끝(설계서 ③)
@@ -659,8 +680,14 @@ def render(site, poem, videos, photos, lang="ko"):
                        f'<i>{e(kinds.get(x["kind"], x["kind"]))}</i><b>{marked(x["kind"], x["title"], lang)}</b><em>{e(x["date"].replace("-", "."))}</em></a></li>' for x in items[1:])
         past = f'<ul class="toc">{rest}</ul>' if rest else f'<p class="empty">{t("empty")}</p>'
         go = t("go_watch")
+        for x in items:  # 찾기: 갈래 낱말 · 작품 · 만든 이 → 유튜브
+            ix["video"].append((tg["video"], " ".join(y for y in (kinds.get(x["kind"], x["kind"]), x["title"], x.get("creator", "")) if y),
+                                x["date"].replace("-", "."), f'https://www.youtube.com/watch?v={x["youtube_id"]}'))
     else:
         u = V["upcoming"]
+        if u.get("title"):  # 찾기: 다음 편(준비 중) → 영상 칸
+            ix["video"].append((tg["video"], " ".join(y for y in (kinds.get(u.get("kind", ""), u.get("kind", "")), u["title"], u.get("creator", "")) if y),
+                                L["search_soon"], "#video"))
         if u.get("thumb"):
             # 첫 편 준비 중(10/24 B): 고른 썸네일 시안을 흑백으로 + '준비 중' + 스틸 출처. 올리면 이 자리에 유튜브 썸네일(색)과 재생 단추
             first = e(u["title"]) if en else marked(u["kind"], u["title"])
@@ -702,6 +729,7 @@ def render(site, poem, videos, photos, lang="ko"):
 
     nav = "".join(f'<a href="#{sid}">{e(x)}</a>' for sid, x in zip(("me", "poem", "photo", "video", "contact"), L["nav"]))  # 소개가 먼저(10/25 동원 "나를 알리는 게 먼저")
     other = "ko" if en else "en"
+    nav += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26) — 국기 단추 앞
     nav += f'<a class="lang" href="{"../" if en else "en/"}" lang="{other}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 국기 이모지(10/25 동원 — 영어 🇬🇧 · 한국어 🇰🇷)
     preload = ("".join(f'<link rel="preload" href="{P}assets/fonts/{f}" as="font" type="font/woff2" crossorigin>\n' for f in
                        (("newsreader.woff2", "bon-myeongjo.woff2") if en else ("bon-myeongjo-light.woff2", "bon-myeongjo.woff2", "bon-myeongjo-bold.woff2"))))
@@ -726,7 +754,12 @@ def render(site, poem, videos, photos, lang="ko"):
     mo, cur = {m["title"]: m for m in opened}, (opened[-1]["title"] if opened else None)
     month_ko = {m["title"]: row_lang(m, "ko") for m in mk}
 
-    def toc_li(row, ko_row):
+    tn = [0]
+
+    def toc_li(row, ko_row, part=None):
+        tn[0] += 1  # 차례 줄마다 id(t1, t2 …) — 찾기 결과가 그 줄로 감
+        ix["toc"].append((tg["toc"], row["title"] + (f' · {ko_row["title"]}' if en else ""),
+                          L["search_toc_where"].format(part=part, page=row["page"]) if part else L["search_page"].format(page=row["page"]), f"#t{tn[0]}"))
         m = mo.get(ko_row["title"])
         cls = "on" if ko_row["title"] == site["poem"]["title"] else ("mo" if m and ko_row["title"] == cur else ("mo past" if m else ""))
         ko = f' <small{ko_tag}>{e(ko_row["title"])}</small>' if en else ""
@@ -737,13 +770,13 @@ def render(site, poem, videos, photos, lang="ko"):
             if ko_row["title"] == cur:
                 orig = f'<small{ko_tag}>{" / ".join(e(x) for x in month_ko[ko_row["title"]]["lines"])}</small>' if en else ""
                 line = f'<em>{"<br>".join(e(x) for x in m["lines"])}{orig}<small>{t("month_line", m=MONTHS[mm - 1] if en else mm)}</small></em>'
-        attr = f' class="{cls}"' if cls else ""
+        attr = f' id="t{tn[0]}"' + (f' class="{cls}"' if cls else "")
         return f'<li{attr}><span>{e(row["title"])}{ko}{tag}</span><span>{row["page"]}</span>{line}</li>'
-    parts = "".join(f'<div><h4>{e(p["name"])}</h4><ol>{"".join(toc_li(r, k) for r, k in zip(p["items"], kp["items"]))}</ol></div>'
+    parts = "".join(f'<div><h4>{e(p["name"])}</h4><ol>{"".join(toc_li(r, k, p["name"]) for r, k in zip(p["items"], kp["items"]))}</ol></div>'
                     for p, kp in zip(toc["parts"], toc_ko["parts"]))
     bintro = (f'<div class="bintro"><p class="bhead">{"<br>".join(e(x) for x in bi["lead"])}</p>'
               f'<p class="btext">{keep(bi["text"])}</p>'
-              f'<div class="btoc"><h3>{e(toc["label"])}</h3><p class="key"><i></i>{t("toc_key")}</p><div class="parts">{parts}</div>'
+              f'<div class="btoc" id="toc"><h3>{e(toc["label"])}</h3><p class="key"><i></i>{t("toc_key")}</p><div class="parts">{parts}</div>'
               f'<ol class="tail">{"".join(toc_li(r, k) for r, k in zip(toc["tail"], toc_ko["tail"]))}</ol></div></div>')
     # 시집 상태 낱말 · 시집 소식(10/25 A 쌓이는 소식 세 줄) — 빌드한 날 기준: 나온 날 전이면 '출간 예정', 그날부터 '판매 중'.
     # 소식은 책에 일어난 일(판권면 '고친 날'은 사이트에 일어난 일) — 날짜가 지난 것만, 최근 세 줄 + 나머지는 '지난 소식'으로 접음
@@ -755,6 +788,32 @@ def render(site, poem, videos, photos, lang="ko"):
     more = f'<details><summary>{t("news_more")}</summary><ol>{"".join(news_li(x) for x in news[3:])}</ol></details>' if len(news) > 3 else ""
     bnews = f'<div class="bnews"><h3>{t("news")}</h3><ol>{"".join(news_li(x) for x in news[:3])}</ol>{more}</div>' if news else ""
     ui_js = json.dumps(L["js"], ensure_ascii=False).replace("</", "<\\/")
+
+    # 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기 → 흰 한 장 · 추천 주제(content/search.json) · 찾을 거리(#sidx). 찾기는 main.js
+    ix["book"] += [(tg["book"], plain(book["title"]), book["spec"], "#poem"), (tg["book"], book["buy_label"], book["store_label"], book["buy_url"])]
+    ix["me"][:0] = [(tg["me"], S["name"], "", "#me"), (tg["me"], S["tagline"], "", "#me")] + [
+        (tg["me"], x, "", "#me") for x in re.split(r"(?<=[.!?다])\s+", plain(S["bio"])) if x]
+    ix["me"] += [(tg["me"], f'{x["label"]} — {plain(x["text"])}', "", "#me") for x in nw.get("items", []) if x.get("text")]
+    ix["news"] += [(tg["news"], plain(x["text"]), x["date"].replace("-", "."), "#poem") for x in news]
+    ix["contact"] += [(tg["contact"], L["label_contact"] if endpoint else L["ask_off"], "", "#contact")] + [(tg["contact"], l["name"], "", l["url"]) for l in links]
+    sidx_js = json.dumps([list(x) for k in ix for x in ix[k]], ensure_ascii=False).replace("</", "<\\/")
+    sj = load("search.json") if (CONTENT / "search.json").exists() else {"suggest": []}
+
+    def sug_li(x):  # 추천 주제 한 줄 — go: 쪽 안 자리 · 'buy'(교보) / q: 그 말로 찾기
+        x = {**x, **(x.get("en") or {})} if en else x
+        note = f'<i>{e(x.get("note", ""))}</i>'
+        hang = ' class="hang"' if x["label"][:1] in "「『" else ""  # 여는 부호로 시작하면 내어 걸기(본명조 앞 빈 0.6em 안팎)
+        if x.get("q"):
+            return f'<li><button type="button"{hang} data-q="{e(x["q"])}">{e(x["label"])}{note}</button></li>'
+        href = book["buy_url"] if x.get("go") == "buy" else x.get("go", "#home")
+        ext = href.startswith("http")
+        return (f'<li><a{hang} href="{e(href)}"' + (' target="_blank" rel="noopener"' if ext else "") + f'>{e(x["label"])}{" ↗" if ext else ""}{note}</a></li>')
+    srch = (f'<div class="srch" role="dialog" aria-modal="true" aria-label="{t("search_label")}" hidden><div class="in">'
+            f'<div class="bar">{SEARCH_ICON}<input type="search" placeholder="{t("search_ph")}" aria-label="{t("search_label")}" autocomplete="off" enterkeyhint="search">'
+            f'<button type="button" class="x">{t("close")}</button></div>'
+            f'<p class="sr-lab">{t("search_suggest")}</p><ul class="sug">{"".join(sug_li(x) for x in sj["suggest"])}</ul>'
+            f'<p class="sr-n" aria-live="polite" hidden></p><ul class="sr-res"></ul><p class="sr-none" hidden>{t("search_none")}</p></div></div>\n'
+            f'<script id="sidx" type="application/json">{sidx_js}</script>\n')
 
     return f"""<!doctype html>
 <html lang="{lang}">
@@ -837,7 +896,7 @@ def render(site, poem, videos, photos, lang="ko"):
   </section>
 </main>
 {sheet}
-{pv}<script id="ui" type="application/json">{ui_js}</script>
+{pv}{srch}<script id="ui" type="application/json">{ui_js}</script>
 <script src="{P}assets/main.js" defer onerror="document.documentElement.classList.remove('js','intro')"></script>
 </body>
 </html>

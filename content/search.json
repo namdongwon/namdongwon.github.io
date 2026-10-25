@@ -1,0 +1,60 @@
+{
+  "suggest": [
+    {
+      "label": "「탁본」 읽기",
+      "note": "시 칸",
+      "go": "#poem",
+      "en": {
+        "label": "Read “Rubbing”",
+        "note": "The poem"
+      }
+    },
+    {
+      "label": "시집 차례",
+      "note": "예순 편 · 네 부",
+      "go": "#toc",
+      "en": {
+        "label": "Contents",
+        "note": "Sixty poems, four parts"
+      }
+    },
+    {
+      "label": "책장에 꽂기",
+      "note": "교보문고",
+      "go": "buy",
+      "en": {
+        "label": "Add to your shelf",
+        "note": "Kyobo Book Centre"
+      }
+    },
+    {
+      "label": "영화 리뷰",
+      "note": "유튜브",
+      "q": "영화",
+      "en": {
+        "label": "Film reviews",
+        "note": "YouTube",
+        "q": "film"
+      }
+    },
+    {
+      "label": "전시",
+      "note": "인스타그램",
+      "q": "전시",
+      "en": {
+        "label": "Exhibitions",
+        "note": "Instagram",
+        "q": "exhibition"
+      }
+    },
+    {
+      "label": "연락",
+      "note": "인스타그램 메시지",
+      "go": "#contact",
+      "en": {
+        "label": "Contact",
+        "note": "Instagram message"
+      }
+    }
+  ]
+}
