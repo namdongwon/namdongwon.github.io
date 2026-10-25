@@ -9,6 +9,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 import unicodedata
 from datetime import date, datetime, timedelta
@@ -114,6 +115,21 @@ def sentence(w, lang="ko", kinds=None):
 
 def ordinal(n):
     return f"{n}{'th' if 10 <= n % 100 <= 20 else {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')}"
+
+
+def printing_no(co):
+    # 판권면 쇄 = 이 판 첫 올림(colophon.edition_start 커밋)부터 docs/를 바꿔 GitHub main에 올린 기록 수 + 1 — 지금 빌드가 다음 올림(10/25 관리 화면 세션 제안 · 동원 수락)
+    # git이 없거나 그 커밋이 기록에 없으면(관리 화면 시험의 가짜 저장소 등) colophon.printing 그대로. 판을 올리면 edition_start를 비우고 그 판 첫 올림 뒤 그 커밋을 적음
+    start = co.get("edition_start", "")
+    if not start:
+        return co["printing"]
+    try:
+        r = subprocess.run(["git", "-C", str(HERE), "rev-list", "origin/main", "--", "docs"], capture_output=True, text=True, timeout=10)
+    except (OSError, subprocess.SubprocessError):
+        return co["printing"]
+    ids = r.stdout.split() if r.returncode == 0 else []
+    n = next((i + 1 for i, c in enumerate(ids) if c.startswith(start)), 0)
+    return n + 1 if n else co["printing"]
 
 
 def merge(a, b):
@@ -667,10 +683,11 @@ def render(site, poem, videos, photos, lang="ko"):
         <p class="msg" role="status"></p></form>''' if endpoint else
            f'<p class="ask-off"><a class="buy" href="{e(link_url(site, "instagram"))}" target="_blank" rel="noopener">{t("ask_off")} ↗</a></p>')
     # 바닥글: 판권면(10/24 A) — 시집 판권면의 틀(제목 → 항목 줄 → ⓒ와 다시 쓰기 안내)만 빌림. 고친 날은 빌드한 날(서울 시간),
-    # 판은 디자인을 크게 다시 할 때 · 쇄는 고쳐 올릴 때마다(site.json — 올리는 흐름을 정하면 쇄는 자동으로 셀 수 있음)
+    # 판은 디자인을 크게 다시 할 때(site.json) · 쇄는 고쳐 올릴 때마다 저절로(printing_no — 올린 기록으로 셈, 10/25)
     co, today = S["colophon"], build_day()
     when = (f"{MONTHS[today.month - 1]}{NB}{today.day}, {today.year}" if en else f"{today.year}년{NB}{today.month}월{NB}{today.day}일")
-    ed = (f'{ordinal(co["edition"])} edition, {ordinal(co["printing"])} printing' if en else f'{co["edition"]}판 {co["printing"]}쇄')
+    pr = printing_no(co)
+    ed = (f'{ordinal(co["edition"])} edition, {ordinal(pr)} printing' if en else f'{co["edition"]}판 {pr}쇄')
     colo = (f'<div class="colo"><p class="t">{e(urlparse(base).netloc or base)}</p><dl>'
             f'<dt>{t("colo_updated")}</dt><dd><time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</dd>'
             f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd><dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd>'
@@ -771,7 +788,7 @@ def render(site, poem, videos, photos, lang="ko"):
   <section id="home" aria-label="{t("home_label")}">
     <div class="l"><h1 class="kick"><span class="name" data-type="{e("|".join(typing_steps(S["name"])))}">{e(S["name"])}</span> <span>{t("ex_kick")}</span></h1>
       <p class="ht">{ht}</p></div>
-    <div class="r book"><div class="side"><p class="hs">{hs}</p><p class="tip">{t("ex_tip")}</p></div>
+    <div class="r book"><div class="side"><p class="hs">{hs}</p><a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener">{e(book["buy_label"])} ↗</a><p class="tip">{t("ex_tip")}</p></div>
       <div class="bk"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="{t("cover_alt", book=e(book["title"]) if en else e(book["title"]))}" width="600" height="881" fetchpriority="high" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i><i class="win"></i></div>
       </div>
     <div class="lab"><p class="rd"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a></p>{exl}</div>

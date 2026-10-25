@@ -50,6 +50,7 @@
 - 3D 책 위 창살 빛(10/25 빛 습작 B): 책이 돌아설 때 십자 창 그림자가 비껴 들어와 머뭅니다 — `build.py` 첫 화면 책의 `<i class="win">` + `style.css` `#home .bk .win`. 크기는 책 폭(`--w`)을 따르고 영상 파일은 없습니다. '동작 줄이기'면 처음부터 머문 자리. 빛 틀이 휴대폰 화면 오른쪽 밖으로 나가므로 `#home{overflow-x:clip}`을 지우면 옆으로 넘칩니다.
 - 큰 제목 줄 나눔은 `site.json`의 `book.display`(`big` 두 줄 · `small` 두 줄, 영어는 `en.book.display`). 라벨 낱말은 `ui.json`의 `ex_…`, 값은 책 제목 · 이름(지은이는 이름만 — 10/25) · `book.spec`(시집 칸 책 카드와 같은 줄, '남동원 시집'은 표지에 있어 뺌 — 10/25) · `book.buy_url`에서 옵니다.
 - 라벨의 '책장에 꽂기 ↗'(사는 길)는 단추 몫 14px입니다 — 휴대폰 · 컴퓨터 같게(10/25 다듬기 가1, 전에는 11px라 같은 화면의 '「탁본」 읽기 ↓'보다 작았음). 라벨의 다른 값은 휴대폰 11px · 컴퓨터 12.5px.
+- 휴대폰에서는 책 옆 작은 제목 아래에도 '책장에 꽂기 ↗'가 한 줄 더 있습니다(`build.py` 첫 화면 `.side`의 `a.sb` · `style.css`의 `#home .sb` — 10/25 다듬기 나1 B). 사파리는 주소창이 펼쳐지면 보이는 높이가 553–659px[추정]이라 라벨의 '책장에 꽂기'(위에서 776–806px)가 첫 화면 밖이기 때문입니다. 컴퓨터 · 태블릿(768px부터)은 라벨이 첫 화면 안이라 숨깁니다. 큰 제목 · 책 크기를 바꾸거나 첫 화면에 줄을 더하면 375×553에서 이 줄이 첫 화면 안인지 다시 봅니다.
 - 첫 줄 이름은 커서와 함께 쳐 나가고, 다 친 뒤 커서는 자리까지 비웁니다(`style.css`의 `.caret.off` 폭 0 — 10/25 가6, 전에는 이름 뒤 빈칸이 두 배).
 - 맨 위 왼쪽 이름(컴퓨터에서만 보임)은 `site.json`의 `logo`(한국어 '남 동원' · 영어 'Dongwon Nam' — 10/25). 다른 자리의 이름은 `name` 그대로입니다.
 - 큰 제목은 화면 폭을 따라 줄어듭니다(휴대폰 최대 76px, 컴퓨터 최대 128px). 줄 나눔을 바꾸면 320px · 768px에서 옆으로 넘치지 않는지 봅니다.
@@ -76,6 +77,7 @@
 ## 판권면 · 404
 
 - 판권면(맨 아래)은 고친 날 · 판 · 쇄 · 지은이 · 만든 곳(`site.json`의 `colophon.made`) · 글꼴과 그 용량 · © · 다시 쓰기 안내 · 쿠키를 쓰지 않는다는 한 줄입니다. 글꼴 용량은 빌드가 줄인 글꼴을 다 만든 뒤 세어 적습니다(한국어판은 한국어 글꼴 다섯, 영어판은 Newsreader 둘까지).
+- 쇄는 저절로 셉니다(10/25): 이 판 첫 올림 커밋(`site.json`의 `colophon.edition_start`, 2판은 04a926f)부터 docs/를 바꿔 GitHub main(`origin/main`)에 올린 기록 수 + 1 — 지금 빌드가 다음에 올라갈 쇄입니다(`build.py`의 `printing_no`). 그래서 빌드만 해도 '2판 4쇄'처럼 다음 쇄가 찍히고, 올리면 그 쇄가 됩니다. git이 없거나 그 커밋이 기록에 없으면(관리 화면 시험의 가짜 저장소 등) `colophon.printing` 값을 씁니다. 디자인을 크게 다시 해 판을 올릴 때는 `edition`을 올리고 `printing`을 1, `edition_start`를 비운 채 올린 뒤 그 첫 올림 커밋을 적습니다.
 - 쿠키나 방문 분석 도구를 넣게 되면 '쿠키를 쓰지 않습니다' 줄(`ui.json`의 `colo_cookie`)을 먼저 고칩니다.
 - 404는 시 구절 없이 전화 자동 안내 말투('지금 찾으신 쪽은 없는 쪽입니다')입니다 — `ui.json`의 `nf_…`.
 
@@ -128,6 +130,8 @@
   2. 올리기: `git push -u origin main`(이 맥은 SSH 키로 GitHub에 로그인되어 있음).
   3. 저장소 Settings → Pages → Build and deployment → Source 'Deploy from a branch' → Branch `main` · 폴더 `/docs` → Save. 1–2분 뒤 주소가 열림.
 - 고친 뒤: `tools/.venv/bin/python 웹사이트/build.py`(빌드) → 이 폴더에서 `git add -A` · `git commit -m "…"` · `git push`. 날짜에 걸린 것(판매 중 · 소식 · 이달의 한 줄 · 판권면 고친 날)은 그날 다시 빌드해 올려야 바뀝니다 — 11/1에 한 번.
+- 큰 변경 뒤 · 올리기 전 점검: 시험 11묶음 + 관리 화면 서버 시험 `tools/.venv/bin/python tools/site_admin_test.py`(59개 · 40초쯤 — 임시 복사본 + 가짜 GitHub로만 돌고, 진짜 원고 · docs · 저장소는 시험 앞뒤 SHA-256 · HEAD로 대조, 10/25부터). 관리 화면 쪽을 고쳤을 땐 화면 시험 `기준/브랜드 시안/admin_shots_v1.py`(23개 · 1분쯤)도. 관리 화면 시험이 도는 동안에는 원고 · 이 폴더 파일을 고치지 않습니다('진짜 원고 그대로'가 걸림).
+- 원고 꼴(표 여섯 now · news · monthly · years · photo_art · videos의 칸 이름 · 차례, `site.json`의 book.toc · base_url, `.cache/instagram/feed.json`)을 바꿀 때는 관리 화면 칸 정의(`tools/site_admin.py`의 SCHEMA — 데이터 설계서 v2 4절)도 함께 고치거나 관리 화면 세션에 알립니다(관리 화면 파일은 그 세션 몫).
 - 도메인을 사면: `content/CNAME`에 `namdongwon.com` 한 줄(빌드가 docs로 옮김) · `site.json`의 `base_url`을 `https://namdongwon.com`으로 → 빌드 · 올림 → 도메인 회사 DNS에 GitHub Pages 주소(꼭대기 도메인은 A 레코드 185.199.108.153 · 185.199.109.153 · 185.199.110.153 · 185.199.111.153, www는 CNAME `namdongwon.github.io`) → Settings → Pages에서 Custom domain · Enforce HTTPS.
 
 ## 글꼴

@@ -72,9 +72,11 @@ html:lang(ko) #poem .h2{text-indent:-.55em}  /* 「탁본」 — 나눔명조 �
 #home .ht{margin:12px 0 0 -.03em;font:700 76px/1 var(--serif);font-size:min(76px,20.5vw);letter-spacing:-.05em}
 html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spacing:-.02em}
 #home .book{margin-top:24px;display:grid;grid-template-columns:1fr auto;column-gap:12px}
-#home .side{display:flex;flex-direction:column;justify-content:space-between;padding-bottom:34px}
+#home .side{display:flex;flex-direction:column;padding-bottom:34px}  /* 작은 제목(+ 사는 길)은 위, '밀어 보세요'와 가는 선은 책 아래쪽(.tip margin-top:auto) */
 #home .hs{font:700 19px/1.45 var(--serif);letter-spacing:-.01em}
-#home .tip{font:300 11px/1.6 var(--sans);color:var(--muted)}
+#home .sb{align-self:flex-start;margin-top:18px}  /* 책 옆 사는 길(10/25 다듬기 나1 B) — 휴대폰은 라벨의 '책장에 꽂기'가 사파리 첫 화면(553–659px) 밖이라 작은 제목 아래 한 줄 더 */
+@media (min-width:768px){#home .sb{display:none}}  /* 컴퓨터 · 태블릿은 라벨이 첫 화면 안 — 한 줄만 */
+#home .tip{margin-top:auto;font:300 11px/1.6 var(--sans);color:var(--muted)}
 #home .tip::after{content:"";display:block;width:58px;height:1px;margin-top:8px;background:var(--ink)}  /* 책을 가리키는 가는 선 */
 #home .bk{--w:min(178px,45vw);--h:calc(var(--w) * 1.4688);--t:calc(var(--w) * .0703)}  /* 128×188mm · 책등 9mm 비율 그대로 */
 #home .lab{margin-top:30px}

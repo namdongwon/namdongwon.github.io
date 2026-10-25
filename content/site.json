@@ -582,6 +582,7 @@
   "colophon": {
     "edition": 2,
     "printing": 1,
+    "edition_start": "04a926f",
     "fonts": "나눔명조 · 은바탕 · Pretendard",
     "note": "글과 사진을 다시 쓰려면 먼저 물어 주세요.",
     "made": "서울에서 쓰고, 찍고, 엮음"
