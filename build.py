@@ -904,7 +904,7 @@ def render(site, poem, videos, photos, lang="ko"):
   </section>
   <section id="contact" aria-labelledby="contact-t">
     <p class="label">{t("label_contact")}</p>
-    <div class="l"><h2 class="h2" id="contact-t">{t("label_contact")}</h2><p class="lead">{lead}</p></div>
+    <div class="l"><h2 class="h2" id="contact-t">{t("contact_title")}</h2><p class="lead">{lead}</p></div>
     <div class="r">{ask}{mail}
       <p class="sns">{sns}</p>
       {colo}</div>

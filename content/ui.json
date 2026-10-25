@@ -117,8 +117,8 @@
     "en": "Earlier news ↓"
   },
   "toc_key": {
-    "ko": "먹 줄은 사이트에서 읽을 수 있는 시 — 달마다 한 편씩 한 행이 열립니다",
-    "en": "Titles in ink can be read here — each month, one more poem opens a line"
+    "ko": "먹 줄은 여기서 읽을 수 있는 시 · 달마다 한 편에서 한 줄씩 엽니다",
+    "en": "Titles in ink can be read here · each month, one line opens from one poem"
   },
   "month_line": {
     "ko": "{m}월의 한 줄",
@@ -271,6 +271,10 @@
   "label_contact": {
     "ko": "연락",
     "en": "Contact"
+  },
+  "contact_title": {
+    "ko": "남동원에게",
+    "en": "Dear Dongwon"
   },
   "form_name": {
     "ko": "이름 (선택)",
