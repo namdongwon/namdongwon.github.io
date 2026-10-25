@@ -62,8 +62,7 @@ button{font:inherit;color:inherit}
 main>section{padding:12px 20px 64px;scroll-margin-top:var(--top)}  /* 칸 높이는 첫 화면만(#home) — 칸 맞춤을 끈 뒤 남은 화면 높이 때문에 칸 사이가 84–312px로 들쭉날쭉했음(10/25 다듬기 가2) */  /* 휴대폰 좌우 여백 20px(10/24 ⑪ A — Le Cinéma Club · 타이포그래피 서울과 같은 값, 시집 제목 줄이 375px에서 한 줄). 컴퓨터는 64px */
 .label{display:flex;align-items:center;gap:12px;margin-top:8px;font:600 11px/1 var(--sans);letter-spacing:.32em;color:var(--muted)}
 .label::after{content:"";flex:1;height:1px;background:var(--rule)}
-.h2{margin-top:36px;font:700 28px/1.2 var(--serif)}
-html:lang(ko) .h2{font-weight:400}  /* 칸 제목(28 · 컴퓨터 40px)은 보통 굵기 — 크게 쓰는 명조는 얇게, 굵은 명조는 작은 제목(작은 제목 · 맨 위 이름 · 채널 이름 · 탁본 한 장 제목)에만(10/26 ① B 크기에 따라 · 75곳 실측) */
+.h2{margin-top:36px;font:400 28px/1.2 var(--serif)}  /* 칸 제목(28 · 컴퓨터 40px)은 보통 굵기 — 크게 쓰는 제목은 얇게, 굵은 글씨는 작은 제목(작은 제목 · 맨 위 이름 · 채널 이름 · 탁본 한 장 제목)에만(10/26 한국어 ① B · 영어 ② A · 75곳 실측) */
 html:lang(ko) #poem .h2{text-indent:-.65em}  /* 「탁본」 — 본명조 「의 앞 빈(보통 0.657 · 굵은꼴 0.649em)만큼 내어 걸어 부호 획을 안내 줄 첫머리에(10/24 · 10/26 본명조로 다시 잼). 영어판 제목은 부호 없음 */
 .buy{display:inline-flex;font:600 14px/1 var(--sans);padding-bottom:5px;border-bottom:1.5px solid var(--ink);white-space:nowrap}
 
@@ -72,8 +71,8 @@ html:lang(ko) #poem .h2{text-indent:-.65em}  /* 「탁본」 — 본명조 「�
 #home{min-height:calc(100vh - var(--top));min-height:calc(100svh - var(--top))}  /* 첫 화면은 맨 위 띠를 뺀 높이 — 라벨이 화면 아래에 붙지 않게 */
 #home .kick{margin-top:22px;font:600 11px/1.5 var(--sans);letter-spacing:.04em}
 #home .ht{margin:12px 0 0 -.03em;font:700 76px/1 var(--serif);font-size:min(76px,20.5vw);letter-spacing:-.05em}
-html:lang(ko) #home .ht{font-weight:300}  /* 큰 제목은 얇게(10/26 — 가늘고 크게, 견본 '본명조 · 큰 제목 가늘게'). 영어판 제목은 Newsreader 700 그대로 */
-html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spacing:-.02em}
+html:lang(ko) #home .ht{font-weight:300}  /* 큰 제목은 얇게(10/26 — 가늘고 크게, 견본 '본명조 · 큰 제목 가늘게') */
+html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spacing:-.02em;font-weight:360}  /* 영어 큰 제목은 Newsreader 360 — 한국어 큰 제목(본명조 300)과 같은 먹색 0.16(10/26 ② A, 실측) */
 #home .book{margin-top:24px;display:grid;grid-template-columns:1fr auto;column-gap:12px}
 #home .side{display:flex;flex-direction:column;padding-bottom:34px}  /* 작은 제목(+ 사는 길)은 위, '밀어 보세요'와 가는 선은 책 아래쪽(.tip margin-top:auto) */
 #home .hs{font:700 19px/1.45 var(--serif);letter-spacing:-.01em}
