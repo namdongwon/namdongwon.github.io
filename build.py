@@ -1,0 +1,961 @@
+"""namdongwon.com 만들기 — content/와 src/를 읽어 docs/(GitHub Pages가 보여 줄 폴더)를 새로 만든다.
+
+쓰는 법(남무비 폴더에서): tools/.venv/bin/python 웹사이트/build.py
+필요한 것: 파이썬 3 + Pillow(사진 줄이기·미리보기 그림) + fontTools·brotli(글꼴을 쓰는 글자만 남겨 woff2로 줄임).
+글꼴 원본은 맥의 정해진 자리에서 찾고, 없으면 docs/assets/fonts에 이미 있는 줄인 판을 그대로 쓴다(새 글자가 생겼으면 빠질 수 있어 알림).
+"""
+import html
+import json
+import os
+import re
+import shutil
+import sys
+import unicodedata
+from datetime import date, datetime, timedelta
+from pathlib import Path
+from urllib.parse import urlparse
+from zoneinfo import ZoneInfo
+
+from fontTools import subset as ftsubset
+from PIL import Image, ImageDraw, ImageFont, ImageOps
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # instagram.py는 이 파일 옆 — 다른 스크립트가 build를 불러 써도 찾게
+import instagram  # noqa: E402
+
+HERE = Path(__file__).resolve().parent
+CONTENT = HERE / "content"
+SRC = HERE / "src"
+DOCS = HERE / "docs"
+ASSETS = DOCS / "assets"
+POEM_DIR = Path.home() / "Downloads/남동원 시집"
+PTD_DIR = HERE.parent / "기준/폰트"
+
+# 원본 글꼴 → 사이트에서 쓰는 줄인 판(woff2). 라이선스(OFL)상 이름이 예약된 글꼴(나눔명조·Pretendard)은
+# 줄인 판에 다른 이름(NDW …)을 붙인다. 은바탕(GPL)은 이름을 두고 '줄인 판'이라는 표시를 남긴다
+FONTS = [
+    ("NanumMyeongjo.ttf", POEM_DIR, "작업 파일)/fonts", "ndw-myeongjo.woff2", True),
+    ("NanumMyeongjoBold.ttf", POEM_DIR, "작업 파일)/fonts", "ndw-myeongjo-bold.woff2", True),
+    ("UnBatang.ttf", POEM_DIR, "작업 파일)/fonts", "un-batang.woff2", False),
+    ("Pretendard-Light.otf", PTD_DIR, "", "ndw-sans-light.woff2", True),
+    ("Pretendard-SemiBold.otf", PTD_DIR, "", "ndw-sans-semibold.woff2", True),
+]
+# 사이트 글자 말고도 늘 남겨 둘 것: 영문·숫자·기호(주소·계정 이름·숫자 세기)와 쓰는 문장부호
+FONTS_KB = {}  # 판권면 글꼴 줄의 용량(10/25 ⑧) — main()이 줄인 글꼴을 다 만든 뒤 채우고 쪽을 한 번 더 그림
+ALWAYS = "".join(chr(c) for c in range(0x20, 0x7F)) + "‘’“”『』「」〈〉《》—–·…→←↑↓↗©\u00a0"  # ↗: 밖으로 나가는 링크(10/24) · 줄 안 바뀜 공백(keep()) · 〈〉《》: 작품 이름 부호(marked())
+NOTE = "Subset for namdongwon.com (only the characters used on the site), 2026"
+# 영어판 글꼴(10/24 ⑤ B): Newsreader — 기준/폰트/Newsreader/(Google Fonts 저장소에서 내려받음, OFL)
+EN_FONTS = [("Newsreader[opsz,wght].ttf", "newsreader.woff2"), ("Newsreader-Italic[opsz,wght].ttf", "newsreader-italic.woff2")]
+e = html.escape
+NB = "\u00a0"  # 줄 안 바뀜 공백
+SPLIT = {}  # 시집 제목 → (큰 제목, 작은 제목) — render()가 원고의 book.display에서 채움(이스케이프한 글, tt())
+NAMES = []  # 채널 이름(한 · 영) — render()가 videos.json에서 채움(names())
+MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+
+def keep(s):
+    # 줄 끝(10/24 ⑨): 날짜(2026년 11월 1일)는 한 덩어리로, 가운뎃점은 앞 말에 붙여 줄 머리에 오지 않게 — 이스케이프까지 함께
+    s = re.sub(r"(\d+년) (\d+월) (\d+일)", rf"\1{NB}\2{NB}\3", e(s))
+    # 영어판(10/24): 치수 '128 × 188 mm'와 날짜 'November 1, 2026'도 한 덩어리로
+    s = re.sub(r"(\d+) × (\d+) (mm|cm)", rf"\1{NB}×{NB}\2{NB}\3", s)
+    s = re.sub(r"\b(" + "|".join(MONTHS) + r") (\d{1,2}), (\d{4})", rf"\1{NB}\2,{NB}\3", s)
+    return names(s.replace(" · ", NB + "· "))
+
+
+def names(s):
+    # 채널 이름(아름다울 남 · Beautiful Nam)도 한 덩어리 — 10/25 마지막 점검 ②③을 고친 뒤 영어 '지금' 320px에서 'Beautiful / Nam'으로 갈려서
+    for n in NAMES:
+        s = s.replace(n, n.replace(" ", NB))
+    return s
+
+
+def build_day():
+    # 빌드한 날(서울) — 판권면 '고친 날' · 시집 상태 낱말 · 시집 소식이 이 날을 봄. 미리 볼 때는 환경 변수 SITE_TODAY=2026-11-01로 날을 정함
+    s = os.environ.get("SITE_TODAY")
+    return date.fromisoformat(s) if s else datetime.now(ZoneInfo("Asia/Seoul")).date()
+
+
+# 작품 이름 부호(10/24 ⑩ A): 영화·작품 〈 〉 · 책 『 』 · 시 「 」 · 전시 《 》 — 문장 부호 규정(2015)과 관행
+MARKS = {"영화": "〈〉", "작품": "〈〉", "책": "『』", "시": "「」", "전시": "《》"}
+
+
+def marked(kind, title, lang="ko"):
+    if kind not in MARKS:
+        raise ValueError(f"갈래 '{kind}'에 맞는 부호가 없음 — {' · '.join(MARKS)} 중 하나로")
+    if lang == "en":  # 영어판(10/24): 영화 · 책 · 전시 · 작품은 기울임, 시는 따옴표(영어 관행)
+        return f"“{e(title)}”" if kind == "시" else f"<i>{e(title)}</i>"
+    return MARKS[kind][0] + e(title) + MARKS[kind][1]
+
+
+def art_parts(a, lang="ko"):
+    # 전시 작품 캡션(10/24 ⑩ · ⑫): 앞 '작가, 〈작품〉, 해' · 뒤 '《전시》, 미술관' — 빈 칸은 건너뜀
+    head = ", ".join(x for x in (e(a.get("artist", "")), marked("작품", a["title"], lang) if a.get("title") else "", e(a.get("year", ""))) if x)
+    tail = ", ".join(x for x in (marked("전시", a["show"], lang) if a.get("show") else "", e(a.get("venue", ""))) if x)
+    return head, tail
+
+
+def art_line(a, lang="ko"):
+    # 한 줄로 쓸 때: '작가, 〈작품〉, 해 — 《전시》, 미술관'
+    head, tail = art_parts(a, lang)
+    return head + (" — " + tail if tail else "")
+
+
+def sentence(w, lang="ko", kinds=None):
+    # 대표 편 정보 한 문장(10/24 ⑩ A — Le Cinéma Club식): '영화 〈제목〉 만든 이. 2001. 일본.' / 'Film *Title* Maker. 2001. Japan.'
+    # 제목 · 만든 이만 먹, 갈래 낱말과 나머지는 옅게(Kunsthalle Basel식 진하기 위계). 사람 이름은 한 덩어리로.
+    # data-title은 부호 없는 제목 — 재생 단추 · 플레이어 이름(main.js). 영어판 제목은 <cite>가 기울임(style.css)
+    who = e(w["creator"]).replace(" ", NB)
+    tail = "".join(f" {keep(x)}." for x in w.get("facts", []))
+    kind = e((kinds or {}).get(w["kind"], w["kind"]))
+    name = marked(w["kind"], w["title"]) if lang == "ko" else e(w["title"])
+    return (f'<p class="vt" data-title="{e(w["title"])}">{kind} <b><cite>{name}</cite> {who}</b>.{tail}</p>')
+
+
+
+
+def ordinal(n):
+    return f"{n}{'th' if 10 <= n % 100 <= 20 else {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')}"
+
+
+def merge(a, b):
+    # 영어 칸(en)을 한국어 위에 덮음 — 사전은 칸마다, 같은 길이의 사전 목록(링크 · 기록)은 순서대로, 나머지는 통째로
+    if isinstance(a, dict) and isinstance(b, dict):
+        return {**a, **{k: merge(a[k], v) if k in a else v for k, v in b.items()}}
+    if isinstance(a, list) and isinstance(b, list) and len(a) == len(b) and all(isinstance(x, dict) for x in a + b):
+        return [merge(x, y) for x, y in zip(a, b)]
+    return b
+
+
+def localize(obj, lang):
+    # 영어판(10/24): 원고마다 붙은 'en' 칸을 덮어씀 — 한국어판은 원고 그대로('en' 칸만 뺌)
+    if isinstance(obj, dict):
+        out = {k: localize(v, lang) for k, v in obj.items() if k != "en"}
+        return merge(out, localize(obj["en"], lang)) if lang == "en" and isinstance(obj.get("en"), dict) else out
+    if isinstance(obj, list):
+        return [localize(x, lang) for x in obj]
+    return obj
+
+
+# 관리 화면이 고치는 작은 표(데이터 설계서 v2 ① — 10/25 원고 옮기기): 지금 · 시집 소식 · 이달의 한 줄 · 연표. 시험처럼 site에 미리 넣어 준 표가 있으면 그것을
+TABLES = {"now": "now.json", "news": "news.json", "monthly": "monthly.json", "years": "years.json"}
+# 영어가 비면(설계서 5절 — 빈 글 ""과 칸 없음은 같은 뜻): 문장 칸(글 · 각주 · 영상 사실 · 스틸 출처)은 영어판에서 숨김(빈 글) · 이름 칸은 한국어 그대로 · 말이 없는 칸은 그대로
+NAME_KEYS = {"label", "title", "creator", "artist", "show", "venue", "where", "name"}
+PLAIN_KEYS = {"updated", "date", "month", "year", "kind", "thumb", "youtube_id", "post", "page", "n", "link", "url", "id"}
+
+
+def tables(site):
+    return {k: site[k] if k in site else load(f) for k, f in TABLES.items()}
+
+
+def row_lang(row, lang):
+    # 관리 화면이 고치는 표의 줄 → 그 말의 값(줄 안 en 칸, 설계서 원칙 4). 한국어판은 en 칸만 뺌
+    if isinstance(row, list):
+        return [row_lang(x, lang) for x in row]
+    if not isinstance(row, dict):
+        return row
+    ko = {k: row_lang(v, lang) for k, v in row.items() if k != "en"}
+    if lang != "en":
+        return ko
+    en, out = row.get("en") or {}, {}
+    for k, v in ko.items():
+        ev = en.get(k)
+        if isinstance(row[k], dict):
+            out[k] = row_lang({**row[k], "en": ev if isinstance(ev, dict) else {}}, lang)
+        elif k in PLAIN_KEYS:
+            out[k] = v
+        elif ev in (None, "", []):
+            out[k] = v if k in NAME_KEYS else ([] if isinstance(v, list) else "")
+        else:
+            out[k] = ev
+    return out
+
+
+def link_url(site, lid):
+    # 주소는 site.json links 한 곳에만(설계서 ③) — 다른 곳은 이름표(id)로 가리킴
+    return next((l["url"] for l in site["links"] if l.get("id") == lid), "")
+
+
+def is_art(p):
+    # 작품 정보 칸에 글이 하나라도 있으면 작품 사진(자르지 않음 · 흰 벽 — 설계서 4-6)
+    return bool(p.get("art")) and any(str(x).strip() for x in p["art"].values())
+
+
+def tt(t, ko, tail=""):
+    # 작품 제목은 바로 붙은 문장부호 · 조사까지 한 덩어리(.tt — 칸에 들어가면 통째로 다음 줄, 칸보다 길면 그 안에서만 갈림 · 10/25 마지막 점검 ②③).
+    # 시집 제목은 그 안을 표지 줄 나눔(큰 제목 | 작은 제목) 두 토막으로 다시 감쌈 — 칸보다 길 때(휴대폰 약력 등)도 '문을 열고 나오면 / 살아 있는 …' 자리에서만 나뉨
+    if t in SPLIT:
+        a, z = SPLIT[t]
+        if ko:
+            return f'<span class="tt"><span class="tt">『{a}</span> <span class="tt">{z}』{tail}</span></span>'
+        return f'<span class="tt"><i><span class="tt">{a}</span> <span class="tt">{z}</span></i>{tail}</span>'  # 기울임은 한 제목에 하나
+    return f'<span class="tt">『{t}』{tail}</span>' if ko else f'<span class="tt"><i>{t}</i>{tail}</span>'
+
+
+def rich(s):
+    # 영어 글의 *별표*는 기울임(작품 제목) — 이스케이프한 뒤에. 영어 제목 · 한국어 『제목』 모두 tt()로
+    s = re.sub(r"\*([^*]+)\*([.,;:!?’”)]*)", lambda m: tt(m.group(1), False, m.group(2)), e(s))
+    return names(re.sub(r"『([^』]*)』([가-힣]*)", lambda m: tt(m.group(1), True, m.group(2)), s))
+
+
+def note_html(s, en):
+    # 연표 각주(10/25 40곳 2차 ④): 날짜 · 가운뎃점은 keep()대로, 작품 제목 안 띄어쓰기는 붙여 두 줄로 갈리지 않게 — 영어는 *별표* 기울임, 한국어는 〈 〉 《 》
+    s = keep(s)
+    if en:
+        return re.sub(r"\*([^*]+)\*", lambda m: "<i>" + m.group(1).replace(" ", NB) + "</i>", s)
+    return re.sub(r"[〈《][^〉》]*[〉》]", lambda m: m.group(0).replace(" ", NB), s)
+
+
+SEASON_WARNED = []
+
+
+def season_of(d):
+    # 24절기(10/25 40곳 2차 ⑤ A — ミナ ペルホネン식): d가 든 절기(시작 날이 d 이전인 마지막 것) → (한국어, 영어). content/seasons.json 표 밖이면 None
+    s = load("seasons.json")
+    rows = sorted((date.fromisoformat(x), n) for k, v in s.items() if k.isdigit() for x, n in v)
+    if not rows or d < rows[0][0] or d >= rows[-1][0] + timedelta(days=14):
+        if not SEASON_WARNED:
+            SEASON_WARNED.append(1)
+            print(f"알림: 절기 표(content/seasons.json)에 {d}가 든 절기가 없어 '지금' 꼬리표 옆 절기를 뺌 — 다음 해 줄을 더할 것")
+        return None
+    n = [n for x, n in rows if x <= d][-1]
+    return n, s["names_en"][n]
+
+
+def stanzas_of(text):
+    # 연은 빈 줄로, 행은 한 줄씩
+    out, cur = [], []
+    for line in text.strip().splitlines():
+        if line.strip():
+            cur.append(line.strip())
+        elif cur:
+            out.append(cur)
+            cur = []
+    if cur:
+        out.append(cur)
+    return out
+
+# 첫 그림이 그려지기 전에 html에 표시를 붙인다: js(움직임을 켬) · intro(문 장면 — 첫 방문 한 번만, '동작 줄이기'나 #주소로 들어오면 생략, ?door면 다시 봄)
+HEAD_JS = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var m=matchMedia("(prefers-reduced-motion: reduce)").matches,
+again=/[?&]door\\b/.test(location.search);if(!m&&!location.hash&&(again||!localStorage.getItem("door"))){H.classList.add("intro");localStorage.setItem("door","1")}}catch(x){}})();</script>"""
+
+
+CHO = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
+VFIRST = {9: 8, 10: 8, 11: 8, 14: 13, 15: 13, 16: 13, 19: 18}  # 겹모음은 두 번에 침: ㅘㅙㅚ←ㅗ · ㅝㅞㅟ←ㅜ · ㅢ←ㅡ
+
+
+def typing_steps(text):
+    # 이름을 두벌식으로 칠 때 화면에 보이는 차례(남동원 → ㄴ 나 남 남ㄷ 남도 남동 남동ㅇ 남동우 남동워 남동원).
+    # 페이지에 적어 두면 이 글자들이 줄인 글꼴에 함께 들어감(첫 화면 이름 자모 타자 — main.js)
+    out, done = [], ""
+    for ch in unicodedata.normalize("NFC", text):
+        code = ord(ch) - 0xAC00
+        if 0 <= code < 11172:
+            c, v, t = code // 588, (code % 588) // 28, code % 28
+
+            def syl(vv, tt=0):
+                return chr(0xAC00 + (c * 21 + vv) * 28 + tt)
+            out.append(done + CHO[c])
+            if v in VFIRST:
+                out.append(done + syl(VFIRST[v]))
+            out.append(done + syl(v))
+            if t:
+                out.append(done + syl(v, t))
+        elif ch.strip():
+            out.append(done + ch)
+        done += ch
+    return out
+
+
+def find(root, name, must_in=""):
+    # 맥 한글 이름은 NFD로 저장될 때가 있어 NFC로 맞춰 찾는다
+    if not root.exists():
+        return None
+    for dp, dn, fn in os.walk(root):
+        for f in fn:
+            if unicodedata.normalize("NFC", f) == name and must_in in unicodedata.normalize("NFC", dp):
+                return Path(dp) / f
+    return None
+
+
+def load(name):
+    return json.loads((CONTENT / name).read_text(encoding="utf-8"))
+
+
+def save_jpg(src, dst, maxw, quality=80):
+    im = ImageOps.exif_transpose(Image.open(src)).convert("RGB")  # 사진 속 정보(위치 등)는 저장하지 않음
+    if im.width > maxw:
+        im = im.resize((maxw, round(im.height * maxw / im.width)), Image.LANCZOS)
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    im.save(dst, "JPEG", quality=quality, optimize=True, progressive=True)
+    return im.size
+
+
+def psrc(p):
+    # 사진 원본 자리 — 인스타에서 받아 온 것은 .cache/instagram, 나머지는 content/photos
+    return Path(p["src"]) if p.get("src") else CONTENT / "photos" / p["file"]
+
+
+# 그림 글자(이모지) — 캡션에서 뺌(10/24, 무채색 사이트에서 색 그림으로 튐). 피부색 · 이음표(ZWJ) · 꾸밈 표시까지
+EMOJI = re.compile("[\U0001F000-\U0001FAFF☀-➿⬅-⬇⬛⬜⭐⭕⌚⌛"
+                   "⏩-⏳⏸-⏺︎️‍⃣]")
+
+
+def first_line(caption, limit=60):
+    # 인스타 글의 첫 줄(10/24 사진 칸 A) — 해시태그 · 그림 글자는 빼고(그러고 나서 빈 줄이면 다음 줄), 길면 낱말 끝에서 줄임
+    clean = (re.sub(r"\s{2,}", " ", re.sub(r"\s*#\S+", "", EMOJI.sub("", x))).strip() for x in caption.splitlines())
+    line = next((x for x in clean if x), "")
+    if len(line) > limit:
+        cut = line[:limit]
+        line = (cut.rsplit(" ", 1)[0] if " " in cut else cut).rstrip(" ,.·") + "…"
+    return line
+
+
+def ig_items(feed, overrides):
+    # 받아 온 게시물 → 사진 칸 한 장(photos.json의 items와 같은 꼴). 날짜는 서울 기준.
+    # 캡션 · 전시 작품 정보를 덧씌울 때는 게시물 주소 끝 글자로(photo_art.json 줄의 post — …/p/ABC123/ → "ABC123")
+    out = []
+    for f in feed:
+        d = datetime.strptime(f["timestamp"], "%Y-%m-%dT%H:%M:%S%z").astimezone(ZoneInfo("Asia/Seoul"))
+        code = f["permalink"].rstrip("/").rsplit("/", 1)[-1]
+        it = {"file": f"ig_{f['id']}.jpg", "src": f["src"], "kids": [k for k in f.get("kids", []) if Path(k).exists()], "where": first_line(f["caption"]), "when": "", "credit": "",
+              "date": f"{d.year}년 {d.month}월 {d.day}일", "link": f["permalink"], "en": {"date": f"{MONTHS[d.month - 1]} {d.day}, {d.year}"}}
+        over = overrides.get(code, {})  # photo_art.json의 그 게시물 줄(10/25 원고 옮기기 — 전에는 photos.json instagram.overrides)
+        ko = {k: v for k, v in over.items() if k not in ("en", "post") and v not in ("", None)}
+        if "art" in ko and not is_art(ko):
+            del ko["art"]
+        oe = {k: ({kk: vv for kk, vv in v.items() if vv not in ("", None)} if isinstance(v, dict) else v)
+              for k, v in (over.get("en") or {}).items() if v not in ("", None)}  # 영어가 빈 칸은 덮지 않음 — 이름 · 캡션 첫 줄은 한국어 그대로(설계서 5절)
+        out.append({**it, **ko, "en": {**it["en"], **{k: v for k, v in oe.items() if v != {}}}})
+    return out
+
+
+def out_size(src, maxw):
+    # save_jpg가 저장할 크기(그림을 다 풀지 않고 머리만 읽음, 사진 속 회전 정보 반영) — <img>의 width · height를 실제 비율로
+    with Image.open(src) as im:
+        w, h = im.size
+        if im.getexif().get(274) in (5, 6, 7, 8):
+            w, h = h, w
+    return (maxw, round(h * maxw / w)) if w > maxw else (w, h)
+
+
+def font(path, size):
+    return ImageFont.truetype(str(path), size)
+
+
+def used_text(pages):
+    # 줄인 글꼴에 남길 글자: 만든 쪽(HTML)의 모든 글자 + main.js의 문자열(안내 문구) + 늘 남길 것. main.js의 주석 글자는 빼서 가볍게
+    js = (SRC / "main.js").read_text(encoding="utf-8")
+    strings = "".join(m.group(0) for m in re.finditer(r'"(?:[^"\\\n]|\\.)*"|`[^`]*`', js))
+    return unicodedata.normalize("NFC", "".join(pages) + strings + ALWAYS)
+
+
+def rename_font(font):
+    # OFL의 예약된 이름(Nanum…, NanumMyeongjo, Pretendard)을 줄인 판에서 쓰지 않게 이름표를 바꿈
+    for r in font["name"].names:
+        s = r.toUnicode()
+        if r.nameID in (3, 6):
+            s = s.replace("NanumMyeongjo", "NDWMyeongjo").replace("Pretendard", "NDWSans")
+        else:
+            s = (s.replace("NanumMyeongjoBold", "NDW Myeongjo Bold").replace("NanumMyeongjo", "NDW Myeongjo")
+                 .replace("나눔명조", "NDW Myeongjo").replace("Pretendard", "NDW Sans"))
+        r.string = s
+    if "CFF " in font:  # Pretendard(OTF)는 글꼴 안 CFF 표에도 이름이 있음
+        cff = font["CFF "].cff
+        cff.fontNames = [n.replace("Pretendard", "NDWSans") for n in cff.fontNames]
+        td = cff.topDictIndex[0]
+        for k in ("FullName", "FamilyName"):
+            if hasattr(td, k):
+                setattr(td, k, getattr(td, k).replace("Pretendard", "NDW Sans"))
+
+
+def subset_font(src, dst, text, rename):
+    opts = ftsubset.Options()
+    opts.flavor = "woff2"
+    opts.layout_features = ["*"]      # 자간·대체 글자 같은 글꼴 기능은 모두 남김
+    opts.name_IDs = ["*"]             # 저작권·라이선스 이름표(0·13·14)까지 남김
+    opts.notdef_outline = True
+    opts.desubroutinize = True        # woff2 압축이 더 잘 되게(Pretendard의 CFF)
+    opts.drop_tables += ["FFTM", "feat", "morx"]  # 글꼴 편집기·맥 전용 표는 웹에 필요 없음
+    f = ftsubset.load_font(str(src), opts)
+    sub = ftsubset.Subsetter(opts)
+    sub.populate(text=text)
+    sub.subset(f)
+    if rename:
+        rename_font(f)
+    # 바꾼 판이라는 표시(GPL 2(a) — 은바탕), 다른 글꼴에도 같은 표시 — 원래 설명 뒤에 덧붙임
+    old = f["name"].getName(10, 3, 1, 0x409)
+    f["name"].setName((old.toUnicode() + " / " if old else "") + NOTE, 10, 3, 1, 0x409)
+    ftsubset.save_font(f, str(dst), opts)
+
+
+def vfont(path, size, axes):
+    # 가변 글꼴(Newsreader)을 굵기 · 글자 크기 축을 정해 씀
+    f = ImageFont.truetype(str(path), size)
+    f.set_variation_by_axes(list(axes))
+    return f
+
+
+def make_og(site, cover, src, lang="ko"):
+    # 카톡·인스타에 링크를 붙였을 때 뜨는 미리보기 그림(1200×630) — 줄이기 전 원본 글꼴로 그림. 영어판은 og-en.jpg(Newsreader)
+    W, H = 1200, 630
+    im = Image.new("RGB", (W, H), "white")
+    d = ImageDraw.Draw(im)
+    c = ImageOps.exif_transpose(Image.open(cover)).convert("RGB")
+    ch = 500
+    c = c.resize((round(c.width * ch / c.height), ch), Image.LANCZOS)
+    x, y = W - c.width - 110, (H - ch) // 2
+    if lang == "ko":
+        d.text((96, 232), site["name"], font=font(src["NanumMyeongjoBold.ttf"], 118), fill="#111111")
+        d.text((100, 392), site["tagline"], font=font(src["UnBatang.ttf"], 34), fill="#555555")  # 회색은 사이트 토큰과 같이(10/24 ⑨ --muted)
+        d.text((100, 540), site["base_url"].replace("https://", ""), font=font(src["Pretendard-Light.otf"], 24), fill="#717171")  # --faint
+        out = "og.jpg"
+    else:
+        room = x - 100 - 48
+        size = 108
+        while vfont(src["NR"], size, (650, 72)).getlength(site["name"]) > room and size > 60:
+            size -= 2
+        d.text((96, 196), site["name"], font=vfont(src["NR"], size, (650, 72)), fill="#111111")
+        tf, yy = vfont(src["NR"], 34, (400, 34)), 196 + size + 44
+        for line in _wrap(d, site["tagline"], tf, room):
+            d.text((100, yy), line, font=tf, fill="#555555")
+            yy += 48
+        d.text((100, 540), site["base_url"].replace("https://", "") + "/en", font=font(src["Pretendard-Light.otf"], 24), fill="#717171")
+        out = "og-en.jpg"
+    d.rectangle((x - 1, y - 1, x + c.width, y + ch), outline="#e2e2e2")
+    im.paste(c, (x, y))
+    im.save(ASSETS / out, "JPEG", quality=86, optimize=True)
+
+
+def _wrap(d, text, f, maxw):
+    # 행이 넓이를 넘으면 낱말 사이에서 넘김(넘어간 부분은 그리는 쪽에서 한 글자 들여씀 — 사이트와 같음)
+    lines, cur = [], ""
+    for wd in text.split(" "):
+        t = (cur + " " + wd).strip()
+        if d.textlength(t, font=f) <= maxw or not cur:
+            cur = t
+        else:
+            lines.append(cur)
+            cur = wd
+    lines.append(cur)
+    return lines
+
+
+def make_takbon(site, poem, src):
+    # '간직하기'로 저장되는 그림(9:16, 인스타 스토리) — 흰 바탕 위 곧은 가장자리의 검은 판에 또렷한 흰 글자로 「탁본」 전문,
+    # 아래에 시집 이름과 사이트 주소(시안 v11 A + 10/24 결 정돈). 줄이기 전 원본 글꼴로 그림
+    W, H, (x0, y0, x1, y1) = 1080, 1920, (64, 70, 1016, 1650)
+    sw, sh = x1 - x0, y1 - y0
+    im = Image.new("RGB", (W, H), (255, 255, 255))
+    d = ImageDraw.Draw(im)
+    d.rectangle((x0, y0, x1 - 1, y1 - 1), fill=(12, 12, 12))
+    ink = (240, 240, 240)
+    d.text((x0 + 84, y0 + 96), f"「{site['poem']['title']}」", font=font(src["NanumMyeongjoBold.ttf"], 54), fill=ink)
+    stanzas = [s.split("\n") for s in poem.strip().split("\n\n")]
+    size = 34
+    while True:  # 시 전체가 판 안에 들어가는 크기
+        f, lh = font(src["UnBatang.ttf"], size), round(size * 1.72)
+        rows = sum(len(_wrap(d, ln, f, sw - 168 - size)) for st in stanzas for ln in st) + len(stanzas) - 1
+        if 206 + rows * lh <= sh - 80 or size <= 24:
+            break
+        size -= 1
+    y = y0 + 206
+    for si, st in enumerate(stanzas):
+        y += lh if si else 0
+        for ln in st:
+            for k, part in enumerate(_wrap(d, ln, f, sw - 168 - size)):
+                d.text((x0 + 84 + (size if k else 0), y), part, font=f, fill=ink)
+                y += lh
+    d.text((70, 1712), f"{site['name']} 시집 『{site['book']['title']}』", font=font(src["Pretendard-Light.otf"], 27), fill=(98, 98, 98))
+    d.text((70, 1762), site["base_url"].replace("https://", ""), font=font(src["Pretendard-SemiBold.otf"], 28), fill=(17, 17, 17))
+    im.save(ASSETS / "img" / "takbon.jpg", "JPEG", quality=90, optimize=True)
+
+
+def make_icons():
+    # 찰칵 표시(■)에서 온 검은 네모
+    (DOCS / "favicon.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#fff"/>'
+        '<rect x="14" y="14" width="36" height="36" fill="#111"/></svg>\n', encoding="utf-8")
+    for size, name in ((32, "favicon-32.png"), (180, "apple-touch-icon.png")):
+        im = Image.new("RGB", (size, size), "white")
+        m = round(size * 14 / 64)
+        ImageDraw.Draw(im).rectangle((m, m, size - m - 1, size - m - 1), fill="#111111")
+        im.save(DOCS / name)
+
+
+def render(site, poem, videos, photos, lang="ko"):
+    # 같은 틀로 한국어판(docs/)과 영어판(docs/en/)을 찍음(10/24 영어판) — 화면 낱말은 content/ui.json, 내용의 영어는 원고마다 'en' 칸
+    ui = load("ui.json")
+    L = {k: v[lang] if isinstance(v, dict) and lang in v else v for k, v in ui.items() if not k.startswith("_")}
+
+    def t(key, **kw):
+        return e(L[key]).format(**kw)
+    S, PH = localize(site, lang), localize(photos, lang)
+    tb = tables(site)
+    # 영상(videos.json — 다음 편 · 올린 편): 5절 규칙, 올린 편은 날짜로 최근 것부터(설계서 ④)
+    V = {"upcoming": row_lang(videos.get("upcoming") or {}, lang),
+         "items": sorted((row_lang(x, lang) for x in videos.get("items", [])), key=lambda x: x.get("date", ""), reverse=True)}
+    en = lang == "en"
+    P = "../" if en else ""  # 영어판은 한 칸 아래(docs/en/)라 assets를 한 칸 위에서
+    base = S["base_url"].rstrip("/")
+    here = f"{base}/en/" if en else f"{base}/"
+    book = S["book"]
+    SPLIT.clear()  # tt()가 쓰는 시집 제목 두 토막 — 한 · 영 모두(영어판 라벨에도 한국어 원제가 나옴)
+    for bk in (site["book"], site.get("en", {}).get("book", {})):
+        d = bk.get("display", {})
+        if d.get("big") and d.get("small"):
+            a, z = " ".join(d["big"]), " ".join(d["small"])
+            SPLIT[e(f"{a} {z}")] = (e(a), e(z))
+    ch = site.get("channel", {})
+    NAMES[:] = [e(n) for n in (ch.get("name"), ch.get("en", {}).get("name")) if n]
+    title = f'{S["name"]} — {S["tagline"]}'
+    links = [l for l in S["links"] if l["url"]]
+    ld = {"@context": "https://schema.org", "@type": "Person", "name": S["name"], "alternateName": site["name"] if en else site["en"]["name"],
+          "url": here, "description": S["tagline"], "sameAs": [l["url"] for l in links]}
+    poem_t = e(S["poem"]["title"])
+    title_br = "<br>".join(e(x) for x in book["title_lines"])
+    book_title = f"<i>{title_br}</i>" if en else f"『{title_br}』"  # 영어판 책 제목은 기울임, 아래에 한국어 원제(표지 · 교보는 한국어)
+    # 첫 화면(10/25 A 시집을 전시하다 — 무채색): 동원이 보낸 웹 전시 그림의 원리만(물건 하나 · 아주 큰 제목 · 박물관 라벨), 색은 흰 바탕 · 먹 그대로.
+    # 이름 · '첫 시집 · 웹 전시' → 아주 큰 제목 → 떠 있는 3D 책(옆으로 밀어 돌림) → 라벨: 작품 · 지은이(한 문장) · 사양 · 소장처 '당신의 책장 — 책장에 꽂기 ↗'.
+    # 화살표 규칙: 밖으로 나가는 링크는 ↗, 사이트 안에서 내려가는 링크는 ↓
+    disp = book["display"]
+    ht, hs = ("<br>".join(e(x) for x in disp[k]) for k in ("big", "small"))
+    work = (f'Poetry collection, {tt(e(book["title"]), False)} <small lang="ko">{tt(e(site["book"]["title"]), True)}</small>' if en
+            else f'시집 {tt(e(book["title"]), True)}')
+    exl = (f'<dl><div><dt>{t("ex_object")}</dt><dd>{work}</dd></div>'
+           f'<div><dt>{t("ex_author")}</dt><dd>{e(S["name"])}</dd></div>'  # 지은이는 이름만(10/25 동원)
+           f'<div><dt>{t("ex_spec")}</dt><dd>{keep(book["spec"])}</dd></div>'
+           f'<div><dt>{t("ex_collection")}</dt><dd>{t("ex_shelf")} — <a class="buy" href="{e(book["buy_url"])}" target="_blank" rel="noopener">{e(book["buy_label"])} ↗</a></dd></div></dl>')
+
+    # 연표(years.json) — 줄의 note 칸이 각주(10/25 40곳 2차 ④ A, Andrew Trousdale식 경의의 각주): 줄 끝 위첨자 번호 + 연표 바로 아래 각주 목록
+    notes, lis = [], []
+    for r in row_lang(tb["years"]["items"], lang):
+        if not r["text"]:
+            continue
+        if r["note"]:
+            notes.append(r["note"])
+        lis.append(f'<li><b>{e(r["year"])}</b><span>{names(e(r["text"]))}' + (f'<sup class="fr">{len(notes)}</sup>' if r["note"] else '') + '</span></li>')
+    years = "".join(lis)
+    fnb = ('<ol class="fn">' + "".join(f'<li><b>{i}</b><span>{note_html(x, en)}</span></li>' for i, x in enumerate(notes, 1)) + '</ol>') if notes else ""
+    # 소개 칸의 지금(10/25 ⑥ A — William Jansson 'Now'식): 연표 아래 읽는 책 · 편집 중인 편 · 쓰는 시 + 고친 날(손으로 적는 날). 빈 줄은 안 보임
+    nw = {**tb["now"], "items": row_lang(tb["now"]["items"], lang)}  # 말 규칙은 줄마다(고친 날 · 세 줄을 담은 겉은 그대로)
+    now_rows = "".join(f'<div><dt>{e(x["label"])}</dt><dd>{rich(x["text"]) if en else keep(x["text"])}</dd></div>' for x in nw.get("items", []) if x.get("text"))
+    nd = date.fromisoformat(nw["updated"]) if nw.get("updated") else None
+    nday = (f"{MONTHS[nd.month - 1]}{NB}{nd.day}, {nd.year}" if en else f"{nd.year}년{NB}{nd.month}월{NB}{nd.day}일") if nd else ""
+    # '지금' 꼬리표 옆 절기 한 낱말(10/25 40곳 2차 ⑤ A) — 고친 날이 든 절기, 줄이 갈리지 않게 붙임
+    sn = season_of(nd) if nd else None
+    nlab = t("now_label") + (f'<i>{t("now_season", name=e(sn[1] if en else sn[0])).replace(" ", NB)}</i>' if sn else "")
+    nowb = (f'<div class="now"><p class="nk"><span class="nl">{nlab}</span><span>{t("now_updated", date=nday)}</span></p><dl>{now_rows}</dl></div>' if now_rows else "")
+
+    # 「탁본」: 연은 문단, 행은 한 줄씩 — 화면이 좁아 행이 넘어가면 넘어간 부분만 한 글자 들여씀(style.css).
+    # 영어판(10/24 ③)은 행마다 원문(.ln)과 번역(.le)을 한 쌍으로 — 휴대폰은 위아래, 컴퓨터는 두 단(style.css)
+    ko_st = stanzas_of(poem)
+    ko_html = "".join("<p>" + "".join(f'<span class="ln">{e(x)}</span>' for x in st) + "</p>" for st in ko_st)
+    if en:
+        tr = stanzas_of((CONTENT / S["poem"]["file"]).read_text(encoding="utf-8"))
+        if [len(x) for x in tr] != [len(x) for x in ko_st]:
+            raise SystemExit(f"번역의 연 · 행 수가 원문과 다름: 원문 {[len(x) for x in ko_st]} · 번역 {[len(x) for x in tr]}")
+        poem_html = "".join("<p>" + "".join(f'<span class="pair"><span class="ln" lang="ko">{e(a)}</span><span class="le">{e(b)}</span></span>'
+                                            for a, b in zip(st, tt)) + "</p>" for st, tt in zip(ko_st, tr))
+    else:
+        poem_html = ko_html
+
+    # 첫 방문의 문 — 시집 제목 첫 줄이 두 문짝에 걸쳐 적힘(움직임은 main.js)
+    door_t = e(book.get("door", book["title_lines"][0]))
+    door = (f'<div class="door" aria-hidden="true"><div class="p l"><div class="t">{door_t}</div></div>'
+            f'<div class="p r"><div class="t">{door_t}</div></div><i class="gap"></i></div>')
+    # 탁본 한 장 — 「탁본」을 길게 누르면 열리는 검은 먹 종이(움직임·간직하기는 main.js). 자바스크립트가 없으면 숨은 채로.
+    # 영어판도 시는 한국어 원문 그대로(10/24 ③)
+    ko_attr = ' lang="ko"' if en else ""
+    sheet_title = f"<i>{e(book['title'])}</i>" if en else f"『{e(book['title'])}』"
+    sheet = (f'<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t" hidden>'
+             f'<p class="st" id="sheet-t"{ko_attr}>「{e(site["poem"]["title"])}」</p><div class="sp"{ko_attr}>{ko_html}</div>'
+             f'<div class="sf"><span>{t("sheet_book", name=e(S["name"]))}<br>{sheet_title}</span>'
+             f'<span class="btns"><button type="button" class="keep">{t("keep")}</button><button type="button" class="close">{t("close")}</button></span></div></div>')
+    # 기록 — 본 영화·전시를 칸으로(그림은 main.js가 캔버스 하나에 그림, 숫자는 글자로 남김)
+    # 숫자는 기록 칸과 같은 네모 점으로 찍고(dot-n), 글자 숫자(.n)는 화면 읽기 프로그램용으로 남김 — 자바스크립트가 없으면 글자 숫자가 보임
+    rec = "".join(f'<canvas class="dot-n" data-to="{r["n"]}" aria-hidden="true"></canvas>'
+                  f'<p class="rl"><b class="n">{r["n"]:,}</b><span>{keep(L["rec"].format(unit=r["unit"], note=r["note"]))}</span></p>'
+                  f'<canvas class="grid" data-n="{r["n"]}" aria-hidden="true"></canvas>' for r in S["records"])
+
+    # 사진 칸
+    shots, caps = [], []
+    for i, p in enumerate(PH["items"]):
+        # 전시 작품 사진("art")은 자르지 않음(10/24 ⑫ A 흰 벽 — style.css의 .art) · 캡션은 작품 틀, 대체 글은 작가 · 작품 · 해
+        a = p["art"] if is_art(p) else None
+        alt = (", ".join(x for x in (a.get("artist"), (a["title"] if en else f'〈{a["title"]}〉') if a.get("title") else "", a.get("year")) if x)
+               if a else (p["where"] or L["photo_alt"]))
+        art = ' class="art"' if a else ""
+        w, h = out_size(psrc(p), 1080)
+        img = f'<img src="{P}assets/img/photos/{e(Path(p["file"]).stem)}.jpg" alt="{e(alt)}" loading="lazy" width="{w}" height="{h}">'
+        if p.get("kids"):  # 여러 장짜리 게시물(10/25 ⑤ A): 누르면 그 게시물 안 사진을 넘겨 보는 창 · 오른쪽 위 'N장'
+            k = 1 + len(p["kids"])
+            img = (f'<button type="button" class="pop" data-i="{i}" aria-haspopup="dialog" aria-label="{e(alt)} — {t("pop", n=k)}">{img}'
+                   f'<span class="many" aria-hidden="true">{t("many", n=k)}</span></button>')
+        shots.append(f'<figure{art}>{img}</figure>')
+        words = " · ".join(x for x in (p["where"], p["when"]) if x)
+        # 작품 캡션 두 결 두 줄(10/25 ⑦ A — Mennour식): '작가, 〈작품〉, 해'는 먹 한 줄로 세우고, 전시 · 미술관은 작은 줄로(작가 이름이 가장 옅은 글자가 되지 않게)
+        head, tail = art_parts(a, lang) if a else ("", "")
+        aw = f'<span class="aw">{head}</span>' if head else ""
+        small = (NB + "· ").join(x for x in (tail, keep(p["credit"]) if p["credit"] else "") if x)
+        wtxt = keep(words)
+        if p.get("link"):  # 인스타에서 받아 온 사진(10/24 사진 칸 A): 글 첫 줄 아래 작은 줄에 날짜 · 게시물 ↗
+            post = f'<a href="{e(p["link"])}" target="_blank" rel="noopener">{t("ig_post")} ↗</a>'
+            small = (NB + "· ").join(x for x in (small, keep(p["date"]), post) if x)
+            if en and re.search("[가-힣]", words):  # 영어판에도 인스타 글은 쓴 말 그대로
+                wtxt = f'<span lang="ko">{wtxt}</span>'
+        cap_art = rich(L["cap_art"]) if en else keep(L["cap_art"])
+        line = (f'<p>{wtxt}{aw}' + (f'<small>{small}</small>' if small else "") + "</p>"
+                if words or small or aw else f'<p class="ph">{keep(L["cap_where"])}<small>{cap_art}</small></p>')
+        caps.append(f'<div class="cap"{"" if i == 0 else " hidden"}>{line}</div>')
+    n = len(PH["items"])
+    iu = link_url(site, PH["account"].get("link", "instagram"))
+    acc = {**PH["account"], "url": iu, "handle": iu.rstrip("/").rsplit("/", 1)[-1]}  # 계정 이름은 links 인스타 주소 끝(설계서 ③)
+    # 게시물 열어 보기(10/25 ⑤ A) — 게시물마다 띠의 사진 + 게시물 안 사진 주소(창은 main.js가 열 때 채움). 한 장짜리 게시물은 빈 목록
+    posts = [[f'{P}assets/img/photos/{Path(p["file"]).stem}.jpg'] + [f'{P}assets/img/photos/post/{Path(k).name}' for k in p["kids"]] if p.get("kids") else []
+             for p in PH["items"]]
+    posts_js = json.dumps(posts).replace("</", "<\\/")
+    pv = (f'<div class="pv" role="dialog" aria-modal="true" aria-label="{t("pv_label")}" hidden><div class="pvh"><p class="pvc" aria-live="polite"></p>'
+          f'<button type="button" class="pvx">{t("close")}</button></div><div class="pvs" tabindex="0" aria-label="{t("pv_label")}"></div><div class="pvf"></div></div>\n'
+          f'<script id="posts" type="application/json">{posts_js}</script>\n') if any(posts) else ""
+    # 아래 작은 줄(보는 한 장만 색)과 '모아 보기' 격자(번호) — 가벼운 작은 사진(240px)을 따로 씀
+    thumb = lambda p: f'{P}assets/img/photos/thumb/{e(Path(p["file"]).stem)}.jpg'
+    tsize = lambda p: 'width="{}" height="{}"'.format(*out_size(psrc(p), 240))
+    tart = lambda p: ' class="art"' if is_art(p) else ""
+    thumbs = "".join(f'<button type="button"{tart(p)} aria-label="{t("thumb", i=i + 1)}"><img src="{thumb(p)}" alt="" loading="lazy" {tsize(p)}></button>'
+                     for i, p in enumerate(PH["items"]))
+    pgrid = "".join(f'<button type="button"{tart(p)} style="--i:{i}" aria-label="{t("grid", i=i + 1)}"><img src="{thumb(p)}" alt="" loading="lazy" {tsize(p)}>'
+                    f'<span class="no">{i + 1:02d}</span></button>' for i, p in enumerate(PH["items"]))
+
+    # 영상 칸 — 최신 한 편 크게 + 지난 편은 차례처럼(편 번호 없음)
+    ch, items, kinds = {**S["channel"], "url": link_url(site, S["channel"]["link"])}, V["items"], L["kinds"]
+    if items:
+        v = items[0]
+        # 큰 한 편: 자바스크립트가 있으면 누를 때 이 자리에서 재생 + 작은 재생기(main.js) — 없으면 유튜브로 가는 링크 그대로
+        latest = (f'<div class="vbox" data-yt="{e(v["youtube_id"])}"><a href="https://www.youtube.com/watch?v={e(v["youtube_id"])}" target="_blank" rel="noopener">'
+                  f'<img class="big" src="https://i.ytimg.com/vi/{e(v["youtube_id"])}/hqdefault.jpg" alt="{t("video_alt", title=e(v["title"]))}" loading="lazy"></a></div>'
+                  + sentence(v, lang, kinds))
+        rest = "".join(f'<li><a href="https://www.youtube.com/watch?v={e(x["youtube_id"])}" target="_blank" rel="noopener">'
+                       f'<i>{e(kinds.get(x["kind"], x["kind"]))}</i><b>{marked(x["kind"], x["title"], lang)}</b><em>{e(x["date"].replace("-", "."))}</em></a></li>' for x in items[1:])
+        past = f'<ul class="toc">{rest}</ul>' if rest else f'<p class="empty">{t("empty")}</p>'
+        go = t("go_watch")
+    else:
+        u = V["upcoming"]
+        if u.get("thumb"):
+            # 첫 편 준비 중(10/24 B): 고른 썸네일 시안을 흑백으로 + '준비 중' + 스틸 출처. 올리면 이 자리에 유튜브 썸네일(색)과 재생 단추
+            first = e(u["title"]) if en else marked(u["kind"], u["title"])
+            latest = (f'<div class="nt"><img src="{P}assets/img/next.jpg" alt="{t("first_alt", title=first)}" width="800" height="450" loading="lazy">'
+                      f'<b><i aria-hidden="true"></i>{t("coming")}</b></div>'
+                      + sentence(u, lang, kinds)
+                      + (f'<p class="cr">{keep(u["credit"])}</p>' if u.get("credit") else ""))
+        else:
+            latest = (f'<div class="big soon" role="img" aria-label="{t("first_soon")}"><span>{t("first_soon")}</span></div>'
+                      + sentence(u, lang, kinds))
+        past = f'<p class="empty">{t("empty")}</p>'
+        go = t("go_channel")
+
+    c = S["contact"]
+    endpoint = f'https://formspree.io/f/{c["formspree_id"]}' if c["formspree_id"] else ""
+    lead = "<br>".join(e(x) for x in c["lead_lines"])
+    sns = "".join(f'<a href="{e(l["url"])}" target="_blank" rel="noopener">{e(l["name"])}</a>' for l in links)
+    # 바닥글: 판권면(10/24 A) — 시집 판권면의 틀(제목 → 항목 줄 → ⓒ와 다시 쓰기 안내)만 빌림. 고친 날은 빌드한 날(서울 시간),
+    # 판은 디자인을 크게 다시 할 때 · 쇄는 고쳐 올릴 때마다(site.json — 올리는 흐름을 정하면 쇄는 자동으로 셀 수 있음)
+    co, today = S["colophon"], build_day()
+    when = (f"{MONTHS[today.month - 1]}{NB}{today.day}, {today.year}" if en else f"{today.year}년{NB}{today.month}월{NB}{today.day}일")
+    ed = (f'{ordinal(co["edition"])} edition, {ordinal(co["printing"])} printing' if en else f'{co["edition"]}판 {co["printing"]}쇄')
+    colo = (f'<div class="colo"><p class="t">{e(urlparse(base).netloc or base)}</p><dl>'
+            f'<dt>{t("colo_updated")}</dt><dd><time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</dd>'
+            f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd><dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd>'
+            f'<dt>{t("colo_type")}</dt><dd>{e(co["fonts"])} — {t("colo_subset", kb=FONTS_KB.get(lang, 0))}</dd></dl>'
+            f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{t("colo_cookie")}</p></div>')
+
+    nav = "".join(f'<a href="#{sid}">{e(x)}</a>' for sid, x in zip(("me", "poem", "photo", "video", "contact"), L["nav"]))  # 소개가 먼저(10/25 동원 "나를 알리는 게 먼저")
+    other = "ko" if en else "en"
+    nav += f'<a class="lang" href="{"../" if en else "en/"}" lang="{other}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 국기 이모지(10/25 동원 — 영어 🇬🇧 · 한국어 🇰🇷)
+    preload = ("".join(f'<link rel="preload" href="{P}assets/fonts/{f}" as="font" type="font/woff2" crossorigin>\n' for f in
+                       (("newsreader.woff2", "un-batang.woff2") if en else ("ndw-myeongjo.woff2", "ndw-myeongjo-bold.woff2", "un-batang.woff2"))))
+    pgno = t("pgno", poem=poem_t, pages=e(S["poem"]["pages"])) + (f'<br>{t("translated")}' if L["translated"] else "")
+    note = f'<p class="note">{t("ship_note")}</p>' if L["ship_note"] else ""
+    # 시집 소개 · 차례(10/25 A 아래로 이어 쌓기) — 책 카드 다음에 머리 두 줄 → 소개 한 단락 → 차례(「탁본」 줄만 먹)
+    # 글은 교보에 올린 최종본 그대로. 영어판은 옮긴 제목 곁에 한국어 원제를 작게(「탁본」 대역과 같은 방식)
+    bi, toc, toc_ko = book["intro"], book["toc"], site["book"]["toc"]  # 차례 줄은 {title, page, en: {title}}(10/25 원고 옮기기 — 한 · 영이 한 줄에)
+    ko_tag = ' lang="ko"'
+
+    # 차례에서 열기(10/25 ④ C): 달마다 시 한 편 — 그달 줄은 먹으로 바뀌고 아래에 한 행이 열림, 지난달 줄은 먹으로 남음(차례가 자람).
+    # book.monthly는 빌드한 달까지만 열림(출간 소식과 같은 날짜 규칙). 영어판은 옮긴 행 아래에 한국어 원문을 작게
+    day = build_day()
+    titles = {r["title"] for p in toc_ko["parts"] for r in p["items"]} | {r["title"] for r in toc_ko["tail"]}
+    mk = tb["monthly"]["items"]
+    for m in mk:
+        if m["title"] not in titles:
+            raise SystemExit(f"이달의 한 줄 제목이 차례에 없음: {m['title']} (content/monthly.json)")
+        if not (m.get("en") or {}).get("lines"):  # 이달의 한 줄은 영어 꼭(설계서 ②)
+            raise SystemExit(f"이달의 한 줄 영어가 비어 있음: {m['title']} (content/monthly.json)")
+    opened = sorted((row_lang(m, lang) for m in mk if m["month"] <= day.strftime("%Y-%m")), key=lambda m: m["month"])
+    mo, cur = {m["title"]: m for m in opened}, (opened[-1]["title"] if opened else None)
+    month_ko = {m["title"]: row_lang(m, "ko") for m in mk}
+
+    def toc_li(row, ko_row):
+        m = mo.get(ko_row["title"])
+        cls = "on" if ko_row["title"] == site["poem"]["title"] else ("mo" if m and ko_row["title"] == cur else ("mo past" if m else ""))
+        ko = f' <small{ko_tag}>{e(ko_row["title"])}</small>' if en else ""
+        tag = line = ""
+        if m:
+            mm = int(m["month"][5:])
+            tag = f'<span class="mt">{MONTHS[mm - 1][:3] if en else str(mm) + "월"}</span>'
+            if ko_row["title"] == cur:
+                orig = f'<small{ko_tag}>{" / ".join(e(x) for x in month_ko[ko_row["title"]]["lines"])}</small>' if en else ""
+                line = f'<em>{"<br>".join(e(x) for x in m["lines"])}{orig}<small>{t("month_line", m=MONTHS[mm - 1] if en else mm)}</small></em>'
+        attr = f' class="{cls}"' if cls else ""
+        return f'<li{attr}><span>{e(row["title"])}{ko}{tag}</span><span>{row["page"]}</span>{line}</li>'
+    parts = "".join(f'<div><h4>{e(p["name"])}</h4><ol>{"".join(toc_li(r, k) for r, k in zip(p["items"], kp["items"]))}</ol></div>'
+                    for p, kp in zip(toc["parts"], toc_ko["parts"]))
+    bintro = (f'<div class="bintro"><p class="bhead">{"<br>".join(e(x) for x in bi["lead"])}</p>'
+              f'<p class="btext">{keep(bi["text"])}</p>'
+              f'<div class="btoc"><h3>{e(toc["label"])}</h3><p class="key"><i></i>{t("toc_key")}</p><div class="parts">{parts}</div>'
+              f'<ol class="tail">{"".join(toc_li(r, k) for r, k in zip(toc["tail"], toc_ko["tail"]))}</ol></div></div>')
+    # 시집 상태 낱말 · 시집 소식(10/25 A 쌓이는 소식 세 줄) — 빌드한 날 기준: 나온 날 전이면 '출간 예정', 그날부터 '판매 중'.
+    # 소식은 책에 일어난 일(판권면 '고친 날'은 사이트에 일어난 일) — 날짜가 지난 것만, 최근 세 줄 + 나머지는 '지난 소식'으로 접음
+    state = f'<p class="bstate"><i aria-hidden="true"></i>{t("book_on" if day >= date.fromisoformat(book["published"]) else "book_soon")}</p>'
+    news = sorted((x for x in row_lang(tb["news"]["items"], lang) if x["text"] and date.fromisoformat(x["date"]) <= day), key=lambda x: x["date"], reverse=True)
+
+    def news_li(x):
+        return f'<li><time datetime="{x["date"]}">{x["date"].replace("-", ".")}</time><span>{keep(x["text"])}</span></li>'
+    more = f'<details><summary>{t("news_more")}</summary><ol>{"".join(news_li(x) for x in news[3:])}</ol></details>' if len(news) > 3 else ""
+    bnews = f'<div class="bnews"><h3>{t("news")}</h3><ol>{"".join(news_li(x) for x in news[:3])}</ol>{more}</div>' if news else ""
+    ui_js = json.dumps(L["js"], ensure_ascii=False).replace("</", "<\\/")
+
+    return f"""<!doctype html>
+<html lang="{lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{e(title)}</title>
+<meta name="description" content="{e(S["description"])}">
+<link rel="canonical" href="{e(here)}">
+<link rel="alternate" hreflang="ko" href="{e(base)}/">
+<link rel="alternate" hreflang="en" href="{e(base)}/en/">
+<link rel="alternate" hreflang="x-default" href="{e(base)}/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{e(here)}">
+<meta property="og:title" content="{e(title)}">
+<meta property="og:description" content="{e(S["description"])}">
+<meta property="og:image" content="{e(base)}/assets/{"og-en.jpg" if en else "og.jpg"}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="{L["og_locale"]}">
+<meta property="og:locale:alternate" content="{ui["og_locale"][other]}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="{P}favicon.svg" type="image/svg+xml">
+<link rel="icon" href="{P}favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="{P}apple-touch-icon.png">
+{HEAD_JS}
+{preload}<link rel="stylesheet" href="{P}assets/style.css">
+<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
+</head>
+<body>
+{door}
+<a class="skip" href="#main">{t("skip")}</a>
+<header class="top"><a class="logo" href="#home">{e(S.get("logo") or S["name"])}</a>
+  <nav aria-label="{t("nav_label")}">{nav}</nav></header>
+<main id="main">
+  <section id="home" aria-label="{t("home_label")}">
+    <div class="l"><h1 class="kick"><span class="name" data-type="{e("|".join(typing_steps(S["name"])))}">{e(S["name"])}</span> <span>{t("ex_kick")}</span></h1>
+      <p class="ht">{ht}</p></div>
+    <div class="r book"><div class="side"><p class="hs">{hs}</p><p class="tip">{t("ex_tip")}</p></div>
+      <div class="bk"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="{t("cover_alt", book=e(book["title"]) if en else e(book["title"]))}" width="600" height="881" fetchpriority="high" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i><i class="win"></i></div>
+      </div>
+    <div class="lab"><p class="rd"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a></p>{exl}</div>
+  </section>
+  <section id="me" aria-labelledby="me-t">
+    <p class="label">{t("label_me")}</p>
+    <div class="l"><h2 class="h2" id="me-t">{e(S["name"])}</h2><p class="tagl">{keep(S["tagline"])}</p><p class="bio">{rich(S["bio"])}</p></div>
+    <div class="r"><ul class="years">{years}</ul>{fnb}{nowb}<div class="rec">{rec}</div></div>
+  </section>
+  <section id="poem" aria-labelledby="poem-t">
+    <p class="label">{t("label_poem")}</p>
+    <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>
+      <p class="pgno">{pgno}</p></div>
+    <div class="l pbook"><div class="bk on" aria-hidden="true"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
+      {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small></p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener">{e(book["store_label"])} ↗</a>{note}</div>
+    {bnews}{bintro}
+  </section>
+  <section id="photo" aria-label="{t("label_photo")}">
+    <p class="label">{t("label_photo")}</p>
+    <div class="r top2"><div class="head"><b>{e(acc["handle"])}</b><span>{e(acc["desc"])}</span></div>
+      <p class="mode" role="group" aria-label="{t("mode_label")}"><button type="button" data-m="one" aria-pressed="true">{t("mode_one")}</button><button type="button" data-m="all" aria-pressed="false">{t("mode_all")}</button></p></div>
+    <div class="l"><div class="strip" tabindex="0" aria-label="{t("strip", n=n)}">{"".join(shots)}</div>
+      <div class="thumbs">{thumbs}</div><div class="pgrid" hidden>{pgrid}</div></div>
+    <div class="r info"><div class="caps"><span class="count" aria-live="polite">1 / {n}</span>{"".join(caps)}</div>
+      <p class="nav2"><button type="button" data-go="-1">{t("prev")}</button><button type="button" data-go="1">{t("next")}</button></p>
+      <a class="buy" href="{e(acc["url"])}" target="_blank" rel="noopener">{t("more_ig")} ↗</a></div>
+  </section>
+  <section id="video" aria-label="{t("label_video")}">
+    <p class="label">{t("label_video")}</p>
+    <div class="l"><div class="ch2"><b>{e(ch["name"])}</b><span>{e(ch["desc"])}</span></div>{latest}
+      <a class="buy" href="{e(ch["url"])}" target="_blank" rel="noopener">{go} ↗</a></div>
+    <div class="r"><p class="sub">{t("past")}</p>{past}</div>
+  </section>
+  <section id="contact" aria-labelledby="contact-t">
+    <p class="label">{t("label_contact")}</p>
+    <div class="l"><h2 class="h2" id="contact-t">{t("label_contact")}</h2><p class="lead">{lead}</p></div>
+    <div class="r"><form class="ask" data-endpoint="{e(endpoint)}" method="post">
+        <label>{t("form_name")}<input type="text" name="name" autocomplete="name"></label>
+        <label>{t("form_email")}<input type="email" name="email" autocomplete="email" required></label>
+        <label>{t("form_message")}<textarea name="message" required></textarea></label>
+        <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label class="agree"><input type="checkbox" name="agree" required>{t("agree", privacy=e(c["privacy"]))}</label>
+        <button class="send" type="submit">{t("send")}</button>
+        <p class="msg" role="status"></p></form>
+      <p class="sns">{sns}</p>
+      {colo}</div>
+  </section>
+</main>
+{sheet}
+{pv}<script id="ui" type="application/json">{ui_js}</script>
+<script src="{P}assets/main.js" defer onerror="document.documentElement.classList.remove('js','intro')"></script>
+</body>
+</html>
+"""
+
+
+def page_404(site):
+    # 없는 쪽 하나(GitHub Pages는 맨 위 404.html 하나만 씀) — 한국어와 영어를 함께
+    ui = load("ui.json")
+    k, en = (lambda key: e(ui[key]["ko"])), (lambda key: e(ui[key]["en"]))
+    return f"""<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{k("nf_title")} — {e(site["name"])}</title><meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"></head>
+<body><main style="min-height:100vh;display:grid;place-content:center;gap:18px;padding:28px;text-align:center">
+<p class="label" style="justify-content:center">404</p>
+<h1 class="h2" style="margin-top:0">{k("nf_title")}</h1>
+<p class="lead">{k("nf_lead")}</p>
+<p><a class="buy" href="/">{k("nf_back")}</a></p>
+<p class="lead" lang="en">{en("nf_title")}. {en("nf_lead")}</p>
+<p lang="en"><a class="buy" href="/en/">{en("nf_back")}</a></p></main></body></html>
+"""
+
+
+def main():
+    site, videos, photos = load("site.json"), load("videos.json"), load("photos.json")
+    # 사진 칸(10/24 A): 인스타그램 최근 게시물을 받아 옴 — 토큰이 없거나 실패하면 지난번 받아 둔 것, 그것도 없으면 photos.json의 사진
+    ig = photos.get("instagram", {})
+    feed = instagram.fetch(ig)
+    if feed:
+        art = {r["post"]: r for r in load("photo_art.json").get("items", [])}  # 작품 정보(10/25 원고 옮기기 — 게시물 주소 끝 글자로)
+        codes = {f["permalink"].rstrip("/").rsplit("/", 1)[-1] for f in feed}
+        for c in sorted(set(art) - codes):
+            print(f"알림: photo_art.json의 게시물 {c}이 받아 온 {len(feed)}장 밖 — 덧씌울 사진이 없음")
+        photos = {**photos, "items": ig_items(feed, art)}
+    poem = (CONTENT / site["poem"]["file"]).read_text(encoding="utf-8")
+    base = site["base_url"].rstrip("/")
+
+    # docs/를 새로 만든다(옛 결과는 지운다 — docs는 빌드 결과라 원본이 아님). 줄인 글꼴·미리보기 그림은 원본을 못 찾을 때를 위해 먼저 옮겨 둔다
+    keep = {}
+    for f in [*(ASSETS / "fonts").glob("*.woff2"), ASSETS / "og.jpg", ASSETS / "og-en.jpg", ASSETS / "img" / "takbon.jpg"]:
+        if f.exists():
+            keep[f.name] = f.read_bytes()
+    if DOCS.exists():
+        shutil.rmtree(DOCS)
+    (ASSETS / "img/photos").mkdir(parents=True)
+    (ASSETS / "fonts").mkdir(parents=True)
+
+    # 쪽을 먼저 만들어 쓰인 글자를 모은 뒤, 그 글자만 남겨 글꼴을 줄임
+    index_html, en_html, page404 = render(site, poem, videos, photos), render(site, poem, videos, photos, "en"), page_404(site)
+    text = used_text([index_html, en_html, page404])
+    srcs = {}
+    for name, root, must, out, rename in FONTS:
+        src = find(root, name, must)
+        if src:
+            srcs[name] = src
+            subset_font(src, ASSETS / "fonts" / out, text, rename)
+        elif out in keep:
+            (ASSETS / "fonts" / out).write_bytes(keep[out])
+            print(f"알림: 원본 {name}을 찾지 못해 지난 줄인 판을 씀 — 새로 생긴 글자는 빠질 수 있음")
+        else:
+            raise SystemExit(f"글꼴을 찾지 못함: {name}")
+    print(f"글꼴에 남긴 글자 {len(set(text))}자")
+    # 영어판 글꼴(10/24 ⑤ B) — Newsreader 바로 · 기울임을 영어판의 글자만 남겨 줄임(가변 축 그대로, 예약된 이름 없어 이름 그대로)
+    text_en = used_text([en_html])
+    for name, out in EN_FONTS:
+        src = find(PTD_DIR, name, "Newsreader")
+        if src:
+            srcs["NR" if "Italic" not in name else "NRI"] = src
+            subset_font(src, ASSETS / "fonts" / out, text_en, False)
+        elif out in keep:
+            (ASSETS / "fonts" / out).write_bytes(keep[out])
+            print(f"알림: 원본 {name}을 찾지 못해 지난 줄인 판을 씀")
+        else:
+            raise SystemExit(f"글꼴을 찾지 못함: {name}")
+
+    # 판권면 글꼴 줄의 용량(10/25 ⑧) — 줄인 글꼴을 다 만든 뒤 세어 두 쪽을 한 번 더 그림(바뀌는 글자는 숫자뿐이라 글꼴은 그대로)
+    def kb(outs):
+        return round(sum((ASSETS / "fonts" / o).stat().st_size for o in outs) / 10000) * 10
+    # 영어 쪽이 실제로 받는 다섯 — 나눔명조 둘은 한국어 제목에만 쓰여 영어 쪽은 받지 않음(10/25 마지막 점검 E, 실측 365,912B)
+    FONTS_KB.update(ko=kb([f[3] for f in FONTS]), en=kb([f[3] for f in FONTS if not f[3].startswith("ndw-myeongjo")] + [f[1] for f in EN_FONTS]))
+    index_html, en_html = render(site, poem, videos, photos), render(site, poem, videos, photos, "en")
+
+    # 글꼴 라이선스 전문은 글꼴 옆에 함께 둔다(OFL·GPL 조건)
+    for lic in sorted((CONTENT / "licenses").glob("*.txt")):
+        shutil.copy2(lic, ASSETS / "fonts" / lic.name)
+
+    shutil.copy2(SRC / "style.css", ASSETS / "style.css")
+    shutil.copy2(SRC / "main.js", ASSETS / "main.js")
+
+    cover = CONTENT / site["book"]["cover"]
+    save_jpg(cover, ASSETS / "img/cover.jpg", 600, quality=84)
+    # 첫 화면 서 있는 책(10/24)의 뒤표지·책등 — 교보 최종 표지 파일에서 자른 그림. 앞표지와 같은 폭 600px, 책등은 9mm 비율(600×9/128 ≈ 42px)
+    save_jpg(CONTENT / site["book"]["back"], ASSETS / "img/back.jpg", 600, quality=84)
+    save_jpg(CONTENT / site["book"]["spine"], ASSETS / "img/spine.jpg", 42, quality=88)
+    # 첫 편 준비 중(10/24)의 썸네일 시안 — 800px(휴대폰 2배·컴퓨터 칸 폭에 넉넉). 흑백은 CSS가 함
+    up = videos.get("upcoming") or {}
+    if not videos["items"] and up.get("thumb"):
+        save_jpg(CONTENT / up["thumb"], ASSETS / "img/next.jpg", 800, quality=84)
+    for p in photos["items"]:
+        save_jpg(psrc(p), ASSETS / "img/photos" / (Path(p["file"]).stem + ".jpg"), 1080)
+        save_jpg(psrc(p), ASSETS / "img/photos/thumb" / (Path(p["file"]).stem + ".jpg"), 240, quality=72)
+        for k in p.get("kids", []):  # 게시물 안 사진(10/25 ⑤ A) — instagram.py가 1080px로 줄여 받아 둔 것을 그대로
+            (ASSETS / "img/photos/post").mkdir(parents=True, exist_ok=True)
+            shutil.copy2(k, ASSETS / "img/photos/post" / Path(k).name)
+
+    if all(k in srcs for k in ("NanumMyeongjoBold.ttf", "UnBatang.ttf", "Pretendard-Light.otf")):
+        make_og(site, cover, srcs)
+    elif "og.jpg" in keep:
+        (ASSETS / "og.jpg").write_bytes(keep["og.jpg"])
+    if all(k in srcs for k in ("NR", "Pretendard-Light.otf")):
+        make_og(localize(site, "en"), cover, srcs, "en")
+    elif "og-en.jpg" in keep:
+        (ASSETS / "og-en.jpg").write_bytes(keep["og-en.jpg"])
+    if all(f[0] in srcs for f in FONTS):  # 원본 글꼴이 다 있으면(10/25 고침 — 영어 글꼴 NR · NRI가 srcs에 더해진 뒤로 '개수 같음'이 늘 거짓이라 옛 그림만 옮겨 쓰고 있었음)
+        make_takbon(site, poem, srcs)
+    elif "takbon.jpg" in keep:
+        (ASSETS / "img" / "takbon.jpg").write_bytes(keep["takbon.jpg"])
+    make_icons()
+    (DOCS / "index.html").write_text(index_html, encoding="utf-8")
+    (DOCS / "en").mkdir()
+    (DOCS / "en" / "index.html").write_text(en_html, encoding="utf-8")
+    (DOCS / "404.html").write_text(page404, encoding="utf-8")
+    (DOCS / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n", encoding="utf-8")
+    (DOCS / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
+        + "".join(f'<url><loc>{e(base)}{path}</loc><xhtml:link rel="alternate" hreflang="ko" href="{e(base)}/"/>'
+                  f'<xhtml:link rel="alternate" hreflang="en" href="{e(base)}/en/"/></url>' for path in ("/", "/en/"))
+        + "</urlset>\n", encoding="utf-8")
+    (DOCS / ".nojekyll").write_text("", encoding="utf-8")  # GitHub Pages가 파일을 다시 가공하지 않게
+    if (CONTENT / "CNAME").exists():  # 도메인을 산 뒤에만 둔다 — docs는 매번 새로 만들어지므로 여기서 옮겨 넣음
+        shutil.copy2(CONTENT / "CNAME", DOCS / "CNAME")
+
+    # 무게 보고
+    total = 0
+    rows = []
+    for f in sorted(DOCS.rglob("*")):
+        if f.is_file():
+            total += f.stat().st_size
+            rows.append((f.stat().st_size, f.relative_to(DOCS)))
+    for size, rel in sorted(rows, reverse=True)[:8]:
+        print(f"{size/1024:9.0f} KB  {rel}")
+    print(f"합계 {total/1024/1024:.1f} MB · 파일 {len(rows)}개 → {DOCS}")
+
+
+if __name__ == "__main__":
+    main()

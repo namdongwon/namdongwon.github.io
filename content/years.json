@@ -1,0 +1,58 @@
+{
+  "items": [
+    {
+      "year": "1995",
+      "text": "겨울, 서울에서 태어남",
+      "note": "",
+      "en": {
+        "text": "Born in Seoul, in winter",
+        "note": ""
+      }
+    },
+    {
+      "year": "2013",
+      "text": "영화 기록 시작",
+      "note": "처음 적은 세 편 — 〈어거스트 러쉬〉 · 〈올드보이〉 · 〈28일 후〉, 2013년 11월 18일",
+      "en": {
+        "text": "Began keeping a film log",
+        "note": "The first three films logged — *August Rush* · *Oldboy* · *28 Days Later*, November 18, 2013"
+      }
+    },
+    {
+      "year": "2023",
+      "text": "전시 기록 시작",
+      "note": "그해 처음 적은 전시 — 마우리치오 카텔란 《WE》, 리움미술관, 2023년 6월 27일",
+      "en": {
+        "text": "Began keeping an exhibition log",
+        "note": "The first exhibition logged that year — Maurizio Cattelan, *WE*, Leeum Museum of Art, June 27, 2023"
+      }
+    },
+    {
+      "year": "2024",
+      "text": "미술 공부 시작",
+      "note": "",
+      "en": {
+        "text": "Began studying art",
+        "note": ""
+      }
+    },
+    {
+      "year": "2026",
+      "text": "첫 시집",
+      "note": "",
+      "en": {
+        "text": "First poetry collection",
+        "note": ""
+      }
+    },
+    {
+      "year": "2026",
+      "text": "유튜브 ‘아름다울 남’",
+      "note": "",
+      "en": {
+        "text": "YouTube channel Beautiful Nam",
+        "note": ""
+      }
+    }
+  ]
+}

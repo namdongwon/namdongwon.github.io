@@ -1,0 +1,14 @@
+namdongwon.com 글꼴 — 사이트에 쓰는 글자만 남겨 woff2로 줄인 판(build.py, fontTools)
+
+- ndw-myeongjo.woff2 · ndw-myeongjo-bold.woff2
+  원본: 나눔명조(NanumMyeongjo) Regular·Bold, Copyright © 2010 NHN Corporation. SIL Open Font License 1.1 — OFL-NanumMyeongjo.txt
+  라이선스상 예약된 글꼴 이름이 있어 줄인 판의 이름을 'NDW Myeongjo'로 바꿈.
+- un-batang.woff2
+  원본: 은 바탕(UnBatang), Copyright © 1998-2008 Koaunghi Un. GNU General Public License 2 — GPL-2.0-UnBatang.txt
+  줄인 판이라는 표시를 글꼴 설명(name ID 10)에 남김.
+- ndw-sans-light.woff2 · ndw-sans-semibold.woff2
+  원본: Pretendard Light·SemiBold, Copyright © 2023 Kil Hyung-jin. SIL Open Font License 1.1 — OFL-Pretendard.txt
+  줄인 판의 이름을 'NDW Sans'로 바꿈.
+- newsreader.woff2 · newsreader-italic.woff2 (영어판)
+  원본: Newsreader[opsz,wght] · Newsreader-Italic[opsz,wght], Copyright 2020 The Newsreader Project Authors (Production Type). SIL Open Font License 1.1 — OFL-Newsreader.txt
+  예약된 글꼴 이름이 없어 이름은 그대로, 줄인 판이라는 표시를 글꼴 설명(name ID 10)에 남김. 굵기 · 글자 크기 축(가변)은 그대로.

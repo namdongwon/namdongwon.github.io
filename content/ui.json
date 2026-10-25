@@ -1,0 +1,365 @@
+{
+  "_설명": "화면 낱말 — 한국어(ko)와 영어(en)를 나란히. {중괄호}는 빌드가 채우는 자리, *별표*는 영어판에서 기울임(작품 제목). js는 main.js가 쓰는 안내 문구",
+  "og_locale": {
+    "ko": "ko_KR",
+    "en": "en_US"
+  },
+  "skip": {
+    "ko": "본문으로 건너뛰기",
+    "en": "Skip to content"
+  },
+  "nav_label": {
+    "ko": "칸 이동",
+    "en": "Sections"
+  },
+  "nav": {
+    "ko": [
+      "소개",
+      "시집",
+      "인스타그램",
+      "유튜브",
+      "연락"
+    ],
+    "en": [
+      "About",
+      "Poetry",
+      "Instagram",
+      "YouTube",
+      "Contact"
+    ]
+  },
+  "switch": {
+    "ko": "EN",
+    "en": "KO"
+  },
+  "switch_flag": {
+    "ko": "🇬🇧",
+    "en": "🇰🇷"
+  },
+  "switch_label": {
+    "ko": "English",
+    "en": "한국어"
+  },
+  "home_label": {
+    "ko": "첫 화면",
+    "en": "Home"
+  },
+  "cover_alt": {
+    "ko": "시집 『{book}』 표지",
+    "en": "Cover of the poetry collection {book}"
+  },
+  "read": {
+    "ko": "「{poem}」 읽기 ↓",
+    "en": "Read “{poem}” ↓"
+  },
+  "ex_kick": {
+    "ko": "첫 시집 · 웹 전시",
+    "en": "· First poetry collection · a web exhibition"
+  },
+  "ex_tip": {
+    "ko": "책을 옆으로 밀어 보세요 — 앞표지 · 책등 · 뒤표지",
+    "en": "Drag the book sideways — front, spine, back"
+  },
+  "ex_object": {
+    "ko": "작품",
+    "en": "Object"
+  },
+  "ex_author": {
+    "ko": "지은이",
+    "en": "Author"
+  },
+  "ex_spec": {
+    "ko": "사양",
+    "en": "Details"
+  },
+  "ex_collection": {
+    "ko": "소장처",
+    "en": "Collection"
+  },
+  "ex_shelf": {
+    "ko": "당신의 책장",
+    "en": "Your bookshelf"
+  },
+  "label_poem": {
+    "ko": "시집",
+    "en": "Poetry"
+  },
+  "hint": {
+    "ko": "시를 길게 눌러 탁본을 떠 보세요",
+    "en": "Press and hold the poem to take a rubbing"
+  },
+  "pgno": {
+    "ko": "「{poem}」 — {pages}",
+    "en": "“{poem},” {pages}"
+  },
+  "translated": {
+    "ko": "",
+    "en": "Translated from the Korean"
+  },
+  "ship_note": {
+    "ko": "",
+    "en": "Printed on demand in Korea. Kyobo ships internationally; its site is in Korean."
+  },
+  "book_soon": {
+    "ko": "출간 예정",
+    "en": "Forthcoming"
+  },
+  "book_on": {
+    "ko": "판매 중",
+    "en": "On sale"
+  },
+  "news": {
+    "ko": "시집 소식",
+    "en": "Book news"
+  },
+  "news_more": {
+    "ko": "지난 소식 ↓",
+    "en": "Earlier news ↓"
+  },
+  "toc_key": {
+    "ko": "먹 줄은 사이트에서 읽을 수 있는 시 — 달마다 한 편씩 한 행이 열립니다",
+    "en": "Titles in ink can be read here — each month, one more poem opens a line"
+  },
+  "month_line": {
+    "ko": "{m}월의 한 줄",
+    "en": "{m}’s line"
+  },
+  "label_me": {
+    "ko": "소개",
+    "en": "About"
+  },
+  "rec": {
+    "ko": "{unit} · {note}",
+    "en": "{unit} {note}"
+  },
+  "label_photo": {
+    "ko": "인스타그램",
+    "en": "Instagram"
+  },
+  "strip": {
+    "ko": "사진 {n}장, 옆으로 넘겨 보기",
+    "en": "{n} photos — swipe to browse"
+  },
+  "many": {
+    "ko": "{n}장",
+    "en": "{n} photos"
+  },
+  "pop": {
+    "ko": "이 게시물 사진 {n}장 보기",
+    "en": "view all {n} photos in this post"
+  },
+  "pv_label": {
+    "ko": "게시물 사진",
+    "en": "Post photos"
+  },
+  "photo_alt": {
+    "ko": "직접 찍은 사진",
+    "en": "Photo by Dongwon Nam"
+  },
+  "thumb": {
+    "ko": "{i}번째 사진 보기",
+    "en": "Show photo {i}"
+  },
+  "grid": {
+    "ko": "{i}번째 사진 크게 보기",
+    "en": "Open photo {i}"
+  },
+  "mode_label": {
+    "ko": "사진 보기 방식",
+    "en": "View"
+  },
+  "mode_one": {
+    "ko": "한 장씩",
+    "en": "One at a time"
+  },
+  "mode_all": {
+    "ko": "모아 보기",
+    "en": "Grid"
+  },
+  "cap_where": {
+    "ko": "어디서 · 언제",
+    "en": "Where · When"
+  },
+  "cap_art": {
+    "ko": "작가, 〈작품〉, 해 — 《전시》, 미술관",
+    "en": "Artist, *Title*, year — *Exhibition*, venue"
+  },
+  "prev": {
+    "ko": "← 이전",
+    "en": "← Previous"
+  },
+  "next": {
+    "ko": "다음 →",
+    "en": "Next →"
+  },
+  "more_ig": {
+    "ko": "인스타그램에서 더 보기",
+    "en": "More on Instagram"
+  },
+  "ig_post": {
+    "ko": "게시물",
+    "en": "Post"
+  },
+  "label_video": {
+    "ko": "유튜브",
+    "en": "YouTube"
+  },
+  "kinds": {
+    "ko": {
+      "영화": "영화",
+      "책": "책",
+      "전시": "전시",
+      "시": "시",
+      "작품": "작품"
+    },
+    "en": {
+      "영화": "Film",
+      "책": "Book",
+      "전시": "Exhibition",
+      "시": "Poem",
+      "작품": "Artwork"
+    }
+  },
+  "coming": {
+    "ko": "준비 중",
+    "en": "Coming soon"
+  },
+  "first_alt": {
+    "ko": "첫 편 {title} 썸네일 — 준비 중",
+    "en": "First episode, {title} — thumbnail, coming soon"
+  },
+  "first_soon": {
+    "ko": "첫 편 준비 중",
+    "en": "First episode coming soon"
+  },
+  "video_alt": {
+    "ko": "{title} 썸네일",
+    "en": "{title} — thumbnail"
+  },
+  "past": {
+    "ko": "지난 편",
+    "en": "Past episodes"
+  },
+  "empty": {
+    "ko": "편이 쌓이면 여기에 차례로 남습니다.",
+    "en": "Episodes will be listed here as they come."
+  },
+  "go_channel": {
+    "ko": "유튜브 채널 보기",
+    "en": "Visit the channel on YouTube"
+  },
+  "go_watch": {
+    "ko": "유튜브에서 보기",
+    "en": "Watch on YouTube"
+  },
+  "label_contact": {
+    "ko": "연락",
+    "en": "Contact"
+  },
+  "form_name": {
+    "ko": "이름 (선택)",
+    "en": "Name (optional)"
+  },
+  "form_email": {
+    "ko": "메일",
+    "en": "Email"
+  },
+  "form_message": {
+    "ko": "내용",
+    "en": "Message"
+  },
+  "agree": {
+    "ko": "{privacy} 동의합니다.",
+    "en": "{privacy} I agree."
+  },
+  "send": {
+    "ko": "보내기",
+    "en": "Send"
+  },
+  "colo_updated": {
+    "ko": "고친 날",
+    "en": "Updated"
+  },
+  "now_label": {
+    "ko": "지금",
+    "en": "Now"
+  },
+  "now_updated": {
+    "ko": "{date} 고침",
+    "en": "Updated {date}"
+  },
+  "now_season": {
+    "ko": "· {name} 무렵",
+    "en": "· around {name}"
+  },
+  "colo_author": {
+    "ko": "지은이",
+    "en": "Author"
+  },
+  "colo_type": {
+    "ko": "글꼴",
+    "en": "Type"
+  },
+  "colo_made": {
+    "ko": "만든 곳",
+    "en": "Made"
+  },
+  "colo_subset": {
+    "ko": "쓰인 글자만 담음 · 약 {kb}KB",
+    "en": "only the characters in use · about {kb} KB"
+  },
+  "colo_cookie": {
+    "ko": "쿠키를 쓰지 않습니다.",
+    "en": "This site uses no cookies."
+  },
+  "sheet_book": {
+    "ko": "{name} 시집",
+    "en": "Poems by {name}"
+  },
+  "keep": {
+    "ko": "간직하기",
+    "en": "Keep"
+  },
+  "close": {
+    "ko": "닫기",
+    "en": "Close"
+  },
+  "nf_title": {
+    "ko": "지금 찾으신 쪽은 없는 쪽입니다",
+    "en": "The page you have dialed is not in service"
+  },
+  "nf_lead": {
+    "ko": "주소가 바뀌었거나 지워진 쪽입니다.",
+    "en": "The address may have changed, or the page was removed."
+  },
+  "nf_back": {
+    "ko": "첫 화면으로 →",
+    "en": "Back to the home page →"
+  },
+  "js": {
+    "ko": {
+      "play": "{title} 재생",
+      "paused": "멈춘 영상",
+      "close_mini": "작은 재생기 닫기",
+      "paused_at": "{t}에서 멈춤 · 이어 보기",
+      "file": "남동원_탁본.jpg",
+      "share": "「탁본」 — 남동원",
+      "form_off": "아직 연결 전입니다. 인스타그램으로 연락해 주세요.",
+      "sending": "보내는 중…",
+      "sent": "잘 받았습니다. 답장 드리겠습니다.",
+      "failed": "보내지 못했습니다. 잠시 뒤 다시 해 주세요."
+    },
+    "en": {
+      "play": "Play {title}",
+      "paused": "Paused video",
+      "close_mini": "Close mini player",
+      "paused_at": "Paused at {t} · Resume",
+      "file": "dongwon-nam_rubbing.jpg",
+      "share": "“Rubbing” — Dongwon Nam",
+      "form_off": "Not connected yet — please message me on Instagram.",
+      "sending": "Sending…",
+      "sent": "Received. I’ll write back soon.",
+      "failed": "Couldn’t send. Please try again in a moment."
+    }
+  }
+}

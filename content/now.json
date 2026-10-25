@@ -1,0 +1,29 @@
+{
+  "updated": "2026-10-25",
+  "items": [
+    {
+      "label": "읽는 책",
+      "text": "",
+      "en": {
+        "label": "Reading",
+        "text": ""
+      }
+    },
+    {
+      "label": "편집 중인 편",
+      "text": "영화 〈릴리 슈슈의 모든 것〉 — 아름다울 남 첫 편",
+      "en": {
+        "label": "Editing",
+        "text": "Film *All About Lily Chou-Chou* — the first episode of Beautiful Nam"
+      }
+    },
+    {
+      "label": "쓰는 시",
+      "text": "",
+      "en": {
+        "label": "Writing",
+        "text": ""
+      }
+    }
+  ]
+}

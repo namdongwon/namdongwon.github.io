@@ -1,0 +1,645 @@
+{
+  "base_url": "https://namdongwon.github.io",
+  "name": "남동원",
+  "logo": "남 동원",
+  "tagline": "보는 것을 리뷰하는, 시를 쓰는 회사원",
+  "description": "시를 쓰는 회사원 남동원. 첫 시집 『문을 열고 나오면 살아 있는 것들로 가득 차 있다』와 영화·책·전시 리뷰 채널 ‘아름다울 남’.",
+  "book": {
+    "title": "문을 열고 나오면 살아 있는 것들로 가득 차 있다",
+    "title_lines": [
+      "문을 열고 나오면",
+      "살아 있는 것들로 가득 차 있다"
+    ],
+    "display": {
+      "big": [
+        "문을 열고",
+        "나오면"
+      ],
+      "small": [
+        "살아 있는 것들로",
+        "가득 차 있다"
+      ]
+    },
+    "buy_label": "책장에 꽂기",
+    "buy_url": "https://product.kyobobook.co.kr/detail/S000221586101",
+    "cover": "img/cover.jpg",
+    "spec": "110쪽 · 128×188mm · 2026년 11월 1일 · 퍼플",
+    "published": "2026-11-01",
+    "store_label": "교보문고에서 사기",
+    "spine": "img/spine.jpg",
+    "back": "img/back.jpg",
+    "intro": {
+      "lead": [
+        "살아 있는 척과 죽어 있는 척 사이에서",
+        "손에 묻은 인주를 털고 걸음을 옮기는 시"
+      ],
+      "text": "남동원의 시는 숨 쉬는 것과 움직이기만 하는 것을 가려 본다. 만지면 무언가 버석하게 떨어지는 건물 벽, 바람에 밀려가는 쓰레기, 일정한 속도로 굴러가는 바퀴들 사이에서 시인은 살아 있는 척할지, 죽어 있는 척할지 묻는다. 그리고 답 대신 손에 묻은 인주를 털어낸다. 감정을 앞세우지 않고 본 것을 적는 단단한 문장이 이 시집의 바탕이다."
+    },
+    "toc": {
+      "label": "차례 — 예순 편, 네 부",
+      "parts": [
+        {
+          "name": "1부",
+          "items": [
+            {
+              "title": "흰 잠",
+              "page": 11,
+              "en": {
+                "title": "White Sleep"
+              }
+            },
+            {
+              "title": "시야",
+              "page": 13,
+              "en": {
+                "title": "Field of Vision"
+              }
+            },
+            {
+              "title": "가라앉지 않는 무게",
+              "page": 14,
+              "en": {
+                "title": "A Weight That Does Not Sink"
+              }
+            },
+            {
+              "title": "통증이 있습니까",
+              "page": 16,
+              "en": {
+                "title": "Do You Have Any Pain?"
+              }
+            },
+            {
+              "title": "유리",
+              "page": 17,
+              "en": {
+                "title": "Glass"
+              }
+            },
+            {
+              "title": "소실점",
+              "page": 18,
+              "en": {
+                "title": "Vanishing Point"
+              }
+            },
+            {
+              "title": "소나",
+              "page": 19,
+              "en": {
+                "title": "Sonar"
+              }
+            },
+            {
+              "title": "안내",
+              "page": 21,
+              "en": {
+                "title": "Recorded Message"
+              }
+            },
+            {
+              "title": "달빛 별빛",
+              "page": 22,
+              "en": {
+                "title": "Moonlight, Starlight"
+              }
+            },
+            {
+              "title": "들렸으면 했던 작은 소리",
+              "page": 24,
+              "en": {
+                "title": "A Small Sound I Hoped You’d Hear"
+              }
+            },
+            {
+              "title": "엉겅퀴",
+              "page": 25,
+              "en": {
+                "title": "Thistle"
+              }
+            },
+            {
+              "title": "생의 박동",
+              "page": 26,
+              "en": {
+                "title": "The Pulse of Life"
+              }
+            },
+            {
+              "title": "파란빛",
+              "page": 28,
+              "en": {
+                "title": "Blue Light"
+              }
+            },
+            {
+              "title": "관람",
+              "page": 30,
+              "en": {
+                "title": "Viewing"
+              }
+            },
+            {
+              "title": "문지방",
+              "page": 32,
+              "en": {
+                "title": "Threshold"
+              }
+            }
+          ],
+          "en": {
+            "name": "Part I"
+          }
+        },
+        {
+          "name": "2부",
+          "items": [
+            {
+              "title": "빈 팔에 남은 하루",
+              "page": 37,
+              "en": {
+                "title": "A Day Left in Empty Arms"
+              }
+            },
+            {
+              "title": "경사",
+              "page": 38,
+              "en": {
+                "title": "Slope"
+              }
+            },
+            {
+              "title": "틈새",
+              "page": 39,
+              "en": {
+                "title": "Gaps"
+              }
+            },
+            {
+              "title": "시계",
+              "page": 40,
+              "en": {
+                "title": "Clock"
+              }
+            },
+            {
+              "title": "놀이",
+              "page": 41,
+              "en": {
+                "title": "Game"
+              }
+            },
+            {
+              "title": "각도",
+              "page": 42,
+              "en": {
+                "title": "Angle"
+              }
+            },
+            {
+              "title": "검침",
+              "page": 44,
+              "en": {
+                "title": "Meter Reading"
+              }
+            },
+            {
+              "title": "점등",
+              "page": 45,
+              "en": {
+                "title": "Switching On"
+              }
+            },
+            {
+              "title": "조각",
+              "page": 46,
+              "en": {
+                "title": "Scraps"
+              }
+            },
+            {
+              "title": "수조",
+              "page": 47,
+              "en": {
+                "title": "Fish Tank"
+              }
+            },
+            {
+              "title": "이빨 사이",
+              "page": 49,
+              "en": {
+                "title": "Between the Teeth"
+              }
+            },
+            {
+              "title": "그냥",
+              "page": 50,
+              "en": {
+                "title": "Just Because"
+              }
+            },
+            {
+              "title": "필적",
+              "page": 52,
+              "en": {
+                "title": "Handwriting"
+              }
+            },
+            {
+              "title": "일상의 저녁",
+              "page": 54,
+              "en": {
+                "title": "An Everyday Evening"
+              }
+            },
+            {
+              "title": "오래전",
+              "page": 56,
+              "en": {
+                "title": "Long Ago"
+              }
+            }
+          ],
+          "en": {
+            "name": "Part II"
+          }
+        },
+        {
+          "name": "3부",
+          "items": [
+            {
+              "title": "탁본",
+              "page": 61,
+              "en": {
+                "title": "Rubbing"
+              }
+            },
+            {
+              "title": "유예",
+              "page": 63,
+              "en": {
+                "title": "Reprieve"
+              }
+            },
+            {
+              "title": "만개",
+              "page": 64,
+              "en": {
+                "title": "Full Bloom"
+              }
+            },
+            {
+              "title": "지각",
+              "page": 66,
+              "en": {
+                "title": "Late"
+              }
+            },
+            {
+              "title": "번호순",
+              "page": 68,
+              "en": {
+                "title": "In Numerical Order"
+              }
+            },
+            {
+              "title": "겉, 속",
+              "page": 69,
+              "en": {
+                "title": "Outside, Inside"
+              }
+            },
+            {
+              "title": "고흐",
+              "page": 70,
+              "en": {
+                "title": "Van Gogh"
+              }
+            },
+            {
+              "title": "직면",
+              "page": 72,
+              "en": {
+                "title": "Face to Face"
+              }
+            },
+            {
+              "title": "역류",
+              "page": 73,
+              "en": {
+                "title": "Against the Current"
+              }
+            },
+            {
+              "title": "기수",
+              "page": 74,
+              "en": {
+                "title": "Brackish Water"
+              }
+            },
+            {
+              "title": "고깔해파리",
+              "page": 75,
+              "en": {
+                "title": "Portuguese Man o’ War"
+              }
+            },
+            {
+              "title": "복숭아",
+              "page": 77,
+              "en": {
+                "title": "Peach"
+              }
+            },
+            {
+              "title": "밑줄",
+              "page": 78,
+              "en": {
+                "title": "Underline"
+              }
+            },
+            {
+              "title": "오후 네 시",
+              "page": 79,
+              "en": {
+                "title": "Four in the Afternoon"
+              }
+            },
+            {
+              "title": "편도",
+              "page": 80,
+              "en": {
+                "title": "One Way"
+              }
+            }
+          ],
+          "en": {
+            "name": "Part III"
+          }
+        },
+        {
+          "name": "4부",
+          "items": [
+            {
+              "title": "활자",
+              "page": 83,
+              "en": {
+                "title": "Type"
+              }
+            },
+            {
+              "title": "학교",
+              "page": 84,
+              "en": {
+                "title": "School"
+              }
+            },
+            {
+              "title": "마지막 아침에",
+              "page": 85,
+              "en": {
+                "title": "On the Last Morning"
+              }
+            },
+            {
+              "title": "여백지",
+              "page": 87,
+              "en": {
+                "title": "Blank Page"
+              }
+            },
+            {
+              "title": "기억",
+              "page": 89,
+              "en": {
+                "title": "Memory"
+              }
+            },
+            {
+              "title": "혼색",
+              "page": 90,
+              "en": {
+                "title": "Mixing Colors"
+              }
+            },
+            {
+              "title": "문법",
+              "page": 91,
+              "en": {
+                "title": "Grammar"
+              }
+            },
+            {
+              "title": "손바닥",
+              "page": 93,
+              "en": {
+                "title": "Palm"
+              }
+            },
+            {
+              "title": "길에서",
+              "page": 95,
+              "en": {
+                "title": "On the Road"
+              }
+            },
+            {
+              "title": "눈 폭폭",
+              "page": 97,
+              "en": {
+                "title": "Deep Snow"
+              }
+            },
+            {
+              "title": "꽃받침",
+              "page": 98,
+              "en": {
+                "title": "Calyx"
+              }
+            },
+            {
+              "title": "못",
+              "page": 100,
+              "en": {
+                "title": "Nail"
+              }
+            },
+            {
+              "title": "뒷모습",
+              "page": 102,
+              "en": {
+                "title": "From Behind"
+              }
+            },
+            {
+              "title": "가벼운 것은",
+              "page": 103,
+              "en": {
+                "title": "What Is Light"
+              }
+            },
+            {
+              "title": "우연히",
+              "page": 105,
+              "en": {
+                "title": "By Chance"
+              }
+            }
+          ],
+          "en": {
+            "name": "Part IV"
+          }
+        }
+      ],
+      "tail": [
+        {
+          "title": "시인의 말",
+          "page": 107,
+          "en": {
+            "title": "Poet’s Note"
+          }
+        },
+        {
+          "title": "읽어 주신 분들께",
+          "page": 108,
+          "en": {
+            "title": "To Those Who Read"
+          }
+        }
+      ]
+    }
+  },
+  "poem": {
+    "title": "탁본",
+    "file": "poem.txt",
+    "pages": "61–62쪽"
+  },
+  "bio": "1995년 겨울, 서울에서 태어났다. 2026년 첫 시집 『문을 열고 나오면 살아 있는 것들로 가득 차 있다』로 작품 활동을 시작했다.",
+  "records": [
+    {
+      "n": 1117,
+      "unit": "편",
+      "note": "2013년부터 기록한 영화",
+      "en": {
+        "unit": "films",
+        "note": "logged since 2013"
+      }
+    },
+    {
+      "n": 438,
+      "unit": "개",
+      "note": "2023년부터 기록한 전시",
+      "en": {
+        "unit": "exhibitions",
+        "note": "logged since 2023"
+      }
+    }
+  ],
+  "contact": {
+    "lead_lines": [
+      "협업이나 궁금한 것은",
+      "아래에 남겨 주세요."
+    ],
+    "formspree_id": "",
+    "privacy": "보내 주신 이름·메일은 답장에만 씁니다."
+  },
+  "links": [
+    {
+      "id": "instagram",
+      "name": "인스타그램",
+      "url": "https://www.instagram.com/nam_dong_won_/",
+      "en": {
+        "name": "Instagram"
+      }
+    },
+    {
+      "id": "youtube",
+      "name": "유튜브",
+      "url": "https://www.youtube.com/@nam_movie",
+      "en": {
+        "name": "YouTube"
+      }
+    },
+    {
+      "id": "brunch",
+      "name": "브런치",
+      "url": "",
+      "en": {
+        "name": "Brunch"
+      }
+    }
+  ],
+  "channel": {
+    "link": "youtube",
+    "name": "아름다울 남",
+    "desc": "유튜브 · 영화 · 책 · 전시 리뷰",
+    "en": {
+      "name": "Beautiful Nam",
+      "desc": "YouTube · film, book and exhibition reviews · in Korean"
+    }
+  },
+  "copyright": "© 2026 남동원",
+  "colophon": {
+    "edition": 2,
+    "printing": 1,
+    "fonts": "나눔명조 · 은바탕 · Pretendard",
+    "note": "글과 사진을 다시 쓰려면 먼저 물어 주세요.",
+    "made": "서울에서 쓰고, 찍고, 엮음"
+  },
+  "en": {
+    "name": "Dongwon Nam",
+    "logo": "Dongwon Nam",
+    "tagline": "An office worker who writes poems and reviews what he sees",
+    "description": "Dongwon Nam, an office worker who writes poems: his first poetry collection, Open the Door, Step Out, and It Is Full of Living Things, and Beautiful Nam, a channel of film, book and exhibition reviews.",
+    "book": {
+      "title": "Open the Door, Step Out, and It Is Full of Living Things",
+      "title_lines": [
+        "Open the Door, Step Out,",
+        "and It Is Full of Living Things"
+      ],
+      "display": {
+        "big": [
+          "Open the Door,",
+          "Step Out,"
+        ],
+        "small": [
+          "and It Is Full of",
+          "Living Things"
+        ]
+      },
+      "door": "Open the door",
+      "buy_label": "Add to your shelf",
+      "spec": "110 pages · 128 × 188 mm · November 1, 2026 · Kyobo PURPLE",
+      "store_label": "Buy at Kyobo Book Centre",
+      "intro": {
+        "lead": [
+          "Between feigning life and feigning death,",
+          "poems that brush the seal ink from their hands and walk on"
+        ],
+        "text": "Dongwon Nam’s poems sort what breathes from what merely moves. Among building walls that crumble dryly at a touch, litter pushed along by the wind and wheels rolling at a steady speed, the poet asks whether to feign life or feign death — and, instead of answering, brushes the seal ink from his hands. Firm sentences that set down what he has seen, without putting feeling first, are the ground of this collection."
+      },
+      "toc": {
+        "label": "Contents — sixty poems in four parts"
+      }
+    },
+    "poem": {
+      "title": "Rubbing",
+      "file": "poem_en.txt",
+      "pages": "pages 61–62"
+    },
+    "bio": "Born in Seoul in the winter of 1995. He began publishing in 2026 with his first poetry collection, *Open the Door, Step Out, and It Is Full of Living Things*.",
+    "contact": {
+      "lead_lines": [
+        "For collaborations or questions,",
+        "leave a note below."
+      ],
+      "privacy": "Your name and email will be used only to reply."
+    },
+    "copyright": "© 2026 Dongwon Nam",
+    "colophon": {
+      "fonts": "Newsreader · Nanum Myeongjo · Un Batang · Pretendard",
+      "note": "Please ask before reusing the text or photos.",
+      "made": "Written, photographed and set in Seoul"
+    }
+  }
+}
