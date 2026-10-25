@@ -232,7 +232,7 @@ html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 
 
 /* ④ 사진 — 한 장씩 크게 + 캡션 */
 .head{margin-top:30px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.head b{font:600 19px/1.2 var(--sans);letter-spacing:.01em}
+.head b{font:700 22px/1.2 var(--serif)}  /* 인스타그램 칸 계정 이름 — 유튜브 채널 이름(.ch2 b)과 같은 명조 700(10/26 나4 A, 동원 "인스타그램 칸 제목은 A 핸들도 명조로 하자" — 전엔 이 칸만 고딕 600 19px) */
 .head span{font:300 12.5px/1 var(--sans);color:var(--muted);letter-spacing:.04em}
 .strip{margin-top:22px;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 .strip::-webkit-scrollbar{display:none}
@@ -557,7 +557,7 @@ html.sr-on{overflow:hidden}
   #photo>.top2{grid-row:3;align-self:end}
   #photo>.info{grid-row:4;align-self:start}
   #photo .head{margin-top:0}
-  #photo .head b{font-size:22px}
+  #photo .head b{font-size:26px}  /* .ch2 b와 같은 26px */
   #photo .strip{margin-top:0;max-width:440px}
   .thumbs{max-width:440px}
   .pgrid{grid-template-columns:repeat(4,1fr);max-width:440px}
