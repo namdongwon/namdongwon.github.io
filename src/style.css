@@ -76,6 +76,7 @@ html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spaci
 #home .book{margin-top:24px;display:grid;grid-template-columns:1fr auto;column-gap:12px}
 #home .side{display:flex;flex-direction:column;padding-bottom:34px}  /* 작은 제목(+ 사는 길)은 위, '밀어 보세요'와 가는 선은 책 아래쪽(.tip margin-top:auto) */
 #home .hs{font:700 19px/1.45 var(--serif);letter-spacing:-.01em}
+#home .hsl{display:none}  /* 컴퓨터 · 태블릿(768px부터)에서만 큰 제목 바로 아래에 보이는 작은 제목 — 휴대폰은 책 옆(.side .hs). 한 번에 하나만 보여 읽기 도구도 한 번만 읽음(10/26 나2 A) */
 #home .sb{align-self:flex-start;margin-top:18px}  /* 책 옆 사는 길(10/25 다듬기 나1 B) — 휴대폰은 라벨의 '책장에 꽂기'가 사파리 첫 화면(553–659px) 밖이라 작은 제목 아래 한 줄 더 */
 @media (min-width:768px){#home .sb{display:none}}  /* 컴퓨터 · 태블릿은 라벨이 첫 화면 안 — 한 줄만 */
 #home .tip{margin-top:auto;font:300 11px/1.6 var(--sans);color:var(--muted)}
@@ -471,6 +472,7 @@ html.pv-on{overflow:hidden}
   html:lang(en) #home .ht{font-size:clamp(38px,5.2vw,84px)}
   #home .book{margin-top:0;column-gap:28px}
   #home .hs{font-size:24px}
+  #home .side .hs{display:none}#home .hsl{display:block;margin-top:26px}  /* 작은 제목을 큰 제목 바로 아래로 — 표지처럼 '문을 열고 나오면 / 살아 있는 것들로 가득 차 있다'가 한 줄기(10/26 나2 A). 전에는 책 옆 위에 붙어 큰 제목보다 먼저 읽혔음 */
   #home .tip{font-size:11px}
   #home .bk{--w:250px;--h:367.2px;--t:17.6px}
   #home .lab{grid-column:1/-1;grid-row:3;margin-top:44px}

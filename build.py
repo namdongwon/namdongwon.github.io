@@ -793,7 +793,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <main id="main">
   <section id="home" aria-label="{t("home_label")}">
     <div class="l"><h1 class="kick"><span class="name" data-type="{e("|".join(typing_steps(S["name"])))}">{e(S["name"])}</span> <span>{t("ex_kick")}</span></h1>
-      <p class="ht">{ht}</p></div>
+      <p class="ht">{ht}</p><p class="hs hsl">{hs}</p></div>
     <div class="r book"><div class="side"><p class="hs">{hs}</p><a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener">{e(book["buy_label"])} ↗</a><p class="tip">{t("ex_tip")}</p></div>
       <div class="bk"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="{t("cover_alt", book=e(book["title"]) if en else e(book["title"]))}" width="600" height="881" fetchpriority="high" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i><i class="win"></i></div>
       </div>
