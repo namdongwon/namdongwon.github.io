@@ -45,6 +45,14 @@ FONTS = [
 SEARCH_ICON = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false">'
                '<circle cx="8.5" cy="8.5" r="6"/><path d="M13 13l5 5" stroke-linecap="round"/></svg>')  # 맨 위 막대 · 찾기 창의 가는 선 돋보기(10/26)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
+# 첫 화면 작은 판(10/27 동원 "첫 화면 작은 글꼴은 B로 하자"): 한국어판 첫 화면에 보이는 글자만 담아 미리 받는 판(CSS BMJF · PTDF) — 통째 판(본명조 보통 · 굵게 182KB)을
+# 미리 받느라 style.css · main.js가 늦던 것을 덜어 냄(시험용 복사본 실측: 느린 4G 문 열림 3.6 → 3.1초 · 보통 LTE 1.5 → 1.3초, 다 선 화면 같음). 통째 판은 아래 칸에서 그대로 씀
+FIRST = {  # 작은 판: (같은 원본의 통째 판, 담을 글자 — first_text())
+    "bon-myeongjo-first.woff2": ("bon-myeongjo.woff2", "door"),           # 문 글자(.door .t, 400)
+    "bon-myeongjo-bold-first.woff2": ("bon-myeongjo-bold.woff2", "hs"),   # 첫 화면 부제(#home .hs, 700)
+    "ndw-sans-light-first.woff2": ("ndw-sans-light.woff2", "home"),       # 첫 화면 작은 글자(#home, 300)
+    "ndw-sans-semibold-first.woff2": ("ndw-sans-semibold.woff2", "home"), # 첫 화면 작은 글자(#home, 600)
+}
 ALWAYS = "".join(chr(c) for c in range(0x20, 0x7F)) + "‘’“”『』「」〈〉《》—–·…→←↑↓↗©\u00a0"  # ↗: 밖으로 나가는 링크(10/24) · 줄 안 바뀜 공백(keep()) · 〈〉《》: 작품 이름 부호(marked())
 NOTE = "Subset for namdongwon.com (only the characters used on the site), 2026"
 # 영어판 글꼴(10/24 ⑤ B): Newsreader — 기준/폰트/Newsreader/(Google Fonts 저장소에서 내려받음, OFL)
@@ -365,6 +373,17 @@ def used_text(pages):
     js = (SRC / "main.js").read_text(encoding="utf-8")
     strings = "".join(m.group(0) for m in re.finditer(r'"(?:[^"\\\n]|\\.)*"|`[^`]*`', js))
     return unicodedata.normalize("NFC", "".join(pages) + strings + ALWAYS)
+
+
+def first_text(page):
+    # 첫 화면 작은 판(FIRST)에 담을 글자 — 만든 한국어판 쪽에서: 문 글자(.door .t) · 부제(#home .hs) · #home 전체(이름 치는 중간 글자 data-type 포함).
+    # 빈칸 · 부호(ALWAYS[95:])는 다른 판처럼 늘 담음(가는 본명조 큰 제목 판과 같은 규칙)
+    home = re.search(r'<section id="home".*?</section>', page, re.S).group(0)
+    plain = lambda s: html.unescape(re.sub(r"<[^>]+>", "", s))  # noqa: E731
+    door = plain(re.search(r'<div class="door".*?<i class="gap"></i></div>', page, re.S).group(0))
+    hs = plain("".join(re.findall(r'<p class="hs[^"]*">(.*?)</p>', home, re.S)))
+    sans = plain(home) + "".join(re.findall(r'data-type="([^"]*)"', home))
+    return {k: unicodedata.normalize("NFC", v + " " + ALWAYS[95:]) for k, v in (("door", door), ("hs", hs), ("home", sans))}
 
 
 def rename_font(font):
@@ -778,7 +797,7 @@ def render(site, poem, videos, photos, lang="ko"):
     nav += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26) — 구분선 뒤 언어 단추 옆(10/26 B, 구분선은 CSS)
     nav += f'<a class="lang" href="{"../" if en else "en/"}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 지금 언어를 보임(10/26 동원 "지금 현재 나라의 언어를 표시하는 게 더 좋을 거 같은데" — 한국어판 🇰🇷 KO · 영어판 🇬🇧 EN, 누르면 다른 판)
     preload = ("".join(f'<link rel="preload" href="{P}assets/fonts/{f}" as="font" type="font/woff2" crossorigin>\n' for f in
-                       (("newsreader.woff2", "bon-myeongjo.woff2") if en else ("bon-myeongjo-light.woff2", "bon-myeongjo.woff2", "bon-myeongjo-bold.woff2"))))
+                       (("newsreader.woff2", "bon-myeongjo.woff2") if en else ("bon-myeongjo-light.woff2", *FIRST))))  # 한국어판은 첫 화면 작은 판만(10/27 B)
     pgno = t("pgno", poem=poem_t, pages=e(S["poem"]["pages"])) + (f'<br>{t("translated")}' if L["translated"] else "")
     note = f'<p class="note">{t("ship_note")}</p>' if L["ship_note"] else ""
     # 시집 소개 · 차례(10/25 A 아래로 이어 쌓기) — 책 카드 다음에 머리 두 줄 → 소개 한 단락 → 차례(「탁본」 줄만 먹)
@@ -1044,6 +1063,15 @@ def main():
             print(f"알림: 원본 {name}을 찾지 못해 지난 줄인 판을 씀 — 새로 생긴 글자는 빠질 수 있음")
         else:
             raise SystemExit(f"글꼴을 찾지 못함: {name}")
+    ft = first_text(index_html)  # 첫 화면 작은 판(10/27 B) — 통째 판과 같은 원본에서 첫 화면 글자만
+    for out, (whole, kind) in FIRST.items():  # (base는 아래 사이트 주소가 쓰는 이름이라 피함)
+        name, rename = next((n, r) for n, _, _, o, r in FONTS if o == whole)
+        if name in srcs:
+            subset_font(srcs[name], ASSETS / "fonts" / out, ft[kind], rename)
+        elif out in keep:
+            (ASSETS / "fonts" / out).write_bytes(keep[out])
+        else:
+            raise SystemExit(f"첫 화면 작은 판을 만들 원본을 찾지 못함: {name}")
     print(f"글꼴에 남긴 글자 {len(set(text))}자")
     # 영어판 글꼴(10/24 ⑤ B) — Newsreader 바로 · 기울임을 영어판의 글자만 남겨 줄임(가변 축 그대로, 예약된 이름 없어 이름 그대로)
     text_en = used_text([en_html])

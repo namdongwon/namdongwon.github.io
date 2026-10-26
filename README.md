@@ -167,6 +167,7 @@
 사이트에 쓰는 글자만 남겨 woff2로 줄인 판을 씁니다(`build.py`가 만들 때마다 다시 줄임).
 
 - 본명조(BonMyeongjo KR — Noto Serif CJK KR · Adobe) — SIL Open Font License 1.1. 10/26부터 명조는 이 한 가족(Light · Regular · Bold): 원본은 시집 작업 폴더 `fonts/out/`의 TrueType 판(이름을 이미 바꾼 판이라 그대로 씀, 원본 예약 이름 'Source'는 쓰지 않음). Light는 첫 화면 큰 제목 글자와 부호만 담음(`build.py`의 `LIGHT_ONLY`) — 굵기 300을 다른 자리에 쓰면 그 글자도 담게 넓힐 것
+- 첫 화면 작은 판(10/27 B): 한국어판 첫 화면에 보이는 글자만 담은 판 넷 — `bon-myeongjo-first`(문 글자) · `bon-myeongjo-bold-first`(부제) · `ndw-sans-light-first` · `ndw-sans-semibold-first`(첫 화면 작은 글자, 이름 치는 중간 글자 포함). `build.py`의 `FIRST` · `first_text()`가 만든 쪽에서 글자를 뽑아 줄이고, 한국어판은 이 넷과 Light만 미리 받음(CSS 가족 `BMJF` · `PTDF`, 담은 글자 밖은 통째 판으로). 문은 문 글자 · 큰 제목 글꼴(글꼴 목록 맨 앞)만 기다림(`main.js`) — 느린 4G 문 열림 3.6 → 3.2초 실측. 첫 화면에 새 칸을 넣어도 빌드가 글자를 알아서 담지만, 그 칸이 `--sans` · 부제(.hs) 말고 다른 글꼴을 쓰면 `style.css`의 첫 화면 규칙도 맞출 것
 - 붙임 공백(U+00A0)은 빌드가 보통 공백과 같은 글리프로 맞춥니다(본명조는 붙임 공백이 0.8px쯤 넓어 묶은 자리만 벌어졌음 — 10/26)
 - Pretendard — SIL Open Font License 1.1. 줄인 판은 'NDW Sans'
 

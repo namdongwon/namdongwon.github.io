@@ -98,10 +98,14 @@
   if (cardBook) turnable(cardBook);
 
   // ① 문 — 첫 방문 한 번만(head의 스크립트가 html.intro를 붙였을 때). 문이 열리는 순간 이름이 나타남
-  // 글꼴은 0.8초까지만 기다림 — 글꼴이 늦으면 검은 문 앞에서 오래 서 있게 되므로(늦게 온 글꼴은 그 뒤에 바뀌어 들어옴)
+  // 글꼴은 문 글자 · 큰 제목에 쓰는 것만, 0.8초까지만 기다림 — 글꼴이 늦으면 검은 문 앞에서 오래 서 있게 되므로(늦게 온 글꼴은 그 뒤에 바뀌어 들어옴).
+  // 모든 글꼴(document.fonts.ready)을 기다리면 아래 칸의 통째 판까지 기다리게 됨 — 한국어판은 둘 다 첫 화면 작은 판이라 곧 옴(10/27 B)
   const door = document.querySelector(".door");
   if (H.classList.contains("intro") && door && motion) {
-    Promise.race([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise(r => setTimeout(r, 800))]).then(() => {
+    // 글꼴 목록의 맨 앞 하나만 — fonts.load는 목록에 든 가족을 모두 받으므로, 통째로 넘기면 뒤의 통째 판(BMJ 보통 90KB)까지 기다림[실측 10/27 — 문 열림 3.9초]
+    const face = el => { const s = getComputedStyle(el); return document.fonts.load(`${s.fontStyle} ${s.fontWeight} ${s.fontSize} ${s.fontFamily.split(",")[0]}`, el.textContent); };
+    const want = document.fonts ? Promise.all([door.querySelector(".t"), home && home.querySelector(".ht")].filter(Boolean).map(face)).catch(() => {}) : Promise.resolve();
+    Promise.race([want, new Promise(r => setTimeout(r, 800))]).then(() => {
       // 첫 화면이 3초 안에 다 서게(10/24 B) — 문 열림 1.55 → 1.1초, 나머지는 그 뒤로 겹쳐 둠
       setTimeout(() => door.classList.add("on"), 200);
       setTimeout(() => door.classList.add("lit"), 800);

@@ -7,6 +7,14 @@
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2") format("woff2");font-weight:300;font-display:swap}
 @font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2") format("woff2");font-weight:600;font-display:swap}
+/* 첫 화면 작은 판(10/27 B): 한국어판 문 글자 · 첫 화면에 보이는 글자만 담아 먼저 받는 판 — 통째 판(본명조 보통 · 굵게)을 미리 받느라 스타일 · main.js가 늦던 것을 덜어 냄(느린 4G 문 열림 3.6 → 3.1초 실측).
+   담은 글자 밖은 뒤의 통째 판(BMJ · PTD)으로 그려짐. 첫 화면에 새 글자 칸을 넣으면 build.py FIRST가 알아서 담음 */
+@font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTDF";src:url("fonts/ndw-sans-light-first.woff2") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTDF";src:url("fonts/ndw-sans-semibold-first.woff2") format("woff2");font-weight:600;font-display:swap}
+html:lang(ko) .door .t,html:lang(ko) #home .hs{font-family:"BMJF",var(--serif)}
+html:lang(ko) #home{--sans:"PTDF","PTD",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}  /* :root --sans 앞에 PTDF만 더함 — --sans를 바꾸면 여기도 */
 /* 영어판(10/24 ⑤ B): Newsreader(Production Type · OFL) — 영어판만 씀(한국어판은 내려받지 않음). 가변 축 굵기 · 글자 크기 */
 @font-face{font-family:"NRD";src:url("fonts/newsreader.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
