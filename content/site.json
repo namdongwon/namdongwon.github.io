@@ -541,6 +541,7 @@
       "아래에 남겨 주세요."
     ],
     "formspree_id": "",
+    "guestbook_formspree_id": "",
     "privacy": "보내 주신 이름·메일은 답장에만 씁니다.",
     "email": {
       "user": "namdonwon",

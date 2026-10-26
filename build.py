@@ -727,6 +727,35 @@ def render(site, poem, videos, photos, lang="ko"):
     em = c.get("email") or {}
     mail = (f'<p class="mail"><span>{t("mail")}</span><a class="buy ml" href="#contact" data-u="{e(em["user"][::-1])}" data-d="{e(em["domain"][::-1])}">'
             f'{e(em["user"])}<span>@</span>{e(em["domain"])}</a></p>') if em.get("user") and em.get("domain") else ""
+    # 방명록(10/26 동원 "방명록은 A 같은 글자 목록으로 하자" — 설계 `기준/웹사이트 방명록 설계_v2.md`) — 연락 칸 안, 연락 길 아래(#guestbook — 관리 화면 미리 보기 자리).
+    # 받은 글은 Formspree → 동원 메일 → 관리 화면 '방명록' 표(content/guestbook.json)에 고른 글만 → 다시 올림. 방문자 글 · 이름은 글자로만(e()) · 줄바꿈만 살림 · 찾기에는 넣지 않음.
+    # 방문자 글은 원문 그대로라 row_lang을 쓰지 않음(영어판에서 비지 않게) — 답만 en.reply가 있으면 영어. 폼 아이디(contact.guestbook_formspree_id)가 없으면 폼을 그리지 않고,
+    # 실린 글도 없으면 묶음 전체를 그리지 않음. 폼을 이으려면 개인정보 처리방침(content/privacy.json)이 먼저 있어야 함(동의 문구가 그 쪽을 가리킴)
+    gb_id = c.get("guestbook_formspree_id", "")
+    if gb_id and not (CONTENT / "privacy.json").exists():
+        raise SystemExit("방명록 폼(contact.guestbook_formspree_id)을 이으려면 개인정보 처리방침(content/privacy.json)이 먼저 있어야 함 — 동의 문구가 그 쪽을 가리킴")
+    gbook = sorted((x for x in (load("guestbook.json").get("items", []) if (CONTENT / "guestbook.json").exists() else []) if x.get("text") and x.get("date")),
+                   key=lambda x: x["date"], reverse=True)
+
+    def gb_li(x):
+        txt = "<br>".join(e(ln) for ln in x["text"].strip().split("\n"))
+        lk = ' lang="ko"' if en and re.search(r"[가-힣]", x["text"]) else ""  # 영어판에서 한국어 글은 한국어로 읽히게
+        rp = ((x.get("en") or {}).get("reply") or x.get("reply", "")) if en else x.get("reply", "")
+        rep = f'<p class="rp">{e(rp)}<span>— {t("gb_reply_by")}</span></p>' if rp else ""
+        return f'<li><p class="tx"{lk}>{txt}</p><p class="by">{e(x.get("name", "")) or t("gb_anon")} · {e(x["date"].replace("-", "."))}</p>{rep}</li>'
+    guest, priv = "", f'<a href="privacy/">{t("gb_privacy")}</a>'  # 처리방침 쪽(한 · 영 모두 제 판 아래 privacy/)
+    if gb_id or gbook:
+        more = f'<details><summary>{t("gb_more")}</summary><ol>{"".join(gb_li(x) for x in gbook[12:])}</ol></details>' if len(gbook) > 12 else ""
+        body = f'<ol>{"".join(gb_li(x) for x in gbook[:12])}</ol>{more}' if gbook else f'<p class="empty">{t("gb_empty")}</p>'
+        form = (f'<h3 class="h3b">{t("gb_write")}</h3><p class="when">{t("gb_when")}</p>'
+                f'<form class="gbf" data-endpoint="https://formspree.io/f/{e(gb_id)}" method="post">'
+                f'<label>{t("gb_name")} <i>{t("gb_name_hint")}</i><input type="text" name="name" maxlength="20" autocomplete="name"></label>'
+                f'<label>{t("gb_text")} <i>{t("gb_text_hint")}</i><textarea name="message" maxlength="200" rows="3" required></textarea></label>'
+                '<input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">'
+                f'<label class="ag"><input type="checkbox" name="agree" required><span>{t("gb_ag1")}</span></label>'
+                f'<label class="ag"><input type="checkbox" name="agree_abroad" required><span>{t("gb_ag2", privacy=priv)}</span></label>'
+                f'<button class="send" type="submit">{t("gb_send")}</button><p class="msg" role="status"></p></form>') if gb_id else ""
+        guest = f'\n      <div class="gb" id="guestbook"><h3>{t("gb_title")}</h3><p class="sep">{t("gb_sep")}</p>{body}{form}</div>'
     # 바닥글: 판권면(10/24 A) — 시집 판권면의 틀(제목 → 항목 줄 → ⓒ와 다시 쓰기 안내)만 빌림. 고친 날은 빌드한 날(서울 시간),
     # 판은 디자인을 크게 다시 할 때(site.json) · 쇄는 고쳐 올릴 때마다 저절로(printing_no — 올린 기록으로 셈, 10/25)
     co, today = S["colophon"], build_day()
@@ -914,7 +943,7 @@ def render(site, poem, videos, photos, lang="ko"):
   <section id="contact" aria-labelledby="contact-t">
     <p class="label">{t("label_contact")}</p>
     <div class="l"><h2 class="h2" id="contact-t">{t("contact_title")}</h2><p class="lead">{lead}</p></div>
-    <div class="r">{ask}{mail}
+    <div class="r">{ask}{mail}{guest}
       <p class="sns">{sns}</p>
       {colo}</div>
   </section>

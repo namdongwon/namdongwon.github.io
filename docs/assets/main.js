@@ -749,6 +749,28 @@
   if (top) addEventListener("scroll", () => top.classList.toggle("sc", scrollY > 8), { passive: true });
 
   // 문의 폼: Formspree 주소가 들어가기 전에는 보내지 않고 안내만
+  // 방명록 보내기(10/26 A — 설계 v2) — fetch로(쿠키 없이 · reCAPTCHA 없이), 보낸 뒤엔 '받았다'만 · 한도가 차면(429) 다음 달에 · 보내는 동안 단추를 잠금
+  const gbf = document.querySelector("form.gbf");
+  if (gbf) {
+    const gbSend = gbf.querySelector(".send"), gbMsg = gbf.querySelector(".msg");
+    gbSend.addEventListener("touchstart", () => {}, { passive: true });  // 아이폰 누름 모양(문의 단추와 같음)
+    gbf.addEventListener("submit", async ev => {
+      ev.preventDefault();
+      gbMsg.textContent = uiText("sending", "보내는 중…");
+      gbSend.disabled = true;
+      try {
+        const r = await fetch(gbf.dataset.endpoint, { method: "POST", body: new FormData(gbf), headers: { Accept: "application/json" } });
+        gbMsg.textContent = r.ok ? uiText("gb_sent", "잘 받았습니다. 월요일에 읽어 보겠습니다.")
+          : r.status === 429 ? uiText("gb_full", "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다.")
+          : uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
+        if (r.ok) gbf.reset();
+      } catch {
+        gbMsg.textContent = uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
+      }
+      gbSend.disabled = false;
+    });
+  }
+
   // 메일(10/26) — 쪽 원본에는 뒤집은 두 조각만 있음(주소를 긁어 가는 프로그램 대비) → 여기서 주소와 mailto를 이어 붙임
   document.querySelectorAll("a.ml[data-u]").forEach(a => {
     const m = [...a.dataset.u].reverse().join("") + "@" + [...a.dataset.d].reverse().join("");
