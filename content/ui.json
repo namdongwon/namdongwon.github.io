@@ -320,6 +320,14 @@
     "ko": "만든 곳",
     "en": "Made"
   },
+  "theme": {
+    "ko": "화면",
+    "en": "Display"
+  },
+  "theme_opts": {
+    "ko": "시스템|밝게|어둡게",
+    "en": "System|Light|Dark"
+  },
   "colo_cookie": {
     "ko": "쿠키를 쓰지 않습니다.",
     "en": "This site uses no cookies."
@@ -361,8 +369,8 @@
     "en": "Bio · timeline · now|“Rubbing” · book · contents|Photos · posts|Videos · reviews|Email · Instagram message"
   },
   "search_sec_keys": {
-    "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 사는 곳 소식|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지",
-    "en": "bio timeline now name|poem book contents rubbing kyobo buy news|photos instagram posts exhibitions|videos reviews film channel|email gmail mail message"
+    "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 사는 곳 소식|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지 화면 어둡게 다크",
+    "en": "bio timeline now name|poem book contents rubbing kyobo buy news|photos instagram posts exhibitions|videos reviews film channel|email gmail mail message display dark"
   },
   "search_toc_where": {
     "ko": "{part} · {page}쪽",

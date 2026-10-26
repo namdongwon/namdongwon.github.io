@@ -287,6 +287,26 @@
     let pt = 0;
     addEventListener("resize", () => { clearTimeout(pt); pt = setTimeout(place, 150); });
   }
+  // 화면 밝게 · 어둡게 · 시스템(10/26 동원 "웹사이트 화면에 화이트모드 다크모드 시스템설정 있으면 좋겠다" → A 먹 종이) — 판권면 세 단추.
+  // 고른 것은 이 기기에만 기억(localStorage theme — 쿠키 아님), 처음은 밝게. 첫 그림 전에 머리 스크립트가 data-theme을 붙이고 여기서는 단추 · 브라우저 막대 색만
+  const thm = document.querySelectorAll(".thm button[data-th]"), tcol = document.querySelector('meta[name="theme-color"]');
+  if (thm.length) {
+    const sysDark = matchMedia("(prefers-color-scheme: dark)");
+    const paint = () => {
+      const th = H.getAttribute("data-theme") || "light";
+      thm.forEach(b => b.setAttribute("aria-pressed", b.dataset.th === th));
+      if (tcol) tcol.content = th === "dark" || (th === "system" && sysDark.matches) ? "#141414" : "#ffffff";
+    };
+    thm.forEach(b => b.addEventListener("click", () => {
+      const th = b.dataset.th;
+      if (th === "light") H.removeAttribute("data-theme"); else H.setAttribute("data-theme", th);
+      try { localStorage.setItem("theme", th); } catch (x) { /* 사생활 모드 등 — 이번 쪽에만 */ }
+      paint();
+    }));
+    sysDark.addEventListener("change", paint);
+    paint();
+  }
+
   // 언어 바꾸기(10/24 영어판) — 보던 칸으로 이어서(예: 사진 칸에서 EN → 영어판 사진 칸)
   const swap = document.querySelector(".top nav .lang");
   if (swap) swap.addEventListener("click", ev => {

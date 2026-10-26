@@ -253,7 +253,7 @@ def stanzas_of(text):
     return out
 
 # 첫 그림이 그려지기 전에 html에 표시를 붙인다: js(움직임을 켬) · intro(문 장면 — 첫 방문 한 번만, '동작 줄이기'나 #주소로 들어오면 생략, ?door면 다시 봄)
-HEAD_JS = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var m=matchMedia("(prefers-reduced-motion: reduce)").matches,
+HEAD_JS = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{var m=matchMedia("(prefers-reduced-motion: reduce)").matches,
 again=/[?&]door\\b/.test(location.search);if(!m&&!location.hash&&(again||!localStorage.getItem("door"))){H.classList.add("intro");localStorage.setItem("door","1")}}catch(x){}})();</script>"""
 
 
@@ -733,9 +733,13 @@ def render(site, poem, videos, photos, lang="ko"):
     when = (f"{MONTHS[today.month - 1]}{NB}{today.day}, {today.year}" if en else f"{today.year}년{NB}{today.month}월{NB}{today.day}일")
     pr = printing_no(co)
     ed = (f'{ordinal(co["edition"])} edition, {ordinal(pr)} printing' if en else f'{co["edition"]}판 {pr}쇄')
+    # 화면 밝게 · 어둡게 · 시스템(10/26 A 먹 종이) — 판권면 줄, 처음은 밝게 · 누르면 main.js가 이 기기에 기억
+    thm = " · ".join(f'<button type="button" data-th="{k}" aria-pressed="{"true" if k == "light" else "false"}">{e(x)}</button>'
+                     for k, x in zip(("system", "light", "dark"), L["theme_opts"].split("|")))
     colo = (f'<div class="colo"><p class="t">{e(urlparse(base).netloc or base)}</p><dl>'
             f'<dt>{t("colo_updated")}</dt><dd><time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</dd>'
-            f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd><dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd></dl>'  # 글꼴 줄은 뺌(10/26 동원 "사이트에 내 글꼴 소개하지 않아도 되잖아 지워" — 라이선스 글은 글꼴 옆에 그대로)
+            f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd><dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd>'
+            f'<dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd></dl>'  # 글꼴 줄은 뺌(10/26 동원 "사이트에 내 글꼴 소개하지 않아도 되잖아 지워" — 라이선스 글은 글꼴 옆에 그대로)
             f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{t("colo_cookie")}</p></div>')
 
     secs = ("me", "poem", "photo", "video", "contact")
@@ -930,7 +934,7 @@ def page_404(site):
     return f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{k("nf_title")} — {e(site["name"])}</title><meta name="robots" content="noindex">
-<link rel="icon" href="/favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"></head>
+<link rel="icon" href="/favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"><script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
 <body><main style="min-height:100vh;display:grid;place-content:center;gap:18px;padding:28px;text-align:center">
 <p class="label" style="justify-content:center">404</p>
 <h1 class="h2" style="margin-top:0">{k("nf_title")}</h1>

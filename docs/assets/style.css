@@ -17,6 +17,7 @@
   /* 흰 바탕 대비(WCAG 등급) — 먹 18.88:1 AAA · --muted 7.46:1 AAA · --faint 4.88:1 AA. 회색 두 단은 Klim 회색 단계에서(10/24 ⑨ — 이전 #6b6b6b 5.33:1 · #a3a3a3 2.52:1)
      맨 위 띠(흰 86%)가 검은 그림 위에 얹혀도 --muted 메뉴 5.38:1 */
   --shadow:0 0 0 1px #e2e2e2,0 14px 30px rgba(0,0,0,.10);
+  --bar:rgba(255,255,255,.86);--chip:rgba(255,255,255,.9);--wall:#fff;--mark:#ececec;--winf:none;--winb:multiply;  /* 어두운 모드에서 바뀌는 것(아래 data-theme) */
   --serif:"BMJ","AppleMyungjo",serif;
   --body:"BMJ","AppleMyungjo",serif;
   --sans:"PTD",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
@@ -24,6 +25,11 @@
   --top:56px;
   --ease:cubic-bezier(.16,1,.3,1);
 }
+/* 어두운 모드(10/26 동원 "웹사이트 화면에 화이트모드 다크모드 시스템설정 있으면 좋겠다" → "A" 먹 종이) — 「탁본」 한 장의 먹 종이를 사이트 전체로.
+   처음은 밝게(흰 바탕 첫인상 — 7절 ⑤-2), 판권면 '화면'에서 고르면 그 기기에 기억(localStorage theme). system은 기기 설정을 따름 · 창살 빛은 그림자 대신 빛(뒤집어 screen)
+   대비: 먹 종이 #141414 위 글자 15.9:1 · --muted 7.9:1 · --faint 5.4:1 */
+:root[data-theme="dark"]{--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:#1d1d1d;--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root[data-theme="system"]{--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:#1d1d1d;--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}}
 :root:lang(en){--serif:"NRD","BMJ","AppleMyungjo",serif;--body:"NRD","BMJ","AppleMyungjo",serif}  /* 라틴 글꼴 먼저, 한글 다음 — 섞인 한글(시 · 원제)은 본명조 */
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}  /* 칸 맞춤(scroll-snap)은 10/25 끔 — 스크롤은 멈춘 자리에 그대로(셔터를 뺀 뒤 남은 '찰칵' · 동원 "① 칸 맞춤 끄기부터 하자"). 사진 띠의 한 장씩 넘기기만 남김 */
@@ -35,19 +41,19 @@ button{font:inherit;color:inherit}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}  /* 화면에는 안 보이고 화면 읽기 프로그램만 읽음 */
 :focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 /* 고르면 먹 바탕 + 흰 글자 — 「탁본」 한 장(검은 먹 종이 + 흰 글자)과 같은 모양(10/24 ⑨ A, Klim식). 아이폰 Safari는 이 규칙을 따르지 않아 기기 파란빛 그대로 */
-::selection{background:var(--ink);color:#fff}
-.buy2::selection{background:#fff;color:var(--ink)}
+::selection{background:var(--ink);color:var(--bg)}
+.buy2::selection{background:var(--bg);color:var(--ink)}
 .sheet ::selection{background:#efefef;color:#0c0c0c}  /* 검은 면 안에서는 거꾸로 */
 /* 줄 끝(10/24 ⑨): 몇 줄짜리 제목·약력·소개·사양 줄은 줄 길이를 고르게, 긴 글은 마지막 줄이 외롭지 않게(못 읽는 브라우저는 보통 줄바꿈).
    시집 제목처럼 손으로 나눈 줄과 「탁본」의 행에는 걸지 않음 · 날짜와 가운뎃점 붙임은 build.py의 keep() */
 .h2,.vt,.bio,.lead,.pbook .t small{text-wrap:balance}
 .tt{display:inline-block;text-wrap:balance}  /* 작품 제목(+붙은 조사 · 문장부호)은 한 덩어리 — 칸에 들어가면 통째로 다음 줄, 칸보다 길면 그 안에서만 갈림(10/25 마지막 점검 ②③, build.py rich · 첫 화면 라벨) · 토막이 칸보다 길어 그 안에서 갈릴 때는 고르게(태블릿 라벨 'Step / Out,' 같은 외톨이 줄이 남지 않게) */
 .cap p,.colo .c,.ask .agree,.empty{text-wrap:pretty}
-.skip{position:absolute;left:-9999px;top:8px;z-index:60;padding:8px 12px;background:var(--ink);color:#fff;font:600 12.5px/1 var(--sans)}
+.skip{position:absolute;left:-9999px;top:8px;z-index:60;padding:8px 12px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans)}
 .skip:focus{left:8px}
 
 /* 맨 위: 휴대폰은 메뉴만, 컴퓨터는 이름 로고 + 메뉴 */
-.top{position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;align-items:center;height:var(--top);padding:0 20px;background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);transition:box-shadow .4s}  /* 아래 재생 띠(.mini)와 같은 흰 86% · 흐림 16px(10/24 ⑨) */
+.top{position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;align-items:center;height:var(--top);padding:0 20px;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);transition:box-shadow .4s}  /* 아래 재생 띠(.mini)와 같은 흰 86% · 흐림 16px(10/24 ⑨) */
 .top.sc{box-shadow:0 1px 0 rgba(0,0,0,.06)}
 .top .logo{display:none;font:700 18px/1 var(--serif)}
 .top nav{position:relative;display:flex;gap:16px;font:300 12.5px/1 var(--sans);letter-spacing:.12em;color:var(--muted)}
@@ -113,7 +119,7 @@ html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spaci
    곱하기로 얹은 겹 하나(.win)가 책 둘레의 틀(시안의 360×450 화면 = 책 176px 둘레)을 덮고, 가장자리 20%(좌우) · 14%(위아래) 안에서 흰 바탕으로 사라짐.
    위치 · 굵기 · 흐림은 모두 책 폭(--w)에 비례 · 빛은 화면에 머물러 책을 돌리면 책이 빛 아래서 돎 · 눌리지 않음 · 시안 기준/브랜드 시안/light_study_mock_v1.py */
 #home{overflow-x:clip}  /* 빛 틀이 휴대폰 오른쪽 화면 밖으로 나가도 쪽이 옆으로 밀리지 않게(세로는 그대로) */
-#home .bk .win{position:absolute;left:-52.3%;right:-52.3%;top:-30.2%;bottom:-43.9%;pointer-events:none;mix-blend-mode:multiply;
+#home .bk .win{position:absolute;left:-52.3%;right:-52.3%;top:-30.2%;bottom:-43.9%;pointer-events:none;mix-blend-mode:var(--winb);filter:var(--winf);
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent),linear-gradient(transparent,#000 14%,#000 86%,transparent);-webkit-mask-composite:source-in;
   mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent),linear-gradient(transparent,#000 14%,#000 86%,transparent);mask-composite:intersect}
 #home .bk .win::before{content:"";position:absolute;left:-5.56%;top:-17.78%;width:83.33%;height:93.33%;border:calc(var(--w) * .08) solid rgba(17,17,17,.13);
@@ -199,7 +205,7 @@ html.js .top nav .lang{padding-left:2px;border-left:0}
 @media (max-width:359px){html.js:lang(en) .top nav .sq{padding-left:7px}}
 html:lang(en) .label,html:lang(en) .sub{text-transform:uppercase;letter-spacing:.1em}  /* 영어 꼬리표는 대문자 + 자간 조금(Oui Non · Fitzcarraldo) */
 html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 작품 제목은 기울임, 짧은 제목은 한 줄에 */
-.buy2{justify-self:start;margin-top:14px;display:inline-flex;align-items:center;padding:12px 18px;border-radius:999px;background:var(--ink);color:#fff;font:600 12.5px/1 var(--sans);white-space:nowrap}
+.buy2{justify-self:start;margin-top:14px;display:inline-flex;align-items:center;padding:12px 18px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);white-space:nowrap}
 
 /* ③ 나 */
 .bio{margin-top:22px;font:15.5px/1.95 var(--body)}
@@ -270,14 +276,14 @@ html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 
 .thumbs button::after{content:"";display:block;height:1.5px;margin-top:5px;background:var(--ink);transform:scaleX(0);transition:transform .35s var(--ease)}
 .thumbs button.on::after{transform:scaleX(1)}
 .thumbs img,.pgrid img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
-.strip figure.art img,.thumbs .art img,.pgrid .art img{object-fit:contain;background:#fff}  /* 전시 작품 사진은 자르지 않음 — 4:5 칸 안에 통째로, 남는 자리는 흰 벽(10/24 ⑫ A · Foam 'Artwork is never cropped'). 칸 높이는 그대로라 넘겨도 캡션이 흔들리지 않음 */
+.strip figure.art img,.thumbs .art img,.pgrid .art img{object-fit:contain;background:var(--wall)}  /* 전시 작품 사진은 자르지 않음 — 4:5 칸 안에 통째로, 남는 자리는 흰 벽(10/24 ⑫ A · Foam 'Artwork is never cropped'). 칸 높이는 그대로라 넘겨도 캡션이 흔들리지 않음 */
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 5px;margin-top:22px}
 .pgrid button{padding:0;border:0;background:none;text-align:left;cursor:pointer}
 .pgrid img{filter:grayscale(1)}
 .pgrid .no{display:block;margin-top:6px;font:300 11px/1 var(--sans);color:var(--faint);letter-spacing:.08em}
 /* 게시물 열어 보기(10/25 ⑤ A) — 여러 장짜리 게시물은 띠의 사진 오른쪽 위에 'N장', 누르면 그 게시물을 넘겨 보는 흰 창(맨 위 '2 / 20' · 닫기, 아래 캡션) */
 .strip .pop{display:block;position:relative;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
-.strip .many{position:absolute;top:10px;right:10px;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.9);font:500 11px/1 var(--sans);color:var(--ink);letter-spacing:.02em}
+.strip .many{position:absolute;top:10px;right:10px;padding:5px 8px;border-radius:999px;background:var(--chip);font:500 11px/1 var(--sans);color:var(--ink);letter-spacing:.02em}
 html.pv-on{overflow:hidden}
 .pv{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--bg);opacity:0;transform:translateY(14px);transition:opacity .3s ease,transform .3s ease}
 .pv.on{opacity:1;transform:none}
@@ -323,10 +329,10 @@ html.sr-on{overflow:hidden}
 .sr-res a{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--rule)}
 .sr-res .tg{font:300 11px/1.3 var(--sans);color:var(--faint)}
 .sr-res .tx{font:400 15.5px/1.5 var(--serif);color:var(--muted);word-break:keep-all}
-.sr-res .tx b{font-weight:400;color:var(--ink);box-shadow:inset 0 -.38em 0 #ececec}  /* 찾은 낱말 — 먹 + 옅은 밑바탕(색 없이) */
+.sr-res .tx b{font-weight:400;color:var(--ink);box-shadow:inset 0 -.38em 0 var(--mark)}  /* 찾은 낱말 — 먹 + 옅은 밑바탕(색 없이) */
 .sr-res .wh{font:300 11px/1 var(--sans);color:var(--faint);white-space:nowrap}
 .sr-none{margin-top:18px;font:14px/1.7 var(--body);color:var(--faint)}
-.hit{background:#f2f2f2;transition:background 1.4s ease}  /* 찾기 결과로 간 줄을 잠깐 */
+.hit{background:var(--ph);transition:background 1.4s ease}  /* 찾기 결과로 간 줄을 잠깐 */
 .hit[tabindex="-1"]:focus,.btoc[tabindex="-1"]:focus,section[tabindex="-1"]:focus{outline:none}  /* 찾기로 옮긴 포커스는 옅은 바탕이 대신 보여 줌 — 검은 테두리 없이 */
 .btoc{scroll-margin-top:calc(var(--top) + 16px)}  /* 찾기 · 추천 '시집 차례'로 오면 차례 머리가 맨 위 띠 아래에 */
 @media (min-width:768px){.srch .in{padding-top:72px}.srch input{font-size:30px}.srch .sug a,.srch .sug button{font-size:21px}}
@@ -358,7 +364,7 @@ html.sr-on{overflow:hidden}
 /* 작은 재생기(A 아래 띠, 10/24) — 재생 중에 영상이 화면에서 다 벗어나면 영상은 멈추고 이 띠가 올라옴. 누르면 영상 칸으로 돌아가 이어 재생.
    흐린 흰 바탕은 맨 위 띠와 같은 재료 · 아이폰 홈 막대 자리만큼 아래를 띄움 */
 .mini{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;align-items:center;gap:12px;height:calc(64px + env(safe-area-inset-bottom));
-  padding:0 10px env(safe-area-inset-bottom) 12px;background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  padding:0 10px env(safe-area-inset-bottom) 12px;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
   box-shadow:0 -1px 0 rgba(0,0,0,.08);transform:translateY(102%);visibility:hidden}
 .mini.on{transform:none;visibility:visible}
 .mini .pr{position:absolute;left:0;top:0;width:0;height:1.5px;background:var(--ink)}
@@ -375,7 +381,7 @@ html.sr-on{overflow:hidden}
 /* 첫 편 준비 중(10/24 B) — 고른 썸네일 시안을 흑백으로 + '준비 중'. 아직 못 보는 것은 흑백(사진 칸 '보는 한 장만 색'과 같은 뜻), 올리면 유튜브 썸네일(색) */
 .nt{position:relative;margin-top:22px;width:100%;aspect-ratio:16/9;min-height:200px;border-radius:4px;overflow:hidden;background:#111}  /* 폭을 정해 둬야 최소 높이가 최소 폭으로 번지지 않음(.vbox와 같음) */
 .nt img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(.95);opacity:.92}
-.nt b{position:absolute;right:10px;top:10px;display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.9);font:400 11px/1 var(--sans);color:var(--ink)}  /* 썸네일 제목(왼쪽 아래)을 가리지 않게 오른쪽 위 */
+.nt b{position:absolute;right:10px;top:10px;display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;background:var(--chip);font:400 11px/1 var(--sans);color:var(--ink)}  /* 썸네일 제목(왼쪽 아래)을 가리지 않게 오른쪽 위 */
 .nt b i{display:block;width:6px;height:6px;border-radius:50%;background:var(--ink)}
 .cr{margin-top:5px;font:300 11px/1.4 var(--sans);color:var(--faint)}  /* 스틸 출처 — 사진 칸 캡션의 출처 줄과 같은 결 */
 @keyframes nxp{50%{opacity:.2}}
@@ -406,9 +412,9 @@ html.sr-on{overflow:hidden}
 .ask input:focus,.ask textarea:focus{border-color:var(--ink)}
 .ask .agree{display:flex;gap:8px;align-items:flex-start;font:300 12.5px/1.5 var(--sans);letter-spacing:0;color:var(--muted)}
 .ask .agree input{margin-top:2px;width:14px;height:14px;accent-color:var(--ink);flex:none}
-.send{justify-self:start;font:600 14px/1 var(--sans);padding:12px 24px;border:1.5px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-@media (hover:hover){.send:hover{background:var(--ink);color:#fff}}  /* 마우스에서만 — 아이폰에서 누른 뒤 검게 남지 않게 */
-.send:active{background:var(--ink);color:#fff}  /* 누르는 동안 먹으로(10/24 ⑨ A) */
+.send{justify-self:start;font:600 14px/1 var(--sans);padding:12px 24px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:999px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+@media (hover:hover){.send:hover{background:var(--ink);color:var(--bg)}}  /* 마우스에서만 — 아이폰에서 누른 뒤 검게 남지 않게 */
+.send:active{background:var(--ink);color:var(--bg)}  /* 누르는 동안 먹으로(10/24 ⑨ A) */
 .msg{min-height:1.4em;font:300 12.5px/1.5 var(--sans);color:var(--muted)}
 .hp{position:absolute;left:-9999px}
 .sns{margin-top:30px;display:flex;gap:18px;font:300 12.5px/1 var(--sans);color:var(--muted)}
@@ -420,6 +426,10 @@ html.sr-on{overflow:hidden}
 .colo dt{color:var(--faint)}
 .colo dd{color:var(--muted)}
 .colo .c{margin-top:16px;font:300 11px/1.6 var(--sans);color:var(--faint)}
+.colo .thm{display:none}.js .colo .thm{display:block}  /* 화면 고르기 — 자바스크립트가 있어야 바뀌므로 그때만 */
+.colo .thm button{padding:0;border:0;background:none;font:inherit;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.colo .thm button[aria-pressed="true"]{color:var(--ink);font-weight:600;box-shadow:inset 0 -1px 0 currentColor}
+.colo .thm button:hover{color:var(--ink)}
 
 
 /* 첫 방문의 문 — '문을 열고 나오면'이 적힌 검은 두 문짝 → 문틈의 빛 → 열리면 사이트(html.intro일 때만, head의 짧은 스크립트가 붙임) */
