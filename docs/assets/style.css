@@ -450,6 +450,17 @@ html.sr-on{overflow:hidden}
 .colo dt{color:var(--faint)}
 .colo dd{color:var(--muted)}
 .colo .c{margin-top:16px;font:300 11px/1.6 var(--sans);color:var(--faint)}
+.colo .pp-l{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}  /* 개인정보 처리방침 쪽(10/27) */
+/* 개인정보 처리방침 쪽(10/27) — 한 단 640px · 칸 제목은 작은 고딕 · 항목은 명조 본문에 가는 줄(시집 소식 · 방명록과 같은 결) */
+.pp{max-width:640px;margin:0 auto;padding:56px 20px calc(72px + env(safe-area-inset-bottom))}
+.pp h1{margin-top:0}
+.pp h2{margin-top:36px;font:600 11px/1.5 var(--sans);letter-spacing:.06em;color:var(--muted)}
+.pp ul{list-style:none;margin:12px 0 0;padding:0}
+.pp li{padding:11px 0;border-top:1px solid var(--rule);font:14.5px/1.75 var(--body);color:var(--ink);word-break:keep-all;text-wrap:pretty}
+.pp ul li:last-child{border-bottom:1px solid var(--rule)}
+.pp .up{margin-top:30px;font:300 11px/1 var(--sans);color:var(--faint)}
+.pp .bk{margin-top:26px;display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
+.pp .oth{font:300 12.5px/1 var(--sans);color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}
 .colo .thm{display:none}.js .colo .thm{display:block}  /* 화면 고르기 — 자바스크립트가 있어야 바뀌므로 그때만 */
 .colo .thm button{padding:0;border:0;background:none;font:inherit;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent}
 .colo .thm button[aria-pressed="true"]{color:var(--ink);font-weight:600;box-shadow:inset 0 -1px 0 currentColor}

@@ -1,0 +1,67 @@
+{
+  "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로",
+  "updated": "2026-10-27",
+  "title": {"ko": "개인정보 처리방침", "en": "Privacy policy"},
+  "lead": {
+    "ko": "이 사이트는 남동원이 직접 운영하는 개인 사이트입니다. 방문하시는 것만으로는 개인정보를 모으지 않고, 쿠키를 쓰지 않습니다. 직접 글을 남기실 때만 아래 정보를 받습니다.",
+    "en": "This is a personal site run by Dongwon Nam. Visiting it collects no personal information, and it uses no cookies. Information is received only when you choose to leave a note or message, as described below."
+  },
+  "sections": [
+    {
+      "h": {"ko": "1. 받는 정보와 쓰는 곳", "en": "1. What is received and why"},
+      "items": [
+        {"ko": "방명록 — 이름(선택)과 글을 받아, 방명록에 골라 싣는 데 씁니다. 보내실 때 Formspree가 보낸 시각과 접속 정보(IP 주소 등)를 함께 적습니다.",
+         "en": "Guestbook — your name (optional) and note, used only to choose notes for the guestbook. When you send, Formspree also records the time and connection details (such as the IP address)."},
+        {"ko": "문의(문의 폼을 연결한 뒤) — 이름(선택) · 메일 · 내용을 받아, 답장하는 데 씁니다.",
+         "en": "Contact form (once connected) — your name (optional), email and message, used only to reply."},
+        {"ko": "방명록에서는 메일 · 전화번호 같은 연락처를 받지 않습니다.",
+         "en": "The guestbook does not ask for an email address, phone number or other contact details."}
+      ]
+    },
+    {
+      "h": {"ko": "2. 얼마나 두고, 언제 지우나", "en": "2. How long it is kept"},
+      "items": [
+        {"ko": "방명록에 실리지 않은 글은 받은 날부터 30일 안에 지웁니다.",
+         "en": "Guestbook notes that are not published are deleted within 30 days of receipt."},
+        {"ko": "방명록에 실린 글은 사이트에 남습니다. 내려 달라고 하시면 바로 내립니다.",
+         "en": "Published notes stay on the site and are removed as soon as you ask."},
+        {"ko": "문의는 답장한 뒤 6개월 안에 지웁니다.",
+         "en": "Contact messages are deleted within six months of my reply."}
+      ]
+    },
+    {
+      "h": {"ko": "3. 국외로 옮겨지는 정보", "en": "3. Transfer outside Korea"},
+      "items": [
+        {"ko": "받는 자: Formspree(미국) — 남기신 글은 이 업체를 거쳐 남동원의 메일함으로 옵니다.",
+         "en": "Recipient: Formspree (United States) — your note passes through this service on its way to Dongwon Nam’s mailbox."},
+        {"ko": "옮겨지는 정보: 1절에 적은 받는 정보.",
+         "en": "What is transferred: the information listed in section 1."},
+        {"ko": "때와 방법: 보내기를 누를 때, 인터넷으로.",
+         "en": "When and how: when you press send, over the internet."},
+        {"ko": "받는 자가 쓰는 곳과 두는 기간: 메일함으로 전달 · Formspree 보관함에 30일.",
+         "en": "Purpose and retention at the recipient: forwarding to the mailbox; kept in Formspree’s inbox for 30 days."},
+        {"ko": "거부하는 법: 동의 칸에 체크하지 않으시면 보내지지 않습니다. 이때는 인스타그램 메시지나 메일로 연락하실 수 있습니다.",
+         "en": "How to refuse: if you don’t tick the consent box, nothing is sent. You can still reach me by Instagram message or email."}
+      ]
+    },
+    {
+      "h": {"ko": "4. 저절로 모이는 정보", "en": "4. Information stored automatically"},
+      "items": [
+        {"ko": "쿠키를 쓰지 않습니다.",
+         "en": "No cookies are used."},
+        {"ko": "이 기기의 브라우저 저장소에 둘을 적어 둡니다 — 첫 방문 문 장면을 한 번 보았는지, 고른 화면(밝게 · 어둡게 · 시스템). 이 기기에만 남고 저에게 오지 않으며, 브라우저의 사이트 데이터 지우기로 지울 수 있습니다.",
+         "en": "Two small settings are kept in this browser’s storage — whether you have already seen the opening door scene, and your chosen display (light, dark or system). They stay on this device, are never sent to me, and can be removed by clearing this site’s data in your browser."}
+      ]
+    },
+    {
+      "h": {"ko": "5. 요청하는 법", "en": "5. Your requests"},
+      "items": [
+        {"ko": "남기신 정보를 보거나, 고치거나, 지우거나, 쓰지 말아 달라고 하실 수 있습니다. 연락 칸의 인스타그램 메시지나 메일로 말씀해 주세요. 개인정보 보호 책임자는 남동원입니다.",
+         "en": "You can ask to see, correct, delete or stop the use of anything you have left. Please write via the Instagram message or email in the contact section. The person responsible for personal information is Dongwon Nam."}
+      ]
+    }
+  ],
+  "updated_label": {"ko": "고친 날", "en": "Last updated"},
+  "back": {"ko": "← 남동원으로", "en": "← Back to Dongwon Nam"},
+  "other": {"ko": "English", "en": "한국어"}
+}

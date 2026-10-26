@@ -765,11 +765,12 @@ def render(site, poem, videos, photos, lang="ko"):
     # 화면 밝게 · 어둡게 · 시스템(10/26 A 먹 종이) — 판권면 줄, 처음은 밝게 · 누르면 main.js가 이 기기에 기억
     thm = " · ".join(f'<button type="button" data-th="{k}" aria-pressed="{"true" if k == "light" else "false"}">{e(x)}</button>'
                      for k, x in zip(("system", "light", "dark"), L["theme_opts"].split("|")))
+    pp_link = f' <a class="pp-l" href="privacy/">{t("gb_privacy")}</a>' if (CONTENT / "privacy.json").exists() else ""  # 처리방침 쪽(10/27) — '쿠키를 쓰지 않습니다' 옆
     colo = (f'<div class="colo"><p class="t">{e(urlparse(base).netloc or base)}</p><dl>'
             f'<dt>{t("colo_updated")}</dt><dd><time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</dd>'
             f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd><dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd>'
             f'<dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd></dl>'  # 글꼴 줄은 뺌(10/26 동원 "사이트에 내 글꼴 소개하지 않아도 되잖아 지워" — 라이선스 글은 글꼴 옆에 그대로)
-            f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{t("colo_cookie")}</p></div>')
+            f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{t("colo_cookie")}{pp_link}</p></div>')
 
     secs = ("me", "poem", "photo", "video", "contact")
     nav = "".join(f'<a href="#{sid}">{e(x)}</a>' for sid, x in zip(secs, L["nav"]))  # 소개가 먼저(10/25 동원 "나를 알리는 게 먼저")
@@ -956,6 +957,35 @@ def render(site, poem, videos, photos, lang="ko"):
 """
 
 
+def page_privacy(site, lang):
+    # 개인정보 처리방침 한 쪽(10/27 — 방명록 · 문의 폼을 켜기 전에, 초안 `기준/개인정보 처리방침 초안_v1.md`). content/privacy.json이 없으면 만들지 않음.
+    # 한국어 docs/privacy/ · 영어 docs/en/privacy/ — 검색에는 내지 않음(noindex) · 고른 화면(어두운 모드)은 첫 그림 전에 · 글자는 사이트 글꼴(쓰인 글자 모으기에 함께 넣음)
+    if not (CONTENT / "privacy.json").exists():
+        return None
+    p, en = load("privacy.json"), lang == "en"
+    g = lambda d: e(d["en"] if en else d["ko"])  # noqa: E731
+    R = "../../" if en else "../"  # 쪽 자리에서 docs/ 맨 위까지
+    base = site["base_url"].rstrip("/")
+    d = date.fromisoformat(p["updated"])
+    when = f"{MONTHS[d.month - 1]} {d.day}, {d.year}" if en else f"{d.year}년 {d.month}월 {d.day}일"
+    secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{g(i)}</li>" for i in x["items"])}</ul>' for x in p["sections"])
+    other_lang, other_href = ("ko", "../../privacy/") if en else ("en", "../en/privacy/")
+    return f"""<!doctype html>
+<html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{g(p["title"])} — {e(site["en"]["name"] if en else site["name"])}</title><meta name="robots" content="noindex">
+<link rel="canonical" href="{e(base)}{"/en" if en else ""}/privacy/"><meta name="theme-color" content="#ffffff">
+<link rel="icon" href="{R}favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="{R}assets/style.css">
+<script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
+<body><main class="pp">
+<h1 class="h2">{g(p["title"])}</h1>
+<p class="lead">{g(p["lead"])}</p>
+{secs}
+<p class="up">{g(p["updated_label"])} <time datetime="{d.isoformat()}">{when}</time></p>
+<p class="bk"><a class="buy" href="../">{g(p["back"])}</a><a class="oth" href="{other_href}" lang="{other_lang}" hreflang="{other_lang}">{g(p["other"])}</a></p>
+</main></body></html>
+"""
+
+
 def page_404(site):
     # 없는 쪽 하나(GitHub Pages는 맨 위 404.html 하나만 씀) — 한국어와 영어를 함께
     ui = load("ui.json")
@@ -1000,7 +1030,8 @@ def main():
 
     # 쪽을 먼저 만들어 쓰인 글자를 모은 뒤, 그 글자만 남겨 글꼴을 줄임
     index_html, en_html, page404 = render(site, poem, videos, photos), render(site, poem, videos, photos, "en"), page_404(site)
-    text = used_text([index_html, en_html, page404])
+    priv = {lg: page_privacy(site, lg) for lg in ("ko", "en")}  # 처리방침 쪽(없으면 None)
+    text = used_text([index_html, en_html, page404, *(x for x in priv.values() if x)])
     srcs = {}
     title_text = unicodedata.normalize("NFC", "".join(site["book"]["display"]["big"]) + " " + ALWAYS[95:])  # 굵기 300 판에 담을 글자(큰 제목 + 빈칸 · 부호 — 영문 · 숫자는 빼고 가볍게)
     for name, root, must, out, rename in FONTS:
@@ -1068,6 +1099,11 @@ def main():
     (DOCS / "en").mkdir()
     (DOCS / "en" / "index.html").write_text(en_html, encoding="utf-8")
     (DOCS / "404.html").write_text(page404, encoding="utf-8")
+    for lg, html in priv.items():
+        if html:
+            d = DOCS / ("en/privacy" if lg == "en" else "privacy")
+            d.mkdir(parents=True, exist_ok=True)
+            (d / "index.html").write_text(html, encoding="utf-8")
     (DOCS / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n", encoding="utf-8")
     (DOCS / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
