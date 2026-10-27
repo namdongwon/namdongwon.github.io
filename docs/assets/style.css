@@ -469,6 +469,7 @@ html.sr-on{overflow:hidden}
 .colo dd{color:var(--muted)}
 .colo .c{margin-top:16px;font:300 11px/1.6 var(--sans);color:var(--faint)}
 .colo .pp-l{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}  /* 개인정보 처리방침 쪽(10/27) */
+.colo .end{margin-top:30px;font:400 15px/1.7 var(--serif);color:var(--ink);letter-spacing:.01em;word-break:keep-all}  /* 끝맺음 한 줄 — 사실 목록 뒤 명조 한 줄로 닫음(10/27 경험 설계 4-① · 정점-끝) */
 /* 개인정보 처리방침 쪽(10/27) — 한 단 640px · 칸 제목은 작은 고딕 · 항목은 명조 본문에 가는 줄(시집 소식 · 방명록과 같은 결) */
 .pp{max-width:640px;margin:0 auto;padding:56px 20px calc(72px + env(safe-area-inset-bottom))}
 .pp h1{margin-top:0}

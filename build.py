@@ -888,7 +888,8 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<dt>{t("colo_updated")}</dt><dd><time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</dd>'
             f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd><dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd>'
             f'<dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd></dl>'  # 글꼴 줄은 뺌(10/26 동원 "사이트에 내 글꼴 소개하지 않아도 되잖아 지워" — 라이선스 글은 글꼴 옆에 그대로)
-            f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{t("colo_cookie")}{pp_link}</p></div>')
+            f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{t("colo_cookie")}{pp_link}</p>'
+            f'<p class="end">{t("colo_end")}</p></div>')  # 사이트의 끝 — 책 '읽어 주신 분들께'의 맺음 인사(10/27 경험 설계 '끝까지 온 사람을 맞이하나?' · 동원 "B1 좋은 아침")
 
     secs = ("me", "poem", "photo", "video", "contact")
     nav = "".join(f'<a href="#{sid}">{e(x)}</a>' for sid, x in zip(secs, L["nav"]))  # 소개가 먼저(10/25 동원 "나를 알리는 게 먼저")
