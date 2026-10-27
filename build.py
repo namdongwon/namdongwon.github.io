@@ -86,6 +86,17 @@ def build_day():
     return date.fromisoformat(s) if s else datetime.now(ZoneInfo("Asia/Seoul")).date()
 
 
+def goatcounter(site):
+    # 방문 셈(10/27 동원 "수락 — GoatCounter 자리 미리 만들어 줘"): site.json analytics.goatcounter에 GoatCounter 이름(주소 앞부분 — 이름.goatcounter.com)을
+    # 넣으면 켜지고 비면 꺼짐. 쿠키 없음 · IP 주소 저장 안 함[출처 goatcounter.com/privacy]. 켜려면 처리방침에 방문 셈 문구(privacy.json의 when "goatcounter")가 먼저 있어야 함
+    code = ((site.get("analytics") or {}).get("goatcounter") or "").strip()
+    if code and not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,62}", code):
+        raise SystemExit(f"GoatCounter 이름은 주소 앞부분만(영문 소문자 · 숫자 · -, 예: namdongwon) — 지금 '{code}'")
+    if code and not any(i.get("when") == "goatcounter" for s in (load("privacy.json")["sections"] if (CONTENT / "privacy.json").exists() else []) for i in s["items"]):
+        raise SystemExit("방문 셈(analytics.goatcounter)을 켜려면 개인정보 처리방침(content/privacy.json)에 방문 셈 문구(when \"goatcounter\")가 먼저 있어야 함")
+    return code
+
+
 def book_card(site):
     # 출간일 공유 카드(10/27 동원 "공유 카드는 B로 하자"): 나온 날(book.published)부터 book.card_until 전날까지는 링크 미리보기를 책 카드로
     # (그림 og-book.jpg · og-book-en.jpg + og:title을 책 제목으로) — 그 밖엔 이름 카드. 정적 사이트라 그날 뒤 처음 빌드할 때 바뀜
@@ -611,7 +622,9 @@ def render(site, poem, videos, photos, lang="ko"):
     title = f'{S["name"]} — {S["tagline"]}'
     # 링크 미리보기(og): 출간일 책 카드 기간에는 책 그림 · 책 제목(10/27 B — book_card), 그 밖엔 이름 카드 · 이름 제목. 탭 제목(<title>)은 늘 이름
     card = book_card(site)
-    og_img = ("og-book-en.jpg" if en else "og-book.jpg") if card else ("og-en.jpg" if en else "og.jpg")
+    gc = goatcounter(site)  # 방문 셈(10/27) — GoatCounter가 알려 준 꼴 그대로(쪽 맨 끝, async)[출처 goatcounter.com/help/start]
+    gc_tag = f'<script data-goatcounter="https://{gc}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n' if gc else ""
+    og_img =("og-book-en.jpg" if en else "og-book.jpg") if card else ("og-en.jpg" if en else "og.jpg")
     og_title = L["og_book_title"].format(title=book["title"], name=S["name"]) if card else title
     links = [l for l in S["links"] if l["url"]]
     ld = {"@context": "https://schema.org", "@type": "Person", "name": S["name"], "alternateName": site["name"] if en else site["en"]["name"],
@@ -1026,7 +1039,7 @@ def render(site, poem, videos, photos, lang="ko"):
 {sheet}
 {pv}{srch}<script id="ui" type="application/json">{ui_js}</script>
 <script src="{P}assets/main.js" defer onerror="document.documentElement.classList.remove('js','intro')"></script>
-</body>
+{gc_tag}</body>
 </html>
 """
 
@@ -1042,7 +1055,11 @@ def page_privacy(site, lang):
     base = site["base_url"].rstrip("/")
     d = date.fromisoformat(p["updated"])
     when = f"{MONTHS[d.month - 1]} {d.day}, {d.year}" if en else f"{d.year}년 {d.month}월 {d.day}일"
-    secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{g(i)}</li>" for i in x["items"])}</ul>' for x in p["sections"])
+    # when이 붙은 줄은 그것을 켰을 때만(방문 셈 when "goatcounter" — 10/27) · 방문 셈을 켜면 첫 문단도 lead_counted로
+    on = {"goatcounter": bool(goatcounter(site))}
+    shown = lambda items: [i for i in items if on.get(i.get("when"), True)]  # noqa: E731
+    lead = p["lead_counted"] if on["goatcounter"] and p.get("lead_counted") else p["lead"]
+    secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{g(i)}</li>" for i in shown(x["items"]))}</ul>' for x in p["sections"])
     other_lang, other_href = ("ko", "../../privacy/") if en else ("en", "../en/privacy/")
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1052,7 +1069,7 @@ def page_privacy(site, lang):
 <script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
 <body><main class="pp">
 <h1 class="h2">{g(p["title"])}</h1>
-<p class="lead">{g(p["lead"])}</p>
+<p class="lead">{g(lead)}</p>
 {secs}
 <p class="up">{g(p["updated_label"])} <time datetime="{d.isoformat()}">{when}</time></p>
 <p class="bk"><a class="buy" href="../">{g(p["back"])}</a><a class="oth" href="{other_href}" lang="{other_lang}" hreflang="{other_lang}">{g(p["other"])}</a></p>

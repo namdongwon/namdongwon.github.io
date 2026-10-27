@@ -121,6 +121,14 @@
 - 칸 이름(10/26 동원 "소개나 시집 이런 대분류들도 검색될 수 있게"): 맨 위 막대의 다섯 칸(소개 · 시집 · 인스타그램 · 유튜브 · 연락)이 결과 맨 위에 '칸'으로 나옵니다. 칸 이름에 없는 말로도 찾게 칸마다 낱말을 둡니다 — `ui.json`의 `search_sec_keys`('|'로 나눈 다섯, 칸 안은 띄어 씀 — 예: '약력' → 소개, '교보' → 시집), 결과 오른쪽 글은 `search_sec_where`. 초성만 치면 낱말 첫머리만 견줍니다.
 - 화면 낱말은 `ui.json`의 `search_…`(갈래 이름 `search_tags`는 '|'로 나눈 아홉 — 차례 · 「탁본」 · 시집 · 소개 · 소식 · 사진 · 영상 · 연락 · 칸 차례 그대로).
 
+## 방문 셈 — GoatCounter (10/27 자리만, 이름을 넣으면 켜짐)
+
+- 켜기: GoatCounter에 가입한 이름(주소 앞부분 — `이름.goatcounter.com`)을 `site.json`의 `analytics.goatcounter`에 넣고 빌드 · 올리기. 비어 있으면 꺼짐(지금). 이름 꼴(영문 소문자 · 숫자 · -)이 아니면 빌드가 멈춤.
+- 켜지면: 한 · 영 첫 쪽 맨 끝에 GoatCounter가 알려 준 한 줄(`data-goatcounter="https://이름.goatcounter.com/count"` · async · `//gc.zgo.at/count.js`)이 붙고, 처리방침에 방문 셈 문구(첫 문단 `lead_counted` · 3절 · 4절의 `when: "goatcounter"` 줄)가 함께 나옴. 그 문구가 `privacy.json`에 없으면 빌드가 켜지 않음. 켜는 날 `privacy.json`의 `updated`를 그날로.
+- 쿠키 없음 · IP 주소 저장 안 함 · 합계만(GoatCounter 개인정보 방침) — 판권면 '쿠키를 쓰지 않습니다'는 그대로 맞음. 동의 창은 두지 않음(처리방침에 밝힘).
+- 내 방문 빼기: 기기마다 한 번 사이트 주소 끝에 `#toggle-goatcounter`를 붙여 열기, 또는 GoatCounter 설정 Tracking → Ignore IPs.
+- 관리 화면 '숫자' · 출간 전 묶음의 GoatCounter 칸은 docs의 `data-goatcounter` 줄을 읽어 '됨'으로 바뀜(관리 화면 세션).
+
 ## 연락 칸 — 문의
 
 - 문의 폼은 Formspree에 이어야 보내집니다. `site.json`의 `contact.formspree_id`가 비어 있는 동안은 폼을 접고 '인스타그램 메시지로 남기기 ↗' 한 줄만 둡니다(`ui.json`의 `ask_off`, 주소는 links의 `instagram` — 10/25 다듬기 가4, 전에는 다 쓰고 보낸 뒤에야 연결 전인 걸 알았음). 폼 번호를 넣고 빌드하면 이름 · 메일 · 내용 · 동의 폼이 다시 나옵니다 — 그때 동의 줄의 보관 기간을 함께 정합니다(다듬기 후보 나9).

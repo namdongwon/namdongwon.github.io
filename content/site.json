@@ -550,6 +550,9 @@
       "domain": "gmail.com"
     }
   },
+  "analytics": {
+    "goatcounter": ""
+  },
   "links": [
     {
       "id": "instagram",
