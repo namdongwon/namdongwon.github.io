@@ -47,43 +47,71 @@
   if (nameEl) nameEl.classList.add("ty");
 
   // 서 있는 책(10/24) — 26°로 서 있고, 옆으로 밀면 돌아가 책등·뒤표지, 놓으면 제자리. 첫 화면 책과 시집 칸 책 카드가 같은 손맛(10/25 시집 칸 A 손으로만)
-  const turnable = bk => {
-    const b = bk.querySelector(".b"), REST = 26;
-    let ry = REST, run = 0, drag = null;
+  // 첫 화면 책은 누르기 · 키보드로도(10/27 점검 a11y 10 — 끌기로만 되던 것): 살짝 누르기 · Enter · Space는 TAP대로, ← → 는 한 면씩
+  const TAP = "around";  // "around" 한 바퀴(책등 · 뒤표지를 차례로 보이고 제자리) · "step" 누를 때마다 한 면씩(그 면에 머묾)
+  const turnable = (bk, keys) => {
+    const b = bk.querySelector(".b"), REST = 26, FACES = [REST, 90, 180 + REST];  // 앞표지 · 책등 · 뒤표지 각도
+    let ry = REST, run = 0, drag = null, face = 0, seq = 0;
     const set = v => { ry = v; b.style.setProperty("--ry", v.toFixed(2) + "deg"); };
     const take = () => {  // CSS가 잡고 있던 각도(처음 자세·4초 안전 장치)를 그대로 넘겨받음 — 시집 칸 책은 처음부터 on이라 26°에서 시작
       if (bk.classList.contains("on")) return;
       set(parseFloat(getComputedStyle(b).getPropertyValue("--ry")) || REST);
       bk.classList.add("on");
     };
-    const tween = (to, ms) => {
+    const tween = (to, ms, done) => {
       const from = ry, t0 = performance.now(), id = ++run;
       const step = now => {
         if (id !== run) return;
         const p = Math.min(1, (now - t0) / ms);
         set(from + (to - from) * (1 - Math.pow(1 - p, 4)));
-        if (p < 1) requestAnimationFrame(step);
+        if (p < 1) requestAnimationFrame(step); else if (done) done();
       };
       requestAnimationFrame(step);
     };
+    const go = (f, ms = 700, done) => {  // f번째 면으로 — 도는 쪽 그대로(뒤표지 다음 앞표지는 한 바퀴 더 돌아 제자리)
+      take();
+      const n = FACES.length, next = ((f % n) + n) % n, fwd = f >= face;
+      let to = FACES[next];
+      if (fwd) while (to <= ry + 1) to += 360; else while (to >= ry - 1) to -= 360;
+      face = next;
+      const end = () => { set(FACES[next]); if (done) done(); };
+      if (reduce) end(); else tween(to, ms, end);
+    };
+    const around = () => {  // 한 바퀴 — '움직임 줄이기'면 한 면씩
+      if (reduce) return go(face + 1);
+      const id = ++seq, k = face, hold = (ms, f) => setTimeout(() => { if (id === seq) f(); }, ms);
+      go(k + 1, 650, () => hold(450, () => go(k + 2, 750, () => hold(550, () => go(k + 3, 900)))));
+    };
+    const press = () => { if (TAP === "around") around(); else { seq++; go(face + 1); } };
     bk.addEventListener("pointerdown", e => {
       if (e.button) return;
       take();
       run++;
-      drag = { x: e.clientX, ry };
+      seq++;
+      drag = { x: e.clientX, ry, t: performance.now() };
       bk.classList.add("drag");
       try { bk.setPointerCapture(e.pointerId); } catch {}
     });
     bk.addEventListener("pointermove", e => { if (drag) set(drag.ry + (e.clientX - drag.x) * 0.9); });
-    const up = () => {
+    const up = e => {
       if (!drag) return;
+      const tap = keys && e.type === "pointerup" && Math.abs(e.clientX - drag.x) < 6 && performance.now() - drag.t < 350;  // 살짝 누름
       drag = null;
       bk.classList.remove("drag");
+      if (tap) return press();
+      face = 0;
       if (reduce) set(REST);
       else tween(REST, 1100);
     };
     bk.addEventListener("pointerup", up);
     bk.addEventListener("pointercancel", up);  // 세로로 밀어 화면이 넘어가면 브라우저가 가져감 → 제자리
+    if (keys) {
+      bk.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); press(); }
+        else if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); seq++; go(face + (e.key === "ArrowRight" ? 1 : -1)); }
+      });
+      bk.addEventListener("blur", () => { if (!face) return; seq++; face = 0; if (reduce) set(REST); else tween(REST, 900); });  // 다른 데로 가면 제자리
+    }
     return { turnIn: () => { if (!drag) { take(); tween(REST, 1000); } } };
   };
   // 첫 화면 책만 처음에 책등이 보이게 비스듬히(78°) 서 있다가 26°로 돌아섬. 돌아서는 때는 문 장면이 정함
@@ -91,7 +119,7 @@
   const bk = home && home.querySelector(".bk");
   let bookIn = () => {};
   if (bk) {
-    const t = turnable(bk);
+    const t = turnable(bk, true);
     if (motion) bookIn = t.turnIn;
   }
   const cardBook = document.querySelector(".pbook .bk");  // 시집 칸 책 카드 — 들어올 때 돌아서지 않고 만질 때만(10/25 A)
@@ -274,7 +302,8 @@
       if (on) {
         if (!was) ul.style.transition = "none";  // 처음 나타날 땐 그 자리에서(왼쪽 끝에서 미끄러져 오지 않게)
         ul.style.width = on.offsetWidth - (parseFloat(getComputedStyle(on).letterSpacing) || 0) + "px";  // 글자 뒤 자간(.12em)만큼 빼서 글자 폭에 맞춤
-        ul.style.transform = `translateX(${on.offsetLeft}px)`;
+        const dy = on.offsetTop + on.offsetHeight - nav.clientHeight;  // 메뉴가 두 줄이면(글 간격을 넓힌 읽기 도구 등 — 돋보기 · 언어 단추가 아랫줄로) 밑줄도 그 칸 이름의 줄 바닥으로
+        ul.style.transform = `translate(${on.offsetLeft}px, ${Math.abs(dy) > 2 ? dy : 0}px)`;  // 한 줄일 때는 반올림 차이로 1px 흔들리지 않게 0
         if (!was) { void ul.offsetWidth; ul.style.transition = ""; }
       }
       ul.classList.toggle("on", !!on);
@@ -516,12 +545,13 @@
       if (list.length < 2) return;
       n = list.length;
       from = btn;
-      const alt = (btn.querySelector("img") || {}).alt || "";
+      const sim = btn.querySelector("img") || {}, alt = sim.alt || "";
       view.textContent = "";
       list.forEach((src, k) => {
         const f = document.createElement("figure"), img = document.createElement("img");
         if (k > 1) img.dataset.src = src; else img.src = src;  // 셋째 장부터는 넘길 때 한 장 앞씩(10/27 점검 — 열 때 여러 장을 한꺼번에 받아 둘째 장이 늦었음)
         img.alt = `${alt} (${k + 1} / ${n})`;
+        if (sim.lang) img.lang = sim.lang;  // 영어판의 한국어 대체 글은 한국어로(띠의 사진과 같게)
         f.append(img);
         view.append(f);
       });
@@ -554,7 +584,7 @@
     });
   }
 
-  // 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기(또는 '/' 키)로 흰 한 장을 열고, 빌드가 쪽에 넣은 찾을 거리(#sidx)에서 찾음.
+  // 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기(또는 ⌘K · Ctrl+K)로 흰 한 장을 열고, 빌드가 쪽에 넣은 찾을 거리(#sidx)에서 찾음.
   // 띄어쓰기 · 부호 · 영문 대소문자 무시 · 초성만 쳐도(ㅌㅂ → 탁본). 검색어는 이 기기 밖으로 나가지 않음 · 열면 나머지 쪽은 inert · Esc나 '닫기'로 닫고 포커스는 돋보기로
   const sq = document.querySelector(".sq"), srch = document.querySelector(".srch"), sidx = document.getElementById("sidx");
   if (sq && srch && sidx) {
@@ -569,6 +599,8 @@
     // 견줄 글(빈칸 · 부호를 뺀 소문자) + 원래 글의 자리 — 찾은 낱말을 원래 글에서 굵게 감쌀 때 씀
     const norm = s => { const o = [], m = []; [...s.normalize("NFC")].forEach((c, i) => { if (!skip.test(c)) { o.push(c.toLowerCase()); m.push(i); } }); return [o.join(""), m]; };
     const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    // 영어판 결과의 한국어(시 행 · 원제 '탁본')는 한국어로 읽히게 감쌈 — 태그 사이 글만(10/27 점검 a11y 9)
+    const ko = s => H.lang === "en" ? s.replace(/[가-힣ㄱ-ㅎ](?:[가-힣ㄱ-ㅎ\s·「」『』〈〉《》,.!?“”‘’()—–-]*[가-힣ㄱ-ㅎ」』〉》])?/g, w => `<span lang="ko">${w}</span>`) : s;
     const find = q => {
       const [nq] = norm(q);
       if (!nq) return [];
@@ -593,7 +625,7 @@
       res.innerHTML = hits.map(h => {
         const ext = /^https?:/.test(h.it[3]);
         return `<li><a href="${esc(h.it[3])}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="tg">${esc(h.it[0])}</span>` +
-          `<span class="tx">${h.html}</span><span class="wh">${esc(h.it[2])}</span></a></li>`;
+          `<span class="tx">${ko(h.html)}</span><span class="wh">${ko(esc(h.it[2]))}</span></a></li>`;
       }).join("");
       none.hidden = empty || hits.length > 0;
       clearTimeout(sayT);
@@ -618,7 +650,7 @@
       srch.hidden = true;
       H.classList.remove("sr-on");
       others(false);
-      if (back) (from && from !== document.body ? from : sq).focus();  // '/'로 열었으면 돋보기로
+      if (back) (from && from !== document.body ? from : sq).focus();  // 포커스 없이(⌘K) 열었으면 돋보기로
     };
     // 결과로 가기 — 사진은 그 장으로 넘기고, 나머지는 그 줄을 화면 가운데에 두고 잠깐 옅은 바탕
     const goTo = href => {
@@ -657,11 +689,10 @@
       shut(false);
       goTo(href);
     });
+    // ⌘K · Ctrl+K로 열기(10/27 동원 "A 조합 키" — 전엔 '/' 한 글자라 음성 입력 · 한 키 탐색에서 뜻하지 않게 열렸음, WCAG 2.1.4). 한글 자판이어도 K 자리(code)로
     document.addEventListener("keydown", ev => {
-      const a = document.activeElement;
-      const other = [...document.querySelectorAll('[aria-modal="true"]')].some(d => d !== srch && !d.hidden);
-      if (ev.key === "/" && !ev.metaKey && !ev.ctrlKey && !ev.altKey && srch.hidden && !other &&
-          !(a && (/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) || a.isContentEditable))) { ev.preventDefault(); open(); }
+      const other = [...document.querySelectorAll('[aria-modal="true"]')].some(d => d !== srch && !d.hidden);  // 다른 창(게시물 · 「탁본」 한 장)이 열려 있으면 무시
+      if ((ev.metaKey || ev.ctrlKey) && !ev.altKey && !ev.shiftKey && (ev.code === "KeyK" || (ev.key || "").toLowerCase() === "k") && srch.hidden && !other) { ev.preventDefault(); open(); }
     });
   }
 

@@ -38,7 +38,7 @@
   },
   "switch_label": {
     "ko": "KO — English",
-    "en": "EN — 한국어"
+    "en": "EN — Korean"
   },
   "home_label": {
     "ko": "첫 화면",
@@ -57,8 +57,8 @@
     "en": "· First poetry collection · A web exhibition"
   },
   "ex_tip": {
-    "ko": "책을 옆으로 밀어 보세요 — 앞표지 · 책등 · 뒤표지",
-    "en": "Drag the book sideways — front, spine, back"
+    "ko": "책을 밀거나 눌러 보세요 — 앞표지 · 책등 · 뒤표지",
+    "en": "Drag or tap the book — front, spine, back"
   },
   "ex_object": {
     "ko": "작품",
@@ -503,5 +503,17 @@
       "gb_sent": "Received. I’ll read it on Monday.",
       "gb_full": "The guestbook is full for this month. Please try again next month."
     }
+  },
+  "pop_post": {
+    "ko": "게시물 {i} / {n}",
+    "en": "Post {i} of {n}"
+  },
+  "toc_here": {
+    "ko": "— 여기서 읽기",
+    "en": "— read it here"
+  },
+  "turn_label": {
+    "ko": "시집 『{book}』 — 눌러서 책등 · 뒤표지 보기",
+    "en": "{book} — press to see the spine and back"
   }
 }

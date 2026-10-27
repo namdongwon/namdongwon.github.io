@@ -87,6 +87,19 @@ def build_day():
     return date.fromisoformat(s) if s else datetime.now(ZoneInfo("Asia/Seoul")).date()
 
 
+def verify_tags(site):
+    # 검색 등록 소유 확인(10/27 동원 "수락" · "네이버도 함께 (권장)") — site.json verify.google · verify.naver에 인증 태그의 content 값만 넣으면
+    # 한국어 첫 쪽(주소 맨 앞 — 두 곳 모두 이 주소로 등록) 머리말에 한 줄씩. 비면 넣지 않음 · 인증 뒤에도 지우지 않음(구글 · 네이버가 다시 확인함). 순서 `기준/검색 등록 순서_v1.md`
+    v, out = site.get("verify") or {}, []
+    for key, name in (("google", "google-site-verification"), ("naver", "naver-site-verification")):
+        code = (v.get(key) or "").strip()
+        if code and not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", code):
+            raise SystemExit(f"검색 인증 값(verify.{key})은 태그의 content 값만 넣음(따옴표 · 태그 없이) — 지금 '{code[:40]}'")
+        if code:
+            out.append(f'<meta name="{name}" content="{code}">')
+    return "".join(out)
+
+
 def goatcounter(site):
     # 방문 셈(10/27 동원 "수락 — GoatCounter 자리 미리 만들어 줘"): site.json analytics.goatcounter에 GoatCounter 이름(주소 앞부분 — 이름.goatcounter.com)을
     # 넣으면 켜지고 비면 꺼짐. 쿠키 없음 · IP 주소 저장 안 함[출처 goatcounter.com/privacy]. 켜려면 처리방침에 방문 셈 문구(privacy.json의 when "goatcounter")가 먼저 있어야 함
@@ -724,10 +737,12 @@ def render(site, poem, videos, photos, lang="ko"):
         w, h = out_size(psrc(p), 1080)
         # 띠의 둘째 장부터는 data-src — main.js가 보는 장 + 다음 한 장만 받음(10/27 점검: 가까이 오면 큰 사진 3–5장을 한꺼번에 받아 첫 장이 늦었음)
         sa, lz = ("src", ' loading="lazy"') if i == 0 else ("data-src", "")
-        img = f'<img {sa}="{P}assets/img/photos/{e(Path(p["file"]).stem)}.jpg" alt="{e(alt)}"{lz} width="{w}" height="{h}">'
+        ko_alt = ' lang="ko"' if en and re.search("[가-힣]", alt) else ""  # 영어판에서 한국어 대체 글(인스타 글 첫 줄)은 한국어로 읽히게(10/27 점검 a11y 9)
+        img = f'<img {sa}="{P}assets/img/photos/{e(Path(p["file"]).stem)}.jpg" alt="{e(alt)}"{ko_alt}{lz} width="{w}" height="{h}">'
         if p.get("kids"):  # 여러 장짜리 게시물(10/25 ⑤ A): 누르면 그 게시물 안 사진을 넘겨 보는 창 · 오른쪽 위 'N장'
             k = 1 + len(p["kids"])
-            img = (f'<button type="button" class="pop" data-i="{i}" aria-haspopup="dialog" aria-label="{e(alt)} — {t("pop", n=k)}">{img}'
+            name = t("pop_post", i=i + 1, n=len(PH["items"])) if ko_alt else e(alt)  # 단추 이름은 한 언어로 — 영어판은 'Post 2 of 8 — …', 한국어 글은 보이는 캡션(lang=ko)이 맡음
+            img = (f'<button type="button" class="pop" data-i="{i}" aria-haspopup="dialog" aria-label="{name} — {t("pop", n=k)}">{img}'
                    f'<span class="many" aria-hidden="true">{t("many", n=k)}</span></button>')
         shots.append(f'<figure{art}>{img}</figure>')
         words = " · ".join(x for x in (p["where"], p["when"]) if x)
@@ -920,7 +935,10 @@ def render(site, poem, videos, photos, lang="ko"):
                 orig = f'<small{ko_tag}>{" / ".join(e(x) for x in month_ko[ko_row["title"]]["lines"])}</small>' if en else ""
                 line = f'<em>{"<br>".join(e(x) for x in m["lines"])}{orig}<small>{t("month_line", m=MONTHS[mm - 1] if en else mm)}</small></em>'
         attr = f' id="t{tn[0]}"' + (f' class="{cls}"' if cls else "")
-        return f'<li{attr}><span>{e(row["title"])}{ko}{tag}</span><span>{row["page"]}</span>{line}</li>'
+        # 먹 줄(사이트에 올린 시)은 제목이 그 시로 가는 링크 + 화면 읽기용 '— 여기서 읽기'(10/27 점검 a11y 11 — 색으로만 구별되던 것)
+        title = f'<a href="#poem">{e(row["title"])}</a>' if cls == "on" else e(row["title"])
+        here = f'<span class="sr"> {t("toc_here")}</span>' if cls == "on" else ""
+        return f'<li{attr}><span>{title}{ko}{here}{tag}</span><span>{row["page"]}</span>{line}</li>'
     parts = "".join(f'<div><h4>{e(p["name"])}</h4><ol>{"".join(toc_li(r, k, p["name"]) for r, k in zip(p["items"], kp["items"]))}</ol></div>'
                     for p, kp in zip(toc["parts"], toc_ko["parts"]))
     bintro = (f'<div class="bintro"><p class="bhead">{"<br>".join(e(x) for x in bi["lead"])}</p>'
@@ -979,7 +997,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{e(title)}</title>
-<meta name="description" content="{e(S["description"])}">
+<meta name="description" content="{e(S["description"])}">{"" if en else verify_tags(site)}
 <link rel="canonical" href="{e(here)}">
 <link rel="alternate" hreflang="ko" href="{e(base)}/">
 <link rel="alternate" hreflang="en" href="{e(base)}/en/">
@@ -1012,7 +1030,7 @@ def render(site, poem, videos, photos, lang="ko"):
     <div class="l"><h1 class="kick"><span class="name" data-type="{e("|".join(typing_steps(S["name"])))}">{e(S["name"])}</span> <span>{t("ex_kick")}</span></h1>
       <p class="ht">{ht}</p><p class="hs hsl">{hs}</p></div>
     <div class="r book"><div class="side"><p class="hs">{hs}</p><a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("첫화면")}>{e(book["buy_label"])} ↗</a><p class="tip">{t("ex_tip")}</p></div>
-      <div class="bk"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="{t("cover_alt", book=e(book["title"]) if en else e(book["title"]))}" width="600" height="881" fetchpriority="high" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i><i class="win"></i></div>
+      <div class="bk" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="{t("cover_alt", book=e(book["title"]) if en else e(book["title"]))}" width="600" height="881" fetchpriority="high" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i><i class="win"></i></div>
       </div>
     <div class="lab"><p class="rd"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a></p>{exl}</div>
   </section>
@@ -1029,9 +1047,9 @@ def render(site, poem, videos, photos, lang="ko"):
       {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small></p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}</div>
     {bnews}{bintro}
   </section>
-  <section id="photo" aria-label="{t("label_photo")}">
+  <section id="photo" aria-labelledby="photo-t">
     <p class="label">{t("label_photo")}</p>
-    <div class="r top2"><div class="head"><b>{e(acc["handle"])}</b><span>{e(acc["desc"])}</span></div>
+    <div class="r top2"><div class="head"><h2 id="photo-t">{e(acc["handle"])}</h2><span>{e(acc["desc"])}</span></div>
       <p class="mode" role="group" aria-label="{t("mode_label")}"><button type="button" data-m="one" aria-pressed="true">{t("mode_one")}</button><button type="button" data-m="all" aria-pressed="false">{t("mode_all")}</button></p></div>
     <div class="l"><div class="strip" tabindex="0" aria-label="{t("strip", n=n)}">{"".join(shots)}</div>
       <div class="thumbs">{thumbs}</div><div class="pgrid" hidden>{pgrid}</div></div>
@@ -1039,9 +1057,9 @@ def render(site, poem, videos, photos, lang="ko"):
       <p class="nav2"><button type="button" data-go="-1">{t("prev")}</button><button type="button" data-go="1">{t("next")}</button></p>
       <a class="buy" href="{e(acc["url"])}" target="_blank" rel="noopener">{t("more_ig")} ↗</a></div>
   </section>
-  <section id="video" aria-label="{t("label_video")}">
+  <section id="video" aria-labelledby="video-t">
     <p class="label">{t("label_video")}</p>
-    <div class="l"><div class="ch2"><b>{e(ch["name"])}</b><span>{e(ch["desc"])}</span></div>{latest}
+    <div class="l"><div class="ch2"><h2 id="video-t"{ko_attr if re.search("[가-힣]", ch["name"]) else ""}>{e(ch["name"])}</h2><span>{e(ch["desc"])}</span></div>{latest}
       <a class="buy" href="{e(ch["url"])}" target="_blank" rel="noopener">{go} ↗</a></div>
     <div class="r"><p class="sub">{t("past")}</p>{past}</div>
   </section>

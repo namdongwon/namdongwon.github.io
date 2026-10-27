@@ -553,6 +553,10 @@
   "analytics": {
     "goatcounter": ""
   },
+  "verify": {
+    "google": "",
+    "naver": ""
+  },
   "links": [
     {
       "id": "instagram",
