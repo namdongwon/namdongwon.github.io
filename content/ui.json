@@ -409,8 +409,8 @@
     "en": "No cookies, ads, or autoplay."
   },
   "sheet_book": {
-    "ko": "{name} 시집",
-    "en": "Poems by {name}"
+    "ko": "{name} 시집 · {pages}",
+    "en": "Poems by {name} · {pages}"
   },
   "keep": {
     "ko": "간직하기",

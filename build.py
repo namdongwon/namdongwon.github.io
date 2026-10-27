@@ -701,10 +701,10 @@ def render(site, poem, videos, photos, lang="ko"):
             ln_no += 1
             if en:
                 spans.append(f'<span class="pair" id="l{ln_no}"><span class="ln" lang="ko">{e(a)}</span><span class="le">{e(b)}</span></span>')
-                ix["poem"] += [(tg["poem"], b, "", f"#l{ln_no}"), (tg["poem"], a, "", f"#l{ln_no}")]
+                ix["poem"] += [(tg["poem"], b, S["poem"]["pages"], f"#l{ln_no}"), (tg["poem"], a, S["poem"]["pages"], f"#l{ln_no}")]  # 어디 칸에 쪽수(10/27 출처 한 줄 — 레퍼런스 제안 ⑥)
             else:
                 spans.append(f'<span class="ln" id="l{ln_no}">{e(a)}</span>')
-                ix["poem"].append((tg["poem"], a, "", f"#l{ln_no}"))
+                ix["poem"].append((tg["poem"], a, S["poem"]["pages"], f"#l{ln_no}"))
         stz.append("<p>" + "".join(spans) + "</p>")
     poem_html = "".join(stz)
 
@@ -721,7 +721,7 @@ def render(site, poem, videos, photos, lang="ko"):
     sheet = (f'<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t" aria-describedby="sheet-e" hidden>'
              f'<p class="st" id="sheet-t"{ko_attr}>「{e(site["poem"]["title"])}」</p><div class="sp"{ko_attr}>{ko_html}</div>'
              f'<div class="sf"><div class="se" id="sheet-e"><p class="g">{t("colo_end")}</p><p>{t("sheet_bridge")}</p></div>'
-             f'<span class="sbk">{t("sheet_book", name=e(S["name"]))}<br>{sheet_title}</span>'
+             f'<span class="sbk">{t("sheet_book", name=e(S["name"]), pages=e(S["poem"]["pages"]))}<br>{sheet_title}</span>'
              f'<span class="btns"><button type="button" class="keep">{t("keep")}</button>'
              f'<a class="kb" href="{e(book["buy_url"])}" target="_blank" rel="noopener" hidden{gcc("탁본")}>{e(book["store_label"])} ↗</a>'
              f'<button type="button" class="close">{t("close")}</button></span></div></div>')
