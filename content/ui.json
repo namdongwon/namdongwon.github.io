@@ -209,8 +209,8 @@
     "en": "[Required] Your name (optional) and note are used only to choose notes for this guestbook. Notes not published are deleted within 30 days; published notes are removed whenever you ask. You keep the copyright and only allow the note to appear on this site. Without this consent the note can’t be sent."
   },
   "gb_ag2": {
-    "ko": "[필수] 글은 미국의 Formspree를 거쳐 남동원의 메일함으로 옵니다. 동의하지 않으시면 보낼 수 없습니다. {privacy}",
-    "en": "[Required] Notes travel through Formspree in the United States to Dongwon Nam’s mailbox. Without this consent the note can’t be sent. {privacy}"
+    "ko": "[필수] 글은 Formspree(미국 등)를 거쳐 남동원의 메일함으로 옵니다. 동의하지 않으시면 보낼 수 없습니다. {privacy}",
+    "en": "[Required] Notes travel through Formspree (United States and elsewhere) to Dongwon Nam’s mailbox. Without this consent the note can’t be sent. {privacy}"
   },
   "gb_privacy": {
     "ko": "개인정보 처리방침",

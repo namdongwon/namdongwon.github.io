@@ -798,7 +798,11 @@ def render(site, poem, videos, photos, lang="ko"):
         go = t("go_channel")
 
     c = S["contact"]
-    endpoint = f'https://formspree.io/f/{c["formspree_id"]}' if c["formspree_id"] else ""
+    # 문의 폼은 쓰지 않음(10/27 동원 "문의 폼은 B로 하자 — 문의 폼 없이 인스타그램 · 메일 두 길") — 연락 칸은 인스타그램 단추 · 메일 · 방명록.
+    # 아래 폼은 동의가 한 칸뿐인 옛 꼴이라, 다시 켜려면 동의 두 칸(시안 A `기준/브랜드 시안/문의폼시안_v1_A·B.png`) · 처리방침 1 · 2절부터 맞출 것
+    if c["formspree_id"]:
+        raise SystemExit("문의 폼(contact.formspree_id)은 10/27 B로 쓰지 않기로 함 — 다시 켜려면 동의 두 칸(시안 A)과 처리방침 1 · 2절을 먼저 맞출 것")
+    endpoint = ""
     lead = "<br>".join(e(x) for x in c["lead_lines"])
     sns = "".join(f'<a href="{e(l["url"])}" target="_blank" rel="noopener">{e(l["name"])} ↗</a>' for l in links)  # 밖으로 나가는 링크는 ↗(10/25 다듬기 가5)
     # 문의 폼(Formspree)을 붙이기 전에는 폼을 접고 인스타그램으로 — 다 쓰고 보낸 뒤에야 '연결 전'을 알게 되지 않게(10/25 다듬기 가4)

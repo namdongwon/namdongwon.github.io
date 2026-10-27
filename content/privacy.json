@@ -1,5 +1,5 @@
 {
-  "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로 · when \"goatcounter\" 줄과 lead_counted는 방문 셈(site.json analytics.goatcounter)을 켰을 때만 — 10/27 동원 '방문 셈 문구 이대로 처리방침에 넣어'(켜는 날 updated를 그날로)",
+  "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로 · when \"goatcounter\" 줄과 lead_counted는 방문 셈(site.json analytics.goatcounter)을 켰을 때만 — 10/27 동원 '방문 셈 문구 이대로 처리방침에 넣어'(켜는 날 updated를 그날로) · 10/27 동원 '문의 폼은 B로 하자' — 문의 폼 없이 메일 · 인스타그램, Formspree(미국 등)는 방명록만",
   "updated": "2026-10-27",
   "title": {
     "ko": "개인정보 처리방침",
@@ -25,8 +25,8 @@
           "en": "Guestbook — your name (optional) and note, used only to choose notes for the guestbook. When you send, Formspree also records the time and connection details (such as the IP address)."
         },
         {
-          "ko": "문의(문의 폼을 연결한 뒤) — 이름(선택) · 메일 · 내용을 받아, 답장하는 데 씁니다.",
-          "en": "Contact form (once connected) — your name (optional), email and message, used only to reply."
+          "ko": "메일 · 인스타그램 메시지 — 보내신 이름 · 메일 · 내용은 답장하는 데만 씁니다.",
+          "en": "Email or Instagram message — your name, email and message are used only to reply."
         },
         {
           "ko": "방명록에서는 메일 · 전화번호 같은 연락처를 받지 않습니다.",
@@ -49,8 +49,8 @@
           "en": "Published notes stay on the site and are removed as soon as you ask."
         },
         {
-          "ko": "문의는 답장한 뒤 6개월 안에 지웁니다.",
-          "en": "Contact messages are deleted within six months of my reply."
+          "ko": "메일로 받은 연락은 답장한 뒤 6개월 안에 지웁니다.",
+          "en": "Emails are deleted within six months of my reply."
         }
       ]
     },
@@ -61,12 +61,12 @@
       },
       "items": [
         {
-          "ko": "받는 자: Formspree(미국) — 남기신 글은 이 업체를 거쳐 남동원의 메일함으로 옵니다.",
-          "en": "Recipient: Formspree (United States) — your note passes through this service on its way to Dongwon Nam’s mailbox."
+          "ko": "받는 자: Formspree(미국 등) — 남기신 글은 이 업체를 거쳐 남동원의 메일함으로 옵니다.",
+          "en": "Recipient: Formspree (United States and elsewhere) — your note passes through this service on its way to Dongwon Nam’s mailbox."
         },
         {
-          "ko": "옮겨지는 정보: 1절에 적은 받는 정보.",
-          "en": "What is transferred: the information listed in section 1."
+          "ko": "옮겨지는 정보: 방명록에 남기신 정보(1절).",
+          "en": "What is transferred: the guestbook information listed in section 1."
         },
         {
           "ko": "때와 방법: 보내기를 누를 때, 인터넷으로.",
