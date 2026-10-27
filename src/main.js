@@ -767,6 +767,30 @@
     };
     // 시가 위에 붙은 제목 밑으로 지나가는 동안만 제목 아래 그림자(10/27 숨 재기 6)
     sheet.addEventListener("scroll", () => sheet.classList.toggle("sc", sheet.scrollTop > 2), { passive: true });
+    // 뜬 날(10/27 동원 'B 주소 줄 오른쪽' — 레퍼런스 제안 ④): 간직하는 그림의 주소 줄 오른쪽에 이 기기의 오늘 날짜(2026. 11. 1. 뜸 · Taken November 1, 2026)를 그려 넣음.
+    // 자리는 build.py make_takbon의 주소 줄과 같은 기준선(1080×1920에서 오른쪽 끝 1010 · 기준선 1789) · 글꼴은 시집 이름 줄과 같은 고딕 300 · 27px · 회색. 그리기에 실패하면 날짜 없는 그림. 이름 · 정보는 받지 않음
+    const dated = async () => {
+      const plain = () => fetch(ASSET + "img/takbon.jpg").then(r => r.blob()).catch(() => null);
+      try {
+        const bmp = await createImageBitmap(await (await fetch(ASSET + "img/takbon.jpg")).blob());
+        await document.fonts.load("300 27px PTD");
+        const c = document.createElement("canvas");
+        c.width = bmp.width;
+        c.height = bmp.height;
+        const g = c.getContext("2d");
+        g.drawImage(bmp, 0, 0);
+        const now = new Date();
+        const d = H.lang === "en" ? now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : `${now.getFullYear()}. ${now.getMonth() + 1}. ${now.getDate()}.`;
+        g.font = "300 27px PTD, -apple-system, sans-serif";
+        g.fillStyle = "#626262";
+        g.textAlign = "right";
+        g.textBaseline = "alphabetic";
+        g.fillText(uiText("kept_on", "{d} 뜸", { d }), 1010, 1789);
+        return (await new Promise(r => c.toBlob(r, "image/jpeg", 0.9))) || plain();
+      } catch {
+        return plain();
+      }
+    };
     // 끝 두 줄(인사 · 다리)이나 교보 단추로 아래 줄이 높아져 종이가 화면보다 길어지면 맨 아래로 — 시의 끝 줄이 아래 줄에 덮이지 않게(10/27 끝 화면 A)
     const toEnd = () => { if (sheet.scrollHeight > sheet.clientHeight + 1) sheet.scrollTo({ top: sheet.scrollHeight, behavior: reduce ? "auto" : "smooth" }); };
     const finish = () => {
@@ -775,8 +799,8 @@
       apply(1);
       sheet.classList.add("done");
       rest(true);
-      // '간직하기'를 누르는 순간 바로 건넬 수 있게 그림을 미리 받아 둠(휴대폰 공유 창은 누른 직후에만 열림)
-      img = img || fetch(ASSET + "img/takbon.jpg").then(r => r.blob()).catch(() => null);
+      // '간직하기'를 누르는 순간 바로 건넬 수 있게 그림을 미리 만들어 둠(휴대폰 공유 창은 누른 직후에만 열림) — 뜬 날을 그린 그림
+      img = img || dated();
       toEnd();
       close.focus({ preventScroll: true });
     };
@@ -876,11 +900,13 @@
         }
       }
       const a = document.createElement("a");
-      a.href = ASSET + "img/takbon.jpg";
+      const url = blob ? URL.createObjectURL(blob) : ASSET + "img/takbon.jpg";  // 뜬 날을 그린 그림, 못 만들었으면 원래 그림
+      a.href = url;
       a.download = name;
       document.body.append(a);
       a.click();
       a.remove();
+      if (blob) setTimeout(() => URL.revokeObjectURL(url), 10000);
       kept();
     });
   }
