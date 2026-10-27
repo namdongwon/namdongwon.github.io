@@ -187,7 +187,7 @@
 
 ## 올리기 — GitHub Pages (10/25 준비)
 
-- 이 폴더(`웹사이트/`)가 곧 공개 저장소 `namdongwon/namdongwon.github.io`입니다. 사이트 주소는 https://namdongwon.github.io/ (`site.json`의 `base_url`). 올리지 않는 것은 `.gitignore`(`.cache/` · `__pycache__/` · `.DS_Store`). 토큰은 이 폴더 밖 `../기준/비밀/`에만 둡니다.
+- 이 폴더(`웹사이트/`)가 곧 공개 저장소 `namdongwon/namdongwon.github.io`입니다. 사이트 주소는 https://namdongwon.com/ (`site.json`의 `base_url` — 10/28 도메인 연결, https://namdongwon.github.io/는 새 주소로 넘어감). 올리지 않는 것은 `.gitignore`(`.cache/` · `__pycache__/` · `.DS_Store`). 토큰은 이 폴더 밖 `../기준/비밀/`에만 둡니다.
 - 커밋 작성자는 GitHub 공개용 주소(`285886368+namdongwon@users.noreply.github.com`, 이 저장소 설정에만) — 개인 메일이 기록에 공개되지 않게.
 - 처음 한 번(동원):
   1. GitHub에서 새 저장소 `namdongwon.github.io` · Public · README · .gitignore · 라이선스는 모두 고르지 않음(빈 저장소 — 이 맥의 첫 기록을 그대로 올림).
@@ -196,7 +196,7 @@
 - 고친 뒤: `tools/.venv/bin/python 웹사이트/build.py`(빌드) → 이 폴더에서 `git add -A` · `git commit -m "…"` · `git push`. 날짜에 걸린 것(판매 중 · 소식 · 이달의 한 줄 · 공유 카드 · 판권면 고친 날)은 그날 다시 빌드해 올려야 바뀝니다 — 예약 작업(이 맥의 앱이 켜져 있을 때, 꺼져 있으면 다음에 켤 때): 11/1 08:00 출간일(site-release-1101) · 12/1 08:00 12월의 한 줄 「우연히」(site-release-1201) · 2027-01-01 08:00 공유 카드를 이름 카드로(site-release-0101). 예약은 docs/ 밖에 커밋하지 않은 고침이 있으면 멈추므로, 그날 전에 고친 것은 올려 둘 것. 1월부터의 한 줄은 monthly.json에 그달 줄을 넣고 그달 1일에 다시 빌드 · 올리기(예약을 새로 두거나 손으로).
 - 큰 변경 뒤 · 올리기 전 점검: 시험 11묶음 + 관리 화면 서버 시험 `tools/.venv/bin/python tools/site_admin_test.py`(59개 · 40초쯤 — 임시 복사본 + 가짜 GitHub로만 돌고, 진짜 원고 · docs · 저장소는 시험 앞뒤 SHA-256 · HEAD로 대조, 10/25부터). 관리 화면 쪽을 고쳤을 땐 화면 시험 `기준/브랜드 시안/admin_shots_v1.py`(23개 · 1분쯤)도. 관리 화면 시험이 도는 동안에는 원고 · 이 폴더 파일을 고치지 않습니다('진짜 원고 그대로'가 걸림).
 - 원고 꼴(표 여섯 now · news · monthly · years · photo_art · videos의 칸 이름 · 차례, `site.json`의 book.toc · base_url, `.cache/instagram/feed.json`)을 바꿀 때는 관리 화면 칸 정의(`tools/site_admin.py`의 SCHEMA — 데이터 설계서 v2 4절)도 함께 고치거나 관리 화면 세션에 알립니다(관리 화면 파일은 그 세션 몫).
-- 도메인을 사면: `content/CNAME`에 `namdongwon.com` 한 줄(빌드가 docs로 옮김) · `site.json`의 `base_url`을 `https://namdongwon.com`으로 → 빌드 · 올림 → 도메인 회사 DNS에 GitHub Pages 주소(꼭대기 도메인은 A 레코드 185.199.108.153 · 185.199.109.153 · 185.199.110.153 · 185.199.111.153, www는 CNAME `namdongwon.github.io`) → Settings → Pages에서 Custom domain · Enforce HTTPS.
+- [끝남 10/28 — Cloudflare 등록 · DNS 9줄 DNS 전용 · GitHub Custom domain · `content/CNAME` · base_url] 도메인을 사면: `content/CNAME`에 `namdongwon.com` 한 줄(빌드가 docs로 옮김) · `site.json`의 `base_url`을 `https://namdongwon.com`으로 → 빌드 · 올림 → 도메인 회사 DNS에 GitHub Pages 주소(꼭대기 도메인은 A 레코드 185.199.108.153 · 185.199.109.153 · 185.199.110.153 · 185.199.111.153, www는 CNAME `namdongwon.github.io`) → Settings → Pages에서 Custom domain · Enforce HTTPS.
 
 ## 글꼴
 
