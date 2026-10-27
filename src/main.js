@@ -190,16 +190,7 @@
     once([...document.querySelectorAll(".rv, .strip, .nt")], el => el.classList.add("in"), { rootMargin: "0px 0px -8% 0px" });  // .nt — '준비 중' 점은 보일 때 세 번만 숨 쉼
   }
 
-  // ② 탁본 — 연이 화면에 들어오면 행마다 차례로 드러남(모양은 style.css)
-  if (motion) {
-    const stanzas = [...document.querySelectorAll(".poem p")];
-    stanzas.forEach(p => p.querySelectorAll(".ln").forEach((l, i) => {
-      l.style.setProperty("--i", i);
-      const le = l.nextElementSibling;  // 영어판(10/24): 번역 행은 짝인 원문 행과 함께 드러남
-      if (le && le.classList.contains("le")) le.style.setProperty("--i", i);
-    }));
-    once(stanzas, p => p.classList.add("in"), { threshold: 0.35 });
-  }
+  // ② 탁본 — 시 칸 글자는 움직이지 않음(10/27 숨 재기 4 — 한 줄씩 찍힘은 「탁본」 한 장에만, 아래 길게 누르기)
 
   // ③ 기록 — 캔버스 하나에 칸을 그림(칸을 요소로 만들면 1,559개가 되어 무거움) + 숫자도 같은 네모 점으로(점 숫자).
   // 움직임이 없으면 다 찬 그림과 숫자. 글자 숫자(.n)는 화면 읽기 프로그램용으로 늘 끝 값 그대로

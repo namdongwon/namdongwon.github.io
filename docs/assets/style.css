@@ -181,7 +181,7 @@ html:lang(en) .bnews li{grid-template-columns:106px 1fr}  /* 영어 날짜 'Nove
 /* 시집 소개 · 차례(10/25 A 아래로 이어 쌓기) — 책 카드 다음에 머리 두 줄(명조) → 소개 한 단락(은바탕) → 차례(휴대폰 두 단 · 쪽 숫자 고정폭 · 「탁본」 줄만 먹) */
 .bintro{margin-top:44px;padding-top:28px;border-top:1px solid var(--rule)}
 .bhead{font:400 19px/1.65 var(--serif);word-break:keep-all;text-wrap:balance}
-.btext{margin-top:16px;font:15px/1.85 var(--body);word-break:keep-all;text-wrap:pretty}
+.btext{margin-top:16px;font:16px/1.85 var(--body);word-break:keep-all;text-wrap:pretty}
 .btoc{margin-top:34px}
 .btoc h3{font:300 11px/1 var(--sans);letter-spacing:.14em;color:var(--faint)}
 html:lang(en) .btoc h3{letter-spacing:0}  /* 영어 소문자 문장에는 넓은 자간을 두지 않음(10/25 다듬기 가8) */
@@ -222,7 +222,7 @@ html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 
 .buy2{justify-self:start;margin-top:14px;display:inline-flex;align-items:center;padding:12px 18px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);white-space:nowrap}
 
 /* ③ 나 */
-.bio{margin-top:22px;font:15.5px/1.95 var(--body)}
+.bio{margin-top:22px;font:16px/1.95 var(--body)}  /* 휴대폰 소개 · 시집 소개 · 연락 첫 글은 시 본문과 같은 16px(10/27 숨 재기 8, 동원 'A 16px' — 전 15–15.5px) */
 .tagl{margin-top:10px;font:14px/1.6 var(--body);color:var(--muted);text-wrap:balance;word-break:keep-all}  /* 소개 이름 아래 한 문장(10/25 제안 ③ — 첫 화면 라벨에서 옮김) */
 .years{list-style:none;margin-top:30px;border-top:1px solid var(--rule)}
 .years li{display:grid;grid-template-columns:64px 1fr;gap:10px;padding:15px 0;border-bottom:1px solid var(--rule);font:14.5px/1.45 var(--body)}
@@ -417,7 +417,7 @@ html.sr-on{overflow:hidden}
 .empty{margin-top:14px;padding:15px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font:14px/1.7 var(--body);color:var(--faint)}
 
 /* ⑥ 연락 — 문의 폼 */
-.lead{margin-top:14px;font:15px/1.8 var(--body);color:var(--muted)}
+.lead{margin-top:14px;font:16px/1.8 var(--body);color:var(--muted)}
 .ask{margin-top:26px;display:grid;gap:16px}
 .ask-off{margin-top:26px}
 /* 메일 한 줄(10/26) — 문의 단추 아래, 이름표는 옅은 고딕 · 주소는 문의 단추와 같은 밑줄 글(두 길이 나란한 무게) */
@@ -569,13 +569,7 @@ html.sr-on{overflow:hidden}
   .js .rv.in{opacity:1;transform:none}
   .js .label::after{transform:scaleX(0);transform-origin:0 50%;transition:transform 1.3s var(--ease) .1s}
   .js .label.in::after{transform:scaleX(1)}
-  /* 탁본 — 행마다 왼쪽부터 매끈하게 쓸리듯 드러나며 옅은 먹이 진해짐(10/24 결 정돈 — 거친 점 가장자리 대신 그러데이션) */
-  .js .poem .ln{-webkit-mask:linear-gradient(90deg,#000 40%,transparent 60%) 100% 0/300% 100% no-repeat;mask:linear-gradient(90deg,#000 40%,transparent 60%) 100% 0/300% 100% no-repeat;color:#8a8a8a;
-    transition:-webkit-mask-position 1.5s cubic-bezier(.33,0,.2,1),mask-position 1.5s cubic-bezier(.33,0,.2,1),color 2.2s ease;transition-delay:calc(var(--i)*.16s)}
-  .js .poem p.in .ln{-webkit-mask-position:0 0;mask-position:0 0;color:var(--ink)}
-  .js .poem .le{-webkit-mask:linear-gradient(90deg,#000 40%,transparent 60%) 100% 0/300% 100% no-repeat;mask:linear-gradient(90deg,#000 40%,transparent 60%) 100% 0/300% 100% no-repeat;color:#8a8a8a;
-    transition:-webkit-mask-position 1.5s cubic-bezier(.33,0,.2,1),mask-position 1.5s cubic-bezier(.33,0,.2,1),color 2.2s ease;transition-delay:calc(var(--i)*.16s + .12s)}  /* 번역 행은 원문 행을 조금 늦게 따라 */
-  .js .poem p.in .le{-webkit-mask-position:0 0;mask-position:0 0;color:var(--muted)}
+  /* 「탁본」 시 칸 글자는 움직이지 않음 — 처음부터 먹(10/27 숨 재기 4, 동원 'A 처음부터 먹' — 한국 · 일본 문학 사이트 7곳 모두 글자를 움직이지 않음 · 한 줄씩 찍힘은 「탁본」 한 장(정점)에만. 전: 10/24 결 정돈의 행마다 쓸림 + 회색→먹 2.6초) */
   /* 사진 — 다가오며 들어오고, 넘긴 사진은 짧게 서서히(10/24 결 정돈 — 밝게 번쩍이던 '현상' 대신) */
   .js .strip img{transform:scale(1.1);transition:transform 1.8s var(--ease),opacity .6s ease}
   .js .strip.in img{transform:scale(1)}
