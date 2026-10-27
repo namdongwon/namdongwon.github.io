@@ -416,6 +416,10 @@
     "ko": "닫기",
     "en": "Close"
   },
+  "sheet_bridge": {
+    "ko": "나머지 쉰아홉 편은 종이 위에 있습니다.",
+    "en": "The other fifty-nine poems are on paper."
+  },
   "search_label": {
     "ko": "사이트 안 찾기",
     "en": "Search this site"

@@ -718,7 +718,7 @@
   const poemBox = document.querySelector(".poem"), hint = document.querySelector(".hint"), sheet = document.querySelector(".sheet");
   if (poemBox && hint && sheet) {
     const lines = [...sheet.querySelectorAll(".sp .ln")];
-    const keep = sheet.querySelector(".keep"), close = sheet.querySelector(".close");
+    const keep = sheet.querySelector(".keep"), close = sheet.querySelector(".close"), kb = sheet.querySelector(".kb");
     const touch = document.createElement("i");
     touch.className = "touch";
     touch.setAttribute("aria-hidden", "true");
@@ -742,7 +742,11 @@
       sheet.classList.remove("done");
       lines.forEach(l => l.classList.remove("on"));
       p = 0;
+      keep.hidden = false;  // 다음에 열면 다시 '간직하기'부터
+      if (kb) kb.hidden = true;
     };
+    // 끝 두 줄(인사 · 다리)이나 교보 단추로 아래 줄이 높아져 종이가 화면보다 길어지면 맨 아래로 — 시의 끝 줄이 아래 줄에 덮이지 않게(10/27 끝 화면 A)
+    const toEnd = () => { if (sheet.scrollHeight > sheet.clientHeight + 1) sheet.scrollTo({ top: sheet.scrollHeight, behavior: reduce ? "auto" : "smooth" }); };
     const finish = () => {
       open = true;
       auto = false;
@@ -751,7 +755,8 @@
       rest(true);
       // '간직하기'를 누르는 순간 바로 건넬 수 있게 그림을 미리 받아 둠(휴대폰 공유 창은 누른 직후에만 열림)
       img = img || fetch(ASSET + "img/takbon.jpg").then(r => r.blob()).catch(() => null);
-      close.focus();
+      toEnd();
+      close.focus({ preventScroll: true });
     };
     const loop = () => {
       const now = performance.now(), dt = (now - last) / 1000;
@@ -820,7 +825,16 @@
     };
     close.addEventListener("click", shut);
     addEventListener("keydown", ev => { if (ev.key === "Escape") { if (open) viaKey = true; shut(); } });
-    // 간직하기 — 휴대폰은 공유 창(사진 저장·인스타로 보내기), 안 되면 그림 파일 내려받기
+    // 간직한 뒤(10/27 끝 화면 A) — '간직하기' 자리를 교보 단추로(나가는 길은 사기 · 닫기 둘). 포커스가 간직하기에 있었으면 교보 단추로 옮김
+    const kept = () => {
+      if (!kb || !open) return;
+      const had = document.activeElement === keep;
+      keep.hidden = true;
+      kb.hidden = false;
+      toEnd();
+      if (had) kb.focus({ preventScroll: true });
+    };
+    // 간직하기 — 휴대폰은 공유 창(사진 저장·인스타로 보내기), 안 되면 그림 파일 내려받기. 공유 창을 닫기만 했으면(AbortError) '간직하기' 그대로
     keep.addEventListener("click", async () => {
       const name = uiText("file", "남동원_탁본.jpg");
       const blob = img ? await img : null;
@@ -829,6 +843,7 @@
         if (navigator.canShare({ files: [file] })) {
           try {
             await navigator.share({ files: [file], title: uiText("share", "「탁본」 — 남동원") });
+            kept();
             return;
           } catch (err) {
             if (err && err.name === "AbortError") return;
@@ -841,6 +856,7 @@
       document.body.append(a);
       a.click();
       a.remove();
+      kept();
     });
   }
 

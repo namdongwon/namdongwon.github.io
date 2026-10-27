@@ -716,10 +716,15 @@ def render(site, poem, videos, photos, lang="ko"):
     # 영어판도 시는 한국어 원문 그대로(10/24 ③)
     ko_attr = ' lang="ko"' if en else ""
     sheet_title = tt(e(book["title"]), not en)  # 출처의 시집 제목도 표지 줄 나눔 자리에서만 나뉘게(10/25 다듬기 가9 — '있다』'만 넘어가던 것)
-    sheet = (f'<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t" hidden>'
+    # 끝 화면(10/27 동원 "A 같은 먹 종이" · "① 나머지 쉰아홉 편" — 레퍼런스 제안 ①): 다 찍히면 판권면과 같은 인사 · 종이책으로 가는 다리 한 문장,
+    # '간직하기'를 마치면 그 자리가 교보 단추로(main.js) — 나가는 길은 사기 · 닫기 둘. 화면 읽기는 종이의 설명(aria-describedby)으로 두 줄을 읽음
+    sheet = (f'<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t" aria-describedby="sheet-e" hidden>'
              f'<p class="st" id="sheet-t"{ko_attr}>「{e(site["poem"]["title"])}」</p><div class="sp"{ko_attr}>{ko_html}</div>'
-             f'<div class="sf"><span>{t("sheet_book", name=e(S["name"]))}<br>{sheet_title}</span>'
-             f'<span class="btns"><button type="button" class="keep">{t("keep")}</button><button type="button" class="close">{t("close")}</button></span></div></div>')
+             f'<div class="sf"><div class="se" id="sheet-e"><p class="g">{t("colo_end")}</p><p>{t("sheet_bridge")}</p></div>'
+             f'<span class="sbk">{t("sheet_book", name=e(S["name"]))}<br>{sheet_title}</span>'
+             f'<span class="btns"><button type="button" class="keep">{t("keep")}</button>'
+             f'<a class="kb" href="{e(book["buy_url"])}" target="_blank" rel="noopener" hidden{gcc("탁본")}>{e(book["store_label"])} ↗</a>'
+             f'<button type="button" class="close">{t("close")}</button></span></div></div>')
     # 기록 — 본 영화·전시를 칸으로(그림은 main.js가 캔버스 하나에 그림, 숫자는 글자로 남김)
     # 숫자는 기록 칸과 같은 네모 점으로 찍고(dot-n), 글자 숫자(.n)는 화면 읽기 프로그램용으로 남김 — 자바스크립트가 없으면 글자 숫자가 보임
     rec = "".join(f'<canvas class="dot-n" data-to="{r["n"]}" aria-hidden="true"></canvas>'

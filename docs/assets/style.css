@@ -529,6 +529,19 @@ html.sr-on{overflow:hidden}
 .sheet button.keep{background:#e9e9e9;color:#111}
 .sheet button:focus-visible{outline:2px solid #fff;outline-offset:3px}
 @media (max-height:740px){.sheet{padding-top:36px}.sheet .sp{font-size:12.5px;line-height:1.65}.sheet .sp p+p{margin-top:1.65em}}  /* 아이폰 SE처럼 낮은 화면 */
+/* 끝 화면(10/27 레퍼런스 제안 ① A — 시안 `기준/브랜드 시안/탁본끝화면시안_v1_지금·A·B.png`): 다 찍히면 아래 줄 위에 인사 · 다리 두 줄,
+   간직한 뒤엔 간직하기 자리에 교보 단추(흰 알약 — 종이 안의 간직하기와 같은 모양). 바탕은 그대로 */
+.sheet .sf{flex-wrap:wrap;row-gap:14px}
+.sheet .se{display:none;flex-basis:100%}
+.sheet.done .se{display:block}
+.sheet .se p{margin-top:1px;font:300 12px/1.6 var(--sans);color:#9a9a9a}
+.sheet .se .g{margin-top:0;font:400 15px/1.7 var(--serif);letter-spacing:.01em;color:#efefef}
+.sheet .sbk{flex:1 1 0;min-width:9em}  /* 시집 이름은 줄어들어 단추와 한 줄에 — 9em보다 좁아지면(영어 교보 단추 'Buy at Kyobo Book Centre') 제 줄로, 여덟 줄로 꺾이지 않게 */
+.sheet.done .sp{padding-bottom:22px}  /* 아래 줄이 높아져도 시의 끝 줄이 그림자에 덮이지 않게 */
+.sheet .kb{display:inline-flex;align-items:center;font:600 12.5px/1 var(--sans);padding:10px 15px;border-radius:999px;background:#e9e9e9;color:#111;white-space:nowrap}
+.sheet .kb:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){.sheet.done .se{animation:sein .4s ease both}}  /* 단추와 같은 0.4초 나타남 */
+@keyframes sein{from{opacity:0}}
 
 /* 결 — 자바스크립트가 켜져 있고 '동작 줄이기'가 아닐 때만. 흐림은 명조의 가는 획에 맞춰 3px(조사 권고 2~4px) */
 @media (prefers-reduced-motion:no-preference){
