@@ -162,7 +162,7 @@
   },
   "gb_sep": {
     "ko": "여기 남긴 글은 남동원이 읽고 골라 이 쪽에 싣습니다. 남동원에게만 하실 말씀은 위 인스타그램 메시지나 메일로 보내 주세요.",
-    "en": "Notes left here are read and chosen by Dongwon Nam before they appear on this page. For anything just between you, please use the Instagram message or email above."
+    "en": "Notes left here are read and chosen by Dongwon Nam before they appear on this page. For anything meant only for Dongwon Nam, please use Instagram or email above."
   },
   "gb_empty": {
     "ko": "아직 실린 글이 없습니다. 첫 글을 기다립니다.",
@@ -186,7 +186,7 @@
   },
   "gb_when": {
     "ko": "한 주에 한 번, 월요일에 읽고 골라 사이트를 다시 올릴 때 함께 싣습니다.",
-    "en": "Once a week, on Mondays, I read the notes and add the ones I choose the next time the site is updated."
+    "en": "Notes are read once a week, on Mondays, and the chosen ones are added the next time the site is updated."
   },
   "gb_name": {
     "ko": "이름",
@@ -206,7 +206,7 @@
   },
   "gb_ag1": {
     "ko": "[필수] 이름(선택)과 글을 방명록에 골라 싣는 데만 씁니다. 실리지 않은 글은 30일 안에, 실린 글은 내려 달라고 하실 때 지웁니다. 글의 저작권은 쓰신 분께 있고, 이 사이트에 싣는 것만 허락받습니다. 동의하지 않으시면 글을 보낼 수 없습니다.",
-    "en": "[Required] Your name (optional) and note are used only to choose notes for this guestbook. Notes not published are deleted within 30 days; published notes are removed whenever you ask. You keep the copyright and only allow the note to appear on this site. Without this consent the note can’t be sent."
+    "en": "[Required] Your name (optional) and note are used only to select and publish notes in this guestbook. Notes not published are deleted within 30 days; published notes are removed whenever you ask. You keep the copyright and allow the note to appear only on this site. Without this consent the note can’t be sent."
   },
   "gb_ag2": {
     "ko": "[필수] 글은 Formspree(미국 등)를 거쳐 남동원의 메일함으로 옵니다. 동의하지 않으시면 보낼 수 없습니다. {privacy}",
@@ -218,7 +218,7 @@
   },
   "gb_send": {
     "ko": "남기기",
-    "en": "Leave it"
+    "en": "Send"
   },
   "many": {
     "ko": "{n}장",
@@ -501,7 +501,7 @@
       "failed": "Couldn’t send. Please try again in a moment.",
       "search_count": "{n} found",
       "gb_sent": "Received. I’ll read it on Monday.",
-      "gb_full": "This month’s notes are full. Please try again next month."
+      "gb_full": "The guestbook is full for this month. Please try again next month."
     }
   }
 }

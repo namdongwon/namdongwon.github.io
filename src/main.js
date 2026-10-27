@@ -166,6 +166,7 @@
       ",": ["..", "..", "..", "..", ".#", ".#", "#."]
     };
     const shown = new Map();  // 점 숫자마다 지금 보이는 값
+    const tone = k => getComputedStyle(H).getPropertyValue(k).trim();  // 색은 style.css 낱말에서(어두운 모드면 어두운 값)
     // 점 한 칸: 컴퓨터 17px · 휴대폰 12px — 끝 값(1,121이면 26칸)이 기록 칸 폭에 다 안 들어가면 들어갈 때까지 줄임(10/24, 좁은 화면·태블릿에서 칸을 넘지 않게).
     // 두 숫자는 같은 크기로(넓은 쪽에 맞춤) · 화면 폭이 바뀌면 다시 잼
     const span = c => { const f = (+c.dataset.to).toLocaleString("ko-KR"); return [...f].reduce((n, ch) => n + F[ch][0].length, 0) + f.length - 1; };
@@ -189,13 +190,13 @@
       c.height = Hh * dpr;
       c.style.width = W + "px";
       c.style.height = Hh + "px";
-      const x = c.getContext("2d");
+      const x = c.getContext("2d"), on = tone("--ink"), dim = tone("--dot-lead"), off = tone("--dot-off");
       x.setTransform(dpr, 0, 0, dpr, 0, 0);
       let col = 0, d = 0;
       chars.forEach(ch => {
         const m = F[ch], faint = ch !== "," && d++ < lead;
         for (let r = 0; r < 7; r++) for (let k = 0; k < m[r].length; k++) {
-          x.fillStyle = m[r][k] === "#" ? (faint ? "#c9c9c9" : "#111") : "#efefef";
+          x.fillStyle = m[r][k] === "#" ? (faint ? dim : on) : off;
           x.fillRect((col + k) * step, r * step, cell, cell);
         }
         col += m[0].length + 1;
@@ -214,10 +215,10 @@
       c.width = Math.round(g.W * dpr);
       c.height = Math.round(g.rows * g.step * dpr);
       c.style.height = g.rows * g.step + "px";
-      const x = c.getContext("2d");
+      const x = c.getContext("2d"), on = tone("--ink"), off = tone("--cell-off");
       x.setTransform(dpr, 0, 0, dpr, 0, 0);
       for (let i = 0; i < +c.dataset.n; i++) {
-        x.fillStyle = i < n ? "#111" : "#e9e9e9";
+        x.fillStyle = i < n ? on : off;
         x.fillRect((i % g.cols) * g.step, Math.floor(i / g.cols) * g.step, g.cell, g.cell);
       }
     };
@@ -226,7 +227,7 @@
       const from = drawn.get(c) || 0, g = grid(c);
       if (n <= from || !g.W) return;
       const x = c.getContext("2d");
-      x.fillStyle = "#111";
+      x.fillStyle = tone("--ink");
       for (let i = from; i < n; i++) x.fillRect((i % g.cols) * g.step, Math.floor(i / g.cols) * g.step, g.cell, g.cell);
       drawn.set(c, n);
     };
@@ -252,6 +253,9 @@
       clearTimeout(rt);
       rt = setTimeout(() => { fit(); cvs.forEach(c => full(c, drawn.get(c))); dots.forEach(c => dot(c, shown.get(c))); }, 150);
     });
+    const redraw = () => { cvs.forEach(c => full(c, drawn.get(c) || 0)); dots.forEach(c => dot(c, shown.get(c) || 0)); };
+    new MutationObserver(redraw).observe(H, { attributes: true, attributeFilter: ["data-theme"] });
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redraw);
   }
 
 
@@ -327,7 +331,17 @@
     const caps = [...document.querySelectorAll(".cap")];
     const thumbs = [...document.querySelectorAll(".thumbs button")];
     const at = () => Math.round(strip.scrollLeft / Math.max(1, strip.clientWidth));
-    const show = i => {
+    const big = [...strip.children].map(f => f.querySelector("img"));
+    const load = im => { if (im && im.dataset.src) { im.src = im.dataset.src; im.removeAttribute("data-src"); } };
+    const ahead = i => { load(big[i]); load(big[i + 1]); };
+    const small = () => document.querySelectorAll(".thumbs img[data-src], .pgrid img[data-src]").forEach(load);
+    if (big[0]) {
+      const go1 = () => { ahead(0); small(); };
+      if (big[0].complete && big[0].naturalWidth) go1();
+      else { big[0].addEventListener("load", go1, { once: true }); big[0].addEventListener("error", go1, { once: true }); }
+    }
+    const show = (i, first) => {
+      if (!first) ahead(i);  // 처음 그릴 때는 받지 않음 — 첫 장이 다 온 뒤에(위) 둘째 장을 받음
       if (count) count.textContent = `${i + 1} / ${slides}`;
       caps.forEach((c, n) => { c.hidden = n !== i; });
       thumbs.forEach((t, n) => { t.classList.toggle("on", n === i); t.setAttribute("aria-current", n === i ? "true" : "false"); });
@@ -356,12 +370,16 @@
       sec.classList.toggle("all", m === "all");
       if (!grid) return;
       grid.hidden = m !== "all";
+      if (m === "all") small();
       grid.classList.remove("show");
       if (m === "all") { void grid.offsetWidth; grid.classList.add("show"); }
     };
     modes.forEach(b => b.addEventListener("click", () => setMode(b.dataset.m)));
-    if (grid) [...grid.children].forEach((b, i) => b.addEventListener("click", () => { setMode("one"); go(i, false); show(i); fade(i); }));
-    show(0);
+    if (grid) [...grid.children].forEach((b, i) => b.addEventListener("click", () => {
+      setMode("one"); go(i, false); show(i); fade(i);
+      (strip.children[i].querySelector(".pop") || strip).focus({ preventScroll: true });  // 격자가 숨으며 포커스가 쪽 바탕으로 빠지지 않게 — 고른 사진으로(10/27 점검)
+    }));
+    show(0, true);
   }
 
   // 영상 칸: 큰 한 편은 누르면 이 자리에서 재생 — 누르기 전에는 플레이어를 불러오지 않음(썸네일 그림만 · youtube-nocookie · IFrame API는 처음 누를 때 한 번).
@@ -489,6 +507,10 @@
     };
     const step = d => view.scrollBy({ left: d * view.clientWidth, behavior: reduce ? "auto" : "smooth" });
     view.addEventListener("scroll", upd, { passive: true });
+    view.addEventListener("scroll", () => {
+      const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
+      [k, k + 1].forEach(j => { const im = view.children[j] && view.children[j].querySelector("img"); if (im && im.dataset.src) { im.src = im.dataset.src; im.removeAttribute("data-src"); } });
+    }, { passive: true });
     const open = (i, btn) => {
       const list = posts[i] || [];
       if (list.length < 2) return;
@@ -498,9 +520,8 @@
       view.textContent = "";
       list.forEach((src, k) => {
         const f = document.createElement("figure"), img = document.createElement("img");
-        img.src = src;
+        if (k > 1) img.dataset.src = src; else img.src = src;  // 셋째 장부터는 넘길 때 한 장 앞씩(10/27 점검 — 열 때 여러 장을 한꺼번에 받아 둘째 장이 늦었음)
         img.alt = `${alt} (${k + 1} / ${n})`;
-        if (k > 1) img.loading = "lazy";
         f.append(img);
         view.append(f);
       });
@@ -540,6 +561,8 @@
     const items = JSON.parse(sidx.textContent);  // [갈래, 글, 자리, 갈 곳] · 칸 이름만 다섯째에 그 칸의 낱말(약력 · 차례 …)
     const inp = srch.querySelector("input"), res = srch.querySelector(".sr-res"), none = srch.querySelector(".sr-none");
     const cnt = srch.querySelector(".sr-n"), lab = srch.querySelector(".sr-lab"), sug = srch.querySelector(".sug");
+    const say = srch.querySelector('[role="status"]');  // 결과 수 · '없음'을 화면 읽기 프로그램에 — 늘 자리에 있는 한 줄에서 글만 바꿈(숨겼다 보이면 안 읽힘, 10/27 점검)
+    let sayT = 0;
     const K = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
     const cho = s => [...s].map(c => { const k = c.charCodeAt(0) - 0xac00; return k >= 0 && k < 11172 ? K[Math.floor(k / 588)] : c; }).join("");
     const skip = /[\s·「」『』〈〉《》,.!?'"“”‘’\-—–()]/;
@@ -573,12 +596,16 @@
           `<span class="tx">${h.html}</span><span class="wh">${esc(h.it[2])}</span></a></li>`;
       }).join("");
       none.hidden = empty || hits.length > 0;
+      clearTimeout(sayT);
+      const msg = empty ? "" : hits.length ? cnt.textContent : none.textContent;
+      sayT = setTimeout(() => { if (say) say.textContent = msg; }, 400);  // 치는 동안 글자마다 읽지 않게 잠깐 멈춘 뒤
     };
     let from = null;
     const others = on => [...document.body.children].forEach(el => { if (el !== srch && el.tagName !== "SCRIPT") el.inert = on; });
     const open = () => {
       if (!srch.hidden) return;
       from = document.activeElement;
+      srch.inert = false;
       srch.hidden = false;
       H.classList.add("sr-on");
       others(true);
@@ -591,7 +618,7 @@
       srch.hidden = true;
       H.classList.remove("sr-on");
       others(false);
-      if (back && from) from.focus();
+      if (back) (from && from !== document.body ? from : sq).focus();  // '/'로 열었으면 돋보기로
     };
     // 결과로 가기 — 사진은 그 장으로 넘기고, 나머지는 그 줄을 화면 가운데에 두고 잠깐 옅은 바탕
     const goTo = href => {
@@ -600,7 +627,13 @@
       if (!el) return;
       const sec = el.matches("section"), big = el.offsetHeight > innerHeight * 0.6;  // 칸 · 큰 덩어리(차례 전체)는 머리를 위에, 한 줄은 화면 가운데에
       el.scrollIntoView({ block: sec || big ? "start" : "center", behavior: reduce ? "auto" : "smooth" });
-      if (p) { const b = document.querySelectorAll(".thumbs button")[+p[1]]; if (b) b.click(); return; }
+      if (p) {  // 그 장으로 넘기고 포커스도 그 사진에(창이 닫히며 쪽 바탕으로 빠지지 않게, 10/27 점검)
+        const i = +p[1], b = document.querySelectorAll(".thumbs button")[i], f = document.querySelectorAll(".strip > *")[i];
+        if (b) b.click();
+        const to = (f && f.querySelector(".pop")) || document.querySelector(".strip");
+        if (to) to.focus({ preventScroll: true });
+        return;
+      }
       if (!sec && !big) { el.classList.add("hit"); setTimeout(() => el.classList.remove("hit"), 1600); }
       if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
       el.focus({ preventScroll: true });
@@ -609,19 +642,25 @@
     srch.querySelector(".x").addEventListener("click", () => shut(true));
     srch.addEventListener("keydown", ev => { if (ev.key === "Escape") shut(true); });
     inp.addEventListener("input", run);
+    inp.addEventListener("keydown", ev => {  // Enter(휴대폰 자판 '검색')면 첫 결과로 — 한글을 짜는 중의 Enter는 글자 마침이라 건너뜀
+      if (ev.key !== "Enter" || ev.isComposing || ev.keyCode === 229) return;
+      const first = res.querySelector("a");
+      if (first) { ev.preventDefault(); first.click(); }
+    });
     srch.addEventListener("click", ev => {
       const a = ev.target.closest("a, button[data-q]");
       if (!a) return;
       if (a.dataset.q) { inp.value = a.dataset.q; run(); inp.focus(); return; }
       const href = a.getAttribute("href") || "";
-      if (!href.startsWith("#")) { shut(false); return; }  // 밖으로 나가는 링크(교보 · 유튜브)는 새 창 그대로
+      if (!href.startsWith("#")) { shut(true); return; }  // 밖으로 나가는 링크(교보 · 유튜브)는 새 창 그대로 · 포커스는 돋보기로(돌아왔을 때 쪽 맨 앞부터 다시가 아니게)
       ev.preventDefault();
       shut(false);
       goTo(href);
     });
     document.addEventListener("keydown", ev => {
       const a = document.activeElement;
-      if (ev.key === "/" && !ev.metaKey && !ev.ctrlKey && !ev.altKey && srch.hidden &&
+      const other = [...document.querySelectorAll('[aria-modal="true"]')].some(d => d !== srch && !d.hidden);
+      if (ev.key === "/" && !ev.metaKey && !ev.ctrlKey && !ev.altKey && srch.hidden && !other &&
           !(a && (/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) || a.isContentEditable))) { ev.preventDefault(); open(); }
     });
   }
@@ -669,7 +708,7 @@
     const loop = () => {
       const now = performance.now(), dt = (now - last) / 1000;
       last = now;
-      if (!open) p = Math.max(0, Math.min(1, p + (pressing || auto ? dt / (auto ? 0.9 : 2.2) : -dt / 0.6)));
+      if (!open) p = Math.max(0, Math.min(1, p + (pressing || auto ? dt / (auto ? 0.9 : 1.9) : -dt / 0.6)));
       apply(p);
       if (p >= 1 && !open) finish();
       if (!open && (pressing || auto || p > 0)) requestAnimationFrame(loop);
@@ -679,27 +718,36 @@
       }
     };
     const run = () => { if (!ticking) { ticking = true; last = performance.now(); requestAnimationFrame(loop); } };
+    let hold = 0, x0 = 0, y0 = 0;
     poemBox.addEventListener("pointerdown", ev => {
       if (open || (ev.pointerType === "mouse" && ev.button !== 0)) return;
       pressing = true;
       viaKey = false;
       back = hint;
-      touch.style.left = ev.clientX + "px";
-      touch.style.top = ev.clientY + "px";
+      x0 = ev.clientX;
+      y0 = ev.clientY;
+      touch.style.left = x0 + "px";
+      touch.style.top = y0 + "px";
       touch.classList.add("on");
-      poemBox.classList.add("pressing");
-      show();
-      if (reduce) { p = 1; finish(); } else run();
+      clearTimeout(hold);
+      hold = setTimeout(() => {
+        if (!pressing) return;
+        poemBox.classList.add("pressing");
+        show();
+        if (reduce) { p = 1; finish(); } else run();
+      }, 300);
     });
     const up = () => {
+      clearTimeout(hold);
       if (!pressing) return;
       pressing = false;
       touch.classList.remove("on");
       poemBox.classList.remove("pressing");
-      run();
+      if (p > 0 || ticking) run();
     };
     addEventListener("pointerup", up);
     addEventListener("pointercancel", up);
+    addEventListener("pointermove", ev => { if (pressing && !open && Math.hypot(ev.clientX - x0, ev.clientY - y0) > 8) up(); }, { passive: true });
     poemBox.addEventListener("contextmenu", ev => { if (pressing) ev.preventDefault(); });
     hint.addEventListener("click", ev => {
       if (open) return;

@@ -13,3 +13,5 @@ namdongwon.com 글꼴 — 사이트에 쓰는 글자만 남겨 woff2로 줄인 �
 - newsreader.woff2 · newsreader-italic.woff2 (영어판)
   원본: Newsreader[opsz,wght] · Newsreader-Italic[opsz,wght], Copyright 2020 The Newsreader Project Authors (Production Type). SIL Open Font License 1.1 — OFL-Newsreader.txt
   예약된 글꼴 이름이 없어 이름은 그대로, 줄인 판이라는 표시를 글꼴 설명(name ID 10)에 남김. 굵기 · 글자 크기 축(가변)은 그대로.
+- newsreader-first.woff2 (영어판, 2026-10-27부터)
+  위 Newsreader와 같은 원본 · 같은 라이선스에서 영어판 첫 화면(문 글자 · 첫 화면)에 보이는 글자만 남긴 판. 첫 화면을 먼저 그리려고 미리 받음. 가변 축 그대로.

@@ -57,6 +57,7 @@ ALWAYS = "".join(chr(c) for c in range(0x20, 0x7F)) + "‘’“”『』「」�
 NOTE = "Subset for namdongwon.com (only the characters used on the site), 2026"
 # 영어판 글꼴(10/24 ⑤ B): Newsreader — 기준/폰트/Newsreader/(Google Fonts 저장소에서 내려받음, OFL)
 EN_FONTS = [("Newsreader[opsz,wght].ttf", "newsreader.woff2"), ("Newsreader-Italic[opsz,wght].ttf", "newsreader-italic.woff2")]
+EN_FIRST = "newsreader-first.woff2"  # 영어판 첫 화면 작은 판(10/27 점검 큼 — 영어판 문이 한국어판보다 0.7초 늦었음): 문 글자 · 첫 화면 글자만 담은 Newsreader(가변 축 그대로)
 e = html.escape
 NB = "\u00a0"  # 줄 안 바뀜 공백
 SPLIT = {}  # 시집 제목 → (큰 제목, 작은 제목) — render()가 원고의 book.display에서 채움(이스케이프한 글, tt())
@@ -400,8 +401,11 @@ def first_text(page):
     plain = lambda s: html.unescape(re.sub(r"<[^>]+>", "", s))  # noqa: E731
     door = plain(re.search(r'<div class="door".*?<i class="gap"></i></div>', page, re.S).group(0))
     hs = plain("".join(re.findall(r'<p class="hs[^"]*">(.*?)</p>', home, re.S)))
+    ht = plain("".join(re.findall(r'<p class="ht[^"]*">(.*?)</p>', home, re.S)))
     sans = plain(home) + "".join(re.findall(r'data-type="([^"]*)"', home))
-    return {k: unicodedata.normalize("NFC", v + " " + ALWAYS[95:]) for k, v in (("door", door), ("hs", hs), ("home", sans))}
+    out = {k: unicodedata.normalize("NFC", v + " " + ALWAYS[95:]) for k, v in (("door", door), ("hs", hs), ("home", sans))}
+    out["serif"] = unicodedata.normalize("NFC", door + ht + hs + " ")  # 영어판 Newsreader 작은 판 — 문 글자 · 큰 제목 · 부제만(부호 · ASCII 통째는 빼서 가볍게, 없는 글자는 통째 판으로)
+    return out
 
 
 def rename_font(font):
@@ -626,6 +630,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 교보 링크 누름(10/27 동원 수락 — 관리 화면 숫자판 M2 '책장에 꽂기', 정의서 v2 W2): 네 자리 × 한 · 영에 이름을 붙여 셈 — 방문 셈을 켰을 때만.
     # 이름 '책장에 꽂기-첫화면 · -소장처 · -책카드 · -찾기', 영어판은 끝에 -en(관리 화면이 이 이름으로 읽음). 값을 붙이면 count.js가 누름을 셈[출처 goatcounter.com/help/events]
     gcc = lambda where: f' data-goatcounter-click="{e("책장에 꽂기-" + where + ("-en" if en else ""))}"' if gc else ""  # noqa: E731
+    dtxt = lambda s: (lambda d: f"{MONTHS[d.month - 1]}{NB}{d.day}, {d.year}")(date.fromisoformat(s)) if en else s.replace("-", ".")  # noqa: E731  소식 · 방명록 날짜 — 한국어 2026.11.01 · 영어 November 1, 2026(같은 쪽 다른 영어 날짜와 같은 꼴, 10/27 점검)
     gc_tag = f'<script data-goatcounter="https://{gc}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n' if gc else ""
     og_img =("og-book-en.jpg" if en else "og-book.jpg") if card else ("og-en.jpg" if en else "og.jpg")
     og_title = L["og_book_title"].format(title=book["title"], name=S["name"]) if card else title
@@ -717,7 +722,9 @@ def render(site, poem, videos, photos, lang="ko"):
                if a else (p["where"] or L["photo_alt"]))
         art = ' class="art"' if a else ""
         w, h = out_size(psrc(p), 1080)
-        img = f'<img src="{P}assets/img/photos/{e(Path(p["file"]).stem)}.jpg" alt="{e(alt)}" loading="lazy" width="{w}" height="{h}">'
+        # 띠의 둘째 장부터는 data-src — main.js가 보는 장 + 다음 한 장만 받음(10/27 점검: 가까이 오면 큰 사진 3–5장을 한꺼번에 받아 첫 장이 늦었음)
+        sa, lz = ("src", ' loading="lazy"') if i == 0 else ("data-src", "")
+        img = f'<img {sa}="{P}assets/img/photos/{e(Path(p["file"]).stem)}.jpg" alt="{e(alt)}"{lz} width="{w}" height="{h}">'
         if p.get("kids"):  # 여러 장짜리 게시물(10/25 ⑤ A): 누르면 그 게시물 안 사진을 넘겨 보는 창 · 오른쪽 위 'N장'
             k = 1 + len(p["kids"])
             img = (f'<button type="button" class="pop" data-i="{i}" aria-haspopup="dialog" aria-label="{e(alt)} — {t("pop", n=k)}">{img}'
@@ -759,9 +766,10 @@ def render(site, poem, videos, photos, lang="ko"):
     thumb = lambda p: f'{P}assets/img/photos/thumb/{e(Path(p["file"]).stem)}.jpg'
     tsize = lambda p: 'width="{}" height="{}"'.format(*out_size(psrc(p), 240))
     tart = lambda p: ' class="art"' if is_art(p) else ""
-    thumbs = "".join(f'<button type="button"{tart(p)} aria-label="{t("thumb", i=i + 1)}"><img src="{thumb(p)}" alt="" loading="lazy" {tsize(p)}></button>'
+    # 작은 사진은 data-src — 첫 큰 사진이 다 온 뒤 main.js가 받음(10/27 점검)
+    thumbs = "".join(f'<button type="button"{tart(p)} aria-label="{t("thumb", i=i + 1)}"><img data-src="{thumb(p)}" alt="" {tsize(p)}></button>'
                      for i, p in enumerate(PH["items"]))
-    pgrid = "".join(f'<button type="button"{tart(p)} style="--i:{i}" aria-label="{t("grid", i=i + 1)}"><img src="{thumb(p)}" alt="" loading="lazy" {tsize(p)}>'
+    pgrid = "".join(f'<button type="button"{tart(p)} style="--i:{i}" aria-label="{t("grid", i=i + 1)}"><img data-src="{thumb(p)}" alt="" {tsize(p)}>'
                     f'<span class="no">{i + 1:02d}</span></button>' for i, p in enumerate(PH["items"]))
 
     # 영상 칸 — 최신 한 편 크게 + 지난 편은 차례처럼(편 번호 없음)
@@ -836,7 +844,7 @@ def render(site, poem, videos, photos, lang="ko"):
         lk = ' lang="ko"' if en and re.search(r"[가-힣]", x["text"]) else ""  # 영어판에서 한국어 글은 한국어로 읽히게
         rp = ((x.get("en") or {}).get("reply") or x.get("reply", "")) if en else x.get("reply", "")
         rep = f'<p class="rp">{e(rp)}<span>— {t("gb_reply_by")}</span></p>' if rp else ""
-        return f'<li><p class="tx"{lk}>{txt}</p><p class="by">{e(x.get("name", "")) or t("gb_anon")} · {e(x["date"].replace("-", "."))}</p>{rep}</li>'
+        return f'<li><p class="tx"{lk}>{txt}</p><p class="by">{e(x.get("name", "")) or t("gb_anon")} · {e(dtxt(x["date"]))}</p>{rep}</li>'
     guest, priv = "", f'<a href="privacy/">{t("gb_privacy")}</a>'  # 처리방침 쪽(한 · 영 모두 제 판 아래 privacy/)
     if gb_id or gbook:
         more = f'<details><summary>{t("gb_more")}</summary><ol>{"".join(gb_li(x) for x in gbook[12:])}</ol></details>' if len(gbook) > 12 else ""
@@ -872,7 +880,8 @@ def render(site, poem, videos, photos, lang="ko"):
     nav += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26) — 구분선 뒤 언어 단추 옆(10/26 B, 구분선은 CSS)
     nav += f'<a class="lang" href="{"../" if en else "en/"}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 지금 언어를 보임(10/26 동원 "지금 현재 나라의 언어를 표시하는 게 더 좋을 거 같은데" — 한국어판 🇰🇷 KO · 영어판 🇬🇧 EN, 누르면 다른 판)
     preload = ("".join(f'<link rel="preload" href="{P}assets/fonts/{f}" as="font" type="font/woff2" crossorigin>\n' for f in
-                       (("newsreader.woff2", "bon-myeongjo.woff2") if en else ("bon-myeongjo-light.woff2", *FIRST))))  # 한국어판은 첫 화면 작은 판만(10/27 B)
+                       ((EN_FIRST, "ndw-sans-light-first.woff2", "ndw-sans-semibold-first.woff2") if en else ("bon-myeongjo-light.woff2", *FIRST))))
+    # 첫 화면 작은 판만 미리 받음(한국어 10/27 B · 영어 10/27 점검 — 영어 첫 화면은 본명조를 한 자도 안 그리는데 통째 판을 받아 문이 늦었음). 작은 고딕 판(PTDF)은 ASCII를 늘 담아 영어 첫 화면에도 씀
     pgno = t("pgno", poem=poem_t, pages=e(S["poem"]["pages"])) + (f'<br>{t("translated")}' if L["translated"] else "")
     note = f'<p class="note">{t("ship_note")}</p>' if L["ship_note"] else ""
     # 시집 소개 · 차례(10/25 A 아래로 이어 쌓기) — 책 카드 다음에 머리 두 줄 → 소개 한 단락 → 차례(「탁본」 줄만 먹)
@@ -924,7 +933,7 @@ def render(site, poem, videos, photos, lang="ko"):
     news = sorted((x for x in row_lang(tb["news"]["items"], lang) if x["text"] and date.fromisoformat(x["date"]) <= day), key=lambda x: x["date"], reverse=True)
 
     def news_li(x):
-        return f'<li><time datetime="{x["date"]}">{x["date"].replace("-", ".")}</time><span>{keep(x["text"])}</span></li>'
+        return f'<li><time datetime="{x["date"]}">{dtxt(x["date"])}</time><span>{keep(x["text"])}</span></li>'
     more = f'<details><summary>{t("news_more")}</summary><ol>{"".join(news_li(x) for x in news[3:])}</ol></details>' if len(news) > 3 else ""
     bnews = f'<div class="bnews"><h3>{t("news")}</h3><ol>{"".join(news_li(x) for x in news[:3])}</ol>{more}</div>' if news else ""
     ui_js = json.dumps(L["js"], ensure_ascii=False).replace("</", "<\\/")
@@ -936,7 +945,7 @@ def render(site, poem, videos, photos, lang="ko"):
     ix["me"][:0] = [(tg["me"], S["name"], "", "#me"), (tg["me"], S["tagline"], "", "#me")] + [
         (tg["me"], x, "", "#me") for x in re.split(r"(?<=[.!?다])\s+", plain(S["bio"])) if x]
     ix["me"] += [(tg["me"], f'{x["label"]} — {plain(x["text"])}', "", "#me") for x in nw.get("items", []) if x.get("text")]
-    ix["news"] += [(tg["news"], plain(x["text"]), x["date"].replace("-", "."), "#poem") for x in news]
+    ix["news"] += [(tg["news"], plain(x["text"]), dtxt(x["date"]), "#poem") for x in news]
     ix["contact"] += [(tg["contact"], L["label_contact"] if endpoint else L["ask_off"], "", "#contact")] + [(tg["contact"], l["name"], "", l["url"]) for l in links]
     sidx_js = json.dumps([list(x) for k in ix for x in ix[k]], ensure_ascii=False).replace("</", "<\\/")
     sj = load("search.json") if (CONTENT / "search.json").exists() else {"suggest": []}
@@ -961,7 +970,7 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<div class="bar">{SEARCH_ICON}<input type="search" placeholder="{t("search_ph")}" aria-label="{t("search_label")}" autocomplete="off" enterkeyhint="search">'
             f'<button type="button" class="x">{t("close")}</button></div>'
             f'<p class="sr-lab">{t("search_suggest")}</p><ul class="sug">{"".join(sug_li(x) for x in sj["suggest"])}</ul>'
-            f'<p class="sr-n" aria-live="polite" hidden></p><ul class="sr-res"></ul><p class="sr-none" hidden>{t("search_none")}</p></div></div>\n'
+            f'<p class="sr" role="status"></p><p class="sr-n" hidden></p><ul class="sr-res"></ul><p class="sr-none" hidden>{t("search_none")}</p></div></div>\n'
             f'<script id="sidx" type="application/json">{sidx_js}</script>\n')
 
     return f"""<!doctype html>
@@ -1063,11 +1072,11 @@ def page_privacy(site, lang):
     base = site["base_url"].rstrip("/")
     d = date.fromisoformat(p["updated"])
     when = f"{MONTHS[d.month - 1]} {d.day}, {d.year}" if en else f"{d.year}년 {d.month}월 {d.day}일"
-    # when이 붙은 줄은 그것을 켰을 때만(방문 셈 when "goatcounter" — 10/27) · 방문 셈을 켜면 첫 문단도 lead_counted로
-    on = {"goatcounter": bool(goatcounter(site))}
+    # when이 붙은 줄은 그것을 켰을 때만(방문 셈 when "goatcounter" · 방명록 when "guestbook" — 10/27) · 칸에 보일 줄이 없으면 그 칸의 empty 한 줄 · 방문 셈을 켜면 첫 문단도 lead_counted로
+    on = {"goatcounter": bool(goatcounter(site)), "guestbook": bool(site["contact"].get("guestbook_formspree_id"))}
     shown = lambda items: [i for i in items if on.get(i.get("when"), True)]  # noqa: E731
     lead = p["lead_counted"] if on["goatcounter"] and p.get("lead_counted") else p["lead"]
-    secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{g(i)}</li>" for i in shown(x["items"]))}</ul>' for x in p["sections"])
+    secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{g(i)}</li>" for i in (shown(x["items"]) or [x["empty"]] * ("empty" in x)))}</ul>' for x in p["sections"])
     other_lang, other_href = ("ko", "../../privacy/") if en else ("en", "../en/privacy/")
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1080,7 +1089,7 @@ def page_privacy(site, lang):
 <p class="lead">{g(lead)}</p>
 {secs}
 <p class="up">{g(p["updated_label"])} <time datetime="{d.isoformat()}">{when}</time></p>
-<p class="bk"><a class="buy" href="../">{g(p["back"])}</a><a class="oth" href="{other_href}" lang="{other_lang}" hreflang="{other_lang}">{g(p["other"])}</a></p>
+<p class="back"><a class="buy" href="../">{g(p["back"])}</a><a class="oth" href="{other_href}" lang="{other_lang}" hreflang="{other_lang}">{g(p["other"])}</a></p>
 </main></body></html>
 """
 
@@ -1155,6 +1164,7 @@ def main():
     print(f"글꼴에 남긴 글자 {len(set(text))}자")
     # 영어판 글꼴(10/24 ⑤ B) — Newsreader 바로 · 기울임을 영어판의 글자만 남겨 줄임(가변 축 그대로, 예약된 이름 없어 이름 그대로)
     text_en = used_text([en_html])
+    fte = first_text(en_html)  # 영어판 첫 화면 작은 판에 담을 글자(문 글자 · 첫 화면)
     for name, out in EN_FONTS:
         src = find(PTD_DIR, name, "Newsreader")
         if src:
@@ -1165,6 +1175,12 @@ def main():
             print(f"알림: 원본 {name}을 찾지 못해 지난 줄인 판을 씀")
         else:
             raise SystemExit(f"글꼴을 찾지 못함: {name}")
+    if "NR" in srcs:
+        subset_font(srcs["NR"], ASSETS / "fonts" / EN_FIRST, fte["serif"], False)
+    elif EN_FIRST in keep:
+        (ASSETS / "fonts" / EN_FIRST).write_bytes(keep[EN_FIRST])
+    else:
+        raise SystemExit(f"영어판 첫 화면 작은 판({EN_FIRST})을 만들 원본(Newsreader)을 찾지 못함")
 
 
     # 글꼴 라이선스 전문은 글꼴 옆에 함께 둔다(OFL·GPL 조건)
