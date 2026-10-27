@@ -623,6 +623,9 @@ def render(site, poem, videos, photos, lang="ko"):
     # 링크 미리보기(og): 출간일 책 카드 기간에는 책 그림 · 책 제목(10/27 B — book_card), 그 밖엔 이름 카드 · 이름 제목. 탭 제목(<title>)은 늘 이름
     card = book_card(site)
     gc = goatcounter(site)  # 방문 셈(10/27) — GoatCounter가 알려 준 꼴 그대로(쪽 맨 끝, async)[출처 goatcounter.com/help/start]
+    # 교보 링크 누름(10/27 동원 수락 — 관리 화면 숫자판 M2 '책장에 꽂기', 정의서 v2 W2): 네 자리 × 한 · 영에 이름을 붙여 셈 — 방문 셈을 켰을 때만.
+    # 이름 '책장에 꽂기-첫화면 · -소장처 · -책카드 · -찾기', 영어판은 끝에 -en(관리 화면이 이 이름으로 읽음). 값을 붙이면 count.js가 누름을 셈[출처 goatcounter.com/help/events]
+    gcc = lambda where: f' data-goatcounter-click="{e("책장에 꽂기-" + where + ("-en" if en else ""))}"' if gc else ""  # noqa: E731
     gc_tag = f'<script data-goatcounter="https://{gc}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n' if gc else ""
     og_img =("og-book-en.jpg" if en else "og-book.jpg") if card else ("og-en.jpg" if en else "og.jpg")
     og_title = L["og_book_title"].format(title=book["title"], name=S["name"]) if card else title
@@ -642,7 +645,7 @@ def render(site, poem, videos, photos, lang="ko"):
     exl = (f'<dl><div><dt>{t("ex_object")}</dt><dd>{work}</dd></div>'
            f'<div><dt>{t("ex_author")}</dt><dd>{e(S["name"])}</dd></div>'  # 지은이는 이름만(10/25 동원)
            f'<div><dt>{t("ex_spec")}</dt><dd>{keep(book["spec"])}</dd></div>'
-           f'<div><dt>{t("ex_collection")}</dt><dd>{t("ex_shelf")} — <a class="buy" href="{e(book["buy_url"])}" target="_blank" rel="noopener">{e(book["buy_label"])} ↗</a></dd></div></dl>')
+           f'<div><dt>{t("ex_collection")}</dt><dd>{t("ex_shelf")} — <a class="buy" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("소장처")}>{e(book["buy_label"])} ↗</a></dd></div></dl>')
 
     # 연표(years.json) — 줄의 note 칸이 각주(10/25 40곳 2차 ④ A, Andrew Trousdale식 경의의 각주): 줄 끝 위첨자 번호 + 연표 바로 아래 각주 목록
     notes, lis = [], []
@@ -948,7 +951,8 @@ def render(site, poem, videos, photos, lang="ko"):
             return f'<li><button type="button"{hang} data-q="{e(x["q"])}">{e(x["label"])}{note}</button></li>'
         href = book["buy_url"] if x.get("go") == "buy" else (x.get("go") or "#home")
         ext = href.startswith("http")
-        return (f'<li><a{hang} href="{e(href)}"' + (' target="_blank" rel="noopener"' if ext else "") + f'>{e(x["label"])}{" ↗" if ext else ""}{note}</a></li>')
+        return (f'<li><a{hang} href="{e(href)}"' + (' target="_blank" rel="noopener"' if ext else "") + (gcc("찾기") if x.get("go") == "buy" else "")
+                + f'>{e(x["label"])}{" ↗" if ext else ""}{note}</a></li>')
     srch = (f'<div class="srch" role="dialog" aria-modal="true" aria-label="{t("search_label")}" hidden><div class="in">'
             f'<div class="bar">{SEARCH_ICON}<input type="search" placeholder="{t("search_ph")}" aria-label="{t("search_label")}" autocomplete="off" enterkeyhint="search">'
             f'<button type="button" class="x">{t("close")}</button></div>'
@@ -994,7 +998,7 @@ def render(site, poem, videos, photos, lang="ko"):
   <section id="home" aria-label="{t("home_label")}">
     <div class="l"><h1 class="kick"><span class="name" data-type="{e("|".join(typing_steps(S["name"])))}">{e(S["name"])}</span> <span>{t("ex_kick")}</span></h1>
       <p class="ht">{ht}</p><p class="hs hsl">{hs}</p></div>
-    <div class="r book"><div class="side"><p class="hs">{hs}</p><a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener">{e(book["buy_label"])} ↗</a><p class="tip">{t("ex_tip")}</p></div>
+    <div class="r book"><div class="side"><p class="hs">{hs}</p><a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("첫화면")}>{e(book["buy_label"])} ↗</a><p class="tip">{t("ex_tip")}</p></div>
       <div class="bk"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="{t("cover_alt", book=e(book["title"]) if en else e(book["title"]))}" width="600" height="881" fetchpriority="high" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i><i class="win"></i></div>
       </div>
     <div class="lab"><p class="rd"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a></p>{exl}</div>
@@ -1009,7 +1013,7 @@ def render(site, poem, videos, photos, lang="ko"):
     <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>
       <p class="pgno">{pgno}</p></div>
     <div class="l pbook"><div class="bk on" aria-hidden="true"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
-      {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small></p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener">{e(book["store_label"])} ↗</a>{note}</div>
+      {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small></p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}</div>
     {bnews}{bintro}
   </section>
   <section id="photo" aria-label="{t("label_photo")}">

@@ -82,8 +82,8 @@
         },
         {
           "when": "goatcounter",
-          "ko": "방문 수를 셀 때 — 받는 자: GoatCounter(운영 Martin Tournoij, 아일랜드 · 서버 독일 · 핀란드). 옮겨지는 정보: 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 · 브라우저 정보)와 본 쪽 · 들어온 곳. 때와 방법: 쪽을 열 때, 인터넷으로. 쓰는 곳과 두는 기간: 방문 수 세기 — IP 주소는 저장하지 않고, 같은 방문을 한 번으로 세는 값은 8시간까지 기억에만 둡니다. 거부하는 법: 브라우저의 추적 막기 · 광고 차단 기능을 켜거나 자바스크립트를 끄시면 세지 않습니다.",
-          "en": "When visits are counted — Recipient: GoatCounter (run by Martin Tournoij, Ireland; servers in Germany and Finland). What is transferred: the connection details your browser sends when a page opens (IP address, browser details), the page viewed and the referring site. When and how: when a page opens, over the internet. Purpose and retention: counting visits — IP addresses are not stored, and the value used to count one visit once is kept in memory for up to 8 hours. How to refuse: turn on your browser’s tracking or ad blocking, or turn off JavaScript, and nothing is counted."
+          "ko": "방문 수를 셀 때 — 받는 자: GoatCounter(운영 Martin Tournoij, 아일랜드 · 서버 독일 · 핀란드). 옮겨지는 정보: 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 · 브라우저 정보)와 본 쪽 · 들어온 곳 · 누른 교보문고 링크. 때와 방법: 쪽을 열 때와 교보문고 링크를 누를 때, 인터넷으로. 쓰는 곳과 두는 기간: 방문 수 세기 — IP 주소는 저장하지 않고, 같은 방문을 한 번으로 세는 값은 8시간까지 기억에만 둡니다. 거부하는 법: 브라우저의 추적 막기 · 광고 차단 기능을 켜거나 자바스크립트를 끄시면 세지 않습니다.",
+          "en": "When visits are counted — Recipient: GoatCounter (run by Martin Tournoij, Ireland; servers in Germany and Finland). What is transferred: the connection details your browser sends when a page opens (IP address, browser details), the page viewed, the referring site and any click on a link to Kyobo Book Centre. When and how: when a page opens or a link to Kyobo Book Centre is clicked, over the internet. Purpose and retention: counting visits — IP addresses are not stored, and the value used to count one visit once is kept in memory for up to 8 hours. How to refuse: turn on your browser’s tracking or ad blocking, or turn off JavaScript, and nothing is counted."
         }
       ]
     },
@@ -103,8 +103,8 @@
         },
         {
           "when": "goatcounter",
-          "ko": "방문 수는 GoatCounter로 쿠키 없이 셉니다. 본 쪽 · 들어온 곳 · 브라우저 · 운영체제 · 나라(IP 주소로 짐작) · 언어 · 화면 폭을 '몇 명'으로만 합쳐 세고, 한 사람을 따로 알아볼 수 있게 남기지 않습니다(3절).",
-          "en": "Visits are counted with GoatCounter, without cookies. The page viewed, referring site, browser, operating system, country (estimated from the IP address), language and screen width are counted only as totals, and nothing is kept that singles out a person (section 3)."
+          "ko": "방문 수는 GoatCounter로 쿠키 없이 셉니다. 본 쪽 · 들어온 곳 · 교보문고 링크를 누른 수 · 브라우저 · 운영체제 · 나라(IP 주소로 짐작) · 언어 · 화면 폭을 '몇 명'으로만 합쳐 세고, 한 사람을 따로 알아볼 수 있게 남기지 않습니다(3절).",
+          "en": "Visits are counted with GoatCounter, without cookies. The page viewed, referring site, clicks on links to Kyobo Book Centre, browser, operating system, country (estimated from the IP address), language and screen width are counted only as totals, and nothing is kept that singles out a person (section 3)."
         }
       ]
     },
