@@ -5,6 +5,7 @@
   const H = document.documentElement;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const motion = !reduce && "IntersectionObserver" in window;
+  const revisit = H.classList.contains("seen");  // 다시 온 방문(head 스크립트 — 이 기기에 문 장면을 본 표시가 있음): 첫 화면 이름 · 책 · 창살 빛을 처음부터 머문 자리로(10/27 숨 재기 3)
   const home = document.querySelector("#home");
   // 영어판(10/24): 안내 문구는 쪽에 실린 ui 글(content/ui.json → 빌드)에서 — 없으면 한국어 그대로.
   // 그림 자리는 이 스크립트가 있는 assets 폴더 기준(영어판은 한 칸 아래 폴더라 "assets/…"로는 못 찾음)
@@ -22,7 +23,7 @@
   // 이름 — 커서와 함께 자모로 쳐 나감(10/24). 치는 차례는 build.py가 data-type에 적어 둠(그 글자들이 줄인 글꼴에 들어가게).
   const nameEl = home && home.querySelector(".name");
   let typeName = () => {};
-  if (motion && nameEl && nameEl.dataset.type) {
+  if (motion && !revisit && nameEl && nameEl.dataset.type) {
     const steps = nameEl.dataset.type.split("|"), full = nameEl.textContent;
     nameEl.textContent = "";
     const sr = document.createElement("span");
@@ -133,12 +134,38 @@
     // 글꼴 목록의 맨 앞 하나만 — fonts.load는 목록에 든 가족을 모두 받으므로, 통째로 넘기면 뒤의 통째 판(BMJ 보통 90KB)까지 기다림[실측 10/27 — 문 열림 3.9초]
     const face = el => { const s = getComputedStyle(el); return document.fonts.load(`${s.fontStyle} ${s.fontWeight} ${s.fontSize} ${s.fontFamily.split(",")[0]}`, el.textContent); };
     const want = document.fonts ? Promise.all([door.querySelector(".t"), home && home.querySelector(".ht")].filter(Boolean).map(face)).catch(() => {}) : Promise.resolve();
+    let opened = false;
+    const openDoor = () => {  // 문 열림 — 이름은 0.15초 · 책은 0.9초 뒤로 겹쳐 두고, 1.4초 뒤 문을 걷어 냄
+      if (opened) return;
+      opened = true;
+      ["wheel", "touchmove", "keydown", "pointerdown"].forEach(k => removeEventListener(k, early, true));
+      door.classList.add("open");
+      H.classList.add("opened");
+      home.classList.add("go");
+      setTimeout(typeName, 150);
+      setTimeout(bookIn, 900);
+      setTimeout(() => { door.remove(); H.classList.remove("intro"); }, 1400);
+    };
+    // 기다리지 않는 사람(10/27 숨 재기 2) — 문이 덮은 동안 누르기 · 스크롤 · 키는 문을 바로 엶. 그 손짓은 문 뒤 쪽에 닿지 않게:
+    // 스크롤은 막고, 누름은 뒤따르는 click까지 삼킴(문이 열리며 손가락 밑에 링크가 드러나도 눌리지 않게 — 0.6초 안에 오지 않으면 풀어 둠)
+    const SCROLL_KEYS = [" ", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "End", "Home"];
+    const eat = ev => { ev.preventDefault(); ev.stopPropagation(); removeEventListener("click", eat, true); };
+    const early = ev => {
+      if (opened || (ev.type === "keydown" && (ev.metaKey || ev.ctrlKey || ev.altKey))) return;  // 브라우저 단축키는 그대로
+      if (ev.type === "wheel" || ev.type === "touchmove" || SCROLL_KEYS.includes(ev.key)) ev.preventDefault();
+      if (ev.type === "pointerdown") {
+        addEventListener("click", eat, true);
+        setTimeout(() => removeEventListener("click", eat, true), 600);
+      }
+      openDoor();
+    };
+    ["wheel", "touchmove", "keydown", "pointerdown"].forEach(k => addEventListener(k, early, { capture: true, passive: false }));
     Promise.race([want, new Promise(r => setTimeout(r, 800))]).then(() => {
+      if (opened) return;
       // 첫 화면이 3초 안에 다 서게(10/24 B) — 문 열림 1.55 → 1.1초, 나머지는 그 뒤로 겹쳐 둠
-      setTimeout(() => door.classList.add("on"), 200);
-      setTimeout(() => door.classList.add("lit"), 800);
-      setTimeout(() => { door.classList.add("open"); H.classList.add("opened"); home.classList.add("go"); setTimeout(typeName, 150); setTimeout(bookIn, 900); }, 1100);
-      setTimeout(() => { door.remove(); H.classList.remove("intro"); }, 2500);
+      setTimeout(() => { if (!opened) door.classList.add("on"); }, 200);
+      setTimeout(() => { if (!opened) door.classList.add("lit"); }, 800);
+      setTimeout(openDoor, 1100);
     });
   } else {
     H.classList.remove("intro");
@@ -146,7 +173,7 @@
     if (home) requestAnimationFrame(() => requestAnimationFrame(() => home.classList.add("go")));
     // 다시 온 사람: 글꼴을 0.8초까지만 기다렸다가 바로 침
     Promise.race([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise(r => setTimeout(r, 800))]).then(() => setTimeout(typeName, 150));
-    if (bk && motion) once([bk], () => setTimeout(bookIn, 250));
+    if (bk && motion && !revisit) once([bk], () => setTimeout(bookIn, 250));
   }
 
   // 결 — 칸 요소들이 화면에 들어오면 차례로 떠오름(시·기록은 장면이 맡음)
@@ -160,7 +187,7 @@
       el.classList.add("rv");
       el.style.setProperty("--i", Math.max(0, [...el.parentElement.children].filter(c => c.matches(sel)).indexOf(el)));
     }));
-    once([...document.querySelectorAll(".rv, .strip")], el => el.classList.add("in"), { rootMargin: "0px 0px -8% 0px" });
+    once([...document.querySelectorAll(".rv, .strip, .nt")], el => el.classList.add("in"), { rootMargin: "0px 0px -8% 0px" });  // .nt — '준비 중' 점은 보일 때 세 번만 숨 쉼
   }
 
   // ② 탁본 — 연이 화면에 들어오면 행마다 차례로 드러남(모양은 style.css)
@@ -744,7 +771,11 @@
       p = 0;
       keep.hidden = false;  // 다음에 열면 다시 '간직하기'부터
       if (kb) kb.hidden = true;
+      sheet.scrollTop = 0;
+      sheet.classList.remove("sc");
     };
+    // 시가 위에 붙은 제목 밑으로 지나가는 동안만 제목 아래 그림자(10/27 숨 재기 6)
+    sheet.addEventListener("scroll", () => sheet.classList.toggle("sc", sheet.scrollTop > 2), { passive: true });
     // 끝 두 줄(인사 · 다리)이나 교보 단추로 아래 줄이 높아져 종이가 화면보다 길어지면 맨 아래로 — 시의 끝 줄이 아래 줄에 덮이지 않게(10/27 끝 화면 A)
     const toEnd = () => { if (sheet.scrollHeight > sheet.clientHeight + 1) sheet.scrollTo({ top: sheet.scrollHeight, behavior: reduce ? "auto" : "smooth" }); };
     const finish = () => {
@@ -807,6 +838,7 @@
       viaKey = ev.detail === 0;  // 키보드(Enter·Space)로 누르면 0
       back = hint;
       show();
+      rest(true);  // 여는 0.9초 동안에도 종이 뒤로 Tab이 새지 않게(10/27 숨 재기 5) — 길게 누르는 길은 손가락이 닿아 있는 동안 inert가 터치를 끊을 수 있어 다 열린 뒤 그대로
       if (reduce) { p = 1; finish(); } else { auto = true; run(); }
     });
     const shut = () => {
@@ -834,11 +866,13 @@
       toEnd();
       if (had) kb.focus({ preventScroll: true });
     };
-    // 간직하기 — 휴대폰은 공유 창(사진 저장·인스타로 보내기), 안 되면 그림 파일 내려받기. 공유 창을 닫기만 했으면(AbortError) '간직하기' 그대로
+    // 간직하기 — 손가락 기기는 공유 창(사진 저장·인스타로 보내기), 마우스 기기나 공유가 안 되면 그림 파일 내려받기(10/27 숨 재기 7 — 맥 Chrome · Safari도 공유 창을 먼저 띄웠음).
+    // 손가락 기기는 CSS의 길게 누르기와 같은 기준(hover:none). 공유 창을 닫기만 했으면(AbortError) '간직하기' 그대로
+    const touchOnly = matchMedia("(hover: none)");
     keep.addEventListener("click", async () => {
       const name = uiText("file", "남동원_탁본.jpg");
       const blob = img ? await img : null;
-      if (blob && navigator.canShare) {
+      if (blob && navigator.canShare && touchOnly.matches) {
         const file = new File([blob], name, { type: "image/jpeg" });
         if (navigator.canShare({ files: [file] })) {
           try {
@@ -914,4 +948,35 @@
       msg.textContent = uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
     }
   });
+
+  // 꼬리표 지우기(10/27 관리 화면 세션 부탁 → 동원 '넣어') — 방문 셈(GoatCounter)이 이 방문을 센 뒤 주소창에서 utm_*만 뺌(다른 값 · # · 기록 상태는 그대로).
+  // 꼬리표 링크(예: 인스타 스토리)를 받은 사람이 주소창 주소를 그대로 다시 퍼뜨려도 그 방문이 같은 꼬리표로 쌓이지 않게(기준/관리 화면 꼬리표 링크 칸 정의_v1.md 4절).
+  // count.js는 실행되자마자(쪽이 보이면) 셈 주소를 만들어 보내고, 숨은 탭이면 보이게 될 때 셈 — 셀 때의 location.search를 읽으므로 반드시 그 뒤에[출처 gc.zgo.at/count.js].
+  // '실행되자마자'는 count.js 줄이 쪽 맨 끝(body 안, async — build.py gc_tag)이라 실행될 때 body가 있어서임. 줄 자리를 옮기면 이 차례를 다시 시험(scratch utm_check.py)
+  // 방문 셈이 꺼져 있으면(count.js 줄이 없으면) 아무것도 하지 않음 · count.js를 못 받으면(막힘) 셀 일이 없으니 바로 뺌
+  const gcs = document.querySelector("script[data-goatcounter]");
+  if (gcs && /[?&]utm_/i.test(location.search)) {
+    let untagged = false;
+    const unTag = () => {
+      if (untagged) return;
+      untagged = true;
+      const q = new URLSearchParams(location.search);
+      [...q.keys()].filter(k => /^utm_/i.test(k)).forEach(k => q.delete(k));
+      const s = q.toString();
+      history.replaceState(history.state, "", location.pathname + (s ? "?" + s : "") + location.hash);
+    };
+    const after = () => {
+      if (!("visibilityState" in document) || document.visibilityState === "visible") { unTag(); return; }  // count.js와 같은 조건
+      // count.js가 먼저 단 visibilitychange가 먼저 돌아 셈이 나간 뒤에 뺌(같은 사건은 단 차례대로 돎)
+      const v = () => { if (document.visibilityState === "visible") { document.removeEventListener("visibilitychange", v); setTimeout(unTag, 0); } };
+      document.addEventListener("visibilitychange", v);
+    };
+    if (window.goatcounter && typeof window.goatcounter.count === "function") after();
+    else {
+      gcs.addEventListener("load", after, { once: true });
+      gcs.addEventListener("error", unTag, { once: true });
+      // count.js가 이 스크립트보다 먼저 막혔으면(광고 차단 등) 위 사건은 이미 지나감 — 쪽을 다 받은 뒤(async 스크립트까지) 한 번 더 봄
+      addEventListener("load", () => { if (!(window.goatcounter && typeof window.goatcounter.count === "function")) unTag(); }, { once: true });
+    }
+  }
 })();

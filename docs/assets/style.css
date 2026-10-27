@@ -488,7 +488,8 @@ html.sr-on{overflow:hidden}
 
 /* 첫 방문의 문 — '문을 열고 나오면'이 적힌 검은 두 문짝 → 문틈의 빛 → 열리면 사이트(html.intro일 때만, head의 짧은 스크립트가 붙임) */
 .door{display:none}
-.intro .door{display:block;position:fixed;inset:0;z-index:70;perspective:1000px;pointer-events:none}
+.intro .door{display:block;position:fixed;inset:0;z-index:70;perspective:1000px}  /* 닫힌 문은 손짓을 받음 — 누르기 · 스크롤 · 키면 main.js가 바로 엶(10/27 숨 재기 2: 전엔 pointer-events:none이라 검은 문 뒤 '책장에 꽂기' 링크가 눌렸음) */
+.intro .door.open{pointer-events:none}  /* 열리기 시작하면 드러나는 쪽을 바로 만질 수 있게 */
 .door .p{position:absolute;top:0;bottom:0;width:50.4%;background:#0c0c0c;overflow:hidden;transition:transform 1.25s cubic-bezier(.65,0,.25,1)}
 .door .p.l{left:0;transform-origin:0 50%}
 .door .p.r{right:0;transform-origin:100% 50%}
@@ -515,8 +516,10 @@ html.sr-on{overflow:hidden}
 .touch.on{opacity:1;transform:scale(1)}
 /* 고른 먹색 한 장에 또렷한 흰 글자 — 종이 결·찢긴 가장자리 없이(10/24 결 정돈) */
 .sheet{position:fixed;inset:0;z-index:75;background:#0c0c0c;color:#efefef;transform:translateY(102%);
-  display:flex;flex-direction:column;padding:48px 20px 0;will-change:transform;overflow-y:auto;overscroll-behavior:contain}
-.sheet .st{font:700 22px/1.2 var(--serif);letter-spacing:.02em;text-indent:-.65em}  /* 「 앞 빈 내어 걸기(10/24 · 본명조 굵은꼴 0.65em, 10/26) */
+  display:flex;flex-direction:column;padding:0 20px;will-change:transform;overflow-y:auto;overscroll-behavior:contain}
+.sheet .st{font:700 22px/1.2 var(--serif);letter-spacing:.02em;text-indent:-.65em;  /* 「 앞 빈 내어 걸기(10/24 · 본명조 굵은꼴 0.65em, 10/26) */
+  position:sticky;top:0;z-index:1;padding-top:48px;background:#0c0c0c}  /* 종이가 화면보다 길면 제목은 위에 붙고 시가 그 밑으로 지나감 — 위 여백을 제목이 가져 잘리지 않게(10/27 숨 재기 6 · 끝 화면 두 줄로 1440×900에서 제목 14px가 잘렸음) */
+.sheet.sc .st{box-shadow:0 18px 16px -6px #0c0c0c}  /* 시가 제목 밑으로 지나가는 동안만 그림자(아래 줄과 같은 결) */
 .sheet .sp{margin-top:16px;font:14px/1.75 var(--body)}
 .sheet .sp .ln{display:block;padding-left:1em;text-indent:-1em;
   opacity:0;transform:translateY(5px);filter:blur(1.5px);transition:opacity .55s ease,transform .55s var(--ease),filter .55s ease}
@@ -528,7 +531,7 @@ html.sr-on{overflow:hidden}
 .sheet button{font:600 12.5px/1 var(--sans);padding:10px 15px;border-radius:999px;border:1px solid #e9e9e9;background:transparent;color:#e9e9e9;white-space:nowrap;cursor:pointer}
 .sheet button.keep{background:#e9e9e9;color:#111}
 .sheet button:focus-visible{outline:2px solid #fff;outline-offset:3px}
-@media (max-height:740px){.sheet{padding-top:36px}.sheet .sp{font-size:12.5px;line-height:1.65}.sheet .sp p+p{margin-top:1.65em}}  /* 아이폰 SE처럼 낮은 화면 */
+@media (max-height:740px){.sheet .st{padding-top:36px}.sheet .sp{font-size:12.5px;line-height:1.65}.sheet .sp p+p{margin-top:1.65em}}  /* 아이폰 SE처럼 낮은 화면 */
 /* 끝 화면(10/27 레퍼런스 제안 ① A — 시안 `기준/브랜드 시안/탁본끝화면시안_v1_지금·A·B.png`): 다 찍히면 아래 줄 위에 인사 · 다리 두 줄,
    간직한 뒤엔 간직하기 자리에 교보 단추(흰 알약 — 종이 안의 간직하기와 같은 모양). 바탕은 그대로 */
 .sheet .sf{flex-wrap:wrap;row-gap:14px}
@@ -545,23 +548,23 @@ html.sr-on{overflow:hidden}
 
 /* 결 — 자바스크립트가 켜져 있고 '동작 줄이기'가 아닐 때만. 흐림은 명조의 가는 획에 맞춰 3px(조사 권고 2~4px) */
 @media (prefers-reduced-motion:no-preference){
-  .nt b i{animation:nxp 2.4s ease-in-out infinite}  /* '준비 중' 점이 천천히 숨 쉼('동작 줄이기'면 멈춘 점) */
+  .nt.in b i{animation:nxp 2.4s ease-in-out 3}  /* '준비 중' 점이 화면에 들어오면 세 번 숨 쉬고 멈춤(10/27 숨 재기 1 — 전엔 쪽을 연 때부터 끝없이) · '동작 줄이기'면 멈춘 점 */
   .top nav a{transition:color .35s var(--ease)}
   .top nav .ul{transition:transform .5s var(--ease),width .5s var(--ease),opacity .3s}  /* 지금 칸 밑줄이 미끄러짐('동작 줄이기'면 바로 그 자리) */
   .mini{transition:transform .5s var(--ease),visibility 0s .5s}  /* 작은 재생기는 아래에서 올라오고 내려감('동작 줄이기'면 바로) */
   .mini.on{transition:transform .5s var(--ease)}
   /* 첫 화면 이름 — 커서와 함께 자모로 쳐 나감(10/24). 자바스크립트가 넘겨받기 전에는 이름을 감춰 한 번 깜빡이지 않게(3초 뒤엔 그냥 보임) */
-  .js #home .name:not(.ty){color:transparent;animation:name-show 0s 3s forwards}
+  .js:not(.seen) #home .name:not(.ty){color:transparent;animation:name-show 0s 3s forwards}  /* 다시 온 방문(.seen — head 스크립트)은 이름 · 책 · 창살 빛을 처음부터 머문 자리로(10/27 숨 재기 3 — 문처럼 첫 방문에만) */
   .js .name .caret{display:inline-block;width:.06em;height:.8em;margin-left:.16em;background:currentColor;vertical-align:-.04em;animation:caret 1s steps(1) infinite}
   .js .name .caret.off{opacity:0;width:0;margin-left:0;transition:opacity .4s,width 0s .4s,margin-left 0s .4s;animation:none}  /* 다 친 뒤엔 자리도 비움 — 이름 뒤 빈칸이 두 배였음(10/25 다듬기 가6) */
   .intro #home .book{opacity:0;transform:translateY(26px);filter:blur(3px);animation:intro-safe .8s var(--ease) 4s forwards}
   .intro .door{animation:door-safe .6s ease 4s forwards}  /* 문 안전장치(10/25 마지막 점검 A): main.js가 문을 못 걷으면 4초 뒤 스스로 — 정상이면 2.5초에 main.js가 문을 치움 */
   .opened #home .book{opacity:1;transform:none;filter:none;transition:opacity .8s var(--ease) .6s,transform .8s var(--ease) .6s,filter .8s var(--ease) .6s}  /* 문 열림 0.6초 뒤부터(10/24 B, 지금 1.1초 뒤 1초) */
   /* 서 있는 책: 처음엔 책등이 보이게(78°) 서 있다가 main.js가 넘겨받아 26°로 돌림. 자바스크립트가 못 넘겨받으면 4초 뒤 스스로 제자리 */
-  .js .bk:not(.on) .b{--ry:78deg;animation:bk-safe 1.7s var(--ease) 4s forwards}
+  .js:not(.seen) .bk:not(.on) .b{--ry:78deg;animation:bk-safe 1.7s var(--ease) 4s forwards}
   /* 창살 빛: 책이 돌아설 때(main.js가 .on을 붙임) 창 그림자가 비껴 들어와 4초 동안 자리 잡음 · 자바스크립트가 못 넘겨받으면 책과 함께 4초 뒤 머문 자리로 떠오름 */
-  .js #home .bk:not(.on) .win::before{animation:win-safe 1.7s var(--ease) 4s both}
-  .js #home .bk.on .win::before{animation:win-in 4s cubic-bezier(.4,0,.3,1) both}
+  .js:not(.seen) #home .bk:not(.on) .win::before{animation:win-safe 1.7s var(--ease) 4s both}
+  .js:not(.seen) #home .bk.on .win::before{animation:win-in 4s cubic-bezier(.4,0,.3,1) backwards}  /* 끝나면 머문 자리(기본 값)와 같은 모양 — backwards라 끝난 뒤엔 움직임 목록에서 빠짐(숨 재기 1) */
   .js .rv{opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;transition-delay:calc(var(--i,0)*.04s)}  /* 떠오르기 A 흐림 없이 짧게(10/25 — 전: 흐림 3px · 26px · 0.95초 · 차례 0.08초) */
   .js .rv.in{opacity:1;transform:none}
   .js .label::after{transform:scaleX(0);transform-origin:0 50%;transition:transform 1.3s var(--ease) .1s}
@@ -652,9 +655,9 @@ html.sr-on{overflow:hidden}
   .pgrid{grid-template-columns:repeat(4,1fr);max-width:440px}
   .door .t{font-size:30px}
   .rec .n{font-size:40px}
-  .sheet{padding:60px calc(50vw - 280px) 0}
+  .sheet{padding:0 calc(50vw - 280px)}
   .sheet .sf{padding-bottom:30px}
-  .sheet .st{font-size:28px}
+  .sheet .st{font-size:28px;padding-top:60px}
   .sheet .sp{font-size:16px}
 }
 @media (min-width:980px){.poem .pair{display:grid;grid-template-columns:1fr 1fr;column-gap:28px;align-items:start}.poem .le{margin-bottom:0;line-height:2}}  /* 영어판 대역: 왼쪽 원문 · 오른쪽 번역 — 시 칸(폭−500px)이 480px 넘을 때만. 768–979px은 한쪽 단이 120–190px라 행이 2–4줄로 조각났음(10/27 점검) */
