@@ -132,6 +132,10 @@
     "ko": "{m}월의 한 줄",
     "en": "{m}’s line"
   },
+  "month_next": {
+    "ko": " · 다음은 {m}",
+    "en": " · next on {m}"
+  },
   "label_me": {
     "ko": "소개",
     "en": "About"
@@ -401,8 +405,8 @@
     "en": "System|Light|Dark"
   },
   "colo_cookie": {
-    "ko": "쿠키를 쓰지 않습니다.",
-    "en": "This site uses no cookies."
+    "ko": "쿠키 · 광고 · 저절로 재생되는 것이 없습니다.",
+    "en": "No cookies, ads, or autoplay."
   },
   "sheet_book": {
     "ko": "{name} 시집",

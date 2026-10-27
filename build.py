@@ -940,7 +940,11 @@ def render(site, poem, videos, photos, lang="ko"):
             tag = f'<span class="mt">{MONTHS[mm - 1][:3] if en else str(mm) + "월"}</span>'
             if ko_row["title"] == cur:
                 orig = f'<small{ko_tag}>{" / ".join(e(x) for x in month_ko[ko_row["title"]]["lines"])}</small>' if en else ""
-                line = f'<em>{"<br>".join(e(x) for x in m["lines"])}{orig}<small>{t("month_line", m=MONTHS[mm - 1] if en else mm)}</small></em>'
+                # 다음 날짜(10/27 동원 "A 꼬리표에 붙임" — 레퍼런스 제안 ⑦, 本屋 Title의 '매일 8시'처럼): 예약된 다음 달 줄이 있을 때만 '· 다음은 12월 1일'.
+                # 그날 아침 예약 올리기(site-release-MMDD)가 있어야 지키는 약속 — 다음 달 줄을 넣을 때 예약도 함께(README)
+                nx = min((x["month"] for x in mk if x["month"] > day.strftime("%Y-%m")), default=None)
+                nxt = t("month_next", m=f"{MONTHS[int(nx[5:]) - 1]}{NB}1" if en else f"{int(nx[5:])}월{NB}1일") if nx else ""
+                line = f'<em>{"<br>".join(e(x) for x in m["lines"])}{orig}<small>{t("month_line", m=MONTHS[mm - 1] if en else mm)}{nxt}</small></em>'
         attr = f' id="t{tn[0]}"' + (f' class="{cls}"' if cls else "")
         # 먹 줄(사이트에 올린 시)은 제목이 그 시로 가는 링크 + 화면 읽기용 '— 여기서 읽기'(10/27 점검 a11y 11 — 색으로만 구별되던 것)
         title = f'<a href="#poem">{e(row["title"])}</a>' if cls == "on" else e(row["title"])
