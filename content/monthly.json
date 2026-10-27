@@ -13,6 +13,20 @@
           "was how a room grew light"
         ]
       }
+    },
+    {
+      "month": "2026-12",
+      "title": "우연히",
+      "lines": [
+        "흰 눈이 펑펑 쏟아지는 밤에",
+        "조용히 집에 들어와 불을 켭니다"
+      ],
+      "en": {
+        "lines": [
+          "On a night of heavy falling snow",
+          "I come home quietly and switch on the light"
+        ]
+      }
     }
   ]
 }

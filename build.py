@@ -729,10 +729,11 @@ def render(site, poem, videos, photos, lang="ko"):
     # 사진 칸
     shots, caps = [], []
     for i, p in enumerate(PH["items"]):
-        # 전시 작품 사진("art")은 자르지 않음(10/24 ⑫ A 흰 벽 — style.css의 .art) · 캡션은 작품 틀, 대체 글은 작가 · 작품 · 해
+        # 전시 작품 사진("art")은 자르지 않음(10/24 ⑫ A 흰 벽 — style.css의 .art) · 캡션은 작품 틀
+        # 대체 글은 사진 설명(photo_art.json의 alt · en.alt — 10/27 동원 "이대로 넣어", 정의 `기준/사진 설명 칸 정의_v1.md`)이 먼저, 없으면 작가 · 작품 · 해 / 인스타 글 첫 줄
         a = p["art"] if is_art(p) else None
-        alt = (", ".join(x for x in (a.get("artist"), (a["title"] if en else f'〈{a["title"]}〉') if a.get("title") else "", a.get("year")) if x)
-               if a else (p["where"] or L["photo_alt"]))
+        alt = p.get("alt") or (", ".join(x for x in (a.get("artist"), (a["title"] if en else f'〈{a["title"]}〉') if a.get("title") else "", a.get("year")) if x)
+                               if a else (p["where"] or L["photo_alt"]))
         art = ' class="art"' if a else ""
         w, h = out_size(psrc(p), 1080)
         # 띠의 둘째 장부터는 data-src — main.js가 보는 장 + 다음 한 장만 받음(10/27 점검: 가까이 오면 큰 사진 3–5장을 한꺼번에 받아 첫 장이 늦었음)
@@ -950,10 +951,10 @@ def render(site, poem, videos, photos, lang="ko"):
     state = f'<p class="bstate"><i aria-hidden="true"></i>{t("book_on" if day >= date.fromisoformat(book["published"]) else "book_soon")}</p>'
     news = sorted((x for x in row_lang(tb["news"]["items"], lang) if x["text"] and date.fromisoformat(x["date"]) <= day), key=lambda x: x["date"], reverse=True)
 
-    def news_li(x):
-        return f'<li><time datetime="{x["date"]}">{dtxt(x["date"])}</time><span>{keep(x["text"])}</span></li>'
-    more = f'<details><summary>{t("news_more")}</summary><ol>{"".join(news_li(x) for x in news[3:])}</ol></details>' if len(news) > 3 else ""
-    bnews = f'<div class="bnews"><h3>{t("news")}</h3><ol>{"".join(news_li(x) for x in news[:3])}</ol>{more}</div>' if news else ""
+    def news_li(k, x):  # 소식 줄마다 id(n1 = 가장 최근) — 찾기 결과가 그 줄로 감(10/27 점검: 시집 칸 맨 위로 가서 소식이 1.6–2.3화면 아래였음)
+        return f'<li id="n{k}"><time datetime="{x["date"]}">{dtxt(x["date"])}</time><span>{keep(x["text"])}</span></li>'
+    more = f'<details><summary>{t("news_more")}</summary><ol>{"".join(news_li(k, x) for k, x in enumerate(news[3:], 4))}</ol></details>' if len(news) > 3 else ""
+    bnews = f'<div class="bnews"><h3>{t("news")}</h3><ol>{"".join(news_li(k, x) for k, x in enumerate(news[:3], 1))}</ol>{more}</div>' if news else ""
     ui_js = json.dumps(L["js"], ensure_ascii=False).replace("</", "<\\/")
 
     # 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기 → 흰 한 장 · 추천 주제(content/search.json) · 찾을 거리(#sidx). 찾기는 main.js
@@ -963,7 +964,7 @@ def render(site, poem, videos, photos, lang="ko"):
     ix["me"][:0] = [(tg["me"], S["name"], "", "#me"), (tg["me"], S["tagline"], "", "#me")] + [
         (tg["me"], x, "", "#me") for x in re.split(r"(?<=[.!?다])\s+", plain(S["bio"])) if x]
     ix["me"] += [(tg["me"], f'{x["label"]} — {plain(x["text"])}', "", "#me") for x in nw.get("items", []) if x.get("text")]
-    ix["news"] += [(tg["news"], plain(x["text"]), dtxt(x["date"]), "#poem") for x in news]
+    ix["news"] += [(tg["news"], plain(x["text"]), dtxt(x["date"]), f"#n{k}") for k, x in enumerate(news, 1)]
     ix["contact"] += [(tg["contact"], L["label_contact"] if endpoint else L["ask_off"], "", "#contact")] + [(tg["contact"], l["name"], "", l["url"]) for l in links]
     sidx_js = json.dumps([list(x) for k in ix for x in ix[k]], ensure_ascii=False).replace("</", "<\\/")
     sj = load("search.json") if (CONTENT / "search.json").exists() else {"suggest": []}
@@ -1137,6 +1138,10 @@ def main():
     feed = instagram.fetch(ig)
     if feed:
         art = {r["post"]: r for r in load("photo_art.json").get("items", [])}  # 작품 정보(10/25 원고 옮기기 — 게시물 주소 끝 글자로)
+        for r in art.values():  # 사진 설명 길이(정의 v1 — 한국어 60자 · 영어 120자 안) — 넘으면 알림만
+            for lg, s, lim in (("한국어", r.get("alt") or "", 60), ("영어", (r.get("en") or {}).get("alt") or "", 120)):
+                if len(s) > lim:
+                    print(f"알림: photo_art.json 게시물 {r['post']}의 사진 설명({lg})이 {len(s)}자 — {lim}자 안을 권함")
         codes = {f["permalink"].rstrip("/").rsplit("/", 1)[-1] for f in feed}
         for c in sorted(set(art) - codes):
             print(f"알림: photo_art.json의 게시물 {c}이 받아 온 {len(feed)}장 밖 — 덧씌울 사진이 없음")

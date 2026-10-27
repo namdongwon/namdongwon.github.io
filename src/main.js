@@ -535,6 +535,15 @@
       if (prev) { prev.setAttribute("aria-disabled", k <= 1); next.setAttribute("aria-disabled", k >= n); }
     };
     const step = d => view.scrollBy({ left: d * view.clientWidth, behavior: reduce ? "auto" : "smooth" });
+    const pin = f => {  // 번호 칩(.pvk)을 맞춰 줄인 사진의 오른쪽 위에 — 사진이 온 뒤 · 창이 보인 뒤 · 화면 크기가 바뀐 뒤
+      const img = f.querySelector("img"), c = f.querySelector(".pvk");
+      if (!img || !c || !img.naturalWidth || pv.hidden) return;
+      const r = img.getBoundingClientRect(), fr = f.getBoundingClientRect();
+      c.style.top = `${r.top - fr.top + 10}px`;
+      c.style.right = `${fr.right - r.right + 10}px`;
+      c.hidden = false;
+    };
+    addEventListener("resize", () => view.querySelectorAll("figure").forEach(pin));
     view.addEventListener("scroll", upd, { passive: true });
     view.addEventListener("scroll", () => {
       const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
@@ -548,11 +557,16 @@
       const sim = btn.querySelector("img") || {}, alt = sim.alt || "";
       view.textContent = "";
       list.forEach((src, k) => {
-        const f = document.createElement("figure"), img = document.createElement("img");
+        const f = document.createElement("figure"), img = document.createElement("img"), chip = document.createElement("span");
         if (k > 1) img.dataset.src = src; else img.src = src;  // 셋째 장부터는 넘길 때 한 장 앞씩(10/27 점검 — 열 때 여러 장을 한꺼번에 받아 둘째 장이 늦었음)
         img.alt = `${alt} (${k + 1} / ${n})`;
         if (sim.lang) img.lang = sim.lang;  // 영어판의 한국어 대체 글은 한국어로(띠의 사진과 같게)
-        f.append(img);
+        chip.className = "pvk";
+        chip.setAttribute("aria-hidden", "true");  // 화면 읽기에는 맨 위 '2 / 20'(aria-live)이 알림
+        chip.hidden = true;
+        chip.textContent = `${k + 1}/${n}`;  // 지금 몇 번째인지 — 인스타그램처럼 사진 위(10/27 동원 "A 사진 위 칩")
+        img.addEventListener("load", () => pin(f));
+        f.append(img, chip);
         view.append(f);
       });
       foot.innerHTML = pcaps[i] ? pcaps[i].innerHTML : "";
@@ -561,6 +575,7 @@
       others(true);
       view.scrollLeft = 0;
       upd();
+      view.querySelectorAll("figure").forEach(pin);  // 이미 받아 둔 사진은 창이 보인 지금 자리를 잼
       requestAnimationFrame(() => requestAnimationFrame(() => pv.classList.add("on")));
       x.focus();
     };
@@ -657,6 +672,8 @@
       const p = /^#p(\d+)$/.exec(href);
       const el = document.querySelector(p ? "#photo" : href);
       if (!el) return;
+      const fold = el.closest("details");  // '지난 소식'처럼 접힌 묶음 안이면 펼친 뒤에
+      if (fold && !fold.open) fold.open = true;
       const sec = el.matches("section"), big = el.offsetHeight > innerHeight * 0.6;  // 칸 · 큰 덩어리(차례 전체)는 머리를 위에, 한 줄은 화면 가운데에
       el.scrollIntoView({ block: sec || big ? "start" : "center", behavior: reduce ? "auto" : "smooth" });
       if (p) {  // 그 장으로 넘기고 포커스도 그 사진에(창이 닫히며 쪽 바탕으로 빠지지 않게, 10/27 점검)

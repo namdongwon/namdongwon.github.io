@@ -3,6 +3,7 @@
     {
       "post": "DbyAokKEtK7",
       "where": "",
+      "alt": "노란 바닥에 엎드린 사람 모양 조각을 위에서 본 모습 — 맨 등과 바닥에 펼쳐진 길고 검은 곱슬머리",
       "art": {
         "artist": "패트리샤 피치니니",
         "title": "",
@@ -12,6 +13,7 @@
       },
       "en": {
         "where": "",
+        "alt": "A figure-like sculpture lying face down on a yellow floor, seen from above: bare back, long dark curly hair spread out",
         "art": {
           "artist": "Patricia Piccinini",
           "title": "",
@@ -21,8 +23,97 @@
       }
     },
     {
+      "post": "Dbx_QHqkmm3",
+      "where": "",
+      "alt": "육각형 거울 조각이 둥글게 이어진 천장을 올려다본 모습, 가운데로 초록 나뭇잎이 보인다",
+      "art": {
+        "artist": "",
+        "title": "",
+        "year": "",
+        "show": "",
+        "venue": ""
+      },
+      "en": {
+        "where": "",
+        "alt": "Looking up into a round ceiling of hexagonal mirror panels, with green leaves showing in the middle",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      }
+    },
+    {
+      "post": "Dbvi3QuEvKZ",
+      "where": "",
+      "alt": "밤 강변 — 불 켜진 긴 다리와 물에 비친 불빛, 강변 길을 걷는 사람들",
+      "art": {
+        "artist": "",
+        "title": "",
+        "year": "",
+        "show": "",
+        "venue": ""
+      },
+      "en": {
+        "where": "",
+        "alt": "A riverside at night: a long lit bridge, its lights reflected in the water, people walking along the path",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      }
+    },
+    {
+      "post": "DbviVc2ktJP",
+      "where": "",
+      "alt": "하얀 전시장 바닥에 놓인 이끼 낀 큰 바위, 오른쪽 위 턱에 한 사람이 앉아 있다",
+      "art": {
+        "artist": "",
+        "title": "",
+        "year": "",
+        "show": "",
+        "venue": ""
+      },
+      "en": {
+        "where": "",
+        "alt": "A large moss-covered boulder on a white gallery floor, with a person sitting on a ledge at the upper right",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      }
+    },
+    {
+      "post": "DbvgR-0kkqA",
+      "where": "",
+      "alt": "어두운 물살 사이로 크고 작은 돌들이 드러난 물가",
+      "art": {
+        "artist": "",
+        "title": "",
+        "year": "",
+        "show": "",
+        "venue": ""
+      },
+      "en": {
+        "where": "",
+        "alt": "Stones large and small rising out of dark running water at the water's edge",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      }
+    },
+    {
       "post": "DbelPAQkm3f",
       "where": "",
+      "alt": "투명한 아크릴 조각과 거울 조각이 수북이 쌓인 부분을 가까이에서",
       "art": {
         "artist": "이불",
         "title": "비밀 공유자",
@@ -32,6 +123,7 @@
       },
       "en": {
         "where": "",
+        "alt": "A close view of heaped clear acrylic shards and mirror pieces",
         "art": {
           "artist": "Lee Bul",
           "title": "The Secret Sharer",
@@ -43,6 +135,7 @@
     {
       "post": "DbekdnEktni",
       "where": "",
+      "alt": "노랑 · 파랑 · 초록의 추상화 앞에 검은 옷을 입은 한 사람이 턱을 괴고 서 있다",
       "art": {
         "artist": "유영국",
         "title": "",
@@ -52,11 +145,34 @@
       },
       "en": {
         "where": "",
+        "alt": "A person in black stands, hand to chin, in front of a yellow, blue and green abstract painting",
         "art": {
           "artist": "Yoo Youngkuk",
           "title": "",
           "show": "Yoo Youngkuk: A Mountain Within Me",
           "venue": "Seoul Museum of Art"
+        }
+      }
+    },
+    {
+      "post": "Dbej3Tgkkts",
+      "where": "",
+      "alt": "풀이 자란 높은 바위 절벽 아래, 초록 물가에 한 사람이 서 있다",
+      "art": {
+        "artist": "",
+        "title": "",
+        "year": "",
+        "show": "",
+        "venue": ""
+      },
+      "en": {
+        "where": "",
+        "alt": "A person stands at the edge of a green pond below a tall rock cliff covered in plants",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
         }
       }
     }
