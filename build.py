@@ -71,6 +71,7 @@ def keep(s):
     # 영어판(10/24): 치수 '128 × 188 mm'와 날짜 'November 1, 2026'도 한 덩어리로
     s = re.sub(r"(\d+) × (\d+) (mm|cm)", rf"\1{NB}×{NB}\2{NB}\3", s)
     s = re.sub(r"\b(" + "|".join(MONTHS) + r") (\d{1,2}), (\d{4})", rf"\1{NB}\2,{NB}\3", s)
+    s = s.replace("교보문고 퍼플", f"교보문고{NB}퍼플").replace("Kyobo PubPle", f"Kyobo{NB}PubPle")  # 상호는 한 덩어리(10/27 점검 남은 것 가2 — 1280 첫 화면 라벨에서 '교보문고 / 퍼플'로 갈렸음)
     return names(s.replace(" · ", NB + "· "))
 
 
@@ -636,7 +637,7 @@ def render(site, poem, videos, photos, lang="ko"):
             SPLIT[e(f"{a} {z}")] = (e(a), e(z))
     ch = site.get("channel", {})
     NAMES[:] = [e(n) for n in (ch.get("name"), ch.get("en", {}).get("name")) if n]
-    title = f'{S["name"]} — {S["tagline"]}'
+    title = S.get("tab_title") or f'{S["name"]} — {S["tagline"]}'  # 영어 탭 제목만 짧게(10/27 밤 '이대로 넣어' — en.tab_title, 소개 칸 한 줄은 tagline 그대로)
     # 링크 미리보기(og): 출간일 책 카드 기간에는 책 그림 · 책 제목(10/27 B — book_card), 그 밖엔 이름 카드 · 이름 제목. 탭 제목(<title>)은 늘 이름
     card = book_card(site)
     gc = goatcounter(site)  # 방문 셈(10/27) — GoatCounter가 알려 준 꼴 그대로(쪽 맨 끝, async)[출처 goatcounter.com/help/start]
@@ -647,9 +648,17 @@ def render(site, poem, videos, photos, lang="ko"):
     gc_tag = f'<script data-goatcounter="https://{gc}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n' if gc else ""
     og_img =("og-book-en.jpg" if en else "og-book.jpg") if card else ("og-en.jpg" if en else "og.jpg")
     og_title = L["og_book_title"].format(title=book["title"], name=S["name"]) if card else title
+    og_desc = L["og_book_desc"] if card else S["description"]  # 책 카드 기간 설명은 그림 · 제목에 없는 사실만(10/27 밤 '이대로 넣어' — 카톡에서 책 제목이 세 번 겹쳤음)
     links = [l for l in S["links"] if l["url"]]
-    ld = {"@context": "https://schema.org", "@type": "Person", "name": S["name"], "alternateName": site["name"] if en else site["en"]["name"],
-          "url": here, "description": S["tagline"], "sameAs": [l["url"] for l in links]}
+    # 구조화 데이터(10/27 점검 남은 것 가5): 사람 + 사이트 이름(검색 결과 윗줄) + 책. 값 · ISBN은 넣지 않음(10/24 동원 "값과 ISBN은 지금은 넣지 말자")
+    me, kb = f"{base}/#me", site["book"]
+    ld = {"@context": "https://schema.org", "@graph": [
+        {"@type": "Person", "@id": me, "name": S["name"], "alternateName": site["name"] if en else site["en"]["name"],
+         "url": here, "description": S["tagline"], "sameAs": [l["url"] for l in links]},
+        {"@type": "WebSite", "name": S["name"], "url": base + "/", "inLanguage": lang, "publisher": {"@id": me}},
+        {"@type": "Book", "name": kb["title"], "alternateName": site["en"]["book"]["title"], "author": {"@id": me}, "inLanguage": "ko",
+         "datePublished": kb["published"], "numberOfPages": int(re.search(r"(\d+)쪽", kb["spec"]).group(1)),
+         "publisher": {"@type": "Organization", "name": kb["spec"].split(" · ")[-1]}, "url": kb["buy_url"], "image": f"{base}/assets/img/cover.jpg"}]}
     poem_t = e(S["poem"]["title"])
     title_br = "<br>".join(e(x) for x in book["title_lines"])
     book_title = f"<i>{title_br}</i>" if en else f"『{title_br}』"  # 영어판 책 제목은 기울임, 아래에 한국어 원제(표지 · 교보는 한국어)
@@ -678,7 +687,7 @@ def render(site, poem, videos, photos, lang="ko"):
     fnb = ('<ol class="fn">' + "".join(f'<li><b>{i}</b><span>{note_html(x, en)}</span></li>' for i, x in enumerate(notes, 1)) + '</ol>') if notes else ""
     # 소개 칸의 지금(10/25 ⑥ A — William Jansson 'Now'식): 연표 아래 읽는 책 · 편집 중인 편 · 쓰는 시 + 고친 날(손으로 적는 날). 빈 줄은 안 보임
     nw = {**tb["now"], "items": row_lang(tb["now"]["items"], lang)}  # 말 규칙은 줄마다(고친 날 · 세 줄을 담은 겉은 그대로)
-    now_rows = "".join(f'<div><dt>{e(x["label"])}</dt><dd>{rich(x["text"]) if en else keep(x["text"])}</dd></div>' for x in nw.get("items", []) if x.get("text"))
+    now_rows = "".join(f'<div><dt>{e(x["label"])}</dt><dd>{rich(x["text"]) if en else note_html(x["text"], False)}</dd></div>' for x in nw.get("items", []) if x.get("text"))  # 한국어도 〈 〉 안 띄어쓰기를 붙임(10/27 가2 — 320에서 '〈릴리 슈슈의 모든 / 것〉')
     nd = date.fromisoformat(nw["updated"]) if nw.get("updated") else None
     nday = (f"{MONTHS[nd.month - 1]}{NB}{nd.day}, {nd.year}" if en else f"{nd.year}년{NB}{nd.month}월{NB}{nd.day}일") if nd else ""
     # '지금' 꼬리표 옆 절기 한 낱말(10/25 40곳 2차 ⑤ A) — 고친 날이 든 절기, 줄이 갈리지 않게 붙임
@@ -970,7 +979,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기 → 흰 한 장 · 추천 주제(content/search.json) · 찾을 거리(#sidx). 찾기는 main.js
     # 칸 이름(10/26 동원 "소개나 시집 이런 대분류들도 검색될 수 있게") — 맨 위 막대의 다섯 칸. 다섯째 값은 그 칸에 든 것의 낱말(약력 · 차례 …) — 칸 이름에 없는 말로도 찾게
     ix["sec"] = [(tg["sec"], x, w, f"#{sid}", k) for sid, x, w, k in zip(secs, L["nav"], L["search_sec_where"].split("|"), L["search_sec_keys"].split("|"))]
-    ix["book"] += [(tg["book"], plain(book["title"]), book["spec"], "#poem"), (tg["book"], book["buy_label"], book["store_label"], book["buy_url"])]
+    ix["book"] += [(tg["book"], plain(book["title"]), book["spec"], "#bookcard"), (tg["book"], book["buy_label"], book["store_label"], book["buy_url"])]  # 책 제목 결과는 책 카드로(10/27 가4 — 휴대폰에서 #poem이면 책 카드가 한 화면 아래)
     ix["me"][:0] = [(tg["me"], S["name"], "", "#me"), (tg["me"], S["tagline"], "", "#me")] + [
         (tg["me"], x, "", "#me") for x in re.split(r"(?<=[.!?다])\s+", plain(S["bio"])) if x]
     ix["me"] += [(tg["me"], f'{x["label"]} — {plain(x["text"])}', "", "#me") for x in nw.get("items", []) if x.get("text")]
@@ -1014,12 +1023,14 @@ def render(site, poem, videos, photos, lang="ko"):
 <link rel="alternate" hreflang="en" href="{e(base)}/en/">
 <link rel="alternate" hreflang="x-default" href="{e(base)}/">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="{e(S["name"])}">
 <meta property="og:url" content="{e(here)}">
 <meta property="og:title" content="{e(og_title)}">
-<meta property="og:description" content="{e(S["description"])}">
+<meta property="og:description" content="{e(og_desc)}">
 <meta property="og:image" content="{e(base)}/assets/{og_img}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{e(og_title)}">
 <meta property="og:locale" content="{L["og_locale"]}">
 <meta property="og:locale:alternate" content="{ui["og_locale"][other]}">
 <meta name="twitter:card" content="summary_large_image">
@@ -1054,7 +1065,7 @@ def render(site, poem, videos, photos, lang="ko"):
     <p class="label">{t("label_poem")}</p>
     <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>
       <p class="pgno">{pgno}</p></div>
-    <div class="l pbook"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
+    <div class="l pbook" id="bookcard"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
       {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small></p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}</div>
     {bnews}{bintro}
   </section>
@@ -1274,8 +1285,9 @@ def main():
     (DOCS / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n", encoding="utf-8")
     (DOCS / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
-        + "".join(f'<url><loc>{e(base)}{path}</loc><xhtml:link rel="alternate" hreflang="ko" href="{e(base)}/"/>'
-                  f'<xhtml:link rel="alternate" hreflang="en" href="{e(base)}/en/"/></url>' for path in ("/", "/en/"))
+        + "".join(f'<url><loc>{e(base)}{path}</loc><lastmod>{build_day().isoformat()}</lastmod><xhtml:link rel="alternate" hreflang="ko" href="{e(base)}/"/>'
+                  f'<xhtml:link rel="alternate" hreflang="en" href="{e(base)}/en/"/><xhtml:link rel="alternate" hreflang="x-default" href="{e(base)}/"/></url>'
+                  for path in ("/", "/en/"))  # lastmod는 빌드한 날 · x-default는 머리말과 같게(10/27 가5)
         + "</urlset>\n", encoding="utf-8")
     (DOCS / ".nojekyll").write_text("", encoding="utf-8")  # GitHub Pages가 파일을 다시 가공하지 않게
     if (CONTENT / "CNAME").exists():  # 도메인을 산 뒤에만 둔다 — docs는 매번 새로 만들어지므로 여기서 옮겨 넣음

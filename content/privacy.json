@@ -1,5 +1,5 @@
 {
-  "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로 · when \"goatcounter\" 줄과 lead_counted는 방문 셈(site.json analytics.goatcounter)을 켰을 때만 — 10/27 동원 '방문 셈 문구 이대로 처리방침에 넣어'(켜는 날 updated를 그날로) · 10/27 동원 '문의 폼은 B로 하자' — 문의 폼 없이 메일 · 인스타그램, Formspree(미국 등)는 방명록만 · 10/27 동원 '이대로 넣어'(웹사이트 점검 5 · 6번, 초안 기준/처리방침 · 영어 문구 고침 초안_v1.md) — when \"guestbook\" 줄은 방명록 폼 아이디(site.json contact.guestbook_formspree_id)가 있을 때만, 칸에 보일 줄이 없으면 empty 한 줄 · 4절 GitHub Pages IP 줄(GitHub Docs 'About GitHub Pages' › Data collection)",
+  "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로 · when \"goatcounter\" 줄과 lead_counted는 방문 셈(site.json analytics.goatcounter)을 켰을 때만 — 10/27 동원 '방문 셈 문구 이대로 처리방침에 넣어'(켜는 날 updated를 그날로) · 10/27 동원 '문의 폼은 B로 하자' — 문의 폼 없이 메일 · 인스타그램, Formspree(미국 등)는 방명록만 · 10/27 동원 '이대로 넣어'(웹사이트 점검 5 · 6번, 초안 기준/처리방침 · 영어 문구 고침 초안_v1.md) — when \"guestbook\" 줄은 방명록 폼 아이디(site.json contact.guestbook_formspree_id)가 있을 때만, 칸에 보일 줄이 없으면 empty 한 줄 · 4절 GitHub Pages IP 줄(GitHub Docs 'About GitHub Pages' › Data collection) · 10/27 밤 동원 '이대로 넣어'(초안 기준/출간 전 문구 고침 초안_v1.md 2 — 3인칭 남동원 · 보호책임자 · 인스타그램 메시지 보관 기간 · 화면 낱말 차례 · 3절 받는 정보 줄)",
   "updated": "2026-10-27",
   "title": {
     "ko": "개인정보 처리방침",
@@ -53,8 +53,8 @@
           "en": "Published notes stay on the site and are removed as soon as you ask."
         },
         {
-          "ko": "메일로 받은 연락은 답장한 뒤 6개월 안에 지웁니다.",
-          "en": "Emails are deleted within six months of my reply."
+          "ko": "메일 · 인스타그램 메시지로 받은 연락은 답장한 뒤 6개월 안에 지웁니다.",
+          "en": "Emails and Instagram messages are deleted within six months of a reply."
         }
       ]
     },
@@ -87,7 +87,7 @@
         {
           "when": "guestbook",
           "ko": "거부하는 법: 동의 칸에 체크하지 않으시면 보내지지 않습니다. 이때는 인스타그램 메시지나 메일로 연락하실 수 있습니다.",
-          "en": "How to refuse: if you don’t tick the consent box, nothing is sent. You can still reach me by Instagram message or email."
+          "en": "How to refuse: if you don’t tick the consent box, nothing is sent. You can still reach Dongwon Nam by Instagram message or email."
         },
         {
           "when": "goatcounter",
@@ -96,8 +96,8 @@
         }
       ],
       "empty": {
-        "ko": "지금은 이 사이트에서 받아 국외로 옮기는 정보가 없습니다.",
-        "en": "Nothing received through this site is currently transferred outside Korea."
+        "ko": "지금은 남동원이 이 사이트로 받는 정보가 없어, 국외로 옮기는 정보도 없습니다. 메일 · 인스타그램 메시지는 각 서비스에 보관됩니다.",
+        "en": "Dongwon Nam currently receives no information through this site, so none is transferred outside Korea. Emails and Instagram messages are kept by those services."
       }
     },
     {
@@ -111,8 +111,8 @@
           "en": "No cookies are used."
         },
         {
-          "ko": "이 기기의 브라우저 저장소에 둘을 적어 둡니다 — 첫 방문 문 장면을 한 번 보았는지, 고른 화면(밝게 · 어둡게 · 시스템). 이 기기에만 남고 저에게 오지 않으며, 브라우저의 사이트 데이터 지우기로 지울 수 있습니다.",
-          "en": "Two small settings are kept in this browser’s storage — whether you have already seen the opening door scene, and your chosen display (light, dark or system). They stay on this device, are never sent to me, and can be removed by clearing this site’s data in your browser."
+          "ko": "이 기기의 브라우저 저장소에 둘을 적어 둡니다 — 첫 방문 문 장면을 한 번 보았는지, 고른 화면(시스템 · 밝게 · 어둡게). 이 기기에만 남고 남동원에게 보내지지 않으며, 브라우저의 사이트 데이터 지우기로 지울 수 있습니다.",
+          "en": "Two small settings are kept in this browser’s storage — whether you have already seen the opening door scene, and your display setting (system, light or dark). They stay on this device, are never sent to Dongwon Nam, and can be removed by clearing this site’s data in your browser."
         },
         {
           "ko": "이 사이트는 GitHub Pages(GitHub, 미국)에 올려 두었습니다. GitHub는 보안을 위해 방문하신 분의 IP 주소를 기록하며, 남동원은 이 기록을 받거나 보지 않습니다.",
@@ -132,8 +132,8 @@
       },
       "items": [
         {
-          "ko": "남기신 정보를 보거나, 고치거나, 지우거나, 쓰지 말아 달라고 하실 수 있습니다. 연락 칸의 인스타그램 메시지나 메일로 말씀해 주세요. 개인정보 보호 책임자는 남동원입니다.",
-          "en": "You can ask to see, correct, delete or stop the use of anything you have left. Please write via the Instagram message or email in the contact section. The person responsible for personal information is Dongwon Nam."
+          "ko": "남기신 정보를 보거나, 고치거나, 지우거나, 쓰지 말아 달라고 하실 수 있습니다. 연락 칸의 인스타그램 메시지나 메일로 말씀해 주세요. 개인정보 보호책임자는 남동원입니다.",
+          "en": "You can ask to see, correct, delete or stop the use of anything you have left. Please get in touch by Instagram message or email (see the contact section). The person responsible for personal information is Dongwon Nam."
         }
       ]
     }

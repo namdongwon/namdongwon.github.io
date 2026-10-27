@@ -59,6 +59,7 @@ button{font:inherit;color:inherit}
 .h2,.vt,.bio,.lead,.pbook .t small{text-wrap:balance}
 .tt{display:inline-block;text-wrap:balance}  /* 작품 제목(+붙은 조사 · 문장부호)은 한 덩어리 — 칸에 들어가면 통째로 다음 줄, 칸보다 길면 그 안에서만 갈림(10/25 마지막 점검 ②③, build.py rich · 첫 화면 라벨) · 토막이 칸보다 길어 그 안에서 갈릴 때는 고르게(태블릿 라벨 'Step / Out,' 같은 외톨이 줄이 남지 않게) */
 .cap p,.colo .c,.ask .agree,.empty{text-wrap:pretty}
+#home .lab dd,.now dd,.btoc .key,#home .kick,#home .tip,.bhead{text-wrap:pretty}  /* 줄 끝 한두 글자 · 한 낱말(10/27 점검 남은 것 가2 — '지금' 첫 편 · 범례 '엽니다' · 영어 첫 줄 'exhibition' 등) */
 .skip{position:absolute;left:-9999px;top:8px;z-index:60;padding:8px 12px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans)}
 .skip:focus{left:8px}
 
@@ -366,7 +367,7 @@ html.sr-on{overflow:hidden}
 /* ⑤ 영상 — 한 편 크게 + 차례 */
 .ch2{margin-top:30px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .ch2 h2{margin:0;font:700 22px/1.2 var(--serif)}  /* 사진 · 영상 칸 이름은 제목(h2) — 제목으로 훑을 때 두 칸이 빠지지 않게(10/27 점검 a11y 6), 모양은 전과 같음 */
-.ch2 span{font:300 12.5px/1 var(--sans);color:var(--muted);letter-spacing:.04em}
+.ch2 span{font:300 12.5px/1.4 var(--sans);color:var(--muted);letter-spacing:.04em}  /* 두 줄이 되면 붙지 않게(10/27 가2 — 영어 320–360 '… in / Korean') */
 .big{margin-top:22px;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px}
 /* 큰 한 편: 누르면 이 자리에서 재생(누르기 전에는 플레이어를 불러오지 않음 — 썸네일 그림만).
    유튜브 플레이어는 최소 200×200px(IFrame Player API 요건) — 휴대폰 영상 칸 폭 350px(390px 화면)면 16:9가 197px라 높이를 200px로 받침(영상 위아래에 1.5px 검은 띠) */
@@ -543,6 +544,8 @@ html.sr-on{overflow:hidden}
 .sheet.done .sp{padding-bottom:22px}  /* 아래 줄이 높아져도 시의 끝 줄이 그림자에 덮이지 않게 */
 .sheet .kb{display:inline-flex;align-items:center;font:600 12.5px/1 var(--sans);padding:10px 15px;border-radius:999px;background:#e9e9e9;color:#111;white-space:nowrap}
 .sheet .kb:focus-visible{outline:2px solid #fff;outline-offset:3px}
+/* 아주 낮은 화면(가로 폰 · 400% 확대)은 제목 · 아래 줄을 붙이지 않고 종이 전체가 스크롤 — 둘 다 붙으면 시 칸이 3–4행 · 0행(10/27 점검 남은 것 가1). 끝으로 내리기(toEnd)는 그대로 */
+@media (max-height:480px){.sheet .st,.sheet .sf{position:static}.sheet .sf,.sheet.sc .st{box-shadow:none}}
 @media (prefers-reduced-motion:no-preference){.sheet.done .se{animation:sein .4s ease both}}  /* 단추와 같은 0.4초 나타남 */
 @keyframes sein{from{opacity:0}}
 
@@ -600,7 +603,8 @@ html.sr-on{overflow:hidden}
   #home .book{margin-top:0;column-gap:28px}
   #home .hs{font-size:24px}
   #home .side .hs{display:none}#home .hsl{display:block;margin-top:26px}  /* 작은 제목을 큰 제목 바로 아래로 — 표지처럼 '문을 열고 나오면 / 살아 있는 것들로 가득 차 있다'가 한 줄기(10/26 나2 A). 전에는 책 옆 위에 붙어 큰 제목보다 먼저 읽혔음 */
-  #home .tip{font-size:11px}
+  #home .tip{font-size:11px;text-align:right}
+  #home .tip::after{margin-left:auto}  /* 넓은 화면에선 안내 · 가는 선을 책 쪽(오른쪽)에 — 왼쪽 끝이면 1440에서 책과 159px · 1920에서 399px 떨어졌음(10/27 동원 'A 책 쪽으로') */
   #home .bk{--w:250px;--h:367.2px;--t:17.6px}
   #home .lab{grid-column:1/-1;grid-row:3;margin-top:44px}
   #home dl{grid-template-columns:repeat(4,1fr);column-gap:28px}
@@ -654,6 +658,8 @@ html.sr-on{overflow:hidden}
   .sheet .st{font-size:28px;padding-top:60px}
   .sheet .sp{font-size:16px}
 }
+/* 컴퓨터의 낮은 화면(노트북 1280×720 · 1366×657 등) — 위 낮은 화면 규칙이 768 묶음에 덮여 16px · 위 60px 그대로였음(10/27 가1) */
+@media (min-width:768px) and (max-height:740px){.sheet .st{padding-top:36px;font-size:24px}.sheet .sp{font-size:14px;line-height:1.65}.sheet .sp p+p{margin-top:1.65em}}
 @media (min-width:980px){.poem .pair{display:grid;grid-template-columns:1fr 1fr;column-gap:28px;align-items:start}.poem .le{margin-bottom:0;line-height:2}}  /* 영어판 대역: 왼쪽 원문 · 오른쪽 번역 — 시 칸(폭−500px)이 480px 넘을 때만. 768–979px은 한쪽 단이 120–190px라 행이 2–4줄로 조각났음(10/27 점검) */
 @media (min-width:768px) and (max-width:1023px){#home .book{grid-template-columns:1fr;row-gap:22px}#home .side{padding-bottom:0}}  /* 태블릿 세로: 책 옆 칸이 좁아 작은 제목을 책 위로(10/25 마지막 점검 C) */
 /* 시집 차례 단 수(10/25) — 휴대폰은 위 값(한국어 두 단 · 영어 한 단). 데스크톱 칸이 넓으면 한국어 1–4부를 한 줄에(책의 차례 쪽처럼),

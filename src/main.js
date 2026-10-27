@@ -577,8 +577,9 @@
       list.forEach((src, k) => {
         const f = document.createElement("figure"), img = document.createElement("img"), chip = document.createElement("span");
         if (k > 1) img.dataset.src = src; else img.src = src;  // 셋째 장부터는 넘길 때 한 장 앞씩(10/27 점검 — 열 때 여러 장을 한꺼번에 받아 둘째 장이 늦었음)
-        img.alt = `${alt} (${k + 1} / ${n})`;
-        if (sim.lang) img.lang = sim.lang;  // 영어판의 한국어 대체 글은 한국어로(띠의 사진과 같게)
+        // 첫 장만 그 사진의 설명, 둘째 장부터는 '게시물 사진 2 / 20' — 첫 장 설명을 되풀이하면 다른 사진을 설명하게 됨(10/27 점검 남은 것 가4 · 장마다 설명은 출간 뒤)
+        img.alt = k ? uiText("post_photo", "게시물 사진 {k} / {n}", { k: k + 1, n }) : `${alt} (1 / ${n})`;
+        if (sim.lang && !k) img.lang = sim.lang;  // 영어판의 한국어 대체 글은 한국어로(띠의 사진과 같게)
         chip.className = "pvk";
         chip.setAttribute("aria-hidden", "true");  // 화면 읽기에는 맨 위 '2 / 20'(aria-live)이 알림
         chip.hidden = true;

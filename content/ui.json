@@ -114,7 +114,11 @@
   },
   "og_book_title": {
     "ko": "『{title}』 — {name} 첫 시집",
-    "en": "{title} — {name}’s first poetry collection"
+    "en": "{title} — {name}"
+  },
+  "og_book_desc": {
+    "ko": "시 예순 편 · 2026년 11월 1일 · 교보문고 퍼플",
+    "en": "Sixty poems in Korean · November 1, 2026 · Kyobo PubPle"
   },
   "news": {
     "ko": "시집 소식",
@@ -126,11 +130,11 @@
   },
   "toc_key": {
     "ko": "먹 줄은 여기서 읽을 수 있는 시 · 달마다 한 편에서 한 줄씩 엽니다",
-    "en": "Titles in ink can be read here · each month, one line opens from one poem"
+    "en": "Titles in ink can be read here · each month, a line or two opens from one poem"
   },
   "month_line": {
     "ko": "{m}월의 한 줄",
-    "en": "{m}’s line"
+    "en": "{m}’s lines"
   },
   "month_next": {
     "ko": " · 다음은 {m}",
@@ -449,8 +453,8 @@
     "en": "Bio · timeline · now|“Rubbing” · book · contents|Photos · posts|Videos · reviews|Email · Instagram message"
   },
   "search_sec_keys": {
-    "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 사는 곳 소식|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지 방명록 화면 어둡게 다크",
-    "en": "bio timeline now name|poem book contents rubbing kyobo buy news|photos instagram posts exhibitions|videos reviews film channel|email gmail mail message guestbook display dark"
+    "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 교보문고 퍼플 서점 구매 구입 사기 신간 출간 판매 쪽수 사는 곳 소식|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지 방명록 화면 어둡게 다크",
+    "en": "bio timeline now name|poem book contents rubbing kyobo pubple buy purchase shop release published pages news|photos instagram posts exhibitions|videos reviews film channel beautiful nam|email gmail mail message guestbook display dark"
   },
   "search_toc_where": {
     "ko": "{part} · {page}쪽",
@@ -489,6 +493,7 @@
       "file": "남동원_탁본.jpg",
       "share": "「탁본」 — 남동원",
       "kept_on": "{d} 뜸",
+      "post_photo": "게시물 사진 {k} / {n}",
       "form_off": "아직 연결 전입니다. 인스타그램으로 연락해 주세요.",
       "sending": "보내는 중…",
       "sent": "잘 받았습니다. 답장 드리겠습니다.",
@@ -505,6 +510,7 @@
       "file": "dongwon-nam_rubbing.jpg",
       "share": "“Rubbing” — Dongwon Nam",
       "kept_on": "Taken {d}",
+      "post_photo": "Post photo {k} of {n}",
       "form_off": "Not connected yet — please message me on Instagram.",
       "sending": "Sending…",
       "sent": "Received. I’ll write back soon.",

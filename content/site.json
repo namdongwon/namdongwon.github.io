@@ -540,7 +540,7 @@
   "contact": {
     "lead_lines": [
       "협업이나 궁금한 것은",
-      "아래에 남겨 주세요."
+      "메시지나 메일로 남겨 주세요."
     ],
     "formspree_id": "",
     "guestbook_formspree_id": "",
@@ -589,7 +589,7 @@
     "desc": "유튜브 · 영화 · 책 · 전시 리뷰",
     "en": {
       "name": "Beautiful Nam",
-      "desc": "YouTube · film, book and exhibition reviews · in Korean"
+      "desc": "YouTube · film, book and exhibition reviews · in\u00a0Korean"
     }
   },
   "copyright": "© 2026 남동원",
@@ -597,14 +597,15 @@
     "edition": 2,
     "printing": 1,
     "edition_start": "04a926f",
-    "note": "글과 사진을 다시 쓰려면 먼저 물어 주세요.",
+    "note": "글과 사진을 가져다 쓰려면 먼저 물어 주세요.",
     "made": "서울에서 쓰고, 찍고, 엮음"
   },
   "en": {
     "name": "Dongwon Nam",
     "logo": "Dongwon Nam",
     "tagline": "An office worker who writes poems and reviews what he sees",
-    "description": "Dongwon Nam, an office worker who writes poems: his first poetry collection, Open the Door, Step Out, and It Is Full of Living Things, and Beautiful Nam, a channel of film, book and exhibition reviews.",
+    "tab_title": "Dongwon Nam — An office worker who writes poems",
+    "description": "Dongwon Nam, an office worker who writes poems. First poetry collection: “Open the Door, Step Out, and It Is Full of Living Things.”",
     "book": {
       "title": "Open the Door, Step Out, and It Is Full of Living Things",
       "title_lines": [
@@ -631,7 +632,7 @@
           "Between pretending to be alive and pretending to be dead,",
           "poems that brush the ink off the hand and walk on"
         ],
-        "text": "Dongwon Nam’s poems sort what breathes from what merely moves. Among building walls where something crumbles off, brittle, at a touch, trash pushed along by the wind and wheels rolling at a steady speed, the poet asks whether to pretend to be alive or to pretend to be dead — and, instead of answering, brushes the ink off his hand. Firm sentences that set down what he has seen, without putting feeling first, are the ground of this collection."
+        "text": "Dongwon Nam’s poems sort what breathes from what merely moves. Among building walls where something brittle crumbles off at a touch, trash pushed along by the wind and wheels rolling at a steady speed, the poet asks whether to pretend to be alive or to pretend to be dead — and, instead of answering, brushes the ink off his hand. Firm sentences that set down what he has seen, without putting feeling first, are the foundation of this collection."
       },
       "toc": {
         "label": "Contents — sixty poems in four parts"
@@ -646,7 +647,7 @@
     "contact": {
       "lead_lines": [
         "For collaborations or questions,",
-        "leave a note below."
+        "send a message or an email."
       ],
       "privacy": "Your name and email will be used only to reply."
     },
