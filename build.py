@@ -86,6 +86,13 @@ def build_day():
     return date.fromisoformat(s) if s else datetime.now(ZoneInfo("Asia/Seoul")).date()
 
 
+def book_card(site):
+    # 출간일 공유 카드(10/27 동원 "공유 카드는 B로 하자"): 나온 날(book.published)부터 book.card_until 전날까지는 링크 미리보기를 책 카드로
+    # (그림 og-book.jpg · og-book-en.jpg + og:title을 책 제목으로) — 그 밖엔 이름 카드. 정적 사이트라 그날 뒤 처음 빌드할 때 바뀜
+    bk = site["book"]
+    return date.fromisoformat(bk["published"]) <= build_day() < date.fromisoformat(bk.get("card_until", "9999-12-31"))
+
+
 # 작품 이름 부호(10/24 ⑩ A): 영화·작품 〈 〉 · 책 『 』 · 시 「 」 · 전시 《 》 — 문장 부호 규정(2015)과 관행
 MARKS = {"영화": "〈〉", "작품": "〈〉", "책": "『』", "시": "「」", "전시": "《》"}
 
@@ -436,8 +443,49 @@ def vfont(path, size, axes):
     return f
 
 
-def make_og(site, cover, src, lang="ko"):
+def og_chip(d, x, y, h, text, f):
+    # 책 카드의 상태 낱말 — 사이트 책 카드(.bstate)와 같은 결: 테두리 알약 + 점 + 낱말. 알약 오른쪽 끝 x를 돌려줌
+    tw = d.textlength(text, font=f)
+    w = round(h * 0.55 + h * 0.32 + tw + h * 0.55)
+    d.rounded_rectangle((x, y, x + w, y + h), radius=h // 2, outline="#111111", width=max(2, h // 26))
+    r, cx, cy = h * 0.12, x + h * 0.55, y + h / 2
+    d.ellipse((cx - r, cy - r, cx + r, cy + r), fill="#111111")
+    d.text((cx + h * 0.32, cy), text, font=f, fill="#111111", anchor="lm")
+    return x + w
+
+
+def og_book(d, site, src, lang, words, room):
+    # 출간일 책 카드(10/27 B — 시안 기준/브랜드 시안/공유카드시안_v1): 사이트 첫 화면과 같은 차례 — '이름 첫 시집' → 큰 제목(가는 본명조 ·
+    # 영어판 Newsreader) → 굵은 부제 → '● 판매 중 · 교보문고 퍼플' → 주소. 칸(room)보다 긴 줄은 글자를 줄임
+    bk, en = site["book"], lang == "en"
+    sans = {600: src["Pretendard-SemiBold.otf"], 300: src["Pretendard-Light.otf"]}
+
+    def fit(make, lines, size, low):
+        while max(make(size).getlength(t) for t in lines) > room and size > low:
+            size -= 2
+        return make(size), size
+
+    kick = words["kick"].format(name=site["name"])
+    kf, _ = fit(lambda s: font(sans[600], s), [kick], 34, 22)
+    d.text((100, 92), kick, font=kf, fill="#111111")
+    big, small = bk["display"]["big"], " ".join(bk["display"]["small"])
+    tf, ts = fit((lambda s: vfont(src["NR"], s, (380, 72))) if en else (lambda s: font(src["BonMyeongjoKR-Light.ttf"], s)), big, 100, 60)
+    lh, y = round(ts * 1.12), 150
+    for t in big:
+        d.text((94, y), t, font=tf, fill="#111111")
+        y += lh
+    sf, ss = fit((lambda s: vfont(src["NR"], s, (650, 36))) if en else (lambda s: font(src["BonMyeongjoKR-Bold.ttf"], s)), [small], 40, 28)
+    y += 24
+    d.text((100, y), small, font=sf, fill="#111111")
+    y += ss + 32
+    end = og_chip(d, 100, y, 64, words["on"], font(sans[600], 32))
+    d.text((end + 18, y + 32), bk["store"], font=font(sans[300], 32), fill="#111111", anchor="lm")
+    d.text((100, 566), site["base_url"].replace("https://", "") + ("/en" if en else ""), font=font(sans[300], 22), fill="#717171")
+
+
+def make_og(site, cover, src, lang="ko", words=None):
     # 카톡·인스타에 링크를 붙였을 때 뜨는 미리보기 그림(1200×630) — 줄이기 전 원본 글꼴로 그림. 영어판은 og-en.jpg(Newsreader)
+    # words(책 카드 낱말 — kick · on)가 있으면 출간일 책 카드 og-book.jpg · og-book-en.jpg(10/27 B). 이름 카드는 늘 그대로 만듦(예전에 읽어 간 주소가 비지 않게)
     W, H = 1200, 630
     im = Image.new("RGB", (W, H), "white")
     d = ImageDraw.Draw(im)
@@ -445,7 +493,10 @@ def make_og(site, cover, src, lang="ko"):
     ch = 500
     c = c.resize((round(c.width * ch / c.height), ch), Image.LANCZOS)
     x, y = W - c.width - 110, (H - ch) // 2
-    if lang == "ko":
+    if words:
+        og_book(d, site, src, lang, words, x - 100 - 48)
+        out = "og-book-en.jpg" if lang == "en" else "og-book.jpg"
+    elif lang == "ko":
         d.text((96, 232), site["name"], font=font(src["BonMyeongjoKR-Bold.ttf"], 118), fill="#111111")
         d.text((100, 392), site["tagline"], font=font(src["BonMyeongjoKR-Regular.ttf"], 34), fill="#555555")  # 회색은 사이트 토큰과 같이(10/24 ⑨ --muted)
         d.text((100, 540), site["base_url"].replace("https://", ""), font=font(src["Pretendard-Light.otf"], 24), fill="#717171")  # --faint
@@ -558,6 +609,10 @@ def render(site, poem, videos, photos, lang="ko"):
     ch = site.get("channel", {})
     NAMES[:] = [e(n) for n in (ch.get("name"), ch.get("en", {}).get("name")) if n]
     title = f'{S["name"]} — {S["tagline"]}'
+    # 링크 미리보기(og): 출간일 책 카드 기간에는 책 그림 · 책 제목(10/27 B — book_card), 그 밖엔 이름 카드 · 이름 제목. 탭 제목(<title>)은 늘 이름
+    card = book_card(site)
+    og_img = ("og-book-en.jpg" if en else "og-book.jpg") if card else ("og-en.jpg" if en else "og.jpg")
+    og_title = L["og_book_title"].format(title=book["title"], name=S["name"]) if card else title
     links = [l for l in S["links"] if l["url"]]
     ld = {"@context": "https://schema.org", "@type": "Person", "name": S["name"], "alternateName": site["name"] if en else site["en"]["name"],
           "url": here, "description": S["tagline"], "sameAs": [l["url"] for l in links]}
@@ -901,9 +956,9 @@ def render(site, poem, videos, photos, lang="ko"):
 <link rel="alternate" hreflang="x-default" href="{e(base)}/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{e(here)}">
-<meta property="og:title" content="{e(title)}">
+<meta property="og:title" content="{e(og_title)}">
 <meta property="og:description" content="{e(S["description"])}">
-<meta property="og:image" content="{e(base)}/assets/{"og-en.jpg" if en else "og.jpg"}">
+<meta property="og:image" content="{e(base)}/assets/{og_img}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="{L["og_locale"]}">
@@ -1039,7 +1094,7 @@ def main():
 
     # docs/를 새로 만든다(옛 결과는 지운다 — docs는 빌드 결과라 원본이 아님). 줄인 글꼴·미리보기 그림은 원본을 못 찾을 때를 위해 먼저 옮겨 둔다
     keep = {}
-    for f in [*(ASSETS / "fonts").glob("*.woff2"), ASSETS / "og.jpg", ASSETS / "og-en.jpg", ASSETS / "img" / "takbon.jpg"]:
+    for f in [*(ASSETS / "fonts").glob("*.woff2"), ASSETS / "og.jpg", ASSETS / "og-en.jpg", ASSETS / "og-book.jpg", ASSETS / "og-book-en.jpg", ASSETS / "img" / "takbon.jpg"]:
         if f.exists():
             keep[f.name] = f.read_bytes()
     if DOCS.exists():
@@ -1118,6 +1173,16 @@ def main():
         make_og(localize(site, "en"), cover, srcs, "en")
     elif "og-en.jpg" in keep:
         (ASSETS / "og-en.jpg").write_bytes(keep["og-en.jpg"])
+    if book_card(site):  # 출간일 책 카드 기간(10/27 B) — 쪽의 og 태그도 이 그림 · 책 제목을 가리킴(render)
+        ui = load("ui.json")
+        for lg, sl, out, need in (("ko", site, "og-book.jpg", ("BonMyeongjoKR-Light.ttf", "BonMyeongjoKR-Bold.ttf")),
+                                  ("en", localize(site, "en"), "og-book-en.jpg", ("NR",))):
+            if all(k in srcs for k in (*need, "Pretendard-Light.otf", "Pretendard-SemiBold.otf")):
+                make_og(sl, cover, srcs, lg, {"kick": ui["og_book_kick"][lg], "on": ui["book_on"][lg]})
+            elif out in keep:
+                (ASSETS / out).write_bytes(keep[out])
+            else:
+                raise SystemExit(f"출간일 책 카드({out})를 그릴 원본 글꼴을 찾지 못함")
     if all(f[0] in srcs for f in FONTS):  # 원본 글꼴이 다 있으면(10/25 고침 — 영어 글꼴 NR · NRI가 srcs에 더해진 뒤로 '개수 같음'이 늘 거짓이라 옛 그림만 옮겨 쓰고 있었음)
         make_takbon(site, poem, srcs)
     elif "takbon.jpg" in keep:

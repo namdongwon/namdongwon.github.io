@@ -26,6 +26,8 @@
     "spec": "110쪽 · 128×188mm · 2026년 11월 1일 · 교보문고 퍼플",
     "published": "2026-11-01",
     "store_label": "교보문고에서 사기",
+    "store": "교보문고 퍼플",
+    "card_until": "2027-01-01",
     "spine": "img/spine.jpg",
     "back": "img/back.jpg",
     "intro": {
@@ -616,6 +618,7 @@
       "buy_label": "Add to your shelf",
       "spec": "110 pages · 128 × 188 mm · November 1, 2026 · Kyobo PubPle",
       "store_label": "Buy at Kyobo Book Centre",
+      "store": "Kyobo PubPle",
       "intro": {
         "lead": [
           "Between pretending to be alive and pretending to be dead,",

@@ -108,6 +108,14 @@
     "ko": "판매 중",
     "en": "On sale"
   },
+  "og_book_kick": {
+    "ko": "{name} 첫 시집",
+    "en": "{name}’s first poetry collection"
+  },
+  "og_book_title": {
+    "ko": "『{title}』 — {name} 첫 시집",
+    "en": "{title} — {name}’s first poetry collection"
+  },
   "news": {
     "ko": "시집 소식",
     "en": "Book news"
