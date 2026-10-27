@@ -48,7 +48,7 @@
 
   // 서 있는 책(10/24) — 26°로 서 있고, 옆으로 밀면 돌아가 책등·뒤표지, 놓으면 제자리. 첫 화면 책과 시집 칸 책 카드가 같은 손맛(10/25 시집 칸 A 손으로만)
   // 첫 화면 책은 누르기 · 키보드로도(10/27 점검 a11y 10 — 끌기로만 되던 것): 살짝 누르기 · Enter · Space는 TAP대로, ← → 는 한 면씩
-  const TAP = "around";  // "around" 한 바퀴(책등 · 뒤표지를 차례로 보이고 제자리) · "step" 누를 때마다 한 면씩(그 면에 머묾)
+  const TAP = "step";  // "step" 누를 때마다 한 면씩(그 면에 머묾 — 10/27 동원 "내가 버튼 누를 때마다 옆모습 뒷모습 보여주는 거로 바꾸자") · "around" 한 바퀴(책등 · 뒤표지를 차례로 보이고 제자리 — 처음 고른 A)
   const turnable = (bk, keys) => {
     const b = bk.querySelector(".b"), REST = 26, FACES = [REST, 90, 180 + REST];  // 앞표지 · 책등 · 뒤표지 각도
     let ry = REST, run = 0, drag = null, face = 0, seq = 0;
@@ -122,8 +122,8 @@
     const t = turnable(bk, true);
     if (motion) bookIn = t.turnIn;
   }
-  const cardBook = document.querySelector(".pbook .bk");  // 시집 칸 책 카드 — 들어올 때 돌아서지 않고 만질 때만(10/25 A)
-  if (cardBook) turnable(cardBook);
+  const cardBook = document.querySelector(".pbook .bk");  // 시집 칸 책 카드 — 들어올 때 돌아서지 않고 만질 때만(10/25 A) · 누르기 · 키보드도 첫 화면 책과 같게(10/27 동원 "시집 칸에 있는 책도 똑같이")
+  if (cardBook) turnable(cardBook, true);
 
   // ① 문 — 첫 방문 한 번만(head의 스크립트가 html.intro를 붙였을 때). 문이 열리는 순간 이름이 나타남
   // 글꼴은 문 글자 · 큰 제목에 쓰는 것만, 0.8초까지만 기다림 — 글꼴이 늦으면 검은 문 앞에서 오래 서 있게 되므로(늦게 온 글꼴은 그 뒤에 바뀌어 들어옴).
