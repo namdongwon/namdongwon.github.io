@@ -89,8 +89,8 @@
     "en": "Press and hold the poem to take a rubbing"
   },
   "pgno": {
-    "ko": "「{poem}」 — {pages}",
-    "en": "“{poem},” {pages}"
+    "ko": "{book} — {pages}",
+    "en": "{book}, {pages}"
   },
   "translated": {
     "ko": "",

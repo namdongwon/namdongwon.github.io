@@ -913,7 +913,16 @@ def render(site, poem, videos, photos, lang="ko"):
     preload = ("".join(f'<link rel="preload" href="{P}assets/fonts/{f}" as="font" type="font/woff2" crossorigin>\n' for f in
                        ((EN_FIRST, "ndw-sans-light-first.woff2", "ndw-sans-semibold-first.woff2") if en else ("bon-myeongjo-light.woff2", *FIRST))))
     # 첫 화면 작은 판만 미리 받음(한국어 10/27 B · 영어 10/27 점검 — 영어 첫 화면은 본명조를 한 자도 안 그리는데 통째 판을 받아 문이 늦었음). 작은 고딕 판(PTDF)은 ASCII를 늘 담아 영어 첫 화면에도 씀
-    pgno = t("pgno", poem=poem_t, pages=e(S["poem"]["pages"])) + (f'<br>{t("translated")}' if L["translated"] else "")
+    # 시 아래 출처 줄은 시집 제목 · 쪽수(10/27 동원 "탁본 - 61쪽 이런식으로 쓰는 게 아니라 문을 열고 나오면 살아 있는 것들로 가득 차 있다 - 61쪽") — 제목은 표지 줄 나눔 자리에서만 갈리고,
+    # 쪽수는 제목 끝 토막 안에 붙여 함께 넘어감(토막 밖에 두면 영어 390에서 'Living Things' / ', pages 61–62'로 갈렸음). 영어는 기울임을 제목에만
+    head, _, tail = t("pgno", book="\0", pages=e(S["poem"]["pages"]).replace(" ", NB)).partition("\0")
+    bt = e(book["title"])
+    if en and bt in SPLIT:
+        a, z = SPLIT[bt]
+        ptitle = f'<span class="tt"><i><span class="tt">{a}</span></i> <span class="tt"><i>{z}</i>{tail}</span></span>'
+    else:
+        ptitle = tt(bt, not en, tail)
+    pgno = head + ptitle + (f'<br>{t("translated")}' if L["translated"] else "")
     note = f'<p class="note">{t("ship_note")}</p>' if L["ship_note"] else ""
     # 시집 소개 · 차례(10/25 A 아래로 이어 쌓기) — 책 카드 다음에 머리 두 줄 → 소개 한 단락 → 차례(「탁본」 줄만 먹)
     # 글은 교보에 올린 최종본 그대로. 영어판은 옮긴 제목 곁에 한국어 원제를 작게(「탁본」 대역과 같은 방식)
@@ -988,7 +997,7 @@ def render(site, poem, videos, photos, lang="ko"):
     sidx_js = json.dumps([list(x) for k in ix for x in ix[k]], ensure_ascii=False).replace("</", "<\\/")
     sj = load("search.json") if (CONTENT / "search.json").exists() else {"suggest": []}
 
-    def sug_li(x):  # 추천 주제 한 줄 — go: 쪽 안 자리 · 'buy'(교보) / q: 그 말로 찾기 · 줄마다 모든 칸, 안 쓰는 쪽은 ""(설계서 7절)
+    def sug_li(x, k):  # 추천 주제 한 줄 — go: 쪽 안 자리 · 'buy'(교보) / q: 그 말로 찾기 · 줄마다 모든 칸, 안 쓰는 쪽은 ""(설계서 7절) · 방향키로 고르는 줄(option, id sg{k})
         if en:  # 영어판은 en 칸으로 — en.label이 비었거나 찾을 말 줄인데 en.q가 비면 그 줄을 뺌(관리 화면 '영어 빔 — 영어판에서 숨겨짐'과 같은 규칙, 10/26)
             o = x.get("en") or {}
             if not o.get("label") or (x.get("q") and not o.get("q")):
@@ -998,17 +1007,19 @@ def render(site, poem, videos, photos, lang="ko"):
             return ""
         note = f'<i>{e(x.get("note", ""))}</i>'
         hang = ' class="hang"' if x["label"][:1] in "「『" else ""  # 여는 부호로 시작하면 내어 걸기(본명조 앞 빈 0.6em 안팎)
+        opt = f' role="option" id="sg{k}" aria-selected="false"'
         if x.get("q"):
-            return f'<li><button type="button"{hang} data-q="{e(x["q"])}">{e(x["label"])}{note}</button></li>'
+            return f'<li role="none"><button type="button"{opt}{hang} data-q="{e(x["q"])}">{e(x["label"])}{note}</button></li>'
         href = book["buy_url"] if x.get("go") == "buy" else (x.get("go") or "#home")
         ext = href.startswith("http")
-        return (f'<li><a{hang} href="{e(href)}"' + (' target="_blank" rel="noopener"' if ext else "") + (gcc("찾기") if x.get("go") == "buy" else "")
+        return (f'<li role="none"><a{opt}{hang} href="{e(href)}"' + (' target="_blank" rel="noopener"' if ext else "") + (gcc("찾기") if x.get("go") == "buy" else "")
                 + f'>{e(x["label"])}{" ↗" if ext else ""}{note}</a></li>')
+    # 입력 칸은 combobox — 추천 · 결과 목록(listbox) 가운데 보이는 쪽을 aria-controls로, 방향키로 고른 줄은 aria-activedescendant로(main.js)
     srch = (f'<div class="srch" role="dialog" aria-modal="true" aria-label="{t("search_label")}" hidden><div class="in">'
-            f'<div class="bar">{SEARCH_ICON}<input type="search" placeholder="{t("search_ph")}" aria-label="{t("search_label")}" autocomplete="off" enterkeyhint="search">'
+            f'<div class="bar">{SEARCH_ICON}<input type="search" role="combobox" aria-autocomplete="list" aria-expanded="true" aria-controls="sr-sug" placeholder="{t("search_ph")}" aria-label="{t("search_label")}" autocomplete="off" enterkeyhint="search">'
             f'<button type="button" class="x">{t("close")}</button></div>'
-            f'<p class="sr-lab">{t("search_suggest")}</p><ul class="sug">{"".join(sug_li(x) for x in sj["suggest"])}</ul>'
-            f'<p class="sr" role="status"></p><p class="sr-n" hidden></p><ul class="sr-res"></ul><p class="sr-none" hidden>{t("search_none")}</p></div></div>\n'
+            f'<p class="sr-lab" id="sr-lab">{t("search_suggest")}</p><ul class="sug" id="sr-sug" role="listbox" aria-labelledby="sr-lab">{"".join(sug_li(x, k) for k, x in enumerate(sj["suggest"]))}</ul>'
+            f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden>{t("search_none")}</p></div></div>\n'
             f'<script id="sidx" type="application/json">{sidx_js}</script>\n')
 
     return f"""<!doctype html>

@@ -651,17 +651,33 @@
       });
       return out.sort((x, y) => (x.at > 0) - (y.at > 0)).slice(0, 12);  // 앞부분이 맞는 것부터, 같으면 갈래 차례(칸 · 시집 · 차례 · 시 · 소개 …)
     };
+    // 방향키로 고른 줄(10/27 동원 요청 · 10/28 A 옅은 바탕) — 포커스는 입력 칸에 두고 고른 줄만 표시(aria-activedescendant) · 더 치면 그대로 이어서 찾음
+    let act = -1, lastQ = null;
+    const opts = () => [...(sug.hidden ? res : sug).querySelectorAll('[role="option"]')];
+    const pick = k => {
+      const o = opts();
+      act = o[k] ? k : -1;
+      o.forEach((el, i) => { el.classList.toggle("on", i === act); el.setAttribute("aria-selected", i === act ? "true" : "false"); });
+      if (act < 0) inp.removeAttribute("aria-activedescendant");
+      else { inp.setAttribute("aria-activedescendant", o[act].id); o[act].scrollIntoView({ block: "nearest" }); }
+    };
     const run = () => {
-      const q = inp.value, empty = !q.trim(), hits = empty ? [] : find(q);
+      const q = inp.value;
+      if (q === lastQ) return;  // 글자가 그대로면(한글 한 글자 마침 등) 다시 그리지 않음 — 고른 줄을 지킴
+      lastQ = q;
+      const empty = !q.trim(), hits = empty ? [] : find(q);
       lab.hidden = sug.hidden = !empty;
       cnt.hidden = empty || !hits.length;
       cnt.textContent = uiText("search_count", "찾은 것 {n}", { n: hits.length });
-      res.innerHTML = hits.map(h => {
+      res.innerHTML = hits.map((h, i) => {
         const ext = /^https?:/.test(h.it[3]);
-        return `<li><a href="${esc(h.it[3])}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="tg">${esc(h.it[0])}</span>` +
+        return `<li role="none"><a role="option" id="sr${i}" aria-selected="false" href="${esc(h.it[3])}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="tg">${esc(h.it[0])}</span>` +
           `<span class="tx">${ko(h.html)}</span><span class="wh">${ko(esc(h.it[2]))}</span></a></li>`;
       }).join("");
       none.hidden = empty || hits.length > 0;
+      inp.setAttribute("aria-controls", empty ? sug.id : res.id);
+      inp.setAttribute("aria-expanded", opts().length ? "true" : "false");
+      pick(-1);
       clearTimeout(sayT);
       const msg = empty ? "" : hits.length ? cnt.textContent : none.textContent;
       sayT = setTimeout(() => { if (say) say.textContent = msg; }, 400);  // 치는 동안 글자마다 읽지 않게 잠깐 멈춘 뒤
@@ -676,6 +692,7 @@
       H.classList.add("sr-on");
       others(true);
       inp.value = "";
+      lastQ = null;
       run();
       inp.focus();
     };
@@ -708,12 +725,23 @@
     };
     sq.addEventListener("click", open);
     srch.querySelector(".x").addEventListener("click", () => shut(true));
-    srch.addEventListener("keydown", ev => { if (ev.key === "Escape") shut(true); });
+    // ↑↓ — 맨 아래 다음 · 맨 위 앞은 입력 칸(고른 줄 없음)으로, 검색창 자동 완성처럼 돎. Tab으로 줄에 가 있었으면 그 줄에서 이어서
+    srch.addEventListener("keydown", ev => {
+      if (ev.key === "Escape") { shut(true); return; }
+      if ((ev.key !== "ArrowDown" && ev.key !== "ArrowUp") || ev.altKey || ev.metaKey || ev.ctrlKey || ev.shiftKey) return;
+      const o = opts(), at = ev.target === inp ? act : o.indexOf(ev.target);
+      if (!o.length || (ev.target !== inp && at < 0)) return;
+      ev.preventDefault();
+      let k = at + (ev.key === "ArrowDown" ? 1 : -1);
+      if (k >= o.length) k = -1; else if (k < -1) k = o.length - 1;
+      if (ev.target !== inp) inp.focus();
+      pick(k);
+    });
     inp.addEventListener("input", run);
-    inp.addEventListener("keydown", ev => {  // Enter(휴대폰 자판 '검색')면 첫 결과로 — 한글을 짜는 중의 Enter는 글자 마침이라 건너뜀
+    inp.addEventListener("keydown", ev => {  // Enter(휴대폰 자판 '검색')면 고른 줄로, 고른 줄이 없으면 첫 결과로 — 한글을 짜는 중의 Enter는 글자 마침이라 건너뜀
       if (ev.key !== "Enter" || ev.isComposing || ev.keyCode === 229) return;
-      const first = res.querySelector("a");
-      if (first) { ev.preventDefault(); first.click(); }
+      const to = opts()[act] || res.querySelector("a");
+      if (to) { ev.preventDefault(); to.click(); }
     });
     srch.addEventListener("click", ev => {
       const a = ev.target.closest("a, button[data-q]");
