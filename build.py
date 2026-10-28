@@ -1205,6 +1205,51 @@ def page_404(site):
 """
 
 
+# 단 검사(10/28 동원 '고치고 검사기 넣어' — 기준/웹사이트 단 검사_2026-10-28.md): style.css가 10/28 단(머리 주석)을 지키는지 빌드마다 훑음.
+# 단 밖인데 일부러 둔 값은 (선택자 머리, 속성): 까닭으로 허용 — 새로 일부러 둘 값이 생기면 까닭과 함께 여기에
+SCALE_SP = {0, 2, 4, 6, 8, 12, 16, 22, 30, 36, 44, 64, 20, 72, *range(48, 61)}  # 간격 열한 단 + 자리 값(옆 여백 20 · 64 · 두 단 틈 72 · 창 안쪽 48–60)
+SCALE_LH = {"1", "1.05", "1.2", "1.3", "1.5", "1.6", "1.7", "1.9", "2"}
+SCALE_FS = {11, 12.5, 13, 14, 15}  # 16px 아래 작은 글자 — 고딕 11 · 12.5 · 14 · 명조 13 · 14 · 15
+SCALE_ALLOW = {
+    (".skip", "left"): "화면 밖에 숨김", (".hp", "left"): "방명록 빈칸 함정 — 화면 밖",
+    (".top nav a::before", "inset"): "누르는 자리 44px", (".pbook .bk .sh", "bottom"): "책 그림자 자리",
+    (".top nav .lang .fl", "line-height"): "국기 줄 높이 0", (".years sup.fr", "font"): "각주 위첨자 줄 높이 0",
+    (".vplay .play", "margin"): "58px 동그라미 가운데", (".touch", "margin"): "58px 동그라미 가운데",
+    (".vplay .play::after", "left"): "재생 세모 자리", (".vplay .play::after", "top"): "재생 세모 자리",
+    ("#poem>.l", "top"): "띠 아래 제목 자리", ("#me>.l", "top"): "띠 아래 제목 자리",
+    ("#contact>.l", "top"): "띠 아래 제목 자리", ("#palette>.l", "top"): "띠 아래 제목 자리",
+}
+
+
+def scale_check():
+    css = re.sub(r"/\*.*?\*/", lambda m: re.sub(r"[^\n]", " ", m.group(0)), (SRC / "style.css").read_text(encoding="utf-8"), flags=re.S)  # 주석은 같은 길이 공백(줄 번호 그대로)
+    bad, ok = [], 0
+    for m in re.finditer(r"([^{}]+)\{([^{}]*)\}", css):
+        sel, head = " ".join(m.group(1).split()), css[:m.start()]
+        k = head.rfind("@media")
+        media = head[k:head.find("{", k)] if k >= 0 and head.count("{", k) > head.count("}", k) else ""
+        for d in re.finditer(r"([\w-]+)\s*:\s*([^;]+)", m.group(2)):
+            prop, val = d.group(1), d.group(2).strip()
+            off = []
+            if re.fullmatch(r"(margin|padding)(-\w+)*|gap|row-gap|column-gap|inset|top|right|bottom|left", prop) and "calc(" not in val:
+                off = [n for n in re.findall(r"-?\d*\.?\d+(?=px)", val) if abs(float(n)) not in SCALE_SP | {1, 1.5}]  # 1 · 1.5px는 선 굵기 맞춤
+            elif prop in ("font", "font-size"):
+                off = [n for n in re.findall(r"(?<![\w.])(\d*\.?\d+)px", val) if float(n) < 16 and float(n) not in SCALE_FS]
+                lh = re.search(r"/\s*(\d*\.?\d+)(?![\w%])", val) if prop == "font" else None
+                off += [lh.group(1)] if lh and lh.group(1) not in SCALE_LH else []
+            elif prop == "line-height" and re.fullmatch(r"\d*\.?\d+", val) and val not in SCALE_LH:
+                off = [val]
+            if not off:
+                continue
+            narrow = ".top nav" in sel and "max-width" in media and prop in ("gap", "padding-left")  # 좁은 폭 메뉴 맞춤값(단 머리 주석)
+            if narrow or any(sel.startswith(a) and prop == b for a, b in SCALE_ALLOW):
+                ok += 1
+            else:
+                bad.append(f"L{css[:m.start(2) + d.start()].count(chr(10)) + 1} {sel[:40]} {prop} {' '.join(off)}")
+    # 어긋나면 '알림'으로 시작 — 관리 화면이 빌드 끝 60줄의 '알림' 줄을 빌드 뒤 알림으로 보여 줌(10/28 관리 화면 세션). 빌드는 멈추지 않음
+    print(("알림 — " if bad else "") + f"단 검사: 단 밖 {len(bad)}곳 (허용 {ok}곳)" + (" — " + " · ".join(bad[:6]) if bad else ""))
+
+
 def main():
     site, videos, photos = load("site.json"), load("videos.json"), load("photos.json")
     # 사진 칸(10/24 A): 인스타그램 최근 게시물을 받아 옴 — 토큰이 없거나 실패하면 지난번 받아 둔 것, 그것도 없으면 photos.json의 사진
@@ -1347,6 +1392,8 @@ def main():
     (DOCS / ".nojekyll").write_text("", encoding="utf-8")  # GitHub Pages가 파일을 다시 가공하지 않게
     if (CONTENT / "CNAME").exists():  # 도메인을 산 뒤에만 둔다 — docs는 매번 새로 만들어지므로 여기서 옮겨 넣음
         shutil.copy2(CONTENT / "CNAME", DOCS / "CNAME")
+
+    scale_check()  # 맨 끝 '합계' 줄 앞에(시험 묶음이 끝 줄을 읽음)
 
     # 무게 보고
     total = 0
