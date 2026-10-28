@@ -532,6 +532,14 @@ html.sr-on{overflow:hidden}
 .buy,.js .mode button,.colo .thm button,.sns a,.cap small a,.colo .pp-l,#home dd .go{position:relative}  /* 밑줄 링크 · 작은 단추의 누르는 자리(10/28 모양 점검 ⑥) */
 .buy::before,.js .mode button::before,#home dd .go::before{content:"";position:absolute;inset:-12px -4px}
 .colo .thm button::before,.sns a::before,.cap small a::before,.colo .pp-l::before{content:"";position:absolute;inset:-16px -4px}
+/* 누름 반응 하나로(10/28 동원 'A 옅게 .5' — 일본 디테일 ⑧ · 시험 쪽 기준/브랜드 시안/누름반응시험_v1.html): 손가락 기기에서 회색 상자를 끄고 닿으면 바로 반쯤 옅게, 떼면 0.4초에 걸쳐 돌아옴(NDC '들어갈 땐 즉시, 물러날 땐 천천히').
+   보내기(먹 반전) · 사진 띠 · 모아 보기 격자는 제 누름 모양이 있어 옅어지지 않게 뺌 · 책 · 「탁본」은 a · button이 아니라 걸리지 않음 · 메뉴는 색 바뀜과 함께 · 나타남(.rv) 중인 것도 옅어지게 .js로 한 단 높임. 아이폰은 main.js의 문서 touchstart가 있어야 :active를 그림 */
+@media (hover:none){
+  a,button{-webkit-tap-highlight-color:transparent}
+  :where(a,button):not(.send,.thumbs button,.pgrid button){transition:opacity .4s}
+  .top nav a{transition:opacity .4s}  /* 메뉴 — '동작 줄이기'면 옅어짐만(색 바뀜과 함께는 아래 prefers-reduced-motion:no-preference 규칙) */
+  .js :where(a,button):not(.send,.thumbs button,.pgrid button):active{opacity:.5;transition:none}
+}
 .js .hint{display:inline-block;margin-top:12px;padding:4px 0;background:none;border:0;font:300 12.5px/1.5 var(--sans);color:var(--faint);letter-spacing:.02em;cursor:pointer}
 .poem{transition:transform .5s var(--ease)}
 .poem.pressing{transform:scale(.992)}
@@ -579,7 +587,7 @@ html.sr-on{overflow:hidden}
 /* 결 — 자바스크립트가 켜져 있고 '동작 줄이기'가 아닐 때만. 흐림은 명조의 가는 획에 맞춰 3px(조사 권고 2~4px) */
 @media (prefers-reduced-motion:no-preference){
   .nt.in b i{animation:nxp 2.4s ease-in-out 3}  /* '준비 중' 점이 화면에 들어오면 세 번 숨 쉬고 멈춤(10/27 숨 재기 1 — 전엔 쪽을 연 때부터 끝없이) · '동작 줄이기'면 멈춘 점 */
-  .top nav a{transition:color .35s var(--ease)}
+  .top nav a{transition:color .35s var(--ease),opacity .4s}  /* 누르면 옅어졌다 0.4초에 돌아옴(10/28 ⑧ — 옅어지는 것은 손가락 기기만, 컴퓨터는 opacity가 바뀌지 않아 그대로) */
   .top nav .ul{transition:transform .5s var(--ease),width .5s var(--ease),opacity .3s}  /* 지금 칸 밑줄이 미끄러짐('동작 줄이기'면 바로 그 자리) */
   .mini{transition:transform .5s var(--ease),visibility 0s .5s}  /* 작은 재생기는 아래에서 올라오고 내려감('동작 줄이기'면 바로) */
   .mini.on{transition:transform .5s var(--ease)}

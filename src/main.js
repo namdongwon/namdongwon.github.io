@@ -1004,6 +1004,9 @@
     a.href = "mailto:" + m;
   });
 
+  // 누름 반응 하나로(10/28 ⑧ A) — 아이폰 Safari는 터치를 듣는 곳이 있어야 :active를 그림. 문서에 하나 두면 모든 링크 · 단추가 닿는 동안 옅어짐(style.css hover:none)
+  document.addEventListener("touchstart", () => {}, { passive: true });
+
   const form = document.querySelector("form.ask");
   // 아이폰 Safari는 터치 이벤트가 붙은 요소에만 누름(:active) 모양을 보여 줌[MDN 호환성 자료] — '보내기'를 누르는 동안 먹으로(10/24 ⑨ A)
   const send = form && form.querySelector(".send");
