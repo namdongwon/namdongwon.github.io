@@ -841,7 +841,7 @@ def render(site, poem, videos, photos, lang="ko"):
         if u.get("thumb"):
             # 첫 편 준비 중(10/24 B): 고른 썸네일 시안을 흑백으로 + '준비 중' + 스틸 출처. 올리면 이 자리에 유튜브 썸네일(색)과 재생 단추
             first = e(u["title"]) if en else marked(u["kind"], u["title"])
-            latest = (f'<div class="nt"><img src="{P}assets/img/next.jpg" alt="{t("first_alt", title=first)}" width="800" height="450" loading="lazy">'
+            latest = (f'<div class="nt"><img src="{P}assets/img/next.jpg" alt="{t("first_alt", title=first)}" width="1280" height="720" loading="lazy">'
                       f'<b><i aria-hidden="true"></i>{t("coming")}</b></div>'
                       + sentence(u, lang, kinds)
                       + (f'<p class="cr">{keep(u["credit"])}</p>' if u.get("credit") else ""))
@@ -1273,7 +1273,7 @@ def main():
     # 첫 편 준비 중(10/24)의 썸네일 시안 — 800px(휴대폰 2배·컴퓨터 칸 폭에 넉넉). 흑백은 CSS가 함
     up = videos.get("upcoming") or {}
     if not videos["items"] and up.get("thumb"):
-        save_jpg(CONTENT / up["thumb"], ASSETS / "img/next.jpg", 800, quality=84)
+        save_jpg(CONTENT / up["thumb"], ASSETS / "img/next.jpg", 1280, quality=80)  # 원본 1280px 그대로(10/28 모양 점검 ⑨ — 800px를 컴퓨터 칸에 1.55배로 늘여 제목 글자가 흐렸음)
     for p in photos["items"]:
         save_jpg(psrc(p), ASSETS / "img/photos" / (Path(p["file"]).stem + ".jpg"), 1080)
         save_jpg(psrc(p), ASSETS / "img/photos/thumb" / (Path(p["file"]).stem + ".jpg"), 240, quality=72)

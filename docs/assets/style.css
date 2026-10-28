@@ -23,7 +23,7 @@ html:lang(en) .door .t,html:lang(en) #home .ht,html:lang(en) #home .hs{font-fami
 
 /* 작은 고딕(Pretendard) 크기는 세 단만 — 11px(꼬리표 · 출처 · 날짜) · 12.5px(메뉴 · 메타) · 14px(단추)(10/25 ⑨, Éditions식). 새 칸을 만들 때도 이 셋 가운데서 고름 */
 :root{
-  --bg:#fff;--ink:#111;--muted:#555;--faint:#717171;--rule:#e6e6e6;--line:#cfcfcf;--ph:#f2f2f2;
+  --bg:#fff;--ink:#111;--barline:rgba(0,0,0,.06);--muted:#555;--faint:#717171;--rule:#e6e6e6;--line:#cfcfcf;--ph:#f2f2f2;
   /* 흰 바탕 대비(WCAG 등급) — 먹 18.88:1 AAA · --muted 7.46:1 AAA · --faint 4.88:1 AA. 회색 두 단은 Klim 회색 단계에서(10/24 ⑨ — 이전 #6b6b6b 5.33:1 · #a3a3a3 2.52:1)
      맨 위 띠(흰 86%)가 검은 그림 위에 얹혀도 --muted 메뉴 5.38:1 */
   --shadow:0 0 0 1px #e2e2e2,0 14px 30px rgba(0,0,0,.10);
@@ -38,8 +38,8 @@ html:lang(en) .door .t,html:lang(en) #home .ht,html:lang(en) #home .hs{font-fami
 /* 어두운 모드(10/26 동원 "웹사이트 화면에 화이트모드 다크모드 시스템설정 있으면 좋겠다" → "A" 먹 종이) — 「탁본」 한 장의 먹 종이를 사이트 전체로.
    처음은 밝게(흰 바탕 첫인상 — 7절 ⑤-2), 판권면 '화면'에서 고르면 그 기기에 기억(localStorage theme). system은 기기 설정을 따름 · 창살 빛은 그림자 대신 빛(뒤집어 screen)
    대비: 먹 종이 #141414 위 글자 15.9:1 · --muted 7.9:1 · --faint 5.4:1 */
-:root[data-theme="dark"]{--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:#1d1d1d;--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}
-@media (prefers-color-scheme:dark){:root[data-theme="system"]{--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:#1d1d1d;--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}}
+:root[data-theme="dark"]{--barline:rgba(255,255,255,.07);--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:#1d1d1d;--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root[data-theme="system"]{--barline:rgba(255,255,255,.07);--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:#1d1d1d;--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}}
 :root:lang(en){--serif:"NRD","BMJ","AppleMyungjo",serif;--body:"NRD","BMJ","AppleMyungjo",serif}  /* 라틴 글꼴 먼저, 한글 다음 — 섞인 한글(시 · 원제)은 본명조 */
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}  /* 칸 맞춤(scroll-snap)은 10/25 끔 — 스크롤은 멈춘 자리에 그대로(셔터를 뺀 뒤 남은 '찰칵' · 동원 "① 칸 맞춤 끄기부터 하자"). 사진 띠의 한 장씩 넘기기만 남김 */
@@ -65,12 +65,13 @@ button{font:inherit;color:inherit}
 
 /* 맨 위: 휴대폰은 메뉴만, 컴퓨터는 이름 로고 + 메뉴 */
 .top{position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;align-items:center;min-height:var(--top);padding:0 20px;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);transition:box-shadow .4s}  /* 아래 재생 띠(.mini)와 같은 흰 86% · 흐림 16px(10/24 ⑨) */
-.top.sc{box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.top.sc{box-shadow:0 1px 0 var(--barline)}  /* 내려가면 띠 아래 가는 선 — 어두운 모드에서도 보이게 색 낱말(10/28 모양 점검 ⑧ — 검정 값이라 어둡게에서 사라졌음) */
 /* 메뉴가 띠보다 넓으면(글 간격을 넓힌 읽기 도구 · 폭 280px 영어판) 두 줄로 내려가고 띠가 그만큼 높아짐 — 전엔 'About'이 화면 왼쪽 밖으로 밀려 볼 수 없었음(10/27 점검 a11y 13 · WCAG 1.4.12). 보통 화면에서는 한 줄 그대로 */
 @media (max-width:767px){.top nav{margin-left:-20px}}  /* 두 줄로 내려가기 전에 왼쪽 여백 20px까지는 씀 — 한국어판 280px처럼 여백 안에서 한 줄로 들어가던 화면은 전과 같게 */
 .top .logo{display:none;font:700 18px/1 var(--serif)}
 .top nav{position:relative;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:16px;font:300 12.5px/1 var(--sans);letter-spacing:.12em;color:var(--muted)}
-.top nav a{padding:6px 0}
+.top nav a{position:relative;padding:6px 0}
+.top nav a::before,.js .top nav .sq::before{content:"";position:absolute;inset:-10px -6px}  /* 누르는 자리 44px 안팎(10/28 모양 점검 ⑥ — 글자 칸은 26px) — 여백을 늘리면 띠 · 구분선 모양이 바뀌어 보이지 않는 자리만 넓힘 */
 .top nav a:hover{color:var(--ink)}
 /* 지금 보는 칸(10/24 B) — 그 칸 이름만 먹색 + 아래 가는 밑줄(main.js가 붙임, 칸을 따라 미끄러짐). 첫 화면에선 없음 */
 .top nav a.on{color:var(--ink)}
@@ -108,8 +109,8 @@ html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spaci
 #home dt{font:300 11px/1.3 var(--sans);color:var(--muted)}
 #home dd{margin-top:3px;font:600 11px/1.55 var(--sans)}
 #home dd small{font:300 11px/1.5 var(--sans);color:var(--muted)}
-#home dd .buy{font-size:14px;padding-bottom:2px;border-bottom-width:1px}  /* 사는 길은 단추 몫 14px(10/25 다듬기 가1 — 11px라 '「탁본」 읽기'보다 작았음) */
-#home dd .go{padding-bottom:1px;border-bottom:1px solid var(--ink)}  /* 재료 줄 '팔레트 보기 ↓'(10/28) — 사는 길(14px)보다 작게, 라벨 글자 그대로 */
+#home dd .buy{font-size:14px}  /* 사는 길은 단추 몫 14px(10/25 다듬기 가1 — 11px라 '「탁본」 읽기'보다 작았음) · 밑줄은 다른 길과 같은 1.5px · 5px(10/28 모양 점검 ⑤ — 1px · 2px 덮어쓰기를 뺌) */
+#home dd .go{display:inline-flex;padding-bottom:5px;border-bottom:1.5px solid var(--ink)}  /* 재료 줄 '팔레트 보기 ↓'(10/28) — 사는 길(14px)보다 작게, 라벨 글자 그대로 */
 /* 첫 화면 시집: 서 있는 책(10/24 A) — 앞표지·책등·뒤표지로 된 3D 책, CSS만(라이브러리 없음). 레퍼런스 Stripe Press(책등이 보이는 3D 책).
    크기는 표지 폭 200px(컴퓨터 250px), 두께는 책등 9mm 비율(200×9/128 = 14px). 26°로 비스듬히 서서 책등이 보임 — 돌리기는 main.js */
 @property --ry{syntax:"<angle>";inherits:false;initial-value:26deg}
@@ -167,7 +168,7 @@ html:lang(en) .pbook .bk{grid-row:span 4}html:lang(en) .pbook .note{grid-column:
 @media (max-width:369px){html:lang(en) .pbook .bk{grid-row:span 2}html:lang(en) .pbook .buy2,html:lang(en) .pbook .note{grid-column:1/-1}}  /* 영어 단추 'Buy at Kyobo Book Centre ↗'(207px)가 360px 이하 폰에서 오른쪽 칸을 넘지 않게 — 책 카드 아래 칸 폭으로(10/25) */
 /* 시집 상태 낱말 · 시집 소식(10/25 A 쌓이는 소식 세 줄) — 상태는 영상 칸 '준비 중'과 같은 알약(먹만 · 흰 바탕이라 테두리),
    소식은 날짜(Pretendard 고정폭) + 한 문장(은바탕), 휴대폰은 책 카드 아래 · 소개 앞 */
-.bstate{display:flex;width:max-content;align-items:center;gap:7px;margin-bottom:12px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;font:400 11px/1 var(--sans);color:var(--ink)}
+.bstate{display:flex;width:max-content;align-items:center;gap:7px;margin-bottom:12px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;font:300 11px/1 var(--sans);color:var(--ink)}
 .bstate i{display:block;width:6px;height:6px;border-radius:50%;background:var(--ink)}
 .bnews{margin-top:30px}
 .bnews h3{font:300 11px/1 var(--sans);letter-spacing:.14em;color:var(--faint)}
@@ -206,7 +207,7 @@ html:lang(en) .btoc .parts,html:lang(en) .btoc .tail{grid-template-columns:1fr} 
 .btoc li.mo em{order:3;flex:0 0 100%;margin:2px 0 8px;padding-left:10px;border-left:1.5px solid var(--ink);font:400 12.5px/1.65 var(--serif);font-style:normal;color:var(--ink)}
 .btoc li.mo em small{display:block;margin:3px 0 0;font:300 11px/1.4 var(--sans);letter-spacing:.04em;color:var(--faint)}
 .top nav .lang{padding-left:13px;border-left:1px solid var(--line);white-space:nowrap}  /* 언어 바꾸기 EN · KO(10/24) */
-.top nav .lang .fl{margin-right:6px;font:14px/1 "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;letter-spacing:0;vertical-align:-1px}  /* 언어 단추 국기(10/25 동원 "직관적으로") — 자간을 0으로(두 글자로 된 국기가 벌어져 갈라지지 않게). 윈도는 국기 대신 GB · KR 글자로 보임 */
+.top nav .lang .fl{margin-right:6px;font:14px/1 "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;letter-spacing:0;vertical-align:-1px;line-height:0}  /* 언어 단추 국기(10/25 동원 "직관적으로") — 자간을 0으로(두 글자로 된 국기가 벌어져 갈라지지 않게). 윈도는 국기 대신 GB · KR 글자로 보임 */
 html:lang(en) .top nav{letter-spacing:.03em;gap:13px}  /* 영어 낱말은 한글 메뉴의 넓은 자간(.12em)이면 띠를 넘침 — 좁은 폭 규칙보다 앞에(10/25 마지막 점검 ①: 뒤에 있으면 374 · 359px 규칙을 덮어 'KO'가 두 줄) */
 @media (max-width:374px){.top nav{gap:7px;font-size:12.5px;letter-spacing:0}.top nav .lang{padding-left:8px}.top nav .lang .fl{margin-right:4px}}
 @media (max-width:409px){html:lang(en) .top nav{gap:7px;font-size:12.5px;letter-spacing:0}html:lang(en) .top nav .lang{padding-left:8px}html:lang(en) .top nav .lang .fl{margin-right:4px}}  /* 영어 메뉴는 409px까지 좁은 간격 — 375px에서 메뉴가 왼쪽 여백 7px까지 밀렸음(10/25 마지막 점검 ①) · 돋보기를 구분선 뒤로 옮긴 뒤 390px에서 왼쪽으로 5px 넘쳐 389 → 409(10/26) */
@@ -237,12 +238,13 @@ html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 
 .bio{margin-top:22px;font:16px/1.95 var(--body)}  /* 휴대폰 소개 · 시집 소개 · 연락 첫 글은 시 본문과 같은 16px(10/27 숨 재기 8, 동원 'A 16px' — 전 15–15.5px) */
 .tagl{margin-top:10px;font:14px/1.6 var(--body);color:var(--muted);text-wrap:balance;word-break:keep-all}  /* 소개 이름 아래 한 문장(10/25 제안 ③ — 첫 화면 라벨에서 옮김) */
 .years{list-style:none;margin-top:30px;border-top:1px solid var(--rule)}
-.years li{display:grid;grid-template-columns:64px 1fr;gap:10px;padding:15px 0;border-bottom:1px solid var(--rule);font:14.5px/1.45 var(--body)}
+.years li{display:grid;grid-template-columns:64px 1fr;align-items:baseline;gap:10px;padding:15px 0;border-bottom:1px solid var(--rule);font:14.5px/1.45 var(--body)}
+.years li span{text-wrap:pretty}  /* 영어 연표 'log²'처럼 각주 번호가 한 낱말과 혼자 떨어지지 않게(10/28 모양 점검 ⑪) */
 .years b{font:600 14px/1.45 var(--sans);letter-spacing:.04em}
-.years sup.fr{font:500 11px/0 var(--sans);vertical-align:super;margin-left:3px;color:var(--muted)}  /* 연표 각주 번호(10/25 40곳 2차 ④ A — Andrew Trousdale식) */
+.years sup.fr{font:300 11px/0 var(--sans);vertical-align:super;margin-left:3px;color:var(--muted)}  /* 연표 각주 번호(10/25 40곳 2차 ④ A — Andrew Trousdale식) */
 .fn{list-style:none;margin-top:12px;display:grid;gap:6px}  /* 각주: 번호(Pretendard 11px) + 명조 13px 회색 #555(7.46:1) — 연표 줄 높이는 그대로 */
 .fn li{display:grid;grid-template-columns:14px 1fr;column-gap:6px;align-items:baseline;font:13px/1.65 var(--body);color:var(--muted);word-break:keep-all}
-.fn li b{font:500 11px/1.65 var(--sans)}
+.fn li b{font:300 11px/1.65 var(--sans)}
 /* 소개 칸의 지금(10/25 ⑥ A — William Jansson 'Now'식): 연표 아래 '지금 · 고친 날' + 읽는 책 · 편집 중인 편 · 쓰는 시 */
 .now{margin-top:28px;padding-top:16px;border-top:1px solid var(--rule)}
 .now .nk{display:flex;justify-content:space-between;align-items:baseline;font:600 12.5px/1 var(--sans);letter-spacing:.04em}
@@ -294,7 +296,7 @@ html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 
 .mode,.thumbs{display:none}
 .js .mode{display:flex;gap:16px;margin-top:14px;font:300 12.5px/1 var(--sans)}
 .js .mode button{background:none;border:0;padding:4px 0;color:var(--faint);cursor:pointer}
-.js .mode button[aria-pressed="true"]{color:var(--ink);box-shadow:inset 0 -1px 0 var(--ink)}
+.js .mode button[aria-pressed="true"]{color:var(--ink);box-shadow:inset 0 -1.5px 0 var(--ink)}
 .js .thumbs{display:flex;gap:6px;margin-top:10px}
 .thumbs button{flex:1 1 0;min-width:0;padding:0;border:0;background:none;cursor:pointer;opacity:.45;filter:grayscale(1);transition:opacity .35s ease,filter .35s ease}
 .thumbs button.on{opacity:1;filter:none}
@@ -311,14 +313,15 @@ html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 
 .strip .pop{display:block;position:relative;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
 .strip .pop:focus-visible{outline:none}
 .strip .pop:focus-visible::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 3px var(--ink),inset 0 0 0 5px var(--bg);pointer-events:none}  /* 띠가 바깥 테두리를 잘라 내서 사진 안쪽에 그림(10/27 점검 — Tab이 사진 8장에서 보이지 않았음) */
-.strip .many,.pvk{position:absolute;top:10px;right:10px;padding:5px 8px;border-radius:999px;background:var(--chip);font:500 11px/1 var(--sans);color:var(--ink);letter-spacing:.02em;font-variant-numeric:tabular-nums}  /* 여러 장 게시물 번호 칩 '1/20' — 띠와 넘겨 보는 창이 같은 칩(10/27 동원 "A 사진 위 칩" — 인스타그램처럼, 전엔 띠 '20장') */
+.strip .many,.pvk{position:absolute;top:10px;right:10px;padding:5px 8px;border-radius:999px;background:var(--chip);font:300 11px/1 var(--sans);color:var(--ink);letter-spacing:.02em;font-variant-numeric:tabular-nums}  /* 여러 장 게시물 번호 칩 '1/20' — 띠와 넘겨 보는 창이 같은 칩(10/27 동원 "A 사진 위 칩" — 인스타그램처럼, 전엔 띠 '20장') */
+.strip .art .many{right:calc(3.125% + 10px)}  /* 작품 사진(3:4를 4:5 칸에 통째로)은 양옆 벽 3.125% 안쪽으로 — 사진 끝에 걸렸음(10/28 모양 점검 ③) */
 .pvk{pointer-events:none}  /* 창에서는 main.js가 맞춰 줄인 사진의 오른쪽 위에 놓음 */
 html.pv-on{overflow:hidden}
 .pv{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--bg);opacity:0;transform:translateY(14px);transition:opacity .3s ease,transform .3s ease}
 .pv.on{opacity:1;transform:none}
 .pvh{flex:none;display:flex;align-items:center;justify-content:space-between;height:var(--top);padding:0 20px;border-bottom:1px solid var(--rule)}
 .pvc{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}  /* 맨 위 '2 / 20'은 화면 읽기용으로만(넘길 때 읽어 줌) — 보이는 번호는 사진 위 칩(.pvk) */
-.pvx{margin-left:auto;padding:8px 0;border:0;background:none;font:400 13px/1 var(--sans);color:var(--ink);cursor:pointer}
+.pvx{margin-left:auto;padding:8px 0;border:0;background:none;font:600 12.5px/1 var(--sans);color:var(--muted);cursor:pointer}  /* 찾기 창 '닫기'와 같은 모양(10/28 모양 점검 ⑩) */
 .pvs{flex:1;min-height:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 .pvs::-webkit-scrollbar{display:none}
 .pvs figure{position:relative;flex:0 0 100%;margin:0;display:flex;align-items:center;justify-content:center;padding:16px 20px;scroll-snap-align:start}
@@ -339,6 +342,7 @@ html.pv-on{overflow:hidden}
 .js .top nav .sq{display:inline-flex;align-items:center;justify-content:center;width:22px;height:24px;margin:0 -4px 0 -2px;padding:0;border:0;background:none;color:var(--muted);cursor:pointer}
 .top nav .sq:hover{color:var(--ink)}
 .top nav .sq svg{width:16px;height:16px}
+.js .top nav .sq{position:relative}
 html.sr-on{overflow:hidden}
 .srch{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}
 .srch .in{max-width:760px;margin:0 auto;padding:16px 20px calc(48px + env(safe-area-inset-bottom))}
@@ -379,6 +383,7 @@ html.sr-on{overflow:hidden}
 
 /* ⑤ 영상 — 한 편 크게 + 차례 */
 .ch2{margin-top:30px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+@media (max-width:767px){.head,.ch2{margin-top:36px}}  /* 휴대폰도 다섯 칸 꼬리표 → 제목 36px(10/28 모양 점검 ① — 인스타그램 · 유튜브만 30px) */
 .ch2 h2{margin:0;font:700 22px/1.2 var(--serif)}  /* 사진 · 영상 칸 이름은 제목(h2) — 제목으로 훑을 때 두 칸이 빠지지 않게(10/27 점검 a11y 6), 모양은 전과 같음 */
 .ch2 span{font:300 12.5px/1.4 var(--sans);color:var(--muted);letter-spacing:.04em}  /* 두 줄이 되면 붙지 않게(10/27 가2 — 영어 320–360 '… in / Korean') */
 .big{margin-top:22px;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px}
@@ -397,7 +402,7 @@ html.sr-on{overflow:hidden}
    흐린 흰 바탕은 맨 위 띠와 같은 재료 · 아이폰 홈 막대 자리만큼 아래를 띄움 */
 .mini{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;align-items:center;gap:12px;height:calc(64px + env(safe-area-inset-bottom));
   padding:0 10px env(safe-area-inset-bottom) 12px;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
-  box-shadow:0 -1px 0 rgba(0,0,0,.08);transform:translateY(102%);visibility:hidden}
+  box-shadow:0 -1px 0 var(--barline);transform:translateY(102%);visibility:hidden}
 .mini.on{transform:none;visibility:visible}
 .mini .pr{position:absolute;left:0;top:0;width:0;height:1.5px;background:var(--ink)}
 .mini .go{flex:1;min-width:0;align-self:stretch;display:flex;align-items:center;gap:12px;padding:0;border:0;background:none;color:var(--ink);text-align:left;cursor:pointer}
@@ -413,16 +418,16 @@ html.sr-on{overflow:hidden}
 /* 첫 편 준비 중(10/24 B) — 고른 썸네일 시안을 흑백으로 + '준비 중'. 아직 못 보는 것은 흑백(사진 칸 '보는 한 장만 색'과 같은 뜻), 올리면 유튜브 썸네일(색) */
 .nt{position:relative;margin-top:22px;width:100%;aspect-ratio:16/9;min-height:200px;border-radius:4px;overflow:hidden;background:#111}  /* 폭을 정해 둬야 최소 높이가 최소 폭으로 번지지 않음(.vbox와 같음) */
 .nt img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(.95);opacity:.92}
-.nt b{position:absolute;right:10px;top:10px;display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;background:var(--chip);font:400 11px/1 var(--sans);color:var(--ink)}  /* 썸네일 제목(왼쪽 아래)을 가리지 않게 오른쪽 위 */
+.nt b{position:absolute;right:10px;top:10px;display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;background:var(--chip);font:300 11px/1 var(--sans);color:var(--ink)}  /* 썸네일 제목(왼쪽 아래)을 가리지 않게 오른쪽 위 */
 .nt b i{display:block;width:6px;height:6px;border-radius:50%;background:var(--ink)}
 .cr{margin-top:5px;font:300 11px/1.4 var(--sans);color:var(--faint)}  /* 스틸 출처 — 사진 칸 캡션의 출처 줄과 같은 결 */
 @keyframes nxp{50%{opacity:.2}}
 .vt{margin-top:14px;font:400 18px/1.6 var(--body);color:var(--faint)}  /* 대표 편 한 문장(10/24 ⑩ A) — 은바탕은 부호 폭이 좁아(〉 뒤 빈 곳 0.23em, 나눔명조는 0.56em) 문장 속 부호가 벌지 않음 */
 .vt b{font-weight:400;color:var(--ink)}  /* 제목 · 만든 이만 먹 */
 .vt cite{font-style:normal}
-#video .buy{margin-top:16px}
+#video .buy{margin-top:18px}
 .sub{margin-top:34px;font:600 11px/1 var(--sans);letter-spacing:.3em;color:var(--muted)}
-.toc{list-style:none;margin-top:12px;border-top:1px solid var(--rule)}
+.toc{list-style:none;margin-top:14px;border-top:1px solid var(--rule)}
 .toc li{border-bottom:1px solid var(--rule)}
 .toc a,.toc .row{display:grid;grid-template-columns:44px 1fr auto;align-items:baseline;gap:8px;padding:15px 0}
 .toc i{font:300 12.5px/1 var(--sans);font-style:normal;color:var(--muted)}
@@ -463,7 +468,7 @@ html.sr-on{overflow:hidden}
 .gb .by{margin-top:6px;font:300 11px/1.3 var(--sans);letter-spacing:.02em;color:var(--faint);font-variant-numeric:tabular-nums}
 .gb .rp{margin-top:10px;padding-left:12px;border-left:1.5px solid var(--line);font:13.5px/1.7 var(--body);color:var(--muted)}
 .gb .rp span{display:block;margin-top:2px;font:300 11px/1 var(--sans);color:var(--faint)}
-.gb .empty{margin-top:16px;padding:16px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font:14px/1.7 var(--body);color:var(--faint)}
+.gb .empty{margin-top:14px;padding:15px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font:14px/1.7 var(--body);color:var(--faint)}
 .gb summary{display:inline-block;margin-top:12px;padding-bottom:2px;border-bottom:1px solid currentColor;font:300 12.5px/1 var(--sans);color:var(--muted);cursor:pointer;list-style:none}
 .gb summary::-webkit-details-marker{display:none}
 .gb .h3b{margin-top:30px}
@@ -496,7 +501,7 @@ html.sr-on{overflow:hidden}
 .pp .oth{font:300 12.5px/1 var(--sans);color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}
 .colo .thm{display:none}.js .colo .thm{display:block}  /* 화면 고르기 — 자바스크립트가 있어야 바뀌므로 그때만 */
 .colo .thm button{padding:0;border:0;background:none;font:inherit;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent}
-.colo .thm button[aria-pressed="true"]{color:var(--ink);font-weight:600;box-shadow:inset 0 -1px 0 currentColor}
+.colo .thm button[aria-pressed="true"]{color:var(--ink);font-weight:600;box-shadow:inset 0 -1.5px 0 currentColor}
 .colo .thm button:hover{color:var(--ink)}
 
 
@@ -519,9 +524,11 @@ html.sr-on{overflow:hidden}
 
 /* 「탁본」 길게 누르기 → 탁본 한 장(10/24) — 검은 먹 종이에 흰 글자. 누르는 동안만 나타나는 순간이라 검은 바탕 결정(⑤-2)의 예외 */
 .hint{display:none}
+.buy,.js .mode button,.colo .thm button,.sns a,.cap small a,.colo .pp-l,#home dd .go{position:relative}  /* 밑줄 링크 · 작은 단추의 누르는 자리(10/28 모양 점검 ⑥) */
+.buy::before,.js .mode button::before,#home dd .go::before{content:"";position:absolute;inset:-12px -4px}
+.colo .thm button::before,.sns a::before,.cap small a::before,.colo .pp-l::before{content:"";position:absolute;inset:-16px -4px}
 .js .hint{display:inline-block;margin-top:10px;padding:4px 0;background:none;border:0;font:300 12.5px/1.4 var(--sans);color:var(--faint);letter-spacing:.02em;cursor:pointer}
 .js .hint:hover{color:var(--muted)}
-.js .hint:focus-visible{outline:1px solid var(--ink);outline-offset:5px}
 .poem{transition:transform .5s var(--ease)}
 .poem.pressing{transform:scale(.992)}
 @media (hover:none){.js .poem{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}}  /* 휴대폰은 길게 누르면 글자 선택 대신 탁본(컴퓨터는 복사 그대로) */
@@ -551,7 +558,7 @@ html.sr-on{overflow:hidden}
 .sheet .sf{flex-wrap:wrap;row-gap:14px}
 .sheet .se{display:none;flex-basis:100%}
 .sheet.done .se{display:block}
-.sheet .se p{margin-top:1px;font:300 12px/1.6 var(--sans);color:#9a9a9a}
+.sheet .se p{margin-top:1px;font:300 12.5px/1.6 var(--sans);color:#9a9a9a}
 .sheet .se .g{margin-top:0;font:400 15px/1.7 var(--serif);letter-spacing:.01em;color:#efefef}
 .sheet .sbk{flex:1 1 0;min-width:9em}  /* 시집 이름은 줄어들어 단추와 한 줄에 — 9em보다 좁아지면(영어 교보 단추 'Buy at Kyobo Book Centre') 제 줄로, 여덟 줄로 꺾이지 않게 */
 .sheet.done .sp{padding-bottom:22px}  /* 아래 줄이 높아져도 시의 끝 줄이 그림자에 덮이지 않게 */
@@ -599,6 +606,7 @@ html.sr-on{overflow:hidden}
 @media (min-width:355px) and (max-width:374px){.poem{font-size:15px}}  /* 「탁본」 첫 행 '… 가득 차 / 있다'가 360에서 한 줄로. 320 · 340은 15px로도 안 들어가고 '있다'만 남아 16px 그대로 */
 @media (min-width:355px) and (max-width:370px){.pbook .t{font-size:14px}}  /* 책 카드 제목 '… 가득 차 / 있다』'가 360에서 두 줄로(320 · 340은 14px로도 세 줄이라 그대로) */
 @media (max-width:370px){.nt,.vbox:not(:has(iframe)){min-height:0}}  /* 좁은 폰은 재생 전 썸네일을 16:9 그대로 — 최소 높이 200px 때문에 좌우가 잘려 썸네일 제목이 깎였음(10/27 점검). 재생기를 불러오면 200px */
+@media (min-width:768px) and (max-width:1023px){.nt,.vbox:not(:has(iframe)){min-height:0}}  /* 태블릿 세로도 재생 전 썸네일은 16:9 그대로 — 최소 높이 200px가 단 폭을 밀어 냈음(10/28 모양 점검 ⑦) */
 
 /* 컴퓨터(폭 768px 이상): 칸마다 2단, 글자 한 단계 크게 */
 @media (min-width:768px){
@@ -606,7 +614,7 @@ html.sr-on{overflow:hidden}
   .top{justify-content:space-between;padding:0 64px}
   .top .logo{display:block}
   .mini{padding-left:64px;padding-right:52px}  /* 맨 위 띠와 같은 안쪽 여백(닫기 단추의 글자가 64px 선에 오게) */
-  main>section{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;column-gap:72px;padding:28px 64px 64px}
+  main>section{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:72px;padding:28px 64px 64px}  /* 두 단은 내용 최소 폭과 상관없이 반반(10/28 모양 점검 ⑦ — 768px 사진 칸 단이 그림이 오면 73px 옆으로 움직였음) */
   main>section>.label{grid-column:1/-1}
   main>section>.l{grid-column:1;grid-row:2;align-self:center}
   main>section>.r{grid-column:2;grid-row:2;align-self:center}
@@ -629,6 +637,9 @@ html.sr-on{overflow:hidden}
   #me>.l,#me>.r{align-self:start;margin-top:36px}
   #me>.l{position:sticky;top:110px}  /* 소개도 이름을 위에 붙이고 연표를 읽는 동안 따라옴 — 가운데 서서 이름 위가 438px 비었음(10/25 다듬기 가3) */
   #contact>.l{align-self:start;margin-top:36px;position:sticky;top:110px}  /* 연락 칸도 소개처럼 제목을 위에 붙이고 따라옴 — 방명록을 켜면 오른쪽이 길어져 제목이 꼬리표에서 440–650px 내려갔음(10/27 점검) */
+  #video>.r{align-self:start;margin-top:36px}  /* 유튜브 '지난 편'도 꼬리표 아래 36px 위 맞춤(10/28 모양 점검 ② — 가운데에 떠 1440에서 196px 아래) */
+  #palette>.l,#palette>.r{align-self:start;margin-top:36px}
+  #palette>.l{position:sticky;top:110px}  /* 글자 팔레트도 소개 · 시집처럼 제목을 위에 붙이고 견본을 보는 동안 따라옴(10/28) */
   #photo>.l,#video>.l{margin-top:36px}  /* 사진 띠 · 채널 이름도 소개 · 시집처럼 꼬리표 아래 36px(10/27 점검 — 0px로 붙어 있었음) */
   #poem>.l{grid-row:2 / span 3}  /* 소식 · 소개 · 차례를 읽는 동안에도 책 카드가 왼쪽에 머묾(10/25) */
   #poem>.bnews{grid-column:2;grid-row:3;margin-top:64px;max-width:34em}  /* 소식은 오른쪽 칸 시 아래 — 왼쪽 책 카드가 낮은 화면(1280×720)보다 길어지지 않게 */
