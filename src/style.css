@@ -242,6 +242,7 @@ html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 
 #palette .g3{color:color-mix(in srgb,var(--ink) 45%,var(--bg))}#palette .g4{color:color-mix(in srgb,var(--ink) 54%,var(--bg))}#palette .g5{color:color-mix(in srgb,var(--ink) 64%,var(--bg))}
 #palette .g6{color:color-mix(in srgb,var(--ink) 73%,var(--bg))}#palette .g7{color:color-mix(in srgb,var(--ink) 82%,var(--bg))}#palette .g8{color:color-mix(in srgb,var(--ink) 91%,var(--bg))}#palette .g9{color:var(--ink)}
 #palette .pk{margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted)}
+#palette .pgo{display:flex;margin-top:16px}  /* 칸 끝 길 '「탁본」 읽기 ↓'(10/28 A) — 설명 줄 아래 16px(사진 · 영상 칸 끝 .buy와 같음, flex라 줄 상자 없이 꼭 16px) */
 .bio{margin-top:22px;font:16px/1.9 var(--body)}  /* 휴대폰 소개 · 시집 소개 · 연락 첫 글은 시 본문과 같은 16px(10/27 숨 재기 8, 동원 'A 16px' — 전 15–15.5px) */
 .tagl{margin-top:12px;font:14px/1.6 var(--body);color:var(--muted);text-wrap:balance;word-break:keep-all}  /* 소개 이름 아래 한 문장(10/25 제안 ③ — 첫 화면 라벨에서 옮김) */
 .years{list-style:none;margin-top:30px;border-top:1px solid var(--rule)}
