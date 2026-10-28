@@ -609,7 +609,8 @@
     document.querySelectorAll("#photo .pop").forEach(b => b.addEventListener("click", () => open(+b.dataset.i, b)));
     x.addEventListener("click", shut);
     if (prev) { prev.addEventListener("click", () => step(-1)); next.addEventListener("click", () => step(1)); }
-    pv.addEventListener("keydown", ev => {
+    document.addEventListener("keydown", ev => {  // 창 안 빈자리를 눌러 포커스가 쪽 바탕으로 빠져도 Esc · 좌우 키가 듣게 문서에서 받음(10/28 점검 3 — 「탁본」 한 장과 같게)
+      if (pv.hidden) return;
       if (ev.key === "Escape") shut();
       else if (ev.key === "ArrowRight" || ev.key === "ArrowLeft") {
         ev.preventDefault();
@@ -639,14 +640,17 @@
       const [nq] = norm(q);
       if (!nq) return [];
       const ch = /^[ㄱ-ㅎ]+$/.test(nq), out = [];
+      const one = H.lang === "en" && nq.length > 3 && nq.endsWith("s") ? nq.slice(0, -1) : "";  // 영어 복수형(films · poems)은 끝 s를 떼고 한 번 더(10/28 점검 5)
       items.forEach(it => {
-        const [nt, map] = norm(it[1]), at = (ch ? cho(nt) : nt).indexOf(nq);
+        const [nt, map] = norm(it[1]), hay = ch ? cho(nt) : nt;
+        let w = nq, at = hay.indexOf(nq);
+        if (at < 0 && one) { w = one; at = hay.indexOf(one); }
         if (at < 0) {  // 칸 이름은 그 칸의 낱말로도('약력' → 소개) — 굵게 할 글자가 없어 이름 그대로, 앞부분이 맞은 것과 함께 위로
           // 낱말을 붙여 견줌('사는 곳'처럼 띄운 말도) · 초성만 쳤으면 낱말 첫머리만(ㅅㅈ → 사진은 맞고 메시지는 안 맞게)
-          if (it[4] && (ch ? it[4].split(" ").some(w => cho(norm(w)[0]).startsWith(nq)) : norm(it[4])[0].includes(nq))) out.push({ it, at: 0, html: esc(it[1]) });
+          if (it[4] && (ch ? it[4].split(" ").some(x => cho(norm(x)[0]).startsWith(nq)) : [nq, one].some(x => x && norm(it[4])[0].includes(x)))) out.push({ it, at: 0, html: esc(it[1]) });
           return;
         }
-        const cs = [...it[1].normalize("NFC")], a = map[at], b = map[at + nq.length - 1] + 1;
+        const cs = [...it[1].normalize("NFC")], a = map[at], b = map[at + w.length - 1] + 1;
         out.push({ it, at, html: esc(cs.slice(0, a).join("")) + "<b>" + esc(cs.slice(a, b).join("")) + "</b>" + esc(cs.slice(b).join("")) });
       });
       return out.sort((x, y) => (x.at > 0) - (y.at > 0)).slice(0, 12);  // 앞부분이 맞는 것부터, 같으면 갈래 차례(칸 · 시집 · 차례 · 시 · 소개 …)
@@ -665,17 +669,17 @@
       const q = inp.value;
       if (q === lastQ) return;  // 글자가 그대로면(한글 한 글자 마침 등) 다시 그리지 않음 — 고른 줄을 지킴
       lastQ = q;
-      const empty = !q.trim(), hits = empty ? [] : find(q);
-      lab.hidden = sug.hidden = !empty;
+      const empty = !q.trim(), hits = empty ? [] : find(q), showSug = empty || !hits.length;  // 찾는 글이 없으면 추천을 함께(10/28 점검 4 — 안내가 '추천 주제를 눌러 보세요')
+      lab.hidden = sug.hidden = !showSug;
       cnt.hidden = empty || !hits.length;
       cnt.textContent = uiText("search_count", "찾은 것 {n}", { n: hits.length });
       res.innerHTML = hits.map((h, i) => {
         const ext = /^https?:/.test(h.it[3]);
         return `<li role="none"><a role="option" id="sr${i}" aria-selected="false" href="${esc(h.it[3])}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="tg">${esc(h.it[0])}</span>` +
-          `<span class="tx">${ko(h.html)}</span><span class="wh">${ko(esc(h.it[2]))}</span></a></li>`;
+          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}</span><span class="wh">${ko(esc(h.it[2]))}</span></a></li>`;  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
       }).join("");
       none.hidden = empty || hits.length > 0;
-      inp.setAttribute("aria-controls", empty ? sug.id : res.id);
+      inp.setAttribute("aria-controls", showSug ? sug.id : res.id);
       inp.setAttribute("aria-expanded", opts().length ? "true" : "false");
       pick(-1);
       clearTimeout(sayT);
@@ -701,7 +705,7 @@
       srch.hidden = true;
       H.classList.remove("sr-on");
       others(false);
-      if (back) (from && from !== document.body ? from : sq).focus();  // 포커스 없이(⌘K) 열었으면 돋보기로
+      if (back) (from && from !== document.body ? from : sq).focus({ preventScroll: true });  // 포커스 없이(⌘K) 열었으면 돋보기로 · 화면은 그대로(10/28 점검 1 — 맨 위 띠의 돋보기로 포커스가 가며 쪽이 400px쯤 위로 튀었음)
     };
     // 결과로 가기 — 사진은 그 장으로 넘기고, 나머지는 그 줄을 화면 가운데에 두고 잠깐 옅은 바탕
     const goTo = href => {
@@ -712,7 +716,9 @@
       if (fold && !fold.open) fold.open = true;
       const sec = el.matches("section"), big = el.offsetHeight > innerHeight * 0.6;  // 칸 · 큰 덩어리(차례 전체)는 머리를 위에, 한 줄은 화면 가운데에
       el.scrollIntoView({ block: sec || big ? "start" : "center", behavior: reduce ? "auto" : "smooth" });
-      if (p) {  // 그 장으로 넘기고 포커스도 그 사진에(창이 닫히며 쪽 바탕으로 빠지지 않게, 10/27 점검)
+      if (p) {  // 그 장으로 넘기고 포커스도 그 사진에(창이 닫히며 쪽 바탕으로 빠지지 않게, 10/27 점검) · 모아 보기였으면 한 장씩으로 먼저(10/28 점검 6)
+        const m1 = document.querySelector('.mode [data-m="one"]');
+        if (m1 && m1.getAttribute("aria-pressed") !== "true") m1.click();
         const i = +p[1], b = document.querySelectorAll(".thumbs button")[i], f = document.querySelectorAll(".strip > *")[i];
         if (b) b.click();
         const to = (f && f.querySelector(".pop")) || document.querySelector(".strip");
@@ -727,7 +733,6 @@
     srch.querySelector(".x").addEventListener("click", () => shut(true));
     // ↑↓ — 맨 아래 다음 · 맨 위 앞은 입력 칸(고른 줄 없음)으로, 검색창 자동 완성처럼 돎. Tab으로 줄에 가 있었으면 그 줄에서 이어서
     srch.addEventListener("keydown", ev => {
-      if (ev.key === "Escape") { shut(true); return; }
       if ((ev.key !== "ArrowDown" && ev.key !== "ArrowUp") || ev.altKey || ev.metaKey || ev.ctrlKey || ev.shiftKey) return;
       const o = opts(), at = ev.target === inp ? act : o.indexOf(ev.target);
       if (!o.length || (ev.target !== inp && at < 0)) return;
@@ -755,6 +760,7 @@
     });
     // ⌘K · Ctrl+K로 열기(10/27 동원 "A 조합 키" — 전엔 '/' 한 글자라 음성 입력 · 한 키 탐색에서 뜻하지 않게 열렸음, WCAG 2.1.4). 한글 자판이어도 K 자리(code)로
     document.addEventListener("keydown", ev => {
+      if (ev.key === "Escape" && !srch.hidden) { shut(true); return; }  // Esc는 문서에서 — 창 안 빈자리를 눌러 포커스가 쪽 바탕으로 빠져도 닫힘(10/28 점검 3)
       const other = [...document.querySelectorAll('[aria-modal="true"]')].some(d => d !== srch && !d.hidden);  // 다른 창(게시물 · 「탁본」 한 장)이 열려 있으면 무시
       if ((ev.metaKey || ev.ctrlKey) && !ev.altKey && !ev.shiftKey && (ev.code === "KeyK" || (ev.key || "").toLowerCase() === "k") && srch.hidden && !other) { ev.preventDefault(); open(); }
     });

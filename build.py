@@ -5,7 +5,9 @@
 글꼴 원본은 맥의 정해진 자리에서 찾고, 없으면 docs/assets/fonts에 이미 있는 줄인 판을 그대로 쓴다(새 글자가 생겼으면 빠질 수 있어 알림).
 """
 import html
+import itertools
 import json
+import math
 import os
 import re
 import shutil
@@ -44,6 +46,7 @@ FONTS = [
 # 사이트 글자 말고도 늘 남겨 둘 것: 영문·숫자·기호(주소·계정 이름·숫자 세기)와 쓰는 문장부호
 SEARCH_ICON = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false">'
                '<circle cx="8.5" cy="8.5" r="6"/><path d="M13 13l5 5" stroke-linecap="round"/></svg>')  # 맨 위 막대 · 찾기 창의 가는 선 돋보기(10/26)
+PAL_FONT = "bon-myeongjo.woff2"  # 글자 팔레트(10/28)의 글자 612가지는 본명조 보통 판에만 담음 — 굵게 · 고딕 판은 늘지 않게(main)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
 # 첫 화면 작은 판(10/27 동원 "첫 화면 작은 글꼴은 B로 하자"): 한국어판 첫 화면에 보이는 글자만 담아 미리 받는 판(CSS BMJF · PTDF) — 통째 판(본명조 보통 · 굵게 182KB)을
 # 미리 받느라 style.css · main.js가 늦던 것을 덜어 냄(시험용 복사본 실측: 느린 4G 문 열림 3.6 → 3.1초 · 보통 LTE 1.5 → 1.3초, 다 선 화면 같음). 통째 판은 아래 칸에서 그대로 씀
@@ -669,9 +672,22 @@ def render(site, poem, videos, photos, lang="ko"):
     ht, hs = ("<br>".join(e(x) for x in disp[k]) for k in ("big", "small"))
     work = (f'Poetry collection, {tt(e(book["title"]), False)} <small lang="ko">{tt(e(site["book"]["title"]), True)}</small>' if en
             else f'시집 {tt(e(book["title"]), True)}')
+    # 글자 팔레트(10/28 동원 'B 첫 화면 바로 아래' — 10/26 동원 제안 '색의 팔레트가 아닌 글자의 팔레트'): 시집 본문에 쓴 글자를 많이 쓴 글자부터 한 번씩(content/palette.json).
+    # 먹색은 쓴 횟수의 로그를 열 단으로(g0 한 번 → g9 가장 많이) — 같은 단은 한 span이라 칸 612개를 요소로 만들지 않음. 사진은 사진 칸의 '절벽 아래 물가'(흑백 · content/img/palette.jpg)
+    pl = load("palette.json")
+    pg, pn = pl["glyphs"], pl["counts"]
+    ptotal = f'{pl["total"]:,}'
+    pal = "".join(f'<span class="g{k}">{"".join(g for g, _ in grp)}</span>'
+                  for k, grp in itertools.groupby(zip(pg, (round(9 * math.log(n) / math.log(pn[0])) for n in pn)), key=lambda x: x[1]))
+    ptop = (", ".join(f"{g} ({n})" for g, n in zip(pg[:3], pn[:3])) if en else " · ".join(f"{g} {n}번" for g, n in zip(pg[:3], pn[:3])))
+    palette = (f'<section id="palette" aria-labelledby="palette-t">\n    <p class="label">{t("label_palette")}</p>\n'
+               f'    <div class="l"><h2 class="h2" id="palette-t">{t("pal_title", n=len(pg))}</h2><p class="lead">{t("pal_lead", total=ptotal, n=len(pg))}</p></div>\n'
+               f'    <div class="r"><p class="pal" aria-hidden="true">{pal}</p><p class="pk">{t("pal_key", top=ptop, ones=pn.count(1))}</p>'
+               f'<img class="pph" src="{P}assets/img/palette.jpg" alt="{t("pal_alt")}" width="900" height="600" loading="lazy" decoding="async"></div>\n  </section>\n  ')
     exl = (f'<dl><div><dt>{t("ex_object")}</dt><dd>{work}</dd></div>'
            f'<div><dt>{t("ex_author")}</dt><dd>{e(S["name"])}</dd></div>'  # 지은이는 이름만(10/25 동원)
            f'<div><dt>{t("ex_spec")}</dt><dd>{keep(book["spec"])}</dd></div>'
+           f'<div><dt>{t("ex_medium")}</dt><dd>{keep(L["ex_medium_v"].format(n=len(pg), total=ptotal))} — <a class="go" href="#palette">{t("pal_go")} ↓</a></dd></div>'  # 재료(10/28 — 미술관 라벨의 재료 칸, 팔레트로 가는 길)
            f'<div><dt>{t("ex_collection")}</dt><dd>{t("ex_shelf")} — <a class="buy" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("소장처")}>{e(book["buy_label"])} ↗</a></dd></div></dl>')
 
     # 연표(years.json) — 줄의 note 칸이 각주(10/25 40곳 2차 ④ A, Andrew Trousdale식 경의의 각주): 줄 끝 위첨자 번호 + 연표 바로 아래 각주 목록
@@ -988,10 +1004,11 @@ def render(site, poem, videos, photos, lang="ko"):
     # 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기 → 흰 한 장 · 추천 주제(content/search.json) · 찾을 거리(#sidx). 찾기는 main.js
     # 칸 이름(10/26 동원 "소개나 시집 이런 대분류들도 검색될 수 있게") — 맨 위 막대의 다섯 칸. 다섯째 값은 그 칸에 든 것의 낱말(약력 · 차례 …) — 칸 이름에 없는 말로도 찾게
     ix["sec"] = [(tg["sec"], x, w, f"#{sid}", k) for sid, x, w, k in zip(secs, L["nav"], L["search_sec_where"].split("|"), L["search_sec_keys"].split("|"))]
-    ix["book"] += [(tg["book"], plain(book["title"]), book["spec"], "#bookcard"), (tg["book"], book["buy_label"], book["store_label"], book["buy_url"])]  # 책 제목 결과는 책 카드로(10/27 가4 — 휴대폰에서 #poem이면 책 카드가 한 화면 아래)
+    ix["sec"].append((tg["sec"], L["label_palette"], L["pal_where"].format(n=len(pg)), "#palette", L["pal_keys"]))  # 글자 팔레트 칸(10/28) — 맨 위 막대에는 없지만 칸 이름 · 낱말로 찾게
+    ix["book"] += [(tg["book"], plain(book["title"]), book["spec"], "#bookcard"), (tg["book"], book["buy_label"], book["store_label"], book["buy_url"], L["search_buy_keys"])]  # 책 제목 결과는 책 카드로(10/27 가4 — 휴대폰에서 #poem이면 책 카드가 한 화면 아래)
     ix["me"][:0] = [(tg["me"], S["name"], "", "#me"), (tg["me"], S["tagline"], "", "#me")] + [
         (tg["me"], x, "", "#me") for x in re.split(r"(?<=[.!?다])\s+", plain(S["bio"])) if x]
-    ix["me"] += [(tg["me"], f'{x["label"]} — {plain(x["text"])}', "", "#me") for x in nw.get("items", []) if x.get("text")]
+    ix["me"] += [(tg["me"], f'{x["label"]} · {plain(x["text"])}', "", "#me") for x in nw.get("items", []) if x.get("text")]  # 이름표와 글 사이는 가운뎃점(10/28 점검 10 — 글 안의 줄표와 겹쳤음)
     ix["news"] += [(tg["news"], plain(x["text"]), dtxt(x["date"]), f"#n{k}") for k, x in enumerate(news, 1)]
     ix["contact"] += [(tg["contact"], L["label_contact"] if endpoint else L["ask_off"], "", "#contact")] + [(tg["contact"], l["name"], "", l["url"]) for l in links]
     sidx_js = json.dumps([list(x) for k in ix for x in ix[k]], ensure_ascii=False).replace("</", "<\\/")
@@ -1016,7 +1033,7 @@ def render(site, poem, videos, photos, lang="ko"):
                 + f'>{e(x["label"])}{" ↗" if ext else ""}{note}</a></li>')
     # 입력 칸은 combobox — 추천 · 결과 목록(listbox) 가운데 보이는 쪽을 aria-controls로, 방향키로 고른 줄은 aria-activedescendant로(main.js)
     srch = (f'<div class="srch" role="dialog" aria-modal="true" aria-label="{t("search_label")}" hidden><div class="in">'
-            f'<div class="bar">{SEARCH_ICON}<input type="search" role="combobox" aria-autocomplete="list" aria-expanded="true" aria-controls="sr-sug" placeholder="{t("search_ph")}" aria-label="{t("search_label")}" autocomplete="off" enterkeyhint="search">'
+            f'<div class="bar">{SEARCH_ICON}<input type="search" name="q" role="combobox" aria-autocomplete="list" aria-expanded="true" aria-controls="sr-sug" placeholder="{t("search_ph")}" aria-label="{t("search_label")}" autocomplete="off" enterkeyhint="search">'
             f'<button type="button" class="x">{t("close")}</button></div>'
             f'<p class="sr-lab" id="sr-lab">{t("search_suggest")}</p><ul class="sug" id="sr-sug" role="listbox" aria-labelledby="sr-lab">{"".join(sug_li(x, k) for k, x in enumerate(sj["suggest"]))}</ul>'
             f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden>{t("search_none")}</p></div></div>\n'
@@ -1067,7 +1084,7 @@ def render(site, poem, videos, photos, lang="ko"):
       </div>
     <div class="lab"><p class="rd"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a></p>{exl}</div>
   </section>
-  <section id="me" aria-labelledby="me-t">
+  {palette}<section id="me" aria-labelledby="me-t">
     <p class="label">{t("label_me")}</p>
     <div class="l"><h2 class="h2" id="me-t">{e(S["name"])}</h2><p class="tagl">{keep(S["tagline"])}</p><p class="bio">{rich(S["bio"])}</p></div>
     <div class="r"><ul class="years">{years}</ul>{fnb}{nowb}<div class="rec">{rec}</div></div>
@@ -1194,14 +1211,16 @@ def main():
     # 쪽을 먼저 만들어 쓰인 글자를 모은 뒤, 그 글자만 남겨 글꼴을 줄임
     index_html, en_html, page404 = render(site, poem, videos, photos), render(site, poem, videos, photos, "en"), page_404(site)
     priv = {lg: page_privacy(site, lg) for lg in ("ko", "en")}  # 처리방침 쪽(없으면 None)
-    text = used_text([index_html, en_html, page404, *(x for x in priv.values() if x)])
+    no_pal = lambda h: re.sub(r'<p class="pal"[^>]*>.*?</p>', "", h, flags=re.S)  # noqa: E731 — 글자 팔레트 칸의 글자는 본명조 보통 판에만(PAL_FONT)
+    text = used_text([no_pal(index_html), no_pal(en_html), page404, *(x for x in priv.values() if x)])
+    pal_text = load("palette.json")["glyphs"]
     srcs = {}
     title_text = unicodedata.normalize("NFC", "".join(site["book"]["display"]["big"]) + " " + ALWAYS[95:])  # 굵기 300 판에 담을 글자(큰 제목 + 빈칸 · 부호 — 영문 · 숫자는 빼고 가볍게)
     for name, root, must, out, rename in FONTS:
         src = find(root, name, must)
         if src:
             srcs[name] = src
-            subset_font(src, ASSETS / "fonts" / out, title_text if out == LIGHT_ONLY else text, rename)
+            subset_font(src, ASSETS / "fonts" / out, title_text if out == LIGHT_ONLY else text + pal_text if out == PAL_FONT else text, rename)
         elif out in keep:
             (ASSETS / "fonts" / out).write_bytes(keep[out])
             print(f"알림: 원본 {name}을 찾지 못해 지난 줄인 판을 씀 — 새로 생긴 글자는 빠질 수 있음")
@@ -1250,6 +1269,7 @@ def main():
     # 첫 화면 서 있는 책(10/24)의 뒤표지·책등 — 교보 최종 표지 파일에서 자른 그림. 앞표지와 같은 폭 600px, 책등은 9mm 비율(600×9/128 ≈ 42px)
     save_jpg(CONTENT / site["book"]["back"], ASSETS / "img/back.jpg", 600, quality=84)
     save_jpg(CONTENT / site["book"]["spine"], ASSETS / "img/spine.jpg", 42, quality=88)
+    shutil.copy2(CONTENT / "img/palette.jpg", ASSETS / "img/palette.jpg")  # 글자 팔레트 칸 사진(10/28 — 사진 칸의 '절벽 아래 물가'를 흑백 3:2 · 900px · 회색 한 채널로 만들어 둔 것 그대로, 다시 줄이지 않음)
     # 첫 편 준비 중(10/24)의 썸네일 시안 — 800px(휴대폰 2배·컴퓨터 칸 폭에 넉넉). 흑백은 CSS가 함
     up = videos.get("upcoming") or {}
     if not videos["items"] and up.get("thumb"):

@@ -46,7 +46,7 @@
   },
   "cover_alt": {
     "ko": "시집 『{book}』 표지",
-    "en": "Cover of the poetry collection {book}"
+    "en": "Cover of the poetry collection “{book}”"
   },
   "read": {
     "ko": "「{poem}」 읽기 ↓",
@@ -79,6 +79,46 @@
   "ex_shelf": {
     "ko": "당신의 책장",
     "en": "Your bookshelf"
+  },
+  "ex_medium": {
+    "ko": "재료",
+    "en": "Medium"
+  },
+  "ex_medium_v": {
+    "ko": "글자 {n}가지 · {total}자",
+    "en": "{n} syllables · {total} in all"
+  },
+  "pal_go": {
+    "ko": "팔레트 보기",
+    "en": "See the palette"
+  },
+  "label_palette": {
+    "ko": "팔레트",
+    "en": "Palette"
+  },
+  "pal_title": {
+    "ko": "글자 {n}가지",
+    "en": "{n} syllables"
+  },
+  "pal_lead": {
+    "ko": "이 시집은 {total}자, 서로 다른 글자 {n}가지로 지었습니다. 색이 아니라 글자로 만든 팔레트입니다. 많이 쓴 글자부터 한 번씩 놓았습니다.",
+    "en": "This book is made of {total} Korean syllables, {n} of them different. A palette of letters rather than colors — each set down once, the most used first."
+  },
+  "pal_key": {
+    "ko": "진할수록 많이 쓴 글자 — {top} … 한 번만 쓴 글자 {ones}가지",
+    "en": "The darker, the more often used — {top} … {ones} used only once"
+  },
+  "pal_alt": {
+    "ko": "풀이 자란 높은 바위 절벽 아래 물가에 한 사람이 서 있는 흑백 사진",
+    "en": "A black-and-white photo of a person standing at the water below a tall, overgrown rock cliff"
+  },
+  "pal_where": {
+    "ko": "시집에 쓴 글자 {n}가지",
+    "en": "The {n} syllables used in the book"
+  },
+  "pal_keys": {
+    "ko": "글자 팔레트 재료 낱자 한글 색",
+    "en": "palette letters syllables medium hangul colors"
   },
   "label_poem": {
     "ko": "시집",
@@ -410,7 +450,7 @@
   },
   "colo_cookie": {
     "ko": "쿠키 · 광고 · 저절로 재생되는 것이 없습니다.",
-    "en": "No cookies, ads, or autoplay."
+    "en": "No cookies, ads or autoplay."
   },
   "sheet_book": {
     "ko": "{name} 시집 · {pages}",
@@ -433,7 +473,7 @@
     "en": "Search this site"
   },
   "search_ph": {
-    "ko": "시 제목, 작품, 전시",
+    "ko": "시 제목 · 작품 · 전시",
     "en": "Poems, works, exhibitions"
   },
   "search_suggest": {
@@ -452,9 +492,13 @@
     "ko": "약력 · 연표 · 지금|「탁본」 · 책 · 차례|사진 · 게시물|영상 · 리뷰|메일 · 인스타그램 메시지",
     "en": "Bio · timeline · now|“Rubbing” · book · contents|Photos · posts|Videos · reviews|Email · Instagram message"
   },
+  "search_buy_keys": {
+    "ko": "교보 교보문고 퍼플 서점 구매 구입 사기 판매 판매처 주문 가격 배송 사는 곳",
+    "en": "kyobo pubple buy purchase order price shipping shop store"
+  },
   "search_sec_keys": {
-    "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 교보문고 퍼플 서점 구매 구입 사기 신간 출간 판매 쪽수 사는 곳 소식|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지 방명록 화면 어둡게 다크",
-    "en": "bio timeline now name|poem book contents rubbing kyobo pubple buy purchase shop release published pages news|photos instagram posts exhibitions|videos reviews film channel beautiful nam|email gmail mail message guestbook display dark"
+    "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 교보문고 퍼플 서점 구매 구입 사기 신간 출간 판매 쪽수 사는 곳 소식 주문 가격 배송 판매처 출간일 발행 영어|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지 방명록 화면 어둡게 다크 이메일 연락처 협업 디엠 dm",
+    "en": "bio timeline now name|poem poems book contents rubbing kyobo pubple buy purchase shop release published pages news translated translation korean ships shipping price order|photos instagram posts exhibitions|videos reviews film films channel beautiful nam|email gmail mail message guestbook display dark collaboration collaborations questions"
   },
   "search_toc_where": {
     "ko": "{part} · {page}쪽",
@@ -530,10 +574,10 @@
   },
   "turn_label": {
     "ko": "시집 『{book}』 — 눌러서 책등 · 뒤표지 보기",
-    "en": "{book} — press to see the spine and back"
+    "en": "“{book}” — press to see the spine and back"
   },
   "colo_end": {
     "ko": "좋은 아침이었으면 합니다.",
-    "en": "I hope it is a good morning."
+    "en": "I hope your morning is a good one."
   }
 }

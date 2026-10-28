@@ -109,6 +109,7 @@ html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spaci
 #home dd{margin-top:3px;font:600 11px/1.55 var(--sans)}
 #home dd small{font:300 11px/1.5 var(--sans);color:var(--muted)}
 #home dd .buy{font-size:14px;padding-bottom:2px;border-bottom-width:1px}  /* 사는 길은 단추 몫 14px(10/25 다듬기 가1 — 11px라 '「탁본」 읽기'보다 작았음) */
+#home dd .go{padding-bottom:1px;border-bottom:1px solid var(--ink)}  /* 재료 줄 '팔레트 보기 ↓'(10/28) — 사는 길(14px)보다 작게, 라벨 글자 그대로 */
 /* 첫 화면 시집: 서 있는 책(10/24 A) — 앞표지·책등·뒤표지로 된 3D 책, CSS만(라이브러리 없음). 레퍼런스 Stripe Press(책등이 보이는 3D 책).
    크기는 표지 폭 200px(컴퓨터 250px), 두께는 책등 9mm 비율(200×9/128 = 14px). 26°로 비스듬히 서서 책등이 보임 — 돌리기는 main.js */
 @property --ry{syntax:"<angle>";inherits:false;initial-value:26deg}
@@ -223,6 +224,16 @@ html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 
 .buy2{justify-self:start;margin-top:14px;display:inline-flex;align-items:center;padding:12px 18px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);white-space:nowrap}
 
 /* ③ 나 */
+/* 글자 팔레트(10/28 동원 'B 첫 화면 바로 아래' — 10/26 동원 제안 '색의 팔레트가 아닌 글자의 팔레트'): 시집에 쓴 글자 612가지를 많이 쓴 글자부터 한 번씩, 한 줄 28자.
+   칸 폭(cqi)으로 글자 크기를 정해 어느 폭에서나 28자 — 본명조 한글은 폭이 1em이라 글자 .88칸 + 자간 .12칸(조금 덜 — 28자째가 다음 줄로 밀리지 않게).
+   먹색은 쓴 횟수의 로그 열 단(build.py — g0 한 번 18% → g9 '다' 356번 100%), 바탕과 섞어 어두운 모드에서도 같은 차례 */
+#palette .r{container-type:inline-size}
+#palette .pal{--c:calc(100cqi / 28);margin-top:6px;font:400 calc(var(--c) * .88)/var(--c) var(--serif);letter-spacing:calc(var(--c) * .1199);word-break:break-all;line-break:anywhere;-webkit-user-select:none;user-select:none}
+#palette .g0{color:color-mix(in srgb,var(--ink) 18%,var(--bg))}#palette .g1{color:color-mix(in srgb,var(--ink) 27%,var(--bg))}#palette .g2{color:color-mix(in srgb,var(--ink) 36%,var(--bg))}
+#palette .g3{color:color-mix(in srgb,var(--ink) 45%,var(--bg))}#palette .g4{color:color-mix(in srgb,var(--ink) 54%,var(--bg))}#palette .g5{color:color-mix(in srgb,var(--ink) 64%,var(--bg))}
+#palette .g6{color:color-mix(in srgb,var(--ink) 73%,var(--bg))}#palette .g7{color:color-mix(in srgb,var(--ink) 82%,var(--bg))}#palette .g8{color:color-mix(in srgb,var(--ink) 91%,var(--bg))}#palette .g9{color:var(--ink)}
+#palette .pk{margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted)}
+#palette .pph{display:block;width:100%;height:auto;margin-top:22px;background:var(--ph)}
 .bio{margin-top:22px;font:16px/1.95 var(--body)}  /* 휴대폰 소개 · 시집 소개 · 연락 첫 글은 시 본문과 같은 16px(10/27 숨 재기 8, 동원 'A 16px' — 전 15–15.5px) */
 .tagl{margin-top:10px;font:14px/1.6 var(--body);color:var(--muted);text-wrap:balance;word-break:keep-all}  /* 소개 이름 아래 한 문장(10/25 제안 ③ — 첫 화면 라벨에서 옮김) */
 .years{list-style:none;margin-top:30px;border-top:1px solid var(--rule)}
@@ -350,7 +361,7 @@ html.sr-on{overflow:hidden}
 .sr-res .tx b{font-weight:400;color:var(--ink);box-shadow:inset 0 -.38em 0 var(--mark)}  /* 찾은 낱말 — 먹 + 옅은 밑바탕(색 없이) */
 .sr-res .wh{font:300 11px/1 var(--sans);color:var(--faint);white-space:nowrap}
 @media (max-width:599px){.sr-res a{grid-template-columns:52px 1fr}.sr-res .wh{grid-column:2;white-space:normal;line-height:1.5}}  /* 폰은 자리 · 설명을 제목 아래 줄로 — 책 설명(110쪽 · … · 교보문고 퍼플)이 제목 칸을 45px로 눌러 낱말마다 세로로 쪼개졌음(10/27 점검) */
-.srch [role="option"].on{background:var(--ph);box-shadow:-14px 0 0 var(--ph),14px 0 0 var(--ph)}  /* 방향키로 고른 줄(10/27) — 찾기로 간 줄(.hit)과 같은 옅은 바탕을 양옆으로 조금 넓혀 */
+.srch [role="option"].on{background:var(--ph);box-shadow:-14px 0 0 var(--ph),14px 0 0 var(--ph),-16px 0 0 var(--ink)}  /* 방향키로 고른 줄(10/27) — 찾기로 간 줄(.hit)과 같은 옅은 바탕을 양옆으로 조금 넓혀 · 왼쪽 2px 먹 줄(10/28 동원 'B 왼쪽 먹 줄 더하기' — 옅은 바탕만으로는 어둡게 1.09:1이라 거의 안 보였음) */
 .srch .on i,.srch .on .tg,.srch .on .wh{color:var(--muted)}  /* 옅은 바탕 위 작은 글자는 한 단 진하게(대비 4.5 넘게) */
 .sr-none{margin-top:18px;font:14px/1.7 var(--body);color:var(--faint)}
 .hit{background:var(--ph);transition:background 1.4s ease}  /* 찾기 결과로 간 줄을 잠깐 */
