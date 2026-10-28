@@ -793,9 +793,27 @@
     };
     // 다 열린 동안 종이 밖은 inert — Tab이 검은 종이 뒤 링크로 새지 않게(10/25 마지막 점검 ⑥). 닫기 시작할 때 먼저 풀어 포커스를 안내로 돌려놓을 수 있게
     const rest = on => [...document.body.children].forEach(el => { if (el !== sheet && el.tagName !== "SCRIPT") el.inert = on; });
-    const show = () => { sheet.hidden = false; H.style.overflow = "hidden"; };
+    // 한 장에 맞춤(10/28 동원 'A 한 장에 맞춤' — 낮은 화면(375×667 · 사파리 548)에서 다 찍힌 뒤 첫 행이 제목 밑에 가려지던 것): 다 찍힌 모습(끝 두 줄까지)으로 재어
+    // 종이가 화면보다 길면 연 사이 → 행간 → 글자(11px 바닥) → 위아래 여백(.tight) → 연 사이 한 번 더, 한 단씩 줄임. 그래도 넘치면 다 찍힌 뒤 맨 아래 대신 첫 행이 보이는 맨 위 그대로
+    const sp = sheet.querySelector(".sp"), stanzas = [...sp.querySelectorAll("p")].slice(1);
+    const gap = v => stanzas.forEach(x => { x.style.marginTop = v; });
+    const FIT = [() => gap("1.2em"), () => gap(".8em"), () => { sp.style.lineHeight = "1.5"; }, () => { sp.style.fontSize = "11px"; }, () => sheet.classList.add("tight"), () => gap(".6em")];
+    let fitOver = 0;
+    const unfit = () => { gap(""); sp.style.lineHeight = sp.style.fontSize = ""; sheet.classList.remove("tight"); };
+    const fit = () => {
+      unfit();
+      const was = sheet.classList.contains("done");
+      sheet.classList.add("done");  // 끝 두 줄이 나온 높이로 잼 — 같은 순간에 되돌려 그려지지 않음
+      const over = () => sheet.scrollHeight - sheet.clientHeight;
+      for (const step of FIT) { if (over() <= 0) break; step(); }
+      fitOver = over();
+      if (!was) sheet.classList.remove("done");
+    };
+    const show = () => { sheet.hidden = false; H.style.overflow = "hidden"; fit(); };
+    addEventListener("resize", () => { if (!sheet.hidden) fit(); }, { passive: true });  // 돌리거나 주소창이 접히면 다시 맞춤
     const hide = () => {
       sheet.hidden = true;
+      unfit();
       H.style.overflow = "";
       rest(false);
       sheet.classList.remove("done");
@@ -842,7 +860,8 @@
       rest(true);
       // '간직하기'를 누르는 순간 바로 건넬 수 있게 그림을 미리 만들어 둠(휴대폰 공유 창은 누른 직후에만 열림) — 뜬 날을 그린 그림
       img = img || dated();
-      toEnd();
+      fit();  // 글꼴이 늦게 와 높이가 바뀌었을 수도 있어 한 번 더(같은 값이면 그대로)
+      if (fitOver <= 0) toEnd();  // 한 장에 들어가면 그대로 · 맞춰도 넘치면 맨 위(첫 행이 보이게 — 10/28 A)
       close.focus({ preventScroll: true });
     };
     const loop = () => {
@@ -919,7 +938,8 @@
       const had = document.activeElement === keep;
       keep.hidden = true;
       kb.hidden = false;
-      toEnd();
+      fit();  // 교보 단추로 아래 줄이 높아지면 다시 맞춤(10/28 A)
+      if (fitOver <= 0) toEnd();
       if (had) kb.focus({ preventScroll: true });
     };
     // 간직하기 — 손가락 기기는 공유 창(사진 저장·인스타로 보내기), 마우스 기기나 공유가 안 되면 그림 파일 내려받기(10/27 숨 재기 7 — 맥 Chrome · Safari도 공유 창을 먼저 띄웠음).

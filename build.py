@@ -691,9 +691,8 @@ def render(site, poem, videos, photos, lang="ko"):
     ptop = (", ".join(f"{g} ({n})" for g, n in zip(pg[:3], pn[:3])) if en else " · ".join(f"{g} {n}번" for g, n in zip(pg[:3], pn[:3])))
     palette = (f'<section id="palette" aria-labelledby="palette-t">\n    <p class="label">{t("label_palette")}</p>\n'
                f'    <div class="l"><h2 class="h2" id="palette-t">{t("pal_title", n=len(pg))}</h2><p class="lead">{t("pal_lead", total=ptotal, n=len(pg))}</p></div>\n'
-               f'    <div class="r"><p class="pal" aria-hidden="true">{pal}</p><p class="pk">{t("pal_key", top=ptop, ones=pn.count(1))}</p>'
-               f'<p class="pgo"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a></p></div>\n  </section>\n  ')  # 사진은 뺌(10/28 동원 "일단 팔레트 아래에 내 사진은 빼자")
-    # 칸 끝 길 '「탁본」 읽기 ↓'(10/28 동원 'A 칸 끝 길 14px') — 글자를 본 다음 그 글자로 쓴 시로. 첫 화면 라벨과 같은 말 · 사진 · 영상 칸 끝과 같은 .buy
+               f'    <div class="r"><p class="pal" aria-hidden="true">{pal}</p><p class="pk">{t("pal_key", top=ptop, ones=pn.count(1))}</p></div>\n  </section>\n  ')  # 사진은 뺌(10/28 동원 "일단 팔레트 아래에 내 사진은 빼자")
+    # 칸 끝 길 '「탁본」 읽기 ↓'(10/28 A)는 10/29 '시집 칸 통째로 앞으로'(시가 팔레트 위로 감)와 함께 뺌 — 팔레트는 차례 뒤 '이 시집의 재료'
     exl = (f'<dl><div><dt>{t("ex_object")}</dt><dd>{work}</dd></div>'
            f'<div><dt>{t("ex_author")}</dt><dd>{e(S["name"])}</dd></div>'  # 지은이는 이름만(10/25 동원)
            f'<div><dt>{t("ex_spec")}</dt><dd>{keep(book["spec"])}</dd></div>\x00MONTH\x00'  # 이달의 한 줄(10/28 동원 'A 라벨에 한 줄') — 차례를 그린 뒤 채움
@@ -935,7 +934,8 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<p class="end">{t("colo_end")}</p></div>')  # 사이트의 끝 — 책 '읽어 주신 분들께'의 맺음 인사(10/27 경험 설계 '끝까지 온 사람을 맞이하나?' · 동원 "B1 좋은 아침")
 
     secs = ("me", "poem", "photo", "video", "contact")
-    nav = "".join(f'<a href="#{sid}">{e(x)}</a>' for sid, x in zip(secs[:4], L["nav"]))  # 소개가 먼저(10/25 동원 "나를 알리는 게 먼저") — 연락은 맨 오른쪽 상자로(아래)
+    navname = dict(zip(secs, L["nav"]))  # 낱말은 ui.json nav 그대로(찾기 칸 이름도 이 차례로 씀)
+    nav = "".join(f'<a href="#{sid}">{e(navname[sid])}</a>' for sid in ("poem", "me", "photo", "video"))  # 시집이 먼저 — 칸 차례와 같게(10/29 동원 'A 시집 칸 통째로', 10/25 '소개 먼저'를 바꿈) · 연락은 맨 오른쪽 상자로(아래)
     other = "ko" if en else "en"
     # 맨 위 띠 차례: 메뉴 넷 | 언어 · 찾기 · [연락하기](10/28 동원 "연락하기를 맨 오른쪽에 놓고 상자 형태로 … 검색은 그 왼쪽 그리고 한국어 영어 버전은 그 왼쪽" · 'A 먹 채운 상자' · "연락이 아니라 연락하기로 하자") — 구분선은 언어 앞(CSS)
     nav += f'<a class="lang" href="{"../" if en else "en/"}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 지금 언어를 보임(10/26 동원 "지금 현재 나라의 언어를 표시하는 게 더 좋을 거 같은데" — 한국어판 🇰🇷 KO · 영어판 🇬🇧 EN, 누르면 다른 판)
@@ -1109,18 +1109,18 @@ def render(site, poem, videos, photos, lang="ko"):
       </div>
     <div class="lab"><p class="rd"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a></p>{exl}</div>
   </section>
+  <section id="poem" aria-labelledby="poem-t">
+    <p class="label">{t("label_poem")}</p>
+    <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>
+      <p class="pgno">{pgno}</p><p class="pbr">{t("sheet_bridge")}</p></div>
+    <div class="l pbook" id="bookcard"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
+      {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}</div>
+    {bnews}{bintro}
+  </section>
   {palette}<section id="me" aria-labelledby="me-t">
     <p class="label">{t("label_me")}</p>
     <div class="l"><h2 class="h2" id="me-t">{e(S["name"])}</h2><p class="tagl">{keep(S["tagline"])}</p><p class="bio">{rich(S["bio"])}</p></div>
     <div class="r"><ul class="years">{years}</ul>{fnb}{nowb}<div class="rec">{rec}</div></div>
-  </section>
-  <section id="poem" aria-labelledby="poem-t">
-    <p class="label">{t("label_poem")}</p>
-    <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>
-      <p class="pgno">{pgno}</p></div>
-    <div class="l pbook" id="bookcard"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
-      {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}</div>
-    {bnews}{bintro}
   </section>
   <section id="photo" aria-labelledby="photo-t">
     <p class="label">{t("label_photo")}</p>

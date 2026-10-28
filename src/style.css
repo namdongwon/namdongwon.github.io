@@ -248,7 +248,7 @@ html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 
 #palette .g3{color:color-mix(in srgb,var(--ink) 45%,var(--bg))}#palette .g4{color:color-mix(in srgb,var(--ink) 54%,var(--bg))}#palette .g5{color:color-mix(in srgb,var(--ink) 64%,var(--bg))}
 #palette .g6{color:color-mix(in srgb,var(--ink) 73%,var(--bg))}#palette .g7{color:color-mix(in srgb,var(--ink) 82%,var(--bg))}#palette .g8{color:color-mix(in srgb,var(--ink) 91%,var(--bg))}#palette .g9{color:var(--ink)}
 #palette .pk{margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted)}
-#palette .pgo{display:flex;margin-top:16px}  /* 칸 끝 길 '「탁본」 읽기 ↓'(10/28 A) — 설명 줄 아래 16px(사진 · 영상 칸 끝 .buy와 같음, flex라 줄 상자 없이 꼭 16px) */
+#poem .pbr{margin-top:22px;font:400 15px/1.7 var(--serif);color:var(--ink)}  /* 「탁본」 아래 다리 한 줄 '나머지 쉰아홉 편은 종이 위에 있습니다.'(10/29 동원 'A 시집 칸 통째로' — 새 눈 비평 고침 1, 「탁본」 한 장 끝 화면과 같은 말) — 이어서 책 카드의 교보 단추 · 팔레트 끝 '「탁본」 읽기 ↓'(10/28)는 시가 위로 가서 뺌 */
 .bio{margin-top:22px;font:16px/1.9 var(--body)}  /* 휴대폰 소개 · 시집 소개 · 연락 첫 글은 시 본문과 같은 16px(10/27 숨 재기 8, 동원 'A 16px' — 전 15–15.5px) */
 .tagl{margin-top:12px;font:14px/1.6 var(--body);color:var(--muted);text-wrap:balance;word-break:keep-all}  /* 소개 이름 아래 한 문장(10/25 제안 ③ — 첫 화면 라벨에서 옮김) */
 .years{list-style:none;margin-top:30px;border-top:1px solid var(--rule)}
@@ -586,6 +586,7 @@ html.sr-on{overflow:hidden}
 .sheet .kb{display:inline-flex;align-items:center;font:600 12.5px/1 var(--sans);padding:12px 16px;border-radius:999px;background:#e9e9e9;color:#111;white-space:nowrap}
 .sheet .kb:focus-visible{outline:2px solid #fff;outline-offset:3px}
 /* 아주 낮은 화면(가로 폰 · 400% 확대)은 제목 · 아래 줄을 붙이지 않고 종이 전체가 스크롤 — 둘 다 붙으면 시 칸이 3–4행 · 0행(10/27 점검 남은 것 가1). 끝으로 내리기(toEnd)는 그대로 */
+.sheet.tight .st{padding-top:12px}.sheet.tight .sp{margin-top:12px}.sheet.tight.done .sp{padding-bottom:16px}.sheet.tight .sf{padding-top:12px;row-gap:12px}  /* 한 장에 맞춤의 넷째 단(10/28 A — main.js fit): 글자를 11px까지 줄여도 넘치면 위아래 여백도 단 안에서 한 단씩 */
 @media (max-height:480px){.sheet .st,.sheet .sf{position:static}.sheet .sf,.sheet.sc .st{box-shadow:none}}
 @media (prefers-reduced-motion:no-preference){.sheet.done .se{animation:sein .4s ease both}}  /* 단추와 같은 0.4초 나타남 */
 @keyframes sein{from{opacity:0}}
