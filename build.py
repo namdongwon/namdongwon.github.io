@@ -46,6 +46,11 @@ FONTS = [
 # 사이트 글자 말고도 늘 남겨 둘 것: 영문·숫자·기호(주소·계정 이름·숫자 세기)와 쓰는 문장부호
 SEARCH_ICON = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false">'
                '<circle cx="8.5" cy="8.5" r="6"/><path d="M13 13l5 5" stroke-linecap="round"/></svg>')  # 맨 위 막대 · 찾기 창의 가는 선 돋보기(10/26)
+THEME_ICONS = {k: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + v + '</svg>' for k, v in {
+    "system": '<rect x="2.5" y="3.5" width="15" height="10" rx="1.5"/><path d="M7 17h6M10 13.5V17"/>',
+    "light": '<circle cx="10" cy="10" r="3.4"/><path d="M10 1.8v2M10 16.2v2M1.8 10h2M16.2 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M4.2 15.8l1.4-1.4M14.4 5.6l1.4-1.4"/>',
+    "dark": '<path d="M16.6 12.4A7 7 0 0 1 7.6 3.4a7 7 0 1 0 9 9z"/>',
+}.items()}  # 판권면 화면 고르기 그림(10/28 동원 "이모지로 하자 글자 말고" → "B 선 그림 먹") — 돋보기와 같은 20칸 · 선 1.4 · 모니터 · 해 · 달
 PAL_FONT = "bon-myeongjo.woff2"  # 글자 팔레트(10/28)의 글자 612가지는 본명조 보통 판에만 담음 — 굵게 · 고딕 판은 늘지 않게(main)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
 # 첫 화면 작은 판(10/27 동원 "첫 화면 작은 글꼴은 B로 하자"): 한국어판 첫 화면에 보이는 글자만 담아 미리 받는 판(CSS BMJF · PTDF) — 통째 판(본명조 보통 · 굵게 182KB)을
@@ -914,8 +919,9 @@ def render(site, poem, videos, photos, lang="ko"):
     pr = printing_no(co)
     ed = (f'{ordinal(co["edition"])} edition, {ordinal(pr)} printing' if en else f'{co["edition"]}판 {pr}쇄')
     # 화면 밝게 · 어둡게 · 시스템(10/26 A 먹 종이) — 판권면 줄, 처음은 밝게 · 누르면 main.js가 이 기기에 기억
-    thm = " · ".join(f'<button type="button" data-th="{k}" aria-pressed="{"true" if k == "light" else "false"}">{e(x)}</button>'
-                     for k, x in zip(("system", "light", "dark"), L["theme_opts"].split("|")))
+    # 글자 대신 그림(10/28 B 선 그림 — 이름은 읽기 프로그램 · 마우스를 올리면 보이는 말로)
+    thm = "".join(f'<button type="button" data-th="{k}" aria-pressed="{"true" if k == "light" else "false"}" aria-label="{e(x)}" title="{e(x)}">{THEME_ICONS[k]}</button>'
+                    for k, x in zip(("system", "light", "dark"), L["theme_opts"].split("|")))
     pp_link = f' <a class="pp-l" href="privacy/">{t("gb_privacy")}</a>' if (CONTENT / "privacy.json").exists() else ""  # 처리방침 쪽(10/27) — '쿠키를 쓰지 않습니다' 옆
     colo = (f'<div class="colo"><p class="t">{e(urlparse(base).netloc or base)}</p><dl>'
             f'<dt>{t("colo_updated")}</dt><dd><time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</dd>'

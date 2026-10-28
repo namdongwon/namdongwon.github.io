@@ -44,6 +44,7 @@ html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:l
 :root[data-theme="dark"]{--barline:rgba(255,255,255,.07);--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:var(--bg);--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}
 @media (prefers-color-scheme:dark){:root[data-theme="system"]{--barline:rgba(255,255,255,.07);--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:var(--bg);--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}}
 :root:lang(en){--serif:"NRD","BMJ","AppleMyungjo",serif;--body:"NRD","BMJ","AppleMyungjo",serif}  /* 라틴 글꼴 먼저, 한글 다음 — 섞인 한글(시 · 원제)은 본명조 */
+html:lang(en) .bio,html:lang(en) .lead,html:lang(en) .btext{line-height:1.7}  /* 영어 본문 행간은 1.7(10/28 동원 'A 1.7' — 일본 디테일 보고서 ⑦: 로마자는 같은 1.9에서도 한글보다 성겨 보임 · NDC 일 1.8 · 영 1.5. 한국어 본문은 1.9 그대로 · 행간 단 안의 값 · 「탁본」 영어 번역 행과 같음) */
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}  /* 칸 맞춤(scroll-snap)은 10/25 끔 — 스크롤은 멈춘 자리에 그대로(셔터를 뺀 뒤 남은 '찰칵' · 동원 "① 칸 맞춤 끄기부터 하자"). 사진 띠의 한 장씩 넘기기만 남김 */
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
@@ -503,8 +504,8 @@ html.sr-on{overflow:hidden}
 .pp .back{margin-top:30px;display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
 .pp .oth{font:300 12.5px/1 var(--sans);color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}
 .colo .thm{display:none}.js .colo .thm{display:block}  /* 화면 고르기 — 자바스크립트가 있어야 바뀌므로 그때만 */
-.colo .thm button{padding:0;border:0;background:none;font:inherit;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent}
-.colo .thm button[aria-pressed="true"]{color:var(--ink);font-weight:600;box-shadow:inset 0 -1.5px 0 currentColor}
+.colo .thm button{display:inline-grid;place-items:center;width:28px;height:28px;margin:-8px 0;padding:0;border:0;background:none;font:inherit;color:var(--muted);vertical-align:middle;cursor:pointer;-webkit-tap-highlight-color:transparent}.colo .thm button+button{margin-left:12px}.colo .thm button svg{width:16px;height:16px}  /* 그림 단추(10/28 B 선 그림) — 누르는 칸 28px, 줄 높이는 글자 줄 그대로(-8px) · 그림은 돋보기와 같은 16px */
+.colo .thm button[aria-pressed="true"]{color:var(--ink);background:linear-gradient(currentColor,currentColor) no-repeat 50% calc(50% + 12px)/16px 1.5px}  /* 고른 것은 먹 + 그림 너비만큼 밑줄 1.5px */
 
 
 /* 첫 방문의 문 — '문을 열고 나오면'이 적힌 검은 두 문짝 → 문틈의 빛 → 열리면 사이트(html.intro일 때만, head의 짧은 스크립트가 붙임) */
