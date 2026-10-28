@@ -935,10 +935,12 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<p class="end">{t("colo_end")}</p></div>')  # 사이트의 끝 — 책 '읽어 주신 분들께'의 맺음 인사(10/27 경험 설계 '끝까지 온 사람을 맞이하나?' · 동원 "B1 좋은 아침")
 
     secs = ("me", "poem", "photo", "video", "contact")
-    nav = "".join(f'<a href="#{sid}">{e(x)}</a>' for sid, x in zip(secs, L["nav"]))  # 소개가 먼저(10/25 동원 "나를 알리는 게 먼저")
+    nav = "".join(f'<a href="#{sid}">{e(x)}</a>' for sid, x in zip(secs[:4], L["nav"]))  # 소개가 먼저(10/25 동원 "나를 알리는 게 먼저") — 연락은 맨 오른쪽 상자로(아래)
     other = "ko" if en else "en"
-    nav += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26) — 구분선 뒤 언어 단추 옆(10/26 B, 구분선은 CSS)
+    # 맨 위 띠 차례: 메뉴 넷 | 언어 · 찾기 · [연락하기](10/28 동원 "연락하기를 맨 오른쪽에 놓고 상자 형태로 … 검색은 그 왼쪽 그리고 한국어 영어 버전은 그 왼쪽" · 'A 먹 채운 상자' · "연락이 아니라 연락하기로 하자") — 구분선은 언어 앞(CSS)
     nav += f'<a class="lang" href="{"../" if en else "en/"}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 지금 언어를 보임(10/26 동원 "지금 현재 나라의 언어를 표시하는 게 더 좋을 거 같은데" — 한국어판 🇰🇷 KO · 영어판 🇬🇧 EN, 누르면 다른 판)
+    nav += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
+    nav += f'<a class="cta" href="#contact">{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(책 카드 '교보문고에서 사기'와 같은 꼴)
     preload = ("".join(f'<link rel="preload" href="{P}assets/fonts/{f}" as="font" type="font/woff2" crossorigin>\n' for f in
                        ((EN_FIRST, "ndw-sans-light-first.woff2", "ndw-sans-semibold-first.woff2") if en else ("bon-myeongjo-light.woff2", *FIRST))))
     # 첫 화면 작은 판만 미리 받음(한국어 10/27 B · 영어 10/27 점검 — 영어 첫 화면은 본명조를 한 자도 안 그리는데 통째 판을 받아 문이 늦었음). 작은 고딕 판(PTDF)은 ASCII를 늘 담아 영어 첫 화면에도 씀

@@ -223,11 +223,18 @@ html:lang(en) .top nav{letter-spacing:.03em;gap:13px}  /* 영어 낱말은 한�
 @media (max-width:339px){html:lang(en) .top nav{gap:6px;font-size:11px}}  /* 320px 영어 메뉴가 화면 끝에 붙지 않게 */
 /* 돋보기는 구분선 뒤 언어 단추 옆(10/26 동원 "맨 위 막대는 돋보기 B 구분선 뒤 · 언어 A 지금 언어로 하자") — 메뉴 다섯 | 찾기 · 언어.
    구분선을 돋보기 앞으로 옮김 — 자바스크립트가 꺼져 돋보기가 없으면 구분선은 언어 단추 앞 그대로. 위 좁은 폭 규칙보다 뒤에 두어야 이김(같은 무게) */
-html.js .top nav .sq{width:auto;margin:0;padding-left:13px;border-left:1px solid var(--line)}
-html.js .top nav .lang{padding-left:2px;border-left:0}
-@media (max-width:374px){html.js .top nav .sq{padding-left:8px}}
-@media (max-width:409px){html.js:lang(en) .top nav .sq{padding-left:8px}}
-@media (max-width:359px){html.js:lang(en) .top nav .sq{padding-left:7px}}
+/* → 10/28 맨 위 띠(동원 "연락하기를 맨 오른쪽에 놓고 상자 형태로 … 검색은 그 왼쪽 그리고 한국어 영어 버전은 그 왼쪽" · 'A 먹 채운 상자' · "연락하기로"): 메뉴 넷 | 언어 · 찾기 · [연락하기].
+   구분선은 다시 언어 단추 앞 하나(위 .lang 규칙 그대로) · 돋보기는 구분선 없이 언어와 상자 사이 · 상자는 책 카드 '교보문고에서 사기'와 같은 먹 채운 상자, 띠 높이는 그대로(margin -3px).
+   지금 칸이 연락이어도 · 마우스를 올려도 글자는 종이색(.on · :hover의 먹색을 덮음) — 밑줄은 main.js가 상자 밑에 그리지 않음 */
+.top nav a.cta{display:inline-flex;align-items:center;margin:-3px 0;padding:8px 14px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);letter-spacing:.04em;white-space:nowrap}
+.top nav a.cta.on,.top nav a.cta:hover{color:var(--bg)}
+@media (max-width:767px){.top nav a.cta{padding:7px 12px}}
+/* 휴대폰 한 줄 맞춤(실측 — 상자만큼 메뉴가 넓어져 375 · 390 한국어 · 360 · 412 영어에서 두 줄로 넘어갔음): 375–419 한국어 메뉴 간격 16 → 10 · 영어 좁은 간격을 419까지 · 영어 국기만을 374까지 · 374 아래 상자 여백 6 · 10 · 359 아래 한국어 간격 6 */
+@media (min-width:375px) and (max-width:419px){html:lang(ko) .top nav{gap:10px}}
+@media (min-width:410px) and (max-width:419px){html:lang(en) .top nav{gap:7px;letter-spacing:0}html:lang(en) .top nav .lang{padding-left:8px}html:lang(en) .top nav .lang .fl{margin-right:4px}}
+@media (max-width:374px){.top nav a.cta{padding:6px 10px;letter-spacing:0}html:lang(en) .top nav .lang .lt{display:none}html:lang(en) .top nav .lang .fl{margin-right:0}}
+@media (max-width:359px){html:lang(ko) .top nav{gap:6px}html:lang(en) .top nav a.cta{padding:6px 9px;font-size:11px}}
+@media (min-width:375px) and (max-width:389px){html:lang(ko) .top nav{gap:9px}html:lang(en) .top nav{gap:6px}}@media (min-width:420px) and (max-width:449px){html:lang(en) .top nav{gap:12px}}  /* 375 · 430(영어)에서 첫 메뉴가 화면 왼쪽 끝에 9–10px로 붙지 않게 — 지금처럼 15px 안팎 */
 html:lang(en) .label,html:lang(en) .sub{text-transform:uppercase;letter-spacing:.1em}  /* 영어 꼬리표는 대문자 + 자간 조금(Oui Non · Fitzcarraldo) */
 html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 작품 제목은 기울임, 짧은 제목은 한 줄에 */
 .buy2{justify-self:start;margin-top:16px;display:inline-flex;align-items:center;padding:12px 16px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);white-space:nowrap}

@@ -28,6 +28,10 @@
       "Contact"
     ]
   },
+  "nav_cta": {
+    "ko": "연락하기",
+    "en": "Contact"
+  },
   "switch": {
     "ko": "KO",
     "en": "EN"

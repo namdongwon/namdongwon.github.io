@@ -317,14 +317,15 @@
     let on = null;
     const place = () => {
       const was = ul.classList.contains("on");
-      if (on) {
+      const at = on && !on.classList.contains("cta") ? on : null;  // 연락하기는 먹 상자라 밑줄을 그리지 않음(10/28 A — 상자가 곧 표시)
+      if (at) {
         if (!was) ul.style.transition = "none";  // 처음 나타날 땐 그 자리에서(왼쪽 끝에서 미끄러져 오지 않게)
-        ul.style.width = on.offsetWidth - (parseFloat(getComputedStyle(on).letterSpacing) || 0) + "px";  // 글자 뒤 자간(.12em)만큼 빼서 글자 폭에 맞춤
-        const dy = on.offsetTop + on.offsetHeight - nav.clientHeight;  // 메뉴가 두 줄이면(글 간격을 넓힌 읽기 도구 등 — 돋보기 · 언어 단추가 아랫줄로) 밑줄도 그 칸 이름의 줄 바닥으로
-        ul.style.transform = `translate(${on.offsetLeft}px, ${Math.abs(dy) > 2 ? dy : 0}px)`;  // 한 줄일 때는 반올림 차이로 1px 흔들리지 않게 0
+        ul.style.width = at.offsetWidth - (parseFloat(getComputedStyle(at).letterSpacing) || 0) + "px";  // 글자 뒤 자간(.12em)만큼 빼서 글자 폭에 맞춤
+        const dy = at.offsetTop + at.offsetHeight - nav.clientHeight;  // 메뉴가 두 줄이면(글 간격을 넓힌 읽기 도구 등 — 돋보기 · 언어 단추가 아랫줄로) 밑줄도 그 칸 이름의 줄 바닥으로
+        ul.style.transform = `translate(${at.offsetLeft}px, ${Math.abs(dy) > 2 ? dy : 0}px)`;  // 한 줄일 때는 반올림 차이로 1px 흔들리지 않게 0
         if (!was) { void ul.offsetWidth; ul.style.transition = ""; }
       }
-      ul.classList.toggle("on", !!on);
+      ul.classList.toggle("on", !!at);
     };
     const show = id => {
       on = links.find(a => a.getAttribute("href") === "#" + id) || null;
