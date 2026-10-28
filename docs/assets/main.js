@@ -179,7 +179,7 @@
   // 결 — 칸 요소들이 화면에 들어오면 차례로 떠오름(시·기록은 장면이 맡음)
   if (motion) {
     const sels = ["main section > .label", "#poem .h2", ".pbook", "#me .h2", ".tagl", ".bio", ".years li", ".now", "#photo .head", "#photo .caps",
-      "#photo .nav2", ".bhead", ".btext", ".btoc h3", ".btoc .parts > div", ".btoc .tail", ".ch2", ".big", ".vt", ".sub", ".toc li", ".empty", "#contact .h2", ".lead", ".ask > *", ".sns", ".colo", "#palette .h2", ".pal", ".pk", ".pph"];
+      "#photo .nav2", ".bhead", ".btext", ".btoc h3", ".btoc .parts > div", ".btoc .tail", ".ch2", ".big", ".vt", ".sub", ".toc li", ".empty", "#contact .h2", ".lead", ".ask > *", ".sns", ".colo", "#palette .h2", ".pal", ".pk"];
     const seen = new Set();
     sels.forEach(sel => document.querySelectorAll(sel).forEach(el => {
       if (seen.has(el)) return;
@@ -1054,6 +1054,15 @@
       // count.js가 이 스크립트보다 먼저 막혔으면(광고 차단 등) 위 사건은 이미 지나감 — 쪽을 다 받은 뒤(async 스크립트까지) 한 번 더 봄
       addEventListener("load", () => { if (!(window.goatcounter && typeof window.goatcounter.count === "function")) unTag(); }, { once: true });
     }
+  }
+
+  // 쪽 안에서 옮긴 뒤 주소창의 #은 지움 — 그 주소를 나누면 받은 사람이 문 · 첫 화면 없이 그 칸에서 시작했음(10/28 동원 'A 주소창의 # 지우기').
+  // 깊은 링크로 들어온 첫 주소(#t23 등)는 그대로 · 뒤로 가기는 전처럼 앞 칸 차례로(기록 칸은 남고 주소만 바뀜)
+  addEventListener("hashchange", () => { if (location.hash) history.replaceState(history.state, "", location.pathname + location.search); });
+  // 깊은 링크(#t23 · #l9 · #n1 …)로 열면 그 줄에 찾기와 같은 옅은 바탕 1.6초(10/28 사용 편의 점검 ⑤ — 어느 줄로 왔는지 표시가 없었음)
+  if (location.hash) {
+    const hit = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (hit && !hit.matches("section")) { hit.classList.add("hit"); setTimeout(() => hit.classList.remove("hit"), 1600); }
   }
 
   // 뒤로 가기로 창 닫기(10/28 사용 편의 점검 ① — 찾기 · 「탁본」 한 장 · 게시물 사진 창을 연 채 뒤로 가면 사이트를 떠났음).

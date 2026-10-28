@@ -594,21 +594,25 @@ def make_takbon(site, poem, src):
     im.save(ASSETS / "img" / "takbon.jpg", "JPEG", quality=90, optimize=True)
 
 
-ICON_V = 2  # 아이콘 주소 끝 ?v= — 아이콘 모양을 바꾸면 하나 올림(브라우저가 옛 탭 아이콘을 오래 기억해서, 10/26 동그라미)
+ICON_V = 3  # 아이콘 주소 끝 ?v= — 아이콘 모양을 바꾸면 하나 올림(브라우저가 옛 탭 아이콘을 오래 기억해서, 10/26 동그라미 · 10/28 바탕 뺌)
 
 
 def make_icons():
-    # 흰 바탕에 검은 동그라미(10/26 동원 "이거 웹페이지 키면 나오는 아이콘 검정색 동그라미로 하자" — 전엔 찰칵 표시에서 온 검은 네모 36/64).
-    # 지름 40/64 — 네모(36×36)와 먹 넓이가 거의 같게(원 1257 · 네모 1296). 흰 바탕은 그대로(어두운 탭 막대에서도 보이게)
+    # 바탕 없는 먹 동그라미(10/28 동원 "바탕없는 먹 동그라미는 어때?" → "C 바탕 없는 동그라미" — 전엔 흰 네모 위 먹 동그라미, 10/26 동원 "검정색 동그라미로 하자").
+    # 지름 40/64 그대로 흰 네모만 뺌 — 회색 탭 막대(안 고른 탭)에서 상자 없이 점 하나. 어두운 탭 막대에서는 사이트 어둡게의 먹(#ecebe6)으로 —
+    # SVG 안 prefers-color-scheme은 크롬 · 엣지 · 파이어폭스가 따르고 사파리는 무시(먹 그대로 · WebKit 버그 309949). 시안 `기준/브랜드 시안/탭아이콘시안_v2_지금·A·C.png`
     (DOCS / "favicon.svg").write_text(
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#fff"/>'
-        '<circle cx="32" cy="32" r="20" fill="#111"/></svg>\n', encoding="utf-8")
-    for size, name in ((32, "favicon-32.png"), (180, "apple-touch-icon.png")):
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><style>circle{fill:#111}'
+        '@media (prefers-color-scheme:dark){circle{fill:#ecebe6}}</style>'
+        '<circle cx="32" cy="32" r="20"/></svg>\n', encoding="utf-8")
+    for size, name, paper in ((32, "favicon-32.png", False), (180, "apple-touch-icon.png", True)):
+        # 32px는 투명 바탕(SVG를 못 쓰는 곳) · 홈 화면 그림은 흰 바탕 그대로(투명하면 iOS가 검게 채움)
         big = size * 8  # 8배로 그려 줄임 — 작은 크기에서도 가장자리가 매끈하게
-        im = Image.new("RGB", (big, big), "white")
+        im = Image.new("RGBA", (big, big), (255, 255, 255, 255 if paper else 0))
         m = big * 12 / 64
-        ImageDraw.Draw(im).ellipse((m, m, big - m, big - m), fill="#111111")
-        im.resize((size, size), Image.LANCZOS).save(DOCS / name)
+        ImageDraw.Draw(im).ellipse((m, m, big - m, big - m), fill=(17, 17, 17, 255))
+        im = im.resize((size, size), Image.LANCZOS)
+        (im.convert("RGB") if paper else im).save(DOCS / name)
 
 
 def render(site, poem, videos, photos, lang="ko"):
@@ -673,7 +677,7 @@ def render(site, poem, videos, photos, lang="ko"):
     work = (f'Poetry collection, {tt(e(book["title"]), False)} <small lang="ko">{tt(e(site["book"]["title"]), True)}</small>' if en
             else f'시집 {tt(e(book["title"]), True)}')
     # 글자 팔레트(10/28 동원 'B 첫 화면 바로 아래' — 10/26 동원 제안 '색의 팔레트가 아닌 글자의 팔레트'): 시집 본문에 쓴 글자를 많이 쓴 글자부터 한 번씩(content/palette.json).
-    # 먹색은 쓴 횟수의 로그를 열 단으로(g0 한 번 → g9 가장 많이) — 같은 단은 한 span이라 칸 612개를 요소로 만들지 않음. 사진은 사진 칸의 '절벽 아래 물가'(흑백 · content/img/palette.jpg)
+    # 먹색은 쓴 횟수의 로그를 열 단으로(g0 한 번 → g9 가장 많이) — 같은 단은 한 span이라 칸 612개를 요소로 만들지 않음. 사진은 10/28 동원 "일단 팔레트 아래에 내 사진은 빼자"로 뺌(글자 견본만)
     pl = load("palette.json")
     pg, pn = pl["glyphs"], pl["counts"]
     ptotal = f'{pl["total"]:,}'
@@ -682,13 +686,12 @@ def render(site, poem, videos, photos, lang="ko"):
     ptop = (", ".join(f"{g} ({n})" for g, n in zip(pg[:3], pn[:3])) if en else " · ".join(f"{g} {n}번" for g, n in zip(pg[:3], pn[:3])))
     palette = (f'<section id="palette" aria-labelledby="palette-t">\n    <p class="label">{t("label_palette")}</p>\n'
                f'    <div class="l"><h2 class="h2" id="palette-t">{t("pal_title", n=len(pg))}</h2><p class="lead">{t("pal_lead", total=ptotal, n=len(pg))}</p></div>\n'
-               f'    <div class="r"><p class="pal" aria-hidden="true">{pal}</p><p class="pk">{t("pal_key", top=ptop, ones=pn.count(1))}</p>'
-               f'<img class="pph" src="{P}assets/img/palette.jpg" alt="{t("pal_alt")}" width="900" height="600" loading="lazy" decoding="async"></div>\n  </section>\n  ')
+               f'    <div class="r"><p class="pal" aria-hidden="true">{pal}</p><p class="pk">{t("pal_key", top=ptop, ones=pn.count(1))}</p></div>\n  </section>\n  ')  # 사진은 뺌(10/28 동원 "일단 팔레트 아래에 내 사진은 빼자")
     exl = (f'<dl><div><dt>{t("ex_object")}</dt><dd>{work}</dd></div>'
            f'<div><dt>{t("ex_author")}</dt><dd>{e(S["name"])}</dd></div>'  # 지은이는 이름만(10/25 동원)
-           f'<div><dt>{t("ex_spec")}</dt><dd>{keep(book["spec"])}</dd></div>'
+           f'<div><dt>{t("ex_spec")}</dt><dd>{keep(book["spec"])}</dd></div>\x00MONTH\x00'  # 이달의 한 줄(10/28 동원 'A 라벨에 한 줄') — 차례를 그린 뒤 채움
            f'<div><dt>{t("ex_medium")}</dt><dd>{keep(L["ex_medium_v"].format(n=len(pg), total=ptotal))} — <a class="go" href="#palette">{t("pal_go")} ↓</a></dd></div>'  # 재료(10/28 — 미술관 라벨의 재료 칸, 팔레트로 가는 길)
-           f'<div><dt>{t("ex_collection")}</dt><dd>{t("ex_shelf")} — <a class="buy" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("소장처")}>{e(book["buy_label"])} ↗</a></dd></div></dl>')
+           f'<div><dt>{t("ex_collection")}</dt><dd>{t("ex_shelf")} — <a class="buy" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("소장처")}>{e(book["buy_label"])} ↗</a><span class="whr">{t("buy_where")}</span></dd></div></dl>')
 
     # 연표(years.json) — 줄의 note 칸이 각주(10/25 40곳 2차 ④ A, Andrew Trousdale식 경의의 각주): 줄 끝 위첨자 번호 + 연표 바로 아래 각주 목록
     notes, lis = [], []
@@ -916,7 +919,9 @@ def render(site, poem, videos, photos, lang="ko"):
     pp_link = f' <a class="pp-l" href="privacy/">{t("gb_privacy")}</a>' if (CONTENT / "privacy.json").exists() else ""  # 처리방침 쪽(10/27) — '쿠키를 쓰지 않습니다' 옆
     colo = (f'<div class="colo"><p class="t">{e(urlparse(base).netloc or base)}</p><dl>'
             f'<dt>{t("colo_updated")}</dt><dd><time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</dd>'
-            f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd><dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd>'
+            f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd>'
+            f'<dt>{t("colo_pub")}</dt><dd>{keep(book["spec"].split(" · ")[-1])} — <a class="pp-l" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("판권면")}>{e(book["buy_label"])} ↗</a></dd>'  # 펴낸 곳(10/28 동원 'A 판권면에 펴낸 곳 줄' — 쪽 끝에서 사는 길이 3.3화면 위였음)
+            f'<dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd>'
             f'<dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd></dl>'  # 글꼴 줄은 뺌(10/26 동원 "사이트에 내 글꼴 소개하지 않아도 되잖아 지워" — 라이선스 글은 글꼴 옆에 그대로)
             f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{t("colo_cookie")}{pp_link}</p>'
             f'<p class="end">{t("colo_end")}</p></div>')  # 사이트의 끝 — 책 '읽어 주신 분들께'의 맺음 인사(10/27 경험 설계 '끝까지 온 사람을 맞이하나?' · 동원 "B1 좋은 아침")
@@ -960,6 +965,7 @@ def render(site, poem, videos, photos, lang="ko"):
     month_ko = {m["title"]: row_lang(m, "ko") for m in mk}
 
     tn = [0]
+    month_row = [""]  # 첫 화면 라벨의 '이달의 한 줄' 줄 — 그달 줄이 열렸을 때만(toc_li가 채움)
 
     def toc_li(row, ko_row, part=None):
         tn[0] += 1  # 차례 줄마다 id(t1, t2 …) — 찾기 결과가 그 줄로 감
@@ -981,6 +987,8 @@ def render(site, poem, videos, photos, lang="ko"):
                 line = f'<em>{"<br>".join(e(x) for x in m["lines"])}{orig}<small>{t("month_line", m=MONTHS[mm - 1] if en else mm)}{nxt}</small></em>'
                 # 찾기 — 다시 온 사람이 '이달 · 11월 · 한 줄'로 그달 줄을 찾게(10/28 사용 편의 점검 ④ — 제목 줄만 있어 0건이었음)
                 mname = MONTHS[mm - 1] if en else mm
+                month_row[0] = (f'<div><dt>{t("ex_month")}</dt><dd>{keep(L["ex_month_v"].format(m=mname, title=row["title"], page=row["page"]))} — '
+                                f'<a class="go" href="#t{tn[0]}">{t("ex_month_go")} ↓</a></dd></div>')
                 ix["toc"].insert(0, (L["search_month_tag"], plain(" ".join(m["lines"])), L["search_month_where"].format(m=mname, title=row["title"], page=row["page"]),
                                      f"#t{tn[0]}", L["search_month_keys"].format(m=mname.lower() if en else mname)))
         attr = f' id="t{tn[0]}"' + (f' class="{cls}"' if cls else "")
@@ -994,6 +1002,7 @@ def render(site, poem, videos, photos, lang="ko"):
               f'<p class="btext">{keep(bi["text"])}</p>'
               f'<div class="btoc" id="toc"><h3>{e(toc["label"])}</h3><p class="key"><i></i>{t("toc_key")}</p><div class="parts">{parts}</div>'
               f'<ol class="tail">{"".join(toc_li(r, k) for r, k in zip(toc["tail"], toc_ko["tail"]))}</ol></div></div>')
+    exl = exl.replace("\x00MONTH\x00", month_row[0])  # 첫 화면 라벨의 '이달의 한 줄' — 차례에서 그달 줄을 찾은 뒤(열린 줄이 없으면 빈 칸)
     # 시집 상태 낱말 · 시집 소식(10/25 A 쌓이는 소식 세 줄) — 빌드한 날 기준: 나온 날 전이면 '출간 예정', 그날부터 '판매 중'.
     # 소식은 책에 일어난 일(판권면 '고친 날'은 사이트에 일어난 일) — 날짜가 지난 것만, 최근 세 줄 + 나머지는 '지난 소식'으로 접음
     state = f'<p class="bstate"><i aria-hidden="true"></i>{t("book_on" if day >= date.fromisoformat(book["published"]) else "book_soon")}</p>'
@@ -1083,7 +1092,7 @@ def render(site, poem, videos, photos, lang="ko"):
   <section id="home" aria-label="{t("home_label")}">
     <div class="l"><h1 class="kick"><span class="name" data-type="{e("|".join(typing_steps(S["name"])))}">{e(S["name"])}</span> <span>{t("ex_kick")}</span></h1>
       <p class="ht">{ht}</p><p class="hs hsl">{hs}</p></div>
-    <div class="r book"><div class="side"><p class="hs">{hs}</p><a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("첫화면")}>{e(book["buy_label"])} ↗</a><p class="tip">{t("ex_tip")}</p></div>
+    <div class="r book"><div class="side"><p class="hs">{hs}</p><a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("첫화면")}>{e(book["buy_label"])} ↗</a><span class="whr">{t("buy_where")}</span><p class="tip">{t("ex_tip")}</p></div>
       <div class="bk" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="{t("cover_alt", book=e(book["title"]) if en else e(book["title"]))}" width="600" height="881" fetchpriority="high" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i><i class="win"></i></div>
       </div>
     <div class="lab"><p class="rd"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a></p>{exl}</div>
@@ -1174,7 +1183,7 @@ def page_404(site):
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{k("nf_title")} — {e(site["name"])}</title><meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"><script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
-<body><main style="min-height:100vh;display:grid;place-content:center;gap:18px;padding:28px;text-align:center">
+<body><main class="nf" style="min-height:100vh;display:grid;place-content:center;gap:18px;padding:28px;text-align:center">
 <p class="label" style="justify-content:center">404</p>
 <h1 class="h2" style="margin-top:0">{k("nf_title")}</h1>
 <p class="lead">{k("nf_lead")}</p>
@@ -1241,7 +1250,7 @@ def main():
             raise SystemExit(f"첫 화면 작은 판을 만들 원본을 찾지 못함: {name}")
     print(f"글꼴에 남긴 글자 {len(set(text))}자")
     # 영어판 글꼴(10/24 ⑤ B) — Newsreader 바로 · 기울임을 영어판의 글자만 남겨 줄임(가변 축 그대로, 예약된 이름 없어 이름 그대로)
-    text_en = used_text([en_html])
+    text_en = used_text([en_html, page404])  # 404의 영어 두 줄도 Newsreader로(10/28)
     fte = first_text(en_html)  # 영어판 첫 화면 작은 판에 담을 글자(문 글자 · 첫 화면)
     for name, out in EN_FONTS:
         src = find(PTD_DIR, name, "Newsreader")
@@ -1273,7 +1282,6 @@ def main():
     # 첫 화면 서 있는 책(10/24)의 뒤표지·책등 — 교보 최종 표지 파일에서 자른 그림. 앞표지와 같은 폭 600px, 책등은 9mm 비율(600×9/128 ≈ 42px)
     save_jpg(CONTENT / site["book"]["back"], ASSETS / "img/back.jpg", 600, quality=84)
     save_jpg(CONTENT / site["book"]["spine"], ASSETS / "img/spine.jpg", 42, quality=88)
-    shutil.copy2(CONTENT / "img/palette.jpg", ASSETS / "img/palette.jpg")  # 글자 팔레트 칸 사진(10/28 — 사진 칸의 '절벽 아래 물가'를 흑백 3:2 · 900px · 회색 한 채널로 만들어 둔 것 그대로, 다시 줄이지 않음)
     # 첫 편 준비 중(10/24)의 썸네일 시안 — 800px(휴대폰 2배·컴퓨터 칸 폭에 넉넉). 흑백은 CSS가 함
     up = videos.get("upcoming") or {}
     if not videos["items"] and up.get("thumb"):

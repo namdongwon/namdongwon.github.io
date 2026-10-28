@@ -80,6 +80,26 @@
     "ko": "당신의 책장",
     "en": "Your bookshelf"
   },
+  "ex_month": {
+    "ko": "이달의 한 줄",
+    "en": "This month"
+  },
+  "ex_month_v": {
+    "ko": "{m}월 · 「{title}」 {page}쪽",
+    "en": "{m} · “{title},” p. {page}"
+  },
+  "ex_month_go": {
+    "ko": "한 줄 읽기",
+    "en": "Read the line"
+  },
+  "buy_where": {
+    "ko": "교보문고",
+    "en": "Kyobo Book Centre · in Korean"
+  },
+  "colo_pub": {
+    "ko": "펴낸 곳",
+    "en": "Publisher"
+  },
   "ex_medium": {
     "ko": "재료",
     "en": "Medium"
@@ -209,8 +229,8 @@
     "en": "Guestbook"
   },
   "gb_sep": {
-    "ko": "여기 남긴 글은 남동원이 읽고 골라 이 쪽에 싣습니다. 남동원에게만 하실 말씀은 위 인스타그램 메시지나 메일로 보내 주세요.",
-    "en": "Notes left here are read and chosen by Dongwon Nam before they appear on this page. For anything meant only for Dongwon Nam, please use Instagram or email above."
+    "ko": "여기 남긴 글은 남동원이 읽고 골라 이 쪽에 싣습니다. 남동원에게만 하실 말씀은 인스타그램 메시지나 메일로 보내 주세요.",
+    "en": "Notes left here are read and chosen by Dongwon Nam before they appear on this page. For anything meant only for Dongwon Nam, please use Instagram or email."
   },
   "gb_empty": {
     "ko": "아직 실린 글이 없습니다. 첫 글을 기다립니다.",
@@ -557,7 +577,7 @@
       "form_off": "아직 연결 전입니다. 인스타그램으로 연락해 주세요.",
       "sending": "보내는 중…",
       "sent": "잘 받았습니다. 답장 드리겠습니다.",
-      "failed": "보내지 못했습니다. 잠시 뒤 다시 해 주세요.",
+      "failed": "보내지 못했습니다. 적으신 글은 그대로 있으니 잠시 뒤 다시 보내 주세요.",
       "search_count": "찾은 것 {n}",
       "gb_sent": "잘 받았습니다. 월요일에 읽어 보겠습니다.",
       "gb_full": "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다.",
@@ -576,7 +596,7 @@
       "form_off": "Not connected yet — please message me on Instagram.",
       "sending": "Sending…",
       "sent": "Received. I’ll write back soon.",
-      "failed": "Couldn’t send. Please try again in a moment.",
+      "failed": "Couldn’t send. Your message is still here — please try again in a moment.",
       "search_count": "{n} found",
       "gb_sent": "Received. I’ll read it on Monday.",
       "gb_full": "The guestbook is full for this month. Please try again next month.",
