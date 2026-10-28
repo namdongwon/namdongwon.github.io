@@ -492,6 +492,22 @@
     "ko": "약력 · 연표 · 지금|「탁본」 · 책 · 차례|사진 · 게시물|영상 · 리뷰|메일 · 인스타그램 메시지",
     "en": "Bio · timeline · now|“Rubbing” · book · contents|Photos · posts|Videos · reviews|Email · Instagram message"
   },
+  "search_month_tag": {
+    "ko": "이달",
+    "en": "This month"
+  },
+  "search_month_where": {
+    "ko": "{m}월의 한 줄 · 「{title}」 {page}쪽",
+    "en": "{m}’s line · “{title},” p. {page}"
+  },
+  "search_month_keys": {
+    "ko": "이달 이번 달 한 줄 {m}월 새 새로",
+    "en": "this month line {m} new"
+  },
+  "search_news_keys": {
+    "ko": "소식 새 새로 나옴 출간",
+    "en": "news new out release"
+  },
   "search_buy_keys": {
     "ko": "교보 교보문고 퍼플 서점 구매 구입 사기 판매 판매처 주문 가격 배송 사는 곳",
     "en": "kyobo pubple buy purchase order price shipping shop store"
@@ -544,7 +560,9 @@
       "failed": "보내지 못했습니다. 잠시 뒤 다시 해 주세요.",
       "search_count": "찾은 것 {n}",
       "gb_sent": "잘 받았습니다. 월요일에 읽어 보겠습니다.",
-      "gb_full": "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다."
+      "gb_full": "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다.",
+      "keep_hold": "그림을 길게 눌러 사진에 저장하세요",
+      "keep_alt": "뜬 「탁본」 한 장"
     },
     "en": {
       "play": "Play {title}",
@@ -561,7 +579,9 @@
       "failed": "Couldn’t send. Please try again in a moment.",
       "search_count": "{n} found",
       "gb_sent": "Received. I’ll read it on Monday.",
-      "gb_full": "The guestbook is full for this month. Please try again next month."
+      "gb_full": "The guestbook is full for this month. Please try again next month.",
+      "keep_hold": "Press and hold the image to save it",
+      "keep_alt": "Your rubbing of “Rubbing”"
     }
   },
   "pop_post": {

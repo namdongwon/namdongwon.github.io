@@ -363,10 +363,15 @@
   }
 
   // 언어 바꾸기(10/24 영어판) — 보던 칸으로 이어서(예: 사진 칸에서 EN → 영어판 사진 칸)
+  // 화면 위 1/3에 걸친 id 가운데 가장 작은 것으로(두 판의 id가 같음 — 차례 t · 시 행 l · 연표 y · 팔레트 …), 없으면 지금 칸(10/28 사용 편의 점검 ⑥ — 칸 머리로만 이어져 차례 · 시에서 읽던 줄을 잃었음)
   const swap = document.querySelector(".top nav .lang");
   if (swap) swap.addEventListener("click", ev => {
+    const y = innerHeight / 3;
+    const hit = [...document.querySelectorAll("main [id]")].filter(el => { const r = el.getBoundingClientRect(); return r.height && r.top <= y && r.bottom > y; })
+      .sort((a, b) => a.getBoundingClientRect().height - b.getBoundingClientRect().height)[0];
     const cur = document.querySelector('.top nav a.on[href^="#"]');
-    if (cur) { ev.preventDefault(); location.href = swap.getAttribute("href") + cur.getAttribute("href"); }
+    const to = hit ? "#" + hit.id : cur ? cur.getAttribute("href") : "";
+    if (to) { ev.preventDefault(); location.href = swap.getAttribute("href") + to; }
   });
 
   // 사진 칸: 옆으로 넘기기 + '1 / 8' + 캡션 · 아래 작은 줄(보는 한 장만 색) · '모아 보기'(번호 붙은 흑백 격자) — 10/24 둘 다
@@ -640,7 +645,7 @@
       const [nq] = norm(q);
       if (!nq) return [];
       const ch = /^[ㄱ-ㅎ]+$/.test(nq), out = [];
-      const one = H.lang === "en" && nq.length > 3 && nq.endsWith("s") ? nq.slice(0, -1) : "";  // 영어 복수형(films · poems)은 끝 s를 떼고 한 번 더(10/28 점검 5)
+      const one = H.lang === "en" && nq.length > 4 && nq.endsWith("s") ? nq.slice(0, -1) : "";  // 영어 복수형(films · poems)은 끝 s를 떼고 한 번 더(10/28 점검 5)
       items.forEach(it => {
         const [nt, map] = norm(it[1]), hay = ch ? cho(nt) : nt;
         let w = nq, at = hay.indexOf(nq);
@@ -919,6 +924,7 @@
     // 간직하기 — 손가락 기기는 공유 창(사진 저장·인스타로 보내기), 마우스 기기나 공유가 안 되면 그림 파일 내려받기(10/27 숨 재기 7 — 맥 Chrome · Safari도 공유 창을 먼저 띄웠음).
     // 손가락 기기는 CSS의 길게 누르기와 같은 기준(hover:none). 공유 창을 닫기만 했으면(AbortError) '간직하기' 그대로
     const touchOnly = matchMedia("(hover: none)");
+    const inApp = /Instagram|FBAN|FBAV|KAKAOTALK|NAVER\(inapp|Line\/|; wv\)/i.test(navigator.userAgent);  // 앱 안 브라우저(인스타그램 · 카카오톡 등)는 내려받기가 조용히 막혀 저장 없이 끝났음(10/28 사용 편의 점검 ②)
     keep.addEventListener("click", async () => {
       const name = uiText("file", "남동원_탁본.jpg");
       const blob = img ? await img : null;
@@ -934,8 +940,26 @@
           }
         }
       }
-      const a = document.createElement("a");
       const url = blob ? URL.createObjectURL(blob) : ASSET + "img/takbon.jpg";  // 뜬 날을 그린 그림, 못 만들었으면 원래 그림
+      if (inApp) {  // 그림을 종이 위에 띄우고 한 줄 — 길게 눌러 사진에 저장(교보 단추는 그 아래 그대로)
+        let fig = sheet.querySelector(".kimg");
+        if (!fig) {
+          fig = document.createElement("figure");
+          fig.className = "kimg";
+          fig.append(document.createElement("figcaption"), document.createElement("img"));  // 안내가 먼저 — 읽고 나서 그림을 길게 누름
+          sheet.querySelector(".sf").before(fig);  // 시 바로 아래 — 아래 줄(.sf)은 가로 칸이라 그 안이면 그림이 눌림
+        }
+        const im = fig.querySelector("img");
+        im.src = url;
+        im.alt = uiText("keep_alt", "뜬 「탁본」 한 장");
+        fig.querySelector("figcaption").textContent = uiText("keep_hold", "그림을 길게 눌러 사진에 저장하세요");
+        kept();
+        // 그림을 다 불러온 뒤 제목 바로 아래로 — 그 전에 맞추면 그림 높이가 0이라 아래 단추 줄 뒤에 가려졌음
+        const show = () => { const st = sheet.querySelector(".st").getBoundingClientRect().bottom - sheet.getBoundingClientRect().top; sheet.scrollTo({ top: Math.max(0, fig.offsetTop - st - 16), behavior: reduce ? "auto" : "smooth" }); };
+        if (im.complete && im.naturalWidth) requestAnimationFrame(show); else im.addEventListener("load", show, { once: true });
+        return;
+      }
+      const a = document.createElement("a");
       a.href = url;
       a.download = name;
       document.body.append(a);
@@ -1031,4 +1055,20 @@
       addEventListener("load", () => { if (!(window.goatcounter && typeof window.goatcounter.count === "function")) unTag(); }, { once: true });
     }
   }
+
+  // 뒤로 가기로 창 닫기(10/28 사용 편의 점검 ① — 찾기 · 「탁본」 한 장 · 게시물 사진 창을 연 채 뒤로 가면 사이트를 떠났음).
+  // 창이 열리면 기록 한 칸을 쌓고, 뒤로 가기면 그 창의 닫기를 누름 · 닫기 · Esc · 찾기 결과로 닫히면 쌓은 칸을 걷음(옮긴 자리는 되돌리지 않게)
+  [[".srch", ".srch .x"], [".sheet", ".sheet .close"], [".pv", ".pvx"]].forEach(([w, x]) => {
+    const el = document.querySelector(w), btn = document.querySelector(x);
+    if (!el || !btn) return;
+    let mine = false, popping = false;
+    new MutationObserver(() => {
+      if (!el.hidden && !mine) { mine = true; history.scrollRestoration = "manual"; history.pushState({ layer: w }, ""); }
+      else if (el.hidden && mine) { mine = false; if (!popping && history.state && history.state.layer === w) history.back(); popping = false; }
+    }).observe(el, { attributes: true, attributeFilter: ["hidden"] });
+    addEventListener("popstate", () => {
+      setTimeout(() => { history.scrollRestoration = "auto"; }, 0);  // 되살리기는 이번 뒤로 가기가 끝난 뒤에 켬 — 바로 켜면 예전에 적어 둔 위치로 쪽이 옮겨졌음(찾기 2400 → 0)
+      if (mine && !el.hidden) { popping = true; btn.click(); }
+    });
+  });
 })();

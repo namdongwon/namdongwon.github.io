@@ -979,6 +979,10 @@ def render(site, poem, videos, photos, lang="ko"):
                 nx = min((x["month"] for x in mk if x["month"] > day.strftime("%Y-%m")), default=None)
                 nxt = t("month_next", m=f"{MONTHS[int(nx[5:]) - 1]}{NB}1" if en else f"{int(nx[5:])}월{NB}1일") if nx else ""
                 line = f'<em>{"<br>".join(e(x) for x in m["lines"])}{orig}<small>{t("month_line", m=MONTHS[mm - 1] if en else mm)}{nxt}</small></em>'
+                # 찾기 — 다시 온 사람이 '이달 · 11월 · 한 줄'로 그달 줄을 찾게(10/28 사용 편의 점검 ④ — 제목 줄만 있어 0건이었음)
+                mname = MONTHS[mm - 1] if en else mm
+                ix["toc"].insert(0, (L["search_month_tag"], plain(" ".join(m["lines"])), L["search_month_where"].format(m=mname, title=row["title"], page=row["page"]),
+                                     f"#t{tn[0]}", L["search_month_keys"].format(m=mname.lower() if en else mname)))
         attr = f' id="t{tn[0]}"' + (f' class="{cls}"' if cls else "")
         # 먹 줄(사이트에 올린 시)은 제목이 그 시로 가는 링크 + 화면 읽기용 '— 여기서 읽기'(10/27 점검 a11y 11 — 색으로만 구별되던 것)
         title = f'<a href="#poem">{e(row["title"])}</a>' if cls == "on" else e(row["title"])
@@ -1009,7 +1013,7 @@ def render(site, poem, videos, photos, lang="ko"):
     ix["me"][:0] = [(tg["me"], S["name"], "", "#me"), (tg["me"], S["tagline"], "", "#me")] + [
         (tg["me"], x, "", "#me") for x in re.split(r"(?<=[.!?다])\s+", plain(S["bio"])) if x]
     ix["me"] += [(tg["me"], f'{x["label"]} · {plain(x["text"])}', "", "#me") for x in nw.get("items", []) if x.get("text")]  # 이름표와 글 사이는 가운뎃점(10/28 점검 10 — 글 안의 줄표와 겹쳤음)
-    ix["news"] += [(tg["news"], plain(x["text"]), dtxt(x["date"]), f"#n{k}") for k, x in enumerate(news, 1)]
+    ix["news"] += [(tg["news"], plain(x["text"]), dtxt(x["date"]), f"#n{k}", L["search_news_keys"]) for k, x in enumerate(news, 1)]  # 소식 줄도 '소식 · 새로'로(10/28 사용 편의 점검 ④)
     ix["contact"] += [(tg["contact"], L["label_contact"] if endpoint else L["ask_off"], "", "#contact")] + [(tg["contact"], l["name"], "", l["url"]) for l in links]
     sidx_js = json.dumps([list(x) for k in ix for x in ix[k]], ensure_ascii=False).replace("</", "<\\/")
     sj = load("search.json") if (CONTENT / "search.json").exists() else {"suggest": []}
