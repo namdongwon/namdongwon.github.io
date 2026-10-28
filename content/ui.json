@@ -61,8 +61,8 @@
     "en": "· First poetry collection · A\u00a0web exhibition"
   },
   "ex_tip": {
-    "ko": "책을 밀거나 눌러 보세요 — 앞표지 · 책등 · 뒤표지",
-    "en": "Drag or tap the book — front, spine, back"
+    "ko": "눌러서 책등 · 뒤표지 보기",
+    "en": "Tap to see the spine and back"
   },
   "ex_object": {
     "ko": "작품",

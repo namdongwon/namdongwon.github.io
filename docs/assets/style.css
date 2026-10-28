@@ -63,7 +63,7 @@ button{font:inherit;color:inherit}
 .h2,.vt,.bio,.lead,.pbook .t small{text-wrap:balance}
 .tt{display:inline-block;text-wrap:balance}  /* 작품 제목(+붙은 조사 · 문장부호)은 한 덩어리 — 칸에 들어가면 통째로 다음 줄, 칸보다 길면 그 안에서만 갈림(10/25 마지막 점검 ②③, build.py rich · 첫 화면 라벨) · 토막이 칸보다 길어 그 안에서 갈릴 때는 고르게(태블릿 라벨 'Step / Out,' 같은 외톨이 줄이 남지 않게) */
 .cap p,.colo .c,.ask .agree,.empty{text-wrap:pretty}
-#home .lab dd,.now dd,.btoc .key,#home .kick,#home .tip,.bhead{text-wrap:pretty}  /* 줄 끝 한두 글자 · 한 낱말(10/27 점검 남은 것 가2 — '지금' 첫 편 · 범례 '엽니다' · 영어 첫 줄 'exhibition' 등) */
+#home .lab dd,.pbook .plab dd,.now dd,.btoc .key,#home .kick,#home .tip,.bhead{text-wrap:pretty}  /* 줄 끝 한두 글자 · 한 낱말(10/27 점검 남은 것 가2 — '지금' 첫 편 · 범례 '엽니다' · 영어 첫 줄 'exhibition' 등) */
 .skip{position:absolute;left:-9999px;top:8px;z-index:60;padding:8px 12px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans)}
 .skip:focus{left:8px}
 
@@ -92,30 +92,28 @@ html:lang(ko) #poem .h2{text-indent:-.65em}  /* 「탁본」 — 본명조 「�
 
 /* ① 첫 화면 */
 /* 첫 화면(10/25 A 시집을 전시하다 — 무채색): 동원이 보낸 웹 전시 그림의 원리만 — 물건 하나(3D 책) · 아주 큰 제목 · 박물관 라벨. 색은 흰 바탕 · 먹 그대로 */
-#home{min-height:calc(100vh - var(--top));min-height:calc(100svh - var(--top))}  /* 첫 화면은 맨 위 띠를 뺀 높이 — 라벨이 화면 아래에 붙지 않게 */
-#home .kick{margin-top:22px;font:600 11px/1.5 var(--sans);letter-spacing:.04em}
+/* 휴대폰 첫 화면은 내용 높이 — 책 · 두 길 아래 64px(칸 아래 여백)에서 끝나고 바로 시집 칸이 이어 보임(10/29 동원 'A 라벨은 책 카드로' — 새 눈 비평 고침 2). 화면 높이는 컴퓨터 · 태블릿만(768 묶음) */
+#home .kick{margin-top:22px;font:600 12.5px/1.5 var(--sans);letter-spacing:.04em}  /* 누구의 시집인지 말하는 첫 줄 11 → 12.5px(10/29 고침 2 — 쪽에서 가장 작은 글자 단이었음) */
 #home .ht{margin:12px 0 0 -.03em;font:700 76px/1 var(--serif);font-size:min(76px,20.5vw);letter-spacing:-.05em}
 html:lang(ko) #home .ht{font-weight:300}  /* 큰 제목은 얇게(10/26 — 가늘고 크게, 견본 '본명조 · 큰 제목 가늘게') */
 html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spacing:-.02em;font-weight:360}  /* 영어 큰 제목은 Newsreader 360 — 한국어 큰 제목(본명조 300)과 같은 먹색 0.16(10/26 ② A, 실측) */
 #home .book{margin-top:22px;display:grid;grid-template-columns:1fr auto;column-gap:12px}
-#home .side{display:flex;flex-direction:column;padding-bottom:36px}  /* 작은 제목(+ 사는 길)은 위, '밀어 보세요'와 가는 선은 책 아래쪽(.tip margin-top:auto) */
+#home .side{display:flex;flex-direction:column}  /* 작은 제목은 책 윗선, 두 길은 책 아랫선(.ps margin-top:auto) — 10/29 고침 2(전: 사는 길 아래 약 60px이 비고 '밀어 보세요'와 가는 선이 아래) */
 #home .hs{font:700 19px/1.5 var(--serif);letter-spacing:-.01em}
 @media (max-width:349px){#home .side .hs{font-size:17px}}  /* 작은 폰(320 · 340)에서 '살아 있는 / 것들로'로 세 줄이 되던 것을 두 줄로(10/28 동원 'A 19→17px' — 모양 점검 ⑮) */
 #home .hsl{display:none}  /* 컴퓨터 · 태블릿(768px부터)에서만 큰 제목 바로 아래에 보이는 작은 제목 — 휴대폰은 책 옆(.side .hs). 한 번에 하나만 보여 읽기 도구도 한 번만 읽음(10/26 나2 A) */
-#home .sb{align-self:flex-start;margin-top:16px}  /* 책 옆 사는 길(10/25 다듬기 나1 B) — 휴대폰은 라벨의 '책장에 꽂기'가 사파리 첫 화면(553–659px) 밖이라 작은 제목 아래 한 줄 더 */
-@media (min-width:768px){#home .sb{display:none}}  /* 컴퓨터 · 태블릿은 라벨이 첫 화면 안 — 한 줄만 */
-#home .tip{margin-top:auto;font:300 11px/1.6 var(--sans);color:var(--muted)}
-#home .tip::after{content:"";display:block;width:58px;height:1px;margin-top:8px;background:var(--ink)}  /* 책을 가리키는 가는 선 */
+#home .paths{display:flex;flex-direction:column;align-items:flex-start;gap:16px}  /* 두 길 '「탁본」 읽기 ↓' · '책장에 꽂기 ↗'을 한자리에(10/29 고침 2 · 10/24 '같은 무게' — 둘 다 14px 600 · 같은 밑줄). 휴대폰은 책 옆 아래 위아래로 */
+#home .ps{margin-top:auto}#home .pl{display:none}  /* 휴대폰은 책 옆(.ps) · 컴퓨터 · 태블릿은 작은 제목 아래(.pl) — 한 번에 하나만 보여 읽기 도구도 한 번만 읽음 */
+#home .buyrow{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}  /* 책장에 꽂기 ↗ 옆에 가는 곳 '교보문고' — 좁은 폰(320)이나 영어판처럼 옆 칸이 모자라면 아랫줄로 */
+#home .tip{grid-column:2;justify-self:center;margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted);white-space:nowrap}  /* 안내는 책 바로 아래 가운데 한 줄(10/29 고침 2 — 전엔 왼쪽 단에서 '앞표지 · / 책등 · 뒤표지'로 끊기고 58px 가는 선이 붙었음). 영어 320px은 책 폭보다 6px 길어 양옆으로 3px씩 나감(꺾지 않음) */
 #home .bk{--w:min(178px,45vw);--h:calc(var(--w) * 1.4688);--t:calc(var(--w) * .0703)}  /* 128×188mm · 책등 9mm 비율 그대로 */
-#home .lab{margin-top:30px}
-#home .rd{display:flex;justify-content:flex-end}
-#home dl{margin-top:16px;padding-top:12px;border-top:1px solid var(--ink);display:grid;gap:12px}  /* 박물관 라벨: 작품 · 지은이 · 사양 · 소장처 */
+#home .lab{display:none}  /* 박물관 라벨은 컴퓨터 · 태블릿 첫 화면에만 — 휴대폰은 책 카드 아래 한 띠(.plab, 10/29 고침 2: 첫 화면 끝에 걸려 '소장처'에서 잘렸음) */
+#home dl{margin-top:16px;padding-top:12px;border-top:1px solid var(--ink);display:grid;gap:12px}  /* 박물관 라벨: 작품 · 지은이 · 사양 · 재료 · 소장처 */
 #home dt{font:300 11px/1.3 var(--sans);color:var(--muted)}
 #home dd{margin-top:4px;font:600 11px/1.6 var(--sans)}
 #home dd small{font:300 11px/1.5 var(--sans);color:var(--muted)}
-#home dd .buy{font-size:14px}  /* 사는 길은 단추 몫 14px(10/25 다듬기 가1 — 11px라 '「탁본」 읽기'보다 작았음) · 밑줄은 다른 길과 같은 1.5px · 5px(10/28 모양 점검 ⑤ — 1px · 2px 덮어쓰기를 뺌) */
-#home dd .go{display:inline-flex;padding-bottom:6px;border-bottom:1.5px solid var(--ink)}  /* 재료 줄 '팔레트 보기 ↓'(10/28) — 사는 길(14px)보다 작게, 라벨 글자 그대로 */
-.whr{font:300 11px/1.3 var(--sans);color:var(--muted)}#home .side .whr{display:block;margin-top:8px}@media (min-width:768px){#home .side .whr{display:none}}#home dd .whr{margin-left:8px}  /* 사는 링크가 가는 곳 — '교보문고' · 'Kyobo Book Centre · in Korean'(10/28 동원 'A 한 · 영 모두') */
+#home dd .go,.pbook .plab .go{display:inline-flex;padding-bottom:6px;border-bottom:1.5px solid var(--ink)}  /* 재료 줄 '팔레트 보기 ↓'(10/28) — 사는 길(14px)보다 작게, 라벨 글자 그대로 */
+.whr{font:300 11px/1.3 var(--sans);color:var(--muted)}  /* 사는 링크가 가는 곳 — '교보문고' · 'Kyobo Book Centre · in Korean'(10/28 동원 'A 한 · 영 모두') */
 /* 첫 화면 시집: 서 있는 책(10/24 A) — 앞표지·책등·뒤표지로 된 3D 책, CSS만(라이브러리 없음). 레퍼런스 Stripe Press(책등이 보이는 3D 책).
    크기는 표지 폭 200px(컴퓨터 250px), 두께는 책등 9mm 비율(200×9/128 = 14px). 26°로 비스듬히 서서 책등이 보임 — 돌리기는 main.js */
 @property --ry{syntax:"<angle>";inherits:false;initial-value:26deg}
@@ -172,6 +170,9 @@ html:lang(ko) .pbook .t{text-indent:-.6em}  /* 『 첫 줄 내어 걸기(본명�
 .pbook .t small{display:block;margin-top:8px;font:300 11px/1.6 var(--sans);color:var(--muted)}
 .pbook .t small.bcr{margin-top:4px}  /* 만든 사람 줄(10/28 ⑨) — 사양과 한 묶음이라 사이는 4px만(제목 → 사양 8px) · 이름 .bcr(.cr은 영상 칸 스틸 출처) */
 .pbook .note{margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--faint)}  /* 영어판: 교보 해외배송 안내 한 줄(10/24 ⑥) */
+.pbook .plab{grid-column:1/-1;margin-top:22px;padding-top:12px;border-top:1px solid var(--ink);display:grid;grid-template-columns:auto 1fr;column-gap:16px;row-gap:8px}  /* 책 카드 박물관 라벨(10/29 동원 'A 라벨은 책 카드로' — 휴대폰 첫 화면 라벨이 옮겨 옴): 지은이 · 사양 · 재료, 첫 화면 라벨과 같은 먹 선 · 11px */
+.pbook .plab>div{display:contents}.pbook .plab dt{font:300 11px/1.6 var(--sans);color:var(--muted)}.pbook .plab dd{font:600 11px/1.6 var(--sans)}
+@media (max-width:767px){.pbook .t small{display:none}}  /* 휴대폰은 사양 · 만든 사람이 아래 라벨에 — 사양 줄이 두 번 나오지 않게(컴퓨터 · 태블릿은 첫 화면 라벨이 그대로라 제목 아래 두 줄 그대로) */
 html:lang(en) .pbook .bk{grid-row:span 4}html:lang(en) .pbook .note{grid-column:2}  /* 영어 배송 안내가 책 칸(96px)에 다섯 줄로 끼지 않게(10/25 마지막 점검 B) */
 @media (max-width:369px){html:lang(en) .pbook .bk{grid-row:span 2}html:lang(en) .pbook .buy2,html:lang(en) .pbook .note{grid-column:1/-1}}  /* 영어 단추 'Buy at Kyobo Book Centre ↗'(207px)가 360px 이하 폰에서 오른쪽 칸을 넘지 않게 — 책 카드 아래 칸 폭으로(10/25) */
 /* 시집 상태 낱말 · 시집 소식(10/25 A 쌓이는 소식 세 줄) — 상태는 영상 칸 '준비 중'과 같은 알약(먹만 · 흰 바탕이라 테두리),
@@ -228,6 +229,7 @@ html:lang(en) .top nav{letter-spacing:.03em;gap:12px}  /* 영어 낱말은 한�
    지금 칸이 연락이어도 · 마우스를 올려도 글자는 종이색(.on · :hover의 먹색을 덮음) — 밑줄은 main.js가 상자 밑에 그리지 않음 */
 .top nav a.cta{display:inline-flex;align-items:center;margin:-4px 0;padding:8px 12px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);letter-spacing:.04em;white-space:nowrap}
 .top nav a.cta.on,.top nav a.cta:hover{color:var(--bg)}
+.top:not(.sc) nav a.cta:not(:hover){background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}  /* 쪽 맨 위에서는 테두리만 — 첫 화면에서 가장 어두운 것은 책의 검은 띠, 내리기 시작해 띠 아래 선(.sc)이 생기면 먹으로 채움 · 마우스를 올려도 채움(10/29 동원 '맨 위는 테두리' — 새 눈 비평 고침 2) */
 /* 휴대폰 한 줄 맞춤(실측 — 상자만큼 메뉴가 넓어져 375 · 390 한국어 · 360 · 412 영어에서 두 줄로 넘어갔음): 375–419 한국어 메뉴 간격 16 → 10 · 영어 좁은 간격을 419까지 · 영어 국기만을 374까지 · 374 아래 상자 여백 6 · 8 · 359 아래 한국어 간격 6(10/28 단 검사로 상자 여백을 단에 맞춤 — 컴퓨터 · 휴대폰 8 · 12 한 규칙) */
 @media (min-width:375px) and (max-width:419px){html:lang(ko) .top nav{gap:10px}}
 @media (min-width:410px) and (max-width:419px){html:lang(en) .top nav{gap:7px;letter-spacing:0}html:lang(en) .top nav .lang{padding-left:8px}html:lang(en) .top nav .lang .fl{margin-right:4px}}
@@ -535,8 +537,8 @@ html.sr-on{overflow:hidden}
 
 /* 「탁본」 길게 누르기 → 탁본 한 장(10/24) — 검은 먹 종이에 흰 글자. 누르는 동안만 나타나는 순간이라 검은 바탕 결정(⑤-2)의 예외 */
 .hint{display:none}
-.buy,.js .mode button,.colo .thm button,.sns a,.cap small a,.colo .pp-l,#home dd .go{position:relative}  /* 밑줄 링크 · 작은 단추의 누르는 자리(10/28 모양 점검 ⑥) */
-.buy::before,.js .mode button::before,#home dd .go::before{content:"";position:absolute;inset:-12px -4px}
+.buy,.js .mode button,.colo .thm button,.sns a,.cap small a,.colo .pp-l,#home dd .go,.pbook .plab .go{position:relative}  /* 밑줄 링크 · 작은 단추의 누르는 자리(10/28 모양 점검 ⑥) */
+.buy::before,.js .mode button::before,#home dd .go::before,.pbook .plab .go::before{content:"";position:absolute;inset:-12px -4px}
 .colo .thm button::before,.sns a::before,.cap small a::before,.colo .pp-l::before{content:"";position:absolute;inset:-16px -4px}
 /* 누름 반응 하나로(10/28 동원 'A 옅게 .5' — 일본 디테일 ⑧ · 시험 쪽 기준/브랜드 시안/누름반응시험_v1.html): 손가락 기기에서 회색 상자를 끄고 닿으면 바로 반쯤 옅게, 떼면 0.4초에 걸쳐 돌아옴(NDC '들어갈 땐 즉시, 물러날 땐 천천히').
    보내기(먹 반전) · 사진 띠 · 모아 보기 격자는 제 누름 모양이 있어 옅어지지 않게 뺌 · 책 · 「탁본」은 a · button이 아니라 걸리지 않음 · 메뉴는 색 바뀜과 함께 · 나타남(.rv) 중인 것도 옅어지게 .js로 한 단 높임. 아이폰은 main.js의 문서 touchstart가 있어야 :active를 그림 */
@@ -594,7 +596,8 @@ html.sr-on{overflow:hidden}
 /* 결 — 자바스크립트가 켜져 있고 '동작 줄이기'가 아닐 때만. 흐림은 명조의 가는 획에 맞춰 3px(조사 권고 2~4px) */
 @media (prefers-reduced-motion:no-preference){
   .nt.in b i{animation:nxp 2.4s ease-in-out 3}  /* '준비 중' 점이 화면에 들어오면 세 번 숨 쉬고 멈춤(10/27 숨 재기 1 — 전엔 쪽을 연 때부터 끝없이) · '동작 줄이기'면 멈춘 점 */
-  .top nav a{transition:color .35s var(--ease),opacity .4s}  /* 누르면 옅어졌다 0.4초에 돌아옴(10/28 ⑧ — 옅어지는 것은 손가락 기기만, 컴퓨터는 opacity가 바뀌지 않아 그대로) */
+  .top nav a{transition:color .35s var(--ease),opacity .4s}
+  .top nav a.cta{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),opacity .4s}  /* 맨 위 테두리 → 먹 채움 0.3초(10/29 고침 2) */  /* 누르면 옅어졌다 0.4초에 돌아옴(10/28 ⑧ — 옅어지는 것은 손가락 기기만, 컴퓨터는 opacity가 바뀌지 않아 그대로) */
   .top nav .ul{transition:transform .5s var(--ease),width .5s var(--ease),opacity .3s}  /* 지금 칸 밑줄이 미끄러짐('동작 줄이기'면 바로 그 자리) */
   .mini{transition:transform .5s var(--ease),visibility 0s .5s}  /* 작은 재생기는 아래에서 올라오고 내려감('동작 줄이기'면 바로) */
   .mini.on{transition:transform .5s var(--ease)}
@@ -640,17 +643,19 @@ html.sr-on{overflow:hidden}
   main>section>.label{grid-column:1/-1}
   main>section>.l{grid-column:1;grid-row:2;align-self:center}
   main>section>.r{grid-column:2;grid-row:2;align-self:center}
-  #home .kick{margin-top:0;font-size:12.5px}
+  #home{min-height:calc(100vh - var(--top));min-height:calc(100svh - var(--top))}  /* 첫 화면은 맨 위 띠를 뺀 높이 — 라벨이 화면 아래에 붙지 않게(휴대폰은 내용 높이, 10/29 고침 2) */
+  #home .kick{margin-top:0}
   #home .ht{margin-top:16px;font-size:clamp(60px,8.4vw,128px)}
   html:lang(en) #home .ht{font-size:clamp(38px,5.2vw,84px)}
-  #home .book{margin-top:0;column-gap:30px}
+  #home .book{margin-top:0;grid-template-columns:1fr}
   #home .hs{font-size:24px}
-  #home .side .hs{display:none}#home .hsl{display:block;margin-top:30px}  /* 작은 제목을 큰 제목 바로 아래로 — 표지처럼 '문을 열고 나오면 / 살아 있는 것들로 가득 차 있다'가 한 줄기(10/26 나2 A). 전에는 책 옆 위에 붙어 큰 제목보다 먼저 읽혔음 */
-  #home .tip{font-size:11px;text-align:right}
-  #home .tip::after{margin-left:auto}  /* 넓은 화면에선 안내 · 가는 선을 책 쪽(오른쪽)에 — 왼쪽 끝이면 1440에서 책과 159px · 1920에서 399px 떨어졌음(10/27 동원 'A 책 쪽으로') */
-  #home .bk{--w:250px;--h:367.2px;--t:17.6px}
-  #home .lab{grid-column:1/-1;grid-row:3;margin-top:44px}
-  #home dl{grid-template-columns:repeat(4,1fr);column-gap:30px}
+  #home .side{display:none}#home .hsl{display:block;margin-top:30px}  /* 작은 제목을 큰 제목 바로 아래로 — 표지처럼 '문을 열고 나오면 / 살아 있는 것들로 가득 차 있다'가 한 줄기(10/26 나2 A). 전에는 책 옆 위에 붙어 큰 제목보다 먼저 읽혔음 */
+  #home .pl{display:flex;flex-flow:row wrap;align-items:baseline;gap:16px 30px;margin-top:30px}  /* 두 길은 작은 제목 아래 한 줄(10/29 고침 2 — 전엔 사는 길이 첫 화면 위쪽에 없고 맨 아래 라벨 '소장처' 줄에만 있었음) */
+  #home .tip{grid-column:1;margin-top:16px}  /* 안내는 책 아래 가운데(10/29 고침 2 — 전: 책 왼쪽에 오른쪽 맞춤 + 가는 선) */
+  #home .bk{--w:clamp(250px,min(23vw,36vh),360px);justify-self:center}  /* 책이 주인공(10/29 고침 2): 1440×900에서 250 → 324px · 오른쪽 끝에서 오른쪽 단 가운데로. 화면 높이의 36%를 넘지 않아 1280×720에서도 라벨이 첫 화면 안(영어판 23vw면 17px 넘침). 비평의 24vw(346px)는 책 윗선이 맨 위 띠와 32px로 붙음 */
+  #home .lab{display:block;grid-column:1/-1;grid-row:3;margin-top:44px}
+  #home dl{grid-template-columns:repeat(4,auto);justify-content:space-between;column-gap:30px}#home dl.n6{grid-template-columns:repeat(5,auto)}#home dl>div:first-child{grid-column:1/-1}  /* 작품은 한 줄 통째 · 나머지는 한 줄에 글 길이대로(10/29 고침 2) — 태블릿 · 영어판(영어 제목 + 한국어 원제가 길어 같은 줄이면 작품이 4–9줄). 11/1부터 '이달의 한 줄'로 한 칸 더(.n6) */
+  .pbook .plab{display:none}
   #home dd{font-size:12.5px}
   .bk{--w:250px;--h:367.2px;--t:17.6px}
   #poem{grid-template-columns:300px 1fr}
@@ -707,7 +712,8 @@ html.sr-on{overflow:hidden}
 /* 컴퓨터의 낮은 화면(노트북 1280×720 · 1366×657 등) — 위 낮은 화면 규칙이 768 묶음에 덮여 16px · 위 60px 그대로였음(10/27 가1) */
 @media (min-width:768px) and (max-height:740px){.sheet .st{padding-top:36px;font-size:24px}.sheet .sp{font-size:14px;line-height:1.6}.sheet .sp p+p{margin-top:1.6em}}
 @media (min-width:980px){.poem .pair{display:grid;grid-template-columns:1fr 1fr;column-gap:30px;align-items:start}.poem .le{margin-bottom:0;line-height:2}}  /* 영어판 대역: 왼쪽 원문 · 오른쪽 번역 — 시 칸(폭−500px)이 480px 넘을 때만. 768–979px은 한쪽 단이 120–190px라 행이 2–4줄로 조각났음(10/27 점검) */
-@media (min-width:768px) and (max-width:1023px){#home .book{grid-template-columns:1fr;row-gap:22px}#home .side{padding-bottom:0}}  /* 태블릿 세로: 책 옆 칸이 좁아 작은 제목을 책 위로(10/25 마지막 점검 C) */
+/* 태블릿 세로(768–1023)의 책 위 작은 제목 규칙(10/25 마지막 점검 C)은 10/29 고침 2로 뺌 — 768부터 책 옆 칸(.side)이 없고 작은 제목 · 두 길은 왼쪽 단 */
+@media (min-width:1200px){html:lang(ko) #home dl{grid-template-columns:repeat(5,auto)}html:lang(ko) #home dl.n6{grid-template-columns:repeat(6,auto)}html:lang(ko) #home dl>div:first-child{grid-column:auto}}  /* 한국어는 1200px부터 라벨 다섯 칸(11/1부터 여섯 칸) 한 줄 — 10/29 고침 2 시안대로 */
 /* 시집 차례 단 수(10/25) — 휴대폰은 위 값(한국어 두 단 · 영어 한 단). 데스크톱 칸이 넓으면 한국어 1–4부를 한 줄에(책의 차례 쪽처럼),
    영어는 대역과 같은 두 단 · 소개 글은 차례 두 단 폭에 맞춤. 태블릿 세로처럼 칸이 좁으면 한 단 */
 @media (min-width:1300px){#poem>.bnews{max-width:min(50% - 14px,34em)}}  /* 넓은 화면에서 소식 폭 = 아래 소개 글 폭(차례 두 단) */
@@ -722,7 +728,7 @@ html.sr-on{overflow:hidden}
 @media print{
   :root,:root[data-theme]{--bg:#fff;--ink:#111;--muted:#444;--faint:#555;--rule:#ddd;--line:#bbb;--ph:#f2f2f2;--wall:#fff;--mark:#e6e6e6;color-scheme:light}
   html,body{background:#fff!important;color:#111!important}
-  .top,.skip,.srch,.mini,.door,.sheet,.pv,.js .hint,#home .tip,#home .sb,#home .side .whr,.thumbs,.pgrid,.js .mode,.pva,.nav2,.gbf,.ask,.colo .thm,.js .dot-n,.rec canvas.grid{display:none!important}
+  .top,.skip,.srch,.mini,.door,.sheet,.pv,.js .hint,#home .tip,#home .buyrow,.thumbs,.pgrid,.js .mode,.pva,.nav2,.gbf,.ask,.colo .thm,.js .dot-n,.rec canvas.grid{display:none!important}
   .js .rv,.js .strip img{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
   .js .label::after{transform:none!important}
   .rec .rl .n{position:static!important;width:auto!important;height:auto!important;overflow:visible!important;clip-path:none!important}

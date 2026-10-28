@@ -693,11 +693,12 @@ def render(site, poem, videos, photos, lang="ko"):
                f'    <div class="l"><h2 class="h2" id="palette-t">{t("pal_title", n=len(pg))}</h2><p class="lead">{t("pal_lead", total=ptotal, n=len(pg))}</p></div>\n'
                f'    <div class="r"><p class="pal" aria-hidden="true">{pal}</p><p class="pk">{t("pal_key", top=ptop, ones=pn.count(1))}</p></div>\n  </section>\n  ')  # 사진은 뺌(10/28 동원 "일단 팔레트 아래에 내 사진은 빼자")
     # 칸 끝 길 '「탁본」 읽기 ↓'(10/28 A)는 10/29 '시집 칸 통째로 앞으로'(시가 팔레트 위로 감)와 함께 뺌 — 팔레트는 차례 뒤 '이 시집의 재료'
+    medium = f'{keep(L["ex_medium_v"].format(n=len(pg), total=ptotal))} — <a class="go" href="#palette">{t("pal_go")} ↓</a>'  # 재료(10/28 — 미술관 라벨의 재료 칸, 팔레트로 가는 길) — 첫 화면 라벨 · 책 카드 라벨이 같이 씀
     exl = (f'<dl><div><dt>{t("ex_object")}</dt><dd>{work}</dd></div>'
            f'<div><dt>{t("ex_author")}</dt><dd>{e(S["name"])}</dd></div>'  # 지은이는 이름만(10/25 동원)
            f'<div><dt>{t("ex_spec")}</dt><dd>{keep(book["spec"])}</dd></div>\x00MONTH\x00'  # 이달의 한 줄(10/28 동원 'A 라벨에 한 줄') — 차례를 그린 뒤 채움
-           f'<div><dt>{t("ex_medium")}</dt><dd>{keep(L["ex_medium_v"].format(n=len(pg), total=ptotal))} — <a class="go" href="#palette">{t("pal_go")} ↓</a></dd></div>'  # 재료(10/28 — 미술관 라벨의 재료 칸, 팔레트로 가는 길)
-           f'<div><dt>{t("ex_collection")}</dt><dd>{t("ex_shelf")} — <a class="buy" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("소장처")}>{e(book["buy_label"])} ↗</a><span class="whr">{t("buy_where")}</span></dd></div></dl>')
+           f'<div><dt>{t("ex_medium")}</dt><dd>{medium}</dd></div>'
+           f'<div><dt>{t("ex_collection")}</dt><dd>{t("ex_shelf")}</dd></div></dl>')  # 소장처는 '당신의 책장' 글만(10/29 고침 2 — 사는 길이 첫 화면 두 길로 올라가 한 화면에 두 번 나오지 않게). 첫 화면 라벨은 컴퓨터 · 태블릿에서만 보임
 
     # 연표(years.json) — 줄의 note 칸이 각주(10/25 40곳 2차 ④ A, Andrew Trousdale식 경의의 각주): 줄 끝 위첨자 번호 + 연표 바로 아래 각주 목록
     notes, lis = [], []
@@ -956,7 +957,13 @@ def render(site, poem, videos, photos, lang="ko"):
     pgno = head + ptitle + (f'<br>{t("translated")}' if L["translated"] else "")
     note = f'<p class="note">{t("ship_note")}</p>' if L["ship_note"] else ""
     # 만든 사람 한 줄(10/28 동원 '모두 직접 했어' — 일본 디테일 보고서 ⑨, 書肆侃侃房 · 港の人가 장정까지 역할어로 적는 방식) — 책 카드 사양 아래, 이름은 한 덩어리
-    credit = f'<small class="bcr">{keep(book["credit"]).replace(e(S["name"]), e(S["name"]).replace(" ", NB))}</small>' if book.get("credit") else ""
+    credit_txt = keep(book["credit"]).replace(e(S["name"]), e(S["name"]).replace(" ", NB)) if book.get("credit") else ""
+    credit = f'<small class="bcr">{credit_txt}</small>' if credit_txt else ""
+    # 책 카드 박물관 라벨(10/29 동원 'A 라벨은 책 카드로' — 새 눈 비평 고침 2): 휴대폰은 첫 화면 라벨이 여기로 — 작품은 카드 제목이, 소장처는 사기 단추가 맡아
+    # 지은이(만든 사람 줄 그대로) · 사양 · (이달의 한 줄) · 재료만. 제목 아래 사양 · 만든 사람 두 줄(small)은 컴퓨터 · 태블릿에서만 보임(그쪽은 첫 화면 라벨이 그대로)
+    plab = (f'<dl class="plab"><div><dt>{t("ex_author")}</dt><dd>{credit_txt or e(S["name"])}</dd></div>'
+            f'<div><dt>{t("ex_spec")}</dt><dd>{keep(book["spec"])}</dd></div>\x00MONTH\x00'
+            f'<div><dt>{t("ex_medium")}</dt><dd>{medium}</dd></div></dl>')
     # 시집 소개 · 차례(10/25 A 아래로 이어 쌓기) — 책 카드 다음에 머리 두 줄 → 소개 한 단락 → 차례(「탁본」 줄만 먹)
     # 글은 교보에 올린 최종본 그대로. 영어판은 옮긴 제목 곁에 한국어 원제를 작게(「탁본」 대역과 같은 방식)
     bi, toc, toc_ko = book["intro"], book["toc"], site["book"]["toc"]  # 차례 줄은 {title, page, en: {title}}(10/25 원고 옮기기 — 한 · 영이 한 줄에)
@@ -1014,7 +1021,8 @@ def render(site, poem, videos, photos, lang="ko"):
               f'<p class="btext">{keep(bi["text"])}</p>'
               f'<div class="btoc" id="toc"><h3>{e(toc["label"])}</h3><p class="key"><i></i>{t("toc_key")}</p><div class="parts">{parts}</div>'
               f'<ol class="tail">{"".join(toc_li(r, k) for r, k in zip(toc["tail"], toc_ko["tail"]))}</ol></div></div>')
-    exl = exl.replace("\x00MONTH\x00", month_row[0])  # 첫 화면 라벨의 '이달의 한 줄' — 차례에서 그달 줄을 찾은 뒤(열린 줄이 없으면 빈 칸)
+    exl, plab = (x.replace("\x00MONTH\x00", month_row[0]) for x in (exl, plab))
+    exl = exl.replace("<dl>", f'<dl class="n{6 if month_row[0] else 5}">', 1)  # 라벨 칸 수 — 컴퓨터 한 줄 짜임이 '이달의 한 줄'이 든 달(여섯 칸)에도 맞게(10/29 고침 2)  # 첫 화면 라벨의 '이달의 한 줄' — 차례에서 그달 줄을 찾은 뒤(열린 줄이 없으면 빈 칸)
     # 시집 상태 낱말 · 시집 소식(10/25 A 쌓이는 소식 세 줄) — 빌드한 날 기준: 나온 날 전이면 '출간 예정', 그날부터 '판매 중'.
     # 소식은 책에 일어난 일(판권면 '고친 날'은 사이트에 일어난 일) — 날짜가 지난 것만, 최근 세 줄 + 나머지는 '지난 소식'으로 접음
     state = f'<p class="bstate"><i aria-hidden="true"></i>{t("book_on" if day >= date.fromisoformat(book["published"]) else "book_soon")}</p>'
@@ -1064,6 +1072,12 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden>{t("search_none")}</p></div></div>\n'
             f'<script id="sidx" type="application/json">{sidx_js}</script>\n')
 
+    def paths(k):
+        # 첫 화면 두 길(10/29 동원 'A' — 새 눈 비평 고침 2 · 10/24 '같은 무게'): 「탁본」 읽기 · 책장에 꽂기를 한자리에 — 휴대폰은 책 옆 아래(.ps · 책 아랫선),
+        # 컴퓨터 · 태블릿은 작은 제목 아래 한 줄(.pl). 한 번에 하나만 보여 읽기 도구도 한 번만 읽음(.hs · .hsl과 같은 방식)
+        return (f'<p class="paths {k}"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a><span class="buyrow">'
+                f'<a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("첫화면")}>{e(book["buy_label"])} ↗</a><span class="whr">{t("buy_where")}</span></span></p>')
+
     return f"""<!doctype html>
 <html lang="{lang}">
 <head>
@@ -1103,18 +1117,18 @@ def render(site, poem, videos, photos, lang="ko"):
 <main id="main">
   <section id="home" aria-label="{t("home_label")}">
     <div class="l"><h1 class="kick"><span class="name" data-type="{e("|".join(typing_steps(S["name"])))}">{e(S["name"])}</span> <span>{t("ex_kick")}</span></h1>
-      <p class="ht">{ht}</p><p class="hs hsl">{hs}</p></div>
-    <div class="r book"><div class="side"><p class="hs">{hs}</p><a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("첫화면")}>{e(book["buy_label"])} ↗</a><span class="whr">{t("buy_where")}</span><p class="tip">{t("ex_tip")}</p></div>
+      <p class="ht">{ht}</p><p class="hs hsl">{hs}</p>{paths("pl")}</div>
+    <div class="r book"><div class="side"><p class="hs">{hs}</p>{paths("ps")}</div>
       <div class="bk" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="{t("cover_alt", book=e(book["title"]) if en else e(book["title"]))}" width="600" height="881" fetchpriority="high" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i><i class="win"></i></div>
-      </div>
-    <div class="lab"><p class="rd"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a></p>{exl}</div>
+      <p class="tip">{t("ex_tip")}</p></div>
+    <div class="lab">{exl}</div>
   </section>
   <section id="poem" aria-labelledby="poem-t">
     <p class="label">{t("label_poem")}</p>
     <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>
       <p class="pgno">{pgno}</p><p class="pbr">{t("sheet_bridge")}</p></div>
     <div class="l pbook" id="bookcard"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
-      {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}</div>
+      {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}{plab}</div>
     {bnews}{bintro}
   </section>
   {palette}<section id="me" aria-labelledby="me-t">

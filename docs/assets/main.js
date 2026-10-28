@@ -993,7 +993,11 @@
 
   // 맨 위 띠: 넘기면 아래 선이 생기고 뒤가 흐리게 비침
   const top = document.querySelector(".top");
-  if (top) addEventListener("scroll", () => top.classList.toggle("sc", scrollY > 8), { passive: true });
+  if (top) {
+    const sc = () => top.classList.toggle("sc", scrollY > 8);
+    sc();  // 쪽 가운데에서 다시 열어도(새로 고침 · #주소) 처음부터 맞게 — 연락하기 상자의 테두리 · 먹 채움이 이 표시를 따름(10/29 고침 2)
+    addEventListener("scroll", sc, { passive: true });
+  }
 
   // 문의 폼: Formspree 주소가 들어가기 전에는 보내지 않고 안내만
   // 방명록 보내기(10/26 A — 설계 v2) — fetch로(쿠키 없이 · reCAPTCHA 없이), 보낸 뒤엔 '받았다'만 · 한도가 차면(429) 다음 달에 · 보내는 동안 단추를 잠금
