@@ -24,6 +24,7 @@
     "buy_url": "https://product.kyobobook.co.kr/detail/S000221586101",
     "cover": "img/cover.jpg",
     "spec": "110쪽 · 128×188mm · 2026년 11월 1일 · 교보문고 퍼플",
+    "credit": "글 · 표지 · 조판 남동원",
     "published": "2026-11-01",
     "store_label": "교보문고에서 사기",
     "store": "교보문고 퍼플",
@@ -625,6 +626,7 @@
       "door": "Open the door",
       "buy_label": "Add to your shelf",
       "spec": "110 pages · 128 × 188 mm · November 1, 2026 · Kyobo PubPle",
+      "credit": "Text, cover and typesetting by Dongwon Nam",
       "store_label": "Buy at Kyobo Book Centre",
       "store": "Kyobo PubPle",
       "intro": {

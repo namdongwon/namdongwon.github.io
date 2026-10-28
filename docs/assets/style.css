@@ -170,6 +170,7 @@ html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spaci
 html:lang(ko) .pbook .t{text-indent:-.6em}  /* 『 첫 줄 내어 걸기(본명조 『 앞 빈 0.605em — 10/26 다시 잼) — 둘째 줄과 첫머리가 맞게(10/24) */
 .pbook .t small{text-indent:0}
 .pbook .t small{display:block;margin-top:8px;font:300 11px/1.6 var(--sans);color:var(--muted)}
+.pbook .t small.bcr{margin-top:4px}  /* 만든 사람 줄(10/28 ⑨) — 사양과 한 묶음이라 사이는 4px만(제목 → 사양 8px) · 이름 .bcr(.cr은 영상 칸 스틸 출처) */
 .pbook .note{margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--faint)}  /* 영어판: 교보 해외배송 안내 한 줄(10/24 ⑥) */
 html:lang(en) .pbook .bk{grid-row:span 4}html:lang(en) .pbook .note{grid-column:2}  /* 영어 배송 안내가 책 칸(96px)에 다섯 줄로 끼지 않게(10/25 마지막 점검 B) */
 @media (max-width:369px){html:lang(en) .pbook .bk{grid-row:span 2}html:lang(en) .pbook .buy2,html:lang(en) .pbook .note{grid-column:1/-1}}  /* 영어 단추 'Buy at Kyobo Book Centre ↗'(207px)가 360px 이하 폰에서 오른쪽 칸을 넘지 않게 — 책 카드 아래 칸 폭으로(10/25) */

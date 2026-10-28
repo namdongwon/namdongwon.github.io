@@ -951,6 +951,8 @@ def render(site, poem, videos, photos, lang="ko"):
         ptitle = tt(bt, not en, tail)
     pgno = head + ptitle + (f'<br>{t("translated")}' if L["translated"] else "")
     note = f'<p class="note">{t("ship_note")}</p>' if L["ship_note"] else ""
+    # 만든 사람 한 줄(10/28 동원 '모두 직접 했어' — 일본 디테일 보고서 ⑨, 書肆侃侃房 · 港の人가 장정까지 역할어로 적는 방식) — 책 카드 사양 아래, 이름은 한 덩어리
+    credit = f'<small class="bcr">{keep(book["credit"]).replace(e(S["name"]), e(S["name"]).replace(" ", NB))}</small>' if book.get("credit") else ""
     # 시집 소개 · 차례(10/25 A 아래로 이어 쌓기) — 책 카드 다음에 머리 두 줄 → 소개 한 단락 → 차례(「탁본」 줄만 먹)
     # 글은 교보에 올린 최종본 그대로. 영어판은 옮긴 제목 곁에 한국어 원제를 작게(「탁본」 대역과 같은 방식)
     bi, toc, toc_ko = book["intro"], book["toc"], site["book"]["toc"]  # 차례 줄은 {title, page, en: {title}}(10/25 원고 옮기기 — 한 · 영이 한 줄에)
@@ -1113,7 +1115,7 @@ def render(site, poem, videos, photos, lang="ko"):
     <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>
       <p class="pgno">{pgno}</p></div>
     <div class="l pbook" id="bookcard"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
-      {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small></p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}</div>
+      {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}</div>
     {bnews}{bintro}
   </section>
   <section id="photo" aria-labelledby="photo-t">
