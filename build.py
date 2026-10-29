@@ -843,11 +843,11 @@ def render(site, poem, videos, photos, lang="ko"):
         v = items[0]
         # 큰 한 편: 자바스크립트가 있으면 누를 때 이 자리에서 재생 + 작은 재생기(main.js) — 없으면 유튜브로 가는 링크 그대로
         latest = (f'<div class="vbox" data-yt="{e(v["youtube_id"])}"><a href="https://www.youtube.com/watch?v={e(v["youtube_id"])}" target="_blank" rel="noopener">'
-                  f'<img class="big" src="https://i.ytimg.com/vi/{e(v["youtube_id"])}/hqdefault.jpg" alt="{t("video_alt", title=e(v["title"]))}" loading="lazy"></a></div>'
-                  + sentence(v, lang, kinds))
+                  f'<img class="big" src="https://i.ytimg.com/vi/{e(v["youtube_id"])}/hqdefault.jpg" alt="{t("video_alt", title=e(v["title"]))}" loading="lazy"></a></div>')
+        info = sentence(v, lang, kinds)
         rest = "".join(f'<li><a href="https://www.youtube.com/watch?v={e(x["youtube_id"])}" target="_blank" rel="noopener">'
                        f'<i>{e(kinds.get(x["kind"], x["kind"]))}</i><b>{marked(x["kind"], x["title"], lang)}</b><em>{e(x["date"].replace("-", "."))}</em></a></li>' for x in items[1:])
-        past = f'<ul class="toc">{rest}</ul>' if rest else f'<p class="empty">{t("empty")}</p>'
+        past = f'<ul class="toc">{rest}</ul>' if rest else ""
         go = t("go_watch")
         for x in items:  # 찾기: 갈래 낱말 · 작품 · 만든 이 → 유튜브
             ix["video"].append((tg["video"], " ".join(y for y in (kinds.get(x["kind"], x["kind"]), x["title"], x.get("creator", "")) if y),
@@ -861,14 +861,17 @@ def render(site, poem, videos, photos, lang="ko"):
             # 첫 편 준비 중(10/24 B): 고른 썸네일 시안을 흑백으로 + '준비 중' + 스틸 출처. 올리면 이 자리에 유튜브 썸네일(색)과 재생 단추
             first = e(u["title"]) if en else marked(u["kind"], u["title"])
             latest = (f'<div class="nt"><img src="{P}assets/img/next.jpg" alt="{t("first_alt", title=first)}" width="1280" height="720" loading="lazy">'
-                      f'<b><i aria-hidden="true"></i>{t("coming")}</b></div>'
-                      + sentence(u, lang, kinds)
-                      + (f'<p class="cr">{keep(u["credit"])}</p>' if u.get("credit") else ""))
+                      f'<b><i aria-hidden="true"></i>{t("coming")}</b></div>')
+            info = sentence(u, lang, kinds) + (f'<p class="cr">{keep(u["credit"])}</p>' if u.get("credit") else "")
         else:
-            latest = (f'<div class="big soon" role="img" aria-label="{t("first_soon")}"><span>{t("first_soon")}</span></div>'
-                      + sentence(u, lang, kinds))
-        past = f'<p class="empty">{t("empty")}</p>'
+            latest = f'<div class="big soon" role="img" aria-label="{t("first_soon")}"><span>{t("first_soon")}</span></div>'
+            info = sentence(u, lang, kinds)
+        past = ""
         go = t("go_channel")
+    # 지난 편이 없을 때(첫 편 전 · 첫 편만 있을 때, 10/29 동원 'B 접고 첫 편을 크게' — 새 눈 비평 그 밖 8): '지난 편' 칸 대신 한 줄 + 컴퓨터는 첫 편을 두 단에 걸쳐 크게(#video.solo)
+    #   — 지난 편이 하나라도 생기면 지금 모양(오른쪽 차례)으로. 한 줄의 '지난 편'은 칸 꼬리표와 같은 .sub(영어는 대문자)
+    solo = not past
+    pastnone = f'<p class="pastnone"><b class="sub">{t("past")}</b> — {t("empty")}</p>' if solo else ""
 
     c = S["contact"]
     # 문의 폼은 쓰지 않음(10/27 동원 "문의 폼은 B로 하자 — 문의 폼 없이 인스타그램 · 메일 두 길") — 연락 칸은 인스타그램 단추 · 메일 · 방명록.
@@ -1155,11 +1158,11 @@ def render(site, poem, videos, photos, lang="ko"):
       <p class="nav2"><button type="button" data-go="-1">{t("prev")}</button><button type="button" data-go="1">{t("next")}</button></p>
       <a class="buy" href="{e(acc["url"])}" target="_blank" rel="noopener">{t("more_ig")} ↗</a></div>
   </section>
-  <section id="video" aria-labelledby="video-t">
+  <section id="video"{' class="solo"' if solo else ""} aria-labelledby="video-t">
     <p class="label">{t("label_video")}</p>
     <div class="l"><div class="ch2"><h2 id="video-t"{ko_attr if re.search("[가-힣]", ch["name"]) else ""}>{e(ch["name"])}</h2><span>{e(ch["desc"])}</span></div>{latest}
-      <a class="buy" href="{e(ch["url"])}" target="_blank" rel="noopener">{go} ↗</a></div>
-    <div class="r"><p class="sub">{t("past")}</p>{past}</div>
+      <div class="vside">{info}{pastnone}<a class="buy" href="{e(ch["url"])}" target="_blank" rel="noopener">{go} ↗</a></div></div>
+    {"" if solo else f'<div class="r"><p class="sub">{t("past")}</p>{past}</div>'}
   </section>
   <section id="contact" aria-labelledby="contact-t">
     <p class="label">{t("label_contact")}</p>

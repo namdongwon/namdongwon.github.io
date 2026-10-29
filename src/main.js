@@ -193,7 +193,7 @@
   // 결 — 칸 요소들이 화면에 들어오면 차례로 떠오름(시·기록은 장면이 맡음)
   if (motion) {
     const sels = ["main section > .label", "#poem .h2", ".pbook", "#me .h2", ".tagl", ".bio", ".years li", ".now", "#photo .head", "#photo .caps",
-      "#photo .nav2", ".bhead", ".btext", ".btoc h3", ".btoc .parts > div", ".btoc .tail", ".ch2", ".big", ".vt", ".sub", ".toc li", ".empty", "#contact .h2", ".lead", ".ask > *", ".sns", ".colo", "#palette .h2", ".pal", ".pk"];
+      "#photo .nav2", ".bhead", ".btext", ".btoc h3", ".btoc .parts > div", ".btoc .tail", ".ch2", ".big", ".vt", ".sub", ".toc li", ".empty", ".pastnone", "#contact .h2", ".lead", ".ask > *", ".sns", ".colo", "#palette .h2", ".pal", ".pk"];
     const seen = new Set();
     sels.forEach(sel => document.querySelectorAll(sel).forEach(el => {
       if (seen.has(el)) return;

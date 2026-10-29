@@ -443,7 +443,9 @@ html.sr-on{overflow:hidden}
 .vt b{font-weight:400;color:var(--ink)}  /* 제목 · 만든 이만 먹 */
 .vt cite{font-style:normal}
 #video .buy{margin-top:16px}
-.sub{margin-top:36px;font:600 11px/1 var(--sans);letter-spacing:.32em;color:var(--muted)}
+.sub{margin-top:36px;font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  /* '지난 편' — 칸 꼬리표와 같이 한글 자간 .04em(10/29 칸 머리 한 벌에 맞춤) */
+.pastnone{margin-top:22px;padding-top:12px;border-top:1px solid var(--rule);font:300 12.5px/1.6 var(--sans);color:var(--muted)}  /* 지난 편이 없을 때 '지난 편' 칸 대신 한 줄(10/29 동원 'B 접고 첫 편을 크게' — 새 눈 비평 그 밖 8) */
+.pastnone .sub{display:inline;margin:0 2px 0 0;font:600 12.5px/1.6 var(--sans);color:var(--ink)}
 .toc{list-style:none;margin-top:16px;border-top:1px solid var(--rule)}
 .toc li{border-bottom:1px solid var(--rule)}
 .toc a,.toc .row{display:grid;grid-template-columns:44px 1fr auto;align-items:baseline;gap:8px;padding:16px 0}
@@ -670,6 +672,7 @@ html.sr-on{overflow:hidden}
   #me>.l,#me>.r{align-self:start;margin-top:36px}
   #me>.l{position:sticky;top:110px}  /* 소개도 이름을 위에 붙이고 연표를 읽는 동안 따라옴 — 가운데 서서 이름 위가 438px 비었음(10/25 다듬기 가3) */
   #contact>.l{align-self:start;margin-top:36px;position:sticky;top:110px}  /* 연락 칸도 소개처럼 제목을 위에 붙이고 따라옴 — 방명록을 켜면 오른쪽이 길어져 제목이 꼬리표에서 440–650px 내려갔음(10/27 점검) */
+  #video.solo>.l{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);column-gap:30px;align-items:end}#video.solo>.l>.ch2{grid-column:1/-1;align-self:start}#video.solo>.l>.vside{grid-column:2}  /* 지난 편이 없을 때 첫 편을 두 단에 걸쳐 크게(2/3) · 글 · 링크 · 한 줄은 오른쪽 1/3 아랫선(10/29 그 밖 8 B) */
   #video>.r{align-self:start;margin-top:36px}  /* 유튜브 '지난 편'도 꼬리표 아래 36px 위 맞춤(10/28 모양 점검 ② — 가운데에 떠 1440에서 196px 아래) */
   #palette>.l,#palette>.r{align-self:start;margin-top:36px}
   #palette>.l{position:sticky;top:110px}  /* 글자 팔레트도 소개 · 시집처럼 제목을 위에 붙이고 견본을 보는 동안 따라옴(10/28) */
