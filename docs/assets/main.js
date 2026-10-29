@@ -193,7 +193,7 @@
   // 결 — 칸 요소들이 화면에 들어오면 차례로 떠오름(시·기록은 장면이 맡음)
   if (motion) {
     const sels = ["main section > .label", "#poem .h2", ".pbook", "#me .h2", ".tagl", ".bio", ".years li", ".now", "#photo .head", "#photo .caps",
-      "#photo .nav2", ".bhead", ".btext", ".btoc h3", ".btoc .parts > div", ".btoc .tail", ".ch2", ".big", ".vt", ".sub", ".toc li", ".empty", ".pastnone", "#contact .h2", ".lead", ".ask > *", ".sns", ".colo", "#palette .h2", ".pal", ".pk"];
+      "#photo .nav2", ".bhead", ".btext", ".btoc h3", ".btoc .parts > div", ".btoc .parts > details", ".btoc .tail", ".ch2", ".big", ".vt", ".sub", ".toc li", ".empty", ".pastnone", "#contact .h2", ".lead", ".ask > *", ".sns", ".colo", "#palette .h2", ".pal", ".pk"];
     const seen = new Set();
     sels.forEach(sel => document.querySelectorAll(sel).forEach(el => {
       if (seen.has(el)) return;
@@ -1132,9 +1132,17 @@
   // 쪽 안에서 옮긴 뒤 주소창의 #은 지움 — 그 주소를 나누면 받은 사람이 문 · 첫 화면 없이 그 칸에서 시작했음(10/28 동원 'A 주소창의 # 지우기').
   // 깊은 링크로 들어온 첫 주소(#t23 등)는 그대로 · 뒤로 가기는 전처럼 앞 칸 차례로(기록 칸은 남고 주소만 바뀜)
   addEventListener("hashchange", () => { if (location.hash) history.replaceState(history.state, "", location.pathname + location.search); });
+  // 접힌 묶음(영어판 차례의 부 · 지난 소식) 안의 줄로 가는 쪽 안 링크는 먼저 펼침 — 첫 화면 '이달의 한 줄'(#tN) 등(10/29 영어판 차례 접기)
+  document.addEventListener("click", ev => {
+    const a = ev.target.closest && ev.target.closest('a[href^="#"]'), id = a && a.getAttribute("href").slice(1);
+    const el = id && document.getElementById(decodeURIComponent(id)), fold = el && el.closest("details");
+    if (fold && !fold.open) fold.open = true;
+  });
   // 깊은 링크(#t23 · #l9 · #n1 …)로 열면 그 줄에 찾기와 같은 옅은 바탕 1.6초(10/28 사용 편의 점검 ⑤ — 어느 줄로 왔는지 표시가 없었음)
   if (location.hash) {
     const hit = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    const fold = hit && hit.closest("details");
+    if (fold && !fold.open) { fold.open = true; hit.scrollIntoView({ block: "center" }); }  // 접힌 부 안의 줄이면 펼친 뒤 그 줄로
     if (hit && !hit.matches("section")) { hit.classList.add("hit"); setTimeout(() => hit.classList.remove("hit"), 1600); }
   }
 

@@ -200,6 +200,11 @@ html:lang(en) .btoc h3{letter-spacing:0}  /* 영어 소문자 문장에는 넓�
 .btoc .parts{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .btoc h4{margin-bottom:8px;font:600 11px/1 var(--sans);letter-spacing:.08em;color:var(--muted)}
 .btoc ol{list-style:none;margin:0;padding:0}
+html:lang(en) .btoc .parts{row-gap:0;border-top:1px solid var(--rule)}.btoc details{border-bottom:1px solid var(--rule)}  /* 영어판 차례는 부마다 접음(10/29 동원 'B 접고 첫 세 편' — 새 눈 비평 그 밖 9) */
+.btoc summary{list-style:none;display:grid;grid-template-columns:1fr auto;align-items:baseline;padding:12px 0;cursor:pointer;font:600 11px/1 var(--sans);letter-spacing:.08em;color:var(--muted)}
+.btoc summary::-webkit-details-marker{display:none}.btoc summary .lb{font-weight:300;letter-spacing:0}.btoc summary .lb b{font-weight:600;letter-spacing:.08em}
+.btoc summary::after{content:"+";grid-column:2;grid-row:1;font:300 14px/1 var(--sans);color:var(--ink)}.btoc details[open] summary::after{content:"−"}
+.btoc details ol{padding-bottom:12px}.btoc summary .pv3{grid-column:1/-1;margin-top:8px;font:300 12.5px/1.5 var(--body);color:var(--faint)}.btoc details[open] summary .pv3{display:none}  /* 접힌 부는 첫 세 편 제목 미리 보기 */
 .btoc li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:.2em 0;font:14px/1.5 var(--body);color:var(--faint);word-break:keep-all}  /* 줄 높이 1.9 → 1.5 + 위아래 .2em — 한 줄 간격은 그대로, 넘어간 제목은 붙어 보이게(10/25 다듬기 가7) */
 .btoc li>span:last-child{flex:none;font:300 11px/1 var(--sans);font-variant-numeric:tabular-nums}
 .btoc li.on{color:var(--ink)}

@@ -1027,8 +1027,17 @@ def render(site, poem, videos, photos, lang="ko"):
         title = f'<a href="#poem">{e(row["title"])}</a>' if cls == "on" else e(row["title"])
         here = f'<span class="sr"> {t("toc_here")}</span>' if cls == "on" else ""
         return f'<li{attr}><span>{title}{ko}{here}{tag}</span><span>{row["page"]}</span>{line}</li>'
-    parts = "".join(f'<div><h4>{e(p["name"])}</h4><ol>{"".join(toc_li(r, k, p["name"]) for r, k in zip(p["items"], kp["items"]))}</ol></div>'
-                    for p, kp in zip(toc["parts"], toc_ko["parts"]))
+    def part(p, kp):
+        lis = "".join(toc_li(r, k, p["name"]) for r, k in zip(p["items"], kp["items"]))
+        if not en:
+            return f'<div><h4>{e(p["name"])}</h4><ol>{lis}</ol></div>'
+        # 영어판은 부마다 접음(10/29 동원 'B 접고 첫 세 편' — 새 눈 비평 그 밖 9: 휴대폰 한 단 60줄이라 차례가 1,894px) — 「Rubbing」 · 이달의 줄이 든 부만 펼침,
+        # 접힌 부는 첫 세 편 제목을 미리 보임 · 쪽 안 링크(첫 화면 '이달의 한 줄' · 찾기)로 그 줄에 가면 main.js가 펼침. 한국어판은 두 단이라 그대로
+        op = any(k["title"] == site["poem"]["title"] or (k["title"] == cur and k["title"] in mo) for k in kp["items"])
+        pv = " · ".join(e(r["title"]) for r in p["items"][:3])
+        return (f'<details{" open" if op else ""}><summary><span class="lb"><b>{e(p["name"])}</b> · {t("toc_part_n", n=len(p["items"]))}</span>'
+                f'<small class="pv3">{pv} …</small></summary><ol>{lis}</ol></details>')
+    parts = "".join(part(p, kp) for p, kp in zip(toc["parts"], toc_ko["parts"]))
     bintro = (f'<div class="bintro"><p class="bhead">{"<br>".join(e(x) for x in bi["lead"])}</p>'
               f'<p class="btext">{keep(bi["text"])}</p>'
               f'<div class="btoc" id="toc"><h3>{e(toc["label"])}</h3><p class="key"><i></i>{t("toc_key")}</p><div class="parts">{parts}</div>'

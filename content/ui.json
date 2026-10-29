@@ -408,6 +408,10 @@
     "ko": "{title} 썸네일",
     "en": "{title} — thumbnail"
   },
+  "toc_part_n": {
+    "ko": "{n}편",
+    "en": "{n} poems"
+  },
   "past": {
     "ko": "지난 편",
     "en": "Past episodes"
