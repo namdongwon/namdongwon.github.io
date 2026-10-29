@@ -697,16 +697,18 @@ html.sr-on{overflow:hidden}
   .toc b{font-size:18px}
   .vt{font-size:22px}
   .ch2 h2{font-size:40px}
-  #photo{display:grid;grid-template-rows:auto 1fr auto auto 1fr}  /* 사진은 왼쪽 줄 2–5, 오른쪽은 계정 · 보기 방식(줄 3) + 캡션 · 넘기기(줄 4)를 가운데로 — 줄 2 · 5는 빈 칸(10/25 ⑤) */
+  #photo{display:grid;grid-template-rows:auto auto auto auto}  /* 머리(이름 · 보기 방식)는 위 한 줄 · 아래 사진(10/29 동원 'B 여덟 장 한 줄' — 새 눈 비평 그 밖 7: 모아 보기가 처음이 된 뒤 440px 격자 옆에 이름이 떠 있었음). 전: 사진 왼쪽 줄 2–5 · 오른쪽 계정 · 캡션을 가운데로(10/25 ⑤) */
   #photo .info,#photo .top2{display:block}
-  #photo>.l{grid-row:2 / -1}
-  #photo>.top2{grid-row:3;align-self:end}
-  #photo>.info{grid-row:4;align-self:start}
+  #photo>.top2{grid-column:1/-1;grid-row:2;display:flex;justify-content:space-between;align-items:flex-end;margin-top:36px}
+  #photo .mode{margin-top:0}
+  #photo>.l{grid-row:3;margin-top:30px}
+  #photo>.info{grid-row:3;align-self:end}  /* 한 장씩: 큰 사진 왼쪽 · 캡션 · 링크는 오른쪽 사진 아랫선 */
+  #photo.all>.l{grid-column:1/-1}#photo.all>.info{grid-column:1/-1;grid-row:4;align-self:auto}  /* 모아 보기: 격자는 두 단을 다 씀 · 링크는 아래 */
   #photo .head{margin-top:0}
   #photo .head h2{font-size:40px}  /* 칸 제목(.h2) · .ch2 h2와 같은 40px(10/29 그 밖 3) */
   #photo .strip{margin-top:0;max-width:440px}
   .thumbs{max-width:440px}
-  .pgrid{grid-template-columns:repeat(4,minmax(0,1fr));max-width:440px}.pgrid .more{display:none}
+  .pgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.pgrid .more{display:none}  /* 태블릿은 넷씩 두 줄 · 1024px부터 여덟 장 한 줄(아래) */
   .door .t{font-size:30px}
   .rec .n{font-size:40px}
   .sheet{padding:0 calc(50vw - 280px)}
@@ -718,6 +720,7 @@ html.sr-on{overflow:hidden}
 @media (min-width:768px) and (max-height:740px){.sheet .st{padding-top:36px;font-size:24px}.sheet .sp{font-size:14px;line-height:1.6}.sheet .sp p+p{margin-top:1.6em}}
 @media (min-width:980px){.poem .pair{display:grid;grid-template-columns:1fr 1fr;column-gap:30px;align-items:start}.poem .le{margin-bottom:0;line-height:2}}  /* 영어판 대역: 왼쪽 원문 · 오른쪽 번역 — 시 칸(폭−500px)이 480px 넘을 때만. 768–979px은 한쪽 단이 120–190px라 행이 2–4줄로 조각났음(10/27 점검) */
 /* 태블릿 세로(768–1023)의 책 위 작은 제목 규칙(10/25 마지막 점검 C)은 10/29 고침 2로 뺌 — 768부터 책 옆 칸(.side)이 없고 작은 제목 · 두 길은 왼쪽 단 */
+@media (min-width:1024px){#photo.all .pgrid{grid-template-columns:repeat(8,minmax(0,1fr))}}  /* 흑백 여덟 장 한 줄 — 밀착 인화지처럼(10/29 그 밖 7 B) */
 @media (min-width:1200px){html:lang(ko) #home dl{grid-template-columns:repeat(5,auto)}html:lang(ko) #home dl.n6{grid-template-columns:repeat(6,auto)}html:lang(ko) #home dl>div:first-child{grid-column:auto}}  /* 한국어는 1200px부터 라벨 다섯 칸(11/1부터 여섯 칸) 한 줄 — 10/29 고침 2 시안대로 */
 /* 시집 차례 단 수(10/25) — 휴대폰은 위 값(한국어 두 단 · 영어 한 단). 데스크톱 칸이 넓으면 한국어 1–4부를 한 줄에(책의 차례 쪽처럼),
    영어는 대역과 같은 두 단 · 소개 글은 차례 두 단 폭에 맞춤. 태블릿 세로처럼 칸이 좁으면 한 단 */
