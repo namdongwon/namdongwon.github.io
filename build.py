@@ -831,6 +831,9 @@ def render(site, poem, videos, photos, lang="ko"):
                      for i, p in enumerate(PH["items"]))
     pgrid = "".join(f'<button type="button"{tart(p)} style="--i:{i}" aria-label="{t("grid", i=i + 1)}"><img data-src="{thumb(p)}" alt="" {tsize(p)}>'
                     f'<span class="no">{i + 1:02d}</span></button>' for i, p in enumerate(PH["items"]))
+    # 격자 끝 칸 '인스타그램에서 더 보기 ↗'(10/29 동원 'A 모아 보기 먼저' — 휴대폰 셋씩 셋째 줄 빈칸을 채움, 컴퓨터는 넷씩 두 줄이라 숨김)
+    pgrid += (f'<a class="more" href="{e(acc["url"])}" target="_blank" rel="noopener" style="--i:{len(PH["items"])}" aria-label="{t("more_ig")}">'
+              f'<span>{t("more_ig_a")}</span><b>{t("more_ig_b")} ↗</b></a>')
 
     # 영상 칸 — 최신 한 편 크게 + 지난 편은 차례처럼(편 번호 없음)
     ch, items, kinds = {**S["channel"], "url": link_url(site, S["channel"]["link"])}, V["items"], L["kinds"]

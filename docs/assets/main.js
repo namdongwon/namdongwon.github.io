@@ -450,11 +450,20 @@
       if (m === "all") { void grid.offsetWidth; grid.classList.add("show"); }
     };
     modes.forEach(b => b.addEventListener("click", () => setMode(b.dataset.m)));
-    if (grid) [...grid.children].forEach((b, i) => b.addEventListener("click", () => {
+    if (grid) [...grid.querySelectorAll("button")].forEach((b, i) => b.addEventListener("click", () => {
       setMode("one"); go(i, false); show(i); fade(i);
       (strip.children[i].querySelector(".pop") || strip).focus({ preventScroll: true });  // 격자가 숨으며 포커스가 쪽 바탕으로 빠지지 않게 — 고른 사진으로(10/27 점검)
     }));
     show(0, true);
+    // 처음은 모아 보기(10/29 동원 'A 모아 보기 먼저' — 새 눈 비평: 맨 앞 컬러 사진이 무채색 쪽에서 가장 큰 색이었음). 색은 손님이 한 장을 고를 때만.
+    // 작은 사진은 칸이 가까워질 때 받고 격자는 그때 떠오름(큰 사진 첫 장은 loading=lazy라 한 장씩으로 바꿀 때 받음)
+    if (grid) {
+      modes.forEach(b => b.setAttribute("aria-pressed", b.dataset.m === "all" ? "true" : "false"));
+      sec.classList.add("all");
+      grid.hidden = false;
+      once([sec], small, { rootMargin: "0px 0px 600px 0px" });
+      once([grid], () => grid.classList.add("show"), { rootMargin: "0px 0px -8% 0px" });
+    }
   }
 
   // 영상 칸: 큰 한 편은 누르면 이 자리에서 재생 — 누르기 전에는 플레이어를 불러오지 않음(썸네일 그림만 · youtube-nocookie · IFrame API는 처음 누를 때 한 번).
