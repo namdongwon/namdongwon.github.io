@@ -213,12 +213,12 @@
     };
     const shown = new Map();  // 점 숫자마다 지금 보이는 값
     const tone = k => getComputedStyle(H).getPropertyValue(k).trim();  // 색은 style.css 낱말에서(어두운 모드면 어두운 값)
-    // 점 한 칸: 컴퓨터 17px · 휴대폰 12px — 끝 값(1,121이면 26칸)이 기록 칸 폭에 다 안 들어가면 들어갈 때까지 줄임(10/24, 좁은 화면·태블릿에서 칸을 넘지 않게).
+    // 점 한 칸: 컴퓨터 11px · 휴대폰 8px(10/29 고침 3 — 17 · 12px에서 한 단 작게, 휴대폰 숫자 높이 81 → 53px) — 끝 값(1,121이면 26칸)이 기록 칸 폭에 다 안 들어가면 들어갈 때까지 줄임(10/24, 좁은 화면·태블릿에서 칸을 넘지 않게).
     // 두 숫자는 같은 크기로(넓은 쪽에 맞춤) · 화면 폭이 바뀌면 다시 잼
     const span = c => { const f = (+c.dataset.to).toLocaleString("ko-KR"); return [...f].reduce((n, ch) => n + F[ch][0].length, 0) + f.length - 1; };
     let step = 12;
     const fit = () => {
-      const max = innerWidth >= 768 ? 17 : 12, room = rec.clientWidth, cols = Math.max(1, ...dots.map(span));
+      const max = innerWidth >= 768 ? 11 : 8, room = rec.clientWidth, cols = Math.max(1, ...dots.map(span));
       step = room ? Math.max(4, Math.min(max, Math.floor((room + 3) / cols))) : max;
     };
     fit();
@@ -242,6 +242,7 @@
       chars.forEach(ch => {
         const m = F[ch], faint = ch !== "," && d++ < lead;
         for (let r = 0; r < 7; r++) for (let k = 0; k < m[r].length; k++) {
+          if (ch === "," && m[r][k] !== "#") continue;  // 쉼표 칸은 꺼진 점 없이 켜진 점만 — 숫자 한 칸('1 ı 1 1 7')이 아니라 부호로 읽히게(10/29 고침 3)
           x.fillStyle = m[r][k] === "#" ? (faint ? dim : on) : off;
           x.fillRect((col + k) * step, r * step, cell, cell);
         }
@@ -249,11 +250,13 @@
       });
     };
     const drawn = new Map();  // 칸 그림마다 지금까지 칠한 칸 수
+    // 다 찬 뒤 옅어진 정도(0 먹 → 1 옅은 회색) — 끝의 올해 본 칸(data-y)만 먹으로 남음(10/29 동원 'B 올해만 먹' — 새 눈 비평 고침 3: 차오를 때는 화려하게, 멈추면 옅게)
+    let rest = motion ? 0 : 1;
     const grid = c => {
-      const W = c.clientWidth, cell = 6, gap = 2, step = cell + gap, cols = Math.max(1, Math.floor((W + gap) / step));
+      const W = c.clientWidth, cell = 3, gap = 2, step = cell + gap, cols = Math.max(1, Math.floor((W + gap) / step));  // 칸 3px + 틈 2px(10/29 고침 3 — 6px이면 1,117칸이 휴대폰 208px 먹 덩어리)
       return { W, cell, step, cols, rows: Math.ceil(+c.dataset.n / cols) };
     };
-    // 처음부터 다 그림(처음 · 화면 폭이 바뀔 때). 선명도는 2배까지만
+    // 처음부터 다 그림(처음 · 화면 폭이 바뀔 때 · 옅어지는 동안). 선명도는 2배까지만
     const full = (c, n) => {
       const g = grid(c), dpr = Math.min(2, devicePixelRatio || 1);
       drawn.set(c, n);
@@ -261,11 +264,18 @@
       c.width = Math.round(g.W * dpr);
       c.height = Math.round(g.rows * g.step * dpr);
       c.style.height = g.rows * g.step + "px";
-      const x = c.getContext("2d"), on = tone("--ink"), off = tone("--cell-off");
+      const x = c.getContext("2d"), on = tone("--ink"), off = tone("--cell-off"), past = tone("--line"), N = +c.dataset.n, y = +c.dataset.y || 0;
       x.setTransform(dpr, 0, 0, dpr, 0, 0);
-      for (let i = 0; i < +c.dataset.n; i++) {
-        x.fillStyle = i < n ? on : off;
-        x.fillRect((i % g.cols) * g.step, Math.floor(i / g.cols) * g.step, g.cell, g.cell);
+      for (let i = 0; i < N; i++) {
+        const px = (i % g.cols) * g.step, py = Math.floor(i / g.cols) * g.step;
+        x.fillStyle = i >= n ? off : rest && i < N - y ? past : on;
+        x.fillRect(px, py, g.cell, g.cell);
+        if (i < n && rest && rest < 1 && i < N - y) {  // 옅어지는 중 — 회색 위에 먹을 (1 − rest)만큼 겹침
+          x.globalAlpha = 1 - rest;
+          x.fillStyle = on;
+          x.fillRect(px, py, g.cell, g.cell);
+          x.globalAlpha = 1;
+        }
       }
     };
     // 새로 찬 칸만 칠함(1,559칸을 매번 다시 그리지 않게)
@@ -287,6 +297,18 @@
           cvs.forEach(c => more(c, Math.round(q * +c.dataset.n)));
           dots.forEach(c => dot(c, Math.round(q * +c.dataset.to)));
           if (p < 1) requestAnimationFrame(tick);
+          else setTimeout(fade, 600);  // 다 찬 모습을 0.6초 보인 뒤
+        };
+        // 0.8초에 옅게 — 올해 본 칸만 먹으로 남음(10/29 고침 3)
+        const fade = () => {
+          const t1 = performance.now();
+          const step2 = () => {
+            const p = Math.min(1, (performance.now() - t1) / 800);
+            rest = Math.max(p * p * (3 - 2 * p), 0.001);
+            cvs.forEach(c => full(c, +c.dataset.n));
+            if (p < 1) requestAnimationFrame(step2);
+          };
+          requestAnimationFrame(step2);
         };
         requestAnimationFrame(tick);
       }, { rootMargin: "0px 0px -35% 0px", threshold: 0.01 });

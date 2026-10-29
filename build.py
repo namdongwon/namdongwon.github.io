@@ -762,9 +762,13 @@ def render(site, poem, videos, photos, lang="ko"):
              f'<button type="button" class="close">{t("close")}</button></span></div></div>')
     # 기록 — 본 영화·전시를 칸으로(그림은 main.js가 캔버스 하나에 그림, 숫자는 글자로 남김)
     # 숫자는 기록 칸과 같은 네모 점으로 찍고(dot-n), 글자 숫자(.n)는 화면 읽기 프로그램용으로 남김 — 자바스크립트가 없으면 글자 숫자가 보임
+    # 올해 본 것(10/29 동원 'B 올해만 먹' — 새 눈 비평 고침 3): 칸 그림은 다 찬 뒤 옅어지고 끝의 year_n칸만 먹으로 남음 + 설명 줄 끝 '· 올해 24편'.
+    # 원고의 year가 빌드한 해와 같을 때만 — 해가 바뀌고 새로 적기 전에는 저절로 모두 옅게(틀린 '올해'가 보이지 않게)
+    yr = build_day().year
+    this = lambda r: r.get("year_n") if r.get("year") == yr and r.get("year_n") else 0  # noqa: E731
     rec = "".join(f'<canvas class="dot-n" data-to="{r["n"]}" aria-hidden="true"></canvas>'
-                  f'<p class="rl"><b class="n">{r["n"]:,}</b><span>{keep(L["rec"].format(unit=r["unit"], note=r["note"]))}</span></p>'
-                  f'<canvas class="grid" data-n="{r["n"]}" aria-hidden="true"></canvas>' for r in S["records"])
+                  f'<p class="rl"><b class="n">{r["n"]:,}</b><span>{keep(L["rec"].format(unit=r["unit"], note=r["note"]) + (L["rec_year"].format(n=this(r), unit=r["unit"]) if this(r) else ""))}</span></p>'
+                  f'<canvas class="grid" data-n="{r["n"]}"' + (f' data-y="{this(r)}"' if this(r) else "") + ' aria-hidden="true"></canvas>' for r in S["records"])
 
     # 사진 칸
     shots, caps = [], []

@@ -212,6 +212,10 @@
     "ko": "{unit} · {note}",
     "en": "{unit} {note}"
   },
+  "rec_year": {
+    "ko": " · 올해 {n}{unit}",
+    "en": " · {n} this year"
+  },
   "label_photo": {
     "ko": "인스타그램",
     "en": "Instagram"
