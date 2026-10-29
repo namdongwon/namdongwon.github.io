@@ -586,6 +586,8 @@ html.sr-on{overflow:hidden}
 .sheet.done .se{display:block}
 .sheet .se p{margin-top:1px;font:300 12.5px/1.6 var(--sans);color:#9a9a9a}
 .sheet .se .g{margin-top:0;font:400 15px/1.7 var(--serif);letter-spacing:0;color:#efefef}
+.sheet .se .bl a{position:relative;color:#efefef;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}.sheet .se .bl a::before{content:"";position:absolute;inset:-12px -4px}  /* 다리 한 줄이 곧 사는 길(10/29 그 밖 4) — 밑줄 링크 · 누르는 자리는 다른 밑줄 링크처럼 */
+.sheet .se .bl .whr{margin-left:8px;color:#9a9a9a}  /* 가는 곳 '교보문고' — 사이트의 '책장에 꽂기 ↗ 교보문고'와 같은 꼴 */
 .sheet .sbk{flex:1 1 0;min-width:9em}  /* 시집 이름은 줄어들어 단추와 한 줄에 — 9em보다 좁아지면(영어 교보 단추 'Buy at Kyobo Book Centre') 제 줄로, 여덟 줄로 꺾이지 않게 */
 .sheet.done .sp{padding-bottom:22px}  /* 아래 줄이 높아져도 시의 끝 줄이 그림자에 덮이지 않게 */
 .sheet .kb{display:inline-flex;align-items:center;font:600 12.5px/1 var(--sans);padding:12px 16px;border-radius:999px;background:#e9e9e9;color:#111;white-space:nowrap}

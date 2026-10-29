@@ -755,7 +755,9 @@ def render(site, poem, videos, photos, lang="ko"):
     # '간직하기'를 마치면 그 자리가 교보 단추로(main.js) — 나가는 길은 사기 · 닫기 둘. 화면 읽기는 종이의 설명(aria-describedby)으로 두 줄을 읽음
     sheet = (f'<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t" aria-describedby="sheet-e" hidden>'
              f'<p class="st" id="sheet-t"{ko_attr}>「{e(site["poem"]["title"])}」</p><div class="sp"{ko_attr}>{ko_html}</div>'
-             f'<div class="sf"><div class="se" id="sheet-e"><p class="g">{t("colo_end")}</p><p>{t("sheet_bridge")}</p></div>'
+             f'<div class="sf"><div class="se" id="sheet-e"><p class="g">{t("colo_end")}</p>'
+             # 다리 한 줄이 곧 사는 길(10/29 동원 'B 다리가 곧 길' — 새 눈 비평 그 밖 4: 교보 단추는 간직한 뒤에만 나와, 읽고 닫는 손님은 정점에서 사는 길을 못 봤음)
+             f'<p class="bl"><a href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("탁본다리")}>{t("sheet_bridge").rstrip(".")} ↗</a><small class="whr">{t("buy_where")}</small></p></div>'
              f'<span class="sbk">{t("sheet_book", name=e(S["name"]), pages=e(S["poem"]["pages"]))}<br>{sheet_title}</span>'
              f'<span class="btns"><button type="button" class="keep">{t("keep")}</button>'
              f'<a class="kb" href="{e(book["buy_url"])}" target="_blank" rel="noopener" hidden{gcc("탁본")}>{e(book["store_label"])} ↗</a>'
