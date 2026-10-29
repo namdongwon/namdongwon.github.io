@@ -131,6 +131,20 @@
   // 모든 글꼴(document.fonts.ready)을 기다리면 아래 칸의 통째 판까지 기다리게 됨 — 한국어판은 둘 다 첫 화면 작은 판이라 곧 옴(10/27 B)
   const door = document.querySelector(".door");
   if (H.classList.contains("intro") && door && motion) {
+    // 문 글자는 첫 화면 제목과 같은 자리 · 크기 · 두 줄 · 글꼴로(10/29 동원 '한 컷으로' — 새 눈 비평 그 밖 5): 문이 갈라지며 흰 글자가 같은 자리의 먹 글자로 남는 한 컷.
+    // 전엔 가운데 21px 한 줄이라 문이 열리면 글자가 바뀌어 보였음. 아래 글꼴 기다리기(want)도 이 모양으로 잼
+    const ht = home && home.querySelector(".ht");
+    const alignDoor = () => {
+      if (!ht || !door.isConnected) return;
+      const r = ht.getBoundingClientRect(), s = getComputedStyle(ht);
+      door.querySelectorAll(".t").forEach(t => {
+        t.innerHTML = ht.innerHTML;
+        Object.assign(t.style, { top: r.top + "px", paddingLeft: r.left + "px", fontFamily: s.fontFamily, fontWeight: s.fontWeight, fontSize: s.fontSize, lineHeight: s.lineHeight, letterSpacing: s.letterSpacing });
+      });
+      door.classList.add("hd");
+    };
+    alignDoor();
+    addEventListener("resize", alignDoor, { passive: true });
     // 글꼴 목록의 맨 앞 하나만 — fonts.load는 목록에 든 가족을 모두 받으므로, 통째로 넘기면 뒤의 통째 판(BMJ 보통 90KB)까지 기다림[실측 10/27 — 문 열림 3.9초]
     const face = el => { const s = getComputedStyle(el); return document.fonts.load(`${s.fontStyle} ${s.fontWeight} ${s.fontSize} ${s.fontFamily.split(",")[0]}`, el.textContent); };
     const want = document.fonts ? Promise.all([door.querySelector(".t"), home && home.querySelector(".ht")].filter(Boolean).map(face)).catch(() => {}) : Promise.resolve();
