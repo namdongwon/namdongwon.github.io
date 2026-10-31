@@ -476,6 +476,10 @@
     "ko": "지은이",
     "en": "Author"
   },
+  "colo_lang": {
+    "ko": "언어",
+    "en": "Language"
+  },
   "colo_made": {
     "ko": "만든 곳",
     "en": "Made"

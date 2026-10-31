@@ -389,7 +389,7 @@
 
   // 언어 바꾸기(10/24 영어판) — 보던 칸으로 이어서(예: 사진 칸에서 EN → 영어판 사진 칸)
   // 화면 위 1/3에 걸친 id 가운데 가장 작은 것으로(두 판의 id가 같음 — 차례 t · 시 행 l · 연표 y · 팔레트 …), 없으면 지금 칸(10/28 사용 편의 점검 ⑥ — 칸 머리로만 이어져 차례 · 시에서 읽던 줄을 잃었음)
-  const swap = document.querySelector(".top nav .lang");
+  const swap = document.querySelector(".colo .lang");  // 10/31 언어는 바닥글 판권면 '언어' 줄로(동원 "언어 설정 하단 푸터로 빼")
   if (swap) swap.addEventListener("click", ev => {
     const y = innerHeight / 3;
     const hit = [...document.querySelectorAll("main [id]")].filter(el => { const r = el.getBoundingClientRect(); return r.height && r.top <= y && r.bottom > y; })

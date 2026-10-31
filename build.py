@@ -957,7 +957,9 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd>'
             f'<dt>{t("colo_pub")}</dt><dd>{keep(book["spec"].split(" · ")[-1])} — <a class="pp-l" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("판권면")}>{e(book["buy_label"])} ↗</a></dd>'  # 펴낸 곳(10/28 동원 'A 판권면에 펴낸 곳 줄' — 쪽 끝에서 사는 길이 3.3화면 위였음)
             f'<dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd>'
-            f'<dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd></dl>'  # 글꼴 줄은 뺌(10/26 동원 "사이트에 내 글꼴 소개하지 않아도 되잖아 지워" — 라이선스 글은 글꼴 옆에 그대로)
+            f'<dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd>'
+            # 언어(10/31 동원 "언어 설정 하단 푸터로 빼") — 화면 줄 바로 아래: 지금 판은 글자 · 다른 판은 그 쪽의 같은 자리로 가는 링크(~L~ — page()가 채움)
+            f'<dt>{t("colo_lang")}</dt><dd class="lng"><span aria-current="true">{"English" if en else "한국어"}</span>{NB}· <a class="lang" href="~L~" hreflang="{"ko" if en else "en"}" lang="{"ko" if en else "en"}">{"한국어" if en else "English"}</a></dd></dl>'  # 글꼴 줄은 뺌(10/26 동원 "사이트에 내 글꼴 소개하지 않아도 되잖아 지워" — 라이선스 글은 글꼴 옆에 그대로)
             f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{t("colo_cookie")}{pp_link}</p>'
             f'<p class="end">{t("colo_end")}</p></div>')  # 사이트의 끝 — 책 '읽어 주신 분들께'의 맺음 인사(10/27 경험 설계 '끝까지 온 사람을 맞이하나?' · 동원 "B1 좋은 아침")
 
@@ -1186,9 +1188,10 @@ def render(site, poem, videos, photos, lang="ko"):
             return link(pg) if PAGES[pg][0] == href[1:] else link(pg) + href
         # 맨 위 띠: 메뉴 넷(소개 · 시집 · 인스타그램 · 유튜브 — 쪽 차례와 같게, 지금 쪽은 먹 · 밑줄 · aria-current) | 언어 · 찾기 · [연락하기](10/28 차례 그대로)
         nav = "".join(f'<a href="{link(pg)}"' + (' class="on" aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a>' for pg in ("", "book", "photo", "video"))
-        nav += f'<a class="lang" href="{PP}{"" if en else "en/"}{kp}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 같은 쪽의 다른 판(10/26 지금 언어를 보임)
-        nav += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
-        nav += f'<a class="cta{" on" if k == "contact" else ""}" href="{link("contact")}"' + (' aria-current="page"' if k == "contact" else "") + f'>{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(연락 쪽에선 맨 위에서도 먹 — 지금 쪽 표시)
+        # 맨 위 띠(10/31 동원 "gnb 이거 있잖아 가운데로 넣어" · "언어 설정 하단 푸터로 빼"): 이름 | 메뉴 넷(가운데) | 찾기 · [연락하기] — 언어는 바닥글 판권면 '언어' 줄로
+        act = f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
+        act += f'<a class="cta{" on" if k == "contact" else ""}" href="{link("contact")}"' + (' aria-current="page"' if k == "contact" else "") + f'>{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(연락 쪽에선 맨 위에서도 먹 — 지금 쪽 표시)
+        lang_href = f'{PP}{"" if en else "en/"}{kp}'  # 같은 쪽의 다른 판 — 바닥글 '언어' 줄(~L~)
         ptitle = title if not k else f'{L["nav"][("me", "poem", "photo", "video", "contact").index(top_of[k])]} — {S["name"]}'
         h1 = "" if bpg else f'<h1 class="sr">{e(S["name"] if not k else ptitle)}</h1>\n'  # 시집 쪽은 첫 화면 h1(이름 · 첫 시집) 그대로, 다른 쪽은 읽기 도구용 쪽 제목
         oimg, otitle, odesc = (og_img, og_title, og_desc) if k in ("", "book") else ("og-en.jpg" if en else "og.jpg", ptitle, S["description"])
@@ -1229,7 +1232,7 @@ def render(site, poem, videos, photos, lang="ko"):
 {door if bpg else ""}
 <a class="skip" href="#main">{t("skip")}</a>
 <header class="top"><a class="logo" href="{link("")}">{e(S.get("logo") or S["name"])}</a>
-  <nav aria-label="{t("nav_label")}">{nav}</nav></header>
+  <nav aria-label="{t("nav_label")}">{nav}</nav><div class="act">{act}</div></header>
 <main id="main">
 {h1}{body}</main>
 <footer class="foot">{colo}</footer>
@@ -1241,7 +1244,7 @@ def render(site, poem, videos, photos, lang="ko"):
 </html>
 """
         html_ = re.sub(r'href="(#[\w-]+)"', lambda m: f'href="{go(m.group(1))}"', html_)  # 칸 사이 링크(첫 화면 '「탁본」 읽기' · 차례 · 찾기 추천 …)를 쪽 주소로
-        return html_.replace("~P~", PP).replace("~R~", R)
+        return html_.replace("~P~", PP).replace("~R~", R).replace("~L~", lang_href)
     return {k: page(k) for k in PAGES}
 
 
