@@ -36,7 +36,7 @@
   };
 
   // 단추 짝(동의 안 함 · 동의 / 차단 · 인증) — 고른 쪽이 먹. '모든 파트너'는 파트너가 하나라 Google과 같은 값
-  const groups = k => [...w.querySelectorAll(k === "g" ? ".cz-va .cz-rd, .cz-vr > .cz-rd" : `.cz-r[data-k="${k}"] > .cz-rd`)];
+  const groups = k => [...w.querySelectorAll(k === "g" ? ".cz-va .cz-rd, .cz-vr .cz-rd" : `.cz-r[data-k="${k}"] .cz-rd`)];
   const paint = () => {
     ["p1", "p2", "g"].forEach(k => groups(k).forEach(gr => gr.querySelectorAll("[role=radio]").forEach(b =>
       b.setAttribute("aria-checked", String(draft[k] !== undefined && String(+draft[k]) === b.dataset.v)))));
@@ -48,11 +48,14 @@
     paint();
   }));
 
-  const info = p => {  // 사용자 정보 보기 — 이 기기에 저장한 선택(이름 · 단추 글은 쪽에서 읽음)
+  const info = p => {  // 사용자 정보 보기 — 이 기기에 저장한 선택을 굵은 이름표 줄로(고야드의 사용자 ID · 토큰 자리 · 이름 · 단추 글은 쪽에서 읽음)
+    p.textContent = "";
     if (!saved) { p.textContent = p.dataset.none; return; }
     const name = k => w.querySelector(`.cz-r[data-k="${k}"] > .cz-e`).textContent.replace(/^[+-]/, "");
     const word = (k, v) => groups(k)[0].querySelector(`[data-v="${v ? 1 : 0}"]`).textContent;
-    p.textContent = ["p1", "p2", "g"].map(k => `${name(k)} — ${word(k, saved[k])}`).join(" · ") + ` · ${(saved.at || "").replace("T", " ").slice(0, 16)}`;
+    const line = (label, value) => { const d = document.createElement("div"), b = document.createElement("b"); b.textContent = label + ": "; d.append(b, value); p.append(d); };
+    ["p1", "p2", "g"].forEach(k => line(name(k), word(k, saved[k])));
+    line(p.dataset.at, (saved.at || "").replace("T", " ").slice(0, 16));
   };
   w.querySelectorAll(".cz-e").forEach(b => b.addEventListener("click", () => {  // '+' 펼침 — 바로 뒤의 .cz-d
     let d = b.nextElementSibling;
@@ -63,6 +66,11 @@
     b.setAttribute("aria-expanded", String(open));
     b.querySelector(".cz-pl").textContent = open ? "-" : "+";
     if (open && b.classList.contains("cz-u")) info(d);
+    const row = b.parentElement;  // 목적 · 파트너 줄을 펼치면 단추 짝이 아래 자리(.cz-rr)로, 접으면 이름 옆으로 — 고야드와 같음
+    if (row.matches(".cz-r[data-k]")) {
+      const rd = row.querySelector(".cz-rd"), slot = row.querySelector(".cz-rr");
+      if (rd && slot) { if (open) slot.appendChild(rd); else b.after(rd); }
+    }
   }));
 
   // 열고 닫기 — 열린 동안 쪽 나머지는 inert(Tab이 창 안에서만) · 닫으면 연 단추로 포커스

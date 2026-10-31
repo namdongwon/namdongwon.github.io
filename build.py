@@ -145,9 +145,11 @@ def consent_html(L, gid, site_label):
         return f'<button type="button" class="cz-e{extra}" aria-expanded="false"><span class="cz-pl" aria-hidden="true">+</span>{label}</button>'
 
     def purpose(key):
-        ex = "".join(f"<li>{e(x)}</li>" for x in L[f"cz_{key}_x"].split("|"))
+        # 펼치면(고야드와 같음) 설명 · 예시 상자(예시 사이는 가는 줄) 아래에 '동의' 글자 + 단추 짝 — 단추는 consent.js가 .cz-rr로 옮김
+        ex = "".join(f"<p>{e(x)}</p>" for x in L[f"cz_{key}_x"].split("|"))
         return (f'<div class="cz-r" data-k="{key}">{opener(g("cz_" + key))}{radio(L["cz_" + key], g("cz_no"), g("cz_ok"))}'
-                f'<div class="cz-d" hidden><p>{g("cz_" + key + "_d")}</p><div class="cz-ex"><b>{g("cz_ex_h")}</b><ul>{ex}</ul></div></div></div>')
+                f'<div class="cz-d" hidden><p class="cz-dd">{g("cz_" + key + "_d")}</p><div class="cz-ex"><b>{g("cz_ex_h")}</b>{ex}</div>'
+                f'<div class="cz-rr"><span class="cz-rl">{g("cz_rr")}</span></div></div></div>')
 
     def head(n, title, back=""):
         return f'<div class="cz-h">{back}<h2 id="cz-t{n}">{title}</h2><button type="button" class="cz-c" aria-label="{g("cz_close")}">×</button></div>'
@@ -169,11 +171,11 @@ def consent_html(L, gid, site_label):
     back = f'<button type="button" class="cz-bk" aria-label="{g("cz_back")}">←</button>'
     l3 = (f'<div class="cz-box cz-3" role="dialog" aria-modal="true" aria-labelledby="cz-t3" hidden>{head(3, g("cz_v_title").replace("{site}", site), back)}'
           f'<p class="cz-t">{g("cz_v_text")}</p><a class="cz-sk" href="#cz-sv3">{g("cz_v_skip")}</a>'
-          f'<div class="cz-vl"><div class="cz-va"><b>{g("cz_v_all")}</b>{radio(L["cz_v_all"], g("cz_v_no"), g("cz_v_ok"))}</div>'
+          f'<div class="cz-va"><b>{g("cz_v_all")}</b>{radio(L["cz_v_all"], g("cz_v_no"), g("cz_v_ok"))}</div><div class="cz-vl">'
           f'<p class="cz-lt">G</p><div class="cz-r cz-vr" data-k="g">{opener(vendor)}{radio(vendor, g("cz_v_no"), g("cz_v_ok"))}'
-          f'<div class="cz-d" hidden>{opener(g("cz_v_consent"))}<ul class="cz-d" hidden><li>{g("cz_p2")}</li><li>{g("cz_p1")}</li></ul>'
+          f'<div class="cz-d" hidden><div class="cz-vc">{opener(g("cz_v_consent"))}<span class="cz-rr"></span><ul class="cz-d" hidden><li>{g("cz_p2")}</li><li>{g("cz_p1")}</li></ul></div>'
           f'<p>{g("cz_v_policy").replace("{policy}", policy)}</p></div></div></div>'
-          f'{opener(g("cz_user"), " cz-u")}<p class="cz-d cz-ui" hidden data-none="{g("cz_user_none")}"></p>'
+          f'{opener(g("cz_user"), " cz-u")}<div class="cz-d cz-ui" hidden data-none="{g("cz_user_none")}" data-at="{g("cz_user_at")}"></div>'
           f'<div class="cz-sr"><button type="button" class="cz-sv" id="cz-sv3" aria-label="{g("cz_save_aria")}">{g("cz_save")}</button></div></div>')
     return f'<div class="cz" id="cz" data-ga="{e(gid)}" hidden>{l1}{l2}{l3}</div>\n'
 
