@@ -1111,10 +1111,7 @@ def render(site, poem, videos, photos, lang="ko"):
 
     # 쪽 나누기(10/31 — PAGES): 칸은 전처럼 그리고 쪽마다 나눠 담음 — 소개(/) · 시집(/book/: 문 · 첫 화면 책 · 「탁본」 · 책 카드 · 소식 · 차례 · 글자 팔레트)
     # · 인스타그램(/photo/) · 유튜브(/video/) · 연락(/contact/ — 방명록 함께). 판권면은 연락 칸 끝에서 모든 쪽 끝 바닥글로
-    # 소개 쪽 갈래(10/31 — 레퍼런스 40곳 Jenny Odell식 '이름 · 소개 · 세 낱말'): 약력 아래 쪽 넷으로 가는 줄. 사이트 안 다른 쪽으로 가는 링크는 →(밖 ↗ · 쪽 안 아래 ↓와 나눔)
-    ways = ('<ul class="ways">' + "".join(f'<li><a href="{h}"><b>{e(n)}</b><span>{d}</span><i aria-hidden="true">→</i></a></li>' for h, n, d in (
-        ("#home", navname["poem"], tt(e(book["title"]), not en)), ("#photo", navname["photo"], f'@{e(acc["handle"])}'),
-        ("#video", navname["video"], e(ch["name"])), ("#contact", navname["contact"], t("contact_title")))) + "</ul>")
+    # 소개 쪽은 소개만(10/31 동원 "애초에 랜딩페이지랑 각자 따로 놀게 하면 좋잖아, 굳이 저렇게 소개에서 링크를 깔 필요가 없잖아") — 쪽 사이 길은 맨 위 띠 메뉴가 맡음(갈래 넷 목록 뺌)
     sec = {
         "home": f"""  <section id="home" aria-label="{t("home_label")}">
     <div class="l"><h1 class="kick"><span class="name" data-type="{e("|".join(typing_steps(S["name"])))}">{e(S["name"])}</span> <span>{t("ex_kick")}</span></h1>
@@ -1137,7 +1134,7 @@ def render(site, poem, videos, photos, lang="ko"):
         "palette": "  " + palette.rstrip() + "\n",
         "me": f"""  <section id="me" aria-labelledby="me-t">
     <p class="label">{t("label_me")}</p>
-    <div class="l"><h2 class="h2" id="me-t">{e(S["name"])}</h2><p class="tagl">{keep(S["tagline"])}</p><p class="bio">{rich(S["bio"])}</p>{ways}</div>
+    <div class="l"><h2 class="h2" id="me-t">{e(S["name"])}</h2><p class="tagl">{keep(S["tagline"])}</p><p class="bio">{rich(S["bio"])}</p></div>
     <div class="r"><ul class="years">{years}</ul>{fnb}{nowb}<div class="rec">{rec}</div></div>
   </section>
 """,
