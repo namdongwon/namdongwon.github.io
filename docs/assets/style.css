@@ -762,3 +762,14 @@ html.sr-on{overflow:hidden}
   #me img{max-height:70mm!important;width:auto!important}
   @page{margin:16mm 14mm}
 }
+
+/* 쪽 나누기(10/31 동원 "랜딩페이지는 내 소개를 넣고 … 따로 페이지를 분리") — 판권면은 모든 쪽 끝 바닥글(컴퓨터는 전처럼 오른쪽 단) · 소개 쪽 갈래 넷(사이트 안 다른 쪽은 →) */
+.foot{padding:0 20px 64px}.foot .colo{margin-top:0}
+.top:not(.sc) nav a.cta.on:not(:hover){background:var(--ink);color:var(--bg);box-shadow:none}  /* 연락 쪽: 맨 위에서도 먹 상자 — 다른 쪽 메뉴의 밑줄과 같은 '지금 쪽' 표시 */
+.ways{margin-top:36px;padding:0;list-style:none;border-top:1px solid var(--rule)}
+.ways a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;column-gap:16px;padding:16px 0;border-bottom:1px solid var(--rule);color:var(--ink);text-decoration:none}
+.ways b{font:600 12.5px/1.5 var(--sans);letter-spacing:.04em;color:var(--muted)}
+.ways span{font:400 16px/1.5 var(--serif);word-break:keep-all}
+.ways i{font-style:normal;color:var(--muted)}
+@media (hover:hover){.ways a:hover b,.ways a:hover i{color:var(--ink)}}
+@media (min-width:768px){.foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:72px;padding:0 64px 64px}.foot .colo{grid-column:2}}

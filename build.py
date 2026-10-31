@@ -304,6 +304,21 @@ def stanzas_of(text):
 # 첫 그림이 그려지기 전에 html에 표시를 붙인다: js(움직임을 켬) · intro(문 장면 — 첫 방문 한 번만, '동작 줄이기'나 #주소로 들어오면 생략, ?door면 다시 봄)
 HEAD_JS = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{var m=matchMedia("(prefers-reduced-motion: reduce)").matches,
 again=/[?&]door\\b/.test(location.search);if(!m&&!location.hash&&(again||!localStorage.getItem("door"))){H.classList.add("intro");localStorage.setItem("door","1")}else if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}})();</script>"""
+# 문이 없는 쪽(소개 · 인스타그램 · 유튜브 · 연락)의 머리 스크립트 — js · 고른 화면 · 다시 온 표시만. 문을 본 표시(door)는 시집 쪽에서만 남김(소개로 먼저 와도 시집 쪽 첫 방문에 문이 열리게)
+HEAD_JS_PLAIN = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}})();</script>"""
+
+# 쪽 나누기(10/31 동원 "랜딩페이지는 내 소개를 넣고, 다른 시집, 인스타그램, 유튜브 이런 것들은 따로 페이지를 분리 … 연락페이지도 따로 빼는 게 좋다고 생각해"
+# · 버튼 '같은 도메인 아래 주소 (권장)' · "지금 구조 만들어"): 쪽 열쇠(주소 폴더) → 그 쪽에 담는 칸 id, 첫째가 그 쪽 맨 위 칸. "" = 첫 화면(소개)
+PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "contact": ("contact",)}
+PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "y": "", "p": "photo", "guestbook": "contact"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p)
+
+
+def page_of(aid):
+    for k, ids in PAGES.items():
+        if aid in ids:
+            return k
+    m = re.fullmatch(r"([a-z]+)\d+", aid)
+    return PAGE_PRE.get(m.group(1) if m else aid, "")
 
 
 CHO = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
@@ -637,7 +652,7 @@ def render(site, poem, videos, photos, lang="ko"):
     V = {"upcoming": row_lang(videos.get("upcoming") or {}, lang),
          "items": sorted((row_lang(x, lang) for x in videos.get("items", [])), key=lambda x: x.get("date", ""), reverse=True)}
     en = lang == "en"
-    P = "../" if en else ""  # 영어판은 한 칸 아래(docs/en/)라 assets를 한 칸 위에서
+    P = "~P~"  # assets 자리 — 쪽 깊이에 따라 page()가 채움(한국어 소개 "" · 그 밖 쪽 "../" · 영어판은 한 칸 더 위)
     base = S["base_url"].rstrip("/")
     here = f"{base}/en/" if en else f"{base}/"
     book = S["book"]
@@ -913,7 +928,7 @@ def render(site, poem, videos, photos, lang="ko"):
         rp = ((x.get("en") or {}).get("reply") or x.get("reply", "")) if en else x.get("reply", "")
         rep = f'<p class="rp">{e(rp)}<span>— {t("gb_reply_by")}</span></p>' if rp else ""
         return f'<li><p class="tx"{lk}>{txt}</p><p class="by">{e(x.get("name", "")) or t("gb_anon")} · {e(dtxt(x["date"]))}</p>{rep}</li>'
-    guest, priv = "", f'<a href="privacy/">{t("gb_privacy")}</a>'  # 처리방침 쪽(한 · 영 모두 제 판 아래 privacy/)
+    guest, priv = "", f'<a href="~R~privacy/">{t("gb_privacy")}</a>'  # 처리방침 쪽(한 · 영 모두 제 판 아래 privacy/ — ~R~은 그 판 맨 위, page()가 채움)
     if gb_id or gbook:
         more = f'<details><summary>{t("gb_more")}</summary><ol>{"".join(gb_li(x) for x in gbook[12:])}</ol></details>' if len(gbook) > 12 else ""
         body = f'<ol>{"".join(gb_li(x) for x in gbook[:12])}</ol>{more}' if gbook else f'<p class="empty">{t("gb_empty")}</p>'
@@ -936,7 +951,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 글자 대신 그림(10/28 B 선 그림 — 이름은 읽기 프로그램 · 마우스를 올리면 보이는 말로)
     thm = "".join(f'<button type="button" data-th="{k}" aria-pressed="{"true" if k == "light" else "false"}" aria-label="{e(x)}" title="{e(x)}">{THEME_ICONS[k]}</button>'
                     for k, x in zip(("system", "light", "dark"), L["theme_opts"].split("|")))
-    pp_link = f' <a class="pp-l" href="privacy/">{t("gb_privacy")}</a>' if (CONTENT / "privacy.json").exists() else ""  # 처리방침 쪽(10/27) — '쿠키를 쓰지 않습니다' 옆
+    pp_link = f' <a class="pp-l" href="~R~privacy/">{t("gb_privacy")}</a>' if (CONTENT / "privacy.json").exists() else ""  # 처리방침 쪽(10/27) — '쿠키를 쓰지 않습니다' 옆
     colo = (f'<div class="colo"><p class="t">{e(urlparse(base).netloc or base)}</p><dl>'
             f'<dt>{t("colo_updated")}</dt><dd><time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</dd>'
             f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd>'
@@ -948,12 +963,8 @@ def render(site, poem, videos, photos, lang="ko"):
 
     secs = ("me", "poem", "photo", "video", "contact")
     navname = dict(zip(secs, L["nav"]))  # 낱말은 ui.json nav 그대로(찾기 칸 이름도 이 차례로 씀)
-    nav = "".join(f'<a href="#{sid}">{e(navname[sid])}</a>' for sid in ("poem", "me", "photo", "video"))  # 시집이 먼저 — 칸 차례와 같게(10/29 동원 'A 시집 칸 통째로', 10/25 '소개 먼저'를 바꿈) · 연락은 맨 오른쪽 상자로(아래)
     other = "ko" if en else "en"
-    # 맨 위 띠 차례: 메뉴 넷 | 언어 · 찾기 · [연락하기](10/28 동원 "연락하기를 맨 오른쪽에 놓고 상자 형태로 … 검색은 그 왼쪽 그리고 한국어 영어 버전은 그 왼쪽" · 'A 먹 채운 상자' · "연락이 아니라 연락하기로 하자") — 구분선은 언어 앞(CSS)
-    nav += f'<a class="lang" href="{"../" if en else "en/"}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 지금 언어를 보임(10/26 동원 "지금 현재 나라의 언어를 표시하는 게 더 좋을 거 같은데" — 한국어판 🇰🇷 KO · 영어판 🇬🇧 EN, 누르면 다른 판)
-    nav += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
-    nav += f'<a class="cta" href="#contact">{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(책 카드 '교보문고에서 사기'와 같은 꼴)
+    # 맨 위 띠는 쪽마다 page()가 만듦(10/31 쪽 나누기 — 메뉴가 칸 자리 #… 대신 쪽 주소)
     preload = ("".join(f'<link rel="preload" href="{P}assets/fonts/{f}" as="font" type="font/woff2" crossorigin>\n' for f in
                        ((EN_FIRST, "ndw-sans-light-first.woff2", "ndw-sans-semibold-first.woff2") if en else ("bon-myeongjo-light.woff2", *FIRST))))
     # 첫 화면 작은 판만 미리 받음(한국어 10/27 B · 영어 10/27 점검 — 영어 첫 화면은 본명조를 한 자도 안 그리는데 통째 판을 받아 문이 늦었음). 작은 고딕 판(PTDF)은 ASCII를 늘 담아 영어 첫 화면에도 씀
@@ -1065,7 +1076,6 @@ def render(site, poem, videos, photos, lang="ko"):
     ix["me"] += [(tg["me"], f'{x["label"]} · {plain(x["text"])}', "", "#me") for x in nw.get("items", []) if x.get("text")]  # 이름표와 글 사이는 가운뎃점(10/28 점검 10 — 글 안의 줄표와 겹쳤음)
     ix["news"] += [(tg["news"], plain(x["text"]), dtxt(x["date"]), f"#n{k}", L["search_news_keys"]) for k, x in enumerate(news, 1)]  # 소식 줄도 '소식 · 새로'로(10/28 사용 편의 점검 ④)
     ix["contact"] += [(tg["contact"], L["label_contact"] if endpoint else L["ask_off"], "", "#contact")] + [(tg["contact"], l["name"], "", l["url"]) for l in links]
-    sidx_js = json.dumps([list(x) for k in ix for x in ix[k]], ensure_ascii=False).replace("</", "<\\/")
     sj = load("search.json") if (CONTENT / "search.json").exists() else {"suggest": []}
 
     def sug_li(x, k):  # 추천 주제 한 줄 — go: 쪽 안 자리 · 'buy'(교보) / q: 그 말로 찾기 · 줄마다 모든 칸, 안 쓰는 쪽은 ""(설계서 7절) · 방향키로 고르는 줄(option, id sg{k})
@@ -1090,8 +1100,8 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<div class="bar">{SEARCH_ICON}<input type="search" name="q" role="combobox" aria-autocomplete="list" aria-expanded="true" aria-controls="sr-sug" placeholder="{t("search_ph")}" aria-label="{t("search_label")}" autocomplete="off" enterkeyhint="search">'
             f'<button type="button" class="x">{t("close")}</button></div>'
             f'<p class="sr-lab" id="sr-lab">{t("search_suggest")}</p><ul class="sug" id="sr-sug" role="listbox" aria-labelledby="sr-lab">{"".join(sug_li(x, k) for k, x in enumerate(sj["suggest"]))}</ul>'
-            f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden>{t("search_none")}</p></div></div>\n'
-            f'<script id="sidx" type="application/json">{sidx_js}</script>\n')
+            f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden>{t("search_none")}</p></div></div>\n')
+    # 찾을 거리(#sidx)는 쪽마다 page()가 — 갈 곳(#t3 등)을 그 쪽에서 본 주소로 바꿔 넣음
 
     def paths(k):
         # 첫 화면 두 길(10/29 동원 'A' — 새 눈 비평 고침 2 · 10/24 '같은 무게'): 「탁본」 읽기 · 책장에 꽂기를 한자리에 — 휴대폰은 책 옆 아래(.ps · 책 아랫선),
@@ -1099,44 +1109,14 @@ def render(site, poem, videos, photos, lang="ko"):
         return (f'<p class="paths {k}"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a><span class="buyrow">'
                 f'<a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("첫화면")}>{e(book["buy_label"])} ↗</a><span class="whr">{t("buy_where")}</span></span></p>')
 
-    return f"""<!doctype html>
-<html lang="{lang}">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{e(title)}</title>
-<meta name="description" content="{e(S["description"])}">{"" if en else verify_tags(site)}
-<link rel="canonical" href="{e(here)}">
-<link rel="alternate" hreflang="ko" href="{e(base)}/">
-<link rel="alternate" hreflang="en" href="{e(base)}/en/">
-<link rel="alternate" hreflang="x-default" href="{e(base)}/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="{e(S["name"])}">
-<meta property="og:url" content="{e(here)}">
-<meta property="og:title" content="{e(og_title)}">
-<meta property="og:description" content="{e(og_desc)}">
-<meta property="og:image" content="{e(base)}/assets/{og_img}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="{e(og_title)}">
-<meta property="og:locale" content="{L["og_locale"]}">
-<meta property="og:locale:alternate" content="{ui["og_locale"][other]}">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#ffffff">
-<link rel="icon" href="{P}favicon.svg?v={ICON_V}" type="image/svg+xml">
-<link rel="icon" href="{P}favicon-32.png?v={ICON_V}" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="{P}apple-touch-icon.png?v={ICON_V}">
-{HEAD_JS}
-{preload}<link rel="stylesheet" href="{P}assets/style.css">
-<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
-</head>
-<body>
-{door}
-<a class="skip" href="#main">{t("skip")}</a>
-<header class="top"><a class="logo" href="#home">{e(S.get("logo") or S["name"])}</a>
-  <nav aria-label="{t("nav_label")}">{nav}</nav></header>
-<main id="main">
-  <section id="home" aria-label="{t("home_label")}">
+    # 쪽 나누기(10/31 — PAGES): 칸은 전처럼 그리고 쪽마다 나눠 담음 — 소개(/) · 시집(/book/: 문 · 첫 화면 책 · 「탁본」 · 책 카드 · 소식 · 차례 · 글자 팔레트)
+    # · 인스타그램(/photo/) · 유튜브(/video/) · 연락(/contact/ — 방명록 함께). 판권면은 연락 칸 끝에서 모든 쪽 끝 바닥글로
+    # 소개 쪽 갈래(10/31 — 레퍼런스 40곳 Jenny Odell식 '이름 · 소개 · 세 낱말'): 약력 아래 쪽 넷으로 가는 줄. 사이트 안 다른 쪽으로 가는 링크는 →(밖 ↗ · 쪽 안 아래 ↓와 나눔)
+    ways = ('<ul class="ways">' + "".join(f'<li><a href="{h}"><b>{e(n)}</b><span>{d}</span><i aria-hidden="true">→</i></a></li>' for h, n, d in (
+        ("#home", navname["poem"], tt(e(book["title"]), not en)), ("#photo", navname["photo"], f'@{e(acc["handle"])}'),
+        ("#video", navname["video"], e(ch["name"])), ("#contact", navname["contact"], t("contact_title")))) + "</ul>")
+    sec = {
+        "home": f"""  <section id="home" aria-label="{t("home_label")}">
     <div class="l"><h1 class="kick"><span class="name" data-type="{e("|".join(typing_steps(S["name"])))}">{e(S["name"])}</span> <span>{t("ex_kick")}</span></h1>
       <p class="ht">{ht}</p><p class="hs hsl">{hs}</p>{paths("pl")}</div>
     <div class="r book"><div class="side"><p class="hs">{hs}</p>{paths("ps")}</div>
@@ -1144,7 +1124,8 @@ def render(site, poem, videos, photos, lang="ko"):
       <p class="tip">{t("ex_tip")}</p></div>
     <div class="lab">{exl}</div>
   </section>
-  <section id="poem" aria-labelledby="poem-t">
+""",
+        "poem": f"""  <section id="poem" aria-labelledby="poem-t">
     <p class="label">{t("label_poem")}</p>
     <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>
       <p class="pgno">{pgno}</p><p class="pbr">{t("sheet_bridge")}</p></div>
@@ -1152,12 +1133,15 @@ def render(site, poem, videos, photos, lang="ko"):
       {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}{plab}</div>
     {bnews}{bintro}
   </section>
-  {palette}<section id="me" aria-labelledby="me-t">
+""",
+        "palette": "  " + palette.rstrip() + "\n",
+        "me": f"""  <section id="me" aria-labelledby="me-t">
     <p class="label">{t("label_me")}</p>
-    <div class="l"><h2 class="h2" id="me-t">{e(S["name"])}</h2><p class="tagl">{keep(S["tagline"])}</p><p class="bio">{rich(S["bio"])}</p></div>
+    <div class="l"><h2 class="h2" id="me-t">{e(S["name"])}</h2><p class="tagl">{keep(S["tagline"])}</p><p class="bio">{rich(S["bio"])}</p>{ways}</div>
     <div class="r"><ul class="years">{years}</ul>{fnb}{nowb}<div class="rec">{rec}</div></div>
   </section>
-  <section id="photo" aria-labelledby="photo-t">
+""",
+        "photo": f"""  <section id="photo" aria-labelledby="photo-t">
     <p class="label">{t("label_photo")}</p>
     <div class="r top2"><div class="head"><h2 id="photo-t">{e(acc["handle"])}</h2><span>{e(acc["desc"])}</span></div>
       <p class="mode" role="group" aria-label="{t("mode_label")}"><button type="button" data-m="one" aria-pressed="true">{t("mode_one")}</button><button type="button" data-m="all" aria-pressed="false">{t("mode_all")}</button></p></div>
@@ -1167,26 +1151,101 @@ def render(site, poem, videos, photos, lang="ko"):
       <p class="nav2"><button type="button" data-go="-1">{t("prev")}</button><button type="button" data-go="1">{t("next")}</button></p>
       <a class="buy" href="{e(acc["url"])}" target="_blank" rel="noopener">{t("more_ig")} ↗</a></div>
   </section>
-  <section id="video"{' class="solo"' if solo else ""} aria-labelledby="video-t">
+""",
+        "video": f"""  <section id="video"{' class="solo"' if solo else ""} aria-labelledby="video-t">
     <p class="label">{t("label_video")}</p>
     <div class="l"><div class="ch2"><h2 id="video-t"{ko_attr if re.search("[가-힣]", ch["name"]) else ""}>{e(ch["name"])}</h2><span>{e(ch["desc"])}</span></div>{latest}
       <div class="vside">{info}{pastnone}<a class="buy" href="{e(ch["url"])}" target="_blank" rel="noopener">{go} ↗</a></div></div>
     {"" if solo else f'<div class="r"><p class="sub">{t("past")}</p>{past}</div>'}
   </section>
-  <section id="contact" aria-labelledby="contact-t">
+""",
+        "contact": f"""  <section id="contact" aria-labelledby="contact-t">
     <p class="label">{t("label_contact")}</p>
     <div class="l"><h2 class="h2" id="contact-t">{t("contact_title")}</h2><p class="lead">{lead}</p></div>
     <div class="r">{ask}{mail}{guest}
-      <p class="sns">{sns}</p>
-      {colo}</div>
+      <p class="sns">{sns}</p></div>
   </section>
-</main>
-{sheet}
-{pv}{srch}<script id="ui" type="application/json">{ui_js}</script>
+""",
+    }
+    items = [list(x) for k in ix for x in ix[k]]
+    top_of = {"": "me", "book": "poem", "photo": "photo", "video": "video", "contact": "contact"}  # 메뉴 이름 · 쪽 제목에 쓰는 칸
+
+    def page(k):
+        R = "../" if k else ""  # 이 판 맨 위(소개)까지
+        PP = R + ("../" if en else "")  # docs 맨 위(assets · 아이콘)까지
+        kp = f"{k}/" if k else ""
+        url = f"{base}{'/en' if en else ''}/{kp}"
+        bpg = k == "book"
+
+        def link(pg):  # 같은 판의 쪽 주소 — 이 쪽에서 본 상대 주소
+            return "./" if pg == k else R + (f"{pg}/" if pg else "") or "./"
+
+        def go(href):  # 칸 자리(#id) → 이 쪽에서 본 주소: 같은 쪽이면 그대로 · 다른 쪽이면 그 쪽 주소(그 쪽 맨 위 칸이면 # 없이 — 시집 쪽은 문 · 첫 화면부터)
+            if not href.startswith("#") or href == "#main":
+                return href
+            pg = page_of(href[1:])
+            if pg == k:
+                return href
+            return link(pg) if PAGES[pg][0] == href[1:] else link(pg) + href
+        # 맨 위 띠: 메뉴 넷(소개 · 시집 · 인스타그램 · 유튜브 — 쪽 차례와 같게, 지금 쪽은 먹 · 밑줄 · aria-current) | 언어 · 찾기 · [연락하기](10/28 차례 그대로)
+        nav = "".join(f'<a href="{link(pg)}"' + (' class="on" aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a>' for pg in ("", "book", "photo", "video"))
+        nav += f'<a class="lang" href="{PP}{"" if en else "en/"}{kp}" hreflang="{other}" aria-label="{t("switch_label")}"><span class="fl" aria-hidden="true">{t("switch_flag")}</span><span class="lt">{t("switch")}</span></a>'  # 같은 쪽의 다른 판(10/26 지금 언어를 보임)
+        nav += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
+        nav += f'<a class="cta{" on" if k == "contact" else ""}" href="{link("contact")}"' + (' aria-current="page"' if k == "contact" else "") + f'>{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(연락 쪽에선 맨 위에서도 먹 — 지금 쪽 표시)
+        ptitle = title if not k else f'{L["nav"][("me", "poem", "photo", "video", "contact").index(top_of[k])]} — {S["name"]}'
+        h1 = "" if bpg else f'<h1 class="sr">{e(S["name"] if not k else ptitle)}</h1>\n'  # 시집 쪽은 첫 화면 h1(이름 · 첫 시집) 그대로, 다른 쪽은 읽기 도구용 쪽 제목
+        oimg, otitle, odesc = (og_img, og_title, og_desc) if k in ("", "book") else ("og-en.jpg" if en else "og.jpg", ptitle, S["description"])
+        sidx = json.dumps([[*x[:3], go(x[3]), *x[4:]] for x in items], ensure_ascii=False).replace("</", "<\\/")
+        body = "".join(sec[s] for s in PAGES[k])
+        html_ = f"""<!doctype html>
+<html lang="{lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{e(ptitle)}</title>
+<meta name="description" content="{e(S["description"])}">{"" if en else verify_tags(site)}
+<link rel="canonical" href="{e(url)}">
+<link rel="alternate" hreflang="ko" href="{e(base)}/{kp}">
+<link rel="alternate" hreflang="en" href="{e(base)}/en/{kp}">
+<link rel="alternate" hreflang="x-default" href="{e(base)}/{kp}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{e(S["name"])}">
+<meta property="og:url" content="{e(url)}">
+<meta property="og:title" content="{e(otitle)}">
+<meta property="og:description" content="{e(odesc)}">
+<meta property="og:image" content="{e(base)}/assets/{oimg}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{e(otitle)}">
+<meta property="og:locale" content="{L["og_locale"]}">
+<meta property="og:locale:alternate" content="{ui["og_locale"][other]}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="{P}favicon.svg?v={ICON_V}" type="image/svg+xml">
+<link rel="icon" href="{P}favicon-32.png?v={ICON_V}" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="{P}apple-touch-icon.png?v={ICON_V}">
+{HEAD_JS if bpg else HEAD_JS_PLAIN}
+{preload if bpg else ""}<link rel="stylesheet" href="{P}assets/style.css">
+<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
+</head>
+<body>
+{door if bpg else ""}
+<a class="skip" href="#main">{t("skip")}</a>
+<header class="top"><a class="logo" href="{link("")}">{e(S.get("logo") or S["name"])}</a>
+  <nav aria-label="{t("nav_label")}">{nav}</nav></header>
+<main id="main">
+{h1}{body}</main>
+<footer class="foot">{colo}</footer>
+{sheet if bpg else ""}
+{pv if k == "photo" else ""}{srch}<script id="sidx" type="application/json">{sidx}</script>
+<script id="ui" type="application/json">{ui_js}</script>
 <script src="{P}assets/main.js" defer onerror="document.documentElement.classList.remove('js','intro')"></script>
 {gc_tag}</body>
 </html>
 """
+        html_ = re.sub(r'href="(#[\w-]+)"', lambda m: f'href="{go(m.group(1))}"', html_)  # 칸 사이 링크(첫 화면 '「탁본」 읽기' · 차례 · 찾기 추천 …)를 쪽 주소로
+        return html_.replace("~P~", PP).replace("~R~", R)
+    return {k: page(k) for k in PAGES}
 
 
 def page_privacy(site, lang):
@@ -1314,10 +1373,11 @@ def main():
     (ASSETS / "fonts").mkdir(parents=True)
 
     # 쪽을 먼저 만들어 쓰인 글자를 모은 뒤, 그 글자만 남겨 글꼴을 줄임
-    index_html, en_html, page404 = render(site, poem, videos, photos), render(site, poem, videos, photos, "en"), page_404(site)
+    pages = {lg: render(site, poem, videos, photos, lg) for lg in ("ko", "en")}  # 판마다 쪽 다섯(10/31 쪽 나누기 — PAGES)
+    page404 = page_404(site)
     priv = {lg: page_privacy(site, lg) for lg in ("ko", "en")}  # 처리방침 쪽(없으면 None)
     no_pal = lambda h: re.sub(r'<p class="pal"[^>]*>.*?</p>', "", h, flags=re.S)  # noqa: E731 — 글자 팔레트 칸의 글자는 본명조 보통 판에만(PAL_FONT)
-    text = used_text([no_pal(index_html), no_pal(en_html), page404, *(x for x in priv.values() if x)])
+    text = used_text([*(no_pal(h) for pg in pages.values() for h in pg.values()), page404, *(x for x in priv.values() if x)])
     pal_text = load("palette.json")["glyphs"]
     srcs = {}
     title_text = unicodedata.normalize("NFC", "".join(site["book"]["display"]["big"]) + " " + ALWAYS[95:])  # 굵기 300 판에 담을 글자(큰 제목 + 빈칸 · 부호 — 영문 · 숫자는 빼고 가볍게)
@@ -1331,7 +1391,7 @@ def main():
             print(f"알림: 원본 {name}을 찾지 못해 지난 줄인 판을 씀 — 새로 생긴 글자는 빠질 수 있음")
         else:
             raise SystemExit(f"글꼴을 찾지 못함: {name}")
-    ft = first_text(index_html)  # 첫 화면 작은 판(10/27 B) — 통째 판과 같은 원본에서 첫 화면 글자만
+    ft = first_text(pages["ko"]["book"])  # 첫 화면 작은 판(10/27 B) — 통째 판과 같은 원본에서 첫 화면 글자만(10/31 문 · 첫 화면 책은 시집 쪽)
     for out, (whole, kind) in FIRST.items():  # (base는 아래 사이트 주소가 쓰는 이름이라 피함)
         name, rename = next((n, r) for n, _, _, o, r in FONTS if o == whole)
         if name in srcs:
@@ -1342,8 +1402,8 @@ def main():
             raise SystemExit(f"첫 화면 작은 판을 만들 원본을 찾지 못함: {name}")
     print(f"글꼴에 남긴 글자 {len(set(text))}자")
     # 영어판 글꼴(10/24 ⑤ B) — Newsreader 바로 · 기울임을 영어판의 글자만 남겨 줄임(가변 축 그대로, 예약된 이름 없어 이름 그대로)
-    text_en = used_text([en_html, page404])  # 404의 영어 두 줄도 Newsreader로(10/28)
-    fte = first_text(en_html)  # 영어판 첫 화면 작은 판에 담을 글자(문 글자 · 첫 화면)
+    text_en = used_text([*pages["en"].values(), page404])  # 404의 영어 두 줄도 Newsreader로(10/28)
+    fte = first_text(pages["en"]["book"])  # 영어판 첫 화면 작은 판에 담을 글자(문 글자 · 첫 화면 — 시집 쪽)
     for name, out in EN_FONTS:
         src = find(PTD_DIR, name, "Newsreader")
         if src:
@@ -1408,9 +1468,11 @@ def main():
     elif "takbon.jpg" in keep:
         (ASSETS / "img" / "takbon.jpg").write_bytes(keep["takbon.jpg"])
     make_icons()
-    (DOCS / "index.html").write_text(index_html, encoding="utf-8")
-    (DOCS / "en").mkdir()
-    (DOCS / "en" / "index.html").write_text(en_html, encoding="utf-8")
+    for lg, pg in pages.items():  # docs/index.html · docs/book/index.html … · 영어판은 docs/en/ 아래 같은 꼴
+        for k, h in pg.items():
+            d = DOCS.joinpath(*(x for x in ("en" if lg == "en" else "", k) if x))
+            d.mkdir(parents=True, exist_ok=True)
+            (d / "index.html").write_text(h, encoding="utf-8")
     (DOCS / "404.html").write_text(page404, encoding="utf-8")
     for lg, html in priv.items():
         if html:
@@ -1420,9 +1482,9 @@ def main():
     (DOCS / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n", encoding="utf-8")
     (DOCS / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
-        + "".join(f'<url><loc>{e(base)}{path}</loc><lastmod>{build_day().isoformat()}</lastmod><xhtml:link rel="alternate" hreflang="ko" href="{e(base)}/"/>'
-                  f'<xhtml:link rel="alternate" hreflang="en" href="{e(base)}/en/"/><xhtml:link rel="alternate" hreflang="x-default" href="{e(base)}/"/></url>'
-                  for path in ("/", "/en/"))  # lastmod는 빌드한 날 · x-default는 머리말과 같게(10/27 가5)
+        + "".join(f'<url><loc>{e(base)}{pre}/{kp}</loc><lastmod>{build_day().isoformat()}</lastmod><xhtml:link rel="alternate" hreflang="ko" href="{e(base)}/{kp}"/>'
+                  f'<xhtml:link rel="alternate" hreflang="en" href="{e(base)}/en/{kp}"/><xhtml:link rel="alternate" hreflang="x-default" href="{e(base)}/{kp}"/></url>'
+                  for pre in ("", "/en") for kp in (f"{k}/" if k else "" for k in PAGES))  # lastmod는 빌드한 날 · x-default는 머리말과 같게(10/27 가5) · 쪽마다(10/31)
         + "</urlset>\n", encoding="utf-8")
     (DOCS / ".nojekyll").write_text("", encoding="utf-8")  # GitHub Pages가 파일을 다시 가공하지 않게
     if (CONTENT / "CNAME").exists():  # 도메인을 산 뒤에만 둔다 — docs는 매번 새로 만들어지므로 여기서 옮겨 넣음

@@ -341,16 +341,14 @@
   }
 
 
-  // 지금 보는 칸(10/24 B) — 위 메뉴에서 그 칸 이름만 먹색, 밑줄이 칸을 따라 미끄러짐(첫 화면엔 없음).
-  // 지금 칸 = 화면 위에서 45% 줄에 걸친 칸 · 화면 읽기 프로그램에는 aria-current로 '지금 위치'
+  // 지금 보는 쪽(10/31 쪽 나누기 — 전엔 한 장에서 칸을 따라 밑줄이 미끄러졌음, 10/24 B) — 빌드가 그 쪽 메뉴에 on · aria-current="page"를 붙여 둠 → 그 이름 아래 밑줄만
   const nav = document.querySelector(".top nav");
-  if (nav && "IntersectionObserver" in window) {
-    const links = [...nav.querySelectorAll('a[href^="#"]')];
+  if (nav) {
     const ul = document.createElement("i");
     ul.className = "ul";
     ul.setAttribute("aria-hidden", "true");
     nav.append(ul);
-    let on = null;
+    const on = nav.querySelector('a[aria-current="page"]');
     const place = () => {
       const was = ul.classList.contains("on");
       const at = on && !on.classList.contains("cta") ? on : null;  // 연락하기는 먹 상자라 밑줄을 그리지 않음(10/28 A — 상자가 곧 표시)
@@ -363,17 +361,7 @@
       }
       ul.classList.toggle("on", !!at);
     };
-    const show = id => {
-      on = links.find(a => a.getAttribute("href") === "#" + id) || null;
-      links.forEach(a => {
-        a.classList.toggle("on", a === on);
-        if (a === on) a.setAttribute("aria-current", "location");
-        else a.removeAttribute("aria-current");
-      });
-      place();
-    };
-    const spy = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) show(e.target.id); }), { rootMargin: "-45% 0px -54% 0px" });
-    document.querySelectorAll("main > section").forEach(s => spy.observe(s));
+    place();
     // 글꼴이 늦게 오거나 화면 폭이 바뀌면 글자 폭이 달라지므로 밑줄 자리를 다시 잼
     if (document.fonts) document.fonts.ready.then(place);
     let pt = 0;
@@ -406,8 +394,7 @@
     const y = innerHeight / 3;
     const hit = [...document.querySelectorAll("main [id]")].filter(el => { const r = el.getBoundingClientRect(); return r.height && r.top <= y && r.bottom > y; })
       .sort((a, b) => a.getBoundingClientRect().height - b.getBoundingClientRect().height)[0];
-    const cur = document.querySelector('.top nav a.on[href^="#"]');
-    const to = hit ? "#" + hit.id : cur ? cur.getAttribute("href") : "";
+    const to = hit ? "#" + hit.id : "";  // 같은 쪽의 다른 판으로(10/31 쪽 나누기 — 언어 단추가 그 쪽 주소를 가리킴)
     if (to) { ev.preventDefault(); location.href = swap.getAttribute("href") + to; }
   });
 
@@ -672,6 +659,7 @@
 
   // 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기(또는 ⌘K · Ctrl+K)로 흰 한 장을 열고, 빌드가 쪽에 넣은 찾을 거리(#sidx)에서 찾음.
   // 띄어쓰기 · 부호 · 영문 대소문자 무시 · 초성만 쳐도(ㅌㅂ → 탁본). 검색어는 이 기기 밖으로 나가지 않음 · 열면 나머지 쪽은 inert · Esc나 '닫기'로 닫고 포커스는 돋보기로
+  let leaving = false;  // 찾기에서 사이트 안 다른 쪽으로 가는 중(10/31 쪽 나누기) — 창을 닫을 때 쌓아 둔 기록 칸을 뒤로 걷지 않음(그 뒤로 가기가 Enter로 시작한 이동을 취소했음)
   const sq = document.querySelector(".sq"), srch = document.querySelector(".srch"), sidx = document.getElementById("sidx");
   if (sq && srch && sidx) {
     const items = JSON.parse(sidx.textContent);  // [갈래, 글, 자리, 갈 곳] · 칸 이름만 다섯째에 그 칸의 낱말(약력 · 차례 …)
@@ -780,6 +768,7 @@
       if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
       el.focus({ preventScroll: true });
     };
+    if (/^#p\d+$/.test(location.hash)) goTo(location.hash);  // 다른 쪽 찾기 결과로 사진 쪽에 온 사람(10/31 쪽 나누기 — photo/#p3) — 그 장으로 넘김
     sq.addEventListener("click", open);
     srch.querySelector(".x").addEventListener("click", () => shut(true));
     // ↑↓ — 맨 아래 다음 · 맨 위 앞은 입력 칸(고른 줄 없음)으로, 검색창 자동 완성처럼 돎. Tab으로 줄에 가 있었으면 그 줄에서 이어서
@@ -804,6 +793,13 @@
       if (!a) return;
       if (a.dataset.q) { inp.value = a.dataset.q; run(); inp.focus(); return; }
       const href = a.getAttribute("href") || "";
+      if (!href.startsWith("#") && a.target !== "_blank") {  // 사이트 안 다른 쪽(10/31 쪽 나누기 — book/#toc 등): 창을 닫고 쌓아 둔 기록 칸을 그 쪽 주소로 바꿔 옮김(뒤로 가기는 찾기 전 자리로)
+        ev.preventDefault();
+        leaving = true;
+        shut(false);
+        location.replace(a.href);
+        return;
+      }
       if (!href.startsWith("#")) { shut(true); return; }  // 밖으로 나가는 링크(교보 · 유튜브)는 새 창 그대로 · 포커스는 돋보기로(돌아왔을 때 쪽 맨 앞부터 다시가 아니게)
       ev.preventDefault();
       shut(false);
@@ -1154,7 +1150,7 @@
     let mine = false, popping = false;
     new MutationObserver(() => {
       if (!el.hidden && !mine) { mine = true; history.scrollRestoration = "manual"; history.pushState({ layer: w }, ""); }
-      else if (el.hidden && mine) { mine = false; if (!popping && history.state && history.state.layer === w) history.back(); popping = false; }
+      else if (el.hidden && mine) { mine = false; if (!popping && !leaving && history.state && history.state.layer === w) history.back(); popping = false; }
     }).observe(el, { attributes: true, attributeFilter: ["hidden"] });
     addEventListener("popstate", () => {
       setTimeout(() => { history.scrollRestoration = "auto"; }, 0);  // 되살리기는 이번 뒤로 가기가 끝난 뒤에 켬 — 바로 켜면 예전에 적어 둔 위치로 쪽이 옮겨졌음(찾기 2400 → 0)
