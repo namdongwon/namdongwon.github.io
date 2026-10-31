@@ -776,3 +776,70 @@ html.sr-on{overflow:hidden}
 /* 바닥글 언어 줄(10/31 동원 '언어 설정 하단 푸터로') — 화면 줄 바로 아래, 지금 판은 먹 글자 · 다른 판은 밑줄 링크 */
 .colo .lng span{color:var(--ink)}.colo .lng a{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}
 @media (hover:hover){.colo .lng a:hover{color:var(--ink)}}
+/* 동의 창(11/1 동원 "고야드 식으로 하긴 하는데 좀 정확히 따라해봐" · 안 1 고야드 문구 바탕) — 고야드(Didomi) 세 단계를 그대로, 색만 무채색(금색 → 먹)
+   1 첫 창은 고야드 그림에서 잰 값(창 652 · 위 오른쪽 '동의 없이 계속하기 →' · 본문 15px 가운데 · 회색 두 줄 12px · 넓은 자간 글자 단추 둘 · 떨어진 밑줄 — 시안 v4)
+   2 · 3 동의 관리 · 파트너 선택은 고야드 창(굵은 고딕 제목 · 명조 본문 · 작은 단추 짝 · 오른쪽 아래 저장) · 이름은 모두 cz-(사이트의 .skip · .bk와 겹쳤던 일 뒤) */
+.cz{position:fixed;inset:0;z-index:95;display:grid;place-items:center;padding:16px;background:rgba(246,246,246,.62);background:color-mix(in srgb,var(--bg) 62%,transparent);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.cz[hidden],.cz [hidden]{display:none!important}
+html.cz-on{overflow:hidden}
+.cz button{margin:0;padding:0;border:0;background:none;color:inherit;cursor:pointer;text-align:inherit}
+.cz a{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.cz-box{position:relative;box-sizing:border-box;width:min(652px,100%);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;background:var(--bg);border:1px solid var(--ink);box-shadow:0 0 0 1px rgba(0,0,0,.05),0 4px 16px rgba(0,0,0,.10);color:var(--ink);word-break:keep-all}
+.cz-box:focus{outline:none}
+/* 1 첫 창 */
+.cz-1{padding:103px 27px 46px;text-align:center}
+.cz .cz-x{position:absolute;top:40px;right:26px;font:400 12px/1.4 var(--sans);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.cz-m{margin:0;font:400 15px/1.34 var(--sans)}
+.cz .cz-pt{font:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.cz-s{margin:22px 0 0;font:300 12px/1.6 var(--sans);color:var(--faint)}.cz-s span{display:block}
+.cz-b{display:flex;justify-content:center;gap:80px;margin-top:52px}
+.cz .cz-b button{position:relative;padding:0 0 13px;border-bottom:1px solid var(--faint);font:400 10.5px/1 var(--sans);letter-spacing:.24em}  /* 넓은 자간은 고야드 그대로(10/29 한글 자간 규칙의 예외 — 이 단추 둘만) */
+.cz .cz-b .cz-yes{border-bottom-color:var(--ink)}
+.cz .cz-b button::before,.cz .cz-x::before{content:"";position:absolute;inset:-12px -8px}  /* 누르는 자리 44px 안팎(맨 위 띠와 같은 방법) */
+/* 2 동의 관리 · 3 파트너 선택 */
+.cz-2,.cz-3{width:min(680px,100%);padding:28px 32px 24px;text-align:left}
+.cz-h{display:flex;align-items:center;gap:10px}
+.cz-h h2{flex:1;margin:0;font:600 16px/1.4 var(--sans)}
+.cz .cz-c{position:relative;padding:0 2px;font:300 26px/1 var(--sans);color:var(--faint)}
+.cz .cz-bk{position:relative;font:600 16px/1 var(--sans)}
+.cz .cz-c::before,.cz .cz-bk::before{content:"";position:absolute;inset:-10px -10px}
+.cz-t{margin:16px 0 0;font:300 14.5px/1.75 var(--serif)}
+.cz-al{margin:18px 0 6px;font:600 11px/1 var(--sans);color:var(--faint)}
+.cz-r{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:12px;padding:7px 0}
+.cz .cz-e{font:700 14.5px/1.5 var(--serif);text-align:left}
+.cz-pl{display:inline-block;width:1em;font-family:var(--sans)}
+.cz-rd{display:flex;gap:6px}
+.cz .cz-rd button{position:relative;height:26px;padding:0 16px;border:1px solid var(--rule);background:var(--bg);box-shadow:1px 1px 0 rgba(0,0,0,.08);font:600 11.5px/1 var(--sans);color:var(--muted);white-space:nowrap}
+.cz .cz-rd button::before{content:"";position:absolute;inset:-9px -3px}  /* 누르는 자리 44px 안팎 */
+.cz .cz-rd [aria-checked="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.cz-d{grid-column:1/-1;margin:6px 0 4px;font:300 13px/1.75 var(--serif);color:var(--muted)}
+.cz-d p{margin:0}
+.cz-ex{margin-top:10px;padding:12px 14px;background:var(--ph);font-size:12px}
+.cz-ex b{display:block;font:600 11.5px/1.5 var(--sans);color:var(--ink)}
+.cz-ex ul{margin:6px 0 0;padding-left:1.1em}
+.cz-f{margin:18px 0 0;text-align:right}
+.cz .cz-vb{height:32px;padding:0 18px;border:1px solid var(--rule);box-shadow:1px 1px 0 rgba(0,0,0,.08);font:600 12px/1 var(--sans);color:var(--muted)}
+.cz-sr{display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:26px}
+.cz .cz-sv{min-width:72px;height:40px;padding:0 20px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans)}
+.cz .cz-sv:disabled{background:var(--ph);color:var(--faint);cursor:default}
+.cz-sr em{font:italic 300 12.5px/1.4 var(--serif);color:var(--faint)}
+.cz-sk{position:absolute;left:-9999px}.cz-sk:focus{position:static}
+.cz-vl{margin-top:16px;border:1px solid var(--rule)}
+.cz-va{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;background:var(--ph)}
+.cz-va b{font:700 14.5px/1.5 var(--serif)}
+.cz-lt{margin:12px 12px 0;font:400 14px/1 var(--serif)}
+.cz-vr{padding:6px 12px 12px}
+.cz-vr .cz-d .cz-e{font-size:13.5px}
+.cz-vr .cz-d ul{margin:4px 0 8px;padding-left:1.4em}
+.cz .cz-u{margin-top:10px;font:400 12.5px/1.5 var(--sans);color:var(--muted)}
+.cz-ui{font:300 12px/1.6 var(--sans);word-break:break-all}
+/* 바닥글 · 처리방침의 '쿠키 설정'(창 다시 열기) — consent.js가 돌 때만 · 처리방침 링크와 같은 꼴 */
+.cz-open{display:none;position:relative;padding:0;border:0;background:none;color:var(--muted);font:inherit;border-bottom:1px solid currentColor;cursor:pointer}
+.cz-js .cz-open{display:inline}
+.cz-open::before{content:"";position:absolute;inset:-16px -4px}
+.ckp{margin:12px 0 0}
+@media (hover:hover){.cz .cz-rd button:hover,.cz .cz-vb:hover{border-color:var(--muted)}.cz-open:hover{color:var(--ink)}}
+@media (max-width:767px){
+  .cz-1{padding:84px 20px 40px}.cz .cz-x{top:28px;right:18px}.cz-m{font-size:14px;line-height:1.5}.cz-b{gap:40px;margin-top:40px}
+  .cz-2,.cz-3{padding:22px 18px 20px}.cz-r{grid-template-columns:1fr}.cz-rd{justify-self:end;margin-top:6px}
+}

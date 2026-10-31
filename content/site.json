@@ -556,7 +556,8 @@
     }
   },
   "analytics": {
-    "goatcounter": ""
+    "goatcounter": "",
+    "ga4": ""
   },
   "verify": {
     "google": "",

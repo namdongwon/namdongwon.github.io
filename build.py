@@ -120,6 +120,64 @@ def goatcounter(site):
     return code
 
 
+def ga4(site):
+    # 방문 통계 GA4(11/1 동원 "ga4로 하자 그래야 내가 공부가 되지"): site.json analytics.ga4에 측정 ID(G-로 시작)를 넣으면 켜지고 비면 꺼짐(끄면 사이트 파일이 전과 같음).
+    # GA4는 쿠키(_ga · _ga_<id> 2년)를 써서 동의한 방문만 셈 — 동의 창(고야드 꼴 세 단계 · consent.js)이 함께 켜짐. 켜려면 처리방침에 GA4 문구(when "ga4")가 먼저 있어야 함
+    gid = ((site.get("analytics") or {}).get("ga4") or "").strip()
+    if gid and not re.fullmatch(r"G-[A-Z0-9]{4,16}", gid):
+        raise SystemExit(f"GA4 측정 ID는 'G-'로 시작하는 영문 대문자 · 숫자(예: G-AB12CD34EF) — 지금 '{gid}'")
+    if gid and not any(i.get("when") == "ga4" for s in (load("privacy.json")["sections"] if (CONTENT / "privacy.json").exists() else []) for i in s["items"]):
+        raise SystemExit("GA4(analytics.ga4)를 켜려면 개인정보 처리방침(content/privacy.json)에 GA4 문구(when \"ga4\")가 먼저 있어야 함")
+    return gid
+
+
+def consent_html(L, gid, site_label):
+    # 동의 창(11/1 동원 "고야드 식으로 하긴 하는데 좀 정확히 따라해봐" · 버튼 "안 1 — 고야드 문구 바탕") — 고야드(Didomi)처럼 세 단계: 첫 창 · 동의 관리 · 파트너 선택.
+    # 글은 ui.json cz_…(고야드 · Didomi · IAB 원문 바탕 — 기준/레퍼런스/동의 창_고야드 · 프라다 원문_2026-11-01.md) · 움직임은 consent.js · 처음엔 숨김(consent.js가 엶)
+    g = lambda k: e(L[k])  # noqa: E731
+
+    def radio(label, no, ok):
+        return (f'<span class="cz-rd" role="radiogroup" aria-label="{e(label)}">'
+                f'<button type="button" role="radio" aria-checked="false" data-v="0">{no}</button>'
+                f'<button type="button" role="radio" aria-checked="false" data-v="1">{ok}</button></span>')
+
+    def opener(label, extra=""):  # '+' 펼침 — 바로 뒤의 .cz-d를 엶(consent.js)
+        return f'<button type="button" class="cz-e{extra}" aria-expanded="false"><span class="cz-pl" aria-hidden="true">+</span>{label}</button>'
+
+    def purpose(key):
+        ex = "".join(f"<li>{e(x)}</li>" for x in L[f"cz_{key}_x"].split("|"))
+        return (f'<div class="cz-r" data-k="{key}">{opener(g("cz_" + key))}{radio(L["cz_" + key], g("cz_no"), g("cz_ok"))}'
+                f'<div class="cz-d" hidden><p>{g("cz_" + key + "_d")}</p><div class="cz-ex"><b>{g("cz_ex_h")}</b><ul>{ex}</ul></div></div></div>')
+
+    def head(n, title, back=""):
+        return f'<div class="cz-h">{back}<h2 id="cz-t{n}">{title}</h2><button type="button" class="cz-c" aria-label="{g("cz_close")}">×</button></div>'
+    site = e(site_label)
+    partner = f'<button type="button" class="cz-pt">{g("cz_partner")}</button>'  # 고야드처럼 파트너 선택 창을 바로 엶
+    privacy = f'<a href="~R~privacy/">{g("cz_privacy")}</a>'
+    policy = f'<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">{g("cz_v_policy_l")}</a>'
+    vendor = "Google Analytics Products"
+    l1 = (f'<div class="cz-box cz-1" role="dialog" aria-modal="true" aria-label="{g("cz_label")}">'
+          f'<button type="button" class="cz-x">{g("cz_skip")}</button>'
+          f'<p class="cz-m">{g("cz_text").replace("{partner}", partner)}</p>'
+          f'<p class="cz-s">{g("cz_list_h")}<span>{g("cz_list")}</span></p>'
+          f'<div class="cz-b"><button type="button" class="cz-more" aria-label="{g("cz_more_aria")}">{g("cz_more")}</button>'
+          f'<button type="button" class="cz-yes" aria-label="{g("cz_yes_aria")}">{g("cz_yes")}</button></div></div>')
+    l2 = (f'<div class="cz-box cz-2" role="dialog" aria-modal="true" aria-labelledby="cz-t2" hidden>{head(2, g("cz_p_title").replace("{site}", site))}'
+          f'<p class="cz-t">{g("cz_p_text").replace("{privacy}", privacy)}</p><p class="cz-al">{g("cz_allow")}</p>{purpose("p1")}{purpose("p2")}'
+          f'<p class="cz-f"><button type="button" class="cz-vb">{g("cz_partners")}</button></p>'
+          f'<div class="cz-sr"><button type="button" class="cz-sv" aria-label="{g("cz_save_aria")}" disabled>{g("cz_save")}</button><em>{g("cz_note")}</em></div></div>')
+    back = f'<button type="button" class="cz-bk" aria-label="{g("cz_back")}">←</button>'
+    l3 = (f'<div class="cz-box cz-3" role="dialog" aria-modal="true" aria-labelledby="cz-t3" hidden>{head(3, g("cz_v_title").replace("{site}", site), back)}'
+          f'<p class="cz-t">{g("cz_v_text")}</p><a class="cz-sk" href="#cz-sv3">{g("cz_v_skip")}</a>'
+          f'<div class="cz-vl"><div class="cz-va"><b>{g("cz_v_all")}</b>{radio(L["cz_v_all"], g("cz_v_no"), g("cz_v_ok"))}</div>'
+          f'<p class="cz-lt">G</p><div class="cz-r cz-vr" data-k="g">{opener(vendor)}{radio(vendor, g("cz_v_no"), g("cz_v_ok"))}'
+          f'<div class="cz-d" hidden>{opener(g("cz_v_consent"))}<ul class="cz-d" hidden><li>{g("cz_p2")}</li><li>{g("cz_p1")}</li></ul>'
+          f'<p>{g("cz_v_policy").replace("{policy}", policy)}</p></div></div></div>'
+          f'{opener(g("cz_user"), " cz-u")}<p class="cz-d cz-ui" hidden data-none="{g("cz_user_none")}"></p>'
+          f'<div class="cz-sr"><button type="button" class="cz-sv" id="cz-sv3" aria-label="{g("cz_save_aria")}">{g("cz_save")}</button></div></div>')
+    return f'<div class="cz" id="cz" data-ga="{e(gid)}" hidden>{l1}{l2}{l3}</div>\n'
+
+
 def book_card(site):
     # 출간일 공유 카드(10/27 동원 "공유 카드는 B로 하자"): 나온 날(book.published)부터 book.card_until 전날까지는 링크 미리보기를 책 카드로
     # (그림 og-book.jpg · og-book-en.jpg + og:title을 책 제목으로) — 그 밖엔 이름 카드. 정적 사이트라 그날 뒤 처음 빌드할 때 바뀜
@@ -670,7 +728,10 @@ def render(site, poem, videos, photos, lang="ko"):
     gc = goatcounter(site)  # 방문 셈(10/27) — GoatCounter가 알려 준 꼴 그대로(쪽 맨 끝, async)[출처 goatcounter.com/help/start]
     # 교보 링크 누름(10/27 동원 수락 — 관리 화면 숫자판 M2 '책장에 꽂기', 정의서 v2 W2): 네 자리 × 한 · 영에 이름을 붙여 셈 — 방문 셈을 켰을 때만.
     # 이름 '책장에 꽂기-첫화면 · -소장처 · -책카드 · -찾기', 영어판은 끝에 -en(관리 화면이 이 이름으로 읽음). 값을 붙이면 count.js가 누름을 셈[출처 goatcounter.com/help/events]
-    gcc = lambda where: f' data-goatcounter-click="{e("책장에 꽂기-" + where + ("-en" if en else ""))}"' if gc else ""  # noqa: E731
+    ga = ga4(site)  # 방문 통계 GA4(11/1) — 동의한 방문만 셈 · 동의 창은 consent_html · consent.js
+    # 교보 링크 누름 — GA4는 같은 이름을 data-ga-click으로(consent.js가 동의한 방문에서만 kyobo_click 이벤트 · 값 spot)
+    gcc = lambda where: ((f' data-goatcounter-click="{e("책장에 꽂기-" + where + ("-en" if en else ""))}"' if gc else "")  # noqa: E731
+                         + (f' data-ga-click="{e("책장에 꽂기-" + where + ("-en" if en else ""))}"' if ga else ""))
     dtxt = lambda s: (lambda d: f"{MONTHS[d.month - 1]}{NB}{d.day}, {d.year}")(date.fromisoformat(s)) if en else s.replace("-", ".")  # noqa: E731  소식 · 방명록 날짜 — 한국어 2026.11.01 · 영어 November 1, 2026(같은 쪽 다른 영어 날짜와 같은 꼴, 10/27 점검)
     gc_tag = f'<script data-goatcounter="https://{gc}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n' if gc else ""
     og_img =("og-book-en.jpg" if en else "og-book.jpg") if card else ("og-en.jpg" if en else "og.jpg")
@@ -952,6 +1013,8 @@ def render(site, poem, videos, photos, lang="ko"):
     thm = "".join(f'<button type="button" data-th="{k}" aria-pressed="{"true" if k == "light" else "false"}" aria-label="{e(x)}" title="{e(x)}">{THEME_ICONS[k]}</button>'
                     for k, x in zip(("system", "light", "dark"), L["theme_opts"].split("|")))
     pp_link = f' <a class="pp-l" href="~R~privacy/">{t("gb_privacy")}</a>' if (CONTENT / "privacy.json").exists() else ""  # 처리방침 쪽(10/27) — '쿠키를 쓰지 않습니다' 옆
+    # GA4를 켜면(11/1) '쿠키 · ' 세 글자만 빼고 프라다 말 '쿠키 설정'(동의 관리 창 다시 열기 — consent.js)을 처리방침 앞에
+    cookie_line = (t("colo_cookie_ga") + f' <button type="button" class="cz-open">{t("cz_open")}</button> ·') if ga else t("colo_cookie")
     colo = (f'<div class="colo"><p class="t">{e(urlparse(base).netloc or base)}</p><dl>'
             f'<dt>{t("colo_updated")}</dt><dd><time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</dd>'
             f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd>'
@@ -960,7 +1023,7 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd>'
             # 언어(10/31 동원 "언어 설정 하단 푸터로 빼") — 화면 줄 바로 아래: 지금 판은 글자 · 다른 판은 그 쪽의 같은 자리로 가는 링크(~L~ — page()가 채움)
             f'<dt>{t("colo_lang")}</dt><dd class="lng"><span aria-current="true">{"English" if en else "한국어"}</span>{NB}· <a class="lang" href="~L~" hreflang="{"ko" if en else "en"}" lang="{"ko" if en else "en"}">{"한국어" if en else "English"}</a></dd></dl>'  # 글꼴 줄은 뺌(10/26 동원 "사이트에 내 글꼴 소개하지 않아도 되잖아 지워" — 라이선스 글은 글꼴 옆에 그대로)
-            f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{t("colo_cookie")}{pp_link}</p>'
+            f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{cookie_line}{pp_link}</p>'
             f'<p class="end">{t("colo_end")}</p></div>')  # 사이트의 끝 — 책 '읽어 주신 분들께'의 맺음 인사(10/27 경험 설계 '끝까지 온 사람을 맞이하나?' · 동원 "B1 좋은 아침")
 
     secs = ("me", "poem", "photo", "video", "contact")
@@ -1240,7 +1303,7 @@ def render(site, poem, videos, photos, lang="ko"):
 {pv if k == "photo" else ""}{srch}<script id="sidx" type="application/json">{sidx}</script>
 <script id="ui" type="application/json">{ui_js}</script>
 <script src="{P}assets/main.js" defer onerror="document.documentElement.classList.remove('js','intro')"></script>
-{gc_tag}</body>
+{consent_html(L, ga, urlparse(base).netloc or base) + f'<script src="{P}assets/consent.js" defer></script>{chr(10)}' if ga else ""}{gc_tag}</body>
 </html>
 """
         html_ = re.sub(r'href="(#[\w-]+)"', lambda m: f'href="{go(m.group(1))}"', html_)  # 칸 사이 링크(첫 화면 '「탁본」 읽기' · 차례 · 찾기 추천 …)를 쪽 주소로
@@ -1260,11 +1323,18 @@ def page_privacy(site, lang):
     d = date.fromisoformat(p["updated"])
     when = f"{MONTHS[d.month - 1]} {d.day}, {d.year}" if en else f"{d.year}년 {d.month}월 {d.day}일"
     # when이 붙은 줄은 그것을 켰을 때만(방문 셈 when "goatcounter" · 방명록 when "guestbook" — 10/27) · 칸에 보일 줄이 없으면 그 칸의 empty 한 줄 · 방문 셈을 켜면 첫 문단도 lead_counted로
-    on = {"goatcounter": bool(goatcounter(site)), "guestbook": bool(site["contact"].get("guestbook_formspree_id"))}
-    shown = lambda items: [i for i in items if on.get(i.get("when"), True)]  # noqa: E731
-    lead = p["lead_counted"] if on["goatcounter"] and p.get("lead_counted") else p["lead"]
+    # GA4(11/1): when "ga4" 줄은 켰을 때만 · unless "ga4" 줄('쿠키를 쓰지 않습니다' · 저장소 둘)은 켜면 숨김 · 첫 문단은 lead_ga · 동의 창과 '쿠키 설정'(동의를 거두는 곳)도 이 쪽에
+    ga = ga4(site)
+    on = {"goatcounter": bool(goatcounter(site)), "ga4": bool(ga), "guestbook": bool(site["contact"].get("guestbook_formspree_id"))}
+    shown = lambda items: [i for i in items if on.get(i.get("when"), True) and not on.get(i.get("unless"), False)]  # noqa: E731
+    lead = p["lead_ga"] if on["ga4"] and p.get("lead_ga") else p["lead_counted"] if on["goatcounter"] and p.get("lead_counted") else p["lead"]
     secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{g(i)}</li>" for i in (shown(x["items"]) or [x["empty"]] * ("empty" in x)))}</ul>' for x in p["sections"])
     other_lang, other_href = ("ko", "../../privacy/") if en else ("en", "../en/privacy/")
+    cz = ckp = ""
+    if ga:
+        Lp = {k: v[lang] if isinstance(v, dict) and lang in v else v for k, v in load("ui.json").items() if not k.startswith("_")}
+        cz = consent_html(Lp, ga, urlparse(base).netloc or base).replace("~R~", R) + f'<script src="{R}assets/consent.js" defer></script>\n'
+        ckp = f'<p class="ckp"><button type="button" class="cz-open">{e(Lp["cz_open"])}</button></p>\n'
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{g(p["title"])} — {e(site["en"]["name"] if en else site["name"])}</title><meta name="robots" content="noindex">
@@ -1274,10 +1344,10 @@ def page_privacy(site, lang):
 <body><main class="pp">
 <h1 class="h2">{g(p["title"])}</h1>
 <p class="lead">{g(lead)}</p>
-{secs}
+{ckp}{secs}
 <p class="up">{g(p["updated_label"])} <time datetime="{d.isoformat()}">{when}</time></p>
 <p class="back"><a class="buy" href="../">{g(p["back"])}</a><a class="oth" href="{other_href}" lang="{other_lang}" hreflang="{other_lang}">{g(p["other"])}</a></p>
-</main></body></html>
+</main>{cz}</body></html>
 """
 
 
@@ -1428,6 +1498,8 @@ def main():
 
     shutil.copy2(SRC / "style.css", ASSETS / "style.css")
     shutil.copy2(SRC / "main.js", ASSETS / "main.js")
+    if ga4(site):
+        shutil.copy2(SRC / "consent.js", ASSETS / "consent.js")  # 동의 창 움직임(11/1) — GA4를 켰을 때만(끄면 사이트 파일이 전과 같음)
 
     cover = CONTENT / site["book"]["cover"]
     save_jpg(cover, ASSETS / "img/cover.jpg", 600, quality=84)
