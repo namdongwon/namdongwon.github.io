@@ -549,7 +549,7 @@ html.sr-on{overflow:hidden}
 .pp .up{margin-top:30px;font:300 11px/1 var(--sans);color:var(--faint)}
 .pp .back{margin-top:30px;display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
 .pp .oth{font:300 12.5px/1 var(--sans);color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}
-.colo .thm{display:none}.js .colo .thm{display:block}  /* 화면 고르기 — 자바스크립트가 있어야 바뀌므로 그때만 */
+.colo .thm{display:none}.js .colo .thm{display:block}.colo .mot{display:none}.js .colo .mot{display:block}  /* 움직임 줄이기 줄도 자바스크립트가 있을 때만(11/1 밤) */  /* 화면 고르기 — 자바스크립트가 있어야 바뀌므로 그때만 */
 .colo .thm button{display:inline-grid;place-items:center;width:28px;height:28px;margin:-8px 0;padding:0;border:0;background:none;font:inherit;color:var(--muted);vertical-align:middle;cursor:pointer;-webkit-tap-highlight-color:transparent}.colo .thm button+button{margin-left:12px}.colo .thm button svg{width:16px;height:16px}  /* 그림 단추(10/28 B 선 그림) — 누르는 칸 28px, 줄 높이는 글자 줄 그대로(-8px) · 그림은 돋보기와 같은 16px */
 .colo .thm button[aria-pressed="true"]{color:var(--ink);background:linear-gradient(currentColor,currentColor) no-repeat 50% calc(50% + 12px)/16px 1.5px}  /* 고른 것은 먹 + 그림 너비만큼 밑줄 1.5px */
 
@@ -1010,3 +1010,11 @@ html:lang(ja) .tk-s .s{word-break:auto-phrase}@media (max-width:899px){html:lang
 .totop:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media (min-width:900px){.totop{right:72px;bottom:72px}}
 @media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}
+/* 판권면 '움직임 줄이기' 스위치(11/1 밤 명품 제안 ⑥ — 버튼 'A 스위치 (권장)'): 고야드 바닥글 스위치 실측(24×14 · 테두리 1px · 글자와 11px) — 모서리는 누르는 단추 한 벌(2px),
+   끔은 옅은 회색 · 켬은 먹 채움에 흰 네모. 켜면 html data-motion="reduce"(빌드 motion_css가 움직임 규칙을 묶음) */
+.colo .mot label{display:inline-flex;align-items:center;gap:12px;color:var(--ink);cursor:pointer}
+.colo .mot input{-webkit-appearance:none;appearance:none;position:relative;flex:none;width:24px;height:14px;margin:0;border:1px solid var(--muted);border-radius:var(--btn-r);background:none;cursor:pointer}
+.colo .mot input::after{content:"";position:absolute;top:2px;left:2px;width:8px;height:8px;border-radius:1px;background:var(--muted)}
+.colo .mot input:checked{border-color:var(--ink);background:var(--ink)}.colo .mot input:checked::after{left:12px;background:var(--bg)}
+.colo .mot input:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.colo .mot small{margin-left:8px;color:var(--faint);font-size:11px}

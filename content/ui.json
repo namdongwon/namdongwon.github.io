@@ -1087,5 +1087,25 @@
     "ko": "『문을 열고 나오면|살아 있는 것들로|가득 차 있다』",
     "en": "Open the Door, Step Out,|and It Is Full of|Living Things",
     "ja": "『扉をあけて出ると、|生きているものたちで|満ちている』"
+  },
+  "motion": {
+    "ko": "움직임",
+    "en": "Motion",
+    "ja": "動き"
+  },
+  "motion_reduce": {
+    "ko": "줄이기",
+    "en": "Reduce",
+    "ja": "減らす"
+  },
+  "motion_off": {
+    "ko": "끔 — 기기 설정을 따름",
+    "en": "Off — follows your device",
+    "ja": "オフ — 端末の設定に従う"
+  },
+  "motion_on": {
+    "ko": "켬 — 움직임 없이 머문 자리로",
+    "en": "On — everything stays still",
+    "ja": "オン — 動きを止めて表示"
   }
 }

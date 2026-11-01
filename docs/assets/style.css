@@ -421,7 +421,7 @@ html.sr-on{overflow:hidden}
 .btoc{scroll-margin-top:4px}  /* 찾기 · 추천 '시집 차례'로 오면 차례 머리가 맨 위 띠 아래에 */
 @media (min-width:768px){.srch .in{padding-top:72px}.srch input{font-size:30px}.srch .sug a,.srch .sug button{font-size:21px}}
 @media (min-width:768px){.pvh,.pvf{padding-left:64px;padding-right:64px}.pvs figure{padding:22px 64px}.pvf p{max-width:720px}}
-@media (prefers-reduced-motion:reduce){.pv{transition:none}}
+@media (prefers-reduced-motion:reduce){.pv{transition:none}}:where(:root[data-motion="reduce"]) .pv,:where(:root[data-motion="reduce"]).pv{transition:none}
 .js #photo .nav2{display:none}
 #photo.all .strip,#photo.all .thumbs,#photo.all .caps{display:none}
 /* 휴대폰: 계정 → 사진 → 캡션 순서(감싼 상자를 풀어 순서만 바꿈) */
@@ -549,7 +549,7 @@ html.sr-on{overflow:hidden}
 .pp .up{margin-top:30px;font:300 11px/1 var(--sans);color:var(--faint)}
 .pp .back{margin-top:30px;display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
 .pp .oth{font:300 12.5px/1 var(--sans);color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}
-.colo .thm{display:none}.js .colo .thm{display:block}  /* 화면 고르기 — 자바스크립트가 있어야 바뀌므로 그때만 */
+.colo .thm{display:none}.js .colo .thm{display:block}.colo .mot{display:none}.js .colo .mot{display:block}  /* 움직임 줄이기 줄도 자바스크립트가 있을 때만(11/1 밤) */  /* 화면 고르기 — 자바스크립트가 있어야 바뀌므로 그때만 */
 .colo .thm button{display:inline-grid;place-items:center;width:28px;height:28px;margin:-8px 0;padding:0;border:0;background:none;font:inherit;color:var(--muted);vertical-align:middle;cursor:pointer;-webkit-tap-highlight-color:transparent}.colo .thm button+button{margin-left:12px}.colo .thm button svg{width:16px;height:16px}  /* 그림 단추(10/28 B 선 그림) — 누르는 칸 28px, 줄 높이는 글자 줄 그대로(-8px) · 그림은 돋보기와 같은 16px */
 .colo .thm button[aria-pressed="true"]{color:var(--ink);background:linear-gradient(currentColor,currentColor) no-repeat 50% calc(50% + 12px)/16px 1.5px}  /* 고른 것은 먹 + 그림 너비만큼 밑줄 1.5px */
 
@@ -629,42 +629,11 @@ html.sr-on{overflow:hidden}
 /* 아주 낮은 화면(가로 폰 · 400% 확대)은 제목 · 아래 줄을 붙이지 않고 종이 전체가 스크롤 — 둘 다 붙으면 시 칸이 3–4행 · 0행(10/27 점검 남은 것 가1). 끝으로 내리기(toEnd)는 그대로 */
 .sheet.tight .st{padding-top:12px}.sheet.tight .sp{margin-top:12px}.sheet.tight.done .sp{padding-bottom:16px}.sheet.tight .sf{padding-top:12px;row-gap:12px}  /* 한 장에 맞춤의 넷째 단(10/28 A — main.js fit): 글자를 11px까지 줄여도 넘치면 위아래 여백도 단 안에서 한 단씩 */
 @media (max-height:480px){.sheet .st,.sheet .sf{position:static}.sheet .sf,.sheet.sc .st{box-shadow:none}}
-@media (prefers-reduced-motion:no-preference){.sheet.done .se{animation:sein .4s ease both}}  /* 단추와 같은 0.4초 나타남 */
+@media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .sheet.done .se,:where(:root:not([data-motion="reduce"])).sheet.done .se{animation:sein .4s ease both}}  /* 단추와 같은 0.4초 나타남 */
 @keyframes sein{from{opacity:0}}
 
 /* 결 — 자바스크립트가 켜져 있고 '동작 줄이기'가 아닐 때만. 흐림은 명조의 가는 획에 맞춰 3px(조사 권고 2~4px) */
-@media (prefers-reduced-motion:no-preference){
-  .nt.in b i{animation:nxp 2.4s ease-in-out 3}  /* '준비 중' 점이 화면에 들어오면 세 번 숨 쉬고 멈춤(10/27 숨 재기 1 — 전엔 쪽을 연 때부터 끝없이) · '동작 줄이기'면 멈춘 점 */
-  .top nav a{transition:color .35s var(--ease),opacity .4s}
-  .top .act a.cta{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),opacity .4s}  /* 맨 위 테두리 → 먹 채움 0.3초(10/29 고침 2) */  /* 누르면 옅어졌다 0.4초에 돌아옴(10/28 ⑧ — 옅어지는 것은 손가락 기기만, 컴퓨터는 opacity가 바뀌지 않아 그대로) */
-  .top nav .ul{transition:transform .5s var(--ease),width .5s var(--ease),opacity .3s}  /* 지금 칸 밑줄이 미끄러짐('동작 줄이기'면 바로 그 자리) */
-  .mini{transition:transform .5s var(--ease),visibility 0s .5s}  /* 작은 재생기는 아래에서 올라오고 내려감('동작 줄이기'면 바로) */
-  .mini.on{transition:transform .5s var(--ease)}
-  /* 첫 화면 이름 — 커서와 함께 자모로 쳐 나감(10/24). 자바스크립트가 넘겨받기 전에는 이름을 감춰 한 번 깜빡이지 않게(3초 뒤엔 그냥 보임) */
-  .js:not(.seen) #home .name:not(.ty){color:transparent;animation:name-show 0s 3s forwards}  /* 다시 온 방문(.seen — head 스크립트)은 이름 · 책 · 창살 빛을 처음부터 머문 자리로(10/27 숨 재기 3 — 문처럼 첫 방문에만) */
-  .js .name .caret{display:inline-block;width:.06em;height:.8em;margin-left:.16em;background:currentColor;vertical-align:-.04em;animation:caret 1s steps(1) infinite}
-  .js .name .caret.off{opacity:0;width:0;margin-left:0;transition:opacity .4s,width 0s .4s,margin-left 0s .4s;animation:none}  /* 다 친 뒤엔 자리도 비움 — 이름 뒤 빈칸이 두 배였음(10/25 다듬기 가6) */
-  .intro #home .book{opacity:0;transform:translateY(26px);filter:blur(3px);animation:intro-safe .8s var(--ease) 4s forwards}
-  .intro .door{animation:door-safe .6s ease 4s forwards}  /* 문 안전장치(10/25 마지막 점검 A): main.js가 문을 못 걷으면 4초 뒤 스스로 — 정상이면 2.5초에 main.js가 문을 치움 */
-  .opened #home .book{opacity:1;transform:none;filter:none;transition:opacity .8s var(--ease) .6s,transform .8s var(--ease) .6s,filter .8s var(--ease) .6s}  /* 문 열림 0.6초 뒤부터(10/24 B, 지금 1.1초 뒤 1초) */
-  /* 서 있는 책: 처음엔 책등이 보이게(78°) 서 있다가 main.js가 넘겨받아 26°로 돌림. 자바스크립트가 못 넘겨받으면 4초 뒤 스스로 제자리 */
-  .js:not(.seen) .bk:not(.on) .b{--ry:78deg;animation:bk-safe 1.7s var(--ease) 4s forwards}
-  /* 창살 빛: 책이 돌아설 때(main.js가 .on을 붙임) 창 그림자가 비껴 들어와 4초 동안 자리 잡음 · 자바스크립트가 못 넘겨받으면 책과 함께 4초 뒤 머문 자리로 떠오름 */
-  .js:not(.seen) #home .bk:not(.on) .win::before{animation:win-safe 1.7s var(--ease) 4s both}
-  .js:not(.seen) #home .bk.on .win::before{animation:win-in 4s cubic-bezier(.4,0,.3,1) backwards}  /* 끝나면 머문 자리(기본 값)와 같은 모양 — backwards라 끝난 뒤엔 움직임 목록에서 빠짐(숨 재기 1) */
-  .js .rv{opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;transition-delay:calc(var(--i,0)*.04s)}  /* 떠오르기 A 흐림 없이 짧게(10/25 — 전: 흐림 3px · 26px · 0.95초 · 차례 0.08초) */
-  .js .rv.in{opacity:1;transform:none}
-  .js .label::after{transform:scaleX(0);transform-origin:0 50%;transition:transform 1.3s var(--ease) .1s}
-  .js .label.in::after{transform:scaleX(1)}
-  /* 「탁본」 시 칸 글자는 움직이지 않음 — 처음부터 먹(10/27 숨 재기 4, 동원 'A 처음부터 먹' — 한국 · 일본 문학 사이트 7곳 모두 글자를 움직이지 않음 · 한 줄씩 찍힘은 「탁본」 한 장(정점)에만. 전: 10/24 결 정돈의 행마다 쓸림 + 회색→먹 2.6초) */
-  /* 사진 — 다가오며 들어오고, 넘긴 사진은 짧게 서서히(10/24 결 정돈 — 밝게 번쩍이던 '현상' 대신) */
-  .js .strip img{transform:scale(1.1);transition:transform 1.8s var(--ease),opacity .6s ease}
-  .js .strip.in img{transform:scale(1)}
-  .js .strip img.dev{opacity:0;transition:transform 1.8s var(--ease)}
-  /* 모아 보기 — 격자가 차례로 떠오름 */
-  .js .pgrid>*{opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i)*.045s)}
-  .js .pgrid.show>*{opacity:1;transform:none}
-}
+@media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .nt.in b i,:where(:root:not([data-motion="reduce"])).nt.in b i{animation:nxp 2.4s ease-in-out 3}:where(:root:not([data-motion="reduce"])) .top nav a,:where(:root:not([data-motion="reduce"])).top nav a{transition:color .35s var(--ease),opacity .4s}:where(:root:not([data-motion="reduce"])) .top .act a.cta,:where(:root:not([data-motion="reduce"])).top .act a.cta{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),opacity .4s}:where(:root:not([data-motion="reduce"])) .top nav .ul,:where(:root:not([data-motion="reduce"])).top nav .ul{transition:transform .5s var(--ease),width .5s var(--ease),opacity .3s}:where(:root:not([data-motion="reduce"])) .mini,:where(:root:not([data-motion="reduce"])).mini{transition:transform .5s var(--ease),visibility 0s .5s}:where(:root:not([data-motion="reduce"])) .mini.on,:where(:root:not([data-motion="reduce"])).mini.on{transition:transform .5s var(--ease)}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .name:not(.ty),:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .name:not(.ty){color:transparent;animation:name-show 0s 3s forwards}:where(:root:not([data-motion="reduce"])) .js .name .caret,:where(:root:not([data-motion="reduce"])).js .name .caret{display:inline-block;width:.06em;height:.8em;margin-left:.16em;background:currentColor;vertical-align:-.04em;animation:caret 1s steps(1) infinite}:where(:root:not([data-motion="reduce"])) .js .name .caret.off,:where(:root:not([data-motion="reduce"])).js .name .caret.off{opacity:0;width:0;margin-left:0;transition:opacity .4s,width 0s .4s,margin-left 0s .4s;animation:none}:where(:root:not([data-motion="reduce"])) .intro #home .book,:where(:root:not([data-motion="reduce"])).intro #home .book{opacity:0;transform:translateY(26px);filter:blur(3px);animation:intro-safe .8s var(--ease) 4s forwards}:where(:root:not([data-motion="reduce"])) .intro .door,:where(:root:not([data-motion="reduce"])).intro .door{animation:door-safe .6s ease 4s forwards}:where(:root:not([data-motion="reduce"])) .opened #home .book,:where(:root:not([data-motion="reduce"])).opened #home .book{opacity:1;transform:none;filter:none;transition:opacity .8s var(--ease) .6s,transform .8s var(--ease) .6s,filter .8s var(--ease) .6s}:where(:root:not([data-motion="reduce"])) .js:not(.seen) .bk:not(.on) .b,:where(:root:not([data-motion="reduce"])).js:not(.seen) .bk:not(.on) .b{--ry:78deg;animation:bk-safe 1.7s var(--ease) 4s forwards}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .bk:not(.on) .win::before,:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .bk:not(.on) .win::before{animation:win-safe 1.7s var(--ease) 4s both}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .bk.on .win::before,:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .bk.on .win::before{animation:win-in 4s cubic-bezier(.4,0,.3,1) backwards}:where(:root:not([data-motion="reduce"])) .js .rv,:where(:root:not([data-motion="reduce"])).js .rv{opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;transition-delay:calc(var(--i,0)*.04s)}:where(:root:not([data-motion="reduce"])) .js .rv.in,:where(:root:not([data-motion="reduce"])).js .rv.in{opacity:1;transform:none}:where(:root:not([data-motion="reduce"])) .js .label::after,:where(:root:not([data-motion="reduce"])).js .label::after{transform:scaleX(0);transform-origin:0 50%;transition:transform 1.3s var(--ease) .1s}:where(:root:not([data-motion="reduce"])) .js .label.in::after,:where(:root:not([data-motion="reduce"])).js .label.in::after{transform:scaleX(1)}:where(:root:not([data-motion="reduce"])) .js .strip img,:where(:root:not([data-motion="reduce"])).js .strip img{transform:scale(1.1);transition:transform 1.8s var(--ease),opacity .6s ease}:where(:root:not([data-motion="reduce"])) .js .strip.in img,:where(:root:not([data-motion="reduce"])).js .strip.in img{transform:scale(1)}:where(:root:not([data-motion="reduce"])) .js .strip img.dev,:where(:root:not([data-motion="reduce"])).js .strip img.dev{opacity:0;transition:transform 1.8s var(--ease)}:where(:root:not([data-motion="reduce"])) .js .pgrid>*,:where(:root:not([data-motion="reduce"])).js .pgrid>*{opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i)*.045s)}:where(:root:not([data-motion="reduce"])) .js .pgrid.show>*,:where(:root:not([data-motion="reduce"])).js .pgrid.show>*{opacity:1;transform:none}}
 
 @media (max-width:374px){.bhead{text-wrap:pretty}}  /* 갤럭시 기본 폭(360)에서 줄 끝에 한두 글자만 남던 것 — 머리글 '… 옮기는 / 시'(10/27 점검) */
 @media (min-width:355px) and (max-width:374px){.poem{font-size:15px}}  /* 「탁본」 첫 행 '… 가득 차 / 있다'가 360에서 한 줄로. 320 · 340은 15px로도 안 들어가고 '있다'만 남아 16px 그대로 */
@@ -902,29 +871,17 @@ html.cz-on{overflow:hidden}
   .hpic:hover img{z-index:5;transform:scale(3.4);filter:none;box-shadow:0 22px 64px rgba(0,0,0,.22)}
   .hpic:hover small{opacity:1}
 }
-@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.hpic img{transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .55s,box-shadow .55s}.hpic small{transition:opacity .3s .2s}}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .hpic img,:where(:root:not([data-motion="reduce"])).hpic img{transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .55s,box-shadow .55s}:where(:root:not([data-motion="reduce"])) .hpic small,:where(:root:not([data-motion="reduce"])).hpic small{transition:opacity .3s .2s}}
 /* ② 시집 첫 화면 책 장면(← '스크롤에 따라 장면이 바뀌는 히어로' · Aube) — 넓은 화면 · 움직임 허용 · 자바스크립트(main.js가 #home에 .scene). 첫 화면을 지나 내려가는 동안 책 칸이 붙어 있고(sticky)
    책이 가운데로 옮겨 가며 한 바퀴 · 곁에 라벨 넷(박물관 라벨 .lab의 글 — .lab은 읽기 도구용으로 화면 밖에 남김) */
-@media (min-width:1024px) and (prefers-reduced-motion:no-preference){
-  #home.scene{min-height:calc(230svh - var(--top));grid-template-rows:auto calc(100svh - var(--top) - 94px) 1fr}
-  #home.scene>.r{grid-row:2/-1;align-self:start;position:sticky;top:calc(var(--top) + 64px)}
-  #home.scene .lab{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-  #home.scene .bk{transform:translateX(var(--sx,0px))}
-  #home.scene .tip{transition:opacity .3s}
-  #home.scene.moved .tip{opacity:0}
-  .bco{position:absolute;z-index:3;width:max-content;max-width:250px;font:300 12.5px/1.5 var(--sans);opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s;pointer-events:none}  /* 긴 사양 줄은 250px에서 접힘(1024 폭 오른쪽이 모자람) · 폭은 글 길이대로(max-content — 단 밖에 붙어 left가 없으면 한 글자씩 접혔음) */
-  .bco b{display:block;font:600 11px/1.5 var(--sans);letter-spacing:.04em;color:var(--muted)}
-  .bco.on{opacity:1;transform:none}
-  .bco::after{content:"";position:absolute;top:1.6em;width:36px;height:1px;background:var(--ink)}
-  .bco.L{text-align:right}.bco.L::after{right:-44px}.bco.R::after{left:-44px}
-}
+@media (min-width:1024px) and (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) #home.scene,:where(:root:not([data-motion="reduce"]))#home.scene{min-height:calc(230svh - var(--top));grid-template-rows:auto calc(100svh - var(--top) - 94px) 1fr}:where(:root:not([data-motion="reduce"])) #home.scene>.r,:where(:root:not([data-motion="reduce"]))#home.scene>.r{grid-row:2/-1;align-self:start;position:sticky;top:calc(var(--top) + 64px)}:where(:root:not([data-motion="reduce"])) #home.scene .lab,:where(:root:not([data-motion="reduce"]))#home.scene .lab{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}:where(:root:not([data-motion="reduce"])) #home.scene .bk,:where(:root:not([data-motion="reduce"]))#home.scene .bk{transform:translateX(var(--sx,0px))}:where(:root:not([data-motion="reduce"])) #home.scene .tip,:where(:root:not([data-motion="reduce"]))#home.scene .tip{transition:opacity .3s}:where(:root:not([data-motion="reduce"])) #home.scene.moved .tip,:where(:root:not([data-motion="reduce"]))#home.scene.moved .tip{opacity:0}:where(:root:not([data-motion="reduce"])) .bco,:where(:root:not([data-motion="reduce"])).bco{position:absolute;z-index:3;width:max-content;max-width:250px;font:300 12.5px/1.5 var(--sans);opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s;pointer-events:none}:where(:root:not([data-motion="reduce"])) .bco b,:where(:root:not([data-motion="reduce"])).bco b{display:block;font:600 11px/1.5 var(--sans);letter-spacing:.04em;color:var(--muted)}:where(:root:not([data-motion="reduce"])) .bco.on,:where(:root:not([data-motion="reduce"])).bco.on{opacity:1;transform:none}:where(:root:not([data-motion="reduce"])) .bco::after,:where(:root:not([data-motion="reduce"])).bco::after{content:"";position:absolute;top:1.6em;width:36px;height:1px;background:var(--ink)}:where(:root:not([data-motion="reduce"])) .bco.L,:where(:root:not([data-motion="reduce"])).bco.L{text-align:right}:where(:root:not([data-motion="reduce"])) .bco.L::after,:where(:root:not([data-motion="reduce"])).bco.L::after{right:-44px}:where(:root:not([data-motion="reduce"])) .bco.R::after,:where(:root:not([data-motion="reduce"])).bco.R::after{left:-44px}}
 /* ③ 「탁본」 칠(← '끌어서 하이라이트 커서') — 끌어 고른 낱말이 선택 색(먹 바탕 + 흰 글)과 같은 꼴로 남음 · 시 위 커서는 작은 먹 고리(흰 테 — 어두운 화면에서도) */
 .poem .w.ink{background:var(--ink);color:var(--bg);box-shadow:0 0 0 2px var(--ink)}
 @media (hover:hover) and (pointer:fine){.js .poem{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='11' cy='11' r='8' fill='none' stroke='%23fff' stroke-width='2.5'/%3E%3Ccircle cx='11' cy='11' r='8' fill='none' stroke='%23111' stroke-width='1.2'/%3E%3C/svg%3E") 11 11,text}}
 /* ④ 「탁본」 읽기 진행(← '읽은 만큼 차오르는 진행 바') — 시 칸에 들어와 있을 때만 맨 위 띠 바로 아래 먹 줄 2px */
 .rbar{position:fixed;left:0;right:0;top:var(--top);z-index:11;height:2px;background:var(--ink);transform:scaleX(0);transform-origin:0 50%;opacity:0;pointer-events:none}
 .rbar.on{opacity:1}
-@media (prefers-reduced-motion:no-preference){.rbar{transition:opacity .3s}}
+@media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .rbar,:where(:root:not([data-motion="reduce"])).rbar{transition:opacity .3s}}
 /* ⑤ 인스타그램 3D 고리(← '클릭 & 드래그 3D' · STNT · 궤도) — 마우스 기기 · 움직임 허용 · '모아 보기'에서만(main.js가 .ring을 만들고 html에 ringon). 장마다 360/n도 · 둘레 390px · 머문 장은 색 */
 .ring{display:none;position:relative;height:460px;margin-top:22px;perspective:1300px;cursor:grab;-webkit-user-select:none;user-select:none;touch-action:pan-y}
 #photo.all .ring{display:block}
@@ -942,7 +899,7 @@ html.cz-on{overflow:hidden}
 .nt.scrub .sbar{opacity:1}
 /* ⑨ 연락 — 메시지 단추를 먹 단추로(맨 위 '연락하기'와 같은 꼴) · 다가오는 움직임(← '마그네틱 버튼')은 main.js(마우스 기기 · 움직임 허용) */
 .ask-off a.buy{align-items:center;padding:12px 16px;border:0;border-radius:var(--btn-r);background:var(--ink);color:var(--bg)}
-@media (prefers-reduced-motion:no-preference){.ask-off a.buy{transition:transform .55s cubic-bezier(.2,.8,.2,1)}.ask-off a.buy.pull{transition:transform .18s ease-out}}
+@media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .ask-off a.buy,:where(:root:not([data-motion="reduce"])).ask-off a.buy{transition:transform .55s cubic-bezier(.2,.8,.2,1)}:where(:root:not([data-motion="reduce"])) .ask-off a.buy.pull,:where(:root:not([data-motion="reduce"])).ask-off a.buy.pull{transition:transform .18s ease-out}}
 /* ⑩ 쪽 사이 원형 전환(← '페이지 인트로') — 맨 위 띠의 쪽 링크를 누른 자리로 원이 닫히고(cgo → cout) 다음 쪽이 그 자리에서 열림(머리 스크립트 cin → main.js copen) · 바깥은 먹 */
 html.cin,html.cgo{background:#111}
 html.cin body,html.cgo body{background:var(--bg)}
@@ -988,14 +945,7 @@ html:lang(ja) .tk-s .s{word-break:auto-phrase}@media (max-width:899px){html:lang
 }
   /* 좁은 컴퓨터 · 태블릿 가로는 단추를 제목 아래로 — 한 줄이면 사람 옷 위에 얹힘(1024px 실측) */
 /* 들어오는 차례(TOKA 미리보기 실측 — 글자 0–0.35초 → 사람 0.35–0.65초 → 글줄 0.9–1.8초 → 단추 2초쯤): main.js가 글꼴을 받은 뒤 .go. 자바스크립트가 없으면 처음부터 다 섬 */
-@media (prefers-reduced-motion:no-preference){
-  .js .tk:not(.go) :is(.tk-w span,.tk-p,.tk-s,.tk-l,.tk-c){opacity:0}
-  .tk.go .tk-w span{animation:tkUp .5s var(--ease) both}.tk.go .tk-w span:nth-child(2){animation-delay:.08s}.tk.go .tk-w span:nth-child(3){animation-delay:.16s}
-  .tk.go .tk-p{animation:tkIn .35s ease .35s both}
-  .tk.go .tk-c{animation:tkIn .3s ease .6s both}
-  .tk.go .tk-s{animation:tkSweep .9s var(--ease) .9s both}
-  .tk.go .tk-l{animation:tkIn .4s ease 1.6s both}.tk.go .tk-btn{animation:tkIn .3s ease 1.85s both}
-}
+@media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .js .tk:not(.go) :is(.tk-w span,.tk-p,.tk-s,.tk-l,.tk-c),:where(:root:not([data-motion="reduce"])).js .tk:not(.go) :is(.tk-w span,.tk-p,.tk-s,.tk-l,.tk-c){opacity:0}:where(:root:not([data-motion="reduce"])) .tk.go .tk-w span,:where(:root:not([data-motion="reduce"])).tk.go .tk-w span{animation:tkUp .5s var(--ease) both}:where(:root:not([data-motion="reduce"])) .tk.go .tk-w span:nth-child(2),:where(:root:not([data-motion="reduce"])).tk.go .tk-w span:nth-child(2){animation-delay:.08s}:where(:root:not([data-motion="reduce"])) .tk.go .tk-w span:nth-child(3),:where(:root:not([data-motion="reduce"])).tk.go .tk-w span:nth-child(3){animation-delay:.16s}:where(:root:not([data-motion="reduce"])) .tk.go .tk-p,:where(:root:not([data-motion="reduce"])).tk.go .tk-p{animation:tkIn .35s ease .35s both}:where(:root:not([data-motion="reduce"])) .tk.go .tk-c,:where(:root:not([data-motion="reduce"])).tk.go .tk-c{animation:tkIn .3s ease .6s both}:where(:root:not([data-motion="reduce"])) .tk.go .tk-s,:where(:root:not([data-motion="reduce"])).tk.go .tk-s{animation:tkSweep .9s var(--ease) .9s both}:where(:root:not([data-motion="reduce"])) .tk.go .tk-l,:where(:root:not([data-motion="reduce"])).tk.go .tk-l{animation:tkIn .4s ease 1.6s both}:where(:root:not([data-motion="reduce"])) .tk.go .tk-btn,:where(:root:not([data-motion="reduce"])).tk.go .tk-btn{animation:tkIn .3s ease 1.85s both}}
 @keyframes tkUp{from{transform:translateY(55%);opacity:0}}
 @keyframes tkIn{from{opacity:0}}
 @keyframes tkSweep{from{clip-path:inset(0 0 100% 0);transform:translateY(12px)}to{clip-path:inset(0)}}
@@ -1009,4 +959,12 @@ html:lang(ja) .tk-s .s{word-break:auto-phrase}@media (max-width:899px){html:lang
 @media (hover:hover){.totop:hover{background:var(--ink);color:var(--bg)}}
 .totop:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media (min-width:900px){.totop{right:72px;bottom:72px}}
-@media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}
+@media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}:where(:root[data-motion="reduce"]) .totop,:where(:root[data-motion="reduce"]).totop,:where(:root[data-motion="reduce"]) .totop.on,:where(:root[data-motion="reduce"]).totop.on{transition:none}
+/* 판권면 '움직임 줄이기' 스위치(11/1 밤 명품 제안 ⑥ — 버튼 'A 스위치 (권장)'): 고야드 바닥글 스위치 실측(24×14 · 테두리 1px · 글자와 11px) — 모서리는 누르는 단추 한 벌(2px),
+   끔은 옅은 회색 · 켬은 먹 채움에 흰 네모. 켜면 html data-motion="reduce"(빌드 motion_css가 움직임 규칙을 묶음) */
+.colo .mot label{display:inline-flex;align-items:center;gap:12px;color:var(--ink);cursor:pointer}
+.colo .mot input{-webkit-appearance:none;appearance:none;position:relative;flex:none;width:24px;height:14px;margin:0;border:1px solid var(--muted);border-radius:var(--btn-r);background:none;cursor:pointer}
+.colo .mot input::after{content:"";position:absolute;top:2px;left:2px;width:8px;height:8px;border-radius:1px;background:var(--muted)}
+.colo .mot input:checked{border-color:var(--ink);background:var(--ink)}.colo .mot input:checked::after{left:12px;background:var(--bg)}
+.colo .mot input:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.colo .mot small{margin-left:8px;color:var(--faint);font-size:11px}

@@ -161,6 +161,59 @@ def ga4(site):
     return gid
 
 
+def motion_css(css):
+    # 판권면 '움직임 줄이기'(11/1 밤 명품 제안 ⑥ A): html에 data-motion="reduce"가 있으면 기기 설정 '동작 줄이기'와 똑같이 —
+    # (prefers-reduced-motion:no-preference)가 든 @media 안 규칙은 data-motion="reduce"가 없을 때만, (…:reduce) 안 규칙은 data-motion="reduce"일 때도(블록 뒤에 한 벌 더).
+    # 조건은 :where()로 감싸 우선순위가 그대로 · html에 붙는 표시(.js · .intro · .opened …)와 그 안 요소 모두 맞게 두 꼴(바로 붙임 · 자손)로. 원본 style.css는 그대로(단 검사도 원본)
+    no, yes = ':where(:root:not([data-motion="reduce"]))', ':where(:root[data-motion="reduce"])'
+    blank = re.sub(r"/\*.*?\*/", lambda m: " " * len(m.group(0)), css, flags=re.S)  # 주석은 같은 길이 빈칸(자리 그대로 — 주석 속 { } 를 세지 않게)
+
+    def close(s, i):  # s[i] == "{" → 짝 "}" 자리
+        depth = 0
+        for j in range(i, len(s)):
+            depth += {"{": 1, "}": -1}.get(s[j], 0)
+            if depth == 0:
+                return j
+        raise SystemExit("style.css: 짝 없는 { — 움직임 규칙 묶기를 못 함")
+
+    def gate(sel, g):
+        parts, depth, cur = [], 0, ""
+        for ch in sel:  # 괄호 밖 쉼표에서만 가름(:is(a, b) 안 쉼표는 그대로)
+            depth += {"(": 1, ")": -1}.get(ch, 0)
+            if ch == "," and depth == 0:
+                parts.append(cur); cur = ""
+            else:
+                cur += ch
+        out = []
+        for x in (p.strip() for p in parts + [cur] if p.strip()):
+            m = re.match(r"(?:html|:root)(?![\w-])", x)
+            out += [x[:m.end()] + g + x[m.end():]] if m else [f"{g} {x}"] + ([g + x] if x[0] in ".#[:" else [])  # 글자로 시작(a · body)은 html일 수 없어 자손만
+        return ",".join(out)
+
+    def rules(body, g):
+        out, i = [], 0
+        while (k := body.find("{", i)) >= 0:
+            e = close(body, k)
+            head = body[i:k].strip()
+            out.append(head + body[k:e + 1] if head.startswith("@") else gate(head, g) + body[k:e + 1])
+            i = e + 1
+        return "".join(out)
+
+    out, i, n = [], 0, 0
+    for m in re.finditer(r"@media[^{]*prefers-reduced-motion\s*:\s*(no-preference|reduce)[^{]*\{", blank):
+        if m.start() < i:
+            continue
+        k = m.end() - 1
+        e = close(blank, k)
+        inner = blank[k + 1:e]
+        out.append(css[i:k + 1] + rules(inner, no) + "}" if m.group(1) == "no-preference" else css[i:e + 1] + rules(inner, yes))
+        i, n = e + 1, n + 1
+    out.append(css[i:])
+    if n < 9:
+        raise SystemExit(f"style.css: 움직임 @media가 {n}개뿐 — 묶기 규칙이 어긋났는지 볼 것(11/1 밤 9개)")
+    return "".join(out)
+
+
 def consent_html(L, gid, site_label):
     # 동의 창(11/1 동원 "고야드 식으로 하긴 하는데 좀 정확히 따라해봐" · 버튼 "안 1 — 고야드 문구 바탕") — 고야드(Didomi)처럼 세 단계: 첫 창 · 동의 관리 · 파트너 선택.
     # 글은 ui.json cz_…(고야드 · Didomi · IAB 원문 바탕 — 기준/레퍼런스/동의 창_고야드 · 프라다 원문_2026-11-01.md) · 움직임은 consent.js · 처음엔 숨김(consent.js가 엶)
@@ -413,14 +466,14 @@ def stanzas_of(text):
     return out
 
 # 첫 그림이 그려지기 전에 html에 표시를 붙인다: js(움직임을 켬) · intro(문 장면 — 첫 방문 한 번만, '동작 줄이기'나 #주소로 들어오면 생략, ?door면 다시 봄)
-HEAD_JS = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{var m=matchMedia("(prefers-reduced-motion: reduce)").matches,
+HEAD_JS = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{if(localStorage.getItem("motion")==="reduce")H.setAttribute("data-motion","reduce")}catch(x){}try{var m=H.getAttribute("data-motion")==="reduce"||matchMedia("(prefers-reduced-motion: reduce)").matches,
 again=/[?&]door\\b/.test(location.search);if(!m&&!location.hash&&(again||!localStorage.getItem("door"))){H.classList.add("intro");localStorage.setItem("door","1")}else if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}__CIN__})();</script>"""
 # 문이 없는 쪽(소개 · 인스타그램 · 유튜브 · 연락)의 머리 스크립트 — js · 고른 화면 · 다시 온 표시만. 문을 본 표시(door)는 시집 쪽에서만 남김(소개로 먼저 와도 시집 쪽 첫 방문에 문이 열리게)
-HEAD_JS_PLAIN = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}__CIN__})();</script>"""
+HEAD_JS_PLAIN = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{if(localStorage.getItem("motion")==="reduce")H.setAttribute("data-motion","reduce")}catch(x){}try{if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}__CIN__})();</script>"""
 # 쪽 사이 원형 전환(11/1 동원 버튼 '권하는 묶음으로 (권장)' — ⑩ '페이지 인트로'): 메뉴를 누른 쪽이 남긴 자리(sessionStorage cto: x · y · 때)가 5초 안이면
 # 첫 그림 전에 cin을 붙여 그 자리에서 원이 닫힌 채 시작(여는 건 main.js) · '동작 줄이기' · 시집 첫 방문 문 장면(intro)이면 원 없이
 CIN_JS = ('try{var c=JSON.parse(sessionStorage.getItem("cto")||"null");sessionStorage.removeItem("cto");'
-          'if(c&&Date.now()-c[2]<5e3&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!H.classList.contains("intro"))'
+          'if(c&&Date.now()-c[2]<5e3&&H.getAttribute("data-motion")!=="reduce"&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!H.classList.contains("intro"))'
           '{H.classList.add("cin");H.style.setProperty("--cx",c[0]+"px");H.style.setProperty("--cy",c[1]+"px")}}catch(x){}')
 HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", CIN_JS), HEAD_JS_PLAIN.replace("__CIN__", CIN_JS)
 
@@ -1187,6 +1240,9 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<dt>{t("colo_pub")}</dt><dd>{keep(book["spec"].split(" · ")[-1])} — <a class="pp-l" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("판권면")}>{e(book["buy_label"])} ↗</a></dd>'  # 펴낸 곳(10/28 동원 'A 판권면에 펴낸 곳 줄' — 쪽 끝에서 사는 길이 3.3화면 위였음)
             f'<dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd>'
             f'<dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd>'
+            # 움직임 줄이기(11/1 밤 명품 제안 ⑥ — 시안 기준/브랜드 시안/움직임줄이기시안_v1_A·B.png → 버튼 "A 스위치 (권장)") — 고야드 · 롤렉스 바닥글처럼 스위치 한 줄, 끔 = 기기 설정을 따름
+            f'<dt class="mot">{t("motion")}</dt><dd class="mot"><label><input type="checkbox" role="switch" aria-label="{t("motion")} {t("motion_reduce")}">{t("motion_reduce")}</label>'
+            f'<small data-on="{t("motion_on")}" data-off="{t("motion_off")}">{t("motion_off")}</small></dd>'
             # 언어(10/31 동원 "언어 설정 하단 푸터로 빼") — 화면 줄 바로 아래: 지금 판은 글자 · 다른 판은 그 쪽의 같은 자리로 가는 링크(~L:말~ — page()가 채움)
             # 11/1 일본어판 — 셋을 늘 같은 차례로 '한국어 · English · 日本語'(칸 정의서 1절): 지금 판은 먹 글자 · 다른 두 판은 밑줄 링크(hreflang · lang)
             f'<dt>{t("colo_lang")}</dt><dd class="lng">{f"{NB}· ".join(lang_item(x) for x in LANGS)}</dd></dl>'  # 글꼴 줄은 뺌(10/26 동원 "사이트에 내 글꼴 소개하지 않아도 되잖아 지워" — 라이선스 글은 글꼴 옆에 그대로)
@@ -1783,7 +1839,7 @@ def main():
     for lic in sorted((CONTENT / "licenses").glob("*.txt")):
         shutil.copy2(lic, ASSETS / "fonts" / lic.name)
 
-    shutil.copy2(SRC / "style.css", ASSETS / "style.css")
+    (ASSETS / "style.css").write_text(motion_css((SRC / "style.css").read_text(encoding="utf-8")), encoding="utf-8")  # 움직임 줄이기 스위치(11/1 밤) — motion_css
     shutil.copy2(SRC / "main.js", ASSETS / "main.js")
     if ga4(site):
         shutil.copy2(SRC / "consent.js", ASSETS / "consent.js")  # 동의 창 움직임(11/1) — GA4를 켰을 때만(끄면 사이트 파일이 전과 같음)

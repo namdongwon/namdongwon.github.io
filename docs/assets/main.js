@@ -3,7 +3,7 @@
 // '동작 줄이기'를 켠 사람과 IntersectionObserver가 없는 브라우저는 움직임 없이 다 보이게 둔다
 (() => {
   const H = document.documentElement;
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches || H.getAttribute("data-motion") === "reduce";  // 판권면 '움직임 줄이기' 스위치(11/1 밤)도 같은 값
   const motion = !reduce && "IntersectionObserver" in window;
   const revisit = H.classList.contains("seen");  // 다시 온 방문(head 스크립트 — 이 기기에 문 장면을 본 표시가 있음): 첫 화면 이름 · 책 · 창살 빛을 처음부터 머문 자리로(10/27 숨 재기 3)
   const home = document.querySelector("#home");
@@ -369,6 +369,23 @@
   }
   // 화면 밝게 · 어둡게 · 시스템(10/26 동원 "웹사이트 화면에 화이트모드 다크모드 시스템설정 있으면 좋겠다" → A 먹 종이) — 판권면 세 단추.
   // 고른 것은 이 기기에만 기억(localStorage theme — 쿠키 아님), 처음은 밝게. 첫 그림 전에 머리 스크립트가 data-theme을 붙이고 여기서는 단추 · 브라우저 막대 색만
+  // 움직임 줄이기(11/1 밤 명품 제안 ⑥ — 버튼 'A 스위치'): 켜면 html data-motion="reduce" — 기기의 '동작 줄이기'와 똑같이(빌드가 스타일 움직임을 그 조건으로 묶음 · motion_css).
+  // 이 기기에만 기억(localStorage motion — 쿠키 아님) · 켜고 끄면 스타일 움직임은 바로, 스크립트 움직임(문 · 이름 치기 · 책 돌기 · 마우스 반응 · 쪽 전환)은 다음 쪽부터
+  const mot = document.querySelector(".colo .mot input");
+  if (mot) {
+    const note = document.querySelector(".colo .mot small");
+    const paintMo = () => {
+      const on = H.getAttribute("data-motion") === "reduce";
+      mot.checked = on;
+      if (note) note.textContent = on ? note.dataset.on : note.dataset.off;
+    };
+    mot.addEventListener("change", () => {
+      if (mot.checked) H.setAttribute("data-motion", "reduce"); else H.removeAttribute("data-motion");
+      try { localStorage.setItem("motion", mot.checked ? "reduce" : "system"); } catch (x) { /* 사생활 모드 등 — 이번 쪽에만 */ }
+      paintMo();
+    });
+    paintMo();
+  }
   const thm = document.querySelectorAll(".thm button[data-th]"), tcol = document.querySelector('meta[name="theme-color"]');
   if (thm.length) {
     const sysDark = matchMedia("(prefers-color-scheme: dark)");
