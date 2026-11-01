@@ -955,34 +955,38 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
    띠 아래 한 화면을 꽉 채움 — 화면 폭의 큰 이름(본명조 700 · 옅은 --mark) 앞에 선 사람(흑백 그림 · 아래로 흐려짐) · 오른쪽 한 문장 · 왼쪽 첫 시집 + 각진 먹 단추 · 구석 서울 시각.
    TOKA 미리보기 실측의 짜임(큰 이름 · 그 앞의 사람 · 양옆 작은 글 · 구석 시각)과 들어오는 차례만 옮기고 색은 흰 바탕 · 무채색. 그 아래로 소개 칸은 전과 같음 */
 .tk{position:relative;height:calc(100svh - var(--top));min-height:560px;overflow:hidden;color:var(--ink)}
-.tk-w{position:absolute;left:0;right:0;top:12px;margin:0;text-align:center;font:700 min(31.8vw,300px)/1 var(--serif);letter-spacing:-.05em;color:var(--mark);white-space:nowrap}
-.tk-w span{display:inline-block}
+.tk-w{position:absolute;left:0;right:0;top:12px;margin:0;text-align:center;font:600 calc((100vw - 40px) * .2397)/.86 "NRDF","NRD",serif;letter-spacing:-.035em;color:var(--mark);white-space:nowrap}  /* 큰 이름 영어(11/1 밤 B nam dongwon) — Newsreader 600, 휴대폰은 두 줄(dongwon이 옆 여백 안 폭에 꽉 차는 크기 — 390px에서 84px) */
+.tk-w span{display:block}
+@media (min-width:600px){.tk-w{font-size:min(calc((100vw - 140px) * .1574),30svh)}.tk-w span{display:inline-block}}  /* 600px 위는 한 줄(1440px에서 205px) */
 .tk-p{position:absolute;top:72px;left:-44px;width:auto;height:calc(100% - 286px);-webkit-mask-image:linear-gradient(#000 74%,transparent 99%);mask-image:linear-gradient(#000 74%,transparent 99%)}
-.tk-s{position:absolute;right:20px;top:calc(72px + (100% - 286px) * .42);width:140px;margin:0;font:300 25px/1.3 var(--serif);letter-spacing:-.01em}
+.tk-s{position:absolute;right:20px;top:calc(72px + (100% - 286px) * .42);width:140px;margin:0;font:300 28px/1.2 var(--serif);letter-spacing:-.01em}  /* 글씨 크기는 TOKA 장면 실측 비율로 키움(11/1 밤 동원 "공간이 적어 보이잖아 … 래퍼런스 토대로 글씨 크기들을 잘 조절해봐") */
 .tk-s .s{display:block;text-wrap:balance}
-html:lang(ko) .tk-s .s{max-width:5.2em}  /* 한국어는 시안처럼 네 줄(보는 것을 / 리뷰하는, / 시를 쓰는 / 회사원) — 두 낱말이 한 줄에 들지 않는 폭 */
+@media (max-width:899px){html:lang(ko) .tk-s .s{max-width:5.2em}}  /* 휴대폰 한국어는 네 줄(보는 것을 / 리뷰하는, / 시를 쓰는 / 회사원) — 컴퓨터는 쉼표 뒤에서 두 줄(build.py) */
 html:lang(ja) .tk-s .s{word-break:auto-phrase}@media (max-width:899px){html:lang(ja) .tk-s{width:150px;font-size:21px}}  /* 일본어는 말 마디로 끊고, 휴대폰은 'レビューする、' 일곱 자가 한 줄에 */
 .tk-s small{display:block;margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted);letter-spacing:0}.tk-s .b{display:none}
-.tk-l{position:absolute;left:20px;bottom:72px;display:grid;grid-template-columns:auto auto;justify-content:start;align-items:end;column-gap:16px}
-.tk-l .k{grid-column:1/-1;margin:0 0 12px;font:600 11px/1 var(--sans);letter-spacing:.06em;color:var(--muted)}
-.tk-l .tt{margin:0;font:400 15px/1.5 var(--serif)}
-.tk-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:var(--btn-r);background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);white-space:nowrap}
-.tk-c{position:absolute;right:20px;bottom:22px;margin:0;text-align:right;font:600 11px/1.5 var(--sans);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.tk-l{position:absolute;left:20px;bottom:72px;display:grid;justify-items:start}
+.tk-l .k{margin:0 0 12px;font:600 11px/1 var(--sans);letter-spacing:.06em;color:var(--muted)}
+.tk-l .tt{margin:0;font:400 18px/1.3 var(--serif)}  /* 제목 세 줄(ui.json tk_title) */
+.tk-btn{display:flex;align-items:center;justify-content:space-between;gap:16px;box-sizing:border-box;width:min(300px,calc(100vw - 40px));margin-top:16px;padding:16px 20px;border-radius:var(--btn-r);background:var(--ink);color:var(--bg);font:600 14px/1 var(--sans);white-space:nowrap}  /* TOKA 'GET STARTED'처럼 제목 아래 긴 막대 — 글은 왼쪽, 화살표는 오른쪽 끝(실측 305×50) */
+.tk-c{position:absolute;right:20px;bottom:22px;margin:0;text-align:right;font:600 13px/1.3 var(--sans);letter-spacing:.02em;font-variant-numeric:tabular-nums}
 .tk-c small{display:block;font:300 11px/1.5 var(--sans);color:var(--muted);letter-spacing:0}
-@media (max-width:389px){.tk-l{grid-template-columns:auto}.tk-btn{justify-self:start;margin-top:12px}}  /* 좁은 휴대폰은 단추를 제목 아래로(제목 · 단추 한 줄이 349px) */
+@media (max-width:899px) and (max-height:700px){.tk-s small{display:none}.tk-l{bottom:64px}.tk-l .tt{font-size:16px}.tk-btn{margin-top:12px}}  /* 키 낮은 휴대폰(320×640 · 375×667)은 문장 밑 두 줄을 빼고 제목을 줄여 왼쪽 묶음과 닿지 않게 */
 :root[data-theme="dark"] .tk-p{filter:brightness(1.7)}  /* 어두운 바탕에서 어두운 옷이 묻히지 않게 */
 @media (prefers-color-scheme:dark){:root[data-theme="system"] .tk-p{filter:brightness(1.7)}}
 @media (min-width:900px){
   .tk{min-height:640px}
-  .tk-w{top:6px;font-size:min(29vw,46svh)}
-  .tk-p{top:26%;left:50%;height:90%;transform:translateX(-53%)}  /* 머리가 가운데 글자 앞에 오게(그림 폭의 53%가 머리 한가운데) */
-  .tk-s{left:auto;right:64px;top:51%;width:min(380px,30vw);font-size:min(44px,3.1vw);line-height:1.3}
-  .tk-s small{margin-top:22px;font-size:14px;line-height:1.7}.tk-s .m{display:none}.tk-s .b{display:block}
-  .tk-l{left:64px;bottom:auto;top:61.6%}
-  .tk-l .tt{font-size:20px}
-  .tk-c{right:64px;bottom:30px;font-size:12.5px}.tk-c small{font-size:12.5px}
+  .tk-w{top:calc(26% + 130px - .86em)}  /* 한 줄이 낮아 이름을 내려 머리(26%)가 글자 아래쪽을 가리게 */
+  .tk-p{top:26%;left:50%;height:90%;transform:translateX(-56%)}  /* 머리가 가운데 앞에 · 오른쪽 문장 자리를 위해 조금 왼쪽(그림 폭의 56%) */
+  .tk-s{left:auto;right:64px;top:47%;width:min(520px,36vw);font-size:min(56px,3.9vw);line-height:1.2}  /* TOKA 오른쪽 큰 글(88px 두 줄 · 높이 47%) — 한글은 같은 크기에서 더 차 보여 56px 두 줄 */
+  .tk-s small{margin-top:30px;font-size:15px;line-height:1.5}.tk-s .m{display:none}.tk-s .b{display:block;max-width:400px}
+  .tk-l{left:64px;bottom:auto;top:47%}
+  .tk-l .k{font-size:12.5px}
+  .tk-l .tt{font-size:min(34px,2.4vw);line-height:1.2}  /* TOKA 왼쪽 큰 글(46px 네 줄) — 한글 34px 세 줄 */
+  .tk-btn{width:min(300px,22vw);margin-top:22px;font-size:15px}
+  .tk-c{right:64px;bottom:36px;font-size:20px}.tk-c small{font-size:12.5px}  /* TOKA 시각 20px · 도시 12px */
+  html:lang(ja) .tk-s{font-size:min(42px,2.9vw)}  /* 일본어 '見るものをレビューする、' 열두 자가 한 줄에 */
 }
-@media (min-width:900px) and (max-width:1199px){.tk-l{grid-template-columns:auto}.tk-btn{justify-self:start;margin-top:12px}.tk-l .tt{font-size:17px}}  /* 좁은 컴퓨터 · 태블릿 가로는 단추를 제목 아래로 — 한 줄이면 사람 옷 위에 얹힘(1024px 실측) */
+  /* 좁은 컴퓨터 · 태블릿 가로는 단추를 제목 아래로 — 한 줄이면 사람 옷 위에 얹힘(1024px 실측) */
 /* 들어오는 차례(TOKA 미리보기 실측 — 글자 0–0.35초 → 사람 0.35–0.65초 → 글줄 0.9–1.8초 → 단추 2초쯤): main.js가 글꼴을 받은 뒤 .go. 자바스크립트가 없으면 처음부터 다 섬 */
 @media (prefers-reduced-motion:no-preference){
   .js .tk:not(.go) :is(.tk-w span,.tk-p,.tk-s,.tk-l,.tk-c){opacity:0}
@@ -995,3 +999,14 @@ html:lang(ja) .tk-s .s{word-break:auto-phrase}@media (max-width:899px){html:lang
 @keyframes tkUp{from{transform:translateY(55%);opacity:0}}
 @keyframes tkIn{from{opacity:0}}
 @keyframes tkSweep{from{clip-path:inset(0 0 100% 0);transform:translateY(12px)}to{clip-path:inset(0)}}
+/* 맨 위로(11/1 밤 동원 "고야드 홈페이지 처럼 … 스크롤 내리면, 오른쪽에 저거 올라가는 버튼 나와서 누르면 바로 맨 위로"): 고야드 실측(goyard.com/kr_ko · 1440 · 390) —
+   22px 동그라미 · 1px 테두리 · 8×6 꺾쇠 · 컴퓨터 오른쪽 · 아래 75px / 휴대폰 40px · 300px까지 숨고 400px에서 보임 · 누르면 부드럽게 위로.
+   색은 먹(금색 대신 — 원리만) · 자리는 단에 맞춰 컴퓨터 72 · 휴대폰 오른쪽 20(옆 여백) · 아래 36 · 360px에서 나타남(main.js) · 누르는 자리는 46px(::before) · 숨은 동안은 초점도 받지 않음(visibility) */
+.totop{position:fixed;right:20px;bottom:36px;z-index:9;display:flex;align-items:center;justify-content:center;width:22px;height:22px;padding:0;border:1px solid var(--ink);border-radius:50%;background:var(--bg);color:var(--ink);cursor:pointer;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
+.totop.on{opacity:1;visibility:visible;transition:opacity .3s}
+.totop::before{content:"";position:absolute;inset:-12px}
+.totop svg{display:block;width:8px;height:6px;fill:none;stroke:currentColor;stroke-width:1}
+@media (hover:hover){.totop:hover{background:var(--ink);color:var(--bg)}}
+.totop:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+@media (min-width:900px){.totop{right:72px;bottom:72px}}
+@media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}

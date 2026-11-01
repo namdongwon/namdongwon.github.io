@@ -1352,13 +1352,20 @@ def render(site, poem, videos, photos, lang="ko"):
     #   화면 폭의 큰 이름(한글 '남동원' — 세 판 같은 로고, 옅은 회색) 앞에 선 사람 · 오른쪽 한 문장(tagline)과 약력 · 왼쪽 첫 시집과 시집 쪽 단추 · 구석 서울 지금 시각(main.js가 채움).
     #   그 아래 소개 칸은 전과 같음. 이름 · 문장 · 시각은 소개 칸과 같은 말이거나 꾸밈이라 읽기 도구엔 숨김 — 단추만 읽힘. 들어오는 차례는 style.css(.tk.go)
     sn_t = season_of(build_day())
+    # 한 문장은 쉼표(, 、) 뒤에서 줄을 바꿈 — 컴퓨터는 두 줄(보는 것을 리뷰하는, / 시를 쓰는 회사원) · 휴대폰은 그 안에서 다시 네 줄
+    tk_line = "<br>".join(keep(x) for x in re.split(r"(?<=[,、])\s*", S["tagline"]) if x)
+    # 제목은 세 줄(ui.json tk_title — 줄은 |, 11/1 밤 TOKA 왼쪽 큰 글처럼) · 영어는 기울임 / 단추는 제목 아래 긴 막대(글 왼쪽 · 화살표 오른쪽 끝)
+    tk_title = "<br>".join(t("tk_title").split("|"))
+    tk_title = f"<i>{tk_title}</i>" if en else tk_title
     tk_pic = ""
     if ME_IMG.exists():
         with Image.open(ME_IMG) as im:
             tk_pic = f'<img class="tk-p" src="{P}assets/img/me.webp" alt="" width="{im.width}" height="{im.height}" decoding="async" fetchpriority="high">'
-    tk = (f'<div class="tk"><p class="tk-w" aria-hidden="true">{"".join(f"<span>{c}</span>" for c in site["name"])}</p>{tk_pic}'
-          f'<p class="tk-s" aria-hidden="true"><span class="s">{keep(S["tagline"])}</span><small class="m">{"<br>".join(t("tk_meta").split("|"))}</small><small class="b">{rich(S["bio"])}</small></p>'
-          f'<div class="tk-l"><p class="k">{t("tk_kick")}</p><p class="tt">{book_title}</p><a class="tk-btn" href="~R~book/">{t("tk_cta")} <span aria-hidden="true">→</span></a></div>'
+    # 큰 이름은 영어 'nam dongwon'(11/1 밤 동원 "가운데 글자 한국어로 하지말고, 남동원 영어로 하자" → 시안 기준/브랜드 시안/첫화면_영어이름시안_v1_휴대폰·컴퓨터.png → 버튼 "B nam dongwon (권장)") — 낱말마다 span(휴대폰 두 줄)
+    tk = (f'<div class="tk"><p class="tk-w" aria-hidden="true" lang="en">{" ".join(f"<span>{w}</span>" for w in t("tk_word").split())}</p>{tk_pic}'
+          f'<p class="tk-s" aria-hidden="true"><span class="s">{tk_line}</span><small class="m">{"<br>".join(t("tk_meta").split("|"))}</small><small class="b">{rich(S["bio"])}</small></p>'
+          f'<div class="tk-l"><p class="k">{t("tk_kick")}</p><p class="tt">{tk_title}</p>'
+          f'<a class="tk-btn" href="~R~book/"><span>{t("tk_cta")}</span><span aria-hidden="true">→</span></a></div>'
           # 시각 글자(오전 · 오후 / 午前 · 午後)는 main.js가 채우므로 글꼴 줄이기가 모으게 data-ap에 둠
           f'<p class="tk-c" aria-hidden="true" data-ap="{t("tk_ampm")}"><span class="tm"></span>{t("tk_city")}'
           + (f'<small>{t("tk_season", name=e(sn_t[1] if en else sn_t[2] if tr_ else sn_t[0]))}</small>' if sn_t else "") + "</p></div>\n")
@@ -1486,6 +1493,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <main id="main">
 {h1}{body}</main>
 <footer class="foot">{colo}</footer>
+<button type="button" class="totop" aria-label="{t("totop")}" hidden><svg viewBox="0 0 8 6" aria-hidden="true" focusable="false"><path d="M.4 4.8 4 1.2l3.6 3.6"/></svg></button>
 {sheet if bpg else ""}
 {pv if k == "photo" else ""}{srch}<script id="sidx" type="application/json">{sidx}</script>
 <script id="ui" type="application/json">{ui_js}</script>
@@ -1571,7 +1579,7 @@ SCALE_LH = {"1", "1.05", "1.2", "1.3", "1.5", "1.6", "1.7", "1.9", "2"}
 SCALE_FS = {11, 12.5, 13, 14, 15}  # 16px 아래 작은 글자 — 고딕 11 · 12.5 · 14 · 명조 13 · 14 · 15
 SCALE_ALLOW = {
     (".skip", "left"): "화면 밖에 숨김", (".hp", "left"): "방명록 빈칸 함정 — 화면 밖",
-    (".top nav a::before", "inset"): "누르는 자리 44px", (".pbook .bk .sh", "bottom"): "책 그림자 자리",
+    (".top nav a::before", "inset"): "누르는 자리 44px", (".tk-w", "font"): "첫 화면 큰 영어 이름 — 두 줄 간격 .86(시안 그대로)", (".pbook .bk .sh", "bottom"): "책 그림자 자리",
     (".top nav .lang .fl", "line-height"): "국기 줄 높이 0", (".years sup.fr", "font"): "각주 위첨자 줄 높이 0",
     (".vplay .play", "margin"): "58px 동그라미 가운데", (".touch", "margin"): "58px 동그라미 가운데",
     (".vplay .play::after", "left"): "재생 세모 자리", (".vplay .play::after", "top"): "재생 세모 자리",
@@ -1735,7 +1743,7 @@ def main():
         else:
             raise SystemExit(f"글꼴을 찾지 못함: {name}")
     if "NR" in srcs:
-        subset_font(srcs["NR"], ASSETS / "fonts" / EN_FIRST, fte["serif"], False)
+        subset_font(srcs["NR"], ASSETS / "fonts" / EN_FIRST, fte["serif"] + load("ui.json")["tk_word"]["ko"], False)  # 소개 첫 화면 큰 이름(11/1 밤 영어)도 작은 판에 — 첫 글자가 늦지 않게
     elif EN_FIRST in keep:
         (ASSETS / "fonts" / EN_FIRST).write_bytes(keep[EN_FIRST])
     else:

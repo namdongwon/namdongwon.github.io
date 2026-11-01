@@ -1072,5 +1072,20 @@
     "ko": "오전 오후",
     "en": "AM PM",
     "ja": "午前 午後"
+  },
+  "tk_word": {
+    "ko": "nam dongwon",
+    "en": "nam dongwon",
+    "ja": "nam dongwon"
+  },
+  "totop": {
+    "ko": "맨 위로",
+    "en": "Back to top",
+    "ja": "ページの先頭へ"
+  },
+  "tk_title": {
+    "ko": "『문을 열고 나오면|살아 있는 것들로|가득 차 있다』",
+    "en": "Open the Door, Step Out,|and It Is Full of|Living Things",
+    "ja": "『扉をあけて出ると、|生きているものたちで|満ちている』"
   }
 }

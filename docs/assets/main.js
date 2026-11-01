@@ -1379,7 +1379,7 @@
   const tk = document.querySelector(".tk");
   if (tk) {
     const w = tk.querySelector(".tk-w"), go = () => tk.classList.add("go");
-    if (w && document.fonts && document.fonts.load) Promise.race([document.fonts.load(`700 1em ${getComputedStyle(w).fontFamily}`, w.textContent), new Promise(r => setTimeout(r, 800))]).then(go, go);
+    if (w && document.fonts && document.fonts.load) Promise.race([document.fonts.load(`${getComputedStyle(w).fontWeight} 1em ${getComputedStyle(w).fontFamily}`, w.textContent), new Promise(r => setTimeout(r, 800))]).then(go, go);
     else go();
     const tm = tk.querySelector(".tk-c .tm");
     if (tm && window.Intl) {
@@ -1390,4 +1390,18 @@
     }
   }
   addEventListener("pageshow", ev => { if (ev.persisted) H.classList.remove("cgo", "cout", "cin", "copen"); });
+
+  // 맨 위로(11/1 밤 — 고야드 실측): 360px 넘게 내리면 오른쪽 아래 동그라미가 나타나고, 누르면 맨 위로(동작 줄이기면 바로).
+  // 키보드로 눌렀으면(detail 0) 맨 위 띠의 첫 링크로 초점을 옮겨 이어서 읽게. 자바스크립트가 없으면 숨은 채로(hidden)
+  const toTop = document.querySelector(".totop");
+  if (toTop) {
+    toTop.hidden = false;
+    const showTop = () => toTop.classList.toggle("on", scrollY > 360);
+    addEventListener("scroll", showTop, { passive: true });
+    showTop();
+    toTop.addEventListener("click", ev => {
+      scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+      if (!ev.detail) { const f = document.querySelector("header.top a"); if (f) f.focus({ preventScroll: true }); }
+    });
+  }
 })();
