@@ -4,6 +4,7 @@
 필요한 것: 파이썬 3 + Pillow(사진 줄이기·미리보기 그림) + fontTools·brotli(글꼴을 쓰는 글자만 남겨 woff2로 줄임).
 글꼴 원본은 맥의 정해진 자리에서 찾고, 없으면 docs/assets/fonts에 이미 있는 줄인 판을 그대로 쓴다(새 글자가 생겼으면 빠질 수 있어 알림).
 """
+import hashlib
 import html
 import itertools
 import json
@@ -531,6 +532,10 @@ def find(root, name, must_in=""):
 
 def load(name):
     return json.loads((CONTENT / name).read_text(encoding="utf-8"))
+
+
+def fp(b):  # 파일 지문 — 내용 sha256 앞 10자(11/2 캐시 버스팅: 내용이 바뀌면 주소 끝 ?v=가 바뀜)
+    return hashlib.sha256(b).hexdigest()[:10]
 
 
 def save_jpg(src, dst, maxw, quality=80):
@@ -1810,10 +1815,20 @@ def main():
     for lic in sorted((CONTENT / "licenses").glob("*.txt")):
         shutil.copy2(lic, ASSETS / "fonts" / lic.name)
 
-    (ASSETS / "style.css").write_text(motion_css((SRC / "style.css").read_text(encoding="utf-8")), encoding="utf-8")  # 움직임 줄이기 스위치(11/1 밤) — motion_css
+    # 파일 지문(11/2 — 올린 직후 10분 동안 새 쪽에 옛 style.css가 붙어 휴대폰 '메뉴' 단추가 컴퓨터에 뜨던 일): GitHub Pages는 모든 파일에 max-age=600(10분)을 붙여
+    # 브라우저가 저장해 둔 옛 파일을 그대로 씀 → 스타일 · 스크립트 · 글꼴 주소 끝에 내용 지문(?v=)을 붙여 내용이 바뀌면 주소가 바뀌게(실무 말: 캐시 버스팅 · 파일 지문).
+    # 글꼴 지문은 style.css의 url()과 시집 쪽 미리 받기(preload)가 같은 꼴 — 둘이 같아야 미리 받은 글꼴을 다시 받지 않음 · 쪽(HTML)은 맨 끝에 stamp()로
+    ver = {f"fonts/{f.name}": fp(f.read_bytes()) for f in (ASSETS / "fonts").glob("*.woff2")}
+    css = motion_css((SRC / "style.css").read_text(encoding="utf-8"))  # 움직임 줄이기 스위치(11/1 밤) — motion_css
+    css = re.sub(r'url\("(fonts/[\w.-]+\.woff2)"\)', lambda m: f'url("{m.group(1)}' + (f'?v={ver[m.group(1)]}' if m.group(1) in ver else "") + '")', css)
+    (ASSETS / "style.css").write_text(css, encoding="utf-8")
     shutil.copy2(SRC / "main.js", ASSETS / "main.js")
     if ga4(site):
         shutil.copy2(SRC / "consent.js", ASSETS / "consent.js")  # 동의 창 움직임(11/1) — GA4를 켰을 때만(끄면 사이트 파일이 전과 같음)
+    ver.update({x: fp((ASSETS / x).read_bytes()) for x in ("style.css", "main.js", "consent.js") if (ASSETS / x).exists()})
+
+    def stamp(h):  # 쪽 안의 assets/style.css · main.js · consent.js · fonts/….woff2 주소 끝에 그 파일의 지문
+        return re.sub(r'(assets/(style\.css|main\.js|consent\.js|fonts/[\w.-]+\.woff2))(?=")', lambda m: m.group(1) + (f"?v={ver[m.group(2)]}" if m.group(2) in ver else ""), h)
 
     cover = CONTENT / site["book"]["cover"]
     save_jpg(cover, ASSETS / "img/cover.jpg", 600, quality=84)
@@ -1872,13 +1887,13 @@ def main():
         for k, h in pg.items():
             d = DOCS.joinpath(*(x for x in (lg if lg in TR else "", k) if x))
             d.mkdir(parents=True, exist_ok=True)
-            (d / "index.html").write_text(h, encoding="utf-8")
-    (DOCS / "404.html").write_text(page404, encoding="utf-8")
+            (d / "index.html").write_text(stamp(h), encoding="utf-8")
+    (DOCS / "404.html").write_text(stamp(page404), encoding="utf-8")
     for lg, html in priv.items():
         if html:
             d = DOCS / (f"{lg}/privacy" if lg in TR else "privacy")
             d.mkdir(parents=True, exist_ok=True)
-            (d / "index.html").write_text(html, encoding="utf-8")
+            (d / "index.html").write_text(stamp(html), encoding="utf-8")
     (DOCS / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n", encoding="utf-8")
     (DOCS / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'

@@ -3,38 +3,38 @@
    움직임 C(10/24): 큰 장면(문 · 탁본 · 기록) + 결(차례로 떠오름) — 동작은 main.js. 칸 사이 셔터는 10/25 뺌(동원 "내려가면서 찰칵 찰칵 거리는 거 … 정신 사나와") */
 /* 글꼴은 사이트에 쓰는 글자만 남겨 woff2로 줄인 판(build.py). Pretendard는 라이선스(OFL)상 이름을 바꾼 NDW … 판 */
 /* 명조는 본명조 한 가족(10/26 동원 "응 바꿔" — 나눔명조 · 은바탕에서): 제목 · 시 · 약력 모두. 굵기 300은 첫 화면 큰 제목 글자만 담음 */
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=c0b57053db") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=a29e62d237") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=e35109a84e") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=0232405daa") format("woff2");font-weight:600;font-display:swap}
 /* 첫 화면 작은 판(10/27 B): 한국어판 문 글자 · 첫 화면에 보이는 글자만 담아 먼저 받는 판 — 통째 판(본명조 보통 · 굵게)을 미리 받느라 스타일 · main.js가 늦던 것을 덜어 냄(느린 4G 문 열림 3.6 → 3.1초 실측).
    담은 글자 밖은 뒤의 통째 판(BMJ · PTD)으로 그려짐. 첫 화면에 새 글자 칸을 넣으면 build.py FIRST가 알아서 담음 */
-@font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTDF";src:url("fonts/ndw-sans-light-first.woff2") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTDF";src:url("fonts/ndw-sans-semibold-first.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTDF";src:url("fonts/ndw-sans-light-first.woff2?v=f160893550") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTDF";src:url("fonts/ndw-sans-semibold-first.woff2?v=c97a7a2139") format("woff2");font-weight:600;font-display:swap}
 html:lang(ko) .door .t,html:lang(ko) #home .hs{font-family:"BMJF",var(--serif)}
 #home{--sans:"PTDF","PTD",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}  /* :root --sans 앞에 PTDF만 더함(PTDF는 ASCII도 담아 영어 첫 화면도) — --sans를 바꾸면 여기도 */
-@font-face{font-family:"NRDF";src:url("fonts/newsreader-first.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:"NRDF";src:url("fonts/newsreader-first.woff2?v=0d2ce9c027") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
 html:lang(en) .door .t,html:lang(en) #home .ht,html:lang(en) #home .hs{font-family:"NRDF",var(--serif)}  /* 영어판 첫 화면 작은 판(10/27 점검) */
 .nf [lang="en"]{font-family:"NRD","BMJ",serif}  /* 404의 영어 두 줄 — 한국어 쪽 안이라 영어 글꼴 규칙을 못 받아 본명조 라틴으로 그려졌음(10/28 일본 디테일 ⑤) */
 html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:lang(en) .sheet .sbk i{font-family:"NRD",serif;font-weight:400;font-size:1.15em;letter-spacing:0}  /* 작은 고딕 속 작품 제목은 Newsreader 기울인꼴 — 고딕엔 기울인꼴이 없어 브라우저가 비스듬히 밀어 그렸음(10/28 동원 'A 명조 기울인꼴로' — 모양 점검 ⑫) */
 /* 영어판(10/24 ⑤ B): Newsreader(Production Type · OFL) — 영어판만 씀(한국어판은 내려받지 않음). 가변 축 굵기 · 글자 크기 */
-@font-face{font-family:"NRD";src:url("fonts/newsreader.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
-@font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
+@font-face{font-family:"NRD";src:url("fonts/newsreader.woff2?v=fb23d6d375") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2?v=19b7c81683") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
 /* 일본어판(11/1 동원 버튼 "A 源ノ明朝 (권장)"): 본명조 자리는 Source Han Serif JP(줄인 판 이름 NDW Serif JP · JMJ) · Pretendard 자리는 Pretendard JP(NDW Sans JP · JGO) — 일본어판 쪽 글자만 담아
    일본어판에서만 받음(한국어 · 영어판 글꼴은 전과 같음). 한글은 담지 않아 일본어판 속 한국어(시 원문 · 원제)는 뒤의 본명조 · Pretendard 판이 그림 · 라틴 글자는 영어판처럼 Newsreader 먼저.
    굵기 300은 일본어판 첫 화면 큰 제목 글자만 · JMJF · JGOF는 시집 쪽 첫 화면 작은 판(한국어판 BMJF · PTDF와 같은 짜임) */
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-light.woff2") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2") format("woff2");font-weight:600;font-display:swap}
-@font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-semibold-first.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-light.woff2?v=237255a497") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=9bdbda74c3") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=605e458d28") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=a367eac380") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=e4f8fb4ee5") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2?v=1beaf3c9bd") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2?v=72b7718a65") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=6f1ea22082") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-semibold-first.woff2?v=261e07674a") format("woff2");font-weight:600;font-display:swap}
 html:lang(ja) .door .t,html:lang(ja) #home .hs{font-family:"JMJF",var(--serif)}
 html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  /* 일본어판 첫 화면 작은 고딕 판 — 라벨의 한국어 원제는 한국어판 작은 판(PTDF)이 */
 .nf [lang="ja"]{--serif:"NRD","JMJ","BMJ",serif;--body:"NRD","JMJ","BMJ",serif;--sans:"JGO","PTD",-apple-system,"Hiragino Sans",sans-serif}  /* 404의 일본어 두 줄(한국어 쪽 안) */
