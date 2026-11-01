@@ -15,16 +15,31 @@
   const write = v => { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (x) { /* 저장소를 막은 브라우저 — 이번 방문에만 */ } };
   const ok = v => !!(v && v.p1 && v.p2 && v.g);
   let saved = read(), draft = {}, loaded = false, back = null;
+  // 꼬리표 지우기(11/1 관리 화면 세션이 찾음 — GA4로 바뀌며 main.js의 GoatCounter 조건에 묶여 꺼져 있었음): 꼬리표 링크(utm_source · utm_medium · utm_campaign)를 받은 사람이
+  // 주소창 주소를 다시 퍼뜨려도 같은 꼬리표로 쌓이지 않게, GA4가 이 방문을 꼬리표와 함께 받은 뒤(config의 page_location에 처음 주소) 또는 세지 않기로 한 때(거부)에 utm_*만 뺌.
+  // 고르기 전(창이 떠 있는 동안)은 그대로 둠 · 다른 값 · # · 기록 상태는 그대로. GA4 판에서는 여기 한 곳에서만 뺌(main.js는 동의 창이 있으면 건너뜀)
+  const first = location.href;  // 꼬리표가 붙은 처음 주소
+  const unTag = () => {
+    if (!/[?&]utm_/i.test(location.search)) return;
+    const q = new URLSearchParams(location.search);
+    [...q.keys()].filter(k => /^utm_/i.test(k)).forEach(k => q.delete(k));
+    const s = q.toString();
+    history.replaceState(history.state, "", location.pathname + (s ? "?" + s : "") + location.hash);
+  };
 
   const load = () => {  // GA4 — 구글이 알려 준 꼴(gtag.js · 측정 ID)[출처 support.google.com/analytics/answer/9304153]
-    if (loaded || !live || !id) return;
+    if (loaded || !id) return;
+    const cfg = { page_location: first };  // 꼬리표를 뺀 뒤에도 이 방문은 처음 주소(꼬리표 포함)로 셈[출처 developers.google.com/analytics/devguides/collection/ga4/views — page_location]
+    w.dataset.config = JSON.stringify(cfg);  // 시험이 읽는 자리(이 맥 주소는 GA를 받지 않음) — 이 기기 안의 값일 뿐, 보내는 것 없음
+    if (!live) { unTag(); return; }
     loaded = true;
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     // 광고 쪽 신호는 늘 거부 — 동의 창은 광고 목적을 묻지 않음(11/1 동원 버튼 '통과하면 올려 (권장)' 때 함께 알림)[출처 developers.google.com/tag-platform/security/guides/consent]
     window.gtag("consent", "default", { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: "granted" });
     window.gtag("js", new Date());
-    window.gtag("config", id);
+    window.gtag("config", id, cfg);
+    unTag();
     const s = document.createElement("script");
     s.async = true;
     s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(id);
@@ -101,7 +116,7 @@
     v.at = new Date().toISOString();
     saved = v;
     write(v);
-    if (ok(v)) load(); else wipe();
+    if (ok(v)) load(); else { wipe(); unTag(); }  // 거부면 GA4가 세지 않으니 바로 뺌
     close();
   };
   box[0].querySelector(".cz-x").addEventListener("click", () => decide({ p1: false, p2: false, g: false }));  // 동의 없이 계속하기
@@ -126,7 +141,8 @@
   }, true);
 
   if (ok(saved)) load();
-  else if (!saved && (live || /[?&]consent=show\b/.test(location.search)) && !document.querySelector("main.pp")) {
+  else if (saved) unTag();  // 전에 거부한 기기 — 세지 않으니 바로 뺌
+  else if ((live || /[?&]consent=show\b/.test(location.search)) && !document.querySelector("main.pp")) {
     const go = () => open(1);
     if (H.classList.contains("intro")) {  // 시집 쪽 첫 방문 — 문 장면이 끝나면(main.js가 intro를 뗌)
       const mo = new MutationObserver(() => { if (!H.classList.contains("intro")) { mo.disconnect(); go(); } });

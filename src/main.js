@@ -1101,9 +1101,11 @@
   // 꼬리표 링크(예: 인스타 스토리)를 받은 사람이 주소창 주소를 그대로 다시 퍼뜨려도 그 방문이 같은 꼬리표로 쌓이지 않게(기준/관리 화면 꼬리표 링크 칸 정의_v1.md 4절).
   // count.js는 실행되자마자(쪽이 보이면) 셈 주소를 만들어 보내고, 숨은 탭이면 보이게 될 때 셈 — 셀 때의 location.search를 읽으므로 반드시 그 뒤에[출처 gc.zgo.at/count.js].
   // '실행되자마자'는 count.js 줄이 쪽 맨 끝(body 안, async — build.py gc_tag)이라 실행될 때 body가 있어서임. 줄 자리를 옮기면 이 차례를 다시 시험(scratch utm_check.py)
-  // 방문 셈이 꺼져 있으면(count.js 줄이 없으면) 아무것도 하지 않음 · count.js를 못 받으면(막힘) 셀 일이 없으니 바로 뺌
+  // count.js를 못 받으면(막힘) 셀 일이 없으니 바로 뺌
+  // 11/1(관리 화면 세션이 찾음 — GA4로 바뀌며 아래가 GoatCounter 줄이 있을 때만 돌아 꺼져 있었음): GA4 판(동의 창 #cz가 있는 쪽)은 consent.js가 한 곳에서 뺌
+  // (셈 뒤 — config의 page_location에 처음 주소 · 거부면 바로 · 고르기 전엔 그대로). 여기는 동의 창이 없는 빌드만 — GoatCounter면 셈 뒤, 방문 셈이 아무것도 없으면 바로
   const gcs = document.querySelector("script[data-goatcounter]");
-  if (gcs && /[?&]utm_/i.test(location.search)) {
+  if (!document.getElementById("cz") && /[?&]utm_/i.test(location.search)) {
     let untagged = false;
     const unTag = () => {
       if (untagged) return;
@@ -1119,7 +1121,8 @@
       const v = () => { if (document.visibilityState === "visible") { document.removeEventListener("visibilitychange", v); setTimeout(unTag, 0); } };
       document.addEventListener("visibilitychange", v);
     };
-    if (window.goatcounter && typeof window.goatcounter.count === "function") after();
+    if (!gcs) unTag();  // 방문 셈이 없는 빌드 — 셀 일이 없으니 바로
+    else if (window.goatcounter && typeof window.goatcounter.count === "function") after();
     else {
       gcs.addEventListener("load", after, { once: true });
       gcs.addEventListener("error", unTag, { once: true });

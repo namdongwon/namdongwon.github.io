@@ -389,14 +389,14 @@
 
   // 언어 바꾸기(10/24 영어판) — 보던 칸으로 이어서(예: 사진 칸에서 EN → 영어판 사진 칸)
   // 화면 위 1/3에 걸친 id 가운데 가장 작은 것으로(두 판의 id가 같음 — 차례 t · 시 행 l · 연표 y · 팔레트 …), 없으면 지금 칸(10/28 사용 편의 점검 ⑥ — 칸 머리로만 이어져 차례 · 시에서 읽던 줄을 잃었음)
-  const swap = document.querySelector(".colo .lang");  // 10/31 언어는 바닥글 판권면 '언어' 줄로(동원 "언어 설정 하단 푸터로 빼")
-  if (swap) swap.addEventListener("click", ev => {
+  // 11/1 일본어판 — 다른 판 링크가 둘(한국어 · English · 日本語 가운데 지금 판 빼고)이라 모두에
+  document.querySelectorAll(".colo .lang").forEach(swap => swap.addEventListener("click", ev => {  // 10/31 언어는 바닥글 판권면 '언어' 줄로(동원 "언어 설정 하단 푸터로 빼")
     const y = innerHeight / 3;
     const hit = [...document.querySelectorAll("main [id]")].filter(el => { const r = el.getBoundingClientRect(); return r.height && r.top <= y && r.bottom > y; })
       .sort((a, b) => a.getBoundingClientRect().height - b.getBoundingClientRect().height)[0];
     const to = hit ? "#" + hit.id : "";  // 같은 쪽의 다른 판으로(10/31 쪽 나누기 — 언어 단추가 그 쪽 주소를 가리킴)
     if (to) { ev.preventDefault(); location.href = swap.getAttribute("href") + to; }
-  });
+  }));
 
   // 사진 칸: 옆으로 넘기기 + '1 / 8' + 캡션 · 아래 작은 줄(보는 한 장만 색) · '모아 보기'(번호 붙은 흑백 격자) — 10/24 둘 다
   const strip = document.querySelector(".strip");
@@ -669,12 +669,12 @@
     let sayT = 0;
     const K = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
     const cho = s => [...s].map(c => { const k = c.charCodeAt(0) - 0xac00; return k >= 0 && k < 11172 ? K[Math.floor(k / 588)] : c; }).join("");
-    const skip = /[\s·「」『』〈〉《》,.!?'"“”‘’\-—–()]/;
+    const skip = /[\s·「」『』〈〉《》,.!?'"“”‘’\-—–()・、。（）：]/;  // 일본어판(11/1) 부호 ・、。（）： 도
     // 견줄 글(빈칸 · 부호를 뺀 소문자) + 원래 글의 자리 — 찾은 낱말을 원래 글에서 굵게 감쌀 때 씀
     const norm = s => { const o = [], m = []; [...s.normalize("NFC")].forEach((c, i) => { if (!skip.test(c)) { o.push(c.toLowerCase()); m.push(i); } }); return [o.join(""), m]; };
     const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-    // 영어판 결과의 한국어(시 행 · 원제 '탁본')는 한국어로 읽히게 감쌈 — 태그 사이 글만(10/27 점검 a11y 9)
-    const ko = s => H.lang === "en" ? s.replace(/[가-힣ㄱ-ㅎ](?:[가-힣ㄱ-ㅎ\s·「」『』〈〉《》,.!?“”‘’()—–-]*[가-힣ㄱ-ㅎ」』〉》])?/g, w => `<span lang="ko">${w}</span>`) : s;
+    // 영어판 · 일본어판 결과의 한국어(시 행 · 원제 '탁본')는 한국어로 읽히게 감쌈 — 태그 사이 글만(10/27 점검 a11y 9)
+    const ko = s => H.lang !== "ko" ? s.replace(/[가-힣ㄱ-ㅎ](?:[가-힣ㄱ-ㅎ\s·「」『』〈〉《》,.!?“”‘’()—–-]*[가-힣ㄱ-ㅎ」』〉》])?/g, w => `<span lang="ko">${w}</span>`) : s;
     const find = q => {
       const [nq] = norm(q);
       if (!nq) return [];
@@ -873,15 +873,18 @@
       const plain = () => fetch(ASSET + "img/takbon.jpg").then(r => r.blob()).catch(() => null);
       try {
         const bmp = await createImageBitmap(await (await fetch(ASSET + "img/takbon.jpg")).blob());
-        await document.fonts.load("300 27px PTD");
+        const sans = H.lang === "ja" ? "JGO, PTD" : "PTD";  // 일본어판(11/1)은 Pretendard JP 판 먼저
+        await document.fonts.load(`300 27px ${sans}`);
         const c = document.createElement("canvas");
         c.width = bmp.width;
         c.height = bmp.height;
         const g = c.getContext("2d");
         g.drawImage(bmp, 0, 0);
         const now = new Date();
-        const d = H.lang === "en" ? now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : `${now.getFullYear()}. ${now.getMonth() + 1}. ${now.getDate()}.`;
-        g.font = "300 27px PTD, -apple-system, sans-serif";
+        const d = H.lang === "en" ? now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+          : H.lang === "ja" ? now.toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })  // 2026年11月1日(일본어판 날짜 꼴)
+          : `${now.getFullYear()}. ${now.getMonth() + 1}. ${now.getDate()}.`;
+        g.font = `300 27px ${sans}, -apple-system, sans-serif`;
         g.fillStyle = "#626262";
         g.textAlign = "right";
         g.textBaseline = "alphabetic";
@@ -1098,9 +1101,11 @@
   // 꼬리표 링크(예: 인스타 스토리)를 받은 사람이 주소창 주소를 그대로 다시 퍼뜨려도 그 방문이 같은 꼬리표로 쌓이지 않게(기준/관리 화면 꼬리표 링크 칸 정의_v1.md 4절).
   // count.js는 실행되자마자(쪽이 보이면) 셈 주소를 만들어 보내고, 숨은 탭이면 보이게 될 때 셈 — 셀 때의 location.search를 읽으므로 반드시 그 뒤에[출처 gc.zgo.at/count.js].
   // '실행되자마자'는 count.js 줄이 쪽 맨 끝(body 안, async — build.py gc_tag)이라 실행될 때 body가 있어서임. 줄 자리를 옮기면 이 차례를 다시 시험(scratch utm_check.py)
-  // 방문 셈이 꺼져 있으면(count.js 줄이 없으면) 아무것도 하지 않음 · count.js를 못 받으면(막힘) 셀 일이 없으니 바로 뺌
+  // count.js를 못 받으면(막힘) 셀 일이 없으니 바로 뺌
+  // 11/1(관리 화면 세션이 찾음 — GA4로 바뀌며 아래가 GoatCounter 줄이 있을 때만 돌아 꺼져 있었음): GA4 판(동의 창 #cz가 있는 쪽)은 consent.js가 한 곳에서 뺌
+  // (셈 뒤 — config의 page_location에 처음 주소 · 거부면 바로 · 고르기 전엔 그대로). 여기는 동의 창이 없는 빌드만 — GoatCounter면 셈 뒤, 방문 셈이 아무것도 없으면 바로
   const gcs = document.querySelector("script[data-goatcounter]");
-  if (gcs && /[?&]utm_/i.test(location.search)) {
+  if (!document.getElementById("cz") && /[?&]utm_/i.test(location.search)) {
     let untagged = false;
     const unTag = () => {
       if (untagged) return;
@@ -1116,7 +1121,8 @@
       const v = () => { if (document.visibilityState === "visible") { document.removeEventListener("visibilitychange", v); setTimeout(unTag, 0); } };
       document.addEventListener("visibilitychange", v);
     };
-    if (window.goatcounter && typeof window.goatcounter.count === "function") after();
+    if (!gcs) unTag();  // 방문 셈이 없는 빌드 — 셀 일이 없으니 바로
+    else if (window.goatcounter && typeof window.goatcounter.count === "function") after();
     else {
       gcs.addEventListener("load", after, { once: true });
       gcs.addEventListener("error", unTag, { once: true });

@@ -989,7 +989,15 @@ def render(site, poem, videos, photos, lang="ko"):
 
     def hero_line(s):
         out = []
-        for part in re.split(r"(\{\w+\})", s):
+        parts = re.split(r"(\{\w+\})", s)
+        if lang == "ja":  # 일본어(11/1)는 빈칸 없이 잇는 말 — 그림이 없는 자리(영어 · 일본어판엔 스틸이 없음)는 앞뒤 빈칸도 함께 뺌('見るものを レビューする'처럼 남지 않게)
+            for i, part in enumerate(parts):
+                m = re.fullmatch(r"\{(\w+)\}", part)
+                if m and not hero_pic(m.group(1)):
+                    parts[i - 1] = parts[i - 1].rstrip(" ") if i else ""
+                    if i + 1 < len(parts):
+                        parts[i + 1] = parts[i + 1].lstrip(" ")
+        for part in parts:
             m = re.fullmatch(r"\{(\w+)\}", part)
             pic = hero_pic(m.group(1)) if m else None
             out.append(f'<span class="hpic{pic[2]}"><img src="{pic[0]}" alt="" decoding="async"><small>{pic[1]}</small></span>' if pic  # 첫 화면이라 바로 받음(lazy면 받지 않은 채 멈춰 있었음 — 실측)
