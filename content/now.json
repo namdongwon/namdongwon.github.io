@@ -7,6 +7,10 @@
       "en": {
         "label": "Reading",
         "text": ""
+      },
+      "ja": {
+        "label": "読んでいる本",
+        "text": ""
       }
     },
     {
@@ -15,6 +19,10 @@
       "en": {
         "label": "Editing",
         "text": "Film *All About Lily Chou-Chou* — the first episode of Beautiful Nam"
+      },
+      "ja": {
+        "label": "編集中の回",
+        "text": "映画『リリイ・シュシュのすべて』 — 美しいナムの第1回"
       }
     },
     {
@@ -22,6 +30,10 @@
       "text": "",
       "en": {
         "label": "Writing",
+        "text": ""
+      },
+      "ja": {
+        "label": "書いている詩",
         "text": ""
       }
     }

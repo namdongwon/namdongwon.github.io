@@ -389,14 +389,14 @@
 
   // 언어 바꾸기(10/24 영어판) — 보던 칸으로 이어서(예: 사진 칸에서 EN → 영어판 사진 칸)
   // 화면 위 1/3에 걸친 id 가운데 가장 작은 것으로(두 판의 id가 같음 — 차례 t · 시 행 l · 연표 y · 팔레트 …), 없으면 지금 칸(10/28 사용 편의 점검 ⑥ — 칸 머리로만 이어져 차례 · 시에서 읽던 줄을 잃었음)
-  const swap = document.querySelector(".colo .lang");  // 10/31 언어는 바닥글 판권면 '언어' 줄로(동원 "언어 설정 하단 푸터로 빼")
-  if (swap) swap.addEventListener("click", ev => {
+  // 11/1 일본어판 — 다른 판 링크가 둘(한국어 · English · 日本語 가운데 지금 판 빼고)이라 모두에
+  document.querySelectorAll(".colo .lang").forEach(swap => swap.addEventListener("click", ev => {  // 10/31 언어는 바닥글 판권면 '언어' 줄로(동원 "언어 설정 하단 푸터로 빼")
     const y = innerHeight / 3;
     const hit = [...document.querySelectorAll("main [id]")].filter(el => { const r = el.getBoundingClientRect(); return r.height && r.top <= y && r.bottom > y; })
       .sort((a, b) => a.getBoundingClientRect().height - b.getBoundingClientRect().height)[0];
     const to = hit ? "#" + hit.id : "";  // 같은 쪽의 다른 판으로(10/31 쪽 나누기 — 언어 단추가 그 쪽 주소를 가리킴)
     if (to) { ev.preventDefault(); location.href = swap.getAttribute("href") + to; }
-  });
+  }));
 
   // 사진 칸: 옆으로 넘기기 + '1 / 8' + 캡션 · 아래 작은 줄(보는 한 장만 색) · '모아 보기'(번호 붙은 흑백 격자) — 10/24 둘 다
   const strip = document.querySelector(".strip");
@@ -669,12 +669,12 @@
     let sayT = 0;
     const K = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
     const cho = s => [...s].map(c => { const k = c.charCodeAt(0) - 0xac00; return k >= 0 && k < 11172 ? K[Math.floor(k / 588)] : c; }).join("");
-    const skip = /[\s·「」『』〈〉《》,.!?'"“”‘’\-—–()]/;
+    const skip = /[\s·「」『』〈〉《》,.!?'"“”‘’\-—–()・、。（）：]/;  // 일본어판(11/1) 부호 ・、。（）： 도
     // 견줄 글(빈칸 · 부호를 뺀 소문자) + 원래 글의 자리 — 찾은 낱말을 원래 글에서 굵게 감쌀 때 씀
     const norm = s => { const o = [], m = []; [...s.normalize("NFC")].forEach((c, i) => { if (!skip.test(c)) { o.push(c.toLowerCase()); m.push(i); } }); return [o.join(""), m]; };
     const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-    // 영어판 결과의 한국어(시 행 · 원제 '탁본')는 한국어로 읽히게 감쌈 — 태그 사이 글만(10/27 점검 a11y 9)
-    const ko = s => H.lang === "en" ? s.replace(/[가-힣ㄱ-ㅎ](?:[가-힣ㄱ-ㅎ\s·「」『』〈〉《》,.!?“”‘’()—–-]*[가-힣ㄱ-ㅎ」』〉》])?/g, w => `<span lang="ko">${w}</span>`) : s;
+    // 영어판 · 일본어판 결과의 한국어(시 행 · 원제 '탁본')는 한국어로 읽히게 감쌈 — 태그 사이 글만(10/27 점검 a11y 9)
+    const ko = s => H.lang !== "ko" ? s.replace(/[가-힣ㄱ-ㅎ](?:[가-힣ㄱ-ㅎ\s·「」『』〈〉《》,.!?“”‘’()—–-]*[가-힣ㄱ-ㅎ」』〉》])?/g, w => `<span lang="ko">${w}</span>`) : s;
     const find = q => {
       const [nq] = norm(q);
       if (!nq) return [];
@@ -873,15 +873,18 @@
       const plain = () => fetch(ASSET + "img/takbon.jpg").then(r => r.blob()).catch(() => null);
       try {
         const bmp = await createImageBitmap(await (await fetch(ASSET + "img/takbon.jpg")).blob());
-        await document.fonts.load("300 27px PTD");
+        const sans = H.lang === "ja" ? "JGO, PTD" : "PTD";  // 일본어판(11/1)은 Pretendard JP 판 먼저
+        await document.fonts.load(`300 27px ${sans}`);
         const c = document.createElement("canvas");
         c.width = bmp.width;
         c.height = bmp.height;
         const g = c.getContext("2d");
         g.drawImage(bmp, 0, 0);
         const now = new Date();
-        const d = H.lang === "en" ? now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : `${now.getFullYear()}. ${now.getMonth() + 1}. ${now.getDate()}.`;
-        g.font = "300 27px PTD, -apple-system, sans-serif";
+        const d = H.lang === "en" ? now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+          : H.lang === "ja" ? now.toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })  // 2026年11月1日(일본어판 날짜 꼴)
+          : `${now.getFullYear()}. ${now.getMonth() + 1}. ${now.getDate()}.`;
+        g.font = `300 27px ${sans}, -apple-system, sans-serif`;
         g.fillStyle = "#626262";
         g.textAlign = "right";
         g.textBaseline = "alphabetic";

@@ -12,6 +12,12 @@
           "That moment",
           "was how a room grew light"
         ]
+      },
+      "ja": {
+        "lines": [
+          "そのわずかな間が",
+          "部屋の明るくなりかたでした"
+        ]
       }
     },
     {
@@ -25,6 +31,12 @@
         "lines": [
           "On a night of heavy falling snow",
           "I come home quietly and switch on the light"
+        ]
+      },
+      "ja": {
+        "lines": [
+          "白い雪がこんこんと降りしきる夜に",
+          "静かに家に帰って明かりをつけます"
         ]
       }
     }

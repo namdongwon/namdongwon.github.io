@@ -9,6 +9,11 @@
         "label": "Read “Rubbing”",
         "note": "The poem",
         "q": ""
+      },
+      "ja": {
+        "label": "「拓本」を読む",
+        "note": "詩集",
+        "q": ""
       }
     },
     {
@@ -19,6 +24,11 @@
       "en": {
         "label": "Contents",
         "note": "Sixty poems, four parts",
+        "q": ""
+      },
+      "ja": {
+        "label": "詩集の目次",
+        "note": "六十篇 · 四部構成",
         "q": ""
       }
     },
@@ -31,6 +41,11 @@
         "label": "Add to your shelf",
         "note": "Kyobo Book Centre",
         "q": ""
+      },
+      "ja": {
+        "label": "本棚に並べる",
+        "note": "教保文庫",
+        "q": ""
       }
     },
     {
@@ -42,6 +57,11 @@
         "label": "Film reviews",
         "note": "YouTube",
         "q": "film"
+      },
+      "ja": {
+        "label": "映画レビュー",
+        "note": "YouTube",
+        "q": "映画"
       }
     },
     {
@@ -53,6 +73,11 @@
         "label": "Exhibitions",
         "note": "Instagram",
         "q": "exhibition"
+      },
+      "ja": {
+        "label": "展示",
+        "note": "Instagram",
+        "q": "展示"
       }
     },
     {
@@ -63,6 +88,11 @@
       "en": {
         "label": "Contact",
         "note": "Email · Instagram message",
+        "q": ""
+      },
+      "ja": {
+        "label": "お問い合わせ",
+        "note": "メール · Instagramのメッセージ",
         "q": ""
       }
     }

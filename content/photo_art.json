@@ -20,6 +20,16 @@
           "show": "Patricia Piccinini: Kinship",
           "venue": "Suwon Museum of Art"
         }
+      },
+      "ja": {
+        "where": "",
+        "alt": "黄色い床にうつ伏せになった、人の姿をした彫刻を上から見たところ：あらわな背中と、床に広がる長く黒い巻き毛",
+        "art": {
+          "artist": "パトリシア・ピッチニーニ",
+          "title": "",
+          "show": "パトリシア・ピッチニーニ：キンシップ",
+          "venue": "水原市立美術館"
+        }
       }
     },
     {
@@ -36,6 +46,16 @@
       "en": {
         "where": "",
         "alt": "Looking up into a round ceiling of hexagonal mirror panels, with green leaves showing in the middle",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "ja": {
+        "where": "",
+        "alt": "六角形の鏡が丸くつらなる天井を見上げたところ、真ん中に緑の木の葉が見える",
         "art": {
           "artist": "",
           "title": "",
@@ -64,6 +84,16 @@
           "show": "",
           "venue": ""
         }
+      },
+      "ja": {
+        "where": "",
+        "alt": "夜の川辺：明かりのともる長い橋と水面に映る光、川沿いの道を歩く人々",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
       }
     },
     {
@@ -80,6 +110,16 @@
       "en": {
         "where": "",
         "alt": "A large moss-covered boulder on a white gallery floor, with a person sitting on a ledge at the upper right",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "ja": {
+        "where": "",
+        "alt": "白い展示室の床に置かれた苔むした大きな岩、右上の岩棚に人がひとり座っている",
         "art": {
           "artist": "",
           "title": "",
@@ -108,6 +148,16 @@
           "show": "",
           "venue": ""
         }
+      },
+      "ja": {
+        "where": "",
+        "alt": "暗い流れのあいだに大小の石がのぞく水辺",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
       }
     },
     {
@@ -129,6 +179,16 @@
           "title": "The Secret Sharer",
           "show": "APMA, CHAPTER FIVE",
           "venue": "Amorepacific Museum of Art"
+        }
+      },
+      "ja": {
+        "where": "",
+        "alt": "透明なアクリルの破片と鏡のかけらがうずたかく積もった部分を間近から",
+        "art": {
+          "artist": "イ・ブル",
+          "title": "秘密を共有するもの",
+          "show": "APMA, CHAPTER FIVE",
+          "venue": "アモーレパシフィック美術館"
         }
       }
     },
@@ -152,6 +212,16 @@
           "show": "Yoo Youngkuk: A Mountain Within Me",
           "venue": "Seoul Museum of Art"
         }
+      },
+      "ja": {
+        "where": "",
+        "alt": "黄・青・緑の抽象画の前に、黒い服の人がひとり、あごに手を当てて立っている",
+        "art": {
+          "artist": "ユ・ヨングク",
+          "title": "",
+          "show": "ユ・ヨングク：山は私の中にある",
+          "venue": "ソウル市立美術館 西小門本館"
+        }
       }
     },
     {
@@ -168,6 +238,16 @@
       "en": {
         "where": "",
         "alt": "A person stands at the edge of a green pond below a tall rock cliff covered in plants",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "ja": {
+        "where": "",
+        "alt": "草の生えた高い岩壁の下、緑色の水辺に人がひとり立っている",
         "art": {
           "artist": "",
           "title": "",

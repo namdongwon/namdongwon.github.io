@@ -49,6 +49,9 @@
               "page": 11,
               "en": {
                 "title": "White Sleep"
+              },
+              "ja": {
+                "title": "白い眠り"
               }
             },
             {
@@ -56,6 +59,9 @@
               "page": 13,
               "en": {
                 "title": "Field of Vision"
+              },
+              "ja": {
+                "title": "視野"
               }
             },
             {
@@ -63,6 +69,9 @@
               "page": 14,
               "en": {
                 "title": "A Weight That Does Not Sink"
+              },
+              "ja": {
+                "title": "沈まない重さ"
               }
             },
             {
@@ -70,6 +79,9 @@
               "page": 16,
               "en": {
                 "title": "Do You Have Any Pain?"
+              },
+              "ja": {
+                "title": "痛みはありますか"
               }
             },
             {
@@ -77,6 +89,9 @@
               "page": 17,
               "en": {
                 "title": "Glass"
+              },
+              "ja": {
+                "title": "ガラス"
               }
             },
             {
@@ -84,6 +99,9 @@
               "page": 18,
               "en": {
                 "title": "Vanishing Point"
+              },
+              "ja": {
+                "title": "消失点"
               }
             },
             {
@@ -91,6 +109,9 @@
               "page": 19,
               "en": {
                 "title": "Sonar"
+              },
+              "ja": {
+                "title": "ソナー"
               }
             },
             {
@@ -98,6 +119,9 @@
               "page": 21,
               "en": {
                 "title": "Recorded Message"
+              },
+              "ja": {
+                "title": "案内"
               }
             },
             {
@@ -105,6 +129,9 @@
               "page": 22,
               "en": {
                 "title": "Moonlight, Starlight"
+              },
+              "ja": {
+                "title": "月明かり 星明かり"
               }
             },
             {
@@ -112,6 +139,9 @@
               "page": 24,
               "en": {
                 "title": "A Small Sound I Hoped You’d Hear"
+              },
+              "ja": {
+                "title": "聞こえてほしかった小さな音"
               }
             },
             {
@@ -119,6 +149,9 @@
               "page": 25,
               "en": {
                 "title": "Thistle"
+              },
+              "ja": {
+                "title": "あざみ"
               }
             },
             {
@@ -126,6 +159,9 @@
               "page": 26,
               "en": {
                 "title": "The Pulse of Life"
+              },
+              "ja": {
+                "title": "生の鼓動"
               }
             },
             {
@@ -133,6 +169,9 @@
               "page": 28,
               "en": {
                 "title": "Blue Light"
+              },
+              "ja": {
+                "title": "青い光"
               }
             },
             {
@@ -140,6 +179,9 @@
               "page": 30,
               "en": {
                 "title": "Viewing"
+              },
+              "ja": {
+                "title": "観覧"
               }
             },
             {
@@ -147,11 +189,17 @@
               "page": 32,
               "en": {
                 "title": "Threshold"
+              },
+              "ja": {
+                "title": "敷居"
               }
             }
           ],
           "en": {
             "name": "Part I"
+          },
+          "ja": {
+            "name": "第1部"
           }
         },
         {
@@ -162,6 +210,9 @@
               "page": 37,
               "en": {
                 "title": "A Day Left in Empty Arms"
+              },
+              "ja": {
+                "title": "空っぽの腕に残った一日"
               }
             },
             {
@@ -169,6 +220,9 @@
               "page": 38,
               "en": {
                 "title": "Slope"
+              },
+              "ja": {
+                "title": "傾斜"
               }
             },
             {
@@ -176,6 +230,9 @@
               "page": 39,
               "en": {
                 "title": "Gaps"
+              },
+              "ja": {
+                "title": "すきま"
               }
             },
             {
@@ -183,6 +240,9 @@
               "page": 40,
               "en": {
                 "title": "Clock"
+              },
+              "ja": {
+                "title": "時計"
               }
             },
             {
@@ -190,6 +250,9 @@
               "page": 41,
               "en": {
                 "title": "Game"
+              },
+              "ja": {
+                "title": "遊び"
               }
             },
             {
@@ -197,6 +260,9 @@
               "page": 42,
               "en": {
                 "title": "Angle"
+              },
+              "ja": {
+                "title": "角度"
               }
             },
             {
@@ -204,6 +270,9 @@
               "page": 44,
               "en": {
                 "title": "Meter Reading"
+              },
+              "ja": {
+                "title": "検針"
               }
             },
             {
@@ -211,6 +280,9 @@
               "page": 45,
               "en": {
                 "title": "Switching On"
+              },
+              "ja": {
+                "title": "点灯"
               }
             },
             {
@@ -218,6 +290,9 @@
               "page": 46,
               "en": {
                 "title": "Scraps"
+              },
+              "ja": {
+                "title": "切れ端"
               }
             },
             {
@@ -225,6 +300,9 @@
               "page": 47,
               "en": {
                 "title": "Fish Tank"
+              },
+              "ja": {
+                "title": "水槽"
               }
             },
             {
@@ -232,6 +310,9 @@
               "page": 49,
               "en": {
                 "title": "Between the Teeth"
+              },
+              "ja": {
+                "title": "歯のあいだ"
               }
             },
             {
@@ -239,6 +320,9 @@
               "page": 50,
               "en": {
                 "title": "Just Because"
+              },
+              "ja": {
+                "title": "なんとなく"
               }
             },
             {
@@ -246,6 +330,9 @@
               "page": 52,
               "en": {
                 "title": "Handwriting"
+              },
+              "ja": {
+                "title": "筆跡"
               }
             },
             {
@@ -253,6 +340,9 @@
               "page": 54,
               "en": {
                 "title": "An Everyday Evening"
+              },
+              "ja": {
+                "title": "日常の夕べ"
               }
             },
             {
@@ -260,11 +350,17 @@
               "page": 56,
               "en": {
                 "title": "Long Ago"
+              },
+              "ja": {
+                "title": "ずっと前"
               }
             }
           ],
           "en": {
             "name": "Part II"
+          },
+          "ja": {
+            "name": "第2部"
           }
         },
         {
@@ -275,6 +371,9 @@
               "page": 61,
               "en": {
                 "title": "Rubbing"
+              },
+              "ja": {
+                "title": "拓本"
               }
             },
             {
@@ -282,6 +381,9 @@
               "page": 63,
               "en": {
                 "title": "Reprieve"
+              },
+              "ja": {
+                "title": "猶予"
               }
             },
             {
@@ -289,6 +391,9 @@
               "page": 64,
               "en": {
                 "title": "Full Bloom"
+              },
+              "ja": {
+                "title": "満開"
               }
             },
             {
@@ -296,6 +401,9 @@
               "page": 66,
               "en": {
                 "title": "Late"
+              },
+              "ja": {
+                "title": "遅刻"
               }
             },
             {
@@ -303,6 +411,9 @@
               "page": 68,
               "en": {
                 "title": "In Numerical Order"
+              },
+              "ja": {
+                "title": "番号順"
               }
             },
             {
@@ -310,6 +421,9 @@
               "page": 69,
               "en": {
                 "title": "Outside, Inside"
+              },
+              "ja": {
+                "title": "外、中"
               }
             },
             {
@@ -317,6 +431,9 @@
               "page": 70,
               "en": {
                 "title": "Van Gogh"
+              },
+              "ja": {
+                "title": "ゴッホ"
               }
             },
             {
@@ -324,6 +441,9 @@
               "page": 72,
               "en": {
                 "title": "Face to Face"
+              },
+              "ja": {
+                "title": "直面"
               }
             },
             {
@@ -331,6 +451,9 @@
               "page": 73,
               "en": {
                 "title": "Against the Current"
+              },
+              "ja": {
+                "title": "逆流"
               }
             },
             {
@@ -338,6 +461,9 @@
               "page": 74,
               "en": {
                 "title": "Brackish Water"
+              },
+              "ja": {
+                "title": "汽水"
               }
             },
             {
@@ -345,6 +471,9 @@
               "page": 75,
               "en": {
                 "title": "Portuguese Man o’ War"
+              },
+              "ja": {
+                "title": "カツオノエボシ"
               }
             },
             {
@@ -352,6 +481,9 @@
               "page": 77,
               "en": {
                 "title": "Peach"
+              },
+              "ja": {
+                "title": "桃"
               }
             },
             {
@@ -359,6 +491,9 @@
               "page": 78,
               "en": {
                 "title": "Underline"
+              },
+              "ja": {
+                "title": "下線"
               }
             },
             {
@@ -366,6 +501,9 @@
               "page": 79,
               "en": {
                 "title": "Four in the Afternoon"
+              },
+              "ja": {
+                "title": "午後四時"
               }
             },
             {
@@ -373,11 +511,17 @@
               "page": 80,
               "en": {
                 "title": "One Way"
+              },
+              "ja": {
+                "title": "片道"
               }
             }
           ],
           "en": {
             "name": "Part III"
+          },
+          "ja": {
+            "name": "第3部"
           }
         },
         {
@@ -388,6 +532,9 @@
               "page": 83,
               "en": {
                 "title": "Type"
+              },
+              "ja": {
+                "title": "活字"
               }
             },
             {
@@ -395,6 +542,9 @@
               "page": 84,
               "en": {
                 "title": "School"
+              },
+              "ja": {
+                "title": "学校"
               }
             },
             {
@@ -402,6 +552,9 @@
               "page": 85,
               "en": {
                 "title": "On the Last Morning"
+              },
+              "ja": {
+                "title": "最後の朝に"
               }
             },
             {
@@ -409,6 +562,9 @@
               "page": 87,
               "en": {
                 "title": "Blank Page"
+              },
+              "ja": {
+                "title": "余白紙"
               }
             },
             {
@@ -416,6 +572,9 @@
               "page": 89,
               "en": {
                 "title": "Memory"
+              },
+              "ja": {
+                "title": "記憶"
               }
             },
             {
@@ -423,6 +582,9 @@
               "page": 90,
               "en": {
                 "title": "Mixing Colors"
+              },
+              "ja": {
+                "title": "混色"
               }
             },
             {
@@ -430,6 +592,9 @@
               "page": 91,
               "en": {
                 "title": "Grammar"
+              },
+              "ja": {
+                "title": "文法"
               }
             },
             {
@@ -437,6 +602,9 @@
               "page": 93,
               "en": {
                 "title": "Palm"
+              },
+              "ja": {
+                "title": "てのひら"
               }
             },
             {
@@ -444,6 +612,9 @@
               "page": 95,
               "en": {
                 "title": "On the Road"
+              },
+              "ja": {
+                "title": "道で"
               }
             },
             {
@@ -451,6 +622,9 @@
               "page": 97,
               "en": {
                 "title": "Deep Snow"
+              },
+              "ja": {
+                "title": "雪 しんしん"
               }
             },
             {
@@ -458,6 +632,9 @@
               "page": 98,
               "en": {
                 "title": "Calyx"
+              },
+              "ja": {
+                "title": "萼"
               }
             },
             {
@@ -465,6 +642,9 @@
               "page": 100,
               "en": {
                 "title": "Nail"
+              },
+              "ja": {
+                "title": "釘"
               }
             },
             {
@@ -472,6 +652,9 @@
               "page": 102,
               "en": {
                 "title": "From Behind"
+              },
+              "ja": {
+                "title": "後ろ姿"
               }
             },
             {
@@ -479,6 +662,9 @@
               "page": 103,
               "en": {
                 "title": "What Is Light"
+              },
+              "ja": {
+                "title": "軽いものは"
               }
             },
             {
@@ -486,11 +672,17 @@
               "page": 105,
               "en": {
                 "title": "By Chance"
+              },
+              "ja": {
+                "title": "偶然に"
               }
             }
           ],
           "en": {
             "name": "Part IV"
+          },
+          "ja": {
+            "name": "第4部"
           }
         }
       ],
@@ -500,6 +692,9 @@
           "page": 107,
           "en": {
             "title": "Poet’s Note"
+          },
+          "ja": {
+            "title": "詩人のことば"
           }
         },
         {
@@ -507,6 +702,9 @@
           "page": 108,
           "en": {
             "title": "To Those Who Read"
+          },
+          "ja": {
+            "title": "読んでくださった方々へ"
           }
         }
       ]
@@ -528,6 +726,10 @@
       "en": {
         "unit": "films",
         "note": "logged since 2013"
+      },
+      "ja": {
+        "unit": "本",
+        "note": "2013年から記録してきた映画"
       }
     },
     {
@@ -539,6 +741,10 @@
       "en": {
         "unit": "exhibitions",
         "note": "logged since 2023"
+      },
+      "ja": {
+        "unit": "件",
+        "note": "2023年から記録してきた展示"
       }
     }
   ],
@@ -570,6 +776,9 @@
       "url": "https://www.instagram.com/nam_dong_won_/",
       "en": {
         "name": "Instagram"
+      },
+      "ja": {
+        "name": "Instagram"
       }
     },
     {
@@ -578,6 +787,9 @@
       "url": "https://www.youtube.com/@namdongwon",
       "en": {
         "name": "YouTube"
+      },
+      "ja": {
+        "name": "YouTube"
       }
     },
     {
@@ -585,6 +797,9 @@
       "name": "브런치",
       "url": "",
       "en": {
+        "name": "Brunch"
+      },
+      "ja": {
         "name": "Brunch"
       }
     }
@@ -596,6 +811,10 @@
     "en": {
       "name": "Beautiful Nam",
       "desc": "YouTube · film, book and exhibition reviews · in\u00a0Korean"
+    },
+    "ja": {
+      "name": "美しいナム",
+      "desc": "YouTube · 映画・本・展示のレビュー · 韓国語"
     }
   },
   "copyright": "© 2026 남동원",
@@ -667,6 +886,69 @@
       "Dongwon Nam {photo},",
       "an office worker who writes {book} poems",
       "and reviews {still} what he sees"
+    ]
+  },
+  "ja": {
+    "name": "ナム・ドンウォン",
+    "logo": "ナム・ドンウォン",
+    "tagline": "見るものをレビューする、詩を書く会社員",
+    "tab_title": "ナム・ドンウォン — 詩を書く会社員",
+    "description": "詩を書く会社員、ナム・ドンウォン。第一詩集『扉をあけて出ると、生きているものたちで満ちている』と、映画・本・展示のレビューチャンネル「美しいナム」。",
+    "book": {
+      "title": "扉をあけて出ると、生きているものたちで満ちている",
+      "title_lines": [
+        "扉をあけて出ると、",
+        "生きているものたちで満ちている"
+      ],
+      "display": {
+        "big": [
+          "扉をあけて",
+          "出ると、"
+        ],
+        "small": [
+          "生きているものたちで",
+          "満ちている"
+        ]
+      },
+      "door": "扉をあけて出ると",
+      "buy_label": "本棚に並べる",
+      "spec": "110ページ · 128 × 188 mm · 2026年11月1日 · 教保文庫 PubPle",
+      "credit": "文 · 装丁 · 組版 ナム・ドンウォン",
+      "store_label": "教保文庫で購入",
+      "store": "教保文庫 PubPle",
+      "intro": {
+        "lead": [
+          "生きているふりと死んでいるふりのあいだで",
+          "手についた朱肉を払って歩き出す詩"
+        ],
+        "text": "ナム・ドンウォンの詩は、息をするものと、ただ動くだけのものとを見分ける。さわると何かがかさりと落ちる建物の壁、風に押されていくごみ、一定の速度で転がっていく車輪のあいだで、詩人は生きているふりをしようか、死んでいるふりをしようかと問う。そして答えのかわりに、手についた朱肉を払い落とす。感情を前に出さず、見たものを書きとめる硬質な文章が、この詩集の土台である。"
+      },
+      "toc": {
+        "label": "目次 — 六十篇、四部構成"
+      }
+    },
+    "poem": {
+      "title": "拓本",
+      "file": "poem_ja.txt",
+      "pages": "61–62ページ"
+    },
+    "bio": "1995年の冬、ソウルで生まれた。2026年、第一詩集『扉をあけて出ると、生きているものたちで満ちている』で作品活動を始めた。",
+    "contact": {
+      "lead_lines": [
+        "お仕事のご相談やご質問は",
+        "メッセージかメールでお寄せください。"
+      ],
+      "privacy": "お送りいただいたお名前とメールアドレスは、返信にのみ使います。"
+    },
+    "copyright": "© 2026 ナム・ドンウォン",
+    "colophon": {
+      "note": "文章や写真をお使いになるときは、先にお声がけください。",
+      "made": "ソウルで書き、撮り、編む"
+    },
+    "hero": [
+      "見るものを {still} レビューする、",
+      "詩を {book} 書く",
+      "会社員、{photo} ナム・ドンウォン"
     ]
   },
   "hero": [
