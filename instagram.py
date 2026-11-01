@@ -103,18 +103,26 @@ def _download(url, dst, maxw=None):
     os.replace(tmp, dst)
 
 
-def fetch(cfg):
-    """최근 게시물 cfg['count']장(기본 8) — [{'id', 'src', 'caption', 'timestamp', 'permalink', 'kids'}] 또는 None. kids는 첫 장 다음 게시물 안 사진(1080px)."""
+def code_of(m):
+    """게시물 주소 끝 글자(…/p/ABC123/ → "ABC123") — photo_art.json · photo_pick.json이 게시물을 가리키는 이름."""
+    return m["permalink"].rstrip("/").rsplit("/", 1)[-1]
+
+
+def fetch(cfg, allow=None):
+    """최근 게시물 cfg['count']장(기본 8) — [{'id', 'src', 'caption', 'timestamp', 'permalink', 'kids'}] 또는 None. kids는 첫 장 다음 게시물 안 사진(1080px).
+    allow(게시물 주소 끝 글자 모음)를 주면 그 게시물만 — 고르지 않은 게시물은 받지도 않음(11/1 photo_pick.json · 저작권)."""
     count, videos = int(cfg.get("count", 8)), cfg.get("videos", "skip")
     token, from_file = _token()
     if token:
         try:
             if from_file:
                 _age_note(token)
-            data = _get("/me/media", token, {"fields": FIELDS, "limit": min(50, count * 3)}).get("data", [])
+            data = _get("/me/media", token, {"fields": FIELDS, "limit": min(50, count * 3) if allow is None else 50}).get("data", [])  # 고른 것만이면 더 거슬러 올라가 찾음
             CACHE.mkdir(parents=True, exist_ok=True)
             feed = []
             for m in data:
+                if allow is not None and code_of(m) not in allow:
+                    continue
                 url = _pick(m, videos)
                 if not url:
                     continue
@@ -144,7 +152,8 @@ def fetch(cfg):
             print(f"알림: 인스타그램에서 받지 못함({x}) — 지난번 받아 둔 것을 씀")
     saved = CACHE / "feed.json"
     if saved.exists():
-        feed = [{**f, "kids": [k for k in f.get("kids", []) if Path(k).exists()]} for f in json.loads(saved.read_text(encoding="utf-8")) if Path(f["src"]).exists()]
+        feed = [{**f, "kids": [k for k in f.get("kids", []) if Path(k).exists()]} for f in json.loads(saved.read_text(encoding="utf-8"))
+                if Path(f["src"]).exists() and (allow is None or code_of(f) in allow)]  # 받아 둔 것에도 고른 것만
         if feed:
             if not token:
                 print(f"알림: 인스타 토큰이 없어 지난번 받아 둔 게시물 {len(feed)}장을 씀")

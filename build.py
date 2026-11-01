@@ -1458,14 +1458,19 @@ def main():
     site, videos, photos = load("site.json"), load("videos.json"), load("photos.json")
     # 사진 칸(10/24 A): 인스타그램 최근 게시물을 받아 옴 — 토큰이 없거나 실패하면 지난번 받아 둔 것, 그것도 없으면 photos.json의 사진
     ig = photos.get("instagram", {})
-    feed = instagram.fetch(ig)
+    # 고른 게시물만(11/1 동원 "내 인스타에서 너가 보고 저작권이 없어 보이는 것들의 포스팅을 가져오면 되잖아") — photo_pick.json의 show만 싣고 새 게시물은 고른 뒤에
+    # 시험이 가짜 서버로 돌 때는 PHOTO_PICK=off(고르기 없이 예전처럼)
+    pick_env = os.environ.get("PHOTO_PICK")
+    pick_file = None if pick_env == "off" else Path(pick_env) if pick_env else CONTENT / "photo_pick.json"
+    pick = json.loads(pick_file.read_text(encoding="utf-8")) if pick_file and pick_file.exists() else None
+    feed = instagram.fetch(ig, {r["post"] for r in pick["show"]} if pick else None)
     if feed:
         art = {r["post"]: r for r in load("photo_art.json").get("items", [])}  # 작품 정보(10/25 원고 옮기기 — 게시물 주소 끝 글자로)
         for r in art.values():  # 사진 설명 길이(정의 v1 — 한국어 60자 · 영어 120자 안) — 넘으면 알림만
             for lg, s, lim in (("한국어", r.get("alt") or "", 60), ("영어", (r.get("en") or {}).get("alt") or "", 120)):
                 if len(s) > lim:
                     print(f"알림: photo_art.json 게시물 {r['post']}의 사진 설명({lg})이 {len(s)}자 — {lim}자 안을 권함")
-        codes = {f["permalink"].rstrip("/").rsplit("/", 1)[-1] for f in feed}
+        codes = {f["permalink"].rstrip("/").rsplit("/", 1)[-1] for f in feed} | {r["post"] for r in (pick or {}).get("hide", [])}  # 일부러 뺀 게시물은 알리지 않음
         for c in sorted(set(art) - codes):
             print(f"알림: photo_art.json의 게시물 {c}이 받아 온 {len(feed)}장 밖 — 덧씌울 사진이 없음")
         photos = {**photos, "items": ig_items(feed, art)}
