@@ -92,6 +92,7 @@
   };
   const close = () => {
     w.hidden = true;
+    box.forEach(b => { b.hidden = true; });  // 닫은 뒤에도 상자 하나가 hidden이 아니면 main.js가 '다른 창 열림'으로 읽어 ⌘K 찾기가 막힘
     rest(false);
     H.classList.remove("cz-on");
     if (back && back.focus && document.contains(back)) back.focus({ preventScroll: true });

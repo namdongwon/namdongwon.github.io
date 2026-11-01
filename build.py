@@ -158,7 +158,7 @@ def consent_html(L, gid, site_label):
     privacy = f'<a href="~R~privacy/">{g("cz_privacy")}</a>'
     policy = f'<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">{g("cz_v_policy_l")}</a>'
     vendor = "Google Analytics Products"
-    l1 = (f'<div class="cz-box cz-1" role="dialog" aria-modal="true" aria-label="{g("cz_label")}">'
+    l1 = (f'<div class="cz-box cz-1" role="dialog" aria-modal="true" aria-label="{g("cz_label")}" hidden>'  # 셋 다 처음엔 숨김 — 숨긴 상자의 aria-modal을 main.js가 '다른 창 열림'으로 읽어 ⌘K 찾기가 막혔음(11/1 arrow 시험)
           f'<button type="button" class="cz-x">{g("cz_skip")}</button>'
           f'<p class="cz-m">{g("cz_text").replace("{partner}", partner)}</p>'
           f'<p class="cz-s">{g("cz_list_h")}<span>{g("cz_list")}</span></p>'
