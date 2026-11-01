@@ -12,7 +12,6 @@ import math
 import os
 import re
 import shutil
-import subprocess
 import sys
 import unicodedata
 from datetime import date, datetime, timedelta
@@ -130,7 +129,7 @@ def names(s):
 
 
 def build_day():
-    # 빌드한 날(서울) — 판권면 '고친 날' · 시집 상태 낱말 · 시집 소식이 이 날을 봄. 미리 볼 때는 환경 변수 SITE_TODAY=2026-11-01로 날을 정함
+    # 빌드한 날(서울) — 시집 상태 낱말 · 시집 소식 · 기록 '올해' · sitemap lastmod가 이 날을 봄(바닥글 '고친 날'은 11/2 뺌). 미리 볼 때는 환경 변수 SITE_TODAY=2026-11-01로 날을 정함
     s = os.environ.get("SITE_TODAY")
     return date.fromisoformat(s) if s else datetime.now(ZoneInfo("Asia/Seoul")).date()
 
@@ -339,28 +338,9 @@ def sentence(w, lang="ko", kinds=None):
 
 
 
-def ordinal(n):
-    return f"{n}{'th' if 10 <= n % 100 <= 20 else {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')}"
-
-
 def ui_lang(ui, lang):
     # ui.json → 그 판의 화면 낱말. 일본어가 아직 없는 칸은 한국어 그대로(11/1 — 번역을 넣기 전 빌드 · 빈 칸 알림은 ja_gaps)
     return {k: (v[lang] if lang in v else v["ko"]) if isinstance(v, dict) and "ko" in v else v for k, v in ui.items() if not k.startswith("_")}
-
-
-def printing_no(co):
-    # 판권면 쇄 = 이 판 첫 올림(colophon.edition_start 커밋)부터 docs/를 바꿔 GitHub main에 올린 기록 수 + 1 — 지금 빌드가 다음 올림(10/25 관리 화면 세션 제안 · 동원 수락)
-    # git이 없거나 그 커밋이 기록에 없으면(관리 화면 시험의 가짜 저장소 등) colophon.printing 그대로. 판을 올리면 edition_start를 비우고 그 판 첫 올림 뒤 그 커밋을 적음
-    start = co.get("edition_start", "")
-    if not start:
-        return co["printing"]
-    try:
-        r = subprocess.run(["git", "-C", str(HERE), "rev-list", "origin/main", "--", "docs"], capture_output=True, text=True, timeout=10)
-    except (OSError, subprocess.SubprocessError):
-        return co["printing"]
-    ids = r.stdout.split() if r.returncode == 0 else []
-    n = next((i + 1 for i, c in enumerate(ids) if c.startswith(start)), 0)
-    return n + 1 if n else co["printing"]
 
 
 def merge(a, b):
@@ -1210,13 +1190,9 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<label class="ag"><input type="checkbox" name="agree_abroad" required><span>{t("gb_ag2_g" if gf else "gb_ag2", privacy=priv)}</span></label>'
             f'<button class="send" type="submit">{t("gb_send")}</button><p class="msg" role="status"></p></form>') if (gb_id or gf) else f'<h3 class="h3b">{t("gb_write")}</h3><p class="when">{t("gb_soon")}</p>'
     guest = f'<div class="gb">{body}{form}</div>'
-    # 바닥글: 판권면(10/24 A) — 시집 판권면의 틀(제목 → 항목 줄 → ⓒ와 다시 쓰기 안내)만 빌림. 고친 날은 빌드한 날(서울 시간),
-    # 판은 디자인을 크게 다시 할 때(site.json) · 쇄는 고쳐 올릴 때마다 저절로(printing_no — 올린 기록으로 셈, 10/25)
-    co, today = S["colophon"], build_day()
-    when = (f"{MONTHS[today.month - 1]}{NB}{today.day}, {today.year}" if en else jday(today) if tr_ else f"{today.year}년{NB}{today.month}월{NB}{today.day}일")
-    pr = printing_no(co)
-    # 판 · 쇄 — 영어는 서수(2nd edition, 68th printing) · 일본어(11/1)는 일본 책 판권면 꼴 '第2版第68刷'(붙여 씀 — 번역 메모)
-    ed = (f'{ordinal(co["edition"])} edition, {ordinal(pr)} printing' if en else f'第{co["edition"]}版第{pr}刷' if tr_ else f'{co["edition"]}판 {pr}쇄')
+    # 바닥글 아래 띠 오른쪽은 고야드 문구 그대로 'Copyright © 2026 남동원. All rights reserved'(11/2 동원 "이런 느낌으로 바꿔" — site.json copyright) ·
+    # 판권면(10/24 A)에서 이어 온 고친 날 · 판 · 쇄 줄은 이때 뺌(쇄를 세던 printing_no도 함께 — 되살릴 땐 git 기록 56579fb). 다시 쓰기 안내(note)는 안내 단에
+    co = S["colophon"]
     # 화면 밝게 · 어둡게 · 시스템(10/26 A 먹 종이) — 판권면 줄, 처음은 밝게 · 누르면 main.js가 이 기기에 기억
     # 글자 대신 그림(10/28 B 선 그림 — 이름은 읽기 프로그램 · 마우스를 올리면 보이는 말로)
     thm = "".join(f'<button type="button" data-th="{k}" aria-pressed="{"true" if k == "light" else "false"}" aria-label="{e(x)}" title="{e(x)}">{THEME_ICONS[k]}</button>'
@@ -1250,9 +1226,9 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<div><h2 class="fh">{e(L["nav"][1])}</h2><ul>{book_li}</ul></div>'
             f'<div><h2 class="fh">{t("foot_info")}</h2><ul>{info_li}</ul></div>'
             f'<div><h2 class="fh">{t("foot_settings")}</h2>{ctl}</div></div>'
-            f'<div class="fmark"><p class="wm">{e(S.get("logo") or S["name"])}</p><p class="dm">{e(urlparse(base).netloc or base)}</p></div>'
-            f'<ul class="ficons">{icons}</ul><p class="end">{t("colo_end")}</p>'  # 사이트의 끝 — 책 '읽어 주신 분들께'의 맺음 인사(10/27 · 동원 "B1 좋은 아침")
-            f'<div class="fbar"><p class="lng">{langs}</p><p class="cp">{e(S["copyright"])}{NB}· <time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</p></div></div>')
+            f'<div class="fmark"><p class="dm">{e(urlparse(base).netloc or base)}</p></div>'  # 가운데 이름 '남 동원'은 뺌(11/2 동원 '두 줄 뺀 상태')
+            f'<ul class="ficons">{icons}</ul>'  # 맺음 인사(10/27 '좋은 아침')는 바닥글에서 뺌(11/2) — 탁본 한 장에는 그대로
+            f'<div class="fbar"><p class="lng">{langs}</p><p class="cp">{e(S["copyright"])}</p></div></div>')
 
     secs = ("me", "poem", "photo", "video", "contact", "guestbook")  # 방명록(11/2)은 ui.json nav 여섯째 낱말 — 앞 다섯 차례는 그대로
     navname = dict(zip(secs, L["nav"]))  # 낱말은 ui.json nav 그대로(찾기 칸 이름도 이 차례로 씀)
