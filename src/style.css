@@ -950,3 +950,48 @@ html.cin body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%))}
 html.cin.copen body{clip-path:circle(150vmax at var(--cx,50%) var(--cy,50%));transition:clip-path .8s cubic-bezier(.65,0,.35,1)}
 html.cgo body{clip-path:circle(150vmax at var(--cx,50%) var(--cy,50%))}
 html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition:clip-path .55s cubic-bezier(.65,0,.35,1)}
+
+/* 소개 첫 화면(11/1 동원 "내 웹사이트 랜딩 페이지 … TOKA 이런 느낌이면 좋겠다" → 버튼 "A 뒷모습 (권장)" — 시안 기준/브랜드 시안/첫화면_TOKA시안_v1_휴대폰_지금·A·B.png):
+   띠 아래 한 화면을 꽉 채움 — 화면 폭의 큰 이름(본명조 700 · 옅은 --mark) 앞에 선 사람(흑백 그림 · 아래로 흐려짐) · 오른쪽 한 문장 · 왼쪽 첫 시집 + 각진 먹 단추 · 구석 서울 시각.
+   TOKA 미리보기 실측의 짜임(큰 이름 · 그 앞의 사람 · 양옆 작은 글 · 구석 시각)과 들어오는 차례만 옮기고 색은 흰 바탕 · 무채색. 그 아래로 소개 칸은 전과 같음 */
+.tk{position:relative;height:calc(100svh - var(--top));min-height:560px;overflow:hidden;color:var(--ink)}
+.tk-w{position:absolute;left:0;right:0;top:12px;margin:0;text-align:center;font:700 min(31.8vw,300px)/1 var(--serif);letter-spacing:-.05em;color:var(--mark);white-space:nowrap}
+.tk-w span{display:inline-block}
+.tk-p{position:absolute;top:72px;left:-44px;width:auto;height:calc(100% - 286px);-webkit-mask-image:linear-gradient(#000 74%,transparent 99%);mask-image:linear-gradient(#000 74%,transparent 99%)}
+.tk-s{position:absolute;right:20px;top:calc(72px + (100% - 286px) * .42);width:140px;margin:0;font:300 25px/1.3 var(--serif);letter-spacing:-.01em}
+.tk-s .s{display:block;text-wrap:balance}
+html:lang(ko) .tk-s .s{max-width:5.2em}  /* 한국어는 시안처럼 네 줄(보는 것을 / 리뷰하는, / 시를 쓰는 / 회사원) — 두 낱말이 한 줄에 들지 않는 폭 */
+html:lang(ja) .tk-s .s{word-break:auto-phrase}@media (max-width:899px){html:lang(ja) .tk-s{width:150px;font-size:21px}}  /* 일본어는 말 마디로 끊고, 휴대폰은 'レビューする、' 일곱 자가 한 줄에 */
+.tk-s small{display:block;margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted);letter-spacing:0}.tk-s .b{display:none}
+.tk-l{position:absolute;left:20px;bottom:72px;display:grid;grid-template-columns:auto auto;justify-content:start;align-items:end;column-gap:16px}
+.tk-l .k{grid-column:1/-1;margin:0 0 12px;font:600 11px/1 var(--sans);letter-spacing:.06em;color:var(--muted)}
+.tk-l .tt{margin:0;font:400 15px/1.5 var(--serif)}
+.tk-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:var(--btn-r);background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);white-space:nowrap}
+.tk-c{position:absolute;right:20px;bottom:22px;margin:0;text-align:right;font:600 11px/1.5 var(--sans);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.tk-c small{display:block;font:300 11px/1.5 var(--sans);color:var(--muted);letter-spacing:0}
+@media (max-width:389px){.tk-l{grid-template-columns:auto}.tk-btn{justify-self:start;margin-top:12px}}  /* 좁은 휴대폰은 단추를 제목 아래로(제목 · 단추 한 줄이 349px) */
+:root[data-theme="dark"] .tk-p{filter:brightness(1.7)}  /* 어두운 바탕에서 어두운 옷이 묻히지 않게 */
+@media (prefers-color-scheme:dark){:root[data-theme="system"] .tk-p{filter:brightness(1.7)}}
+@media (min-width:900px){
+  .tk{min-height:640px}
+  .tk-w{top:6px;font-size:min(29vw,46svh)}
+  .tk-p{top:26%;left:50%;height:90%;transform:translateX(-53%)}  /* 머리가 가운데 글자 앞에 오게(그림 폭의 53%가 머리 한가운데) */
+  .tk-s{left:auto;right:64px;top:51%;width:min(380px,30vw);font-size:min(44px,3.1vw);line-height:1.3}
+  .tk-s small{margin-top:22px;font-size:14px;line-height:1.7}.tk-s .m{display:none}.tk-s .b{display:block}
+  .tk-l{left:64px;bottom:auto;top:61.6%}
+  .tk-l .tt{font-size:20px}
+  .tk-c{right:64px;bottom:30px;font-size:12.5px}.tk-c small{font-size:12.5px}
+}
+@media (min-width:900px) and (max-width:1199px){.tk-l{grid-template-columns:auto}.tk-btn{justify-self:start;margin-top:12px}.tk-l .tt{font-size:17px}}  /* 좁은 컴퓨터 · 태블릿 가로는 단추를 제목 아래로 — 한 줄이면 사람 옷 위에 얹힘(1024px 실측) */
+/* 들어오는 차례(TOKA 미리보기 실측 — 글자 0–0.35초 → 사람 0.35–0.65초 → 글줄 0.9–1.8초 → 단추 2초쯤): main.js가 글꼴을 받은 뒤 .go. 자바스크립트가 없으면 처음부터 다 섬 */
+@media (prefers-reduced-motion:no-preference){
+  .js .tk:not(.go) :is(.tk-w span,.tk-p,.tk-s,.tk-l,.tk-c){opacity:0}
+  .tk.go .tk-w span{animation:tkUp .5s var(--ease) both}.tk.go .tk-w span:nth-child(2){animation-delay:.08s}.tk.go .tk-w span:nth-child(3){animation-delay:.16s}
+  .tk.go .tk-p{animation:tkIn .35s ease .35s both}
+  .tk.go .tk-c{animation:tkIn .3s ease .6s both}
+  .tk.go .tk-s{animation:tkSweep .9s var(--ease) .9s both}
+  .tk.go .tk-l{animation:tkIn .4s ease 1.6s both}.tk.go .tk-btn{animation:tkIn .3s ease 1.85s both}
+}
+@keyframes tkUp{from{transform:translateY(55%);opacity:0}}
+@keyframes tkIn{from{opacity:0}}
+@keyframes tkSweep{from{clip-path:inset(0 0 100% 0);transform:translateY(12px)}to{clip-path:inset(0)}}

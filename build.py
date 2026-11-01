@@ -27,6 +27,7 @@ import instagram  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 CONTENT = HERE / "content"
+ME_IMG = CONTENT / "img/me_back.png"  # 소개 첫 화면의 사람(11/1 TOKA식 A) — 동원 사진에서 사람만 남긴 흑백(뒤 작품은 지워짐). 없으면 첫 화면은 이름 · 글만
 SRC = HERE / "src"
 DOCS = HERE / "docs"
 ASSETS = DOCS / "assets"
@@ -1347,6 +1348,20 @@ def render(site, poem, videos, photos, lang="ko"):
     # 쪽 나누기(10/31 — PAGES): 칸은 전처럼 그리고 쪽마다 나눠 담음 — 소개(/) · 시집(/book/: 문 · 첫 화면 책 · 「탁본」 · 책 카드 · 소식 · 차례 · 글자 팔레트)
     # · 인스타그램(/photo/) · 유튜브(/video/) · 연락(/contact/ — 방명록 함께). 판권면은 연락 칸 끝에서 모든 쪽 끝 바닥글로
     # 소개 쪽은 소개만(10/31 동원 "애초에 랜딩페이지랑 각자 따로 놀게 하면 좋잖아, 굳이 저렇게 소개에서 링크를 깔 필요가 없잖아") — 쪽 사이 길은 맨 위 띠 메뉴가 맡음(갈래 넷 목록 뺌)
+    # 소개 첫 화면(11/1 동원 "내 웹사이트 랜딩 페이지 https://motionsites.ai/?prompt=toka-hero 이런 느낌이면 좋겠다" → 시안 기준/브랜드 시안/첫화면_TOKA시안_v1 → 버튼 "A 뒷모습 (권장)"):
+    #   화면 폭의 큰 이름(한글 '남동원' — 세 판 같은 로고, 옅은 회색) 앞에 선 사람 · 오른쪽 한 문장(tagline)과 약력 · 왼쪽 첫 시집과 시집 쪽 단추 · 구석 서울 지금 시각(main.js가 채움).
+    #   그 아래 소개 칸은 전과 같음. 이름 · 문장 · 시각은 소개 칸과 같은 말이거나 꾸밈이라 읽기 도구엔 숨김 — 단추만 읽힘. 들어오는 차례는 style.css(.tk.go)
+    sn_t = season_of(build_day())
+    tk_pic = ""
+    if ME_IMG.exists():
+        with Image.open(ME_IMG) as im:
+            tk_pic = f'<img class="tk-p" src="{P}assets/img/me.webp" alt="" width="{im.width}" height="{im.height}" decoding="async" fetchpriority="high">'
+    tk = (f'<div class="tk"><p class="tk-w" aria-hidden="true">{"".join(f"<span>{c}</span>" for c in site["name"])}</p>{tk_pic}'
+          f'<p class="tk-s" aria-hidden="true"><span class="s">{keep(S["tagline"])}</span><small class="m">{"<br>".join(t("tk_meta").split("|"))}</small><small class="b">{rich(S["bio"])}</small></p>'
+          f'<div class="tk-l"><p class="k">{t("tk_kick")}</p><p class="tt">{book_title}</p><a class="tk-btn" href="~R~book/">{t("tk_cta")} <span aria-hidden="true">→</span></a></div>'
+          # 시각 글자(오전 · 오후 / 午前 · 午後)는 main.js가 채우므로 글꼴 줄이기가 모으게 data-ap에 둠
+          f'<p class="tk-c" aria-hidden="true" data-ap="{t("tk_ampm")}"><span class="tm"></span>{t("tk_city")}'
+          + (f'<small>{t("tk_season", name=e(sn_t[1] if en else sn_t[2] if tr_ else sn_t[0]))}</small>' if sn_t else "") + "</p></div>\n")
     sec = {
         # 시집 쪽 h1(11/1 동원 버튼 "함께 넣어 (권장)" — 명품 사이트 조사 제안 ①: 상품 쪽 h1은 상품 이름): 이름 · 첫 시집 줄 + 큰 제목 + 작은 제목을 한 h1로 — 보이는 모양은 그대로(전엔 h1이 위 작은 줄뿐).
         # 휴대폰의 작은 제목은 책 옆(.side .hs — 읽기 도구에는 숨김)이 보이고, h1 안의 작은 제목(.hsl)은 휴대폰에선 화면 밖 글(읽기 도구만) · 768px부터 보임
@@ -1369,7 +1384,7 @@ def render(site, poem, videos, photos, lang="ko"):
   </section>
 """,
         "palette": "  " + palette.rstrip() + "\n",
-        "me": f"""  <section id="me" aria-labelledby="me-t">
+        "me": f"""  {tk}  <section id="me" aria-labelledby="me-t">
     <p class="label">{t("label_me")}</p>
     {hero}<div class="l"><h2 class="h2" id="me-t">{e(S["name"])}</h2><p class="tagl">{keep(S["tagline"])}</p><p class="bio">{rich(S["bio"])}</p></div>
     <div class="r"><ul class="years">{years}</ul>{fnb}{nowb}<div class="rec">{rec}</div></div>
@@ -1770,6 +1785,10 @@ def main():
     # 첫 화면 서 있는 책(10/24)의 뒤표지·책등 — 교보 최종 표지 파일에서 자른 그림. 앞표지와 같은 폭 600px, 책등은 9mm 비율(600×9/128 ≈ 42px)
     save_jpg(CONTENT / site["book"]["back"], ASSETS / "img/back.jpg", 600, quality=84)
     save_jpg(CONTENT / site["book"]["spine"], ASSETS / "img/spine.jpg", 42, quality=88)
+    # 소개 첫 화면의 사람(11/1) — 투명 바탕 그대로 WebP(원고 PNG 300KB → 52KB). 원본 사진 · 사람만 남기기는 기준/브랜드 시안/첫화면_TOKA시안_v1/
+    if ME_IMG.exists():
+        with Image.open(ME_IMG) as im:
+            im.convert("RGBA").save(ASSETS / "img/me.webp", "WEBP", quality=82, method=6)
     # 첫 편 준비 중(10/24)의 썸네일 시안 — 800px(휴대폰 2배·컴퓨터 칸 폭에 넉넉). 흑백은 CSS가 함
     up = videos.get("upcoming") or {}
     if not videos["items"] and up.get("thumb"):

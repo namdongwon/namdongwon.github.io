@@ -1374,5 +1374,20 @@
     H.classList.add("cout");
     setTimeout(() => { location.href = to.href; }, 560);
   });
+  // 소개 첫 화면(11/1 첫 화면 TOKA식 A): 큰 이름의 글꼴이 오면 들어오는 차례를 켬(.go — 글자 → 사람 → 시각 → 한 문장 → 첫 시집 · 단추, style.css).
+  // 글꼴은 0.8초까지만 기다림(문 장면과 같은 원칙 — 늦으면 대신 글꼴로 시작하고 온 뒤 바뀜). 구석 시각은 서울 시각을 30초마다 — 판마다 그 말의 꼴(오후 8:07 · 8:07 PM · 午後8:07)
+  const tk = document.querySelector(".tk");
+  if (tk) {
+    const w = tk.querySelector(".tk-w"), go = () => tk.classList.add("go");
+    if (w && document.fonts && document.fonts.load) Promise.race([document.fonts.load(`700 1em ${getComputedStyle(w).fontFamily}`, w.textContent), new Promise(r => setTimeout(r, 800))]).then(go, go);
+    else go();
+    const tm = tk.querySelector(".tk-c .tm");
+    if (tm && window.Intl) {
+      const fmt = new Intl.DateTimeFormat(H.lang === "en" ? "en-US" : H.lang === "ja" ? "ja-JP" : "ko-KR", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "Asia/Seoul" });
+      const tick = () => { tm.textContent = fmt.format(new Date()) + " · "; };
+      tick();
+      setInterval(tick, 30000);
+    }
+  }
   addEventListener("pageshow", ev => { if (ev.persisted) H.classList.remove("cgo", "cout", "cin", "copen"); });
 })();

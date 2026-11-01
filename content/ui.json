@@ -1042,5 +1042,35 @@
     "ko": "좋은 아침이었으면 합니다.",
     "en": "I hope your morning is a good one.",
     "ja": "よい朝でありますように。"
+  },
+  "tk_meta": {
+    "ko": "1995년 겨울, 서울|2026년 첫 시집",
+    "en": "Seoul, winter 1995|First poetry collection, 2026",
+    "ja": "1995年冬、ソウル|2026年 第一詩集"
+  },
+  "tk_kick": {
+    "ko": "첫 시집 · 2026",
+    "en": "First poetry collection · 2026",
+    "ja": "第一詩集 · 2026"
+  },
+  "tk_cta": {
+    "ko": "시집 보기",
+    "en": "See the book",
+    "ja": "詩集を見る"
+  },
+  "tk_city": {
+    "ko": "서울",
+    "en": "Seoul",
+    "ja": "ソウル"
+  },
+  "tk_season": {
+    "ko": "{name} 무렵",
+    "en": "around {name}",
+    "ja": "{name}のころ"
+  },
+  "tk_ampm": {
+    "ko": "오전 오후",
+    "en": "AM PM",
+    "ja": "午前 午後"
   }
 }
