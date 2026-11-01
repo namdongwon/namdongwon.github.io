@@ -367,6 +367,34 @@
     let pt = 0;
     addEventListener("resize", () => { clearTimeout(pt); pt = setTimeout(place, 150); });
   }
+  // 휴대폰 메뉴 단추(11/1 밤 동원 버튼 "B 메뉴 단추" — 방명록을 더하면 메뉴 다섯이 휴대폰 한 줄에 안 들어가, 명품 사이트 휴대폰 꼴로): 띠 왼쪽 '메뉴'를 누르면 띠 아래로 쪽 목록(#mnu).
+  // 여는 동안 띠와 목록 밖은 inert(Tab이 목록 뒤로 새지 않게 — 찾기 창과 같은 꼴) · 쪽 스크롤 멈춤 · 다시 누르거나 Esc면 닫고 단추로 · 찾기를 열거나(돋보기 · ⌘K) 768px 위로 넓어지면 닫음
+  const mb = document.querySelector(".top .mb"), mnu = document.getElementById("mnu");
+  if (mb && mnu) {
+    const head = mb.closest(".top");
+    const menu = on => {
+      if (on === !mnu.hidden) return;
+      if (on) mnu.style.top = head.getBoundingClientRect().bottom + "px";  // 글 간격을 넓힌 읽기 도구로 띠가 높아져도 띠 바로 아래
+      mnu.hidden = !on;
+      mb.setAttribute("aria-expanded", on ? "true" : "false");
+      mb.textContent = on ? mb.dataset.close : mb.dataset.open;
+      H.classList.toggle("mnu-on", on);
+      [...document.body.children].forEach(el => { if (el !== head && el !== mnu && el.tagName !== "SCRIPT") el.inert = on; });
+    };
+    mb.addEventListener("click", ev => {
+      const on = mnu.hidden;
+      menu(on);
+      if (on && !ev.detail) mnu.querySelector("a").focus({ preventScroll: true });  // 키보드로 열었을 때만 첫 쪽 이름으로(손가락 · 마우스는 단추에 그대로 — 첫 이름에 굵은 포커스 테두리가 뜨지 않게)
+    });
+    addEventListener("keydown", ev => {
+      if (mnu.hidden) return;
+      if (ev.key === "Escape") { menu(false); mb.focus(); }
+      else if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === "k") menu(false);  // 찾기 창보다 먼저 닫음(찾기가 쪽 나머지를 inert로 돌리고 닫을 때 풀기 때문)
+    }, true);
+    head.addEventListener("click", ev => { if (ev.target.closest(".sq")) menu(false); }, true);
+    matchMedia("(min-width:768px)").addEventListener("change", m => { if (m.matches) menu(false); });
+    addEventListener("pageshow", ev => { if (ev.persisted) menu(false); });  // 뒤로 가기로 돌아온 쪽(bfcache)이 열린 채 남지 않게
+  }
   // 화면 밝게 · 어둡게 · 시스템(10/26 동원 "웹사이트 화면에 화이트모드 다크모드 시스템설정 있으면 좋겠다" → A 먹 종이) — 판권면 세 단추.
   // 고른 것은 이 기기에만 기억(localStorage theme — 쿠키 아님), 처음은 밝게. 첫 그림 전에 머리 스크립트가 data-theme을 붙이고 여기서는 단추 · 브라우저 막대 색만
   // 움직임 줄이기(11/1 밤 명품 제안 ⑥ — 버튼 'A 스위치'): 켜면 html data-motion="reduce" — 기기의 '동작 줄이기'와 똑같이(빌드가 스타일 움직임을 그 조건으로 묶음 · motion_css).

@@ -1472,6 +1472,8 @@ def render(site, poem, videos, photos, lang="ko"):
         # 맨 위 띠(10/31 동원 "gnb 이거 있잖아 가운데로 넣어" · "언어 설정 하단 푸터로 빼"): 이름 | 메뉴 넷(가운데) | 찾기 · [연락하기] — 언어는 바닥글 판권면 '언어' 줄로
         act = f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
         act += f'<a class="cta{" on" if k == "contact" else ""}" href="{link("contact")}"' + (' aria-current="page"' if k == "contact" else "") + f'>{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(연락 쪽에선 맨 위에서도 먹 — 지금 쪽 표시)
+        # 휴대폰 메뉴 단추의 목록(11/1 밤 동원 버튼 "B 메뉴 단추"): 메뉴와 같은 쪽 · 같은 차례, 쪽 이름만 큰 명조로(동원 "url 은 빼") — 띠 밖(</header> 뒤)에 둠: 띠의 흐림(backdrop-filter)이 안쪽 fixed를 띠 높이에 가둠
+        mnu = "".join(f'<li><a href="{link(pg)}"' + (' aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a></li>' for pg in ("", "book", "photo", "video"))
         lang_href = {x: f'{PP}{"" if x == "ko" else x + "/"}{kp}' for x in others}  # 같은 쪽의 다른 판 — 바닥글 '언어' 줄(~L:말~)
         ptitle = title if not k else f'{L["nav"][("me", "poem", "photo", "video", "contact").index(top_of[k])]} — {S["name"]}'
         h1 = "" if bpg else f'<h1 class="sr">{e(S["name"] if not k else ptitle)}</h1>\n'  # 시집 쪽은 첫 화면 h1(이름 · 첫 시집) 그대로, 다른 쪽은 읽기 도구용 쪽 제목
@@ -1512,8 +1514,9 @@ def render(site, poem, videos, photos, lang="ko"):
 <body>
 {door if bpg else ""}
 <a class="skip" href="#main">{t("skip")}</a>
-<header class="top"><a class="logo" href="{link("")}">{e(S.get("logo") or S["name"])}</a>
+<header class="top"><a class="logo" href="{link("")}">{e(S.get("logo") or S["name"])}</a><button type="button" class="mb" aria-expanded="false" aria-controls="mnu" data-open="{t("menu")}" data-close="{t("close")}">{t("menu")}</button>
   <nav aria-label="{t("nav_label")}">{nav}</nav><div class="act">{act}</div></header>
+<nav class="mnu" id="mnu" aria-label="{t("nav_label")}" hidden><ol>{mnu}</ol></nav>
 <main id="main">
 {h1}{body}</main>
 <footer class="foot">{colo}</footer>

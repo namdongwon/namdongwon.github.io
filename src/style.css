@@ -95,11 +95,21 @@ button{font:inherit;color:inherit}
 .top .logo{display:none;font:700 18px/1 var(--serif)}
 .top nav{position:relative;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:16px;font:600 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  /* 한글 메뉴 자간 .12 → .04em(10/29 동원 'B 이름은 그대로' — 새 눈 비평 그 밖 2: 한글은 자간을 벌리면 낱말 덩어리가 깨짐) */
 .top nav a{position:relative;padding:6px 0}
-.top nav a::before,.top .act a::before,.js .top .sq::before{content:"";position:absolute;inset:-10px -6px}  /* 누르는 자리 44px 안팎(10/28 모양 점검 ⑥ — 글자 칸은 26px) — 여백을 늘리면 띠 · 구분선 모양이 바뀌어 보이지 않는 자리만 넓힘 */
+.top nav a::before,.top .act a::before,.js .top .sq::before,.top .mb::before{content:"";position:absolute;inset:-10px -6px}  /* 누르는 자리 44px 안팎(10/28 모양 점검 ⑥ — 글자 칸은 26px) — 여백을 늘리면 띠 · 구분선 모양이 바뀌어 보이지 않는 자리만 넓힘 */
 /* 지금 보는 칸(10/24 B) — 그 칸 이름만 먹색 + 아래 가는 밑줄(main.js가 붙임, 칸을 따라 미끄러짐). 첫 화면에선 없음 */
 .top nav a.on{color:var(--ink)}
 .top nav .ul{position:absolute;left:0;bottom:1px;width:0;height:1.5px;background:var(--ink);opacity:0;pointer-events:none}
 .top nav .ul.on{opacity:1}
+/* 휴대폰 메뉴 단추(11/1 밤 동원 버튼 "B 메뉴 단추" — 방명록을 더하면 메뉴 다섯이 휴대폰 한 줄에 안 들어가, 명품 사이트 휴대폰 꼴로): 띠 왼쪽 '메뉴' → 띠 아래로 쪽 목록(쪽 이름만 큰 명조 · 가는 줄 — 11/1 동원 "url 은 빼").
+   스크립트가 없으면 전처럼 메뉴 넷 · 컴퓨터 · 태블릿(768 위)은 그대로 */
+.top .mb{display:none;position:relative;margin-right:auto;padding:6px 0;border:0;background:none;font:600 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--ink);cursor:pointer}
+@media (max-width:767px){.js .top .mb{display:block}.js .top nav{display:none}}
+.mnu{position:fixed;left:0;right:0;top:var(--top);bottom:0;z-index:45;overflow-y:auto;overscroll-behavior:contain;padding:12px 20px 44px;background:var(--bg)}  /* 띠 바로 아래(main.js가 띠 높이로 맞춤) · 재생 띠(40) · 맨 위로 단추(9) 위, 찾기 창(50) 아래 */
+.mnu ol{margin:0;padding:0;list-style:none}
+.mnu li{border-bottom:1px solid var(--rule)}
+.mnu a{display:block;padding:20px 0;font:400 24px/1.2 var(--serif);color:var(--ink)}
+html.mnu-on{overflow:hidden}  /* 여는 동안 쪽은 멈춤 */
+@media (min-width:768px){.mnu{display:none}}
 
 /* 칸 */
 html{scroll-padding-top:calc(var(--top) + 12px)}  /* Tab · 건너뛰기로 간 자리가 맨 위 띠에 덮이지 않게 — 뒤로 Tab하면 '책장에 꽂기 ↗'가 띠 밑에 통째로 숨었음(10/27 점검, WCAG 2.4.11) */
