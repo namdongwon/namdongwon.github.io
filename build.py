@@ -48,6 +48,12 @@ FONTS = [
 # 사이트 글자 말고도 늘 남겨 둘 것: 영문·숫자·기호(주소·계정 이름·숫자 세기)와 쓰는 문장부호
 SEARCH_ICON = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false">'
                '<circle cx="8.5" cy="8.5" r="6"/><path d="M13 13l5 5" stroke-linecap="round"/></svg>')  # 맨 위 막대 · 찾기 창의 가는 선 돋보기(10/26)
+FOOT_ICONS = {k: f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">{d}</svg>' for k, d in {  # 바닥글 원 아이콘(11/2 — 직접 그린 선 그림)
+    "ig": '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/>',
+    "yt": '<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.2 9.4v5.2l4.4-2.6z" fill="currentColor" stroke="none"/>',
+    "mail": '<rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.6 7.2 12 13l8.4-5.8"/>',
+    "book": '<path d="M12 7c-2.2-1.6-5.2-2-8-1.4v12.6c2.8-.6 5.8-.2 8 1.4 2.2-1.6 5.2-2 8-1.4V5.6c-2.8-.6-5.8-.2-8 1.4z"/><path d="M12 7v12.6"/>',
+}.items()}
 THEME_ICONS = {k: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + v + '</svg>' for k, v in {
     "system": '<rect x="2.5" y="3.5" width="15" height="10" rx="1.5"/><path d="M7 17h6M10 13.5V17"/>',
     "light": '<circle cx="10" cy="10" r="3.4"/><path d="M10 1.8v2M10 16.2v2M1.8 10h2M16.2 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M4.2 15.8l1.4-1.4M14.4 5.6l1.4-1.4"/>',
@@ -1217,23 +1223,34 @@ def render(site, poem, videos, photos, lang="ko"):
         if x == lang:
             return f'<span aria-current="true">{LANG_NAME[x]}</span>'
         return f'<a class="lang" href="~L:{x}~" hreflang="{x}" lang="{x}">{LANG_NAME[x]}</a>'
-    pp_link = f' <a class="pp-l" href="~R~privacy/">{t("gb_privacy")}</a>' if (CONTENT / "privacy.json").exists() else ""  # 처리방침 쪽(10/27) — '쿠키를 쓰지 않습니다' 옆
-    # GA4를 켜면(11/1) '쿠키 · ' 세 글자만 빼고 프라다 말 '쿠키 설정'(동의 관리 창 다시 열기 — consent.js)을 처리방침 앞에
-    cookie_line = (t("colo_cookie_ga") + f' <button type="button" class="cz-open">{t("cz_open")}</button> ·') if ga else t("colo_cookie")
-    colo = (f'<div class="colo"><p class="t">{e(urlparse(base).netloc or base)}</p><dl>'
-            f'<dt>{t("colo_updated")}</dt><dd><time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</dd>'
-            f'<dt>{t("colo_author")}</dt><dd>{e(S["name"])}</dd>'
-            f'<dt>{t("colo_pub")}</dt><dd>{keep(book["spec"].split(" · ")[-1])} — <a class="pp-l" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("판권면")}>{e(book["buy_label"])} ↗</a></dd>'  # 펴낸 곳(10/28 동원 'A 판권면에 펴낸 곳 줄' — 쪽 끝에서 사는 길이 3.3화면 위였음)
-            f'<dt>{t("colo_made")}</dt><dd>{e(co["made"])}</dd>'
-            f'<dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd>'
-            # 움직임 줄이기(11/1 밤 명품 제안 ⑥ — 시안 기준/브랜드 시안/움직임줄이기시안_v1_A·B.png → 버튼 "A 스위치 (권장)") — 고야드 · 롤렉스 바닥글처럼 스위치 한 줄, 끔 = 기기 설정을 따름
-            f'<dt class="mot">{t("motion")}</dt><dd class="mot"><label><input type="checkbox" role="switch" aria-label="{t("motion")} {t("motion_reduce")}">{t("motion_reduce")}</label>'
-            f'<small data-on="{t("motion_on")}" data-off="{t("motion_off")}">{t("motion_off")}</small></dd>'
-            # 언어(10/31 동원 "언어 설정 하단 푸터로 빼") — 화면 줄 바로 아래: 지금 판은 글자 · 다른 판은 그 쪽의 같은 자리로 가는 링크(~L:말~ — page()가 채움)
-            # 11/1 일본어판 — 셋을 늘 같은 차례로 '한국어 · English · 日本語'(칸 정의서 1절): 지금 판은 먹 글자 · 다른 두 판은 밑줄 링크(hreflang · lang)
-            f'<dt>{t("colo_lang")}</dt><dd class="lng">{f"{NB}· ".join(lang_item(x) for x in LANGS)}</dd></dl>'  # 글꼴 줄은 뺌(10/26 동원 "사이트에 내 글꼴 소개하지 않아도 되잖아 지워" — 라이선스 글은 글꼴 옆에 그대로)
-            f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{cookie_line}{pp_link}</p>'
-            f'<p class="end">{t("colo_end")}</p></div>')  # 사이트의 끝 — 책 '읽어 주신 분들께'의 맺음 인사(10/27 경험 설계 '끝까지 온 사람을 맞이하나?' · 동원 "B1 좋은 아침")
+    # 바닥글 — 고야드 꼴(11/2 동원 "우리 하단 푸터 고야드처럼 바꾸자 벤치마킹해보자 … 이모지 로 링크 타는 방식도 좋고" → 목업 기준/브랜드 시안/푸터시안_v1_A·B.png → "A 고야드 꼴 (권장)"):
+    # 네 단(둘러보기 · 시집 · 안내 · 설정) 가운데 정렬 → 이름 표장 → 원 아이콘(인스타그램 · 유튜브 · 연락 · 교보문고) → 맺음 인사 → 아래 띠(왼쪽 언어 · 오른쪽 © · 고친 날 · 판 · 쇄).
+    # 판권면(10/24 A)의 기록은 아래 띠 한 줄로 이어 감 · 스크립트가 읽는 이름(.colo · .thm · .mot · .lang · .cz-open)은 그대로 · 쪽 주소는 ~R~(page()가 그 판 맨 위로 채움)
+    def fli(href, label, extra=""):  # 단 안 한 줄 링크
+        return f'<li><a href="{href}"{extra}>{label}</a></li>'
+    nav_li = "".join(fli(f"~R~{p}", e(x)) for p, x in (("", L["nav"][0]), ("book/", L["nav"][1]), ("photo/", L["nav"][2]), ("video/", L["nav"][3]), ("guestbook/", L["nav"][5]), ("contact/", L["nav_cta"])))
+    book_li = (fli("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", "")) + fli("~R~book/#toc", e(book["toc"]["label"]))
+               + fli(e(book["buy_url"]), f'{e(book["store_label"])} ↗', f' target="_blank" rel="noopener"{gcc("판권면")}'))
+    info_li = ((fli("~R~privacy/", t("gb_privacy")) if (CONTENT / "privacy.json").exists() else "")
+               + (f'<li><button type="button" class="cz-open">{t("cz_open")}</button></li>' if ga else "")  # GA4를 켰을 때만 '쿠키 설정'(동의 관리 창 다시 열기 — consent.js)
+               + f'<li class="tx">{e(co["note"])}</li><li class="tx">{t("colo_cookie_ga") if ga else t("colo_cookie")}</li>')
+    # 설정 — 화면 밝게 · 어둡게 · 시스템(10/26 A · 10/28 선 그림) · 움직임 줄이기(11/1 밤 명품 제안 ⑥ 'A 스위치')
+    ctl = (f'<dl class="ctl"><dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd>'
+           f'<dt class="mot">{t("motion")}</dt><dd class="mot"><label><input type="checkbox" role="switch" aria-label="{t("motion")} {t("motion_reduce")}">{t("motion_reduce")}</label>'
+           f'<small data-on="{t("motion_on")}" data-off="{t("motion_off")}">{t("motion_off")}</small></dd></dl>')
+    ext = ' target="_blank" rel="noopener"'
+    icons = "".join(f'<li><a href="{h}" aria-label="{a}"{x}>{FOOT_ICONS[k]}</a></li>' for k, h, a, x in (
+        ("ig", e(iu), e(L["nav"][2]), ext), ("yt", e(ch.get("url", "")), e(L["nav"][3]), ext),
+        ("mail", "~R~contact/", L["nav_cta"], ""), ("book", e(book["buy_url"]), e(book["store_label"]), ext + gcc("판권면 아이콘"))))
+    # 언어(10/31 동원 "언어 설정 하단 푸터로 빼" · 11/1 세 판 '한국어 · English · 日本語') — 아래 띠 왼쪽: 지금 판은 먹 글자 · 다른 두 판은 그 쪽의 같은 자리로(~L:말~)
+    langs = f"{NB}· ".join(lang_item(x) for x in LANGS)
+    colo = (f'<div class="colo"><div class="fcols"><div><h2 class="fh">{t("foot_pages")}</h2><ul>{nav_li}</ul></div>'
+            f'<div><h2 class="fh">{e(L["nav"][1])}</h2><ul>{book_li}</ul></div>'
+            f'<div><h2 class="fh">{t("foot_info")}</h2><ul>{info_li}</ul></div>'
+            f'<div><h2 class="fh">{t("foot_settings")}</h2>{ctl}</div></div>'
+            f'<div class="fmark"><p class="wm">{e(S.get("logo") or S["name"])}</p><p class="dm">{e(urlparse(base).netloc or base)}</p></div>'
+            f'<ul class="ficons">{icons}</ul><p class="end">{t("colo_end")}</p>'  # 사이트의 끝 — 책 '읽어 주신 분들께'의 맺음 인사(10/27 · 동원 "B1 좋은 아침")
+            f'<div class="fbar"><p class="lng">{langs}</p><p class="cp">{e(S["copyright"])}{NB}· <time datetime="{today.isoformat()}">{when}</time>{NB}· {ed}</p></div></div>')
 
     secs = ("me", "poem", "photo", "video", "contact", "guestbook")  # 방명록(11/2)은 ui.json nav 여섯째 낱말 — 앞 다섯 차례는 그대로
     navname = dict(zip(secs, L["nav"]))  # 낱말은 ui.json nav 그대로(찾기 칸 이름도 이 차례로 씀)

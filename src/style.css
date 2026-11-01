@@ -809,8 +809,27 @@ html.sr-on{overflow:hidden}
 }
 
 /* 쪽 나누기(10/31 동원 "랜딩페이지는 내 소개를 넣고 … 따로 페이지를 분리") — 판권면은 모든 쪽 끝 바닥글(컴퓨터는 전처럼 오른쪽 단) · 소개 쪽 갈래 넷은 10/31 동원 '소개에서 링크를 깔 필요가 없잖아'로 뺌(쪽 사이 길은 맨 위 띠 메뉴) */
-.foot{padding:0 20px 64px}.foot .colo{margin-top:0}
-@media (min-width:768px){.foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:72px;padding:0 64px 64px}.foot .colo{grid-column:2}}
+/* 바닥글 — 고야드 꼴(11/2 동원 '푸터 고야드처럼' → 목업 A · 고야드 실측 기준/레퍼런스/고야드푸터_실측_1102/): 네 단 가운데 정렬 → 이름 표장 → 원 아이콘 → 맺음 인사 → 아래 띠. 색은 따르지 않음 */
+.foot{padding:0 20px}
+.foot .colo{max-width:1120px;margin:0 auto;padding-top:64px;border-top:1px solid var(--rule);text-align:center}
+.fcols{display:grid;gap:36px}
+.fh{margin:0 0 16px;font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  /* 단 이름 — '차례' · '지난 편'과 같은 칸 머리 */
+.fcols ul{list-style:none;margin:0;padding:0}
+.fcols li{font:14px/2 var(--body);color:var(--ink)}
+.fcols li.tx{margin-top:4px;font:300 11px/1.6 var(--sans);color:var(--faint)}
+.fcols .cz-open{padding:0;border:0;background:none;font:inherit;color:inherit;cursor:pointer}
+.colo .ctl{display:inline-grid;margin-top:0;text-align:left}
+.fmark{margin-top:64px}
+.fmark .wm{font:700 22px/1 var(--serif);color:var(--ink)}
+.fmark .dm{margin-top:12px;font:300 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.ficons{display:flex;justify-content:center;gap:16px;margin:36px 0 0;padding:0;list-style:none}
+.ficons a{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;color:var(--ink)}
+.ficons svg{width:20px;height:20px}
+@media (hover:hover){.fcols a:hover{text-decoration:underline;text-underline-offset:4px}.ficons a:hover{background:var(--ph)}}  /* 호버 — 글은 밑줄, 아이콘은 옅은 회색(11/2 맨 위 띠와 같은 결) */
+.colo .end{margin-top:36px}
+.fbar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;margin-top:44px;padding:16px 0 72px;border-top:1px solid var(--rule);font:300 11px/1.6 var(--sans);color:var(--faint);text-align:left}  /* 휴대폰 — 맨 위로 단추(오른쪽 아래 고정) 자리를 비움 */
+.fbar .lng [aria-current]{color:var(--ink)}
+@media (min-width:768px){.foot{padding:0 64px}.fcols{grid-template-columns:repeat(4,1fr);gap:30px}.fbar{padding-bottom:30px}}
 /* 맨 위 띠 오른쪽 찾기 · 연락하기(10/31 메뉴를 가운데로 — 메뉴 밖 묶음) · 휴대폰은 메뉴와 사이 구분선(전엔 언어 단추 앞) → 11/2 구분선 뺌 */
 .top .act a{position:relative}  /* 누르는 자리(::before)가 연락하기 상자 기준으로 — 없으면 띠 전체 기준이라 컴퓨터에서 옆으로 6px 넘쳤음(실측) */
 .top .act{display:flex;align-items:center;gap:16px;margin-left:12px;white-space:nowrap}  /* 돋보기 앞 구분선 뺌(11/2 동원 '돋보기 왼쪽에 선 없애고') */

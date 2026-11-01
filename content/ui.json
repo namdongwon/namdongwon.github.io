@@ -1056,6 +1056,21 @@
     "en": "“{book}” — press to see the spine and back",
     "ja": "詩集『{book}』 — 押して背表紙 · 裏表紙を見る"
   },
+  "foot_pages": {
+    "ko": "둘러보기",
+    "en": "Explore",
+    "ja": "ページ"
+  },
+  "foot_info": {
+    "ko": "안내",
+    "en": "Information",
+    "ja": "ご案内"
+  },
+  "foot_settings": {
+    "ko": "설정",
+    "en": "Settings",
+    "ja": "設定"
+  },
   "colo_end": {
     "ko": "좋은 아침이었으면 합니다.",
     "en": "I hope your morning is a good one.",
