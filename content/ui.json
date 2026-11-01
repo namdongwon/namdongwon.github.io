@@ -1043,11 +1043,6 @@
     "en": "I hope your morning is a good one.",
     "ja": "よい朝でありますように。"
   },
-  "tk_meta": {
-    "ko": "1995년 겨울, 서울|2026년 첫 시집",
-    "en": "Seoul, winter 1995|First poetry collection, 2026",
-    "ja": "1995年冬、ソウル|2026年 第一詩集"
-  },
   "tk_kick": {
     "ko": "첫 시집 · 2026",
     "en": "First poetry collection · 2026",
@@ -1063,16 +1058,6 @@
     "en": "Seoul",
     "ja": "ソウル"
   },
-  "tk_season": {
-    "ko": "{name} 무렵",
-    "en": "around {name}",
-    "ja": "{name}のころ"
-  },
-  "tk_ampm": {
-    "ko": "오전 오후",
-    "en": "AM PM",
-    "ja": "午前 午後"
-  },
   "tk_word": {
     "ko": "nam dongwon",
     "en": "nam dongwon",
@@ -1084,9 +1069,9 @@
     "ja": "ページの先頭へ"
   },
   "tk_title": {
-    "ko": "『문을 열고 나오면|살아 있는 것들로|가득 차 있다』",
-    "en": "Open the Door, Step Out,|and It Is Full of|Living Things",
-    "ja": "『扉をあけて出ると、|生きているものたちで|満ちている』"
+    "ko": "『문을 열고 나오면|살아 있는 것들로 가득 차 있다』",
+    "en": "Open the Door, Step Out,|and It Is Full of Living Things",
+    "ja": "『扉をあけて出ると、|生きているものたちで満ちている』"
   },
   "motion": {
     "ko": "움직임",
@@ -1107,5 +1092,20 @@
     "ko": "켬 — 움직임 없이 머문 자리로",
     "en": "On — everything stays still",
     "ja": "オン — 動きを止めて表示"
+  },
+  "tk_big": {
+    "ko": "CREATIVE|STUDIO",
+    "en": "CREATIVE|STUDIO",
+    "ja": "CREATIVE|STUDIO"
+  },
+  "tk_about": {
+    "ko": "{city}에서 영화 · 전시 · 책을 보고 리뷰하고, 시를 쓰는 크리에이티브 스튜디오.",
+    "en": "A creative studio based in {city}, reviewing films, exhibitions and books, and writing poems.",
+    "ja": "{city}を拠点に、映画・展示・本をレビューし、詩を書くクリエイティブスタジオ。"
+  },
+  "tk_clock": {
+    "ko": "SEOUL, KOREA",
+    "en": "SEOUL, KOREA",
+    "ja": "SEOUL, KOREA"
   }
 }

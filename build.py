@@ -1024,41 +1024,8 @@ def render(site, poem, videos, photos, lang="ko"):
                   f'<p class="rl"><b class="n">{r["n"]:,}</b><span>{keep(L["rec"].format(unit=r["unit"], note=r["note"]) + (L["rec_year"].format(n=this(r), unit=r["unit"]) if this(r) else ""))}</span></p>'
                   f'<canvas class="grid" data-n="{r["n"]}"' + (f' data-y="{this(r)}"' if this(r) else "") + ' aria-hidden="true"></canvas>' for r in S["records"])
 
-    # 소개 첫 화면 문장(11/1 동원 버튼 '권하는 묶음으로 (권장)' — ① '커서에 따라 숨은 영상이 드러나는 히어로' · Born from stone): 큰 명조 한 문장 사이사이 작은 그림.
-    #   {still} 영화 장면(보도 자료 스틸 1장 · 출처 줄) · {book} 시집 표지 · {photo} 가장 최근 인스타그램 사진. 흑백 · 마우스를 올리면 커지고 색 · 아래에 한 줄(style.css)
-    #   소개 이름 아래 한 줄(.tagl)과 같은 말이라 읽기 도구에는 숨김(aria-hidden) — 원고는 site.json hero · en.hero
-    U, p0 = V["upcoming"], (PH["items"] or [None])[0]
-
-    def hero_pic(k):
-        if k == "still" and U.get("stills"):
-            name = e(U["title"]) if en else marked(U["kind"], U["title"], lang)
-            return f"{P}assets/img/stills/1.jpg", name + (f" · {keep(U['credit'])}" if U.get("credit") else ""), ""
-        if k == "book":
-            return f"{P}assets/img/cover.jpg", (f'<i>{e(book["title"])}</i>' if en else f'『{e(book["title"])}』'), " bk"
-        if k == "photo" and p0:
-            a = p0["art"] if is_art(p0) else None
-            head = re.sub(r"<[^>]+>", "", art_parts(a, lang)[0]) if a else e(p0["where"] or "")
-            return f"{P}assets/img/photos/{e(Path(p0['file']).stem)}.jpg", (NB + "· ").join(x for x in (head, keep(p0.get("date") or "")) if x), ""
-        return None
-
-    def hero_line(s):
-        out = []
-        parts = re.split(r"(\{\w+\})", s)
-        if lang == "ja":  # 일본어(11/1)는 빈칸 없이 잇는 말 — 그림이 없는 자리(영어 · 일본어판엔 스틸이 없음)는 앞뒤 빈칸도 함께 뺌('見るものを レビューする'처럼 남지 않게)
-            for i, part in enumerate(parts):
-                m = re.fullmatch(r"\{(\w+)\}", part)
-                if m and not hero_pic(m.group(1)):
-                    parts[i - 1] = parts[i - 1].rstrip(" ") if i else ""
-                    if i + 1 < len(parts):
-                        parts[i + 1] = parts[i + 1].lstrip(" ")
-        for part in parts:
-            m = re.fullmatch(r"\{(\w+)\}", part)
-            pic = hero_pic(m.group(1)) if m else None
-            out.append(f'<span class="hpic{pic[2]}"><img src="{pic[0]}" alt="" decoding="async"><small>{pic[1]}</small></span>' if pic  # 첫 화면이라 바로 받음(lazy면 받지 않은 채 멈춰 있었음 — 실측)
-                       else ("" if m else keep(part)))
-        return "".join(out)
-
-    hero = f'<p class="hb" aria-hidden="true">{"<br>".join(hero_line(x) for x in S["hero"])}</p>' if S.get("hero") else ""
+    # (소개 첫 화면 문장 · 문장 사이 그림 hb는 11/1 밤 뺌 — TOKA식 첫 화면과 같은 말이라. 동원 "랜딩페이지나, 웹페이지는 했던 말을 또하고 그러면 안되는거야" ·
+    #  원고 site.json hero · 그림 칸 style.css .hb · .hpic은 남겨 둠, 되살리려면 2026-11-01 커밋 0983520의 hero_line)
 
     # 사진 칸
     shots, caps = [], []
@@ -1404,27 +1371,28 @@ def render(site, poem, videos, photos, lang="ko"):
     # 쪽 나누기(10/31 — PAGES): 칸은 전처럼 그리고 쪽마다 나눠 담음 — 소개(/) · 시집(/book/: 문 · 첫 화면 책 · 「탁본」 · 책 카드 · 소식 · 차례 · 글자 팔레트)
     # · 인스타그램(/photo/) · 유튜브(/video/) · 연락(/contact/ — 방명록 함께). 판권면은 연락 칸 끝에서 모든 쪽 끝 바닥글로
     # 소개 쪽은 소개만(10/31 동원 "애초에 랜딩페이지랑 각자 따로 놀게 하면 좋잖아, 굳이 저렇게 소개에서 링크를 깔 필요가 없잖아") — 쪽 사이 길은 맨 위 띠 메뉴가 맡음(갈래 넷 목록 뺌)
-    # 소개 첫 화면(11/1 동원 "내 웹사이트 랜딩 페이지 https://motionsites.ai/?prompt=toka-hero 이런 느낌이면 좋겠다" → 시안 기준/브랜드 시안/첫화면_TOKA시안_v1 → 버튼 "A 뒷모습 (권장)"):
-    #   화면 폭의 큰 이름(한글 '남동원' — 세 판 같은 로고, 옅은 회색) 앞에 선 사람 · 오른쪽 한 문장(tagline)과 약력 · 왼쪽 첫 시집과 시집 쪽 단추 · 구석 서울 지금 시각(main.js가 채움).
-    #   그 아래 소개 칸은 전과 같음. 이름 · 문장 · 시각은 소개 칸과 같은 말이거나 꾸밈이라 읽기 도구엔 숨김 — 단추만 읽힘. 들어오는 차례는 style.css(.tk.go)
-    sn_t = season_of(build_day())
-    # 한 문장은 쉼표(, 、) 뒤에서 줄을 바꿈 — 컴퓨터는 두 줄(보는 것을 리뷰하는, / 시를 쓰는 회사원) · 휴대폰은 그 안에서 다시 네 줄
-    tk_line = "<br>".join(keep(x) for x in re.split(r"(?<=[,、])\s*", S["tagline"]) if x)
-    # 제목은 세 줄(ui.json tk_title — 줄은 |, 11/1 밤 TOKA 왼쪽 큰 글처럼) · 영어는 기울임 / 단추는 제목 아래 긴 막대(글 왼쪽 · 화살표 오른쪽 끝)
-    tk_title = "<br>".join(t("tk_title").split("|"))
+    # 소개 첫 화면(11/1 동원 "내 웹사이트 랜딩 페이지 https://motionsites.ai/?prompt=toka-hero 이런 느낌이면 좋겠다" → 시안 기준/브랜드 시안/첫화면_TOKA시안_v1 → 버튼 "A 뒷모습 (권장)",
+    #   v2 11/1 밤 → 시안 기준/브랜드 시안/첫화면_TOKA_v2시안_A·B.png → 버튼 "A CREATIVE STUDIO (권장)"): 화면 폭의 큰 이름(nam dongwon — 세 판 같은 로고, 옅은 회색) 앞에 선 사람 ·
+    #   오른쪽 큰 영어 두 줄(레퍼런스 문구 'CREATIVE STUDIO' — ui.json tk_big)과 그 아래 레퍼런스 문장 꼴 한 줄(도시는 굵게 — tk_about) · 왼쪽 첫 시집 제목 두 줄과 제목 폭만큼 긴 '시집 소개 페이지 보러 가기 ↗' ·
+    #   구석 시계는 영어 두 줄(9:58 PM / SEOUL, KOREA — 동원 "시계는 그냥 차라리 영어로 … AM PM 쓰면", main.js가 서울 시각을 채움). 아래 소개 칸은 이 말을 되풀이하지 않음. 들어오는 차례는 style.css(.tk.go)
+    tk_title = "<br>".join(t("tk_title").split("|"))  # 제목 두 줄(줄은 |) · 영어는 기울임
     tk_title = f"<i>{tk_title}</i>" if en else tk_title
+    tk_big = "".join(f"<span>{w}</span>" for w in t("tk_big").split("|"))
+    tk_about = t("tk_about", city=f"<b>{t('tk_city')}</b>")
     tk_pic = ""
     if ME_IMG.exists():
         with Image.open(ME_IMG) as im:
             tk_pic = f'<img class="tk-p" src="{P}assets/img/me.webp" alt="" width="{im.width}" height="{im.height}" decoding="async" fetchpriority="high">'
-    # 큰 이름은 영어 'nam dongwon'(11/1 밤 동원 "가운데 글자 한국어로 하지말고, 남동원 영어로 하자" → 시안 기준/브랜드 시안/첫화면_영어이름시안_v1_휴대폰·컴퓨터.png → 버튼 "B nam dongwon (권장)") — 낱말마다 span(휴대폰 두 줄)
     tk = (f'<div class="tk"><p class="tk-w" aria-hidden="true" lang="en">{" ".join(f"<span>{w}</span>" for w in t("tk_word").split())}</p>{tk_pic}'
-          f'<p class="tk-s" aria-hidden="true"><span class="s">{tk_line}</span><small class="m">{"<br>".join(t("tk_meta").split("|"))}</small><small class="b">{rich(S["bio"])}</small></p>'
+          f'<div class="tk-s"><p class="s" lang="en">{tk_big}</p><p class="ab">{tk_about}</p></div>'
           f'<div class="tk-l"><p class="k">{t("tk_kick")}</p><p class="tt">{tk_title}</p>'
-          f'<a class="tk-btn" href="~R~book/"><span>{t("tk_cta")}</span><span aria-hidden="true">→</span></a></div>'
-          # 시각 글자(오전 · 오후 / 午前 · 午後)는 main.js가 채우므로 글꼴 줄이기가 모으게 data-ap에 둠
-          f'<p class="tk-c" aria-hidden="true" data-ap="{t("tk_ampm")}"><span class="tm"></span>{t("tk_city")}'
-          + (f'<small>{t("tk_season", name=e(sn_t[1] if en else sn_t[2] if tr_ else sn_t[0]))}</small>' if sn_t else "") + "</p></div>\n")
+          f'<a class="tk-btn" href="~R~book/"><span>{t("tk_cta")}</span><span aria-hidden="true">↗</span></a></div>'
+          f'<p class="tk-c" aria-hidden="true" lang="en"><span class="tm"></span><span class="ct">{t("tk_clock")}</span></p></div>\n')
+    # 아래 소개 칸의 약력은 첫 화면 왼쪽 책 제목과 겹치지 않게 제목을 뺌(11/1 밤) — '첫 시집 『…』로' → '첫 시집으로' · 第一詩集『…』で → 第一詩集で · 영어 ', *…*' 뺌. 검색 · 다른 곳의 약력은 그대로
+    bio_me = (re.sub(r"\s*『[^』]*』로", "으로", S["bio"]) if lang == "ko" else re.sub(r"『[^』]*』", "", S["bio"]) if lang == "ja"
+              else re.sub(r",\s*\*[^*]+\*", "", S["bio"]))
+    if lang == "ko":  # 휴대폰에서 '… 태어났다. 2026년 / 첫 시집으로'로 갈리지 않게 둘째 문장 머리를 붙임 공백으로 — 줄은 문장 끝에서 갈림(10/25 마지막 점검 ③의 뜻)
+        bio_me = re.sub(r"(\d{4}년) (첫) (시집으로)", rf"\1{NB}\2{NB}\3", bio_me)
     sec = {
         # 시집 쪽 h1(11/1 동원 버튼 "함께 넣어 (권장)" — 명품 사이트 조사 제안 ①: 상품 쪽 h1은 상품 이름): 이름 · 첫 시집 줄 + 큰 제목 + 작은 제목을 한 h1로 — 보이는 모양은 그대로(전엔 h1이 위 작은 줄뿐).
         # 휴대폰의 작은 제목은 책 옆(.side .hs — 읽기 도구에는 숨김)이 보이고, h1 안의 작은 제목(.hsl)은 휴대폰에선 화면 밖 글(읽기 도구만) · 768px부터 보임
@@ -1449,7 +1417,7 @@ def render(site, poem, videos, photos, lang="ko"):
         "palette": "  " + palette.rstrip() + "\n",
         "me": f"""  {tk}  <section id="me" aria-labelledby="me-t">
     <p class="label">{t("label_me")}</p>
-    {hero}<div class="l"><h2 class="h2" id="me-t">{e(S["name"])}</h2><p class="tagl">{keep(S["tagline"])}</p><p class="bio">{rich(S["bio"])}</p></div>
+    <div class="l"><h2 class="h2 sr" id="me-t">{e(S["name"])}</h2><p class="bio">{rich(bio_me)}</p></div>
     <div class="r"><ul class="years">{years}</ul>{fnb}{nowb}<div class="rec">{rec}</div></div>
   </section>
 """,
@@ -1799,7 +1767,7 @@ def main():
         else:
             raise SystemExit(f"글꼴을 찾지 못함: {name}")
     if "NR" in srcs:
-        subset_font(srcs["NR"], ASSETS / "fonts" / EN_FIRST, fte["serif"] + load("ui.json")["tk_word"]["ko"], False)  # 소개 첫 화면 큰 이름(11/1 밤 영어)도 작은 판에 — 첫 글자가 늦지 않게
+        subset_font(srcs["NR"], ASSETS / "fonts" / EN_FIRST, fte["serif"] + load("ui.json")["tk_word"]["ko"] + load("ui.json")["tk_big"]["ko"], False)  # 소개 첫 화면 큰 이름(11/1 밤 영어)도 작은 판에 — 첫 글자가 늦지 않게
     elif EN_FIRST in keep:
         (ASSETS / "fonts" / EN_FIRST).write_bytes(keep[EN_FIRST])
     else:

@@ -916,34 +916,33 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .tk-w span{display:block}
 @media (min-width:600px){.tk-w{font-size:min(calc((100vw - 140px) * .1574),30svh)}.tk-w span{display:inline-block}}  /* 600px 위는 한 줄(1440px에서 205px) */
 .tk-p{position:absolute;top:72px;left:-44px;width:auto;height:calc(100% - 286px);-webkit-mask-image:linear-gradient(#000 74%,transparent 99%);mask-image:linear-gradient(#000 74%,transparent 99%)}
-.tk-s{position:absolute;right:20px;top:calc(72px + (100% - 286px) * .42);width:140px;margin:0;font:300 28px/1.2 var(--serif);letter-spacing:-.01em}  /* 글씨 크기는 TOKA 장면 실측 비율로 키움(11/1 밤 동원 "공간이 적어 보이잖아 … 래퍼런스 토대로 글씨 크기들을 잘 조절해봐") */
-.tk-s .s{display:block;text-wrap:balance}
-@media (max-width:899px){html:lang(ko) .tk-s .s{max-width:5.2em}}  /* 휴대폰 한국어는 네 줄(보는 것을 / 리뷰하는, / 시를 쓰는 / 회사원) — 컴퓨터는 쉼표 뒤에서 두 줄(build.py) */
-html:lang(ja) .tk-s .s{word-break:auto-phrase}@media (max-width:899px){html:lang(ja) .tk-s{width:150px;font-size:21px}}  /* 일본어는 말 마디로 끊고, 휴대폰은 'レビューする、' 일곱 자가 한 줄에 */
-.tk-s small{display:block;margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted);letter-spacing:0}.tk-s .b{display:none}
-.tk-l{position:absolute;left:20px;bottom:72px;display:grid;justify-items:start}
+.tk-s{position:absolute;right:20px;top:calc(72px + (100% - 286px) * .42);width:max-content;margin:0}  /* v2(11/1 밤 'A CREATIVE STUDIO'): 오른쪽 큰 영어 두 줄 + 레퍼런스 문장 꼴 한 줄 — TOKA 'CREATIVE STUDIO' · 문단 */
+.tk-s .s{margin:0;font:300 26px/1 "NRDF","NRD",serif;letter-spacing:.01em}.tk-s .s span{display:block}
+.tk-s .ab{max-width:156px;margin:12px 0 0;font:300 11px/1.5 var(--sans);color:var(--muted)}.tk-s .ab b{font-weight:600;color:var(--ink)}  /* 도시는 굵게(레퍼런스 'Jakarta, Indonesia'처럼) */
+.tk-l{position:absolute;left:20px;bottom:72px;display:grid;justify-items:stretch;max-width:calc(100% - 40px)}  /* 단추가 제목 폭만큼(TOKA 'GET STARTED'가 글 묶음 폭) */
 .tk-l .k{margin:0 0 12px;font:600 11px/1 var(--sans);letter-spacing:.06em;color:var(--muted)}
-.tk-l .tt{margin:0;font:400 18px/1.3 var(--serif)}  /* 제목 세 줄(ui.json tk_title) */
-.tk-btn{display:flex;align-items:center;justify-content:space-between;gap:16px;box-sizing:border-box;width:min(300px,calc(100vw - 40px));margin-top:16px;padding:16px 20px;border-radius:var(--btn-r);background:var(--ink);color:var(--bg);font:600 14px/1 var(--sans);white-space:nowrap}  /* TOKA 'GET STARTED'처럼 제목 아래 긴 막대 — 글은 왼쪽, 화살표는 오른쪽 끝(실측 305×50) */
-.tk-c{position:absolute;right:20px;bottom:22px;margin:0;text-align:right;font:600 13px/1.3 var(--sans);letter-spacing:.02em;font-variant-numeric:tabular-nums}
-.tk-c small{display:block;font:300 11px/1.5 var(--sans);color:var(--muted);letter-spacing:0}
-@media (max-width:899px) and (max-height:700px){.tk-s small{display:none}.tk-l{bottom:64px}.tk-l .tt{font-size:16px}.tk-btn{margin-top:12px}}  /* 키 낮은 휴대폰(320×640 · 375×667)은 문장 밑 두 줄을 빼고 제목을 줄여 왼쪽 묶음과 닿지 않게 */
+.tk-l .tt{margin:0;font:400 18px/1.3 var(--serif)}  /* 제목 두 줄(ui.json tk_title — 11/1 밤 '가득 차 있다』를 것들로 옆으로') */
+.tk-btn{display:flex;align-items:center;justify-content:space-between;gap:16px;box-sizing:border-box;margin-top:16px;padding:16px 20px;border-radius:var(--btn-r);background:var(--ink);color:var(--bg);font:600 14px/1 var(--sans);white-space:nowrap}  /* 긴 막대 — 글 왼쪽 · 화살표 ↗ 오른쪽 끝 */
+.tk-c{position:absolute;right:20px;bottom:22px;margin:0;text-align:right;font:600 13px/1.3 var(--sans);letter-spacing:.02em;font-variant-numeric:tabular-nums}  /* 시계 영어 두 줄(11/1 밤 '영어로 … AM PM') — TOKA '8:07 AM / JAKARTA, ID' */
+.tk-c .tm{display:block}.tk-c .ct{display:block;margin-top:2px;font:600 11px/1.3 var(--sans);letter-spacing:.06em}
+@media (max-width:899px) and (max-height:700px){.tk-s .ab{display:none}.tk-l{bottom:64px}.tk-l .tt{font-size:16px}.tk-btn{margin-top:12px}}  /* 키 낮은 휴대폰(320×640 · 375×667)은 오른쪽 작은 한 줄을 빼고 제목을 줄여 왼쪽 묶음과 닿지 않게 */
 :root[data-theme="dark"] .tk-p{filter:brightness(1.7)}  /* 어두운 바탕에서 어두운 옷이 묻히지 않게 */
 @media (prefers-color-scheme:dark){:root[data-theme="system"] .tk-p{filter:brightness(1.7)}}
 @media (min-width:900px){
   .tk{min-height:640px}
   .tk-w{top:calc(26% + 130px - .86em)}  /* 한 줄이 낮아 이름을 내려 머리(26%)가 글자 아래쪽을 가리게 */
-  .tk-p{top:26%;left:50%;height:90%;transform:translateX(-56%)}  /* 머리가 가운데 앞에 · 오른쪽 문장 자리를 위해 조금 왼쪽(그림 폭의 56%) */
-  .tk-s{left:auto;right:64px;top:47%;width:min(520px,36vw);font-size:min(56px,3.9vw);line-height:1.2}  /* TOKA 오른쪽 큰 글(88px 두 줄 · 높이 47%) — 한글은 같은 크기에서 더 차 보여 56px 두 줄 */
-  .tk-s small{margin-top:30px;font-size:15px;line-height:1.5}.tk-s .m{display:none}.tk-s .b{display:block;max-width:400px}
+  .tk-p{top:26%;left:50%;height:90%;transform:translateX(-50%)}  /* 사람은 가운데(v2 — 오른쪽 큰 글이 영어 두 줄로 좁아져 왼쪽 제목과 같은 틈으로, 폭마다 잰 틈 30px 넘게) */
+  .tk-s{left:auto;right:64px;top:47%}  /* TOKA 오른쪽 큰 글(88px 두 줄 · 높이 47%) */
+  .tk-s .s{font-size:min(80px,5.6vw)}.tk-s .ab{max-width:min(380px,26vw);margin-top:22px;font-size:15px}  /* 작은 한 줄 폭이 큰 글보다 넓으면 묶음이 왼쪽으로 늘어 얼굴에 얹힘(1024px 실측) — 큰 글 폭 안으로 */
   .tk-l{left:64px;bottom:auto;top:47%}
   .tk-l .k{font-size:12.5px}
-  .tk-l .tt{font-size:min(34px,2.4vw);line-height:1.2}  /* TOKA 왼쪽 큰 글(46px 네 줄) — 한글 34px 세 줄 */
-  .tk-btn{width:min(300px,22vw);margin-top:22px;font-size:15px}
-  .tk-c{right:64px;bottom:36px;font-size:20px}.tk-c small{font-size:12.5px}  /* TOKA 시각 20px · 도시 12px */
-  html:lang(ja) .tk-s{font-size:min(42px,2.9vw)}  /* 일본어 '見るものをレビューする、' 열두 자가 한 줄에 */
+  .tk-l .tt{font-size:min(30px,2.1vw);line-height:1.2}  /* TOKA 왼쪽 큰 글 — 제목 두 줄 */
+  .tk-btn{margin-top:22px;font-size:15px}
+  .tk-c{right:64px;bottom:36px;font-size:20px}.tk-c .ct{font-size:12.5px}  /* TOKA 시각 20px · 도시 12px */
 }
   /* 좁은 컴퓨터 · 태블릿 가로는 단추를 제목 아래로 — 한 줄이면 사람 옷 위에 얹힘(1024px 실측) */
+@media (min-width:900px) and (max-width:1199px){.tk-p{height:80%}.tk-l .tt{font-size:min(30px,1.8vw)}}
+@media (min-width:1200px) and (max-width:1499px){.tk-p{transform:translateX(-46%)}}  /* 1280 · 1440은 왼쪽 틈(12 · 25px)이 좁고 오른쪽(107 · 131px)이 넉넉해 사람을 조금 오른쪽으로 — 폭마다 잰 틈 */  /* 좁은 컴퓨터 · 태블릿 가로는 사람을 조금 작게 — 왼쪽 제목 끝 · 오른쪽 큰 글이 머리 · 얼굴에 얹히지 않게(1024px 실측) */
 /* 들어오는 차례(TOKA 미리보기 실측 — 글자 0–0.35초 → 사람 0.35–0.65초 → 글줄 0.9–1.8초 → 단추 2초쯤): main.js가 글꼴을 받은 뒤 .go. 자바스크립트가 없으면 처음부터 다 섬 */
 @media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .js .tk:not(.go) :is(.tk-w span,.tk-p,.tk-s,.tk-l,.tk-c),:where(:root:not([data-motion="reduce"])).js .tk:not(.go) :is(.tk-w span,.tk-p,.tk-s,.tk-l,.tk-c){opacity:0}:where(:root:not([data-motion="reduce"])) .tk.go .tk-w span,:where(:root:not([data-motion="reduce"])).tk.go .tk-w span{animation:tkUp .5s var(--ease) both}:where(:root:not([data-motion="reduce"])) .tk.go .tk-w span:nth-child(2),:where(:root:not([data-motion="reduce"])).tk.go .tk-w span:nth-child(2){animation-delay:.08s}:where(:root:not([data-motion="reduce"])) .tk.go .tk-w span:nth-child(3),:where(:root:not([data-motion="reduce"])).tk.go .tk-w span:nth-child(3){animation-delay:.16s}:where(:root:not([data-motion="reduce"])) .tk.go .tk-p,:where(:root:not([data-motion="reduce"])).tk.go .tk-p{animation:tkIn .35s ease .35s both}:where(:root:not([data-motion="reduce"])) .tk.go .tk-c,:where(:root:not([data-motion="reduce"])).tk.go .tk-c{animation:tkIn .3s ease .6s both}:where(:root:not([data-motion="reduce"])) .tk.go .tk-s,:where(:root:not([data-motion="reduce"])).tk.go .tk-s{animation:tkSweep .9s var(--ease) .9s both}:where(:root:not([data-motion="reduce"])) .tk.go .tk-l,:where(:root:not([data-motion="reduce"])).tk.go .tk-l{animation:tkIn .4s ease 1.6s both}:where(:root:not([data-motion="reduce"])) .tk.go .tk-btn,:where(:root:not([data-motion="reduce"])).tk.go .tk-btn{animation:tkIn .3s ease 1.85s both}}
 @keyframes tkUp{from{transform:translateY(55%);opacity:0}}
