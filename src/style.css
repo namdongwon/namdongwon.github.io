@@ -7,6 +7,7 @@
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2") format("woff2");font-weight:600;font-display:swap}
 /* 첫 화면 작은 판(10/27 B): 한국어판 문 글자 · 첫 화면에 보이는 글자만 담아 먼저 받는 판 — 통째 판(본명조 보통 · 굵게)을 미리 받느라 스타일 · main.js가 늦던 것을 덜어 냄(느린 4G 문 열림 3.6 → 3.1초 실측).
    담은 글자 밖은 뒤의 통째 판(BMJ · PTD)으로 그려짐. 첫 화면에 새 글자 칸을 넣으면 build.py FIRST가 알아서 담음 */
@@ -30,6 +31,7 @@ html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:l
 @font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2") format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2") format("woff2");font-weight:700;font-display:swap}
@@ -37,7 +39,7 @@ html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:l
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-semibold-first.woff2") format("woff2");font-weight:600;font-display:swap}
 html:lang(ja) .door .t,html:lang(ja) #home .hs{font-family:"JMJF",var(--serif)}
 html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  /* 일본어판 첫 화면 작은 고딕 판 — 라벨의 한국어 원제는 한국어판 작은 판(PTDF)이 */
-.nf [lang="ja"]{--serif:"NRD","JMJ","BMJ",serif;--body:"NRD","JMJ","BMJ",serif;--sans:"JGO","PTD",-apple-system,"Hiragino Sans",sans-serif}  /* 404의 일본어 두 줄(한국어 쪽 안) */
+.nf [lang="ja"]{--serif:"NRD","JMJ","BMJ",serif;--body:"JGO","PTD",-apple-system,"Hiragino Sans",sans-serif;--sans:"JGO","PTD",-apple-system,"Hiragino Sans",sans-serif}  /* 404의 일본어 두 줄(한국어 쪽 안) */
 
 /* 작은 고딕(Pretendard) 크기는 세 단만 — 11px(꼬리표 · 출처 · 날짜) · 12.5px(메뉴 · 메타) · 14px(단추)(10/25 ⑨, Éditions식). 새 칸을 만들 때도 이 셋 가운데서 고름 */
 :root{
@@ -47,7 +49,7 @@ html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino San
   --shadow:0 0 0 1px #e2e2e2,0 14px 30px rgba(0,0,0,.10);
   --bar:rgba(255,255,255,.86);--chip:rgba(255,255,255,.9);--wall:#fff;--mark:#ececec;--winf:none;--winb:multiply;--dot-off:#efefef;--dot-lead:#c9c9c9;--cell-off:#e9e9e9;  /* 어두운 모드에서 바뀌는 것(아래 data-theme) */
   --serif:"BMJ","AppleMyungjo",serif;
-  --body:"BMJ","AppleMyungjo",serif;
+  --body:"PTD",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;  /* 본문은 고딕 Pretendard Regular(11/2 동원 '기본적인 글씨체들 전부 고딕체로' → 목업 본문고딕시안_v1 'A Regular 400') — 큰 제목 · 히어로 · 로고 · 시 본문은 명조(--serif) */
   --sans:"PTD",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   --sys:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;  /* 방문자가 치는 글(폼)은 기기 글꼴 — 줄인 글꼴에 없는 글자가 섞이지 않게 */
   --top:56px;
@@ -59,8 +61,8 @@ html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino San
    대비: 먹 종이 #141414 위 글자 15.9:1 · --muted 7.9:1 · --faint 5.4:1 */
 :root[data-theme="dark"]{--barline:rgba(255,255,255,.07);--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:var(--bg);--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}
 @media (prefers-color-scheme:dark){:root[data-theme="system"]{--barline:rgba(255,255,255,.07);--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:var(--bg);--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}}
-:root:lang(en){--serif:"NRD","BMJ","AppleMyungjo",serif;--body:"NRD","BMJ","AppleMyungjo",serif}  /* 라틴 글꼴 먼저, 한글 다음 — 섞인 한글(시 · 원제)은 본명조 */
-:root:lang(ja){--serif:"NRD","JMJ","BMJ","Hiragino Mincho ProN","Yu Mincho",serif;--body:"NRD","JMJ","BMJ","Hiragino Mincho ProN","Yu Mincho",serif;--sans:"JGO","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  /* 일본어판(11/1): 라틴 Newsreader → 일본어 → 섞인 한글은 본명조 · Pretendard */
+:root:lang(en){--serif:"NRD","BMJ","AppleMyungjo",serif;--body:"PTD",-apple-system,"Apple SD Gothic Neo",sans-serif}  /* 라틴 글꼴 먼저, 한글 다음 — 섞인 한글(시 · 원제)은 본명조 */
+:root:lang(ja){--serif:"NRD","JMJ","BMJ","Hiragino Mincho ProN","Yu Mincho",serif;--body:"JGO","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;--sans:"JGO","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  /* 일본어판(11/1): 라틴 Newsreader → 일본어 → 섞인 한글은 본명조 · Pretendard */
 /* 일본어 줄바꿈(11/1 번역 메모 — keep-all이면 빈칸 없는 일본어 문장이 거의 끊기지 않음): 일본어는 글자 사이에서 갈리고 줄 머리 금칙(、。」 등)은 strict로. 일본어판 속 한국어는 keep-all 그대로.
    (.tt — 작품 제목 『 』 「 」 — 은 한 덩어리 그대로 · 시집 제목은 표지 줄 나눔 자리에서만 갈림 — build.py tt) */
 html:lang(ja) :lang(ja){word-break:normal;line-break:strict}html:lang(ja) :lang(ko){word-break:keep-all}
@@ -180,7 +182,7 @@ html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spaci
 @keyframes win-safe{from{opacity:0}to{opacity:1}}
 
 /* ② 시집 — 「탁본」 */
-.poem{margin-top:30px;font:16px/2 var(--body)}
+.poem{margin-top:30px;font:16px/2 var(--serif)}  /* 시 본문은 명조 그대로(11/2 본문 고딕에서 뺌) */
 /* 행이 화면보다 길면 넘어간 부분만 한 글자 들여씀(행 첫머리는 그대로) · 연 사이는 빈 줄 하나만큼 */
 .poem .ln{display:block;padding-left:1em;text-indent:-1em}
 /* 영어판 「탁본」 대역(10/24 ③): 행마다 원문 + 번역 한 쌍 — 휴대폰은 원문 밑에 번역, 컴퓨터는 두 단(아래 768px) */
@@ -612,7 +614,7 @@ html.sr-on{overflow:hidden}
 .sheet .st{font:700 22px/1.2 var(--serif);letter-spacing:.02em;text-indent:-.65em;  /* 「 앞 빈 내어 걸기(10/24 · 본명조 굵은꼴 0.65em, 10/26) */
   position:sticky;top:0;z-index:1;padding-top:48px;background:#0c0c0c}  /* 종이가 화면보다 길면 제목은 위에 붙고 시가 그 밑으로 지나감 — 위 여백을 제목이 가져 잘리지 않게(10/27 숨 재기 6 · 끝 화면 두 줄로 1440×900에서 제목 14px가 잘렸음) */
 .sheet.sc .st{box-shadow:0 18px 16px -6px #0c0c0c}  /* 시가 제목 밑으로 지나가는 동안만 그림자(아래 줄과 같은 결) */
-.sheet .sp{margin-top:16px;font:14px/1.7 var(--body)}
+.sheet .sp{margin-top:16px;font:14px/1.7 var(--serif)}  /* 탁본 한 장의 시 — 명조 그대로 */
 .sheet .sp .ln{display:block;padding-left:1em;text-indent:-1em;
   opacity:0;transform:translateY(5px);filter:blur(1.5px);transition:opacity .55s ease,transform .55s var(--ease),filter .55s ease}
 .sheet .sp .ln.on{opacity:1;transform:none;filter:none}
@@ -856,14 +858,14 @@ html.cz-on{overflow:hidden}
 .cz .cz-pt{font:inherit;text-decoration:underline}
 .cz-s{margin:15px 0 0;font:300 12px/19.2px var(--serif)}.cz-s span{display:block;color:var(--faint)}
 .cz-b{display:flex;justify-content:center;gap:80px;margin-top:27px}
-.cz .cz-b button{position:relative;padding:8px 0;border-bottom:1px solid var(--faint);font:400 9px/22.4px var(--sans);letter-spacing:1.35px;color:var(--muted)}  /* 넓은 자간은 고야드 그대로(10/29 한글 자간 규칙의 예외 — 이 단추 둘만) */
+.cz .cz-b button{position:relative;padding:8px 0;border-bottom:1px solid var(--faint);font:300 9px/22.4px var(--sans);letter-spacing:1.35px;color:var(--muted)}  /* 넓은 자간은 고야드 그대로(10/29 한글 자간 규칙의 예외 — 이 단추 둘만) */
 .cz .cz-b .cz-yes{border-bottom-color:var(--ink);color:var(--ink)}
 .cz .cz-b button::before,.cz .cz-x::before{content:"";position:absolute;inset:-6px -8px}  /* 누르는 자리 44px 안팎(맨 위 띠와 같은 방법) */
 /* 2 동의 관리 · 3 파트너 선택 — 650 · 안쪽 20 · 제목 굵은 고딕 15/24 · 본문 명조 15/24 · 단추 짝 63×25 굵은 고딕 12 #757575 · 테두리 #eee · 그림자 1px */
 .cz-2,.cz-3{width:min(650px,100%);padding:20px 20px 0;text-align:left}
 .cz-h{display:flex;align-items:center;gap:4px;margin:12px 0 0;min-height:30px}
 .cz-h h2{flex:1;margin:0;font:600 15px/24px var(--sans);color:var(--ink)}
-.cz .cz-c{position:relative;margin-left:auto;font:500 30px/30px var(--sans);color:var(--ink)}
+.cz .cz-c{position:relative;margin-left:auto;font:300 30px/30px var(--sans);color:var(--ink)}  /* 동의 창 단추 · ×는 300(11/2 본문 고딕 Regular 파일을 더하며 — 그동안 400 · 500으로 적혀 있었지만 Regular 파일이 없어 Light로 보였음, 보이던 모습 그대로) */
 .cz .cz-bk{position:relative;font:600 15px/24px var(--sans)}
 .cz .cz-c::before,.cz .cz-bk::before{content:"";position:absolute;inset:-8px -12px}
 .cz-t{margin:34px 0 0;font:400 15px/24px var(--serif);color:var(--ink)}

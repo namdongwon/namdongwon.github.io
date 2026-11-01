@@ -4,9 +4,9 @@ namdongwon.com 글꼴 — 사이트에 쓰는 글자만 남겨 woff2로 줄인 �
   원본: 본명조 — Noto Serif CJK KR(Source Han Serif K) 2.002 Light · Regular · Bold, Copyright © 2017-2023 Adobe. SIL Open Font License 1.1 — OFL-BonMyeongjo.txt
   시집 작업에서 TrueType으로 바꾸고 이름을 'BonMyeongjo KR'로 바꾼 판(원본의 예약 이름 'Source'를 쓰지 않음)을, 사이트에 쓰는 글자만 남겨 줄임.
   Light는 첫 화면 큰 제목 글자만 담음. 줄인 판이라는 표시를 글꼴 설명(name ID 10)에 남김.
-- ndw-sans-light.woff2 · ndw-sans-semibold.woff2
-  원본: Pretendard Light·SemiBold, Copyright © 2023 Kil Hyung-jin. SIL Open Font License 1.1 — OFL-Pretendard.txt
-  줄인 판의 이름을 'NDW Sans'로 바꿈.
+- ndw-sans-light.woff2 · ndw-sans-regular.woff2 · ndw-sans-semibold.woff2
+  원본: Pretendard Light · Regular · SemiBold, Copyright © 2023 Kil Hyung-jin. SIL Open Font License 1.1 — OFL-Pretendard.txt
+  줄인 판의 이름을 'NDW Sans'로 바꿈. Regular는 본문 글자(2026-11-02부터).
 - bon-myeongjo-first.woff2 · bon-myeongjo-bold-first.woff2 · ndw-sans-light-first.woff2 · ndw-sans-semibold-first.woff2 (2026-10-27부터)
   위 본명조 Regular · Bold, Pretendard Light · SemiBold와 같은 원본 · 같은 라이선스에서 한국어판 첫 화면(문 글자 · 부제 · 첫 화면 작은 글자)에 보이는 글자만 남긴 판.
   첫 화면을 먼저 그리려고 미리 받음. Pretendard에서 줄인 판은 위와 같이 이름을 'NDW Sans'로 바꿈.
@@ -19,8 +19,8 @@ namdongwon.com 글꼴 — 사이트에 쓰는 글자만 남겨 woff2로 줄인 �
   원본: 源ノ明朝 Source Han Serif JP 2.003 Light · Regular · Bold, Copyright © 2017-2024 Adobe. SIL Open Font License 1.1 — OFL-SourceHanSerifJP.txt
   일본어판 쪽(+ 처리방침 · 404의 일본어)에 쓰는 글자만 남겨 줄이고, 예약된 이름('Source')을 쓰지 않게 줄인 판의 이름을 'NDW Serif JP'로 바꿈.
   Light는 일본어판 첫 화면 큰 제목 글자만 담음. 한글은 담지 않음(일본어판의 한국어는 본명조 판이 그림). 줄인 판이라는 표시를 글꼴 설명(name ID 10)에 남김.
-- ndw-sans-jp-light.woff2 · ndw-sans-jp-semibold.woff2 (일본어판, 2026-11-01부터)
-  원본: Pretendard JP 1.309 Light · SemiBold, Copyright © 2023 Kil Hyung-jin. SIL Open Font License 1.1 — OFL-PretendardJP.txt
+- ndw-sans-jp-light.woff2 · ndw-sans-jp-regular.woff2 · ndw-sans-jp-semibold.woff2 (일본어판, 2026-11-01부터 · Regular는 본문 글자 2026-11-02부터)
+  원본: Pretendard JP 1.309 Light · Regular · SemiBold, Copyright © 2023 Kil Hyung-jin. SIL Open Font License 1.1 — OFL-PretendardJP.txt
   일본어판 쪽에 쓰는 글자만 남기고 줄인 판의 이름을 'NDW Sans JP'로 바꿈.
 - ndw-serif-jp-first.woff2 · ndw-serif-jp-bold-first.woff2 · ndw-sans-jp-light-first.woff2 · ndw-sans-jp-semibold-first.woff2 (일본어판, 2026-11-01부터)
   위 Source Han Serif JP Regular · Bold, Pretendard JP Light · SemiBold와 같은 원본 · 같은 라이선스에서 일본어판 첫 화면(문 글자 · 부제 · 첫 화면 작은 글자)에 보이는 글자만 남긴 판.

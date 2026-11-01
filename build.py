@@ -43,6 +43,7 @@ FONTS = [
     ("BonMyeongjoKR-Regular.ttf", POEM_DIR, "작업 파일)/fonts/out", "bon-myeongjo.woff2", False),
     ("BonMyeongjoKR-Bold.ttf", POEM_DIR, "작업 파일)/fonts/out", "bon-myeongjo-bold.woff2", False),
     ("Pretendard-Light.otf", PTD_DIR, "", "ndw-sans-light.woff2", True),
+    ("Pretendard-Regular.otf", PTD_DIR, "", "ndw-sans-regular.woff2", True),  # 본문 고딕(11/2 동원 '기본적인 글씨체들 전부 고딕체로' → 'A Regular 400')
     ("Pretendard-SemiBold.otf", PTD_DIR, "", "ndw-sans-semibold.woff2", True),
 ]
 # 사이트 글자 말고도 늘 남겨 둘 것: 영문·숫자·기호(주소·계정 이름·숫자 세기)와 쓰는 문장부호
@@ -80,7 +81,7 @@ LANGS = ("ko", "en", "ja")
 TR = ("en", "ja")
 LANG_NAME = {"ko": "한국어", "en": "English", "ja": "日本語"}  # 판권면 '언어' 줄 · 처리방침 다른 판 링크 — 낱말은 그 말 그대로
 # 일본어판 글꼴(11/1 동원 버튼 "A 源ノ明朝 (권장)" — 시안 기준/브랜드 시안/일본어판_글꼴시안_v1_휴대폰.png): 본명조 자리는 Source Han Serif JP(Light · Regular · Bold),
-# Pretendard 자리는 Pretendard JP(Light · SemiBold) — 기준/폰트/일본어/. 둘 다 OFL 예약 이름('Source' · 'Pretendard')이 있어 줄인 판 이름을 NDW Serif JP · NDW Sans JP로 바꿈(rename_font).
+# Pretendard 자리는 Pretendard JP(Light · Regular · SemiBold — Regular는 11/2 본문 고딕) — 기준/폰트/일본어/. 둘 다 OFL 예약 이름('Source' · 'Pretendard')이 있어 줄인 판 이름을 NDW Serif JP · NDW Sans JP로 바꿈(rename_font).
 # 일본어판 쪽(+ 404 · 처리방침의 일본어)에 쓰인 글자만 담고, 한국어 · 영어판 글꼴은 전과 같은 글자로(일본어 글자를 섞지 않음 — 한국어판 손님이 받는 무게 그대로)
 JA_DIR = PTD_DIR / "일본어"
 JA_FONTS = [
@@ -88,6 +89,7 @@ JA_FONTS = [
     ("SourceHanSerifJP-Regular.otf", "ndw-serif-jp.woff2"),
     ("SourceHanSerifJP-Bold.otf", "ndw-serif-jp-bold.woff2"),
     ("PretendardJP-Light.otf", "ndw-sans-jp-light.woff2"),
+    ("PretendardJP-Regular.otf", "ndw-sans-jp-regular.woff2"),  # 일본어판 본문(11/2 본문 고딕 'A Regular 400' — 한국어 · 영어판과 같은 굵기)
     ("PretendardJP-SemiBold.otf", "ndw-sans-jp-semibold.woff2"),
 ]
 JA_LIGHT_ONLY = "ndw-serif-jp-light.woff2"  # 굵기 300은 일본어판 첫 화면 큰 제목에만(한국어판 LIGHT_ONLY와 같은 규칙)
