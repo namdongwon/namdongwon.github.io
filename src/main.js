@@ -1099,6 +1099,20 @@
       gbMsg.textContent = uiText("sending", "보내는 중…");
       gbSend.disabled = true;
       try {
+        if (gbf.dataset.kind === "gform") {
+          // 구글 폼(11/1): 이름 · 글 두 칸만 보냄(동의 칸은 우리 쪽 확인) · 숨은 칸이 차 있으면 보낸 척만(스팸 프로그램).
+          // 구글은 다른 주소의 답을 읽게 해 주지 않아(no-cors) 보내기가 끝나면 받은 것으로 봄 — 켜는 날 시험 글로 시트에 들어오는지 확인
+          const fd = new FormData(gbf), hp = gbf.querySelector(".hp");
+          if (!(hp && hp.value)) {
+            const body = new URLSearchParams();
+            [...gbf.querySelectorAll("input[name^='entry.'], textarea[name^='entry.']")].forEach(x => body.append(x.name, fd.get(x.name) || ""));
+            await fetch(gbf.dataset.endpoint, { method: "POST", mode: "no-cors", body });
+          }
+          gbMsg.textContent = uiText("gb_sent", "잘 받았습니다. 월요일에 읽어 보겠습니다.");
+          gbf.reset();
+          gbSend.disabled = false;
+          return;
+        }
         const r = await fetch(gbf.dataset.endpoint, { method: "POST", body: new FormData(gbf), headers: { Accept: "application/json" } });
         gbMsg.textContent = r.ok ? uiText("gb_sent", "잘 받았습니다. 월요일에 읽어 보겠습니다.")
           : r.status === 429 ? uiText("gb_full", "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다.")

@@ -26,21 +26,24 @@
       "시집",
       "인스타그램",
       "유튜브",
-      "연락"
+      "연락",
+      "방명록"
     ],
     "en": [
       "About",
       "Poetry",
       "Instagram",
       "YouTube",
-      "Contact"
+      "Contact",
+      "Guestbook"
     ],
     "ja": [
       "紹介",
       "詩集",
       "Instagram",
       "YouTube",
-      "お問い合わせ"
+      "お問い合わせ",
+      "芳名録"
     ]
   },
   "nav_cta": {
@@ -372,6 +375,16 @@
     "ko": "개인정보 처리방침",
     "en": "Privacy policy",
     "ja": "プライバシーポリシー"
+  },
+  "gb_h": {
+    "ko": "다녀갑니다",
+    "en": "Passing Through",
+    "ja": "立ち寄りました"
+  },
+  "gb_soon": {
+    "ko": "글 남기기는 곧 열립니다.",
+    "en": "Leaving a note opens soon.",
+    "ja": "書き込みは、まもなく始まります。"
   },
   "gb_send": {
     "ko": "남기기",
@@ -897,9 +910,9 @@
     "ja": "目次|「拓本」|詩集|紹介|お知らせ|写真|動画|連絡|ページ"
   },
   "search_sec_where": {
-    "ko": "약력 · 연표 · 지금|「탁본」 · 책 · 차례|사진 · 게시물|영상 · 리뷰|메일 · 인스타그램 메시지",
-    "en": "Bio · timeline · now|“Rubbing” · book · contents|Photos · posts|Videos · reviews|Email · Instagram message",
-    "ja": "略歴 · 年表 · いま|「拓本」 · 本 · 目次|写真 · 投稿|動画 · レビュー|メール · Instagramのメッセージ"
+    "ko": "약력 · 연표 · 지금|「탁본」 · 책 · 차례|사진 · 게시물|영상 · 리뷰|메일 · 인스타그램 메시지|남긴 글 · 남기기",
+    "en": "Bio · timeline · now|“Rubbing” · book · contents|Photos · posts|Videos · reviews|Email · Instagram message|Notes · leave a note",
+    "ja": "略歴 · 年表 · いま|「拓本」 · 本 · 目次|写真 · 投稿|動画 · レビュー|メール · Instagramのメッセージ|メッセージ · 書き込み"
   },
   "search_month_tag": {
     "ko": "이달",
@@ -927,9 +940,9 @@
     "ja": "教保 教保文庫 kyobo pubple 書店 本屋 購入 買う 販売 販売店 注文 価格 値段 配送 発送 海外発送 買える場所 こうにゅう"
   },
   "search_sec_keys": {
-    "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 교보문고 퍼플 서점 구매 구입 사기 신간 출간 판매 쪽수 사는 곳 소식 주문 가격 배송 판매처 출간일 발행 영어|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지 방명록 화면 어둡게 다크 이메일 연락처 협업 디엠 dm",
-    "en": "bio timeline now name|poem poems book contents rubbing kyobo pubple buy purchase shop release published pages news translated translation korean ships shipping price order|photos instagram posts exhibitions|videos reviews film films channel beautiful nam|email gmail mail message guestbook display dark collaboration collaborations questions",
-    "ja": "略歴 年表 いま 今 名前 プロフィール ナム・ドンウォン ナムドンウォン 남동원 りゃくれき|詩 本 目次 拓本 教保 教保文庫 kyobo pubple 書店 本屋 購入 買う 新刊 刊行 出版 発売 販売 ページ数 頁 買える場所 お知らせ 注文 価格 値段 配送 発送 海外発送 販売店 発売日 発行 韓国語 翻訳 日本語 ししゅう たくほん|写真 インスタ instagram 投稿 展示 展覧会 しゃしん|動画 映像 レビュー 映画 チャンネル 아름다울 남 美しいナム youtube どうが|メール メールアドレス gmail 問い合わせ お問い合わせ 連絡 連絡先 メッセージ 芳名録 ゲストブック 表示 ダーク ダークモード コラボ 依頼 DM dm めーる"
+    "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 교보문고 퍼플 서점 구매 구입 사기 신간 출간 판매 쪽수 사는 곳 소식 주문 가격 배송 판매처 출간일 발행 영어|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지 화면 어둡게 다크 이메일 연락처 협업 디엠 dm|방명록 남긴 글 글 남기기 방문 다녀감",
+    "en": "bio timeline now name|poem poems book contents rubbing kyobo pubple buy purchase shop release published pages news translated translation korean ships shipping price order|photos instagram posts exhibitions|videos reviews film films channel beautiful nam|email gmail mail message display dark collaboration collaborations questions|guestbook notes note visitors sign",
+    "ja": "略歴 年表 いま 今 名前 プロフィール ナム・ドンウォン ナムドンウォン 남동원 りゃくれき|詩 本 目次 拓本 教保 教保文庫 kyobo pubple 書店 本屋 購入 買う 新刊 刊行 出版 発売 販売 ページ数 頁 買える場所 お知らせ 注文 価格 値段 配送 発送 海外発送 販売店 発売日 発行 韓国語 翻訳 日本語 ししゅう たくほん|写真 インスタ instagram 投稿 展示 展覧会 しゃしん|動画 映像 レビュー 映画 チャンネル 아름다울 남 美しいナム youtube どうが|メール メールアドレス gmail 問い合わせ お問い合わせ 連絡 連絡先 メッセージ 表示 ダーク ダークモード コラボ 依頼 DM dm めーる|芳名録 ゲストブック 書き込み 訪問 ほうめいろく"
   },
   "search_toc_where": {
     "ko": "{part} · {page}쪽",
@@ -1112,5 +1125,10 @@
     "ko": "SEOUL, KOREA",
     "en": "SEOUL, KOREA",
     "ja": "SEOUL, KOREA"
+  },
+  "gb_ag2_g": {
+    "ko": "[필수] 글은 남동원의 구글 폼(Google, 미국 등)에 담기고, 연결된 구글 시트로도 옵니다. 동의하지 않으시면 보낼 수 없습니다. {privacy}",
+    "en": "[Required] Notes are stored in Dongwon Nam’s Google Form (Google, United States and elsewhere) and copied to the Google Sheet linked to it. Without this consent the note can’t be sent. {privacy}",
+    "ja": "[必須] メッセージはナム・ドンウォンのGoogleフォーム（Google、米国など）に保存され、リンクされたGoogleスプレッドシートにも届きます。同意いただけない場合は、送信できません。{privacy}"
   }
 }

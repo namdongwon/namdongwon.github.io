@@ -1,5 +1,5 @@
 {
-  "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로 · when \"goatcounter\" 줄과 lead_counted는 방문 셈(site.json analytics.goatcounter)을 켰을 때만 — 10/27 동원 '방문 셈 문구 이대로 처리방침에 넣어'(켜는 날 updated를 그날로) · 10/27 동원 '문의 폼은 B로 하자' — 문의 폼 없이 메일 · 인스타그램, Formspree(미국 등)는 방명록만 · 10/27 동원 '이대로 넣어'(웹사이트 점검 5 · 6번, 초안 기준/처리방침 · 영어 문구 고침 초안_v1.md) — when \"guestbook\" 줄은 방명록 폼 아이디(site.json contact.guestbook_formspree_id)가 있을 때만, 칸에 보일 줄이 없으면 empty 한 줄 · 4절 GitHub Pages IP 줄(GitHub Docs 'About GitHub Pages' › Data collection) · 10/27 밤 동원 '이대로 넣어'(초안 기준/출간 전 문구 고침 초안_v1.md 2 — 3인칭 남동원 · 보호책임자 · 인스타그램 메시지 보관 기간 · 화면 낱말 차례 · 3절 받는 정보 줄) · when \"ga4\" 줄 · unless \"ga4\" 줄(켜면 숨김) · lead_ga는 GA4(site.json analytics.ga4)를 켰을 때만 — 11/1 동원 'ga4로 하자'(켜는 날 updated를 그날로 · '14개월'은 GA4 관리 → 데이터 보관 설정과 맞춤 · IP는 기록 · 저장 안 함[출처 support.google.com/analytics/answer/2763052])",
+  "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로 · when \"goatcounter\" 줄과 lead_counted는 방문 셈(site.json analytics.goatcounter)을 켰을 때만 — 10/27 동원 '방문 셈 문구 이대로 처리방침에 넣어'(켜는 날 updated를 그날로) · 10/27 동원 '문의 폼은 B로 하자' — 문의 폼 없이 메일 · 인스타그램, Formspree(미국 등)는 방명록만 · 10/27 동원 '이대로 넣어'(웹사이트 점검 5 · 6번, 초안 기준/처리방침 · 영어 문구 고침 초안_v1.md) — when \"guestbook\" 줄은 방명록 받는 곳(site.json contact.guestbook_gform 구글 폼 — 11/1 동원 버튼 'B 구글 폼 (권장)'로 Formspree에서 바꿈 · 또는 guestbook_formspree_id)이 있을 때만, 칸에 보일 줄이 없으면 empty 한 줄 · 4절 GitHub Pages IP 줄(GitHub Docs 'About GitHub Pages' › Data collection) · 10/27 밤 동원 '이대로 넣어'(초안 기준/출간 전 문구 고침 초안_v1.md 2 — 3인칭 남동원 · 보호책임자 · 인스타그램 메시지 보관 기간 · 화면 낱말 차례 · 3절 받는 정보 줄) · when \"ga4\" 줄 · unless \"ga4\" 줄(켜면 숨김) · lead_ga는 GA4(site.json analytics.ga4)를 켰을 때만 — 11/1 동원 'ga4로 하자'(켜는 날 updated를 그날로 · '14개월'은 GA4 관리 → 데이터 보관 설정과 맞춤 · IP는 기록 · 저장 안 함[출처 support.google.com/analytics/answer/2763052])",
   "updated": "2026-11-01",
   "title": {
     "ko": "개인정보 처리방침",
@@ -26,9 +26,9 @@
       "items": [
         {
           "when": "guestbook",
-          "ko": "방명록 — 이름(선택)과 글을 받아, 방명록에 골라 싣는 데 씁니다. 보내실 때 Formspree가 보낸 시각과 접속 정보(IP 주소 등)를 함께 적습니다.",
-          "en": "Guestbook — your name (optional) and note, used only to choose notes for the guestbook. When you send, Formspree also records the time and connection details (such as the IP address).",
-          "ja": "芳名録 — お名前（任意）とメッセージを受け取り、芳名録に選んで掲載するために利用します。送信される際、Formspreeが送信日時と接続情報（IPアドレスなど）もあわせて記録します。"
+          "ko": "방명록 — 이름(선택)과 글을 받아, 방명록에 골라 싣는 데 씁니다. 보내실 때 구글 폼이 보낸 시각을 함께 적고, 구글은 자기 처리방침에 따라 접속 정보(IP 주소 등)를 처리할 수 있습니다.",
+          "en": "Guestbook — your name (optional) and note, used only to choose notes for the guestbook. When you send, Google Forms also records the time, and Google may process connection details (such as the IP address) under its own privacy policy.",
+          "ja": "芳名録 — お名前（任意）とメッセージを受け取り、芳名録に選んで掲載するために利用します。送信される際、Googleフォームが送信日時を記録し、Googleは自社のプライバシーポリシーに基づき接続情報（IPアドレスなど）を処理することがあります。"
         },
         {
           "ko": "메일 · 인스타그램 메시지 — 보내신 이름 · 메일 · 내용은 답장하는 데만 씁니다.",
@@ -78,9 +78,9 @@
       "items": [
         {
           "when": "guestbook",
-          "ko": "받는 자: Formspree(미국 등) — 남기신 글은 이 업체를 거쳐 남동원의 메일함으로 옵니다.",
-          "en": "Recipient: Formspree (United States and elsewhere) — your note passes through this service on its way to Dongwon Nam’s mailbox.",
-          "ja": "移転先：Formspree（米国など） — 残していただいたメッセージは、この事業者を経由してナム・ドンウォンのメールボックスに届きます。"
+          "ko": "받는 자: Google LLC(미국 등) — 남기신 글은 남동원의 구글 폼에 담기고, 그 폼에 연결된 구글 시트로도 옵니다.",
+          "en": "Recipient: Google LLC (United States and elsewhere) — your note is stored in Dongwon Nam’s Google Form and also copied to the Google Sheet linked to it.",
+          "ja": "移転先：Google LLC（米国など） — 残していただいたメッセージは、ナム・ドンウォンのGoogleフォームに保存され、そのフォームにリンクされたGoogleスプレッドシートにも届きます。"
         },
         {
           "when": "guestbook",
@@ -96,9 +96,9 @@
         },
         {
           "when": "guestbook",
-          "ko": "받는 자가 쓰는 곳과 두는 기간: 메일함으로 전달 · Formspree 보관함에 30일.",
-          "en": "Purpose and retention at the recipient: forwarding to the mailbox; kept in Formspree’s inbox for 30 days.",
-          "ja": "移転先での利用目的と保存期間：メールボックスへの転送、Formspreeの受信箱で30日間保管。"
+          "ko": "받는 자가 쓰는 곳과 두는 기간: 구글 폼과 연결된 구글 시트에 보관 · 실리지 않은 글은 받은 날부터 30일 안에 둘 다에서 지움.",
+          "en": "Purpose and retention at the recipient: kept in the Google Form and the Google Sheet linked to it; notes that are not published are deleted from both within 30 days of receipt.",
+          "ja": "移転先での利用目的と保存期間：Googleフォームと、リンクされたGoogleスプレッドシートに保管し、掲載されなかったメッセージは受け取った日から30日以内に両方から削除。"
         },
         {
           "when": "guestbook",

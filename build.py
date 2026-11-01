@@ -215,6 +215,17 @@ def motion_css(css):
     return "".join(out)
 
 
+def gform(site):
+    # 방명록 받는 곳 — 구글 폼(11/1 동원 버튼 "B 구글 폼 (권장)" — 시안 기준/브랜드 시안/방명록받는곳시안_v1_휴대폰_A·B.png): 우리 폼 모양 그대로 두고 구글 폼 응답 주소(formResponse)로 보냄,
+    # 응답은 구글 폼 · 연결된 구글 시트에 한 줄씩(타임스탬프 | 이름 | 글). site.json contact.guestbook_gform {action · name · text} 셋 다 있을 때만 켜짐 — 칸 번호는 구글 폼 '미리 채워진 링크'에서
+    g = (site.get("contact") or {}).get("guestbook_gform") or {}
+    if not all(str(g.get(k) or "").strip() for k in ("action", "name", "text")):
+        return None
+    if not re.fullmatch(r"https://docs\.google\.com/forms/d/e/[\w-]+/formResponse", g["action"]) or not all(re.fullmatch(r"entry\.\d+", g[k]) for k in ("name", "text")):
+        raise SystemExit("구글 폼 칸(contact.guestbook_gform)은 action 'https://docs.google.com/forms/d/e/…/formResponse' · name · text 'entry.숫자' 꼴이어야 함")
+    return g
+
+
 def consent_html(L, gid, site_label):
     # 동의 창(11/1 동원 "고야드 식으로 하긴 하는데 좀 정확히 따라해봐" · 버튼 "안 1 — 고야드 문구 바탕") — 고야드(Didomi)처럼 세 단계: 첫 창 · 동의 관리 · 파트너 선택.
     # 글은 ui.json cz_…(고야드 · Didomi · IAB 원문 바탕 — 기준/레퍼런스/동의 창_고야드 · 프라다 원문_2026-11-01.md) · 움직임은 consent.js · 처음엔 숨김(consent.js가 엶)
@@ -480,8 +491,8 @@ HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", CIN_JS), HEAD_JS_PLAIN.repla
 
 # 쪽 나누기(10/31 동원 "랜딩페이지는 내 소개를 넣고, 다른 시집, 인스타그램, 유튜브 이런 것들은 따로 페이지를 분리 … 연락페이지도 따로 빼는 게 좋다고 생각해"
 # · 버튼 '같은 도메인 아래 주소 (권장)' · "지금 구조 만들어"): 쪽 열쇠(주소 폴더) → 그 쪽에 담는 칸 id, 첫째가 그 쪽 맨 위 칸. "" = 첫 화면(소개)
-PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "contact": ("contact",)}
-PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "y": "", "p": "photo", "guestbook": "contact"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p)
+PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "guestbook": ("guestbook",), "contact": ("contact",)}  # 11/2 방명록 쪽(동원 "방명록 사이트를 먼저 추가") — 연락 칸 안에서 떼어 /guestbook/
+PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "y": "", "p": "photo"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p)
 
 
 def page_of(aid):
@@ -1159,12 +1170,12 @@ def render(site, poem, videos, photos, lang="ko"):
     em = c.get("email") or {}
     mail = (f'<p class="mail"><span>{t("mail")}</span><a class="buy ml" href="#contact" data-u="{e(em["user"][::-1])}" data-d="{e(em["domain"][::-1])}">'
             f'{e(em["user"])}<span>@</span>{e(em["domain"])}</a></p>') if em.get("user") and em.get("domain") else ""
-    # 방명록(10/26 동원 "방명록은 A 같은 글자 목록으로 하자" — 설계 `기준/웹사이트 방명록 설계_v2.md`) — 연락 칸 안, 연락 길 아래(#guestbook — 관리 화면 미리 보기 자리).
+    # 방명록(10/26 동원 "방명록은 A 같은 글자 목록으로 하자" — 설계 `기준/웹사이트 방명록 설계_v2.md`) — 11/2부터 제 쪽(/guestbook/ · #guestbook 칸 — 관리 화면 미리 보기 자리, 전엔 연락 칸 안).
     # 받은 글은 Formspree → 동원 메일 → 관리 화면 '방명록' 표(content/guestbook.json)에 고른 글만 → 다시 올림. 방문자 글 · 이름은 글자로만(e()) · 줄바꿈만 살림 · 찾기에는 넣지 않음.
-    # 방문자 글은 원문 그대로라 row_lang을 쓰지 않음(영어판에서 비지 않게) — 답만 en.reply가 있으면 영어. 폼 아이디(contact.guestbook_formspree_id)가 없으면 폼을 그리지 않고,
-    # 실린 글도 없으면 묶음 전체를 그리지 않음. 폼을 이으려면 개인정보 처리방침(content/privacy.json)이 먼저 있어야 함(동의 문구가 그 쪽을 가리킴)
-    gb_id = c.get("guestbook_formspree_id", "")
-    if gb_id and not (CONTENT / "privacy.json").exists():
+    # 방문자 글은 원문 그대로라 row_lang을 쓰지 않음(영어판에서 비지 않게) — 답만 en.reply가 있으면 영어. 받는 곳(구글 폼 · Formspree 아이디)이 없으면 폼 대신
+    # '곧 열립니다' 한 줄(11/2). 폼을 이으려면 개인정보 처리방침(content/privacy.json)이 먼저 있어야 함(동의 문구가 그 쪽을 가리킴)
+    gb_id, gf = c.get("guestbook_formspree_id", ""), gform(site)  # 받는 곳 — 구글 폼이 있으면 구글 폼(11/1), 없으면 Formspree 아이디
+    if (gb_id or gf) and not (CONTENT / "privacy.json").exists():
         raise SystemExit("방명록 폼(contact.guestbook_formspree_id)을 이으려면 개인정보 처리방침(content/privacy.json)이 먼저 있어야 함 — 동의 문구가 그 쪽을 가리킴")
     gbook = sorted((x for x in (load("guestbook.json").get("items", []) if (CONTENT / "guestbook.json").exists() else []) if x.get("text") and x.get("date")),
                    key=lambda x: x["date"], reverse=True)
@@ -1175,19 +1186,21 @@ def render(site, poem, videos, photos, lang="ko"):
         rp = ((x.get(lang) or {}).get("reply") or x.get("reply", "")) if tr_ else x.get("reply", "")
         rep = f'<p class="rp">{e(rp)}<span>— {t("gb_reply_by")}</span></p>' if rp else ""
         return f'<li><p class="tx"{lk}>{txt}</p><p class="by">{e(x.get("name", "")) or t("gb_anon")} · {e(dtxt(x["date"]))}</p>{rep}</li>'
-    guest, priv = "", f'<a href="~R~privacy/">{t("gb_privacy")}</a>'  # 처리방침 쪽(한 · 영 모두 제 판 아래 privacy/ — ~R~은 그 판 맨 위, page()가 채움)
-    if gb_id or gbook:
-        more = f'<details><summary>{t("gb_more")}</summary><ol>{"".join(gb_li(x) for x in gbook[12:])}</ol></details>' if len(gbook) > 12 else ""
-        body = f'<ol>{"".join(gb_li(x) for x in gbook[:12])}</ol>{more}' if gbook else f'<p class="empty">{t("gb_empty")}</p>'
-        form = (f'<h3 class="h3b">{t("gb_write")}</h3><p class="when">{t("gb_when")}</p>'
-                f'<form class="gbf" data-endpoint="https://formspree.io/f/{e(gb_id)}" method="post">'
-                f'<label>{t("gb_name")} <i>{t("gb_name_hint")}</i><input type="text" name="name" maxlength="20" autocomplete="name"></label>'
-                f'<label>{t("gb_text")} <i>{t("gb_text_hint")}</i><textarea name="message" maxlength="200" rows="3" required></textarea></label>'
-                '<input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">'
-                f'<label class="ag"><input type="checkbox" name="agree" required><span>{t("gb_ag1")}</span></label>'
-                f'<label class="ag"><input type="checkbox" name="agree_abroad" required><span>{t("gb_ag2", privacy=priv)}</span></label>'
-                f'<button class="send" type="submit">{t("gb_send")}</button><p class="msg" role="status"></p></form>') if gb_id else ""
-        guest = f'\n      <div class="gb" id="guestbook"><h3>{t("gb_title")}</h3><p class="sep">{t("gb_sep")}</p>{body}{form}</div>'
+    priv = f'<a href="~R~privacy/">{t("gb_privacy")}</a>'  # 처리방침 쪽(한 · 영 모두 제 판 아래 privacy/ — ~R~은 그 판 맨 위, page()가 채움)
+    # 11/2 방명록 쪽(/guestbook/ — 동원 "방명록 사이트를 먼저 추가하는 게 나은 거 같아 … 디자인은 바꿀 수 있으니까"): 묶음을 연락 칸에서 떼어 제 칸으로. 받는 곳(구글 폼)이 없으면
+    # 쓰는 칸 대신 '곧 열립니다' 한 줄 — 받을 곳 없이 폼을 열면 남긴 글이 사라짐. 실린 글이 없으면 '첫 글을 기다립니다'
+    more = f'<details><summary>{t("gb_more")}</summary><ol>{"".join(gb_li(x) for x in gbook[12:])}</ol></details>' if len(gbook) > 12 else ""
+    body = f'<ol>{"".join(gb_li(x) for x in gbook[:12])}</ol>{more}' if gbook else f'<p class="empty">{t("gb_empty")}</p>'
+    form = (f'<h3 class="h3b">{t("gb_write")}</h3><p class="when">{t("gb_when")}</p>'
+            # 구글 폼이면 칸 이름이 그 폼의 칸 번호(entry.…) · data-kind="gform"(main.js가 두 칸만 no-cors로 보냄)
+            + (f'<form class="gbf" data-endpoint="{e(gf["action"])}" data-kind="gform" method="post">' if gf else f'<form class="gbf" data-endpoint="https://formspree.io/f/{e(gb_id)}" method="post">')
+            + f'<label>{t("gb_name")} <i>{t("gb_name_hint")}</i><input type="text" name="{e(gf["name"]) if gf else "name"}" maxlength="20" autocomplete="name"></label>'
+            f'<label>{t("gb_text")} <i>{t("gb_text_hint")}</i><textarea name="{e(gf["text"]) if gf else "message"}" maxlength="200" rows="3" required></textarea></label>'
+            '<input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">'
+            f'<label class="ag"><input type="checkbox" name="agree" required><span>{t("gb_ag1")}</span></label>'
+            f'<label class="ag"><input type="checkbox" name="agree_abroad" required><span>{t("gb_ag2_g" if gf else "gb_ag2", privacy=priv)}</span></label>'
+            f'<button class="send" type="submit">{t("gb_send")}</button><p class="msg" role="status"></p></form>') if (gb_id or gf) else f'<h3 class="h3b">{t("gb_write")}</h3><p class="when">{t("gb_soon")}</p>'
+    guest = f'<div class="gb">{body}{form}</div>'
     # 바닥글: 판권면(10/24 A) — 시집 판권면의 틀(제목 → 항목 줄 → ⓒ와 다시 쓰기 안내)만 빌림. 고친 날은 빌드한 날(서울 시간),
     # 판은 디자인을 크게 다시 할 때(site.json) · 쇄는 고쳐 올릴 때마다 저절로(printing_no — 올린 기록으로 셈, 10/25)
     co, today = S["colophon"], build_day()
@@ -1221,7 +1234,7 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<p class="c">{e(S["copyright"])}<br>{e(co["note"])}<br>{cookie_line}{pp_link}</p>'
             f'<p class="end">{t("colo_end")}</p></div>')  # 사이트의 끝 — 책 '읽어 주신 분들께'의 맺음 인사(10/27 경험 설계 '끝까지 온 사람을 맞이하나?' · 동원 "B1 좋은 아침")
 
-    secs = ("me", "poem", "photo", "video", "contact")
+    secs = ("me", "poem", "photo", "video", "contact", "guestbook")  # 방명록(11/2)은 ui.json nav 여섯째 낱말 — 앞 다섯 차례는 그대로
     navname = dict(zip(secs, L["nav"]))  # 낱말은 ui.json nav 그대로(찾기 칸 이름도 이 차례로 씀)
     others = [x for x in LANGS if x != lang]  # 다른 판 — og:locale:alternate · hreflang · 언어 줄
     # 맨 위 띠는 쪽마다 page()가 만듦(10/31 쪽 나누기 — 메뉴가 칸 자리 #… 대신 쪽 주소)
@@ -1447,13 +1460,19 @@ def render(site, poem, videos, photos, lang="ko"):
         "contact": f"""  <section id="contact" aria-labelledby="contact-t">
     <p class="label">{t("label_contact")}</p>
     <div class="l"><h2 class="h2" id="contact-t">{t("contact_title")}</h2><p class="lead">{lead}</p></div>
-    <div class="r">{ask}{mail}{guest}
+    <div class="r">{ask}{mail}
       <p class="sns">{sns}</p></div>
+  </section>
+""",
+        "guestbook": f"""  <section id="guestbook" aria-labelledby="guestbook-t">
+    <p class="label">{t("gb_title")}</p>
+    <div class="l"><h2 class="h2" id="guestbook-t">{t("gb_h")}</h2><p class="lead">{t("gb_sep")}</p></div>
+    <div class="r">{guest}</div>
   </section>
 """,
     }
     items = [list(x) for k in ix for x in ix[k]]
-    top_of = {"": "me", "book": "poem", "photo": "photo", "video": "video", "contact": "contact"}  # 메뉴 이름 · 쪽 제목에 쓰는 칸
+    top_of = {"": "me", "book": "poem", "photo": "photo", "video": "video", "guestbook": "guestbook", "contact": "contact"}  # 메뉴 이름 · 쪽 제목에 쓰는 칸
 
     def page(k):
         R = "../" if k else ""  # 이 판 맨 위(소개)까지
@@ -1473,14 +1492,14 @@ def render(site, poem, videos, photos, lang="ko"):
                 return href
             return link(pg) if PAGES[pg][0] == href[1:] else link(pg) + href
         # 맨 위 띠: 메뉴 넷(소개 · 시집 · 인스타그램 · 유튜브 — 쪽 차례와 같게, 지금 쪽은 먹 · 밑줄 · aria-current) | 언어 · 찾기 · [연락하기](10/28 차례 그대로)
-        nav = "".join(f'<a href="{link(pg)}"' + (' class="on" aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a>' for pg in ("", "book", "photo", "video"))
+        nav = "".join(f'<a href="{link(pg)}"' + (' class="on" aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a>' for pg in ("", "book", "photo", "video", "guestbook"))
         # 맨 위 띠(10/31 동원 "gnb 이거 있잖아 가운데로 넣어" · "언어 설정 하단 푸터로 빼"): 이름 | 메뉴 넷(가운데) | 찾기 · [연락하기] — 언어는 바닥글 판권면 '언어' 줄로
         act = f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
         act += f'<a class="cta{" on" if k == "contact" else ""}" href="{link("contact")}"' + (' aria-current="page"' if k == "contact" else "") + f'>{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(연락 쪽에선 맨 위에서도 먹 — 지금 쪽 표시)
         # 휴대폰 메뉴 단추의 목록(11/1 밤 동원 버튼 "B 메뉴 단추"): 메뉴와 같은 쪽 · 같은 차례, 쪽 이름만 큰 명조로(동원 "url 은 빼") — 띠 밖(</header> 뒤)에 둠: 띠의 흐림(backdrop-filter)이 안쪽 fixed를 띠 높이에 가둠
-        mnu = "".join(f'<li><a href="{link(pg)}"' + (' aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a></li>' for pg in ("", "book", "photo", "video"))
+        mnu = "".join(f'<li><a href="{link(pg)}"' + (' aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a></li>' for pg in ("", "book", "photo", "video", "guestbook"))
         lang_href = {x: f'{PP}{"" if x == "ko" else x + "/"}{kp}' for x in others}  # 같은 쪽의 다른 판 — 바닥글 '언어' 줄(~L:말~)
-        ptitle = title if not k else f'{L["nav"][("me", "poem", "photo", "video", "contact").index(top_of[k])]} — {S["name"]}'
+        ptitle = title if not k else f'{L["nav"][("me", "poem", "photo", "video", "contact", "guestbook").index(top_of[k])]} — {S["name"]}'
         h1 = "" if bpg else f'<h1 class="sr">{e(S["name"] if not k else ptitle)}</h1>\n'  # 시집 쪽은 첫 화면 h1(이름 · 첫 시집) 그대로, 다른 쪽은 읽기 도구용 쪽 제목
         oimg, otitle, odesc = (og_img, og_title, og_desc) if k in ("", "book") else (f"og-{lang}.jpg" if tr_ else "og.jpg", ptitle, S["description"])
         sidx = json.dumps([[*x[:3], go(x[3]), *x[4:]] for x in items], ensure_ascii=False).replace("</", "<\\/")
@@ -1555,7 +1574,7 @@ def page_privacy(site, lang):
     # when이 붙은 줄은 그것을 켰을 때만(방문 셈 when "goatcounter" · 방명록 when "guestbook" — 10/27) · 칸에 보일 줄이 없으면 그 칸의 empty 한 줄 · 방문 셈을 켜면 첫 문단도 lead_counted로
     # GA4(11/1): when "ga4" 줄은 켰을 때만 · unless "ga4" 줄('쿠키를 쓰지 않습니다' · 저장소 둘)은 켜면 숨김 · 첫 문단은 lead_ga · 동의 창과 '쿠키 설정'(동의를 거두는 곳)도 이 쪽에
     ga = ga4(site)
-    on = {"goatcounter": bool(goatcounter(site)), "ga4": bool(ga), "guestbook": bool(site["contact"].get("guestbook_formspree_id"))}
+    on = {"goatcounter": bool(goatcounter(site)), "ga4": bool(ga), "guestbook": bool(site["contact"].get("guestbook_formspree_id") or gform(site))}
     shown = lambda items: [i for i in items if on.get(i.get("when"), True) and not on.get(i.get("unless"), False)]  # noqa: E731
     lead = p["lead_ga"] if on["ga4"] and p.get("lead_ga") else p["lead_counted"] if on["goatcounter"] and p.get("lead_counted") else p["lead"]
     secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{g(i)}</li>" for i in (shown(x["items"]) or [x["empty"]] * ("empty" in x)))}</ul>' for x in p["sections"])
