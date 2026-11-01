@@ -966,13 +966,14 @@ def render(site, poem, videos, photos, lang="ko"):
            f'<div><dt>{t("ex_collection")}</dt><dd>{t("ex_shelf")}</dd></div></dl>')  # 소장처는 '당신의 책장' 글만(10/29 고침 2 — 사는 길이 첫 화면 두 길로 올라가 한 화면에 두 번 나오지 않게). 첫 화면 라벨은 컴퓨터 · 태블릿에서만 보임
 
     # 연표(years.json) — 줄의 note 칸이 각주(10/25 40곳 2차 ④ A, Andrew Trousdale식 경의의 각주): 줄 끝 위첨자 번호 + 연표 바로 아래 각주 목록
+    # 줄 글은 rich()로(11/2 동원 '여기에 첫 시집 내 책 제목 들어가면 좋지' · '첫은 빼자' — 『시집 제목』은 표지 줄 나눔 자리에서만 갈리고, 영어판 *제목*은 기울임)
     notes, lis = [], []
     for r in row_lang(tb["years"]["items"], lang):
         if not r["text"]:
             continue
         if r["note"]:
             notes.append(r["note"])
-        lis.append(f'<li id="y{len(lis) + 1}"><b>{e(r["year"])}</b><span>{names(e(r["text"]))}' + (f'<sup class="fr">{len(notes)}</sup>' if r["note"] else '') + '</span></li>')
+        lis.append(f'<li id="y{len(lis) + 1}"><b>{e(r["year"])}</b><span>{rich(r["text"])}' + (f'<sup class="fr">{len(notes)}</sup>' if r["note"] else '') + '</span></li>')
         ix["me"].append((tg["me"], f'{r["year"]} {plain(r["text"])}', L["search_timeline"], f"#y{len(lis)}"))
     years = "".join(lis)
     fnb = ('<ol class="fn">' + "".join(f'<li><b>{i}</b><span>{note_html(x, lang)}</span></li>' for i, x in enumerate(notes, 1)) + '</ol>') if notes else ""
