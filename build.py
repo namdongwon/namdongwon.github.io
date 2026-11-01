@@ -313,7 +313,7 @@ def localize(obj, lang):
 TABLES = {"now": "now.json", "news": "news.json", "monthly": "monthly.json", "years": "years.json"}
 # 영어가 비면(설계서 5절 — 빈 글 ""과 칸 없음은 같은 뜻): 문장 칸(글 · 각주 · 영상 사실 · 스틸 출처)은 영어판에서 숨김(빈 글) · 이름 칸은 한국어 그대로 · 말이 없는 칸은 그대로
 NAME_KEYS = {"label", "title", "creator", "artist", "show", "venue", "where", "name"}
-PLAIN_KEYS = {"updated", "date", "month", "year", "kind", "thumb", "youtube_id", "post", "page", "n", "link", "url", "id"}
+PLAIN_KEYS = {"updated", "date", "month", "year", "kind", "thumb", "stills", "youtube_id", "post", "page", "n", "link", "url", "id"}  # stills(11/1 — 그림 자리 목록, 말과 상관없음 · 빠져 있어 영어 · 일본어판에 스틸이 안 나왔음)
 
 
 def tables(site):
@@ -1167,8 +1167,8 @@ def render(site, poem, videos, photos, lang="ko"):
     co, today = S["colophon"], build_day()
     when = (f"{MONTHS[today.month - 1]}{NB}{today.day}, {today.year}" if en else jday(today) if tr_ else f"{today.year}년{NB}{today.month}월{NB}{today.day}일")
     pr = printing_no(co)
-    # 판 · 쇄 — 영어는 서수(2nd edition, 68th printing) · 일본어(11/1)는 일본 판권면 꼴 '第2版 第68刷'
-    ed = (f'{ordinal(co["edition"])} edition, {ordinal(pr)} printing' if en else f'第{co["edition"]}版{NB}第{pr}刷' if tr_ else f'{co["edition"]}판 {pr}쇄')
+    # 판 · 쇄 — 영어는 서수(2nd edition, 68th printing) · 일본어(11/1)는 일본 책 판권면 꼴 '第2版第68刷'(붙여 씀 — 번역 메모)
+    ed = (f'{ordinal(co["edition"])} edition, {ordinal(pr)} printing' if en else f'第{co["edition"]}版第{pr}刷' if tr_ else f'{co["edition"]}판 {pr}쇄')
     # 화면 밝게 · 어둡게 · 시스템(10/26 A 먹 종이) — 판권면 줄, 처음은 밝게 · 누르면 main.js가 이 기기에 기억
     # 글자 대신 그림(10/28 B 선 그림 — 이름은 읽기 프로그램 · 마우스를 올리면 보이는 말로)
     thm = "".join(f'<button type="button" data-th="{k}" aria-pressed="{"true" if k == "light" else "false"}" aria-label="{e(x)}" title="{e(x)}">{THEME_ICONS[k]}</button>'
@@ -1509,8 +1509,8 @@ def page_privacy(site, lang):
     cz = ckp = ""
     if ga:
         Lp = ui_lang(load("ui.json"), lang)
-        # 동의 창 안 '처리방침' 링크(~R~privacy/)는 그 판의 처리방침으로 — 일본어판은 '../'(/ja/privacy/). 영어판은 지금 R(../../ → 한국어 처리방침)이라 그대로 둠(보고서 열린 것)
-        cz = consent_html(Lp, ga, urlparse(base).netloc or base).replace("~R~", "../" if lang == "ja" else R) + f'<script src="{R}assets/consent.js" defer></script>\n'
+        # 동의 창 안 '처리방침' 링크(~R~privacy/)는 그 판의 처리방침으로 — 영어 · 일본어판은 '../'(/en/privacy/ · /ja/privacy/) · 한국어판은 R(11/1 영어판이 한국어 처리방침으로 가던 것 고침)
+        cz = consent_html(Lp, ga, urlparse(base).netloc or base).replace("~R~", "../" if tr_ else R) + f'<script src="{R}assets/consent.js" defer></script>\n'
         ckp = f'<p class="ckp"><button type="button" class="cz-open">{e(Lp["cz_open"])}</button></p>\n'
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
