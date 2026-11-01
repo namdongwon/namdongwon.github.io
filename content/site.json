@@ -39,7 +39,7 @@
       "text": "남동원의 시는 숨 쉬는 것과 움직이기만 하는 것을 가려 본다. 만지면 무언가 버석하게 떨어지는 건물 벽, 바람에 밀려가는 쓰레기, 일정한 속도로 굴러가는 바퀴들 사이에서 시인은 살아 있는 척할지, 죽어 있는 척할지 묻는다. 그리고 답 대신 손에 묻은 인주를 털어낸다. 감정을 앞세우지 않고 본 것을 적는 단단한 문장이 이 시집의 바탕이다."
     },
     "toc": {
-      "label": "차례 — 예순 편, 네 부",
+      "label": "차례",
       "parts": [
         {
           "name": "1부",
@@ -807,14 +807,14 @@
   "channel": {
     "link": "youtube",
     "name": "아름다울 남",
-    "desc": "유튜브 · 영화 · 책 · 전시 리뷰",
+    "desc": "영화 · 시리즈 · 책 · 전시 리뷰",
     "en": {
       "name": "Beautiful Nam",
-      "desc": "YouTube · film, book and exhibition reviews · in\u00a0Korean"
+      "desc": "Film, series, book and exhibition reviews · in\u00a0Korean"
     },
     "ja": {
       "name": "美しいナム",
-      "desc": "YouTube · 映画・本・展示のレビュー · 韓国語"
+      "desc": "映画・シリーズ・本・展示のレビュー · 韓国語"
     }
   },
   "copyright": "© 2026 남동원",
@@ -861,7 +861,7 @@
         "text": "Dongwon Nam’s poems sort what breathes from what merely moves. Among building walls where something brittle crumbles off at a touch, trash pushed along by the wind and wheels rolling at a steady speed, the poet asks whether to pretend to be alive or to pretend to be dead — and, instead of answering, brushes the ink off his hand. Firm sentences that set down what he has seen, without putting feeling first, are the foundation of this collection."
       },
       "toc": {
-        "label": "Contents — sixty poems in four parts"
+        "label": "Contents"
       }
     },
     "poem": {
@@ -924,7 +924,7 @@
         "text": "ナム・ドンウォンの詩は、息をするものと、ただ動くだけのものとを見分ける。さわると何かがかさりと落ちる建物の壁、風に押されていくごみ、一定の速度で転がっていく車輪のあいだで、詩人は生きているふりをしようか、死んでいるふりをしようかと問う。そして答えのかわりに、手についた朱肉を払い落とす。感情を前に出さず、見たものを書きとめる硬質な文章が、この詩集の土台である。"
       },
       "toc": {
-        "label": "目次 — 六十篇、四部構成"
+        "label": "目次"
       }
     },
     "poem": {

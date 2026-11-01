@@ -83,7 +83,7 @@ button{font:inherit;color:inherit}
 .h2,.vt,.bio,.lead,.pbook .t small{text-wrap:balance}
 .tt{display:inline-block;text-wrap:balance}  /* 작품 제목(+붙은 조사 · 문장부호)은 한 덩어리 — 칸에 들어가면 통째로 다음 줄, 칸보다 길면 그 안에서만 갈림(10/25 마지막 점검 ②③, build.py rich · 첫 화면 라벨) · 토막이 칸보다 길어 그 안에서 갈릴 때는 고르게(태블릿 라벨 'Step / Out,' 같은 외톨이 줄이 남지 않게) */
 .cap p,.colo .c,.ask .agree,.empty{text-wrap:pretty}
-#home .lab dd,.pbook .plab dd,.now dd,.btoc .key,#home .kick,#home .tip,.bhead{text-wrap:pretty}  /* 줄 끝 한두 글자 · 한 낱말(10/27 점검 남은 것 가2 — '지금' 첫 편 · 범례 '엽니다' · 영어 첫 줄 'exhibition' 등) */
+#home .lab dd,.pbook .plab dd,.now dd,#home .kick,#home .tip,.bhead{text-wrap:pretty}  /* 줄 끝 한두 글자 · 한 낱말(10/27 점검 남은 것 가2 — '지금' 첫 편 · 범례 '엽니다' · 영어 첫 줄 'exhibition' 등) */
 .skip{position:absolute;left:-9999px;top:8px;z-index:60;padding:8px 12px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans)}
 .skip:focus{left:8px}
 
@@ -225,7 +225,7 @@ html:lang(en) .bnews li{grid-template-columns:106px 1fr}html:lang(ja) .bnews li{
 .bhead{font:400 19px/1.7 var(--serif);word-break:keep-all;text-wrap:balance}
 .btext{margin-top:16px;font:16px/1.9 var(--body);word-break:keep-all;text-wrap:pretty}
 .btoc{margin-top:36px}
-.btoc h3{font:300 11px/1 var(--sans);letter-spacing:.14em;color:var(--faint)}
+.btoc h3{font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  /* '차례' 굵게 — '지난 편'(.sub)과 같은 칸 머리(11/2 동원 '차례는 굵은 표시로') */
 html:lang(en) .btoc h3{letter-spacing:0}  /* 영어 소문자 문장에는 넓은 자간을 두지 않음(10/25 다듬기 가8) */
 .btoc .parts{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .btoc h4{margin-bottom:8px;font:600 11px/1 var(--sans);letter-spacing:.08em;color:var(--muted)}
@@ -244,8 +244,6 @@ html:lang(en) .btoc .parts,html:lang(ja) .btoc .parts{row-gap:0;border-top:1px s
 .btoc .tail{margin-top:16px;padding-top:12px;border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
 html:lang(en) .btoc .parts,html:lang(en) .btoc .tail,html:lang(ja) .btoc .parts,html:lang(ja) .btoc .tail{grid-template-columns:1fr}  /* 영어 제목은 길어 휴대폰에서 한 단 */
 /* 차례에서 열기(10/25 ④ C) — 그달의 시 줄은 먹 + 아래에 한 행(명조, 왼쪽 먹 선), 지난달 줄은 먹으로 남음 · 달 꼬리표 · 차례 위 범례 한 줄 */
-.btoc .key{margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted)}
-.btoc .key i{display:inline-block;width:14px;height:1.5px;margin-right:6px;vertical-align:middle;background:var(--ink)}
 .btoc li.mo{flex-wrap:wrap;color:var(--ink)}
 .btoc li .mt{margin-left:6px;font:300 11px/1 var(--sans);letter-spacing:.04em;color:var(--faint)}
 .btoc li.mo em{order:3;flex:0 0 100%;margin:2px 0 8px;padding-left:12px;border-left:1.5px solid var(--ink);font:400 12.5px/1.7 var(--serif);font-style:normal;color:var(--ink)}
@@ -279,6 +277,7 @@ html:lang(en) .label,html:lang(en) .sub{text-transform:uppercase;letter-spacing:
 html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 작품 제목은 기울임, 짧은 제목은 한 줄에 */
 html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:400}  /* 일본어판(11/1): 『제목』은 한 덩어리(기울임 없음) · 「拓本」 번역 행은 명조 보통 굵기(영어 360은 Newsreader 가변 굵기 — 源ノ明朝는 300이 큰 제목 글자뿐) */
 .buy2{justify-self:start;margin-top:16px;display:inline-flex;align-items:center;padding:12px 16px;border-radius:var(--btn-r);background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);white-space:nowrap}
+@media (hover:hover){.buy2:hover{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}}  /* 11/2 동원 '교보문고에서 사기 마우스 오버시 달라지는 부분이 있어야지 뭐 흰색으로 된다거나' — 헤더 CTA와 같게 평소 먹, 올리면 흰 바탕 · 테두리 */
 
 /* ③ 나 */
 /* 글자 팔레트(10/28 동원 'B 첫 화면 바로 아래' — 10/26 동원 제안 '색의 팔레트가 아닌 글자의 팔레트'): 시집에 쓴 글자 612가지를 많이 쓴 글자부터 한 번씩, 한 줄 28자.
@@ -651,7 +650,8 @@ html.sr-on{overflow:hidden}
 @media (prefers-reduced-motion:no-preference){
   .nt.in b i{animation:nxp 2.4s ease-in-out 3}  /* '준비 중' 점이 화면에 들어오면 세 번 숨 쉬고 멈춤(10/27 숨 재기 1 — 전엔 쪽을 연 때부터 끝없이) · '동작 줄이기'면 멈춘 점 */
   .top nav a{transition:color .35s var(--ease),opacity .4s}
-  .top nav a::after,.js .top .sq::after{transition:background-color .2s var(--ease)}  /* 회색 상자가 0.2초에 번짐(11/2) */
+  .top nav a::after,.js .top .sq::after{transition:background-color .2s var(--ease)}
+  .buy2{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease)}  /* 교보 단추 호버 0.3초(11/2 — CTA와 같게) */  /* 회색 상자가 0.2초에 번짐(11/2) */
   .top .act a.cta{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),opacity .4s}  /* 맨 위 테두리 → 먹 채움 0.3초(10/29 고침 2) */  /* 누르면 옅어졌다 0.4초에 돌아옴(10/28 ⑧ — 옅어지는 것은 손가락 기기만, 컴퓨터는 opacity가 바뀌지 않아 그대로) */
   .top nav .ul{transition:transform .5s var(--ease),width .5s var(--ease),opacity .3s}  /* 지금 칸 밑줄이 미끄러짐('동작 줄이기'면 바로 그 자리) */
   .mini{transition:transform .5s var(--ease),visibility 0s .5s}  /* 작은 재생기는 아래에서 올라오고 내려감('동작 줄이기'면 바로) */

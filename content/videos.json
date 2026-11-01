@@ -8,7 +8,7 @@
       "일본"
     ],
     "thumb": "img/next.png",
-    "credit": "스틸: Film Movement 보도 자료",
+    "credit": "출처: Film Movement 보도 자료",
     "en": {
       "title": "All About Lily Chou-Chou",
       "creator": "Shunji Iwai",
@@ -16,7 +16,7 @@
         "2001",
         "Japan"
       ],
-      "credit": "Stills: Film Movement press kit"
+      "credit": "Stills courtesy of Film Movement"
     },
     "ja": {
       "title": "リリイ・シュシュのすべて",
@@ -25,7 +25,7 @@
         "2001",
         "日本"
       ],
-      "credit": "場面写真：Film Movement プレス資料"
+      "credit": "出典：Film Movement プレス資料"
     },
     "stills": [
       "img/stills/1.jpg",

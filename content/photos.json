@@ -1,12 +1,12 @@
 {
   "account": {
     "link": "instagram",
-    "desc": "인스타그램 · 직접 찍은 사진",
+    "desc": "",
     "en": {
-      "desc": "Instagram · photos by Dongwon Nam"
+      "desc": ""
     },
     "ja": {
-      "desc": "Instagram · 自分で撮った写真"
+      "desc": ""
     }
   },
   "instagram": {

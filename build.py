@@ -1329,7 +1329,7 @@ def render(site, poem, videos, photos, lang="ko"):
     parts = "".join(part(p, kp) for p, kp in zip(toc["parts"], toc_ko["parts"]))
     bintro = (f'<div class="bintro"><p class="bhead">{"<br>".join(e(x) for x in bi["lead"])}</p>'
               f'<p class="btext">{keep(bi["text"])}</p>'
-              f'<div class="btoc" id="toc"><h3>{e(toc["label"])}</h3><p class="key"><i></i>{t("toc_key")}</p><div class="parts">{parts}</div>'
+              f'<div class="btoc" id="toc"><h3>{e(toc["label"])}</h3><div class="parts">{parts}</div>'
               f'<ol class="tail">{"".join(toc_li(r, k) for r, k in zip(toc["tail"], toc_ko["tail"]))}</ol></div></div>')
     exl, plab = (x.replace("\x00MONTH\x00", month_row[0]) for x in (exl, plab))
     exl = exl.replace("<dl>", f'<dl class="n{6 if month_row[0] else 5}">', 1)  # 라벨 칸 수 — 컴퓨터 한 줄 짜임이 '이달의 한 줄'이 든 달(여섯 칸)에도 맞게(10/29 고침 2)  # 첫 화면 라벨의 '이달의 한 줄' — 차례에서 그달 줄을 찾은 뒤(열린 줄이 없으면 빈 칸)
@@ -1416,7 +1416,7 @@ def render(site, poem, videos, photos, lang="ko"):
         # 시집 쪽 h1(11/1 동원 버튼 "함께 넣어 (권장)" — 명품 사이트 조사 제안 ①: 상품 쪽 h1은 상품 이름): 이름 · 첫 시집 줄 + 큰 제목 + 작은 제목을 한 h1로 — 보이는 모양은 그대로(전엔 h1이 위 작은 줄뿐).
         # 휴대폰의 작은 제목은 책 옆(.side .hs — 읽기 도구에는 숨김)이 보이고, h1 안의 작은 제목(.hsl)은 휴대폰에선 화면 밖 글(읽기 도구만) · 768px부터 보임
         "home": f"""  <section id="home" aria-label="{t("home_label")}">
-    <div class="l"><h1 class="hh"><span class="kick"><span class="name" data-type="{e("|".join(typing_steps(S["name"])))}">{e(S["name"])}</span> <span>{t("ex_kick")}</span></span>
+    <div class="l"><h1 class="hh"><span class="kick"><span class="sr">{e(S["name"])} </span><span class="name" data-type="{e("|".join(typing_steps(L["ex_kick"])))}">{t("ex_kick")}</span></span>
       <span class="ht">{ht}</span><span class="hs hsl">{hs}</span></h1>{paths("pl")}</div>
     <div class="r book"><div class="side"><p class="hs" aria-hidden="true">{hs}</p>{paths("ps")}</div>
       <div class="bk" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="{t("cover_alt", book=e(book["title"]) if en else e(book["title"]))}" width="600" height="881" fetchpriority="high" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i><i class="win"></i></div>
@@ -1442,7 +1442,7 @@ def render(site, poem, videos, photos, lang="ko"):
 """,
         "photo": f"""  <section id="photo" aria-labelledby="photo-t">
     <p class="label">{t("label_photo")}</p>
-    <div class="r top2"><div class="head"><h2 id="photo-t">{e(acc["handle"])}</h2><span>{e(acc["desc"])}</span></div>
+    <div class="r top2"><div class="head"><h2 id="photo-t">{e(acc["handle"])}</h2>{f'<span>{e(acc["desc"])}</span>' if acc.get("desc") else ""}</div>
       <p class="mode" role="group" aria-label="{t("mode_label")}"><button type="button" data-m="one" aria-pressed="true">{t("mode_one")}</button><button type="button" data-m="all" aria-pressed="false">{t("mode_all")}</button></p></div>
     <div class="l"><div class="strip" tabindex="0" aria-label="{t("strip", n=n)}">{"".join(shots)}</div>
       <div class="thumbs">{thumbs}</div><div class="pgrid" hidden>{pgrid}</div></div>

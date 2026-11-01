@@ -82,9 +82,9 @@
     "ja": "「{poem}」を読む ↓"
   },
   "ex_kick": {
-    "ko": "첫 시집 · 웹 전시",
-    "en": "· First poetry collection · A\u00a0web exhibition",
-    "ja": "第一詩集 · ウェブ展示"
+    "ko": "시집",
+    "en": "Poetry collection",
+    "ja": "詩集"
   },
   "ex_tip": {
     "ko": "눌러서 책등 · 뒤표지 보기",
