@@ -263,8 +263,7 @@ html:lang(en) .top nav{letter-spacing:.03em;gap:12px}  /* 영어 낱말은 한�
    구분선은 다시 언어 단추 앞 하나(위 .lang 규칙 그대로) · 돋보기는 구분선 없이 언어와 상자 사이 · 상자는 책 카드 '교보문고에서 사기'와 같은 먹 채운 상자, 띠 높이는 그대로(margin −4px).
    지금 칸이 연락이어도 · 마우스를 올려도 글자는 종이색(.on · :hover의 먹색을 덮음) — 밑줄은 main.js가 상자 밑에 그리지 않음 */
 .top .act a.cta{display:inline-flex;align-items:center;margin:-4px 0;padding:8px 12px;border-radius:var(--btn-r);background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);letter-spacing:.04em;white-space:nowrap}
-.top .act a.cta.on,.top .act a.cta:hover{color:var(--bg)}
-.top:not(.sc) .act a.cta:not(:hover){background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}  /* 쪽 맨 위에서는 테두리만 — 첫 화면에서 가장 어두운 것은 책의 검은 띠, 내리기 시작해 띠 아래 선(.sc)이 생기면 먹으로 채움 · 마우스를 올려도 채움(10/29 동원 '맨 위는 테두리' — 새 눈 비평 고침 2) */
+@media (hover:hover){.top .act a.cta:hover{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}}  /* 11/2 동원 '연락하기 상시값 검은색으로 … 마우스를 올리면 지금 상황이 되고' — 평소엔 맨 위에서도 먹 상자, 마우스를 올리면 테두리만(전엔 거꾸로 — 맨 위 테두리 · 내리거나 올리면 먹) · 연락 쪽도 같음 */
 /* 휴대폰 한 줄 맞춤(실측 — 상자만큼 메뉴가 넓어져 375 · 390 한국어 · 360 · 412 영어에서 두 줄로 넘어갔음): 375–419 한국어 메뉴 간격 16 → 10 · 영어 좁은 간격을 419까지 · 영어 국기만을 374까지 · 374 아래 상자 여백 6 · 8 · 359 아래 한국어 간격 6(10/28 단 검사로 상자 여백을 단에 맞춤 — 컴퓨터 · 휴대폰 8 · 12 한 규칙) */
 @media (min-width:375px) and (max-width:419px){html:lang(ko) .top nav{gap:10px}}
 @media (min-width:410px) and (max-width:419px){html:lang(en) .top nav{gap:7px;letter-spacing:0}html:lang(en) .top nav .lang{padding-left:8px}html:lang(en) .top nav .lang .fl{margin-right:4px}}
@@ -273,7 +272,7 @@ html:lang(en) .top nav{letter-spacing:.03em;gap:12px}  /* 영어 낱말은 한�
 @media (min-width:375px) and (max-width:389px){html:lang(ko) .top nav{gap:9px}html:lang(en) .top nav{gap:6px}}@media (min-width:420px) and (max-width:449px){html:lang(en) .top nav{gap:12px}}  /* 375 · 430(영어)에서 첫 메뉴가 화면 왼쪽 끝에 9–10px로 붙지 않게 — 지금처럼 15px 안팎 */
 /* 일본어판 맨 위 띠(11/1 — 「お問い合わせ」 단추가 '연락하기'보다 28px 넓어 390px에서 메뉴가 두 줄이었음): 449px 아래는 메뉴 간격 8 · 자간 0, 389px 아래는 간격 6 · 단추 안쪽 6 · 8, 359px 아래는 글자 11px(영어판 좁은 폭 규칙과 같은 길) — 320–430 일곱 넓이 한 줄 실측 */
 @media (max-width:449px){html:lang(ja) .top nav{gap:8px;letter-spacing:0}html:lang(ja) .top .act a.cta{letter-spacing:0}}
-@media (max-width:389px){html:lang(ja) .top nav{gap:6px}html:lang(ja) .top .act{gap:8px;margin-left:8px;padding-left:8px}html:lang(ja) .top .act a.cta{padding:6px 8px}}
+@media (max-width:389px){html:lang(ja) .top nav{gap:6px}html:lang(ja) .top .act{gap:8px;margin-left:8px}html:lang(ja) .top .act a.cta{padding:6px 8px}}
 @media (max-width:359px){html:lang(ja) .top nav{gap:6px;font-size:11px}html:lang(ja) .top .act a.cta{font-size:11px}}
 html:lang(ja) #home .hs,html:lang(ja) .hb{text-wrap:balance}.nw{white-space:nowrap}html:lang(ja) :is(.hb,#home .hs,.bhead,.tagl,.h2,#poem .pbr,.colo .end):lang(ja){word-break:auto-phrase}  /* 일본어 부제 · 소개 첫 문장은 줄을 고르게(글자 사이에서 갈려 '生きているものた / ちで'처럼 남던 것) · 사람 이름은 한 덩어리(build.py names — 'ナム・ド / ンウォン') · 크게 쓰는 줄은 말마디에서 갈림(word-break:auto-phrase — 크롬 119부터, 모르는 브라우저는 normal 그대로) */
 html:lang(en) .label,html:lang(en) .sub{text-transform:uppercase;letter-spacing:.1em}  /* 영어 꼬리표는 대문자 + 자간 조금(Oui Non · Fitzcarraldo) */
@@ -512,6 +511,11 @@ html.sr-on{overflow:hidden}
 .send{justify-self:start;font:600 14px/1 var(--sans);padding:12px 22px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:var(--btn-r);cursor:pointer;-webkit-tap-highlight-color:transparent}
 @media (hover:hover){.send:hover{background:var(--ink);color:var(--bg)}}
 @media (hover:hover){.top nav a:hover,.top .sq:hover,.nav2 button:hover,.sns a:hover,.colo .thm button:hover{color:var(--ink)}.js .hint:hover{color:var(--muted)}}  /* 마우스 기기에서만 — 손가락 기기에서 누른 메뉴 이름이 먹색으로 남아 '지금 칸' 표시와 둘이 되던 것(10/28 일본 디테일 ②) */  /* 마우스에서만 — 아이폰에서 누른 뒤 검게 남지 않게 */
+/* 마우스를 올리면 옅은 회색 상자(11/2 동원 '마우스를 가까이 대면 … 회색이 된다거나 검은색 상자가 된다거나 · 돋보기 까지 마찬가지' → 시안 `메뉴마우스시안_v1_A·B.png` 'A 옅은 회색') —
+   메뉴 이름 · 돋보기에 같게, 글자 뒤 ::after라 자리가 밀리지 않음 · 모서리는 단추와 같은 2px · 손가락 기기는 그대로(올림이 없음) */
+.top nav a::after,.js .top .sq::after{content:"";position:absolute;z-index:-1;border-radius:var(--btn-r);background:transparent}
+.top nav a::after{inset:-2px -8px}.js .top .sq::after{inset:-2px -4px}
+@media (hover:hover){.top nav a:hover::after,.js .top .sq:hover::after{background:var(--ph)}}
 .send:active{background:var(--ink);color:var(--bg)}  /* 누르는 동안 먹으로(10/24 ⑨ A) */
 .msg{min-height:1.4em;font:300 12.5px/1.5 var(--sans);color:var(--muted)}
 .hp{position:absolute;left:-9999px}
@@ -647,6 +651,7 @@ html.sr-on{overflow:hidden}
 @media (prefers-reduced-motion:no-preference){
   .nt.in b i{animation:nxp 2.4s ease-in-out 3}  /* '준비 중' 점이 화면에 들어오면 세 번 숨 쉬고 멈춤(10/27 숨 재기 1 — 전엔 쪽을 연 때부터 끝없이) · '동작 줄이기'면 멈춘 점 */
   .top nav a{transition:color .35s var(--ease),opacity .4s}
+  .top nav a::after,.js .top .sq::after{transition:background-color .2s var(--ease)}  /* 회색 상자가 0.2초에 번짐(11/2) */
   .top .act a.cta{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),opacity .4s}  /* 맨 위 테두리 → 먹 채움 0.3초(10/29 고침 2) */  /* 누르면 옅어졌다 0.4초에 돌아옴(10/28 ⑧ — 옅어지는 것은 손가락 기기만, 컴퓨터는 opacity가 바뀌지 않아 그대로) */
   .top nav .ul{transition:transform .5s var(--ease),width .5s var(--ease),opacity .3s}  /* 지금 칸 밑줄이 미끄러짐('동작 줄이기'면 바로 그 자리) */
   .mini{transition:transform .5s var(--ease),visibility 0s .5s}  /* 작은 재생기는 아래에서 올라오고 내려감('동작 줄이기'면 바로) */
@@ -805,12 +810,11 @@ html.sr-on{overflow:hidden}
 
 /* 쪽 나누기(10/31 동원 "랜딩페이지는 내 소개를 넣고 … 따로 페이지를 분리") — 판권면은 모든 쪽 끝 바닥글(컴퓨터는 전처럼 오른쪽 단) · 소개 쪽 갈래 넷은 10/31 동원 '소개에서 링크를 깔 필요가 없잖아'로 뺌(쪽 사이 길은 맨 위 띠 메뉴) */
 .foot{padding:0 20px 64px}.foot .colo{margin-top:0}
-.top:not(.sc) .act a.cta.on:not(:hover){background:var(--ink);color:var(--bg);box-shadow:none}  /* 연락 쪽: 맨 위에서도 먹 상자 — 다른 쪽 메뉴의 밑줄과 같은 '지금 쪽' 표시 */
 @media (min-width:768px){.foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:72px;padding:0 64px 64px}.foot .colo{grid-column:2}}
-/* 맨 위 띠 오른쪽 찾기 · 연락하기(10/31 메뉴를 가운데로 — 메뉴 밖 묶음) · 휴대폰은 메뉴와 사이 구분선(전엔 언어 단추 앞) */
+/* 맨 위 띠 오른쪽 찾기 · 연락하기(10/31 메뉴를 가운데로 — 메뉴 밖 묶음) · 휴대폰은 메뉴와 사이 구분선(전엔 언어 단추 앞) → 11/2 구분선 뺌 */
 .top .act a{position:relative}  /* 누르는 자리(::before)가 연락하기 상자 기준으로 — 없으면 띠 전체 기준이라 컴퓨터에서 옆으로 6px 넘쳤음(실측) */
-.top .act{display:flex;align-items:center;gap:16px;margin-left:12px;padding-left:12px;border-left:1px solid var(--line);white-space:nowrap}
-@media (max-width:374px){.top .act{gap:8px;margin-left:8px;padding-left:8px}}
+.top .act{display:flex;align-items:center;gap:16px;margin-left:12px;white-space:nowrap}  /* 돋보기 앞 구분선 뺌(11/2 동원 '돋보기 왼쪽에 선 없애고') */
+@media (max-width:374px){.top .act{gap:8px;margin-left:8px}}
 /* 바닥글 언어 줄(10/31 동원 '언어 설정 하단 푸터로') — 화면 줄 바로 아래, 지금 판은 먹 글자 · 다른 판은 밑줄 링크 */
 .colo .lng span{color:var(--ink)}.colo .lng a{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}
 @media (hover:hover){.colo .lng a:hover{color:var(--ink)}}
