@@ -1,6 +1,6 @@
 {
   "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로 · when \"goatcounter\" 줄과 lead_counted는 방문 셈(site.json analytics.goatcounter)을 켰을 때만 — 10/27 동원 '방문 셈 문구 이대로 처리방침에 넣어'(켜는 날 updated를 그날로) · 10/27 동원 '문의 폼은 B로 하자' — 문의 폼 없이 메일 · 인스타그램, Formspree(미국 등)는 방명록만 · 10/27 동원 '이대로 넣어'(웹사이트 점검 5 · 6번, 초안 기준/처리방침 · 영어 문구 고침 초안_v1.md) — when \"guestbook\" 줄은 방명록 폼 아이디(site.json contact.guestbook_formspree_id)가 있을 때만, 칸에 보일 줄이 없으면 empty 한 줄 · 4절 GitHub Pages IP 줄(GitHub Docs 'About GitHub Pages' › Data collection) · 10/27 밤 동원 '이대로 넣어'(초안 기준/출간 전 문구 고침 초안_v1.md 2 — 3인칭 남동원 · 보호책임자 · 인스타그램 메시지 보관 기간 · 화면 낱말 차례 · 3절 받는 정보 줄) · when \"ga4\" 줄 · unless \"ga4\" 줄(켜면 숨김) · lead_ga는 GA4(site.json analytics.ga4)를 켰을 때만 — 11/1 동원 'ga4로 하자'(켜는 날 updated를 그날로 · '14개월'은 GA4 관리 → 데이터 보관 설정과 맞춤 · IP는 기록 · 저장 안 함[출처 support.google.com/analytics/answer/2763052])",
-  "updated": "2026-10-27",
+  "updated": "2026-11-01",
   "title": {
     "ko": "개인정보 처리방침",
     "en": "Privacy policy"

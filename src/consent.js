@@ -21,6 +21,8 @@
     loaded = true;
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
+    // 광고 쪽 신호는 늘 거부 — 동의 창은 광고 목적을 묻지 않음(11/1 동원 버튼 '통과하면 올려 (권장)' 때 함께 알림)[출처 developers.google.com/tag-platform/security/guides/consent]
+    window.gtag("consent", "default", { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: "granted" });
     window.gtag("js", new Date());
     window.gtag("config", id);
     const s = document.createElement("script");
