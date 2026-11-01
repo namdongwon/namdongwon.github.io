@@ -363,9 +363,15 @@ def stanzas_of(text):
 
 # 첫 그림이 그려지기 전에 html에 표시를 붙인다: js(움직임을 켬) · intro(문 장면 — 첫 방문 한 번만, '동작 줄이기'나 #주소로 들어오면 생략, ?door면 다시 봄)
 HEAD_JS = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{var m=matchMedia("(prefers-reduced-motion: reduce)").matches,
-again=/[?&]door\\b/.test(location.search);if(!m&&!location.hash&&(again||!localStorage.getItem("door"))){H.classList.add("intro");localStorage.setItem("door","1")}else if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}})();</script>"""
+again=/[?&]door\\b/.test(location.search);if(!m&&!location.hash&&(again||!localStorage.getItem("door"))){H.classList.add("intro");localStorage.setItem("door","1")}else if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}__CIN__})();</script>"""
 # 문이 없는 쪽(소개 · 인스타그램 · 유튜브 · 연락)의 머리 스크립트 — js · 고른 화면 · 다시 온 표시만. 문을 본 표시(door)는 시집 쪽에서만 남김(소개로 먼저 와도 시집 쪽 첫 방문에 문이 열리게)
-HEAD_JS_PLAIN = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}})();</script>"""
+HEAD_JS_PLAIN = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}__CIN__})();</script>"""
+# 쪽 사이 원형 전환(11/1 동원 버튼 '권하는 묶음으로 (권장)' — ⑩ '페이지 인트로'): 메뉴를 누른 쪽이 남긴 자리(sessionStorage cto: x · y · 때)가 5초 안이면
+# 첫 그림 전에 cin을 붙여 그 자리에서 원이 닫힌 채 시작(여는 건 main.js) · '동작 줄이기' · 시집 첫 방문 문 장면(intro)이면 원 없이
+CIN_JS = ('try{var c=JSON.parse(sessionStorage.getItem("cto")||"null");sessionStorage.removeItem("cto");'
+          'if(c&&Date.now()-c[2]<5e3&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!H.classList.contains("intro"))'
+          '{H.classList.add("cin");H.style.setProperty("--cx",c[0]+"px");H.style.setProperty("--cy",c[1]+"px")}}catch(x){}')
+HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", CIN_JS), HEAD_JS_PLAIN.replace("__CIN__", CIN_JS)
 
 # 쪽 나누기(10/31 동원 "랜딩페이지는 내 소개를 넣고, 다른 시집, 인스타그램, 유튜브 이런 것들은 따로 페이지를 분리 … 연락페이지도 따로 빼는 게 좋다고 생각해"
 # · 버튼 '같은 도메인 아래 주소 (권장)' · "지금 구조 만들어"): 쪽 열쇠(주소 폴더) → 그 쪽에 담는 칸 id, 첫째가 그 쪽 맨 위 칸. "" = 첫 화면(소개)
@@ -850,6 +856,34 @@ def render(site, poem, videos, photos, lang="ko"):
                   f'<p class="rl"><b class="n">{r["n"]:,}</b><span>{keep(L["rec"].format(unit=r["unit"], note=r["note"]) + (L["rec_year"].format(n=this(r), unit=r["unit"]) if this(r) else ""))}</span></p>'
                   f'<canvas class="grid" data-n="{r["n"]}"' + (f' data-y="{this(r)}"' if this(r) else "") + ' aria-hidden="true"></canvas>' for r in S["records"])
 
+    # 소개 첫 화면 문장(11/1 동원 버튼 '권하는 묶음으로 (권장)' — ① '커서에 따라 숨은 영상이 드러나는 히어로' · Born from stone): 큰 명조 한 문장 사이사이 작은 그림.
+    #   {still} 영화 장면(보도 자료 스틸 1장 · 출처 줄) · {book} 시집 표지 · {photo} 가장 최근 인스타그램 사진. 흑백 · 마우스를 올리면 커지고 색 · 아래에 한 줄(style.css)
+    #   소개 이름 아래 한 줄(.tagl)과 같은 말이라 읽기 도구에는 숨김(aria-hidden) — 원고는 site.json hero · en.hero
+    U, p0 = V["upcoming"], (PH["items"] or [None])[0]
+
+    def hero_pic(k):
+        if k == "still" and U.get("stills"):
+            name = e(U["title"]) if en else marked(U["kind"], U["title"])
+            return f"{P}assets/img/stills/1.jpg", name + (f" · {keep(U['credit'])}" if U.get("credit") else ""), ""
+        if k == "book":
+            return f"{P}assets/img/cover.jpg", (f'<i>{e(book["title"])}</i>' if en else f'『{e(book["title"])}』'), " bk"
+        if k == "photo" and p0:
+            a = p0["art"] if is_art(p0) else None
+            head = re.sub(r"<[^>]+>", "", art_parts(a, lang)[0]) if a else e(p0["where"] or "")
+            return f"{P}assets/img/photos/{e(Path(p0['file']).stem)}.jpg", (NB + "· ").join(x for x in (head, keep(p0.get("date") or "")) if x), ""
+        return None
+
+    def hero_line(s):
+        out = []
+        for part in re.split(r"(\{\w+\})", s):
+            m = re.fullmatch(r"\{(\w+)\}", part)
+            pic = hero_pic(m.group(1)) if m else None
+            out.append(f'<span class="hpic{pic[2]}"><img src="{pic[0]}" alt="" decoding="async"><small>{pic[1]}</small></span>' if pic  # 첫 화면이라 바로 받음(lazy면 받지 않은 채 멈춰 있었음 — 실측)
+                       else ("" if m else keep(part)))
+        return "".join(out)
+
+    hero = f'<p class="hb" aria-hidden="true">{"<br>".join(hero_line(x) for x in S["hero"])}</p>' if S.get("hero") else ""
+
     # 사진 칸
     shots, caps = [], []
     for i, p in enumerate(PH["items"]):
@@ -938,7 +972,9 @@ def render(site, poem, videos, photos, lang="ko"):
         if u.get("thumb"):
             # 첫 편 준비 중(10/24 B): 고른 썸네일 시안을 흑백으로 + '준비 중' + 스틸 출처. 올리면 이 자리에 유튜브 썸네일(색)과 재생 단추
             first = e(u["title"]) if en else marked(u["kind"], u["title"])
-            latest = (f'<div class="nt"><img src="{P}assets/img/next.jpg" alt="{t("first_alt", title=first)}" width="1280" height="720" loading="lazy">'
+            # 썸네일에 올리면 보도 자료 스틸이 넘어감(11/1 ⑦ '올리면 재생되는 썸네일' — 영상 · 예고편 대신 스틸만, 마우스 기기만 · main.js) — 스틸은 올릴 때 처음 받음
+            ds = f' data-stills="{"|".join(f"{P}assets/img/stills/{i}.jpg" for i in range(1, len(u["stills"]) + 1))}"' if u.get("stills") else ""
+            latest = (f'<div class="nt"{ds}><img src="{P}assets/img/next.jpg" alt="{t("first_alt", title=first)}" width="1280" height="720" loading="lazy">'
                       f'<b><i aria-hidden="true"></i>{t("coming")}</b></div>')
             info = sentence(u, lang, kinds) + (f'<p class="cr">{keep(u["credit"])}</p>' if u.get("credit") else "")
         else:
@@ -1201,7 +1237,7 @@ def render(site, poem, videos, photos, lang="ko"):
         "palette": "  " + palette.rstrip() + "\n",
         "me": f"""  <section id="me" aria-labelledby="me-t">
     <p class="label">{t("label_me")}</p>
-    <div class="l"><h2 class="h2" id="me-t">{e(S["name"])}</h2><p class="tagl">{keep(S["tagline"])}</p><p class="bio">{rich(S["bio"])}</p></div>
+    {hero}<div class="l"><h2 class="h2" id="me-t">{e(S["name"])}</h2><p class="tagl">{keep(S["tagline"])}</p><p class="bio">{rich(S["bio"])}</p></div>
     <div class="r"><ul class="years">{years}</ul>{fnb}{nowb}<div class="rec">{rec}</div></div>
   </section>
 """,
@@ -1512,6 +1548,9 @@ def main():
     up = videos.get("upcoming") or {}
     if not videos["items"] and up.get("thumb"):
         save_jpg(CONTENT / up["thumb"], ASSETS / "img/next.jpg", 1280, quality=80)  # 원본 1280px 그대로(10/28 모양 점검 ⑨ — 800px를 컴퓨터 칸에 1.55배로 늘여 제목 글자가 흐렸음)
+    # 썸네일 스틸 넘김 · 소개 첫 화면 문장의 영화 장면(11/1 ⑦ · ①) — 보도 자료 스틸을 16:9 1280px로(content/img/stills, 원본은 편 폴더)
+    for i, s in enumerate(up.get("stills", []), 1):
+        save_jpg(CONTENT / s, ASSETS / "img/stills" / f"{i}.jpg", 1280, quality=80)
     for p in photos["items"]:
         save_jpg(psrc(p), ASSETS / "img/photos" / (Path(p["file"]).stem + ".jpg"), 1080)
         save_jpg(psrc(p), ASSETS / "img/photos/thumb" / (Path(p["file"]).stem + ".jpg"), 240, quality=72)

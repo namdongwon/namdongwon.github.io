@@ -17,7 +17,15 @@
         "Japan"
       ],
       "credit": "Stills: Film Movement press kit"
-    }
+    },
+    "stills": [
+      "img/stills/1.jpg",
+      "img/stills/2.jpg",
+      "img/stills/3.jpg",
+      "img/stills/4.jpg",
+      "img/stills/5.jpg",
+      "img/stills/6.jpg"
+    ]
   },
   "items": []
 }

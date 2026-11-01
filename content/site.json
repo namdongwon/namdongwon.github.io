@@ -662,6 +662,16 @@
     "colophon": {
       "note": "Please ask before reusing the text or photos.",
       "made": "Written, photographed and set in Seoul"
-    }
-  }
+    },
+    "hero": [
+      "Dongwon Nam {photo},",
+      "an office worker who writes {book} poems",
+      "and reviews {still} what he sees"
+    ]
+  },
+  "hero": [
+    "보는 것을 {still} 리뷰하는,",
+    "시를 {book} 쓰는",
+    "회사원, {photo} 남동원"
+  ]
 }

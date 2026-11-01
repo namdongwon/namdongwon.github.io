@@ -1157,4 +1157,216 @@
       if (mine && !el.hidden) { popping = true; btn.click(); }
     });
   });
+  // ── 마우스 반응 열(11/1 동원 버튼 '권하는 묶음으로 (권장)' — 패스트캠퍼스 강의 쪽에서 고른 열, 시안 `기준/브랜드 시안/고른열시안_v1.mp4`)
+  // 마우스로만 하는 것은 마우스 기기(hover:hover · pointer:fine)에서만 · 움직이는 것은 '동작 줄이기'면 빼고 · 라이브러리 없이
+  const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  // ② 시집 첫 화면 책 장면(← '스크롤에 따라 장면이 바뀌는 히어로' · Aube) — 넓은 화면 · 움직임 허용이면 #home에 .scene(style.css). 첫 화면을 지나 내려가는 동안
+  //   책 칸이 붙어 있고 책이 가운데로 옮겨 가며(--sx · 처음 20%) 한 바퀴(--ry 26° → 386°) · 라벨이 차례로 곁에(박물관 라벨 .lab에서 작품 · 지은이를 뺀 사양 · (이달의 한 줄) · 재료 · 소장처 —
+  //   글만 옮기고 링크 '팔레트 보기 ↓' 같은 말은 뺌 · 링크는 화면 밖에 남긴 .lab이 그대로 맡음)
+  const sBk = home && home.querySelector(".bk"), sB = sBk && sBk.querySelector(".b"), sLab = home && home.querySelector(".lab");
+  if (sB && sLab && motion && matchMedia("(min-width: 1024px)").matches) {
+    home.classList.add("scene");
+    const sR = sBk.closest(".r"), side = ["L", "R", "L", "R"], at = [.12, .3, .48, .66];
+    const cos = [...sLab.querySelectorAll("dl > div")].slice(2, 6).map((d, i) => {
+      const c = document.createElement("div"), dd = d.querySelector("dd").cloneNode(true);
+      dd.querySelectorAll("a").forEach(a => a.remove());
+      c.className = "bco " + side[i];
+      c.setAttribute("aria-hidden", "true");
+      c.innerHTML = `<b>${d.querySelector("dt").textContent}</b>`;
+      c.append(dd.textContent.replace(/\s*—\s*$/, "").trim());
+      sR.appendChild(c);
+      return c;
+    });
+    let geo = null, pend = false;
+    const place = () => {
+      sBk.style.setProperty("--sx", "0px");
+      const rr = sR.getBoundingClientRect(), br = sBk.getBoundingClientRect(), mid = innerWidth / 2;
+      geo = { sx: mid - (br.left + br.width / 2), max: Math.max(1, home.offsetHeight - innerHeight) };
+      cos.forEach((c, i) => {
+        c.style.top = (br.top - rr.top + br.height * (.14 + i * .2)) + "px";
+        if (side[i] === "L") { c.style.right = (rr.left + rr.width - (mid - br.width / 2 - 52)) + "px"; c.style.left = "auto"; }
+        else { c.style.left = (mid + br.width / 2 + 52 - rr.left) + "px"; c.style.right = "auto"; }
+      });
+    };
+    const upd = () => {
+      pend = false;
+      if (!geo) place();
+      const p = Math.min(1, Math.max(0, -home.getBoundingClientRect().top / geo.max)), q = Math.min(1, p / .2);
+      sBk.style.setProperty("--sx", (geo.sx * q * q * (3 - 2 * q)).toFixed(1) + "px");
+      if (p > 0) sB.style.setProperty("--ry", (26 + p * 360).toFixed(1) + "deg");  // 맨 위에서는 책 만지기(끌어 돌리기 · 누르기)가 정한 각 그대로
+      home.classList.toggle("moved", p > .02);
+      cos.forEach((c, i) => c.classList.toggle("on", p >= at[i]));
+    };
+    addEventListener("scroll", () => { if (!pend) { pend = true; requestAnimationFrame(upd); } }, { passive: true });
+    addEventListener("resize", () => { geo = null; upd(); }, { passive: true });
+    upd();
+  }
+
+  // ③ 「탁본」 칠(← '끌어서 하이라이트 커서') — 마우스로 끌어 고른 낱말이 손을 떼면 칠로 남음(고르는 동안의 선택 색 · 먹 바탕 + 흰 글과 같은 꼴). 복사는 그대로 · 칠한 낱말을 한 번 누르면 지움
+  //   길게 누르기(탁본 한 장)는 8px 넘게 움직이면 풀리는 지금 규칙이라 겹치지 않음 · 낱말은 띄어쓰기 단위로 감쌈(행 id · 글은 그대로 — 찾기 · 깊은 링크 #l9 그대로)
+  const verse = document.querySelector(".poem");
+  if (verse && fine) {
+    verse.querySelectorAll(".ln, .le").forEach(ln => {
+      if (ln.children.length) return;  // 안에 다른 칸(기울임 등)이 있으면 그대로
+      const parts = ln.textContent.split(/(\s+)/);
+      ln.textContent = "";
+      parts.forEach(w => {
+        if (!w) return;
+        if (/^\s+$/.test(w)) { ln.append(w); return; }
+        const s = document.createElement("span");
+        s.className = "w";
+        s.textContent = w;
+        ln.append(s);
+      });
+    });
+    let down = null;
+    verse.addEventListener("mousedown", ev => { if (ev.button === 0) down = [ev.clientX, ev.clientY]; });
+    addEventListener("mouseup", ev => {
+      if (!down) return;
+      const far = Math.hypot(ev.clientX - down[0], ev.clientY - down[1]) > 6, sel = getSelection();
+      down = null;
+      if (!far) {
+        const w = ev.target.closest && ev.target.closest(".poem .w.ink");
+        if (w && sel.isCollapsed) w.classList.remove("ink");
+        return;
+      }
+      if (sel.isCollapsed || !verse.contains(sel.anchorNode)) return;
+      verse.querySelectorAll(".w").forEach(w => { if (sel.containsNode(w, true)) w.classList.add("ink"); });
+    });
+  }
+
+  // ④ 「탁본」 읽기 진행(← '읽은 만큼 차오르는 진행 바') — 시 칸이 화면 위 30% 선을 지나는 동안 맨 위 띠 바로 아래 먹 줄이 차오름(모든 기기)
+  const poemSec = document.querySelector("#poem");
+  if (poemSec) {
+    const bar = document.createElement("i");
+    bar.className = "rbar";
+    bar.setAttribute("aria-hidden", "true");
+    document.body.appendChild(bar);
+    let pend = false;
+    const upd = () => {
+      pend = false;
+      const r = poemSec.getBoundingClientRect(), y = innerHeight * .3;
+      bar.style.transform = `scaleX(${Math.min(1, Math.max(0, (y - r.top) / Math.max(1, r.height - y))).toFixed(4)})`;
+      bar.classList.toggle("on", r.top < y && r.bottom > 0);
+    };
+    addEventListener("scroll", () => { if (!pend) { pend = true; requestAnimationFrame(upd); } }, { passive: true });
+    upd();
+  }
+
+  // ⑤ 인스타그램 3D 고리(← '클릭 & 드래그 3D' · STNT · 궤도) — 마우스 기기 · 움직임 허용이면 '모아 보기'의 여덟 장을 3D 고리로(흑백 · 머문 장은 색).
+  //   천천히 돎(장 위에 있거나 끄는 동안 · 화면 밖이면 멈춤) · 끌어 돌리기 · 누르면 그 게시물로(모아 보기 단추를 그대로 누름) · 키보드는 장마다 단추. 그 밖은 흑백 한 줄 그대로(⑥ — style.css)
+  const pgrid = document.querySelector(".pgrid");
+  if (pgrid && fine && motion) {
+    const bs = [...pgrid.querySelectorAll(":scope > button")];
+    const ring = document.createElement("div");
+    ring.className = "ring";
+    ring.innerHTML = `<div class="rot">${bs.map((b, i) => `<button type="button" class="rc" style="--i:${i};--n:${bs.length}" data-i="${i}"><img alt="" draggable="false"></button>`).join("")}</div>` +
+      `<p class="rh" aria-hidden="true">${uiText("ring_hint", "끌어서 돌리기 · 누르면 크게")}</p>`;
+    ring.querySelectorAll(".rc").forEach((c, i) => {
+      const s = bs[i].querySelector("img");
+      c.setAttribute("aria-label", bs[i].getAttribute("aria-label") || "");
+      c.firstChild.src = s.getAttribute("src") || s.dataset.src;
+    });
+    pgrid.before(ring);
+    H.classList.add("ringon");
+    const rot = ring.querySelector(".rot");
+    let a = 0, drag = null, hov = false, live = false, last = 0, moved = 0;
+    const tick = now => {
+      const dt = last ? Math.min(50, now - last) : 16;
+      last = now;
+      if (!drag && !hov) a += dt * .0085;  // 초당 8.5° — 한 바퀴 약 42초
+      rot.style.setProperty("--a", a.toFixed(2) + "deg");
+      if (live) requestAnimationFrame(tick); else last = 0;
+    };
+    new IntersectionObserver(es => {
+      const v = es[0].isIntersecting;
+      if (v && !live) { live = true; requestAnimationFrame(tick); } else if (!v) live = false;
+    }).observe(ring);
+    ring.addEventListener("mouseover", ev => { hov = !!ev.target.closest(".rc"); });
+    ring.addEventListener("mouseleave", () => { hov = false; });
+    ring.addEventListener("pointerdown", ev => {
+      if (ev.button !== 0) return;
+      drag = { x: ev.clientX, a };
+      moved = 0;
+      ring.classList.add("drag");
+      ring.setPointerCapture(ev.pointerId);
+    });
+    ring.addEventListener("pointermove", ev => {
+      if (!drag) return;
+      moved = Math.max(moved, Math.abs(ev.clientX - drag.x));
+      a = drag.a + (ev.clientX - drag.x) * .32;
+    });
+    const end = () => { drag = null; ring.classList.remove("drag"); };
+    ring.addEventListener("pointerup", end);
+    ring.addEventListener("pointercancel", end);
+    ring.addEventListener("click", ev => {
+      const el = ev.detail ? document.elementFromPoint(ev.clientX, ev.clientY) : ev.target, c = el && el.closest(".rc");  // 끌기 중 잡아 둔 포인터 탓에 누른 자리로 다시 찾음
+      if (c && moved <= 5) bs[+c.dataset.i].click();
+      moved = 0;
+    });
+  }
+
+  // ⑦ 유튜브 썸네일 스틸 넘김(← '올리면 재생되는 썸네일') — 마우스 기기에서 썸네일 위 커서의 가로 자리 = 몇째 장(보도 자료 스틸 · 영상 · 예고편은 쓰지 않음). 스틸은 처음 올릴 때 받음
+  const nt = document.querySelector(".nt[data-stills]");
+  if (nt && fine) {
+    const img = nt.querySelector("img"), first = img.getAttribute("src"), list = nt.dataset.stills.split("|");
+    const bar = document.createElement("i");
+    bar.className = "sbar";
+    bar.style.setProperty("--n", list.length);
+    nt.appendChild(bar);
+    let got = false, k = -1;
+    nt.addEventListener("mouseenter", () => { if (!got) { got = true; list.forEach(u => { new Image().src = u; }); } });
+    nt.addEventListener("mousemove", ev => {
+      const r = nt.getBoundingClientRect(), n = Math.max(0, Math.min(list.length - 1, Math.floor((ev.clientX - r.left) / r.width * list.length)));
+      if (n !== k) { k = n; img.src = list[n]; bar.style.setProperty("--k", n); }
+      nt.classList.add("scrub");
+    });
+    nt.addEventListener("mouseleave", () => { k = -1; img.src = first; nt.classList.remove("scrub"); });
+  }
+
+  // ⑨ 연락 — '인스타그램 메시지로 남기기'가 커서 쪽으로 다가옴(← '마그네틱 버튼') · 단추 둘레 90px 안에서 0.32배 · 최대 18px · 1.04배(마우스 기기 · 움직임 허용)
+  const ask = document.querySelector(".ask-off a");
+  if (ask && fine && !reduce) {
+    let box = null;
+    addEventListener("resize", () => { box = null; }, { passive: true });
+    addEventListener("mousemove", ev => {
+      if (!box) {
+        ask.style.transform = "";
+        const r = ask.getBoundingClientRect();
+        box = { x: r.left + r.width / 2, y: r.top + scrollY + r.height / 2, R: Math.max(r.width, r.height) / 2 + 90 };
+      }
+      const dx = ev.clientX - box.x, dy = ev.clientY + scrollY - box.y;
+      if (Math.hypot(dx, dy) < box.R) {
+        let tx = dx * .32, ty = dy * .4;
+        const L = Math.hypot(tx, ty);
+        if (L > 18) { tx *= 18 / L; ty *= 18 / L; }
+        ask.classList.add("pull");
+        ask.style.transform = `translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px) scale(1.04)`;
+      } else if (ask.classList.contains("pull")) { ask.classList.remove("pull"); ask.style.transform = ""; }
+    }, { passive: true });
+  }
+
+  // ⑩ 쪽 사이 원형 전환(← '페이지 인트로') — 맨 위 띠의 쪽 링크(이름 · 메뉴 넷 · 연락하기)를 누르면 누른 자리로 원이 닫히고(0.55초) 다음 쪽이 그 자리에서 열림(0.8초 —
+  //   머리 스크립트가 남긴 cin을 여기서 copen으로). 새 탭 · 수정 키 · 같은 쪽 · '동작 줄이기'면 그대로 · 뒤로 가기로 돌아오면(bfcache) 원을 거둠
+  if (H.classList.contains("cin")) requestAnimationFrame(() => requestAnimationFrame(() => {
+    H.classList.add("copen");
+    setTimeout(() => H.classList.remove("cin", "copen"), 900);
+  }));
+  if (!reduce) document.addEventListener("click", ev => {
+    const a = ev.target.closest && ev.target.closest("header.top a[href]");
+    if (!a || ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || a.target === "_blank") return;
+    const to = new URL(a.href, location.href);
+    if (to.origin !== location.origin || to.pathname === location.pathname) return;
+    ev.preventDefault();
+    const r = a.getBoundingClientRect(), x = ev.detail ? ev.clientX : r.left + r.width / 2, y = ev.detail ? ev.clientY : r.top + r.height / 2;  // 키보드(Enter)면 링크 가운데에서
+    try { sessionStorage.setItem("cto", JSON.stringify([Math.round(x), Math.round(y), Date.now()])); } catch (x2) { /* 사생활 모드 — 다음 쪽은 원 없이 */ }
+    H.style.setProperty("--cx", x + "px");
+    H.style.setProperty("--cy", y + scrollY + "px");  // 닫히는 원은 body 기준(내려 둔 만큼 더함)
+    H.classList.add("cgo");
+    void H.offsetWidth;
+    H.classList.add("cout");
+    setTimeout(() => { location.href = to.href; }, 560);
+  });
+  addEventListener("pageshow", ev => { if (ev.persisted) H.classList.remove("cgo", "cout", "cin", "copen"); });
 })();

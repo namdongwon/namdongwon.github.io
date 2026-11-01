@@ -776,3 +776,150 @@ html.sr-on{overflow:hidden}
 /* 바닥글 언어 줄(10/31 동원 '언어 설정 하단 푸터로') — 화면 줄 바로 아래, 지금 판은 먹 글자 · 다른 판은 밑줄 링크 */
 .colo .lng span{color:var(--ink)}.colo .lng a{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}
 @media (hover:hover){.colo .lng a:hover{color:var(--ink)}}
+/* 동의 창(11/1 동원 "고야드 식으로 하긴 하는데 좀 정확히 따라해봐" · 안 1 고야드 문구 바탕 · "동의 관리는 고야드 동의 관리를 참고해서 적은거야?") — 고야드(Didomi) 세 단계를 그대로.
+   값은 goyard.com/kr_ko 창에서 잰 것(11/1 04:5x 앱 안 브라우저 · 1134px 폭 getComputedStyle): 글은 명조(고야드 Newsreader + 한글 명조 → 우리 --serif) · 제목 · 단추는 고딕(Arial · Goyard → --sans)
+   색만 무채색: 짙은 초록 테두리 · 금색 → 먹 / 푸른 회색 #526e7a → --faint / 글 #333 → 먹 82% / 단추 글 #757575 → --faint / 고른 단추(빨강 · 초록) → 먹 · 이름은 모두 cz-(사이트 .skip · .bk와 겹쳤던 일 뒤) */
+.cz{--cz-t:color-mix(in srgb,var(--ink) 82%,var(--bg));--cz-b1:color-mix(in srgb,var(--ink) 7%,var(--bg));--cz-b3:color-mix(in srgb,var(--ink) 30%,transparent);--cz-ex:color-mix(in srgb,var(--rule) 50%,var(--line));--cz-f5:color-mix(in srgb,var(--ink) 5%,transparent);
+  position:fixed;inset:0;z-index:95;display:grid;place-items:center;padding:16px;background:rgba(255,255,255,.8);background:color-mix(in srgb,var(--bg) 80%,transparent)}  /* 고야드 막: 흰색 80% · 흐림 없음 */
+.cz[hidden],.cz [hidden]{display:none!important}
+html.cz-on{overflow:hidden}
+.cz button{margin:0;padding:0;border:0;background:none;color:inherit;cursor:pointer;text-align:inherit}
+.cz a{color:inherit;text-decoration:underline;text-underline-offset:auto}
+/* 창 — 테두리 1px 먹 + 1px 띄운 바깥 테두리 30%(고야드 두 겹) */
+.cz-box{position:relative;box-sizing:border-box;width:min(652px,100%);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;background:var(--bg);border:1px solid var(--ink);box-shadow:0 0 0 1px var(--bg),0 0 0 2px var(--cz-b3);color:var(--ink);word-break:keep-all}
+.cz-box:focus{outline:none}
+/* 1 첫 창 — 652 · 안쪽 45/25 · 본문 명조 15/20 #333 · 회색 두 줄 12/19.2 300 · 단추 9px 자간 1.35px · 높이 42 · 사이 80 */
+.cz-1{padding:45px 25px;text-align:center;color:var(--cz-t)}
+.cz .cz-x{position:absolute;top:36px;right:26px;font:400 12px/20px var(--serif);text-decoration:underline}
+.cz-m{margin:50px 0 0;font:400 15px/20px var(--serif)}
+.cz .cz-pt{font:inherit;text-decoration:underline}
+.cz-s{margin:15px 0 0;font:300 12px/19.2px var(--serif)}.cz-s span{display:block;color:var(--faint)}
+.cz-b{display:flex;justify-content:center;gap:80px;margin-top:27px}
+.cz .cz-b button{position:relative;padding:8px 0;border-bottom:1px solid var(--faint);font:400 9px/22.4px var(--sans);letter-spacing:1.35px;color:var(--muted)}  /* 넓은 자간은 고야드 그대로(10/29 한글 자간 규칙의 예외 — 이 단추 둘만) */
+.cz .cz-b .cz-yes{border-bottom-color:var(--ink);color:var(--ink)}
+.cz .cz-b button::before,.cz .cz-x::before{content:"";position:absolute;inset:-6px -8px}  /* 누르는 자리 44px 안팎(맨 위 띠와 같은 방법) */
+/* 2 동의 관리 · 3 파트너 선택 — 650 · 안쪽 20 · 제목 굵은 고딕 15/24 · 본문 명조 15/24 · 단추 짝 63×25 굵은 고딕 12 #757575 · 테두리 #eee · 그림자 1px */
+.cz-2,.cz-3{width:min(650px,100%);padding:20px 20px 0;text-align:left}
+.cz-h{display:flex;align-items:center;gap:4px;margin:12px 0 0;min-height:30px}
+.cz-h h2{flex:1;margin:0;font:600 15px/24px var(--sans);color:var(--ink)}
+.cz .cz-c{position:relative;margin-left:auto;font:500 30px/30px var(--sans);color:var(--ink)}
+.cz .cz-bk{position:relative;font:600 15px/24px var(--sans)}
+.cz .cz-c::before,.cz .cz-bk::before{content:"";position:absolute;inset:-8px -12px}
+.cz-t{margin:34px 0 0;font:400 15px/24px var(--serif);color:var(--ink)}
+.cz-3 .cz-t{margin-top:23px}
+.cz-al{margin:16px 0 0;font:600 12px/24px var(--sans);color:var(--faint)}
+.cz-r{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:12px;min-height:33px}
+.cz .cz-e{display:flex;align-items:baseline;font:700 15px/24px var(--serif);color:var(--ink);text-align:left}
+.cz-pl{display:inline-block;width:15px;font:700 16px/24px var(--serif)}
+.cz-rd{display:flex;gap:5px}
+.cz .cz-rd button{position:relative;height:25px;padding:0 20px;border:1px solid var(--cz-b1);background:var(--bg);box-shadow:1px 1px 0 rgba(0,0,0,.1);font:600 12px/12px var(--sans);color:var(--faint);white-space:nowrap}
+.cz .cz-rd button::before{content:"";position:absolute;inset:-10px -2px}  /* 누르는 자리 44px 안팎 */
+.cz .cz-rd button{display:inline-flex;align-items:center;justify-content:center;gap:4px}
+.cz .cz-rd [aria-checked="true"]{background:var(--ink);border-color:var(--cz-b3);color:var(--bg)}  /* 고야드는 고른 '동의 안 함' 빨강 · '동의' 초록 → 먹 */
+.cz .cz-rd [aria-checked="true"]::after{order:-1;font-weight:700}.cz .cz-rd [data-v="0"][aria-checked="true"]::after{content:"×"}.cz .cz-rd [data-v="1"][aria-checked="true"]::after{content:"✓"}  /* 고른 단추 앞 표시(고야드 × · ✓) */
+.cz-d{grid-column:1/-1;margin:0 0 8px}
+.cz-dd{margin:4px 0 0;font:300 14px/24px var(--serif);color:var(--cz-t);text-align:justify}
+.cz-ex{margin-top:10px;padding:10px;border:1px solid var(--cz-ex);background:var(--ph);font:300 10px/16px var(--serif);color:var(--cz-t);text-align:justify}
+.cz-ex b{display:block;font-weight:700}
+.cz-ex p{margin:0;padding:10px 0}.cz-ex p+p{border-top:1px solid var(--cz-ex);padding-bottom:0}
+.cz-rr{display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:10px}
+.cz-rl{font:700 14px/24px var(--serif);color:var(--cz-t)}
+.cz-f{margin:30px 0 0;text-align:right}
+.cz .cz-vb{position:relative;padding:5px 15px;border:1px solid var(--cz-b1);background:var(--bg);box-shadow:1px 1px 0 rgba(0,0,0,.1);font:600 12px/16px var(--sans);color:var(--faint)}
+.cz .cz-vb::before{content:"";position:absolute;inset:-8px -2px}
+.cz-sr{display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin:20px 0 0;padding:10px 0 16px}
+.cz .cz-sv{height:38px;padding:0 20px;border:1px solid color-mix(in srgb,var(--ink) 20%,transparent);background:var(--bg);font:600 16px/18px var(--sans);color:var(--muted)}
+.cz .cz-sv:disabled{opacity:.4;cursor:default}
+.cz-sr em{font:italic 300 12.5px/1.4 var(--serif);color:var(--faint)}.cz .cz-sv:not(:disabled)+em{display:none}  /* 안내는 저장이 흐릴 때만(고야드) */
+.cz-sk{position:absolute;left:-9999px}.cz-sk:focus{position:static}
+/* 3 파트너 — '모든 파트너' 띠(5% 회색 · 8/12) · 목록 상자(테두리 2px 5% · 안쪽 12) · G · 이름 보통 굵기 · 사용자 정보 보기 굵은 명조 12 #666 */
+.cz-va{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:8px 12px;background:var(--cz-f5)}
+.cz-va b{font:700 15px/24px var(--serif)}
+.cz-vl{border:2px solid var(--cz-f5);border-top:0;padding:12px}  /* 목록 상자 — 위 띠에 붙어 있음 */
+.cz-lt{margin:0 2px;font:400 15px/24px var(--serif)}
+.cz-vr{padding:5px 0 0 15px}
+.cz-vr>.cz-e{font-weight:400}
+.cz-vc{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:12px}
+.cz-vc .cz-e{font-size:14px;text-decoration:underline}  /* '동의에 따른 데이터 처리' 굵은 글 + 밑줄(고야드) */
+.cz-vc ul{grid-column:1/-1;margin:4px 0 8px;padding-left:1.4em;font:300 14px/24px var(--serif);color:var(--cz-t)}
+.cz-vr .cz-d>p{margin:4px 0 0;font:300 14px/24px var(--serif);color:var(--cz-t)}
+.cz .cz-u{display:block;margin-top:6px;font:700 12px/24px var(--serif);color:var(--muted)}
+.cz-ui{margin:6px 0 0;padding:10px 12px;border:1px solid var(--cz-ex);font:300 14px/24px var(--serif);word-break:break-all;color:var(--cz-t)}.cz-ui b{font-weight:700;color:var(--ink)}  /* 테두리 상자 · 굵은 이름표(고야드 사용자 ID · 토큰 자리) */
+/* 바닥글 · 처리방침의 '쿠키 설정'(동의 관리 다시 열기) — consent.js가 돌 때만 · 처리방침 링크와 같은 꼴 */
+.cz-open{display:none;position:relative;padding:0;border:0;background:none;color:var(--muted);font:inherit;border-bottom:1px solid currentColor;cursor:pointer}
+.cz-js .cz-open{display:inline}
+.cz-open::before{content:"";position:absolute;inset:-16px -4px}
+.ckp{margin:12px 0 0}
+@media (hover:hover){.cz .cz-rd button:hover,.cz .cz-vb:hover{border-color:var(--cz-b3)}.cz-open:hover{color:var(--ink)}}
+@media (max-width:767px){
+  .cz-1{padding:40px 20px}.cz .cz-x{top:28px;right:20px}.cz-m{margin-top:44px}.cz-b{gap:48px}
+  .cz-2,.cz-3{padding:16px 16px 0}.cz-t{margin-top:22px}.cz-r{grid-template-columns:1fr}.cz-r>.cz-rd{justify-self:end;margin:2px 0 6px}
+  .cz-dd,.cz-ex{text-align:left}  /* 좁은 폭의 양쪽 맞춤은 한글 낱말 사이가 크게 벌어져 휴대폰만 왼쪽 맞춤(실측 11/1) */
+}
+
+/* ── 마우스 반응 열(11/1 동원 버튼 '권하는 묶음으로 (권장)' — 패스트캠퍼스 강의 쪽에서 고른 열, 시안 `기준/브랜드 시안/고른열시안_v1.mp4`). 색은 따르지 않음 — 흰 바탕 · 무채색 · 명조
+   마우스로만 하는 것은 (hover:hover) and (pointer:fine) 안에 · 움직임은 '동작 줄이기'면 뺌(main.js도 같은 기준) */
+/* ① 소개 첫 화면 문장 — 칸 이름 .hpic(.hp는 문의 폼 숨은 칸 이름이라 겹쳐 그림이 화면 밖으로 밀렸음)(← '커서에 따라 숨은 영상이 드러나는 히어로' · Born from stone) — 큰 명조 한 문장 사이사이 작은 그림(흑백). 마우스를 올리면 그림이 커지고 색 · 아래에 한 줄 */
+.hb{margin:16px 0 44px;font:400 34px/1.3 var(--serif);letter-spacing:-.02em;word-break:keep-all}
+.hpic{position:relative;display:inline-block;width:1.3em;height:.86em;margin:0 .16em;vertical-align:-.08em}
+.hpic.bk{width:.6em}
+.hpic img{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1);border-radius:2px}
+.hpic.bk img{outline:1px solid rgba(0,0,0,.14);outline-offset:-1px}  /* 흰 표지가 흰 바탕에 묻히지 않게(첫 화면 책과 같은 값) */
+.hpic small{position:absolute;left:50%;top:calc(220% + 8px);z-index:6;transform:translateX(-50%);padding:2px 6px;background:var(--bg);font:300 12.5px/1.5 var(--sans);letter-spacing:0;color:var(--ink);white-space:nowrap;opacity:0;pointer-events:none}  /* 3.4배로 커진 그림 바로 아래 — 칸 높이의 220%(100% + 커지며 내려온 120%) + 8px · 글자 크기와 상관없이 · 큰 글자 위에 겹쳐도 읽히게 흰 바탕 */
+@media (min-width:768px){
+  #me>.hb{grid-column:1/-1;grid-row:2;margin:44px 0 64px;font-size:clamp(48px,5.6vw,80px)}
+  #me>.l,#me>.r{grid-row:3}
+}
+@media (hover:hover) and (pointer:fine){
+  .hpic:hover{z-index:5}
+  .hpic:hover img{z-index:5;transform:scale(3.4);filter:none;box-shadow:0 22px 64px rgba(0,0,0,.22)}
+  .hpic:hover small{opacity:1}
+}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.hpic img{transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .55s,box-shadow .55s}.hpic small{transition:opacity .3s .2s}}
+/* ② 시집 첫 화면 책 장면(← '스크롤에 따라 장면이 바뀌는 히어로' · Aube) — 넓은 화면 · 움직임 허용 · 자바스크립트(main.js가 #home에 .scene). 첫 화면을 지나 내려가는 동안 책 칸이 붙어 있고(sticky)
+   책이 가운데로 옮겨 가며 한 바퀴 · 곁에 라벨 넷(박물관 라벨 .lab의 글 — .lab은 읽기 도구용으로 화면 밖에 남김) */
+@media (min-width:1024px) and (prefers-reduced-motion:no-preference){
+  #home.scene{min-height:calc(230svh - var(--top));grid-template-rows:auto calc(100svh - var(--top) - 94px) 1fr}
+  #home.scene>.r{grid-row:2/-1;align-self:start;position:sticky;top:calc(var(--top) + 64px)}
+  #home.scene .lab{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  #home.scene .bk{transform:translateX(var(--sx,0px))}
+  #home.scene .tip{transition:opacity .3s}
+  #home.scene.moved .tip{opacity:0}
+  .bco{position:absolute;z-index:3;width:max-content;max-width:250px;font:300 12.5px/1.5 var(--sans);opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s;pointer-events:none}  /* 긴 사양 줄은 250px에서 접힘(1024 폭 오른쪽이 모자람) · 폭은 글 길이대로(max-content — 단 밖에 붙어 left가 없으면 한 글자씩 접혔음) */
+  .bco b{display:block;font:600 11px/1.5 var(--sans);letter-spacing:.04em;color:var(--muted)}
+  .bco.on{opacity:1;transform:none}
+  .bco::after{content:"";position:absolute;top:1.6em;width:36px;height:1px;background:var(--ink)}
+  .bco.L{text-align:right}.bco.L::after{right:-44px}.bco.R::after{left:-44px}
+}
+/* ③ 「탁본」 칠(← '끌어서 하이라이트 커서') — 끌어 고른 낱말이 선택 색(먹 바탕 + 흰 글)과 같은 꼴로 남음 · 시 위 커서는 작은 먹 고리(흰 테 — 어두운 화면에서도) */
+.poem .w.ink{background:var(--ink);color:var(--bg);box-shadow:0 0 0 2px var(--ink)}
+@media (hover:hover) and (pointer:fine){.js .poem{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='11' cy='11' r='8' fill='none' stroke='%23fff' stroke-width='2.5'/%3E%3Ccircle cx='11' cy='11' r='8' fill='none' stroke='%23111' stroke-width='1.2'/%3E%3C/svg%3E") 11 11,text}}
+/* ④ 「탁본」 읽기 진행(← '읽은 만큼 차오르는 진행 바') — 시 칸에 들어와 있을 때만 맨 위 띠 바로 아래 먹 줄 2px */
+.rbar{position:fixed;left:0;right:0;top:var(--top);z-index:11;height:2px;background:var(--ink);transform:scaleX(0);transform-origin:0 50%;opacity:0;pointer-events:none}
+.rbar.on{opacity:1}
+@media (prefers-reduced-motion:no-preference){.rbar{transition:opacity .3s}}
+/* ⑤ 인스타그램 3D 고리(← '클릭 & 드래그 3D' · STNT · 궤도) — 마우스 기기 · 움직임 허용 · '모아 보기'에서만(main.js가 .ring을 만들고 html에 ringon). 장마다 360/n도 · 둘레 390px · 머문 장은 색 */
+.ring{display:none;position:relative;height:460px;margin-top:22px;perspective:1300px;cursor:grab;-webkit-user-select:none;user-select:none;touch-action:pan-y}
+#photo.all .ring{display:block}
+.ringon #photo.all .pgrid{display:none}
+.ring.drag{cursor:grabbing}
+.ring .rot{position:absolute;left:50%;top:44%;transform-style:preserve-3d;transform:rotateX(-9deg) rotateY(var(--a,0deg))}
+.ring .rc{position:absolute;left:0;top:0;width:160px;height:213px;padding:0;border:0;background:none;cursor:pointer;transform:translate(-50%,-50%) rotateY(calc(var(--i) * 360deg / var(--n))) translateZ(390px)}
+.ring .rc img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1);box-shadow:0 12px 30px rgba(0,0,0,.14);transition:filter .4s,transform .4s}
+.ring .rc:hover img,.ring .rc:focus-visible img{filter:none;transform:scale(1.07)}
+.ring .rh{position:absolute;left:0;right:0;bottom:0;margin:0;text-align:center;font:300 11px/1.5 var(--sans);letter-spacing:.06em;color:var(--muted)}
+/* ⑥ 고리를 쓰지 않는 마우스 기기('동작 줄이기')는 흑백 한 줄에 올리면 그 장만 색 — 휴대폰은 지금 그대로 */
+@media (hover:hover) and (pointer:fine){#photo .pgrid>button img{transition:filter .45s}#photo .pgrid>button:hover img{filter:none}}
+/* ⑦ 유튜브 썸네일 스틸 넘김(← '올리면 재생되는 썸네일') — 넘기는 동안 아래 흰 칸 줄로 몇째 장인지 · 흑백은 그대로(준비 중) */
+.nt .sbar{position:absolute;left:0;right:0;bottom:0;height:2px;opacity:0;pointer-events:none;background:linear-gradient(90deg,transparent calc(var(--k,0) * 100% / var(--n,6)),#fff calc(var(--k,0) * 100% / var(--n,6)),#fff calc((var(--k,0) + 1) * 100% / var(--n,6)),transparent calc((var(--k,0) + 1) * 100% / var(--n,6)))}
+.nt.scrub .sbar{opacity:1}
+/* ⑨ 연락 — 메시지 단추를 먹 단추로(맨 위 '연락하기'와 같은 꼴) · 다가오는 움직임(← '마그네틱 버튼')은 main.js(마우스 기기 · 움직임 허용) */
+.ask-off a.buy{align-items:center;padding:12px 16px;border:0;border-radius:999px;background:var(--ink);color:var(--bg)}
+@media (prefers-reduced-motion:no-preference){.ask-off a.buy{transition:transform .55s cubic-bezier(.2,.8,.2,1)}.ask-off a.buy.pull{transition:transform .18s ease-out}}
+/* ⑩ 쪽 사이 원형 전환(← '페이지 인트로') — 맨 위 띠의 쪽 링크를 누른 자리로 원이 닫히고(cgo → cout) 다음 쪽이 그 자리에서 열림(머리 스크립트 cin → main.js copen) · 바깥은 먹 */
+html.cin,html.cgo{background:#111}
+html.cin body,html.cgo body{background:var(--bg)}
+html.cin body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%))}
+html.cin.copen body{clip-path:circle(150vmax at var(--cx,50%) var(--cy,50%));transition:clip-path .8s cubic-bezier(.65,0,.35,1)}
+html.cgo body{clip-path:circle(150vmax at var(--cx,50%) var(--cy,50%))}
+html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition:clip-path .55s cubic-bezier(.65,0,.35,1)}
