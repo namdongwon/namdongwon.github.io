@@ -51,6 +51,7 @@ html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino San
   --sans:"PTD",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   --sys:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;  /* 방문자가 치는 글(폼)은 기기 글꼴 — 줄인 글꼴에 없는 글자가 섞이지 않게 */
   --top:56px;
+  --btn-r:2px;  /* 누르는 단추의 모서리 한 벌(11/1 동원 버튼 "B 각진 2px (권장)" — 명품 20곳 제안 ③ · 시안 `기준/브랜드 시안/단추모서리시안_v1_휴대폰.png`): 에르메스 주 단추 2px · 첫 화면 사진(.hpic img)과 같은 값. 맨 위 '연락하기' · 교보 단추 · 연락 쪽 메시지 · 「탁본」 단추 · 방명록 '보내기'가 씀, 표지(판매 중 · 사진 칩 1/20 · 준비 중)는 알약 그대로 */
   --ease:cubic-bezier(.16,1,.3,1);
 }
 /* 어두운 모드(10/26 동원 "웹사이트 화면에 화이트모드 다크모드 시스템설정 있으면 좋겠다" → "A" 먹 종이) — 「탁본」 한 장의 먹 종이를 사이트 전체로.
@@ -251,7 +252,7 @@ html:lang(en) .top nav{letter-spacing:.03em;gap:12px}  /* 영어 낱말은 한�
 /* → 10/28 맨 위 띠(동원 "연락하기를 맨 오른쪽에 놓고 상자 형태로 … 검색은 그 왼쪽 그리고 한국어 영어 버전은 그 왼쪽" · 'A 먹 채운 상자' · "연락하기로"): 메뉴 넷 | 언어 · 찾기 · [연락하기].
    구분선은 다시 언어 단추 앞 하나(위 .lang 규칙 그대로) · 돋보기는 구분선 없이 언어와 상자 사이 · 상자는 책 카드 '교보문고에서 사기'와 같은 먹 채운 상자, 띠 높이는 그대로(margin −4px).
    지금 칸이 연락이어도 · 마우스를 올려도 글자는 종이색(.on · :hover의 먹색을 덮음) — 밑줄은 main.js가 상자 밑에 그리지 않음 */
-.top .act a.cta{display:inline-flex;align-items:center;margin:-4px 0;padding:8px 12px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);letter-spacing:.04em;white-space:nowrap}
+.top .act a.cta{display:inline-flex;align-items:center;margin:-4px 0;padding:8px 12px;border-radius:var(--btn-r);background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);letter-spacing:.04em;white-space:nowrap}
 .top .act a.cta.on,.top .act a.cta:hover{color:var(--bg)}
 .top:not(.sc) .act a.cta:not(:hover){background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}  /* 쪽 맨 위에서는 테두리만 — 첫 화면에서 가장 어두운 것은 책의 검은 띠, 내리기 시작해 띠 아래 선(.sc)이 생기면 먹으로 채움 · 마우스를 올려도 채움(10/29 동원 '맨 위는 테두리' — 새 눈 비평 고침 2) */
 /* 휴대폰 한 줄 맞춤(실측 — 상자만큼 메뉴가 넓어져 375 · 390 한국어 · 360 · 412 영어에서 두 줄로 넘어갔음): 375–419 한국어 메뉴 간격 16 → 10 · 영어 좁은 간격을 419까지 · 영어 국기만을 374까지 · 374 아래 상자 여백 6 · 8 · 359 아래 한국어 간격 6(10/28 단 검사로 상자 여백을 단에 맞춤 — 컴퓨터 · 휴대폰 8 · 12 한 규칙) */
@@ -268,7 +269,7 @@ html:lang(ja) #home .hs,html:lang(ja) .hb{text-wrap:balance}.nw{white-space:nowr
 html:lang(en) .label,html:lang(en) .sub{text-transform:uppercase;letter-spacing:.1em}  /* 영어 꼬리표는 대문자 + 자간 조금(Oui Non · Fitzcarraldo) */
 html:lang(en) .vt cite{font-style:italic;white-space:nowrap}  /* 영어 관행: 작품 제목은 기울임, 짧은 제목은 한 줄에 */
 html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:400}  /* 일본어판(11/1): 『제목』은 한 덩어리(기울임 없음) · 「拓本」 번역 행은 명조 보통 굵기(영어 360은 Newsreader 가변 굵기 — 源ノ明朝는 300이 큰 제목 글자뿐) */
-.buy2{justify-self:start;margin-top:16px;display:inline-flex;align-items:center;padding:12px 16px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);white-space:nowrap}
+.buy2{justify-self:start;margin-top:16px;display:inline-flex;align-items:center;padding:12px 16px;border-radius:var(--btn-r);background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);white-space:nowrap}
 
 /* ③ 나 */
 /* 글자 팔레트(10/28 동원 'B 첫 화면 바로 아래' — 10/26 동원 제안 '색의 팔레트가 아닌 글자의 팔레트'): 시집에 쓴 글자 612가지를 많이 쓴 글자부터 한 번씩, 한 줄 28자.
@@ -498,7 +499,7 @@ html.sr-on{overflow:hidden}
 .ask input:focus,.ask textarea:focus{border-color:var(--ink)}
 .ask .agree{display:flex;gap:8px;align-items:flex-start;font:300 12.5px/1.5 var(--sans);letter-spacing:0;color:var(--muted)}
 .ask .agree input{margin-top:2px;width:14px;height:14px;accent-color:var(--ink);flex:none}
-.send{justify-self:start;font:600 14px/1 var(--sans);padding:12px 22px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:999px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.send{justify-self:start;font:600 14px/1 var(--sans);padding:12px 22px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:var(--btn-r);cursor:pointer;-webkit-tap-highlight-color:transparent}
 @media (hover:hover){.send:hover{background:var(--ink);color:var(--bg)}}
 @media (hover:hover){.top nav a:hover,.top .sq:hover,.nav2 button:hover,.sns a:hover,.colo .thm button:hover{color:var(--ink)}.js .hint:hover{color:var(--muted)}}  /* 마우스 기기에서만 — 손가락 기기에서 누른 메뉴 이름이 먹색으로 남아 '지금 칸' 표시와 둘이 되던 것(10/28 일본 디테일 ②) */  /* 마우스에서만 — 아이폰에서 누른 뒤 검게 남지 않게 */
 .send:active{background:var(--ink);color:var(--bg)}  /* 누르는 동안 먹으로(10/24 ⑨ A) */
@@ -608,7 +609,7 @@ html.sr-on{overflow:hidden}
 .sheet .kimg img{display:block;width:100%;height:auto;outline:1px solid rgba(255,255,255,.18);-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
 .sheet .kimg figcaption{margin-bottom:8px;font:300 12.5px/1.6 var(--sans);color:#9a9a9a;text-align:center}
 .sheet.done .btns{opacity:1}
-.sheet button{font:600 12.5px/1 var(--sans);padding:12px 16px;border-radius:999px;border:1px solid #e9e9e9;background:transparent;color:#e9e9e9;white-space:nowrap;cursor:pointer}
+.sheet button{font:600 12.5px/1 var(--sans);padding:12px 16px;border-radius:var(--btn-r);border:1px solid #e9e9e9;background:transparent;color:#e9e9e9;white-space:nowrap;cursor:pointer}
 .sheet button.keep{background:#e9e9e9;color:#111}
 .sheet button:focus-visible{outline:2px solid #fff;outline-offset:3px}
 @media (max-width:767px) and (max-height:860px){.sheet .st{padding-top:20px}.sheet .sp{font-size:12.5px;line-height:1.6}.sheet .sp p+p{margin-top:1.6em}}  /* 휴대폰 낮은 화면 — 860px까지(10/28 동원 'B 낮은 화면 규칙 넓힘' — 다 찍힌 뒤 책 제목이 된 첫 행이 제목 밑으로 숨었음: 아이폰 전체 화면 반 줄 · 앱 안 2–4행) */
@@ -623,7 +624,7 @@ html.sr-on{overflow:hidden}
 .sheet .se .bl .whr{margin-left:8px;color:#9a9a9a}  /* 가는 곳 '교보문고' — 사이트의 '책장에 꽂기 ↗ 교보문고'와 같은 꼴 */
 .sheet .sbk{flex:1 1 0;min-width:9em}  /* 시집 이름은 줄어들어 단추와 한 줄에 — 9em보다 좁아지면(영어 교보 단추 'Buy at Kyobo Book Centre') 제 줄로, 여덟 줄로 꺾이지 않게 */
 .sheet.done .sp{padding-bottom:22px}  /* 아래 줄이 높아져도 시의 끝 줄이 그림자에 덮이지 않게 */
-.sheet .kb{display:inline-flex;align-items:center;font:600 12.5px/1 var(--sans);padding:12px 16px;border-radius:999px;background:#e9e9e9;color:#111;white-space:nowrap}
+.sheet .kb{display:inline-flex;align-items:center;font:600 12.5px/1 var(--sans);padding:12px 16px;border-radius:var(--btn-r);background:#e9e9e9;color:#111;white-space:nowrap}
 .sheet .kb:focus-visible{outline:2px solid #fff;outline-offset:3px}
 /* 아주 낮은 화면(가로 폰 · 400% 확대)은 제목 · 아래 줄을 붙이지 않고 종이 전체가 스크롤 — 둘 다 붙으면 시 칸이 3–4행 · 0행(10/27 점검 남은 것 가1). 끝으로 내리기(toEnd)는 그대로 */
 .sheet.tight .st{padding-top:12px}.sheet.tight .sp{margin-top:12px}.sheet.tight.done .sp{padding-bottom:16px}.sheet.tight .sf{padding-top:12px;row-gap:12px}  /* 한 장에 맞춤의 넷째 단(10/28 A — main.js fit): 글자를 11px까지 줄여도 넘치면 위아래 여백도 단 안에서 한 단씩 */
@@ -940,7 +941,7 @@ html.cz-on{overflow:hidden}
 .nt .sbar{position:absolute;left:0;right:0;bottom:0;height:2px;opacity:0;pointer-events:none;background:linear-gradient(90deg,transparent calc(var(--k,0) * 100% / var(--n,6)),#fff calc(var(--k,0) * 100% / var(--n,6)),#fff calc((var(--k,0) + 1) * 100% / var(--n,6)),transparent calc((var(--k,0) + 1) * 100% / var(--n,6)))}
 .nt.scrub .sbar{opacity:1}
 /* ⑨ 연락 — 메시지 단추를 먹 단추로(맨 위 '연락하기'와 같은 꼴) · 다가오는 움직임(← '마그네틱 버튼')은 main.js(마우스 기기 · 움직임 허용) */
-.ask-off a.buy{align-items:center;padding:12px 16px;border:0;border-radius:999px;background:var(--ink);color:var(--bg)}
+.ask-off a.buy{align-items:center;padding:12px 16px;border:0;border-radius:var(--btn-r);background:var(--ink);color:var(--bg)}
 @media (prefers-reduced-motion:no-preference){.ask-off a.buy{transition:transform .55s cubic-bezier(.2,.8,.2,1)}.ask-off a.buy.pull{transition:transform .18s ease-out}}
 /* ⑩ 쪽 사이 원형 전환(← '페이지 인트로') — 맨 위 띠의 쪽 링크를 누른 자리로 원이 닫히고(cgo → cout) 다음 쪽이 그 자리에서 열림(머리 스크립트 cin → main.js copen) · 바깥은 먹 */
 html.cin,html.cgo{background:#111}
