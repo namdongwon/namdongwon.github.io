@@ -4,11 +4,11 @@
 /* 글꼴은 사이트에 쓰는 글자만 남겨 woff2로 줄인 판(build.py). Pretendard는 라이선스(OFL)상 이름을 바꾼 NDW … 판 */
 /* 명조는 본명조 한 가족(10/26 동원 "응 바꿔" — 나눔명조 · 은바탕에서): 제목 · 시 · 약력 모두. 굵기 300은 첫 화면 큰 제목 글자만 담음 */
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=3d7b106965") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=1b09dbcef4") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=d1156b80b9") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=0e4edaa1c4") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=e73fea313c") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=06086fa4aa") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=cf679b1505") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=b655c44981") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=4c270df788") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=2f66677206") format("woff2");font-weight:600;font-display:swap}
 /* 첫 화면 작은 판(10/27 B): 한국어판 문 글자 · 첫 화면에 보이는 글자만 담아 먼저 받는 판 — 통째 판(본명조 보통 · 굵게)을 미리 받느라 스타일 · main.js가 늦던 것을 덜어 냄(느린 4G 문 열림 3.6 → 3.1초 실측).
    담은 글자 밖은 뒤의 통째 판(BMJ · PTD)으로 그려짐. 첫 화면에 새 글자 칸을 넣으면 build.py FIRST가 알아서 담음 */
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
@@ -28,11 +28,11 @@ html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:l
    일본어판에서만 받음(한국어 · 영어판 글꼴은 전과 같음). 한글은 담지 않아 일본어판 속 한국어(시 원문 · 원제)는 뒤의 본명조 · Pretendard 판이 그림 · 라틴 글자는 영어판처럼 Newsreader 먼저.
    굵기 300은 일본어판 첫 화면 큰 제목 글자만 · JMJF · JGOF는 시집 쪽 첫 화면 작은 판(한국어판 BMJF · PTDF와 같은 짜임) */
 @font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-light.woff2?v=237255a497") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=b7efa4cd34") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=25fbff8536") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=3e170a8e63") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=535eb29a11") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=587a53f71b") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=fba00564ba") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=c4f33c2392") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=8e4d4edd89") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=a4ba5b25b7") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=7835d12c22") format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2?v=1beaf3c9bd") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2?v=72b7718a65") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=d7c5d884d5") format("woff2");font-weight:300;font-display:swap}
