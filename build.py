@@ -6,6 +6,7 @@
 """
 import hashlib
 import html
+import io
 import itertools
 import json
 import math
@@ -569,6 +570,39 @@ def psrc(p):
     return Path(p["src"]) if p.get("src") else CONTENT / "photos" / p["file"]
 
 
+_PHOTO = {}  # 원본 자리 → (확장자, 바이트) — 한 번 굽고 세 판이 같이 씀
+
+
+def photo_pick(src, keep=False):
+    # 인스타 사진 꼴(11/2 동원 버튼 'WebP 80 (권장)' — 비교 기준/브랜드 시안/사진압축시안_v1.png · 73장 14.4 → 약 10.2MB): 같은 1080px에서
+    # WebP 80과 JPEG 80 가운데 작은 쪽(결이 아주 촘촘한 몇 장은 WebP가 더 커서 JPEG 그대로). keep이면 JPEG는 받아 온 파일 그대로(게시물 속 사진 — 다시 굽지 않음)
+    k = str(src)
+    if k not in _PHOTO:
+        # 디스크 저장(11/2 QA — 빌드마다 73장을 새로 구워 관리 화면 미리 보기가 3초 → 13초로 늘었음): 원본 내용의 지문으로 .cache/photo_pick에 두고 같으면 꺼내 씀
+        raw = Path(src).read_bytes()
+        key = hashlib.sha1(raw + (b"|keep" if keep else b"") + b"|webp80-v1").hexdigest()[:20]
+        pc = HERE / ".cache/photo_pick"
+        hit = next((f for f in (pc / f"{key}.webp", pc / f"{key}.jpg") if f.exists()), None)
+        if hit:
+            _PHOTO[k] = (hit.suffix[1:], hit.read_bytes())
+            return _PHOTO[k]
+        im = ImageOps.exif_transpose(Image.open(src)).convert("RGB")  # 사진 속 정보(위치 등)는 저장하지 않음
+        if im.width > 1080:
+            im = im.resize((1080, round(im.height * 1080 / im.width)), Image.LANCZOS)
+        jb = raw if keep else None
+        if jb is None:
+            b = io.BytesIO()
+            im.save(b, "JPEG", quality=80, optimize=True, progressive=True)
+            jb = b.getvalue()
+        b = io.BytesIO()
+        im.save(b, "WEBP", quality=80, method=6)
+        wb = b.getvalue()
+        _PHOTO[k] = ("webp", wb) if len(wb) < len(jb) else ("jpg", jb)
+        pc.mkdir(parents=True, exist_ok=True)
+        (pc / f"{key}.{_PHOTO[k][0]}").write_bytes(_PHOTO[k][1])
+    return _PHOTO[k]
+
+
 # 그림 글자(이모지) — 캡션에서 뺌(10/24, 무채색 사이트에서 색 그림으로 튐). 피부색 · 이음표(ZWJ) · 꾸밈 표시까지
 EMOJI = re.compile("[\U0001F000-\U0001FAFF☀-➿⬅-⬇⬛⬜⭐⭕⌚⌛"
                    "⏩-⏳⏸-⏺︎️‍⃣]")
@@ -1063,7 +1097,7 @@ def render(site, poem, videos, photos, lang="ko"):
         # 띠의 둘째 장부터는 data-src — main.js가 보는 장 + 다음 한 장만 받음(10/27 점검: 가까이 오면 큰 사진 3–5장을 한꺼번에 받아 첫 장이 늦었음)
         sa, lz = ("src", ' loading="lazy"') if i == 0 else ("data-src", "")
         ko_alt = ' lang="ko"' if tr_ and re.search("[가-힣]", alt) else ""  # 영어판 · 일본어판에서 한국어 대체 글(인스타 글 첫 줄)은 한국어로 읽히게(10/27 점검 a11y 9)
-        img = f'<img {sa}="{P}assets/img/photos/{e(Path(p["file"]).stem)}.jpg" alt="{e(alt)}"{ko_alt}{lz} width="{w}" height="{h}">'
+        img = f'<img {sa}="{P}assets/img/photos/{e(Path(p["file"]).stem)}.{photo_pick(psrc(p))[0]}" alt="{e(alt)}"{ko_alt}{lz} width="{w}" height="{h}">'
         if p.get("kids"):  # 여러 장짜리 게시물(10/25 ⑤ A): 누르면 그 게시물 안 사진을 넘겨 보는 창 · 오른쪽 위 'N장'
             k = 1 + len(p["kids"])
             name = t("pop_post", i=i + 1, n=len(PH["items"])) if ko_alt else e(alt)  # 단추 이름은 한 언어로 — 영어판은 'Post 2 of 8 — …', 한국어 글은 보이는 캡션(lang=ko)이 맡음
@@ -1094,7 +1128,7 @@ def render(site, poem, videos, photos, lang="ko"):
     iu = link_url(site, PH["account"].get("link", "instagram"))
     acc = {**PH["account"], "url": iu, "handle": iu.rstrip("/").rsplit("/", 1)[-1]}  # 계정 이름은 links 인스타 주소 끝(설계서 ③)
     # 게시물 열어 보기(10/25 ⑤ A) — 게시물마다 띠의 사진 + 게시물 안 사진 주소(창은 main.js가 열 때 채움). 한 장짜리 게시물은 빈 목록
-    posts = [[f'{P}assets/img/photos/{Path(p["file"]).stem}.jpg'] + [f'{P}assets/img/photos/post/{Path(k).name}' for k in p["kids"]] if p.get("kids") else []
+    posts = [[f'{P}assets/img/photos/{Path(p["file"]).stem}.{photo_pick(psrc(p))[0]}'] + [f'{P}assets/img/photos/post/{Path(k).stem}.{photo_pick(k, keep=True)[0]}' for k in p["kids"]] if p.get("kids") else []
              for p in PH["items"]]
     posts_js = json.dumps(posts).replace("</", "<\\/")
     pv = (f'<div class="pv" role="dialog" aria-modal="true" aria-label="{t("pv_label")}" hidden><div class="pvh"><p class="pvc" aria-live="polite"></p>'
@@ -1887,11 +1921,13 @@ def main():
     for i, s in enumerate(up.get("stills", []), 1):
         save_jpg(CONTENT / s, ASSETS / "img/stills" / f"{i}.jpg", 1280, quality=80)
     for p in photos["items"]:
-        save_jpg(psrc(p), ASSETS / "img/photos" / (Path(p["file"]).stem + ".jpg"), 1080)
+        x, data = photo_pick(psrc(p))  # 큰 사진 — WebP 80 또는 JPEG 가운데 작은 쪽(11/2)
+        (ASSETS / "img/photos" / f'{Path(p["file"]).stem}.{x}').write_bytes(data)
         save_jpg(psrc(p), ASSETS / "img/photos/thumb" / (Path(p["file"]).stem + ".jpg"), 240, quality=72)
-        for k in p.get("kids", []):  # 게시물 안 사진(10/25 ⑤ A) — instagram.py가 1080px로 줄여 받아 둔 것을 그대로
+        for k in p.get("kids", []):  # 게시물 안 사진(10/25 ⑤ A) — instagram.py가 1080px로 줄여 받아 둔 JPEG, WebP 80이 더 작으면 WebP로(11/2)
             (ASSETS / "img/photos/post").mkdir(parents=True, exist_ok=True)
-            shutil.copy2(k, ASSETS / "img/photos/post" / Path(k).name)
+            x, data = photo_pick(k, keep=True)
+            (ASSETS / "img/photos/post" / f"{Path(k).stem}.{x}").write_bytes(data)
 
     if all(k in srcs for k in ("BonMyeongjoKR-Bold.ttf", "BonMyeongjoKR-Regular.ttf", "Pretendard-Light.otf")):
         make_og(site, cover, srcs)
