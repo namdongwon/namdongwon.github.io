@@ -366,15 +366,10 @@
     "en": "Up to 200 characters · longer messages by email",
     "ja": "200字まで · 長くなるときはメールで"
   },
-  "gb_ag1": {
-    "ko": "[필수] 글은 방명록에 골라 싣는 데만 씁니다. 실리지 않은 글은 30일 안에, 실린 글은 내려 달라고 하실 때 지웁니다. 글의 저작권은 쓰신 분께 있고, 이 사이트에 싣는 것만 허락받습니다. 동의하지 않으시면 글을 보낼 수 없습니다.",
-    "en": "[Required] Your note is used only to select and publish notes in this guestbook. Notes not published are deleted within 30 days; published notes are removed whenever you ask. You keep the copyright and allow the note to appear only on this site. Without this consent the note can’t be sent.",
-    "ja": "[必須] メッセージは、芳名録に選んで載せるためだけに使います。掲載されなかったメッセージは30日以内に、掲載されたメッセージは取り下げのご希望があったときに削除します。メッセージの著作権は書いた方にあり、このサイトへの掲載についてのみ許諾をいただきます。同意いただけない場合は、送信できません。"
-  },
-  "gb_ag2": {
-    "ko": "[필수] 글은 Formspree(미국 등)를 거쳐 남동원의 메일함으로 옵니다. 동의하지 않으시면 보낼 수 없습니다. {privacy}",
-    "en": "[Required] Notes travel through Formspree (United States and elsewhere) to Dongwon Nam’s mailbox. Without this consent the note can’t be sent. {privacy}",
-    "ja": "[必須] メッセージはFormspree（米国など）を経由して、ナム・ドンウォンのメールボックスに届きます。同意いただけない場合は、送信できません。{privacy}"
+  "gb_note": {
+    "ko": "남기신 글은 Formspree(미국)를 거쳐 남동원의 메일함으로 옵니다. 실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있습니다. {privacy}",
+    "en": "Notes travel through Formspree (United States) to Dongwon Nam’s mailbox. Notes not published are deleted within 30 days, and you keep the copyright. {privacy}",
+    "ja": "メッセージはFormspree（米国）を経由して、ナム・ドンウォンのメールボックスに届きます。掲載されなかったメッセージは30日以内に削除し、著作権は書いた方にあります。{privacy}"
   },
   "gb_privacy": {
     "ko": "개인정보 처리방침",
@@ -1169,9 +1164,9 @@
     "en": "SEOUL, KOREA",
     "ja": "SEOUL, KOREA"
   },
-  "gb_ag2_g": {
-    "ko": "[필수] 글은 남동원의 구글 폼(Google, 미국 등)에 담기고, 연결된 구글 시트로도 옵니다. 동의하지 않으시면 보낼 수 없습니다. {privacy}",
-    "en": "[Required] Notes are stored in Dongwon Nam’s Google Form (Google, United States and elsewhere) and copied to the Google Sheet linked to it. Without this consent the note can’t be sent. {privacy}",
-    "ja": "[必須] メッセージはナム・ドンウォンのGoogleフォーム（Google、米国など）に保存され、リンクされたGoogleスプレッドシートにも届きます。同意いただけない場合は、送信できません。{privacy}"
+  "gb_note_g": {
+    "ko": "남기신 글은 구글 폼(Google, 미국)에 담깁니다. 실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있습니다. {privacy}",
+    "en": "Notes are stored in a Google Form (Google, United States). Notes not published are deleted within 30 days, and you keep the copyright. {privacy}",
+    "ja": "メッセージはGoogleフォーム（Google、米国）に保存されます。掲載されなかったメッセージは30日以内に削除し、著作権は書いた方にあります。{privacy}"
   }
 }

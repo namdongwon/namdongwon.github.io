@@ -543,9 +543,9 @@ html.sr-on{overflow:hidden}
 .gbf label i{font-style:normal;font-weight:300;letter-spacing:0;color:var(--faint)}
 .gbf input[type=text],.gbf textarea{font:300 16px/1.5 var(--sys);color:var(--ink);border:0;border-bottom:1px solid var(--line);padding:6px 0;background:transparent;border-radius:0;outline:none;width:100%;resize:vertical}
 .gbf input[type=text]:focus,.gbf textarea:focus{border-color:var(--ink)}
-.gbf .ag{display:flex;gap:8px;align-items:flex-start;font:300 11px/1.6 var(--sans);letter-spacing:0;color:var(--muted)}
-.gbf .ag input{margin-top:4px;width:13px;height:13px;flex:none;accent-color:var(--ink)}
-.gbf .ag a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+/* 안내 한 줄(11/2 밤 B — 동의 체크 둘 대신): 옛 동의 글과 같은 작은 고딕 · 흐린 먹 · 처리방침 링크만 먹 밑줄 */
+.gbf .gbn{margin:0;font:300 11px/1.6 var(--sans);letter-spacing:0;color:var(--muted)}
+.gbf .gbn a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
 .gbf .send:disabled{opacity:.5;cursor:default}
 /* 방명록 엽서 한 장(11/2 동원 '① + ⑤ 엽서 + 달 묶음' → 질문 · 달 묶음 · 이름 · 날짜 없이 — 목업 기준/브랜드 시안/방명록일곱방향_v1_휴대폰.png): 쓰는 카드는 가는 선 한 장 · 글 칸에만 옅은 줄 · 쓰는 동안 테두리 먹 */
 .gb .card{border:1px solid var(--line);padding:20px 16px 16px;background:var(--bg)}

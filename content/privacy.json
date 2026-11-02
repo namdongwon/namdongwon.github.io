@@ -102,9 +102,9 @@
         },
         {
           "when": "guestbook",
-          "ko": "거부하는 법: 동의 칸에 체크하지 않으시면 보내지지 않습니다. 이때는 인스타그램 메시지나 메일로 연락하실 수 있습니다.",
-          "en": "How to refuse: if you don’t tick the consent box, nothing is sent. You can still reach Dongwon Nam by Instagram message or email.",
-          "ja": "拒否の方法：同意欄にチェックを入れなければ、送信されません。その場合は、Instagramのメッセージまたはメールでご連絡いただけます。"
+          "ko": "거부하는 법: 남기기를 누르지 않으시면 보내지지 않습니다. 이때는 인스타그램 메시지나 메일로 연락하실 수 있습니다.",
+          "en": "How to refuse: if you don’t press Send, nothing is sent. You can still reach Dongwon Nam by Instagram message or email.",
+          "ja": "拒否の方法：「送る」を押さなければ、送信されません。その場合は、Instagramのメッセージまたはメールでご連絡いただけます。"
         },
         {
           "when": "goatcounter",

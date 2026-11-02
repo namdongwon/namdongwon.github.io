@@ -1234,7 +1234,9 @@ def render(site, poem, videos, photos, lang="ko"):
     body = f'<ol>{"".join(gb_li(x) for x in gbook[:12])}</ol>{more}' if gbook else f'<p class="empty">{t("gb_empty")}</p>'
     # 11/2 엽서 한 장(동원 버튼 '① + ⑤ 엽서 + 달 묶음 (권장)' → '질문 없이' · '달 묶음은 없어도' · 실린 글 '가는 줄 목록, 번호 없이' · '이름 날짜도 없이 그냥 내용만'
     # — 목업 기준/브랜드 시안/방명록일곱방향_v1_휴대폰.png · 보고서 기준/레퍼런스/reports/방명록 화면 레퍼런스와 아이디어.md): 맨 위 쓰는 카드 한 장(받는 사람 줄 · 줄 친 글 칸 ·
-    # 글자 수 · 동의 두 칸 · 남기기 · 단추 아래 약속 한 줄 — 보내면 그 자리가 상태 한 줄) → 아래 실린 글(글만 · 가는 줄). 이름 칸은 없음(받지 않음)
+    # 글자 수 · 안내 한 줄 · 남기기 · 단추 아래 약속 한 줄 — 보내면 그 자리가 상태 한 줄) → 아래 실린 글(글만 · 가는 줄). 이름 칸은 없음(받지 않음)
+    # 동의 체크 둘(싣기 · 저작권 / 국외 이전)은 11/2 밤 안내 한 줄로(동원 "근데 방명록 쓰는데 무슨 동의 할 게 있어" → 목업 방명록동의시안_v1 → 'B 안내 한 줄 (권장)'):
+    # 받는 것은 글 하나뿐 · 국외 이전은 처리방침 공개로(개인정보보호법 제28조의8 — 공개로 갈음하는 길[추정 · 법률 자문 아님]) · 체크 없이 단추 위 한 줄 + 처리방침 링크
     to = f'<p class="to">{t("gb_to")}</p>'
     if gb_id or gf:
         # 구글 폼이면 칸 이름이 그 폼의 칸 번호(entry.…) · data-kind="gform"(main.js가 글 칸만 no-cors로 보냄)
@@ -1242,8 +1244,7 @@ def render(site, poem, videos, photos, lang="ko"):
                 + f'<label>{t("gb_text")} <i>{t("gb_text_hint")}</i><textarea name="{e(gf["text"]) if gf else "message"}" maxlength="200" rows="4" required></textarea></label>'
                 + '<p class="cnt" hidden><span>0</span> / 200</p>'  # 글자 수 — main.js가 켜고 셈(자바스크립트가 없으면 숨김)
                 + '<input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">'
-                + f'<label class="ag"><input type="checkbox" name="agree" required><span>{t("gb_ag1")}</span></label>'
-                + f'<label class="ag"><input type="checkbox" name="agree_abroad" required><span>{t("gb_ag2_g" if gf else "gb_ag2", privacy=priv)}</span></label>'
+                + f'<p class="gbn">{t("gb_note_g" if gf else "gb_note", privacy=priv)}</p>'
                 + f'<button class="send" type="submit">{t("gb_send")}</button><p class="msg" role="status">{t("gb_when")}</p></form>')  # 약속 한 줄 — 보내면 main.js가 상태로 바꿈
     else:  # 받는 곳이 없으면 쓰는 칸 대신 '곧 열립니다'
         card = to + f'<p class="when">{t("gb_soon")}</p><p class="msg">{t("gb_when")}</p>'
