@@ -224,11 +224,11 @@ def motion_css(css):
 
 def gform(site):
     # 방명록 받는 곳 — 구글 폼(11/1 동원 버튼 "B 구글 폼 (권장)" — 시안 기준/브랜드 시안/방명록받는곳시안_v1_휴대폰_A·B.png): 우리 폼 모양 그대로 두고 구글 폼 응답 주소(formResponse)로 보냄,
-    # 응답은 구글 폼 · 연결된 구글 시트에 한 줄씩(타임스탬프 | 이름 | 글). site.json contact.guestbook_gform {action · name · text} 셋 다 있을 때만 켜짐 — 칸 번호는 구글 폼 '미리 채워진 링크'에서
+    # 응답은 구글 폼 · 연결된 구글 시트에 한 줄씩(타임스탬프 | 이름 | 글). site.json contact.guestbook_gform {action · text} 둘이 있으면 켜짐(11/2부터 이름은 받지 않음 — 동원 '이름 날짜도 없이 그냥 내용만' · name 칸은 있어도 쓰지 않음) — 칸 번호는 구글 폼 '미리 채워진 링크'에서
     g = (site.get("contact") or {}).get("guestbook_gform") or {}
-    if not all(str(g.get(k) or "").strip() for k in ("action", "name", "text")):
+    if not all(str(g.get(k) or "").strip() for k in ("action", "text")):
         return None
-    if not re.fullmatch(r"https://docs\.google\.com/forms/d/e/[\w-]+/formResponse", g["action"]) or not all(re.fullmatch(r"entry\.\d+", g[k]) for k in ("name", "text")):
+    if not re.fullmatch(r"https://docs\.google\.com/forms/d/e/[\w-]+/formResponse", g["action"]) or not re.fullmatch(r"entry\.\d+", g["text"]):
         raise SystemExit("구글 폼 칸(contact.guestbook_gform)은 action 'https://docs.google.com/forms/d/e/…/formResponse' · name · text 'entry.숫자' 꼴이어야 함")
     return g
 
@@ -1174,22 +1174,28 @@ def render(site, poem, videos, photos, lang="ko"):
         lk = ' lang="ko"' if tr_ and re.search(r"[가-힣]", x["text"]) else ""  # 영어판 · 일본어판에서 한국어 글은 한국어로 읽히게
         rp = ((x.get(lang) or {}).get("reply") or x.get("reply", "")) if tr_ else x.get("reply", "")
         rep = f'<p class="rp">{e(rp)}<span>— {t("gb_reply_by")}</span></p>' if rp else ""
-        return f'<li><p class="tx"{lk}>{txt}</p><p class="by">{e(x.get("name", "")) or t("gb_anon")} · {e(dtxt(x["date"]))}</p>{rep}</li>'
+        return f'<li><p class="tx"{lk}>{txt}</p>{rep}</li>'  # 11/2 이름 · 날짜 줄 뺌(동원 '이름 날짜도 없이 그냥 내용만') — 날짜는 차례 · 30일 지우기에만
     priv = f'<a href="~R~privacy/">{t("gb_privacy")}</a>'  # 처리방침 쪽(한 · 영 모두 제 판 아래 privacy/ — ~R~은 그 판 맨 위, page()가 채움)
     # 11/2 방명록 쪽(/guestbook/ — 동원 "방명록 사이트를 먼저 추가하는 게 나은 거 같아 … 디자인은 바꿀 수 있으니까"): 묶음을 연락 칸에서 떼어 제 칸으로. 받는 곳(구글 폼)이 없으면
     # 쓰는 칸 대신 '곧 열립니다' 한 줄 — 받을 곳 없이 폼을 열면 남긴 글이 사라짐. 실린 글이 없으면 '첫 글을 기다립니다'
     more = f'<details><summary>{t("gb_more")}</summary><ol>{"".join(gb_li(x) for x in gbook[12:])}</ol></details>' if len(gbook) > 12 else ""
     body = f'<ol>{"".join(gb_li(x) for x in gbook[:12])}</ol>{more}' if gbook else f'<p class="empty">{t("gb_empty")}</p>'
-    form = (f'<h3 class="h3b">{t("gb_write")}</h3><p class="when">{t("gb_when")}</p>'
-            # 구글 폼이면 칸 이름이 그 폼의 칸 번호(entry.…) · data-kind="gform"(main.js가 두 칸만 no-cors로 보냄)
-            + (f'<form class="gbf" data-endpoint="{e(gf["action"])}" data-kind="gform" method="post">' if gf else f'<form class="gbf" data-endpoint="https://formspree.io/f/{e(gb_id)}" method="post">')
-            + f'<label>{t("gb_name")} <i>{t("gb_name_hint")}</i><input type="text" name="{e(gf["name"]) if gf else "name"}" maxlength="20" autocomplete="name"></label>'
-            f'<label>{t("gb_text")} <i>{t("gb_text_hint")}</i><textarea name="{e(gf["text"]) if gf else "message"}" maxlength="200" rows="3" required></textarea></label>'
-            '<input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">'
-            f'<label class="ag"><input type="checkbox" name="agree" required><span>{t("gb_ag1")}</span></label>'
-            f'<label class="ag"><input type="checkbox" name="agree_abroad" required><span>{t("gb_ag2_g" if gf else "gb_ag2", privacy=priv)}</span></label>'
-            f'<button class="send" type="submit">{t("gb_send")}</button><p class="msg" role="status"></p></form>') if (gb_id or gf) else f'<h3 class="h3b">{t("gb_write")}</h3><p class="when">{t("gb_soon")}</p>'
-    guest = f'<div class="gb">{body}{form}</div>'
+    # 11/2 엽서 한 장(동원 버튼 '① + ⑤ 엽서 + 달 묶음 (권장)' → '질문 없이' · '달 묶음은 없어도' · 실린 글 '가는 줄 목록, 번호 없이' · '이름 날짜도 없이 그냥 내용만'
+    # — 목업 기준/브랜드 시안/방명록일곱방향_v1_휴대폰.png · 보고서 기준/레퍼런스/reports/방명록 화면 레퍼런스와 아이디어.md): 맨 위 쓰는 카드 한 장(받는 사람 줄 · 줄 친 글 칸 ·
+    # 글자 수 · 동의 두 칸 · 남기기 · 단추 아래 약속 한 줄 — 보내면 그 자리가 상태 한 줄) → 아래 실린 글(글만 · 가는 줄). 이름 칸은 없음(받지 않음)
+    to = f'<p class="to">{t("gb_to")}</p>'
+    if gb_id or gf:
+        # 구글 폼이면 칸 이름이 그 폼의 칸 번호(entry.…) · data-kind="gform"(main.js가 글 칸만 no-cors로 보냄)
+        card = (to + (f'<form class="gbf" data-endpoint="{e(gf["action"])}" data-kind="gform" method="post">' if gf else f'<form class="gbf" data-endpoint="https://formspree.io/f/{e(gb_id)}" method="post">')
+                + f'<label>{t("gb_text")} <i>{t("gb_text_hint")}</i><textarea name="{e(gf["text"]) if gf else "message"}" maxlength="200" rows="4" required></textarea></label>'
+                + '<p class="cnt" hidden><span>0</span> / 200</p>'  # 글자 수 — main.js가 켜고 셈(자바스크립트가 없으면 숨김)
+                + '<input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">'
+                + f'<label class="ag"><input type="checkbox" name="agree" required><span>{t("gb_ag1")}</span></label>'
+                + f'<label class="ag"><input type="checkbox" name="agree_abroad" required><span>{t("gb_ag2_g" if gf else "gb_ag2", privacy=priv)}</span></label>'
+                + f'<button class="send" type="submit">{t("gb_send")}</button><p class="msg" role="status">{t("gb_when")}</p></form>')  # 약속 한 줄 — 보내면 main.js가 상태로 바꿈
+    else:  # 받는 곳이 없으면 쓰는 칸 대신 '곧 열립니다'
+        card = to + f'<p class="when">{t("gb_soon")}</p><p class="msg">{t("gb_when")}</p>'
+    guest = f'<div class="gb"><h3 class="sr">{t("gb_write")}</h3><div class="card">{card}</div>{body}</div>'
     # 바닥글 아래 띠 오른쪽은 고야드 문구 그대로 'Copyright © 2026 남동원. All rights reserved'(11/2 동원 "이런 느낌으로 바꿔" — site.json copyright) ·
     # 판권면(10/24 A)에서 이어 온 고친 날 · 판 · 쇄 줄은 이때 뺌(쇄를 세던 printing_no도 함께 — 되살릴 땐 git 기록 56579fb). 다시 쓰기 안내(note)는 안내 단에
     co = S["colophon"]

@@ -306,10 +306,15 @@
     "en": "Guestbook",
     "ja": "芳名録"
   },
+  "gb_to": {
+    "ko": "받는 사람 — 남동원",
+    "en": "To — Dongwon Nam",
+    "ja": "宛先 — ナム・ドンウォン"
+  },
   "gb_sep": {
-    "ko": "여기 남긴 글은 남동원이 읽고 골라 이 쪽에 싣습니다. 남동원에게만 하실 말씀은 인스타그램 메시지나 메일로 보내 주세요.",
-    "en": "Notes left here are read and chosen by Dongwon Nam before they appear on this page. For anything meant only for Dongwon Nam, please use Instagram or email.",
-    "ja": "ここに残していただいたメッセージは、ナム・ドンウォンが読んで選び、このページに載せます。ナム・ドンウォンだけに伝えたいことは、Instagramのメッセージかメールでお送りください。"
+    "ko": "남동원에게만 하실 말씀은 인스타그램 메시지나 메일로 보내 주세요.",
+    "en": "For anything meant only for Dongwon Nam, please use Instagram or email.",
+    "ja": "ナム・ドンウォンだけに伝えたいことは、Instagramのメッセージかメールでお送りください。"
   },
   "gb_empty": {
     "ko": "아직 실린 글이 없습니다. 첫 글을 기다립니다.",
@@ -337,9 +342,9 @@
     "ja": "芳名録に書く"
   },
   "gb_when": {
-    "ko": "한 주에 한 번, 월요일에 읽고 골라 사이트를 다시 올릴 때 함께 싣습니다.",
-    "en": "Notes are read once a week, on Mondays, and the chosen ones are added the next time the site is updated.",
-    "ja": "週に一度、月曜日に読んで選び、サイトを更新するときにあわせて載せます。"
+    "ko": "모든 글을 읽고, 월요일에 일부를 골라 싣습니다.",
+    "en": "Every note is read, and a few are chosen on Mondays to appear here.",
+    "ja": "すべてのメッセージを読み、月曜日に一部を選んで掲載します。"
   },
   "gb_name": {
     "ko": "이름",
@@ -362,9 +367,9 @@
     "ja": "200字まで · 長くなるときはメールで"
   },
   "gb_ag1": {
-    "ko": "[필수] 이름(선택)과 글을 방명록에 골라 싣는 데만 씁니다. 실리지 않은 글은 30일 안에, 실린 글은 내려 달라고 하실 때 지웁니다. 글의 저작권은 쓰신 분께 있고, 이 사이트에 싣는 것만 허락받습니다. 동의하지 않으시면 글을 보낼 수 없습니다.",
-    "en": "[Required] Your name (optional) and note are used only to select and publish notes in this guestbook. Notes not published are deleted within 30 days; published notes are removed whenever you ask. You keep the copyright and allow the note to appear only on this site. Without this consent the note can’t be sent.",
-    "ja": "[必須] お名前（任意）とメッセージは、芳名録に選んで載せるためだけに使います。掲載されなかったメッセージは30日以内に、掲載されたメッセージは取り下げのご希望があったときに削除します。メッセージの著作権は書いた方にあり、このサイトへの掲載についてのみ許諾をいただきます。同意いただけない場合は、送信できません。"
+    "ko": "[필수] 글은 방명록에 골라 싣는 데만 씁니다. 실리지 않은 글은 30일 안에, 실린 글은 내려 달라고 하실 때 지웁니다. 글의 저작권은 쓰신 분께 있고, 이 사이트에 싣는 것만 허락받습니다. 동의하지 않으시면 글을 보낼 수 없습니다.",
+    "en": "[Required] Your note is used only to select and publish notes in this guestbook. Notes not published are deleted within 30 days; published notes are removed whenever you ask. You keep the copyright and allow the note to appear only on this site. Without this consent the note can’t be sent.",
+    "ja": "[必須] メッセージは、芳名録に選んで載せるためだけに使います。掲載されなかったメッセージは30日以内に、掲載されたメッセージは取り下げのご希望があったときに削除します。メッセージの著作権は書いた方にあり、このサイトへの掲載についてのみ許諾をいただきます。同意いただけない場合は、送信できません。"
   },
   "gb_ag2": {
     "ko": "[필수] 글은 Formspree(미국 등)를 거쳐 남동원의 메일함으로 옵니다. 동의하지 않으시면 보낼 수 없습니다. {privacy}",
@@ -994,7 +999,7 @@
       "sent": "잘 받았습니다. 답장 드리겠습니다.",
       "failed": "보내지 못했습니다. 적으신 글은 그대로 있으니 잠시 뒤 다시 보내 주세요.",
       "search_count": "찾은 것 {n}",
-      "gb_sent": "잘 받았습니다. 월요일에 읽어 보겠습니다.",
+      "gb_sent": "보냈습니다. 월요일에 읽겠습니다.",
       "gb_full": "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다.",
       "keep_hold": "그림을 길게 눌러 사진에 저장하세요",
       "keep_alt": "뜬 「탁본」 한 장",
@@ -1014,7 +1019,7 @@
       "sent": "Received. I’ll write back soon.",
       "failed": "Couldn’t send. Your message is still here — please try again in a moment.",
       "search_count": "{n} found",
-      "gb_sent": "Received. I’ll read it on Monday.",
+      "gb_sent": "Sent. I’ll read it on Monday.",
       "gb_full": "The guestbook is full for this month. Please try again next month.",
       "keep_hold": "Press and hold the image to save it",
       "keep_alt": "Your rubbing of “Rubbing”",
@@ -1034,7 +1039,7 @@
       "sent": "確かに受け取りました。お返事を書きます。",
       "failed": "送信できませんでした。書いていただいた内容はそのまま残っていますので、少し時間をおいてもう一度お送りください。",
       "search_count": "{n}件",
-      "gb_sent": "確かに受け取りました。月曜日に拝読します。",
+      "gb_sent": "送信しました。月曜日に拝読します。",
       "gb_full": "今月の受付枠がいっぱいになりました。来月あらためてお願いいたします。",
       "keep_hold": "画像を長押しして、写真に保存してください",
       "keep_alt": "「拓本」をとった一枚",

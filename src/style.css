@@ -547,6 +547,16 @@ html.sr-on{overflow:hidden}
 .gbf .ag input{margin-top:4px;width:13px;height:13px;flex:none;accent-color:var(--ink)}
 .gbf .ag a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
 .gbf .send:disabled{opacity:.5;cursor:default}
+/* 방명록 엽서 한 장(11/2 동원 '① + ⑤ 엽서 + 달 묶음' → 질문 · 달 묶음 · 이름 · 날짜 없이 — 목업 기준/브랜드 시안/방명록일곱방향_v1_휴대폰.png): 쓰는 카드는 가는 선 한 장 · 글 칸에만 옅은 줄 · 쓰는 동안 테두리 먹 */
+.gb .card{border:1px solid var(--line);padding:20px 16px 16px;background:var(--bg)}
+.gb .card:focus-within{border-color:var(--ink)}
+.gb .to{margin:0;font:300 11px/1 var(--sans);letter-spacing:.06em;color:var(--muted)}
+.gb .card .gbf{margin-top:20px}
+.gb .card textarea{min-height:128px;field-sizing:content;resize:none;padding:0;border:0;font:16px/32px var(--body);background:repeating-linear-gradient(to bottom,transparent 0,transparent 31px,var(--rule) 31px,var(--rule) 32px)}
+.gb .cnt{margin:-8px 0 0;text-align:right;font:300 11px/1 var(--sans);color:var(--faint);font-variant-numeric:tabular-nums}
+.gb .card>.when,.gb .card>.msg{margin-top:12px}
+@media (max-width:767px){.gb .card{margin-top:30px}}  /* 휴대폰 — 머리말과 띄움(두 단인 컴퓨터는 오른쪽 단 맨 위) */
+.gb .card~ol,.gb .card~.empty{margin-top:36px}  /* 실린 글은 카드 아래 — 글만, 가는 줄(11/2 '가는 줄 목록, 번호 없이') */
 .colo{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule)}
 .colo .t{font:400 14px/1.5 var(--serif);color:var(--ink);letter-spacing:0}
 .colo dl{margin-top:16px;display:grid;grid-template-columns:auto 1fr;column-gap:16px;row-gap:6px;font:300 11px/1.5 var(--sans)}

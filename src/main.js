@@ -1093,6 +1093,15 @@
   const gbf = document.querySelector("form.gbf");
   if (gbf) {
     const gbSend = gbf.querySelector(".send"), gbMsg = gbf.querySelector(".msg");
+    // 글자 수(11/2 엽서 한 장) — 글 칸 아래 '0 / 200'을 켜고 칠 때마다 셈 · 보낸 뒤 비우면 다시 0
+    const gbTa = gbf.querySelector("textarea"), gbCnt = gbf.querySelector(".cnt");
+    if (gbTa && gbCnt) {
+      const n = gbCnt.querySelector("span"), count = () => { n.textContent = gbTa.value.length; };
+      gbTa.addEventListener("input", count);
+      gbf.addEventListener("reset", () => setTimeout(count));
+      count();
+      gbCnt.hidden = false;
+    }
     gbSend.addEventListener("touchstart", () => {}, { passive: true });  // 아이폰 누름 모양(문의 단추와 같음)
     gbf.addEventListener("submit", async ev => {
       ev.preventDefault();
