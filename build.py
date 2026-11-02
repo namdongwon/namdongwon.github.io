@@ -158,6 +158,24 @@ def goatcounter(site):
     return code
 
 
+def cf_beacon(site):
+    # 방문 수 — Cloudflare Web Analytics(11/2 관리 화면 쿠키 동의율 카드의 분모 '들어온 방문' · 동원 버튼 'A 숫자 카드 (권장)'): site.json analytics.cloudflare에
+    # 비콘 토큰(쪽 소스에 보이는 공개 값)을 넣으면 켜지고 비면 꺼짐(끄면 사이트 파일이 전과 같음). 쿠키 · 기기 저장소를 쓰지 않음[출처 Cloudflare Web Analytics 문서 ·
+    # 관리 화면 세션 기준/레퍼런스/research_notes/쿠키 동의율 기준표/r3]. 켜려면 처리방침에 when "cfwa" 문구가 먼저 있어야 함(지금 초안 — 켜는 날 동원 확인)
+    tok = ((site.get("analytics") or {}).get("cloudflare") or "").strip()
+    if tok and not re.fullmatch(r"[0-9a-f]{32}", tok):
+        raise SystemExit(f"Cloudflare Web Analytics 토큰은 영문 소문자 · 숫자 32자(대시보드 '자바스크립트 코드'의 token 값) — 지금 '{tok}'")
+    if tok and not any(i.get("when") == "cfwa" for s in (load("privacy.json")["sections"] if (CONTENT / "privacy.json").exists() else []) for i in s["items"]):
+        raise SystemExit("Cloudflare Web Analytics(analytics.cloudflare)를 켜려면 개인정보 처리방침(content/privacy.json)에 when \"cfwa\" 문구가 먼저 있어야 함")
+    return tok
+
+
+def cf_tag(site):
+    # 비콘 한 줄 — 공식 꼴(type="module" · 2026-07-13부터) · 닫는 body 바로 앞 · 모든 쪽(본 쪽 · 처리방침 · 404) · 쪽마다 하나
+    tok = cf_beacon(site)
+    return f'<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{{"token": "{tok}"}}\'></script>\n' if tok else ""
+
+
 def ga4(site):
     # 방문 통계 GA4(11/1 동원 "ga4로 하자 그래야 내가 공부가 되지"): site.json analytics.ga4에 측정 ID(G-로 시작)를 넣으면 켜지고 비면 꺼짐(끄면 사이트 파일이 전과 같음).
     # GA4는 쿠키(_ga · _ga_<id> 2년)를 써서 동의한 방문만 셈 — 동의 창(고야드 꼴 세 단계 · consent.js)이 함께 켜짐. 켜려면 처리방침에 GA4 문구(when "ga4")가 먼저 있어야 함
@@ -1552,7 +1570,7 @@ def render(site, poem, videos, photos, lang="ko"):
 {pv if k == "photo" else ""}{srch}<script id="sidx" type="application/json">{sidx}</script>
 <script id="ui" type="application/json">{ui_js}</script>
 <script src="{P}assets/main.js" defer onerror="document.documentElement.classList.remove('js','intro')"></script>
-{consent_html(L, ga, urlparse(base).netloc or base) + f'<script src="{P}assets/consent.js" defer></script>{chr(10)}' if ga else ""}{gc_tag}</body>
+{consent_html(L, ga, urlparse(base).netloc or base) + f'<script src="{P}assets/consent.js" defer></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
 </html>
 """
         html_ = re.sub(r'href="(#[\w-]+)"', lambda m: f'href="{go(m.group(1))}"', html_)  # 칸 사이 링크(첫 화면 '「탁본」 읽기' · 차례 · 찾기 추천 …)를 쪽 주소로
@@ -1577,7 +1595,7 @@ def page_privacy(site, lang):
     # when이 붙은 줄은 그것을 켰을 때만(방문 셈 when "goatcounter" · 방명록 when "guestbook" — 10/27) · 칸에 보일 줄이 없으면 그 칸의 empty 한 줄 · 방문 셈을 켜면 첫 문단도 lead_counted로
     # GA4(11/1): when "ga4" 줄은 켰을 때만 · unless "ga4" 줄('쿠키를 쓰지 않습니다' · 저장소 둘)은 켜면 숨김 · 첫 문단은 lead_ga · 동의 창과 '쿠키 설정'(동의를 거두는 곳)도 이 쪽에
     ga = ga4(site)
-    on = {"goatcounter": bool(goatcounter(site)), "ga4": bool(ga), "guestbook": bool(site["contact"].get("guestbook_formspree_id") or gform(site))}
+    on = {"goatcounter": bool(goatcounter(site)), "ga4": bool(ga), "cfwa": bool(cf_beacon(site)), "guestbook": bool(site["contact"].get("guestbook_formspree_id") or gform(site))}
     shown = lambda items: [i for i in items if on.get(i.get("when"), True) and not on.get(i.get("unless"), False)]  # noqa: E731
     lead = p["lead_ga"] if on["ga4"] and p.get("lead_ga") else p["lead_counted"] if on["goatcounter"] and p.get("lead_counted") else p["lead"]
     secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{g(i)}</li>" for i in (shown(x["items"]) or [x["empty"]] * ("empty" in x)))}</ul>' for x in p["sections"])
@@ -1601,7 +1619,7 @@ def page_privacy(site, lang):
 {ckp}{secs}
 <p class="up">{g(p["updated_label"])} <time datetime="{d.isoformat()}">{when}</time></p>
 <p class="back"><a class="buy" href="../">{g(p["back"])}</a>{oth}</p>
-</main>{cz}</body></html>
+</main>{cz}{cf_tag(site)}</body></html>
 """
 
 
@@ -1622,7 +1640,7 @@ def page_404(site, ja=True):
 <p class="lead">{k("nf_lead")}</p>
 <p><a class="buy" href="/">{k("nf_back")}</a></p>
 <p class="lead" lang="en">{en("nf_title")}. {en("nf_lead")}</p>
-<p lang="en"><a class="buy" href="/en/">{en("nf_back")}</a></p>{jp}</main></body></html>
+<p lang="en"><a class="buy" href="/en/">{en("nf_back")}</a></p>{jp}</main>{cf_tag(site)}</body></html>
 """
 
 

@@ -117,6 +117,12 @@
           "ko": "방문 통계를 낼 때(동의하신 경우에만) — 받는 자: Google LLC(미국 · Google 애널리틱스). 옮겨지는 정보: 쿠키 식별자, 본 쪽 · 들어온 곳 · 누른 교보문고 링크, 브라우저 · 기기 정보, 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 — 나라 · 도시를 짐작하는 데 쓰이며, Google 애널리틱스는 IP 주소를 기록하거나 저장하지 않습니다). 때와 방법: 동의하신 뒤 쪽을 열 때와 교보문고 링크를 누를 때, 인터넷으로. 쓰는 곳과 두는 기간: 방문 통계 — 통계 자료는 14개월 뒤 지워집니다. 거부하는 법: 동의 창에서 '동의 없이 계속하기'를 누르시거나, 각 쪽 아래 '쿠키 설정'에서 언제든 거두실 수 있습니다.",
           "en": "When visitor statistics are produced (only if you agree) — Recipient: Google LLC (United States · Google Analytics). What is transferred: a cookie identifier, the page viewed, the referring site and any click on a link to Kyobo Book Centre, browser and device details, and the connection details your browser sends when a page opens (IP address — used to estimate country and city; Google Analytics does not log or store IP addresses). When and how: after you agree, when a page opens or a link to Kyobo Book Centre is clicked, over the internet. Purpose and retention: visitor statistics — the statistics are deleted after 14 months. How to refuse: choose ‘Continue without agreeing’ in the consent window, or withdraw at any time under ‘Cookie settings’ at the bottom of each page.",
           "ja": "アクセス統計を取るとき（同意された場合のみ） — 移転先：Google LLC（米国・Google Analytics）。移転される情報：クッキー識別子、閲覧したページ・参照元・教保文庫へのリンクのクリック、ブラウザ・デバイスの情報、ページを開くときにブラウザが送信する接続情報（IPアドレス — 国・都市の推定に使われ、Google AnalyticsはIPアドレスを記録・保存しません）。時期と方法：同意された後、ページを開いたときと、教保文庫へのリンクをクリックしたときに、インターネットを通じて。利用目的と保存期間：アクセス統計 — 統計データは14か月後に削除されます。拒否の方法：同意画面で「同意しないで続行する」を押すか、各ページ下部の「クッキー設定」から、いつでも同意を撤回できます。"
+        },
+        {
+          "when": "cfwa",
+          "ko": "방문 수를 셀 때 — 받는 자: Cloudflare, Inc.(미국 · Cloudflare Web Analytics). 옮겨지는 정보: 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 · 브라우저 정보)와 본 쪽 주소 · 들어온 곳 · 쪽이 열리는 속도. 때와 방법: 쪽을 열 때, 인터넷으로. 쓰는 곳: 방문 수 세기 — 쿠키나 기기 저장소를 쓰지 않고 '몇 명'으로만 합쳐 셉니다. 거부하는 법: 브라우저의 추적 막기 · 광고 차단 기능을 켜거나 자바스크립트를 끄시면 세지 않습니다.",
+          "en": "When visits are counted — Recipient: Cloudflare, Inc. (United States · Cloudflare Web Analytics). What is transferred: the connection details your browser sends when a page opens (IP address, browser information), plus the page address, where you came from and how fast the page loads. When and how: when a page opens, over the internet. Purpose: counting visits — no cookies or device storage are used, and visits are only added up as totals. How to refuse: turn on your browser’s tracking protection or an ad blocker, or turn off JavaScript, and nothing is counted.",
+          "ja": "アクセス数を計測するとき — 移転先：Cloudflare, Inc.（米国・Cloudflare Web Analytics）。移転される情報：ページを開くときにブラウザが送る接続情報（IPアドレス・ブラウザ情報）と、閲覧したページのアドレス・参照元・ページの表示速度。時期と方法：ページを開くとき、インターネットで。利用目的：アクセス数の計測 — クッキーや端末の保存領域は使わず、「何人」という合計としてのみ数えます。拒否の方法：ブラウザのトラッキング防止・広告ブロック機能を有効にするか、JavaScriptをオフにすると計測されません。"
         }
       ],
       "empty": {
@@ -166,6 +172,12 @@
           "ko": "방문 수는 GoatCounter로 쿠키 없이 셉니다. 본 쪽 · 들어온 곳 · 교보문고 링크를 누른 수 · 브라우저 · 운영체제 · 나라(IP 주소로 짐작) · 언어 · 화면 폭을 '몇 명'으로만 합쳐 세고, 한 사람을 따로 알아볼 수 있게 남기지 않습니다(3절).",
           "en": "Visits are counted with GoatCounter, without cookies. The page viewed, referring site, clicks on links to Kyobo Book Centre, browser, operating system, country (estimated from the IP address), language and screen width are counted only as totals, and nothing is kept that singles out a person (section 3).",
           "ja": "アクセス数は、GoatCounterを使ってクッキーなしで計測します。閲覧したページ・参照元・教保文庫へのリンクのクリック数・ブラウザ・OS・国（IPアドレスから推定）・言語・画面幅を「何人」という人数にまとめて数えるだけで、特定の個人を識別できる形では残しません（第3項）。"
+        },
+        {
+          "when": "cfwa",
+          "ko": "방문 수는 Cloudflare Web Analytics로 쿠키 없이 셉니다. 본 쪽 · 들어온 곳 · 브라우저 · 운영체제 · 쪽이 열리는 속도를 '몇 명'으로만 합쳐 보고, 한 사람을 따로 알아볼 수 있게 남기지 않습니다(3절).",
+          "en": "Visits are counted without cookies through Cloudflare Web Analytics. Pages viewed, where visitors came from, browser, operating system and page speed are seen only as totals, and nothing is kept that singles out one person (section 3).",
+          "ja": "アクセス数はCloudflare Web Analyticsでクッキーを使わずに数えます。閲覧したページ・参照元・ブラウザ・OS・ページの表示速度を「何人」という人数にまとめて確認し、一人ひとりを見分けられる形では残しません（第3項）。"
         }
       ]
     },
