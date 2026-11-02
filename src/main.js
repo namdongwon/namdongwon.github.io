@@ -1090,9 +1090,34 @@
 
   // 문의 폼: Formspree 주소가 들어가기 전에는 보내지 않고 안내만
   // 방명록 보내기(10/26 A — 설계 v2) — fetch로(쿠키 없이 · reCAPTCHA 없이), 보낸 뒤엔 '받았다'만 · 한도가 차면(429) 다음 달에 · 보내는 동안 단추를 잠금
+  // 보낸 뒤 완료 화면(11/2 동원 예시 '메일을 성공적으로 발송하였습니다' → 버튼 'A 완료 화면 (권장)' — 목업 기준/브랜드 시안/보낸뒤화면시안_v1_휴대폰.png):
+  // 쓰던 칸이 원 안 체크 · 굵은 한 줄 · 옅은 한 줄 · 가는 선 · '새로 쓰기' · '첫 화면으로'로 바뀜(두 번 보내기를 막음). whole이면 box의 안을 통째로(방명록 카드), 아니면 box 자리에(연락 폼)
+  // '새로 쓰기'는 비운 칸을 되돌리고 글 칸에 초점 · 화면 읽기에는 굵은 줄로 초점(role=status)
+  const done = (box, whole, title, sub) => {
+    const kids = whole ? [...box.children] : [box];
+    const ok = document.createElement("div");
+    ok.className = "ok";
+    ok.setAttribute("role", "status");
+    ok.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10.5"/><path d="M7.6 12.3l3 3 5.8-6.2"/></svg>'
+      + '<p class="ot" tabindex="-1"></p><p class="os"></p><div class="ob"><button type="button"></button><a></a></div>';
+    ok.querySelector(".ot").textContent = title;
+    ok.querySelector(".os").textContent = sub;
+    const again = ok.querySelector("button"), home = ok.querySelector("a");
+    again.textContent = uiText("done_again", "새로 쓰기");
+    home.textContent = uiText("done_home", "첫 화면으로");
+    home.href = (document.querySelector(".top .logo") || {}).href || "/";
+    if (whole) { kids.forEach(k => k.remove()); box.append(ok); } else box.replaceWith(ok);
+    ok.querySelector(".ot").focus({ preventScroll: true });
+    again.addEventListener("click", () => {
+      if (whole) { ok.remove(); kids.forEach(k => box.append(k)); } else ok.replaceWith(box);
+      const ta = box.querySelector("textarea");
+      if (ta) ta.focus();
+    });
+  };
+
   const gbf = document.querySelector("form.gbf");
   if (gbf) {
-    const gbSend = gbf.querySelector(".send"), gbMsg = gbf.querySelector(".msg");
+    const gbSend = gbf.querySelector(".send"), gbMsg = gbf.querySelector(".msg"), gbPromise = gbMsg.textContent;  // 단추 아래 약속 한 줄(보내는 동안 상태로 바뀌었다가 되돌림)
     // 글자 수(11/2 엽서 한 장) — 글 칸 아래 '0 / 200'을 켜고 칠 때마다 셈 · 보낸 뒤 비우면 다시 0
     const gbTa = gbf.querySelector("textarea"), gbCnt = gbf.querySelector(".cnt");
     if (gbTa && gbCnt) {
@@ -1117,16 +1142,17 @@
             [...gbf.querySelectorAll("input[name^='entry.'], textarea[name^='entry.']")].forEach(x => body.append(x.name, fd.get(x.name) || ""));
             await fetch(gbf.dataset.endpoint, { method: "POST", mode: "no-cors", body });
           }
-          gbMsg.textContent = uiText("gb_sent", "잘 받았습니다. 월요일에 읽어 보겠습니다.");
           gbf.reset();
           gbSend.disabled = false;
+          gbMsg.textContent = gbPromise;
+          done(gbf.closest(".card") || gbf, !!gbf.closest(".card"), uiText("gb_ok", "글을 보냈습니다."), uiText("gb_ok_sub", gbPromise));
           return;
         }
         const r = await fetch(gbf.dataset.endpoint, { method: "POST", body: new FormData(gbf), headers: { Accept: "application/json" } });
-        gbMsg.textContent = r.ok ? uiText("gb_sent", "잘 받았습니다. 월요일에 읽어 보겠습니다.")
+        gbMsg.textContent = r.ok ? gbPromise
           : r.status === 429 ? uiText("gb_full", "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다.")
           : uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
-        if (r.ok) gbf.reset();
+        if (r.ok) { gbf.reset(); done(gbf.closest(".card") || gbf, !!gbf.closest(".card"), uiText("gb_ok", "글을 보냈습니다."), uiText("gb_ok_sub", gbPromise)); }
       } catch {
         gbMsg.textContent = uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
       }
@@ -1158,8 +1184,8 @@
     msg.textContent = uiText("sending", "보내는 중…");
     try {
       const r = await fetch(form.dataset.endpoint, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
-      msg.textContent = r.ok ? uiText("sent", "잘 받았습니다. 답장 드리겠습니다.") : uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
-      if (r.ok) form.reset();
+      msg.textContent = r.ok ? "" : uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
+      if (r.ok) { form.reset(); done(form, false, uiText("ask_ok", "메시지를 보냈습니다."), uiText("ask_ok_sub", "답장 드리겠습니다.")); }
     } catch {
       msg.textContent = uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
     }

@@ -556,7 +556,15 @@ html.sr-on{overflow:hidden}
 .gb .cnt{margin:-8px 0 0;text-align:right;font:300 11px/1 var(--sans);color:var(--faint);font-variant-numeric:tabular-nums}
 .gb .card>.when,.gb .card>.msg{margin-top:12px}
 @media (max-width:767px){.gb .card{margin-top:30px}}  /* 휴대폰 — 머리말과 띄움(두 단인 컴퓨터는 오른쪽 단 맨 위) */
-.gb .card~ol,.gb .card~.empty{margin-top:36px}  /* 실린 글은 카드 아래 — 글만, 가는 줄(11/2 '가는 줄 목록, 번호 없이') */
+.gb .card~ol,.gb .card~.empty{margin-top:36px}
+/* 보낸 뒤 완료 화면(11/2 동원 예시 '메일을 성공적으로 발송' → 'A 완료 화면' — 목업 기준/브랜드 시안/보낸뒤화면시안_v1_휴대폰.png): 원 안 체크 · 굵은 한 줄 · 옅은 한 줄 · 가는 선 · 단추 둘 · 색은 무채색 */
+.ok{padding:30px 0 22px;text-align:center}
+.ok svg{width:44px;height:44px;color:var(--muted)}
+.ok .ot{margin:16px 0 0;font:600 17px/1.3 var(--sans);color:var(--ink);outline:none}
+.ok .os{margin:8px 0 0;font:300 13px/1.6 var(--sans);color:var(--muted);word-break:keep-all}
+.ok .ob{display:flex;justify-content:center;gap:8px;margin-top:22px;padding-top:22px;border-top:1px solid var(--rule)}
+.ok .ob a,.ok .ob button{padding:12px 16px;border:1px solid var(--line);border-radius:var(--btn-r);background:var(--bg);font:400 13px/1 var(--sans);color:var(--ink);text-decoration:none;cursor:pointer}
+@media (hover:hover){.ok .ob a:hover,.ok .ob button:hover{border-color:var(--ink)}}  /* 실린 글은 카드 아래 — 글만, 가는 줄(11/2 '가는 줄 목록, 번호 없이') */
 .colo{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule)}
 .colo .t{font:400 14px/1.5 var(--serif);color:var(--ink);letter-spacing:0}
 .colo dl{margin-top:16px;display:grid;grid-template-columns:auto 1fr;column-gap:16px;row-gap:6px;font:300 11px/1.5 var(--sans)}
@@ -832,14 +840,14 @@ html.cz-on{overflow:hidden}
 .cz .cz-pt{font:inherit;text-decoration:underline}
 .cz-s{margin:15px 0 0;font:300 12px/19.2px var(--serif)}.cz-s span{display:block;color:var(--faint)}
 .cz-b{display:flex;justify-content:center;gap:80px;margin-top:27px}
-.cz .cz-b button{position:relative;padding:8px 0;border-bottom:1px solid var(--faint);font:300 9px/22.4px var(--sans);letter-spacing:1.35px;color:var(--muted)}  /* 넓은 자간은 고야드 그대로(10/29 한글 자간 규칙의 예외 — 이 단추 둘만) */
+.cz .cz-b button{position:relative;padding:8px 0;border-bottom:1px solid var(--faint);font:400 9px/22.4px var(--sans);letter-spacing:1.35px;color:var(--muted)}  /* 넓은 자간은 고야드 그대로(10/29 한글 자간 규칙의 예외 — 이 단추 둘만) */
 .cz .cz-b .cz-yes{border-bottom-color:var(--ink);color:var(--ink)}
 .cz .cz-b button::before,.cz .cz-x::before{content:"";position:absolute;inset:-6px -8px}  /* 누르는 자리 44px 안팎(맨 위 띠와 같은 방법) */
 /* 2 동의 관리 · 3 파트너 선택 — 650 · 안쪽 20 · 제목 굵은 고딕 15/24 · 본문 명조 15/24 · 단추 짝 63×25 굵은 고딕 12 #757575 · 테두리 #eee · 그림자 1px */
 .cz-2,.cz-3{width:min(650px,100%);padding:20px 20px 0;text-align:left}
 .cz-h{display:flex;align-items:center;gap:4px;margin:12px 0 0;min-height:30px}
 .cz-h h2{flex:1;margin:0;font:600 15px/24px var(--sans);color:var(--ink)}
-.cz .cz-c{position:relative;margin-left:auto;font:300 30px/30px var(--sans);color:var(--ink)}  /* 동의 창 단추 · ×는 300(11/2 본문 고딕 Regular 파일을 더하며 — 그동안 400 · 500으로 적혀 있었지만 Regular 파일이 없어 Light로 보였음, 보이던 모습 그대로) */
+.cz .cz-c{position:relative;margin-left:auto;font:500 30px/30px var(--sans);color:var(--ink)}  /* 동의 창 단추 400 · × 500 — 고야드 실측(11/2 동원 버튼 '고야드 실측 Regular (권장)' — 목업 기준/브랜드 시안/동의창단추굵기시안_v1.png · 본문 고딕 Regular 파일이 생겨 적은 굵기대로 그려짐) */
 .cz .cz-bk{position:relative;font:600 15px/24px var(--sans)}
 .cz .cz-c::before,.cz .cz-bk::before{content:"";position:absolute;inset:-8px -12px}
 .cz-t{margin:34px 0 0;font:400 15px/24px var(--serif);color:var(--ink)}
