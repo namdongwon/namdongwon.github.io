@@ -1120,6 +1120,19 @@
     const gbSend = gbf.querySelector(".send"), gbMsg = gbf.querySelector(".msg"), gbPromise = gbMsg.textContent;  // 단추 아래 약속 한 줄(보내는 동안 상태로 바뀌었다가 되돌림)
     // 글자 수(11/2 엽서 한 장) — 글 칸 아래 '0 / 200'을 켜고 칠 때마다 셈 · 보낸 뒤 비우면 다시 0
     const gbTa = gbf.querySelector("textarea"), gbCnt = gbf.querySelector(".cnt");
+    // 쓰던 글 지켜 두기(11/3 동원 '다정한 UX 7가지' ① → 목업 기준/브랜드 시안/방명록임시저장시안_v1_휴대폰_A·B.png → 'A 조용히 되살림 (권장)'):
+    // 칠 때마다 이 기기의 브라우저 저장소(localStorage gb-draft — 쿠키 아님 · 서버로 보내지 않음)에 글과 적은 때를 둠 → 다시 열면 안내 없이 그대로(Gmail 임시보관함 꼴)
+    // 보내면(reset) 지움 · 7일 지나면 지움(같이 쓰는 PC 대비) · 저장소가 막힌 브라우저(사생활 보호 창 등)는 지금처럼 그냥 둠
+    const DK = "gb-draft", WEEK = 7 * 864e5;
+    const dSet = v => { try { if (v) localStorage.setItem(DK, JSON.stringify({ t: v, at: Date.now() })); else localStorage.removeItem(DK); } catch {} };
+    if (gbTa) {
+      try {
+        const d = JSON.parse(localStorage.getItem(DK) || "null");
+        if (d && Date.now() - d.at < WEEK) { if (!gbTa.value) gbTa.value = d.t; } else if (d) dSet("");
+      } catch { dSet(""); }
+      gbTa.addEventListener("input", () => dSet(gbTa.value));
+      gbf.addEventListener("reset", () => dSet(""));
+    }
     if (gbTa && gbCnt) {
       const n = gbCnt.querySelector("span"), count = () => { n.textContent = gbTa.value.length; };
       gbTa.addEventListener("input", count);
