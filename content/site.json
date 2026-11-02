@@ -755,6 +755,10 @@
     ],
     "formspree_id": "",
     "guestbook_formspree_id": "",
+    "guestbook_gform": {
+      "action": "https://docs.google.com/forms/d/e/1FAIpQLSeft-oeS26wA7IcLmmAH23MPt7QNAICSdMUtsHoTlIXrKpAHQ/formResponse",
+      "text": "entry.867092931"
+    },
     "privacy": "보내 주신 이름·메일은 답장에만 씁니다.",
     "email": {
       "user": "namdonwon",
