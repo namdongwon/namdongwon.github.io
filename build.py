@@ -229,7 +229,7 @@ def gform(site):
     if not all(str(g.get(k) or "").strip() for k in ("action", "text")):
         return None
     if not re.fullmatch(r"https://docs\.google\.com/forms/d/e/[\w-]+/formResponse", g["action"]) or not re.fullmatch(r"entry\.\d+", g["text"]):
-        raise SystemExit("구글 폼 칸(contact.guestbook_gform)은 action 'https://docs.google.com/forms/d/e/…/formResponse' · name · text 'entry.숫자' 꼴이어야 함")
+        raise SystemExit("구글 폼 칸(contact.guestbook_gform)은 action 'https://docs.google.com/forms/d/e/…/formResponse' · text 'entry.숫자' 꼴이어야 함(name은 11/2부터 쓰지 않음)")
     return g
 
 
@@ -1402,7 +1402,8 @@ def render(site, poem, videos, photos, lang="ko"):
     tk_pic = ""
     if ME_IMG.exists():
         with Image.open(ME_IMG) as im:
-            tk_pic = f'<img class="tk-p" src="{P}assets/img/me.webp" alt="" width="{im.width}" height="{im.height}" decoding="async" fetchpriority="high">'
+            # 대체 글(11/2 동원 버튼 '짧은 설명 넣기 (권장)' — 전엔 빈칸이라 hiddentext 알림 · 화면 읽기에 아무 말 없음): ui.json me_alt 세 판
+            tk_pic = f'<img class="tk-p" src="{P}assets/img/me.webp" alt="{t("me_alt")}" width="{im.width}" height="{im.height}" decoding="async" fetchpriority="high">'
     tk = (f'<div class="tk"><p class="tk-w" aria-hidden="true" lang="en">{" ".join(f"<span>{w}</span>" for w in t("tk_word").split())}</p>{tk_pic}'
           f'<div class="tk-s"><p class="s" lang="en">{tk_big}</p><p class="ab">{tk_about}</p></div>'
           f'<div class="tk-l"><p class="k">{t("tk_kick")}</p><p class="tt">{tk_title}</p>'
