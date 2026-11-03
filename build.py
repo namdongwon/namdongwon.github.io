@@ -929,7 +929,7 @@ def make_icons():
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><style>circle{fill:#111}'
         '@media (prefers-color-scheme:dark){circle{fill:#ecebe6}}</style>'
         '<circle cx="32" cy="32" r="20"/></svg>\n', encoding="utf-8")
-    for size, name, paper in ((32, "favicon-32.png", False), (180, "apple-touch-icon.png", True)):
+    for size, name, paper in ((32, "favicon-32.png", False), (180, "apple-touch-icon.png", True), (192, "icon-192.png", True), (512, "icon-512.png", True)):  # 192 · 512: 웹 앱 매니페스트(11/3) — 먹 동그라미가 가운데 62.5%라 안드로이드 둥근 · 네모 가림(maskable 안전 지대 80%) 안에 듦
         # 32px는 투명 바탕(SVG를 못 쓰는 곳) · 홈 화면 그림은 흰 바탕 그대로(투명하면 iOS가 검게 채움)
         big = size * 8  # 8배로 그려 줄임 — 작은 크기에서도 가장자리가 매끈하게
         im = Image.new("RGBA", (big, big), (255, 255, 255, 255 if paper else 0))
@@ -1647,6 +1647,8 @@ def render(site, poem, videos, photos, lang="ko"):
 <link rel="icon" href="{P}favicon.svg?v={ICON_V}" type="image/svg+xml">
 <link rel="icon" href="{P}favicon-32.png?v={ICON_V}" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="{P}apple-touch-icon.png?v={ICON_V}">
+<link rel="manifest" href="{"/" + lang + "/" if tr_ else "/"}manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="NAM DONGWON">
 {HEAD_JS if bpg else HEAD_JS_PLAIN}
 {preload if bpg else ""}<link rel="stylesheet" href="{P}assets/style.css">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
@@ -2088,6 +2090,13 @@ def main():
                   f'<xhtml:link rel="alternate" hreflang="x-default" href="{e(base)}/{kp}"/></url>'
                   for pre in ("", "/en", "/ja") for kp in (f"{k}/" if k else "" for k in PAGES))  # lastmod는 빌드한 날 · x-default는 머리말과 같게(10/27 가5) · 쪽마다(10/31) · 일본어판(11/1)
         + "</urlset>\n", encoding="utf-8")
+    for lg in LANGS:  # 웹 앱 매니페스트(11/3 동원 버튼 "B NAM DONGWON" — 목업 기준/브랜드 시안/홈화면이름시안_v1): 홈 화면 이름은 맨 위 띠 표장과 같은 말 · 세 판 같음,
+        # 판마다 시작 주소만 그 판 · display는 browser(주소창 · 공유가 그대로인 바로가기 — 앱처럼 감싸지 않음, 담백하게) · 바탕 · 띠 색은 흰 바탕
+        pre = f"/{lg}/" if lg in TR else "/"
+        man = {"name": "NAM DONGWON", "short_name": "NAM DONGWON", "lang": lg, "dir": "ltr", "id": pre, "start_url": pre, "scope": "/",
+               "display": "browser", "background_color": "#ffffff", "theme_color": "#ffffff",
+               "icons": [{"src": f"/icon-{s}.png", "sizes": f"{s}x{s}", "type": "image/png", "purpose": "any maskable"} for s in (192, 512)]}
+        (DOCS / (f"{lg}/manifest.webmanifest" if lg in TR else "manifest.webmanifest")).write_text(json.dumps(man, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     for lg, xml in feeds(site, base).items():  # RSS(11/3) — 판마다 그 판 맨 위에
         (DOCS / (f"{lg}/feed.xml" if lg in TR else "feed.xml")).write_text(xml, encoding="utf-8")
     (DOCS / ".nojekyll").write_text("", encoding="utf-8")  # GitHub Pages가 파일을 다시 가공하지 않게
