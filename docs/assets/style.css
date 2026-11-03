@@ -794,7 +794,7 @@ html.sr-on{overflow:hidden}
 .fcols .cz-open{padding:0;border:0;background:none;font:inherit;color:inherit;cursor:pointer}
 .colo .ctl{display:inline-grid;margin-top:0;text-align:left}
 .fmark{margin-top:64px}
-.fmark .dm{font:300 calc(11px * var(--fs))/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.fmark .dm{font:400 calc(11px * var(--fs))/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--ink)}  
 .ficons{display:flex;justify-content:center;gap:16px;margin:36px 0 0;padding:0;list-style:none}
 .ficons a{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;color:var(--ink)}
 .ficons svg{width:20px;height:20px}
