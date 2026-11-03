@@ -321,10 +321,10 @@ html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:
 .head{margin-top:30px}
 .head h2{margin:0;font:400 28px/1.2 var(--serif)}  
 .head span{display:block;margin-top:8px;font:300 calc(12.5px * var(--fs))/1.5 var(--sans);color:var(--muted);letter-spacing:.04em}
-.strip{margin-top:22px;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
-.strip::-webkit-scrollbar{display:none}
-.strip figure{flex:0 0 100%;scroll-snap-align:start}
-.strip img{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--ph)}
+
+
+
+
 
 .caps{margin-top:12px;display:flex;align-items:baseline;gap:8px}
 .cap{flex:1}
@@ -334,35 +334,35 @@ html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:
 .cap .aw{display:block;margin-top:4px;color:var(--ink)}  
 .cap small a{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}  
 .count{order:2;flex:none;font:300 calc(12.5px * var(--fs))/1 var(--sans);color:var(--muted)}
-.nav2{margin-top:12px;display:flex;justify-content:space-between}
-.nav2 button{background:none;border:0;padding:6px 0;font:300 calc(12.5px * var(--fs))/1 var(--sans);color:var(--muted);cursor:pointer}
-#photo .buy{margin-top:16px;align-self:flex-start}
 
-.mode,.thumbs{display:none}
-.js .mode{display:flex;gap:16px;margin-top:16px;font:300 calc(12.5px * var(--fs))/1 var(--sans)}
-.js .mode button{background:none;border:0;padding:4px 0;color:var(--faint);cursor:pointer}
-.js .mode button[aria-pressed="true"]{color:var(--ink);box-shadow:inset 0 -1.5px 0 var(--ink)}
-.js .thumbs{display:flex;gap:6px;margin-top:12px}
-.thumbs button{flex:1 1 0;min-width:0;padding:0;border:0;background:none;cursor:pointer;opacity:.45;filter:grayscale(1);transition:opacity .35s ease,filter .35s ease}
-.thumbs button.on{opacity:1;filter:none}
-.thumbs button:focus-visible{opacity:1}  
-.thumbs button::after{content:"";display:block;height:1.5px;margin-top:6px;background:var(--ink);transform:scaleX(0);transition:transform .35s var(--ease)}
-.thumbs button.on::after{transform:scaleX(1)}
-.thumbs img,.pgrid img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
-.strip figure.art img,.thumbs .art img{object-fit:contain;background:var(--wall)}  
-.pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 6px;margin-top:22px}  
-.pgrid .more{display:flex;flex-direction:column;justify-content:flex-end;gap:4px;aspect-ratio:4/5;padding:12px;border:1px solid var(--line);color:var(--ink)}  
-.pgrid .more span{font:300 calc(11px * var(--fs))/1.3 var(--sans);color:var(--muted)}.pgrid .more b{font:600 calc(14px * var(--fs))/1 var(--sans)}
-@media (max-width:767px){#photo.all .info>.buy{display:none}}
-.pgrid button{padding:0;border:0;background:none;text-align:left;cursor:pointer}
-.pgrid img{filter:grayscale(1)}
-.pgrid .no{display:block;margin-top:6px;font:300 calc(11px * var(--fs))/1 var(--sans);color:var(--faint);letter-spacing:.04em}
 
-.strip .pop{display:block;position:relative;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
-.strip .pop:focus-visible{outline:none}
-.strip .pop:focus-visible::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 3px var(--ink),inset 0 0 0 5px var(--bg);pointer-events:none}  
-.strip .many,.pvk{position:absolute;top:12px;right:12px;padding:6px 8px;border-radius:999px;background:var(--chip);font:300 calc(11px * var(--fs))/1 var(--sans);color:var(--ink);letter-spacing:0;font-variant-numeric:tabular-nums}  
-.strip .art .many{right:calc(3.125% + 10px)}  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  
+
+
+
+
+
+
+
+
+  
+.pvk{position:absolute;top:12px;right:12px;padding:6px 8px;border-radius:999px;background:var(--chip);font:300 calc(11px * var(--fs))/1 var(--sans);color:var(--ink);letter-spacing:0;font-variant-numeric:tabular-nums}  
+  
 .pvk{pointer-events:none}  
 html.pv-on{overflow:hidden}
 .pv{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--bg);opacity:0;transform:scale(.98);filter:blur(4px);transition:opacity .22s var(--e2),transform .22s var(--e2),filter .22s var(--e2)}  
@@ -420,12 +420,12 @@ html.sr-on{overflow:hidden}
 @media (min-width:768px){.srch .in{padding-top:72px}.srch input{font-size:30px}.srch .sug a,.srch .sug button{font-size:21px}}
 @media (min-width:768px){.pvh,.pvf{padding-left:64px;padding-right:64px}.pvs figure{padding:22px 64px}.pvf p{max-width:720px}}
 @media (prefers-reduced-motion:reduce){.pv{transition:none}}:where(:root[data-motion="reduce"]) .pv,:where(:root[data-motion="reduce"]).pv{transition:none}
-.js #photo .nav2{display:none}
-#photo.all .strip,#photo.all .thumbs,#photo.all .caps{display:none}
+
+
 
 #photo{display:flex;flex-direction:column}
-#photo .info,#photo .top2{display:contents}
-#photo .label{order:0} #photo .head{order:1} #photo .mode{order:2} #photo>.l{order:3} #photo .caps{order:4} #photo .nav2{order:5} #photo .buy{order:6}  
+
+        
 
 
 .ch2{margin-top:30px}
@@ -497,7 +497,7 @@ html.sr-on{overflow:hidden}
 .ask .agree input{margin-top:2px;width:14px;height:14px;accent-color:var(--ink);flex:none}
 .send{justify-self:start;font:600 calc(14px * var(--fs))/1 var(--sans);padding:12px 22px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:var(--btn-r);cursor:pointer;-webkit-tap-highlight-color:transparent}
 @media (hover:hover){.send:hover{background:var(--ink);color:var(--bg)}}
-@media (hover:hover){.top nav a:hover,.top .sq:hover,.nav2 button:hover,.sns a:hover,.colo .thm button:hover{color:var(--ink)}.js .hint:hover{color:var(--muted)}}    
+@media (hover:hover){.top nav a:hover,.top .sq:hover,.sns a:hover,.colo .thm button:hover{color:var(--ink)}.js .hint:hover{color:var(--muted)}}    
 
 .top nav a::after,.js .top .sq::after{content:"";position:absolute;z-index:-1;border-radius:var(--btn-r);background:transparent}
 .top nav a::after{inset:-2px -8px}.js .top .sq::after{inset:-2px -4px}
@@ -591,8 +591,8 @@ html.sr-on{overflow:hidden}
 
 
 .hint{display:none}
-.buy,.js .mode button,.colo .thm button,.sns a,.cap small a,.colo .pp-l,#home dd .go,.pbook .plab .go{position:relative}  
-.buy::before,.js .mode button::before,#home dd .go::before,.pbook .plab .go::before{content:"";position:absolute;inset:-12px -4px}
+.buy,.colo .thm button,.sns a,.cap small a,.colo .pp-l,#home dd .go,.pbook .plab .go{position:relative}  
+.buy::before,#home dd .go::before,.pbook .plab .go::before{content:"";position:absolute;inset:-12px -4px}
 .colo .thm button::before,.sns a::before,.cap small a::before,.colo .pp-l::before{content:"";position:absolute;inset:-16px -4px}
 
 @media (hover:none){a,button{-webkit-tap-highlight-color:transparent}}
@@ -648,7 +648,7 @@ html.sr-on{overflow:hidden}
 @keyframes sein{from{opacity:0}}
 
 
-@media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .nt.in b i,:where(:root:not([data-motion="reduce"])).nt.in b i{animation:nxp 2.4s ease-in-out 3}:where(:root:not([data-motion="reduce"])) .top nav a,:where(:root:not([data-motion="reduce"])).top nav a{transition:color var(--fast) var(--e2),opacity var(--fast) var(--e2)}:where(:root:not([data-motion="reduce"])) .top nav a::after,:where(:root:not([data-motion="reduce"])).top nav a::after,:where(:root:not([data-motion="reduce"])) .js .top .sq::after,:where(:root:not([data-motion="reduce"])).js .top .sq::after{transition:background-color .2s var(--ease)}:where(:root:not([data-motion="reduce"])) .buy2,:where(:root:not([data-motion="reduce"])).buy2{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease)}:where(:root:not([data-motion="reduce"])) .top .act a.cta,:where(:root:not([data-motion="reduce"])).top .act a.cta{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),opacity .4s}:where(:root:not([data-motion="reduce"])) .top nav .ul,:where(:root:not([data-motion="reduce"])).top nav .ul{transition:transform .28s var(--e2),width .28s var(--e2),opacity .3s}:where(:root:not([data-motion="reduce"])) .mini,:where(:root:not([data-motion="reduce"])).mini{transition:transform .5s var(--ease),visibility 0s .5s}:where(:root:not([data-motion="reduce"])) .mini.on,:where(:root:not([data-motion="reduce"])).mini.on{transition:transform .5s var(--ease)}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .name:not(.ty),:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .name:not(.ty){color:transparent;animation:name-show 0s 3s forwards}:where(:root:not([data-motion="reduce"])) .js .name .caret,:where(:root:not([data-motion="reduce"])).js .name .caret{display:inline-block;width:.06em;height:.8em;margin-left:.16em;background:currentColor;vertical-align:-.04em;animation:caret 1s steps(1) infinite}:where(:root:not([data-motion="reduce"])) .js .name .caret.off,:where(:root:not([data-motion="reduce"])).js .name .caret.off{opacity:0;width:0;margin-left:0;transition:opacity .4s,width 0s .4s,margin-left 0s .4s;animation:none}:where(:root:not([data-motion="reduce"])) .intro #home .book,:where(:root:not([data-motion="reduce"])).intro #home .book{opacity:0;transform:translateY(26px);filter:blur(3px);animation:intro-safe .8s var(--ease) 4s forwards}:where(:root:not([data-motion="reduce"])) .intro .door,:where(:root:not([data-motion="reduce"])).intro .door{animation:door-safe .6s ease 4s forwards}:where(:root:not([data-motion="reduce"])) .opened #home .book,:where(:root:not([data-motion="reduce"])).opened #home .book{opacity:1;transform:none;filter:none;transition:opacity .8s var(--ease) .6s,transform .8s var(--ease) .6s,filter .8s var(--ease) .6s}:where(:root:not([data-motion="reduce"])) .js:not(.seen) .bk:not(.on) .b,:where(:root:not([data-motion="reduce"])).js:not(.seen) .bk:not(.on) .b{--ry:78deg;animation:bk-safe 1.7s var(--ease) 4s forwards}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .bk:not(.on) .win::before,:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .bk:not(.on) .win::before{animation:win-safe 1.7s var(--ease) 4s both}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .bk.on .win::before,:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .bk.on .win::before{animation:win-in 4s cubic-bezier(.4,0,.3,1) backwards}:where(:root:not([data-motion="reduce"])) .js .rv,:where(:root:not([data-motion="reduce"])).js .rv{opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;transition-delay:calc(var(--i,0)*.04s)}:where(:root:not([data-motion="reduce"])) .js .rv.in,:where(:root:not([data-motion="reduce"])).js .rv.in{opacity:1;transform:none}:where(:root:not([data-motion="reduce"])) .js .label::after,:where(:root:not([data-motion="reduce"])).js .label::after{transform:scaleX(0);transform-origin:0 50%;transition:transform 1.3s var(--ease) .1s}:where(:root:not([data-motion="reduce"])) .js .label.in::after,:where(:root:not([data-motion="reduce"])).js .label.in::after{transform:scaleX(1)}:where(:root:not([data-motion="reduce"])) .js .strip img,:where(:root:not([data-motion="reduce"])).js .strip img{transform:scale(1.1);transition:transform 1.8s var(--ease),opacity .6s ease}:where(:root:not([data-motion="reduce"])) .js .strip.in img,:where(:root:not([data-motion="reduce"])).js .strip.in img{transform:scale(1)}:where(:root:not([data-motion="reduce"])) .js .strip img.dev,:where(:root:not([data-motion="reduce"])).js .strip img.dev{opacity:0;transition:transform 1.8s var(--ease)}:where(:root:not([data-motion="reduce"])) .js .pgrid>*,:where(:root:not([data-motion="reduce"])).js .pgrid>*{opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i)*.045s)}:where(:root:not([data-motion="reduce"])) .js .pgrid.show>*,:where(:root:not([data-motion="reduce"])).js .pgrid.show>*{opacity:1;transform:none}}
+@media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .nt.in b i,:where(:root:not([data-motion="reduce"])).nt.in b i{animation:nxp 2.4s ease-in-out 3}:where(:root:not([data-motion="reduce"])) .top nav a,:where(:root:not([data-motion="reduce"])).top nav a{transition:color var(--fast) var(--e2),opacity var(--fast) var(--e2)}:where(:root:not([data-motion="reduce"])) .top nav a::after,:where(:root:not([data-motion="reduce"])).top nav a::after,:where(:root:not([data-motion="reduce"])) .js .top .sq::after,:where(:root:not([data-motion="reduce"])).js .top .sq::after{transition:background-color .2s var(--ease)}:where(:root:not([data-motion="reduce"])) .buy2,:where(:root:not([data-motion="reduce"])).buy2{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease)}:where(:root:not([data-motion="reduce"])) .top .act a.cta,:where(:root:not([data-motion="reduce"])).top .act a.cta{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),opacity .4s}:where(:root:not([data-motion="reduce"])) .top nav .ul,:where(:root:not([data-motion="reduce"])).top nav .ul{transition:transform .28s var(--e2),width .28s var(--e2),opacity .3s}:where(:root:not([data-motion="reduce"])) .mini,:where(:root:not([data-motion="reduce"])).mini{transition:transform .5s var(--ease),visibility 0s .5s}:where(:root:not([data-motion="reduce"])) .mini.on,:where(:root:not([data-motion="reduce"])).mini.on{transition:transform .5s var(--ease)}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .name:not(.ty),:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .name:not(.ty){color:transparent;animation:name-show 0s 3s forwards}:where(:root:not([data-motion="reduce"])) .js .name .caret,:where(:root:not([data-motion="reduce"])).js .name .caret{display:inline-block;width:.06em;height:.8em;margin-left:.16em;background:currentColor;vertical-align:-.04em;animation:caret 1s steps(1) infinite}:where(:root:not([data-motion="reduce"])) .js .name .caret.off,:where(:root:not([data-motion="reduce"])).js .name .caret.off{opacity:0;width:0;margin-left:0;transition:opacity .4s,width 0s .4s,margin-left 0s .4s;animation:none}:where(:root:not([data-motion="reduce"])) .intro #home .book,:where(:root:not([data-motion="reduce"])).intro #home .book{opacity:0;transform:translateY(26px);filter:blur(3px);animation:intro-safe .8s var(--ease) 4s forwards}:where(:root:not([data-motion="reduce"])) .intro .door,:where(:root:not([data-motion="reduce"])).intro .door{animation:door-safe .6s ease 4s forwards}:where(:root:not([data-motion="reduce"])) .opened #home .book,:where(:root:not([data-motion="reduce"])).opened #home .book{opacity:1;transform:none;filter:none;transition:opacity .8s var(--ease) .6s,transform .8s var(--ease) .6s,filter .8s var(--ease) .6s}:where(:root:not([data-motion="reduce"])) .js:not(.seen) .bk:not(.on) .b,:where(:root:not([data-motion="reduce"])).js:not(.seen) .bk:not(.on) .b{--ry:78deg;animation:bk-safe 1.7s var(--ease) 4s forwards}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .bk:not(.on) .win::before,:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .bk:not(.on) .win::before{animation:win-safe 1.7s var(--ease) 4s both}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .bk.on .win::before,:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .bk.on .win::before{animation:win-in 4s cubic-bezier(.4,0,.3,1) backwards}:where(:root:not([data-motion="reduce"])) .js .rv,:where(:root:not([data-motion="reduce"])).js .rv{opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;transition-delay:calc(var(--i,0)*.04s)}:where(:root:not([data-motion="reduce"])) .js .rv.in,:where(:root:not([data-motion="reduce"])).js .rv.in{opacity:1;transform:none}:where(:root:not([data-motion="reduce"])) .js .label::after,:where(:root:not([data-motion="reduce"])).js .label::after{transform:scaleX(0);transform-origin:0 50%;transition:transform 1.3s var(--ease) .1s}:where(:root:not([data-motion="reduce"])) .js .label.in::after,:where(:root:not([data-motion="reduce"])).js .label.in::after{transform:scaleX(1)}}
 
 @media (max-width:374px){.bhead{text-wrap:pretty}}  
 @media (min-width:355px) and (max-width:374px){.poem{font-size:calc(15px * var(--fs))}}  
@@ -694,7 +694,7 @@ html.sr-on{overflow:hidden}
   #video>.r{align-self:start;margin-top:36px}  
   #palette>.l,#palette>.r{align-self:start;margin-top:36px}
   #palette>.l{position:sticky;top:110px}  
-  #photo>.l,#video>.l{margin-top:36px}  
+  #video>.l{margin-top:36px}  
   #poem>.l{grid-row:2 / span 3}  
   #poem>.bnews{grid-column:2;grid-row:3;margin-top:64px;max-width:34em}  
   #poem>.bintro{grid-column:2;grid-row:4;margin-top:64px}
@@ -720,17 +720,17 @@ html.sr-on{overflow:hidden}
   .vt{font-size:22px}
   .ch2 h2{font-size:40px}
   #photo{display:grid;grid-template-rows:auto auto auto auto}  
-  #photo .info,#photo .top2{display:block}
+  
   #photo>.top2{grid-column:1/-1;grid-row:2;display:flex;justify-content:space-between;align-items:flex-end;margin-top:36px}
-  #photo .mode{margin-top:0}
-  #photo>.l{grid-row:3;margin-top:30px}
+  
+  
   #photo>.info{grid-row:3;align-self:end}  
-  #photo.all>.l{grid-column:1/-1}#photo.all>.info{grid-column:1/-1;grid-row:4;align-self:auto}  
-  #photo .head{margin-top:0}
-  #photo .head h2{font-size:40px}  
-  #photo .strip{margin-top:0;max-width:440px}
-  .thumbs{max-width:440px}
-  .pgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.pgrid .more{display:none}  
+    
+  
+    
+  
+  
+    
   .door .t{font-size:30px}
   .rec .n{font-size:40px}
   .sheet{padding:0 calc(50vw - 280px)}
@@ -742,7 +742,7 @@ html.sr-on{overflow:hidden}
 @media (min-width:768px) and (max-height:740px){.sheet .st{padding-top:36px;font-size:24px}.sheet .sp{font-size:calc(14px * var(--fs));line-height:1.6}.sheet .sp p+p{margin-top:1.6em}}
 @media (min-width:980px){.poem .pair{display:grid;grid-template-columns:1fr 1fr;column-gap:30px;align-items:start}.poem .le{margin-bottom:0;line-height:2}}  
 
-@media (min-width:1024px){#photo.all .pgrid{grid-template-columns:repeat(8,minmax(0,1fr))}}  
+  
 @media (min-width:1200px){html:lang(ko) #home dl{grid-template-columns:repeat(5,auto)}html:lang(ko) #home dl.n6{grid-template-columns:repeat(6,auto)}html:lang(ko) #home dl>div:first-child{grid-column:auto}}  
 
 @media (min-width:1300px){#poem>.bnews{max-width:min(50% - 14px,34em)}}  
@@ -757,14 +757,14 @@ html.sr-on{overflow:hidden}
 @media print{
   :root,:root[data-theme]{--bg:#fff;--ink:#111;--muted:#444;--faint:#555;--rule:#ddd;--line:#bbb;--ph:#f2f2f2;--wall:#fff;--mark:#e6e6e6;color-scheme:light}
   html,body{background:#fff!important;color:#111!important}
-  .top,.skip,.srch,.mini,.door,.sheet,.pv,.js .hint,#home .tip,#home .buyrow,.thumbs,.pgrid,.js .mode,.pva,.nav2,.gbf,.ask,.colo .thm,.js .dot-n,.rec canvas.grid{display:none!important}
-  .js .rv,.js .strip img{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+  .top,.skip,.srch,.mini,.door,.sheet,.pv,.js .hint,#home .tip,#home .buyrow,.pva,.gbf,.ask,.colo .thm,.js .dot-n,.rec canvas.grid{display:none!important}
+  .js .rv{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
   .js .label::after{transform:none!important}
   .rec .rl .n{position:static!important;width:auto!important;height:auto!important;overflow:visible!important;clip-path:none!important}
   #home{min-height:0!important}
-  .strip{overflow:visible!important;display:block!important}
-  .strip figure:not(:first-child){display:none!important}
-  .strip figure img{max-height:85mm!important;width:auto!important}
+  
+  
+  
   .nt{max-width:110mm!important;min-height:0!important}
   .poem p,.poem .pair,.years li,.fn li,.btoc li,.bnews li{break-inside:avoid}
   .h2,.head,.ch2,.label,.bhead{break-after:avoid}
@@ -921,17 +921,17 @@ html.cz-on{overflow:hidden}
 .rbar.on{opacity:1}
 @media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .rbar,:where(:root:not([data-motion="reduce"])).rbar{transition:opacity .3s}}
 
-.ring{display:none;position:relative;height:460px;margin-top:22px;perspective:1300px;cursor:grab;-webkit-user-select:none;user-select:none;touch-action:pan-y}
-#photo.all .ring{display:block}
-.ringon #photo.all .pgrid{display:none}
-.ring.drag{cursor:grabbing}
-.ring .rot{position:absolute;left:50%;top:44%;transform-style:preserve-3d;transform:rotateX(-9deg) rotateY(var(--a,0deg))}
-.ring .rc{position:absolute;left:0;top:0;width:160px;height:213px;padding:0;border:0;background:none;cursor:pointer;transform:translate(-50%,-50%) rotateY(calc(var(--i) * 360deg / var(--n))) translateZ(390px)}
-.ring .rc img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1);box-shadow:0 12px 30px rgba(0,0,0,.14);transition:filter .4s,transform .4s}
-.ring .rc:hover img,.ring .rc:focus-visible img{filter:none;transform:scale(1.07)}
-.ring .rh{position:absolute;left:0;right:0;bottom:0;margin:0;text-align:center;font:300 calc(11px * var(--fs))/1.5 var(--sans);letter-spacing:.04em;color:var(--muted)}
 
-@media (hover:hover) and (pointer:fine){#photo .pgrid>button img{transition:filter .45s}#photo .pgrid>button:hover img{filter:none}}
+
+
+
+
+
+
+
+
+
+
 
 #photo.wallp{display:block}
 .wall{display:grid;gap:30px}

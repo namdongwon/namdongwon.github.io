@@ -1191,19 +1191,7 @@ def render(site, poem, videos, photos, lang="ko"):
           f'<button type="button" class="pva pvp" aria-label="{t("pv_prev")}">←</button><button type="button" class="pva pvn" aria-label="{t("pv_next")}">→</button></div>'  # 넘기기 단추 — 마우스로 보는 컴퓨터에서만(10/26 동원 "컴퓨터에서는 확대해도 안 넘어가는 거 같네")
           f'<div class="pvf"></div></div>\n'
           f'<script id="posts" type="application/json">{posts_js}</script>\n') if any(posts) else ""
-    # 아래 작은 줄(보는 한 장만 색)과 '모아 보기' 격자(번호) — 가벼운 작은 사진(240px)을 따로 씀
-    thumb = lambda p: f'{P}assets/img/photos/thumb/{e(Path(p["file"]).stem)}.jpg'
-    tsize = lambda p: 'width="{}" height="{}"'.format(*out_size(psrc(p), 240))
-    tart = lambda p: ' class="art"' if is_art(p) else ""
-    # 작은 사진은 data-src — 첫 큰 사진이 다 온 뒤 main.js가 받음(10/27 점검)
-    thumbs = "".join(f'<button type="button"{tart(p)} aria-label="{t("thumb", i=i + 1)}"><img data-src="{thumb(p)}" alt="" {tsize(p)}></button>'
-                     for i, p in enumerate(PH["items"]))
-    pgrid = "".join(f'<button type="button"{tart(p)} style="--i:{i}" aria-label="{t("grid", i=i + 1)}"><img data-src="{thumb(p)}" alt="" {tsize(p)}>'
-                    f'<span class="no">{i + 1:02d}</span></button>' for i, p in enumerate(PH["items"]))
-    # 격자 끝 칸 '인스타그램에서 더 보기 ↗'(10/29 동원 'A 모아 보기 먼저' — 휴대폰 셋씩 셋째 줄 빈칸을 채움, 컴퓨터는 넷씩 두 줄이라 숨김)
-    pgrid += (f'<a class="more" href="{e(acc["url"])}" target="_blank" rel="noopener" style="--i:{len(PH["items"])}" aria-label="{t("more_ig")}">'
-              f'<span>{t("more_ig_a")}</span><b>{t("more_ig_b")} ↗</b></a>')
-
+    # 옛 작은 줄 · '모아 보기' 격자는 11/3 흐르는 벽으로 바뀌며 뺌(11/4 정리) — 작은 사진(thumb)은 찾기 · 공유에서 그대로 씀
     # 흐르는 벽(11/3 동원 "https://motionsites.ai/?prompt=atrium-mtl 내 인스타그램 페이지 이거로 하는 건 어때?" → 목업 인스타벽시안_v1 · 예시 영상 → 'A 흐르는 벽 (권장)'):
     # 게시물마다 첫 사진 + 안쪽 사진을 작은 판(photos/wall 480px)으로 세 줄에 차례로(휴대폰은 두 줄) · 줄마다 두 벌을 이어 끝없이 흐름(둘째 벌은 화면 읽기 · Tab에서 뺌) ·
     # 누르면 게시물 창이 그 사진에서 열림(.pop · data-k) · 넷째 자리마다 옅은 빈칸(레퍼런스의 색 블록 자리 — 흰 바탕 · 무채색)

@@ -201,7 +201,7 @@
       el.classList.add("rv");
       el.style.setProperty("--i", Math.max(0, [...el.parentElement.children].filter(c => c.matches(sel)).indexOf(el)));
     }));
-    once([...document.querySelectorAll(".rv, .strip, .nt")], el => el.classList.add("in"), { rootMargin: "0px 0px -8% 0px" });  // .nt — '준비 중' 점은 보일 때 세 번만 숨 쉼
+    once([...document.querySelectorAll(".rv, .nt")], el => el.classList.add("in"), { rootMargin: "0px 0px -8% 0px" });  // .nt — '준비 중' 점은 보일 때 세 번만 숨 쉼
   }
 
   // ② 탁본 — 시 칸 글자는 움직이지 않음(10/27 숨 재기 4 — 한 줄씩 찍힘은 「탁본」 한 장에만, 아래 길게 누르기)
@@ -486,74 +486,7 @@
     if (to) { ev.preventDefault(); location.href = swap.getAttribute("href") + to; }
   }));
 
-  // 사진 칸: 옆으로 넘기기 + '1 / 8' + 캡션 · 아래 작은 줄(보는 한 장만 색) · '모아 보기'(번호 붙은 흑백 격자) — 10/24 둘 다
-  const strip = document.querySelector(".strip");
-  if (strip) {
-    const sec = document.querySelector("#photo"), grid = document.querySelector(".pgrid");
-    const slides = strip.children.length;
-    const count = document.querySelector(".count");
-    const caps = [...document.querySelectorAll(".cap")];
-    const thumbs = [...document.querySelectorAll(".thumbs button")];
-    const at = () => Math.round(strip.scrollLeft / Math.max(1, strip.clientWidth));
-    const big = [...strip.children].map(f => f.querySelector("img"));
-    const load = im => { if (im && im.dataset.src) { im.src = im.dataset.src; im.removeAttribute("data-src"); } };
-    const ahead = i => { load(big[i]); load(big[i + 1]); };
-    const small = () => document.querySelectorAll(".thumbs img[data-src], .pgrid img[data-src]").forEach(load);
-    if (big[0]) {
-      const go1 = () => { ahead(0); small(); };
-      if (big[0].complete && big[0].naturalWidth) go1();
-      else { big[0].addEventListener("load", go1, { once: true }); big[0].addEventListener("error", go1, { once: true }); }
-    }
-    const show = (i, first) => {
-      if (!first) ahead(i);  // 처음 그릴 때는 받지 않음 — 첫 장이 다 온 뒤에(위) 둘째 장을 받음
-      if (count) count.textContent = `${i + 1} / ${slides}`;
-      caps.forEach((c, n) => { c.hidden = n !== i; });
-      thumbs.forEach((t, n) => { t.classList.toggle("on", n === i); t.setAttribute("aria-current", n === i ? "true" : "false"); });
-    };
-    strip.addEventListener("scroll", () => show(at()), { passive: true });
-    const go = (i, smooth) => strip.scrollTo({ left: i * strip.clientWidth, behavior: smooth && !reduce ? "smooth" : "auto" });
-    let devLast = -1e9;  // 넘긴 사진은 짧게 서서히 — 1초에 한 번까지
-    const fade = i => {
-      const now = performance.now();
-      if (!motion || now - devLast < 1000) return;
-      devLast = now;
-      const img = strip.children[i] && strip.children[i].querySelector("img");
-      if (img) { img.classList.add("dev"); requestAnimationFrame(() => requestAnimationFrame(() => img.classList.remove("dev"))); }
-    };
-    // 이전·다음(자바스크립트가 없을 때만 보임 — 있으면 작은 줄이 대신함)
-    document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => {
-      const i = Math.max(0, Math.min(slides - 1, at() + Number(b.dataset.go)));
-      go(i, true);
-      setTimeout(() => fade(i), 420);
-    }));
-    thumbs.forEach((t, i) => t.addEventListener("click", () => { go(i, false); show(i); fade(i); }));
-    // 한 장씩 ↔ 모아 보기
-    const modes = [...document.querySelectorAll(".mode button")];
-    const setMode = m => {
-      modes.forEach(b => b.setAttribute("aria-pressed", b.dataset.m === m ? "true" : "false"));
-      sec.classList.toggle("all", m === "all");
-      if (!grid) return;
-      grid.hidden = m !== "all";
-      if (m === "all") small();
-      grid.classList.remove("show");
-      if (m === "all") { void grid.offsetWidth; grid.classList.add("show"); }
-    };
-    modes.forEach(b => b.addEventListener("click", () => setMode(b.dataset.m)));
-    if (grid) [...grid.querySelectorAll("button")].forEach((b, i) => b.addEventListener("click", () => {
-      setMode("one"); go(i, false); show(i); fade(i);
-      (strip.children[i].querySelector(".pop") || strip).focus({ preventScroll: true });  // 격자가 숨으며 포커스가 쪽 바탕으로 빠지지 않게 — 고른 사진으로(10/27 점검)
-    }));
-    show(0, true);
-    // 처음은 모아 보기(10/29 동원 'A 모아 보기 먼저' — 새 눈 비평: 맨 앞 컬러 사진이 무채색 쪽에서 가장 큰 색이었음). 색은 손님이 한 장을 고를 때만.
-    // 작은 사진은 칸이 가까워질 때 받고 격자는 그때 떠오름(큰 사진 첫 장은 loading=lazy라 한 장씩으로 바꿀 때 받음)
-    if (grid) {
-      modes.forEach(b => b.setAttribute("aria-pressed", b.dataset.m === "all" ? "true" : "false"));
-      sec.classList.add("all");
-      grid.hidden = false;
-      once([sec], small, { rootMargin: "0px 0px 600px 0px" });
-      once([grid], () => grid.classList.add("show"), { rootMargin: "0px 0px -8% 0px" });
-    }
-  }
+  // 사진 칸의 한 장씩 · 모아 보기 · 3D 고리(10/24–11/1)는 11/3 흐르는 벽으로 바뀌며 뺌(11/4 정리 — git 기록 9cec51b 앞에 있음)
 
   // 영상 칸: 큰 한 편은 누르면 이 자리에서 재생 — 누르기 전에는 플레이어를 불러오지 않음(썸네일 그림만 · youtube-nocookie · IFrame API는 처음 누를 때 한 번).
   // 작은 재생기(A 아래 띠, 10/24): 재생 중에 영상이 화면에서 다 벗어나면 멈추고 아래 띠가 올라옴 → 띠를 누르면 영상 칸으로 돌아가 이어 재생.
@@ -850,18 +783,9 @@
       if (fold && !fold.open) fold.open = true;
       const sec = el.matches("section"), big = el.offsetHeight > innerHeight * 0.6;  // 칸 · 큰 덩어리(차례 전체)는 머리를 위에, 한 줄은 화면 가운데에
       el.scrollIntoView({ block: sec || big ? "start" : "center", behavior: reduce ? "auto" : "smooth" });
-      if (p && document.querySelector("#photo .wt")) {  // 흐르는 벽(11/3) — 그 게시물을 창으로 엶(첫 사진 단추에 포커스를 두고 누름 — 창을 닫으면 그 자리로)
+      if (p) {  // 흐르는 벽(11/3) — 그 게시물을 창으로 엶(첫 사진 단추에 포커스를 두고 누름 — 창을 닫으면 그 자리로)
         const b = document.querySelector(`#photo .wt[data-i="${+p[1]}"][data-k="0"]`);
         if (b) { b.focus({ preventScroll: true }); b.click(); }
-        return;
-      }
-      if (p) {  // 그 장으로 넘기고 포커스도 그 사진에(창이 닫히며 쪽 바탕으로 빠지지 않게, 10/27 점검) · 모아 보기였으면 한 장씩으로 먼저(10/28 점검 6)
-        const m1 = document.querySelector('.mode [data-m="one"]');
-        if (m1 && m1.getAttribute("aria-pressed") !== "true") m1.click();
-        const i = +p[1], b = document.querySelectorAll(".thumbs button")[i], f = document.querySelectorAll(".strip > *")[i];
-        if (b) b.click();
-        const to = (f && f.querySelector(".pop")) || document.querySelector(".strip");
-        if (to) to.focus({ preventScroll: true });
         return;
       }
       if (!sec && !big) { el.classList.add("hit"); setTimeout(() => el.classList.remove("hit"), 1600); }
@@ -1431,58 +1355,6 @@
     upd();
   }
 
-  // ⑤ 인스타그램 3D 고리(← '클릭 & 드래그 3D' · STNT · 궤도) — 마우스 기기 · 움직임 허용이면 '모아 보기'의 여덟 장을 3D 고리로(흑백 · 머문 장은 색).
-  //   천천히 돎(장 위에 있거나 끄는 동안 · 화면 밖이면 멈춤) · 끌어 돌리기 · 누르면 그 게시물로(모아 보기 단추를 그대로 누름) · 키보드는 장마다 단추. 그 밖은 흑백 한 줄 그대로(⑥ — style.css)
-  const pgrid = document.querySelector(".pgrid");
-  if (pgrid && fine && motion) {
-    const bs = [...pgrid.querySelectorAll(":scope > button")];
-    const ring = document.createElement("div");
-    ring.className = "ring";
-    ring.innerHTML = `<div class="rot">${bs.map((b, i) => `<button type="button" class="rc" style="--i:${i};--n:${bs.length}" data-i="${i}"><img alt="" draggable="false"></button>`).join("")}</div>` +
-      `<p class="rh" aria-hidden="true">${uiText("ring_hint", "끌어서 돌리기 · 누르면 크게")}</p>`;
-    ring.querySelectorAll(".rc").forEach((c, i) => {
-      const s = bs[i].querySelector("img");
-      c.setAttribute("aria-label", bs[i].getAttribute("aria-label") || "");
-      c.firstChild.src = s.getAttribute("src") || s.dataset.src;
-    });
-    pgrid.before(ring);
-    H.classList.add("ringon");
-    const rot = ring.querySelector(".rot");
-    let a = 0, drag = null, hov = false, live = false, last = 0, moved = 0;
-    const tick = now => {
-      const dt = last ? Math.min(50, now - last) : 16;
-      last = now;
-      if (!drag && !hov) a += dt * .0085;  // 초당 8.5° — 한 바퀴 약 42초
-      rot.style.setProperty("--a", a.toFixed(2) + "deg");
-      if (live) requestAnimationFrame(tick); else last = 0;
-    };
-    new IntersectionObserver(es => {
-      const v = es[0].isIntersecting;
-      if (v && !live) { live = true; requestAnimationFrame(tick); } else if (!v) live = false;
-    }).observe(ring);
-    ring.addEventListener("mouseover", ev => { hov = !!ev.target.closest(".rc"); });
-    ring.addEventListener("mouseleave", () => { hov = false; });
-    ring.addEventListener("pointerdown", ev => {
-      if (ev.button !== 0) return;
-      drag = { x: ev.clientX, a };
-      moved = 0;
-      ring.classList.add("drag");
-      ring.setPointerCapture(ev.pointerId);
-    });
-    ring.addEventListener("pointermove", ev => {
-      if (!drag) return;
-      moved = Math.max(moved, Math.abs(ev.clientX - drag.x));
-      a = drag.a + (ev.clientX - drag.x) * .32;
-    });
-    const end = () => { drag = null; ring.classList.remove("drag"); };
-    ring.addEventListener("pointerup", end);
-    ring.addEventListener("pointercancel", end);
-    ring.addEventListener("click", ev => {
-      const el = ev.detail ? document.elementFromPoint(ev.clientX, ev.clientY) : ev.target, c = el && el.closest(".rc");  // 끌기 중 잡아 둔 포인터 탓에 누른 자리로 다시 찾음
-      if (c && moved <= 5) bs[+c.dataset.i].click();
-      moved = 0;
-    });
-  }
 
   // ⑦ 유튜브 썸네일 스틸 넘김(← '올리면 재생되는 썸네일') — 마우스 기기에서 썸네일 위 커서의 가로 자리 = 몇째 장(보도 자료 스틸 · 영상 · 예고편은 쓰지 않음). 스틸은 처음 올릴 때 받음
   const nt = document.querySelector(".nt[data-stills]");
