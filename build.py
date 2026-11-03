@@ -1630,6 +1630,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <link rel="alternate" hreflang="en" href="{e(base)}/en/{kp}">
 <link rel="alternate" hreflang="ja" href="{e(base)}/ja/{kp}">
 <link rel="alternate" hreflang="x-default" href="{e(base)}/{kp}">
+<link rel="alternate" type="application/rss+xml" title="{e(S["name"])}" href="{e(base)}{"/" + lang if tr_ else ""}/feed.xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{e(S["name"])}">
 <meta property="og:url" content="{e(url)}">
@@ -1835,6 +1836,28 @@ def ja_gaps():
             walk(json.loads(f.read_text(encoding="utf-8")), f.name)
     if not (CONTENT / "poem_ja.txt").exists():
         out.append("poem_ja.txt")
+    return out
+
+
+def feeds(site, base):
+    # RSS 2.0 피드 세 판(11/3 동원 버튼 "RSS 피드 (권장)" — 기준/웹사이트 RSS 피드 칸 정의_v1.md): 시집 소식(날짜가 지난 것 · 최근 20) → /feed.xml · /en/feed.xml · /ja/feed.xml.
+    # guid는 한국어 글의 지문이라 세 판이 같은 항목을 같은 이름으로 셈 · lastBuildDate는 가장 새 항목의 날(내용이 같으면 파일도 같게). 유튜브 편 · 기록 색인은 생기면 v2
+    from email.utils import format_datetime
+    ui, day, rows = load("ui.json"), build_day(), tables(site)["news"]["items"]
+    ko = {id(r): r["text"] for r in rows}
+    out = {}
+    for lang in LANGS:
+        S, pre = localize(site, lang), (f"/{lang}" if lang in TR else "")
+        items = sorted(((r, row_lang(r, lang)) for r in rows if r.get("text")), key=lambda z: z[0]["date"], reverse=True)
+        items = [(r, x) for r, x in items if x.get("text") and date.fromisoformat(r["date"]) <= day][:20]
+        when = lambda d: format_datetime(datetime.fromisoformat(d + "T09:00:00").replace(tzinfo=ZoneInfo("Asia/Seoul")))
+        body = "".join(f'<item><title>{e(x["text"])}</title><link>{e(base)}{pre}/book/</link>'
+                       f'<guid isPermaLink="false">{e(urlparse(base).netloc)}/news/{r["date"]}-{hashlib.sha1(ko[id(r)].encode()).hexdigest()[:8]}</guid>'
+                       f'<pubDate>{when(r["date"])}</pubDate><category>{e(ui["news"][lang])}</category></item>' for r, x in items)
+        last = f"<lastBuildDate>{when(items[0][0]['date'])}</lastBuildDate>" if items else ""
+        out[lang] = ('<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>'
+                     f'<title>{e(S["name"])}</title><link>{e(base)}{pre}/</link><description>{e(S["description"])}</description><language>{lang}</language>'
+                     f'<atom:link href="{e(base)}{pre}/feed.xml" rel="self" type="application/rss+xml"/>{last}{body}</channel></rss>\n')
     return out
 
 
@@ -2057,6 +2080,8 @@ def main():
                   f'<xhtml:link rel="alternate" hreflang="x-default" href="{e(base)}/{kp}"/></url>'
                   for pre in ("", "/en", "/ja") for kp in (f"{k}/" if k else "" for k in PAGES))  # lastmod는 빌드한 날 · x-default는 머리말과 같게(10/27 가5) · 쪽마다(10/31) · 일본어판(11/1)
         + "</urlset>\n", encoding="utf-8")
+    for lg, xml in feeds(site, base).items():  # RSS(11/3) — 판마다 그 판 맨 위에
+        (DOCS / (f"{lg}/feed.xml" if lg in TR else "feed.xml")).write_text(xml, encoding="utf-8")
     (DOCS / ".nojekyll").write_text("", encoding="utf-8")  # GitHub Pages가 파일을 다시 가공하지 않게
     if (CONTENT / "CNAME").exists():  # 도메인을 산 뒤에만 둔다 — docs는 매번 새로 만들어지므로 여기서 옮겨 넣음
         shutil.copy2(CONTENT / "CNAME", DOCS / "CNAME")
