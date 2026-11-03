@@ -94,6 +94,7 @@ JA_FONTS = [
     ("PretendardJP-SemiBold.otf", "ndw-sans-jp-semibold.woff2"),
 ]
 JA_LIGHT_ONLY = "ndw-serif-jp-light.woff2"  # 굵기 300은 일본어판 첫 화면 큰 제목에만(한국어판 LIGHT_ONLY와 같은 규칙)
+JA_NAME = "ndw-sans-jp-name.woff2"  # 한국어 · 영어판 바닥글 언어 줄의 '日本語'만 담은 작은 판(CSS JPN · unicode-range) — 우리 고딕에 한자가 없어 기기 글꼴로 그려지던 것(11/3 Lighthouse 덤 → 목업 일본어이름글꼴시안_v1 'A 일본어판 고딕 (권장)')
 JA_FIRST = {  # 일본어판 첫 화면 작은 판(한국어판 FIRST와 같은 짜임 — 시집 쪽 문 · 첫 화면 글자만, 미리 받음)
     "ndw-serif-jp-first.woff2": ("ndw-serif-jp.woff2", "door"),
     "ndw-serif-jp-bold-first.woff2": ("ndw-serif-jp-bold.woff2", "hs"),
@@ -1975,6 +1976,13 @@ def main():
             print(f"알림: 일본어판 원본 {name}을 찾지 못해 지난 줄인 판을 씀 — 새로 생긴 글자는 빠질 수 있음")
         else:
             raise SystemExit(f"일본어판 글꼴을 찾지 못함: {name} (기준/폰트/일본어/)")
+    name = "PretendardJP-Light.otf"
+    if name in srcs:
+        subset_font(srcs[name], ASSETS / "fonts" / JA_NAME, LANG_NAME["ja"], True)
+    elif JA_NAME in keep:
+        (ASSETS / "fonts" / JA_NAME).write_bytes(keep[JA_NAME])
+    else:
+        raise SystemExit(f"'日本語' 작은 판을 만들 원본을 찾지 못함: {name}")
     ftj = first_text(pages["ja"]["book"])  # 일본어판 첫 화면 작은 판(JA_FIRST)
     for out, (whole, kind) in JA_FIRST.items():
         name = next(n for n, o in JA_FONTS if o == whole)

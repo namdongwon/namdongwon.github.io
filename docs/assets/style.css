@@ -801,6 +801,8 @@ html.sr-on{overflow:hidden}
 .ficons svg{width:20px;height:20px}
 @media (hover:hover){.fcols a:hover{text-decoration:underline;text-underline-offset:4px}.ficons a:hover{background:var(--ph)}}  
 .fbar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;margin-top:44px;padding:16px 0 72px;border-top:1px solid var(--rule);font:300 calc(11px * var(--fs))/1.6 var(--sans);color:var(--faint);text-align:left}  
+@font-face{font-family:"JPN";src:url("fonts/ndw-sans-jp-name.woff2?v=21238b6dfd") format("woff2");font-weight:300;font-display:swap;unicode-range:U+65E5,U+672C,U+8A9E}
+.lng a[lang="ja"]{font-family:"JPN",var(--sans)}  
 .fbar .lng [aria-current]{color:var(--ink)}
 @media (min-width:768px){.foot{padding:0 64px}.fcols{grid-template-columns:repeat(4,1fr);gap:30px}.fbar{padding-bottom:30px}}
 
