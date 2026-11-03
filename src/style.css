@@ -1078,3 +1078,6 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .colo .mot input:checked{border-color:var(--ink);background:var(--ink)}.colo .mot input:checked::after{left:12px;background:var(--bg)}
 .colo .mot input:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .colo .mot small{margin-left:8px;color:var(--faint);font-size:11px}
+/* 글자 크기(11/3 동원 '다정한 UX' ④ — 목업 글자크기시안_v1 'A 판권면 셋째 줄 (권장)'): --fs를 빌드(fs_css)가 20px 이하 글자에 곱함 · 단계는 Apple Dynamic Type 본문 17 → 19 · 21pt 비율 */
+:root{--fs:1}:root[data-fs="l"]{--fs:1.125}:root[data-fs="xl"]{--fs:1.25}
+.colo .fsz button span{font:500 13px/1 var(--sans)}.colo .fsz button+button span{font-size:16px}.colo .fsz button+button+button span{font-size:19px}

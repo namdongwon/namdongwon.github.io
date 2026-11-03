@@ -188,6 +188,31 @@ def ga4(site):
     return gid
 
 
+FS_SKIP = re.compile(r"\.cz|\.top\b|\.door|\.fsz|#palette|\.mnu|#home|\.buy\b|\.whr")  # 글자 크기에서 빼는 곳 — 동의 창(줄 높이를 px로 맞춤) · 맨 위 띠(휴대폰 한 줄에 단추 넷) · 문 장면 · 글자 단추 자신 · 팔레트 · 휴대폰 메뉴 목록 · 시집 첫 화면(책과 글이 한 줄에 — 320px 영어판 더 크게에서 책이 밀려 잘렸음, 스테이징 11/3) · 첫 화면 단추 .buy · 서점 이름 .whr(#home 밖 선택자로 꾸밈)
+
+
+def fs_css(css):
+    # 판권면 '글자'(11/3 동원 '다정한 UX 7가지' ④ → 목업 글자크기시안_v1 'A 판권면 셋째 줄 (권장)'): html data-fs="l" · "xl"이면 읽는 글자를 112.5 · 125%로
+    # (단계는 Apple Dynamic Type 본문 17 → 19 · 21pt의 비율과 같은 결). 사이트 글자가 px라 빌드가 20px 이하 글자 크기만 calc(Npx * var(--fs))로 바꿈 —
+    # 큰 제목 · 첫 화면 큰 글자(21px 넘음)는 그대로(휴대폰에서 넘치지 않게) · 원본 style.css는 그대로(단 검사도 원본)
+    def size(m):
+        n = float(m.group(2))
+        return m.group(0) if n > 20 else f"{m.group(1)}calc({m.group(2)}px * var(--fs))"
+
+    def rule(m):
+        sel, body = m.group(1), m.group(2)
+        parts = re.split(r",(?![^()]*\))", sel)  # 묶은 선택자는 하나씩 — 뺄 곳만 원래 크기로 남기고 나머지는 키움
+        keep = [x for x in parts if FS_SKIP.search(x)]
+        if len(keep) == len(parts):
+            return m.group(0)
+        old, sel = body, ",".join(x for x in parts if x not in keep)
+        body = re.sub(r"(font-size:\s*)(\d+(?:\.\d+)?)px", size, body)
+        body = re.sub(r"(font:\s*(?:(?:normal|italic|oblique|\d{3}|bold|lighter|bolder)\s+)*)(\d+(?:\.\d+)?)px", size, body)
+        return (f'{",".join(keep)}{{{old}}}' if keep and body != old else "") + f"{sel}{{{body}}}" if body != old else m.group(0)
+    blank = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+    return re.sub(r"([^{}]+)\{([^{}]*)\}", rule, blank)
+
+
 def motion_css(css):
     # 판권면 '움직임 줄이기'(11/1 밤 명품 제안 ⑥ A): html에 data-motion="reduce"가 있으면 기기 설정 '동작 줄이기'와 똑같이 —
     # (prefers-reduced-motion:no-preference)가 든 @media 안 규칙은 data-motion="reduce"가 없을 때만, (…:reduce) 안 규칙은 data-motion="reduce"일 때도(블록 뒤에 한 벌 더).
@@ -485,10 +510,10 @@ def stanzas_of(text):
     return out
 
 # 첫 그림이 그려지기 전에 html에 표시를 붙인다: js(움직임을 켬) · intro(문 장면 — 첫 방문 한 번만, '동작 줄이기'나 #주소로 들어오면 생략, ?door면 다시 봄)
-HEAD_JS = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{if(localStorage.getItem("motion")==="reduce")H.setAttribute("data-motion","reduce")}catch(x){}try{var m=H.getAttribute("data-motion")==="reduce"||matchMedia("(prefers-reduced-motion: reduce)").matches,
+HEAD_JS = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{if(localStorage.getItem("motion")==="reduce")H.setAttribute("data-motion","reduce")}catch(x){}try{var fs=localStorage.getItem("fs");if(fs==="l"||fs==="xl")H.setAttribute("data-fs",fs)}catch(x){}try{var m=H.getAttribute("data-motion")==="reduce"||matchMedia("(prefers-reduced-motion: reduce)").matches,
 again=/[?&]door\\b/.test(location.search);if(!m&&!location.hash&&(again||!localStorage.getItem("door"))){H.classList.add("intro");localStorage.setItem("door","1")}else if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}__CIN__})();</script>"""
 # 문이 없는 쪽(소개 · 인스타그램 · 유튜브 · 연락)의 머리 스크립트 — js · 고른 화면 · 다시 온 표시만. 문을 본 표시(door)는 시집 쪽에서만 남김(소개로 먼저 와도 시집 쪽 첫 방문에 문이 열리게)
-HEAD_JS_PLAIN = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{if(localStorage.getItem("motion")==="reduce")H.setAttribute("data-motion","reduce")}catch(x){}try{if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}__CIN__})();</script>"""
+HEAD_JS_PLAIN = """<script>(function(){var H=document.documentElement;H.classList.add("js");try{var th=localStorage.getItem("theme");if(th==="dark"||th==="system")H.setAttribute("data-theme",th)}catch(x){}try{if(localStorage.getItem("motion")==="reduce")H.setAttribute("data-motion","reduce")}catch(x){}try{var fs=localStorage.getItem("fs");if(fs==="l"||fs==="xl")H.setAttribute("data-fs",fs)}catch(x){}try{if(localStorage.getItem("door"))H.classList.add("seen")}catch(x){}__CIN__})();</script>"""
 # 쪽 사이 원형 전환(11/1 동원 버튼 '권하는 묶음으로 (권장)' — ⑩ '페이지 인트로'): 메뉴를 누른 쪽이 남긴 자리(sessionStorage cto: x · y · 때)가 5초 안이면
 # 첫 그림 전에 cin을 붙여 그 자리에서 원이 닫힌 채 시작(여는 건 main.js) · '동작 줄이기' · 시집 첫 방문 문 장면(intro)이면 원 없이
 CIN_JS = ('try{var c=JSON.parse(sessionStorage.getItem("cto")||"null");sessionStorage.removeItem("cto");'
@@ -1275,7 +1300,11 @@ def render(site, poem, videos, photos, lang="ko"):
     # 설정 — 화면 밝게 · 어둡게 · 시스템(10/26 A · 10/28 선 그림) · 움직임 줄이기(11/1 밤 명품 제안 ⑥ 'A 스위치')
     ctl = (f'<dl class="ctl"><dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd>'
            f'<dt class="mot">{t("motion")}</dt><dd class="mot"><label><input type="checkbox" role="switch" aria-label="{t("motion")} {t("motion_reduce")}">{t("motion_reduce")}</label>'
-           f'<small data-on="{t("motion_on")}" data-off="{t("motion_off")}">{t("motion_off")}</small></dd></dl>')
+           f'<small data-on="{t("motion_on")}" data-off="{t("motion_off")}">{t("motion_off")}</small></dd>'
+           # 글자(11/3 '다정한 UX' ④ A) — 보통 · 크게 · 더 크게, 단추 글자도 세 크기 · 화면 줄과 같은 꼴(고른 것 먹 + 밑줄)
+           f'<dt class="thm">{t("fs")}</dt><dd class="thm fsz" role="group" aria-label="{t("fs")}">'
+           + "".join(f'<button type="button" data-fs="{v}" aria-pressed="{str(v == "m").lower()}" aria-label="{t("fs_" + v)}" title="{t("fs_" + v)}"><span>{t("fs_g")}</span></button>' for v in ("m", "l", "xl"))
+           + '</dd></dl>')
     ext = ' target="_blank" rel="noopener"'
     icons = "".join(f'<li><a href="{h}" aria-label="{a}"{x}>{FOOT_ICONS[k]}</a></li>' for k, h, a, x in (
         ("ig", e(iu), e(L["nav"][2]), ext), ("yt", e(ch.get("url", "")), e(L["nav"][3]), ext),
@@ -1900,7 +1929,7 @@ def main():
     # 브라우저가 저장해 둔 옛 파일을 그대로 씀 → 스타일 · 스크립트 · 글꼴 주소 끝에 내용 지문(?v=)을 붙여 내용이 바뀌면 주소가 바뀌게(실무 말: 캐시 버스팅 · 파일 지문).
     # 글꼴 지문은 style.css의 url()과 시집 쪽 미리 받기(preload)가 같은 꼴 — 둘이 같아야 미리 받은 글꼴을 다시 받지 않음 · 쪽(HTML)은 맨 끝에 stamp()로
     ver = {f"fonts/{f.name}": fp(f.read_bytes()) for f in (ASSETS / "fonts").glob("*.woff2")}
-    css = motion_css((SRC / "style.css").read_text(encoding="utf-8"))  # 움직임 줄이기 스위치(11/1 밤) — motion_css
+    css = fs_css(motion_css((SRC / "style.css").read_text(encoding="utf-8")))  # 움직임 줄이기 스위치(11/1 밤) — motion_css · 글자 크기(11/3) — fs_css
     css = re.sub(r'url\("(fonts/[\w.-]+\.woff2)"\)', lambda m: f'url("{m.group(1)}' + (f'?v={ver[m.group(1)]}' if m.group(1) in ver else "") + '")', css)
     (ASSETS / "style.css").write_text(css, encoding="utf-8")
     shutil.copy2(SRC / "main.js", ASSETS / "main.js")

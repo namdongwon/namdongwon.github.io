@@ -151,16 +151,16 @@
           "unless": "ga4"
         },
         {
-          "ko": "이 기기의 브라우저 저장소에 넷을 적어 둡니다 — 첫 방문 문 장면을 한 번 보았는지, 고른 화면(시스템 · 밝게 · 어둡게), 움직임 줄이기를 켰는지, 방명록에 쓰다 아직 보내지 않은 글(보내거나 7일이 지나면 지움). 이 기기에만 남고 남동원에게 보내지지 않으며, 브라우저의 사이트 데이터 지우기로 지울 수 있습니다.",
-          "en": "Four small things are kept in this browser’s storage — whether you have already seen the opening door scene, your display setting (system, light or dark), whether you turned on Reduce motion, and a guestbook note you started but haven’t sent (removed once sent or after 7 days). They stay on this device, are never sent to Dongwon Nam, and can be removed by clearing this site’s data in your browser.",
-          "ja": "このデバイスのブラウザのストレージに、次の4つを記録しておきます — 初回訪問時の扉のシーンを一度ご覧になったかどうか、「表示」で選ばれた設定（システム・ライト・ダーク）、「動き」を減らす設定にしたかどうか、ゲストブックに書きかけでまだ送っていないメッセージ（送信後または7日後に削除）。これらはこのデバイスにのみ残り、ナム・ドンウォンに送信されることはなく、ブラウザでサイトデータを消去すると削除できます。",
+          "ko": "이 기기의 브라우저 저장소에 다섯을 적어 둡니다 — 첫 방문 문 장면을 한 번 보았는지, 고른 화면(시스템 · 밝게 · 어둡게), 움직임 줄이기를 켰는지, 고른 글자 크기, 방명록에 쓰다 아직 보내지 않은 글(보내거나 7일이 지나면 지움). 이 기기에만 남고 남동원에게 보내지지 않으며, 브라우저의 사이트 데이터 지우기로 지울 수 있습니다.",
+          "en": "Five small things are kept in this browser’s storage — whether you have already seen the opening door scene, your display setting (system, light or dark), whether you turned on Reduce motion, your text size, and a guestbook note you started but haven’t sent (removed once sent or after 7 days). They stay on this device, are never sent to Dongwon Nam, and can be removed by clearing this site’s data in your browser.",
+          "ja": "このデバイスのブラウザのストレージに、次の5つを記録しておきます — 初回訪問時の扉のシーンを一度ご覧になったかどうか、「表示」で選ばれた設定（システム・ライト・ダーク）、「動き」を減らす設定にしたかどうか、選ばれた文字の大きさ、ゲストブックに書きかけでまだ送っていないメッセージ（送信後または7日後に削除）。これらはこのデバイスにのみ残り、ナム・ドンウォンに送信されることはなく、ブラウザでサイトデータを消去すると削除できます。",
           "unless": "ga4"
         },
         {
           "when": "ga4",
-          "ko": "이 기기의 브라우저 저장소에 다섯을 적어 둡니다 — 첫 방문 문 장면을 한 번 보았는지, 고른 화면(시스템 · 밝게 · 어둡게), 움직임 줄이기를 켰는지, 쿠키 동의에서 고르신 것, 방명록에 쓰다 아직 보내지 않은 글(보내거나 7일이 지나면 지움). 이 기기에만 남고 남동원에게 보내지지 않으며, 브라우저의 사이트 데이터 지우기로 지울 수 있습니다.",
-          "en": "Five small things are kept in this browser’s storage — whether you have already seen the opening door scene, your display setting (system, light or dark), whether you turned on Reduce motion, your cookie consent choice, and a guestbook note you started but haven’t sent (removed once sent or after 7 days). They stay on this device, are never sent to Dongwon Nam, and can be removed by clearing this site’s data in your browser.",
-          "ja": "このデバイスのブラウザのストレージに、次の5つを記録しておきます — 初回訪問時の扉のシーンを一度ご覧になったかどうか、「表示」で選ばれた設定（システム・ライト・ダーク）、「動き」を減らす設定にしたかどうか、クッキーの同意についての選択、ゲストブックに書きかけでまだ送っていないメッセージ（送信後または7日後に削除）。これらはこのデバイスにのみ残り、ナム・ドンウォンに送信されることはなく、ブラウザでサイトデータを消去すると削除できます。"
+          "ko": "이 기기의 브라우저 저장소에 여섯을 적어 둡니다 — 첫 방문 문 장면을 한 번 보았는지, 고른 화면(시스템 · 밝게 · 어둡게), 움직임 줄이기를 켰는지, 고른 글자 크기, 쿠키 동의에서 고르신 것, 방명록에 쓰다 아직 보내지 않은 글(보내거나 7일이 지나면 지움). 이 기기에만 남고 남동원에게 보내지지 않으며, 브라우저의 사이트 데이터 지우기로 지울 수 있습니다.",
+          "en": "Six small things are kept in this browser’s storage — whether you have already seen the opening door scene, your display setting (system, light or dark), whether you turned on Reduce motion, your text size, your cookie consent choice, and a guestbook note you started but haven’t sent (removed once sent or after 7 days). They stay on this device, are never sent to Dongwon Nam, and can be removed by clearing this site’s data in your browser.",
+          "ja": "このデバイスのブラウザのストレージに、次の6つを記録しておきます — 初回訪問時の扉のシーンを一度ご覧になったかどうか、「表示」で選ばれた設定（システム・ライト・ダーク）、「動き」を減らす設定にしたかどうか、選ばれた文字の大きさ、クッキーの同意についての選択、ゲストブックに書きかけでまだ送っていないメッセージ（送信後または7日後に削除）。これらはこのデバイスにのみ残り、ナム・ドンウォンに送信されることはなく、ブラウザでサイトデータを消去すると削除できます。"
         },
         {
           "ko": "이 사이트는 GitHub Pages(GitHub, 미국)에 올려 두었습니다. GitHub는 보안을 위해 방문하신 분의 IP 주소를 기록하며, 남동원은 이 기록을 받거나 보지 않습니다.",

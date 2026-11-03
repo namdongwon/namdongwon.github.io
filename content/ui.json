@@ -1198,5 +1198,30 @@
     "ko": "쓰는 사람과 지나온 기록",
     "en": "The writer, and the record so far",
     "ja": "書く人と、これまでの記録"
+  },
+  "fs": {
+    "ko": "글자",
+    "en": "Text",
+    "ja": "文字"
+  },
+  "fs_g": {
+    "ko": "가",
+    "en": "A",
+    "ja": "あ"
+  },
+  "fs_m": {
+    "ko": "보통",
+    "en": "Default",
+    "ja": "標準"
+  },
+  "fs_l": {
+    "ko": "크게",
+    "en": "Large",
+    "ja": "大きく"
+  },
+  "fs_xl": {
+    "ko": "더 크게",
+    "en": "Larger",
+    "ja": "さらに大きく"
   }
 }

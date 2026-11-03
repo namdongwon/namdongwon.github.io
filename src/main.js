@@ -414,6 +414,18 @@
     });
     paintMo();
   }
+  // 글자 크기(11/3 '다정한 UX' ④ A): 보통 · 크게 · 더 크게 — html data-fs="l" · "xl"(빌드 fs_css가 읽는 글자 크기에 --fs를 곱함) · 이 기기에만 기억(localStorage fs — 쿠키 아님) · 머리 스크립트가 첫 그림 전에 붙임
+  const fsz = document.querySelectorAll(".fsz button[data-fs]");
+  if (fsz.length) {
+    const paintFs = () => { const v = H.getAttribute("data-fs") || "m"; fsz.forEach(b => b.setAttribute("aria-pressed", b.dataset.fs === v)); };
+    fsz.forEach(b => b.addEventListener("click", () => {
+      const v = b.dataset.fs;
+      if (v === "m") H.removeAttribute("data-fs"); else H.setAttribute("data-fs", v);
+      try { localStorage.setItem("fs", v); } catch (x) { /* 사생활 모드 등 — 이번 쪽에만 */ }
+      paintFs();
+    }));
+    paintFs();
+  }
   const thm = document.querySelectorAll(".thm button[data-th]"), tcol = document.querySelector('meta[name="theme-color"]');
   if (thm.length) {
     const sysDark = matchMedia("(prefers-color-scheme: dark)");
