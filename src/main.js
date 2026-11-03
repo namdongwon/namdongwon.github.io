@@ -349,9 +349,9 @@
     ul.setAttribute("aria-hidden", "true");
     nav.append(ul);
     const on = nav.querySelector('a[aria-current="page"]');
-    const place = () => {
+    const place = to => {  // to: 손 댄 메뉴(11/4 ⑨ 메뉴 밑줄 미끄러짐) — 없으면 지금 쪽
       const was = ul.classList.contains("on");
-      const at = on && !on.classList.contains("cta") ? on : null;  // 연락하기는 먹 상자라 밑줄을 그리지 않음(10/28 A — 상자가 곧 표시)
+      const at0 = to || on, at = at0 && !at0.classList.contains("cta") ? at0 : null;  // 연락하기는 먹 상자라 밑줄을 그리지 않음(10/28 A — 상자가 곧 표시)
       if (at) {
         if (!was) ul.style.transition = "none";  // 처음 나타날 땐 그 자리에서(왼쪽 끝에서 미끄러져 오지 않게)
         ul.style.width = at.offsetWidth - (parseFloat(getComputedStyle(at).letterSpacing) || 0) + "px";  // 글자 뒤 자간(.12em)만큼 빼서 글자 폭에 맞춤
@@ -362,6 +362,10 @@
       ul.classList.toggle("on", !!at);
     };
     place();
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {  // ⑨ 메뉴에 손을 대면 밑줄이 그 메뉴로 미끄러지고, 떼면 제자리(11/4 동원 '넣기' — 손반응열_v1 09)
+      nav.querySelectorAll("a[data-pg]").forEach(a => a.addEventListener("mouseenter", () => place(a)));
+      nav.addEventListener("mouseleave", () => place());
+    }
     // 글꼴이 늦게 오거나 화면 폭이 바뀌면 글자 폭이 달라지므로 밑줄 자리를 다시 잼
     if (document.fonts) document.fonts.ready.then(place);
     let pt = 0;
@@ -712,6 +716,12 @@
         view.append(f);
       });
       foot.innerHTML = pcaps[i] ? pcaps[i].innerHTML : "";
+      if (btn && btn.classList.contains("wt")) {  // ⑧ 누른 사진 자리에서 창이 커지며 열림(11/4 동원 '넣기' — 손반응열_v1 08)
+        const r = btn.getBoundingClientRect();
+        pv.style.setProperty("--ox", `${r.left + r.width / 2}px`);
+        pv.style.setProperty("--oy", `${r.top + r.height / 2}px`);
+        pv.classList.add("fromt");
+      } else pv.classList.remove("fromt");
       pv.hidden = false;
       H.classList.add("pv-on");
       others(true);
@@ -1128,7 +1138,16 @@
   // 맨 위 띠: 넘기면 아래 선이 생기고 뒤가 흐리게 비침
   const top = document.querySelector(".top");
   if (top) {
-    const sc = () => top.classList.toggle("sc", scrollY > 8);
+    let ly = scrollY;
+    const sc = () => {
+      const y = scrollY;
+      top.classList.toggle("sc", y > 8);
+      // ⑥ 아래로 내리면 띠가 숨고 조금이라도 올리면 나타남(11/4 동원 '넣기' — 손반응열_v1 06) · 맨 위 120px 안 · 띠 안에 초점이 있으면 늘 보임
+      if (y > ly + 4 && y > 120 && !top.contains(document.activeElement)) top.classList.add("hide");
+      else if (y < ly - 4 || y <= 120) top.classList.remove("hide");
+      ly = y;
+    };
+    top.addEventListener("focusin", () => top.classList.remove("hide"));
     sc();  // 쪽 가운데에서 다시 열어도(새로 고침 · #주소) 처음부터 맞게 — 연락하기 상자의 테두리 · 먹 채움이 이 표시를 따름(10/29 고침 2)
     addEventListener("scroll", sc, { passive: true });
   }
@@ -1543,12 +1562,36 @@
   }
   addEventListener("pageshow", ev => { if (ev.persisted) H.classList.remove("cgo", "cout", "cin", "copen"); });
 
+  // ① 사진이 받아지면 0.5초에 스며듦 · 받는 동안은 옅은 회색 자리(11/4 동원 '넣기' — 손반응열_v1 01 · recent.design) — 이미 받아 둔 사진은 그대로
+  document.querySelectorAll(".wall .wt img, #video .nt img, #video img.big").forEach(im => {
+    if (im.complete && im.naturalWidth) return;
+    im.classList.add("fi");
+    const done = () => im.classList.add("ld");
+    im.addEventListener("load", done, { once: true });
+    im.addEventListener("error", done, { once: true });
+  });
+  // ⑤ 밑줄 단추 끝의 화살표(↗ · ↓)만 따로 — 손을 대면 그 방향으로 살짝(11/4 동원 '넣기' — 손반응열_v1 05)
+  document.querySelectorAll(".buy").forEach(a => {
+    const last = a.lastChild;
+    if (!last || last.nodeType !== 3 || !/[↗↓]\s*$/.test(last.textContent)) return;
+    const ch = last.textContent.trim().slice(-1);
+    last.textContent = last.textContent.replace(/[↗↓]\s*$/, "");  // 앞 빈칸은 남김 — 글자(읽기 도구 · 찾기)가 전과 같게
+    const s = document.createElement("span");
+    s.className = "ar " + (ch === "↗" ? "ne" : "dn");
+    s.setAttribute("aria-hidden", "true");
+    s.textContent = ch;
+    a.append(s);
+  });
+
   // 맨 위로(11/1 밤 — 고야드 실측): 360px 넘게 내리면 오른쪽 아래 동그라미가 나타나고, 누르면 맨 위로(동작 줄이기면 바로).
   // 키보드로 눌렀으면(detail 0) 맨 위 띠의 첫 링크로 초점을 옮겨 이어서 읽게. 자바스크립트가 없으면 숨은 채로(hidden)
   const toTop = document.querySelector(".totop");
   if (toTop) {
     toTop.hidden = false;
-    const showTop = () => toTop.classList.toggle("on", scrollY > 360);
+    const showTop = () => {
+      toTop.classList.toggle("on", scrollY > 360);
+      toTop.style.setProperty("--p", (scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight)).toFixed(3));  // ⑩A 테두리가 내린 만큼 채워짐(11/4)
+    };
     addEventListener("scroll", showTop, { passive: true });
     showTop();
     toTop.addEventListener("click", ev => {

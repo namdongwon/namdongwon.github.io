@@ -684,7 +684,7 @@ html.sr-on{overflow:hidden}
   .top nav a::after,.js .top .sq::after{transition:background-color .2s var(--ease)}
   .buy2{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease)}  /* 교보 단추 호버 0.3초(11/2 — CTA와 같게) */  /* 회색 상자가 0.2초에 번짐(11/2) */
   .top .act a.cta{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),opacity .4s}  /* 맨 위 테두리 → 먹 채움 0.3초(10/29 고침 2) */  /* 누르면 옅어졌다 0.4초에 돌아옴(10/28 ⑧ — 옅어지는 것은 손가락 기기만, 컴퓨터는 opacity가 바뀌지 않아 그대로) */
-  .top nav .ul{transition:transform .5s var(--ease),width .5s var(--ease),opacity .3s}  /* 지금 칸 밑줄이 미끄러짐('동작 줄이기'면 바로 그 자리) */
+  .top nav .ul{transition:transform .28s var(--e2),width .28s var(--e2),opacity .3s}  /* ⑨ 미끄러짐 0.28초(11/4) */  /* 지금 칸 밑줄이 미끄러짐('동작 줄이기'면 바로 그 자리) */
   .mini{transition:transform .5s var(--ease),visibility 0s .5s}  /* 작은 재생기는 아래에서 올라오고 내려감('동작 줄이기'면 바로) */
   .mini.on{transition:transform .5s var(--ease)}
   /* 첫 화면 이름 — 커서와 함께 자모로 쳐 나감(10/24). 자바스크립트가 넘겨받기 전에는 이름을 감춰 한 번 깜빡이지 않게(3초 뒤엔 그냥 보임) */
@@ -1031,7 +1031,7 @@ html.cz-on{overflow:hidden}
 .wall .wv{display:flex;flex-direction:column;gap:12px;padding-bottom:12px}
 @keyframes wup{to{transform:translateY(-50%)}}
 @keyframes wdown{from{transform:translateY(-50%)}to{transform:none}}
-.wall .wt{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;-webkit-tap-highlight-color:transparent}
+.wall .wt{display:block;width:100%;padding:0;border:0;border-radius:var(--btn-r);background:var(--ph);cursor:zoom-in;-webkit-tap-highlight-color:transparent}  /* ① 받는 동안 옅은 회색 자리(11/4) */
 .wall .wt img{display:block;width:100%;height:auto;border-radius:var(--btn-r);filter:grayscale(1);transition:filter var(--mid) var(--e2)}
 .wall .wt:hover img,.wall .wt:focus-visible img{filter:none}
 .wall .wt:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
@@ -1043,6 +1043,26 @@ html.cz-on{overflow:hidden}
   .wall h2{font-size:clamp(46px,4.6vw,72px);overflow-wrap:normal}
   .wall .cols{grid-template-columns:repeat(3,minmax(0,1fr));height:calc(100svh - var(--top) - 94px)}
   .wall .col:nth-child(3){display:block}
+
+/* 손에 닿는 반응 열 가운데 아홉(11/4 동원 "이런 시도가 좀 다양했으면 좋겠어 … 한 10개 정도 예시로 가져와줘 영상으로" → 영상 손반응열_v1 하나씩 → ①②④⑤⑥⑦⑧⑨ '넣기' · ⑩ 'A 테두리가 진행' · ③ 장수 뺌) */
+.js img.fi{opacity:0;transition:opacity .5s linear}.js img.fi.ld{opacity:1}  /* ① 스며듦 */
+.wall .wt[data-cap]::before{content:attr(data-cap);position:absolute;left:0;right:0;bottom:0;z-index:1;padding:22px 12px 8px;border-radius:0 0 var(--btn-r) var(--btn-r);background:linear-gradient(transparent,rgba(0,0,0,.55));color:#fff;font:400 12.5px/1.3 var(--sans);text-align:left;opacity:0;transform:translateY(6px);transition:opacity var(--mid) var(--e2),transform var(--mid) var(--e2);pointer-events:none}  /* ② 사진 아래 글 첫 줄 · 날짜 */
+.top{transition:transform .25s var(--e2),box-shadow .4s}.top.hide{transform:translateY(-100%)}  /* ⑥ 내리면 숨는 띠 */
+.buy .ar{display:inline-block;transition:transform var(--mid) var(--e2)}  /* ⑤ 화살표 */
+.totop{border:1.5px solid transparent!important;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box!important}  /* ⑩A 테두리가 곧 진행 줄(원 하나) */
+.pv.fromt{transform-origin:var(--ox) var(--oy);transform:scale(.4)}.pv.fromt.on{transform:none}  /* ⑧ 누른 사진 자리에서 열림 */
+@view-transition{navigation:auto}  /* ⑦ 쪽이 0.25초 겹쳐 바뀜(크롬 · 사파리 18.2 위 — 그 밖엔 지금처럼) */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.25s;animation-timing-function:var(--e2)}
+@media (hover:hover) and (pointer:fine){
+  .wall .wt:hover::before,.wall .wt:focus-visible::before{opacity:1;transform:none}
+  .buy{border-bottom-color:var(--line)}  /* ④ 옅은 줄 위로 먹 줄이 왼쪽에서 그어짐 — 손가락 기기는 지금처럼 먹 줄 */
+  .buy::after{content:"";position:absolute;left:0;right:0;bottom:-1.5px;height:1.5px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .28s var(--e2);pointer-events:none}
+  .buy:hover::after,.buy:focus-visible::after{transform:none}
+  .buy:hover .ar.ne{transform:translate(2px,-2px)}.buy:hover .ar.dn{transform:translateY(3px)}
+}
+:root[data-motion="reduce"] img.fi{transition:none}:root[data-motion="reduce"] .top{transition:none}:root[data-motion="reduce"] .pv.fromt{transform:none}
+:root[data-motion="reduce"]::view-transition-old(root),:root[data-motion="reduce"]::view-transition-new(root){animation:none}
+@media (prefers-reduced-motion:reduce){img.fi{transition:none}.top{transition:none}.pv.fromt{transform:none}::view-transition-old(root),::view-transition-new(root){animation:none}}
 
 /* 손에 닿는 반응 넷(11/3 동원 "recent.design … 누르면 기분이 좋아" → 후보 ② · ⑤ · ⑥ · ③ · ④ → '다섯 한꺼번에 (권장)') — 마우스 기기에서만 · 움직임 줄이기면 떠오름 · 열림 움직임은 끔 */
 .ficons a{transition:transform var(--mid) var(--e2),background-color var(--fast) var(--e2)}

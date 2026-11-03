@@ -1215,7 +1215,10 @@ def render(site, poem, videos, photos, lang="ko"):
             ww, wh = out_size(f, 480)
             lab = f'{alts[i]} — {k + 1} / {len(files)}' if k == 0 else L["js"]["post_photo"].format(k=k + 1, n=len(files))
             lang_ = ' lang="ko"' if tr_ and re.search("[가-힣]", lab) else ""
-            wtiles.append((k, i, f'<button type="button" class="pop wt{" art" if is_art(p) else ""}" data-i="{i}" data-k="{k}" aria-label="{e(lab)}"{lang_}>'
+            hd = art_parts(p["art"], lang)[0] if is_art(p) else ""
+            cap = " · ".join(x for x in (re.sub("<[^>]+>", "", hd) if hd else p.get("where", ""), p.get("date", "")) if x)  # ② 손 대면 사진 아래 한 줄(11/4) — 작품은 '작가, 〈작품〉' · 그 밖엔 글 첫 줄 · 날짜
+            dc = f' data-cap="{e(html.unescape(cap))}"' if cap else ""
+            wtiles.append((k, i, f'<button type="button" class="pop wt{" art" if is_art(p) else ""}" data-i="{i}" data-k="{k}" aria-label="{e(lab)}"{lang_}{dc}>'
                           f'<img src="{wsrc(f)}" alt="" loading="lazy" width="{ww}" height="{wh}"></button>'))
     wtiles = [x for _, _, x in sorted(wtiles, key=lambda z: (z[0], z[1]))]  # 게시물을 섞어 늘어놓음(각 게시물의 첫 장들 → 둘째 장들 …) — 세 줄이 서로 다른 게시물로 시작
 
