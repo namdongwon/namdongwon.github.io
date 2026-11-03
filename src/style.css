@@ -621,12 +621,14 @@ html.sr-on{overflow:hidden}
 .colo .thm button::before,.sns a::before,.cap small a::before,.colo .pp-l::before{content:"";position:absolute;inset:-16px -4px}
 /* 누름 반응 하나로(10/28 동원 'A 옅게 .5' — 일본 디테일 ⑧ · 시험 쪽 기준/브랜드 시안/누름반응시험_v1.html): 손가락 기기에서 회색 상자를 끄고 닿으면 바로 반쯤 옅게, 떼면 0.4초에 걸쳐 돌아옴(NDC '들어갈 땐 즉시, 물러날 땐 천천히').
    보내기(먹 반전) · 사진 띠 · 모아 보기 격자는 제 누름 모양이 있어 옅어지지 않게 뺌 · 책 · 「탁본」은 a · button이 아니라 걸리지 않음 · 메뉴는 색 바뀜과 함께 · 나타남(.rv) 중인 것도 옅어지게 .js로 한 단 높임. 아이폰은 main.js의 문서 touchstart가 있어야 :active를 그림 */
-@media (hover:none){
-  a,button{-webkit-tap-highlight-color:transparent}
-  :where(a,button):not(.send,.thumbs button,.pgrid>*){transition:opacity .4s}
-  .top nav a{transition:opacity .4s}  /* 메뉴 — '동작 줄이기'면 옅어짐만(색 바뀜과 함께는 아래 prefers-reduced-motion:no-preference 규칙) */
-  .js :where(a,button):not(.send,.thumbs button,.pgrid>*):active{opacity:.5;transition:none}
-}
+@media (hover:none){a,button{-webkit-tap-highlight-color:transparent}}
+/* 누름 반응 ① 살짝 눌림(11/3 동원 "recent.design … 버튼이나 이런 거 누르면 기분이 좋아" → 예시 영상 누름반응시안_v1 → '① 살짝 눌림 (권장)' — 10/28 '옅게 .5'를 바꿈):
+   누르는 동안 97%로 바로 눌리고(전환 없음), 떼면 0.12초 cubic-bezier(.2,0,0,1)로 돌아옴 — recent.design 실측 값. 마우스 · 손가락 모두. 제 전환이 있는 단추는 그 전환대로 돌아옴(:where — 우선순위 0).
+   글줄 속 링크(inline)는 transform이 듣지 않아 그대로 · 보내기(먹 반전)는 제 누름 모양 · 움직임 줄이기면 눌림 대신 살짝 옅게 */
+:where(a,button){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
+.js :where(a,button):not(.send):active{transform:scale(.97);transition:none}
+:root[data-motion="reduce"] :where(a,button):not(.send):active{transform:none;opacity:.6}
+@media (prefers-reduced-motion:reduce){.js :where(a,button):not(.send):active{transform:none;opacity:.6}}
 .js .hint{display:inline-block;margin-top:12px;padding:4px 0;background:none;border:0;font:300 12.5px/1.5 var(--sans);color:var(--faint);letter-spacing:0;cursor:pointer}
 .poem{transition:transform .5s var(--ease)}
 .poem.pressing{transform:scale(.992)}

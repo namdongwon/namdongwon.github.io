@@ -594,12 +594,12 @@ html.sr-on{overflow:hidden}
 .buy::before,.js .mode button::before,#home dd .go::before,.pbook .plab .go::before{content:"";position:absolute;inset:-12px -4px}
 .colo .thm button::before,.sns a::before,.cap small a::before,.colo .pp-l::before{content:"";position:absolute;inset:-16px -4px}
 
-@media (hover:none){
-  a,button{-webkit-tap-highlight-color:transparent}
-  :where(a,button):not(.send,.thumbs button,.pgrid>*){transition:opacity .4s}
-  .top nav a{transition:opacity .4s}  
-  .js :where(a,button):not(.send,.thumbs button,.pgrid>*):active{opacity:.5;transition:none}
-}
+@media (hover:none){a,button{-webkit-tap-highlight-color:transparent}}
+
+:where(a,button){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
+.js :where(a,button):not(.send):active{transform:scale(.97);transition:none}
+:root[data-motion="reduce"] :where(a,button):not(.send):active{transform:none;opacity:.6}
+@media (prefers-reduced-motion:reduce){.js :where(a,button):not(.send):active{transform:none;opacity:.6}}:where(:root[data-motion="reduce"]) .js :where(a,button):not(.send):active,:where(:root[data-motion="reduce"]).js :where(a,button):not(.send):active{transform:none;opacity:.6}
 .js .hint{display:inline-block;margin-top:12px;padding:4px 0;background:none;border:0;font:300 calc(12.5px * var(--fs))/1.5 var(--sans);color:var(--faint);letter-spacing:0;cursor:pointer}
 .poem{transition:transform .5s var(--ease)}
 .poem.pressing{transform:scale(.992)}
