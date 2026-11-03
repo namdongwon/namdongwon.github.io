@@ -1756,6 +1756,8 @@ SCALE_ALLOW = {
     (".vplay .play::after", "left"): "재생 세모 자리", (".vplay .play::after", "top"): "재생 세모 자리",
     ("#poem>.l", "top"): "띠 아래 제목 자리", ("#me>.l", "top"): "띠 아래 제목 자리",
     ("#contact>.l", "top"): "띠 아래 제목 자리", ("#palette>.l", "top"): "띠 아래 제목 자리",
+    # 표장(11/3 동원 '이름 표기 여덟' → "2 자간 넓게 가늘게" · 실측 겹침으로 좁은 폭 한 단계 작게)
+    (".top .logo", "font"): "표장 12px — 고른 꼴", (".js .top .logo", "font-size"): "휴대폰 표장 10px — 390 아래 찾기 단추와 겹침", (".js:lang(ja) .top .logo", "font-size"): "일본어판 표장 9px — 430 아래 겹침",
     # 동의 창(.cz…) — 고야드 창에서 잰 값 그대로(11/1 동원 '좀 정확히 따라해봐' · 단 검사 29곳에 버튼 '고야드 값 그대로 (권장)')
     **{(".cz", p): "동의 창 — 고야드에서 잰 값" for p in ("padding", "margin", "margin-top", "gap", "top", "right", "left", "inset", "font")},
 }
