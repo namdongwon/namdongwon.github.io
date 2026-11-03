@@ -414,6 +414,33 @@
     });
     paintMo();
   }
+  // 지난번 뒤 새로 생긴 것 점(11/3 '다정한 UX' ⑥ A — 칸 정의 기준/웹사이트 새것 점 칸 정의_v1.md): 빌드가 실은 쪽마다 지문(#nw)을 이 기기의 지난 지문(localStorage seen)과 견줌.
+  // 처음 온 사람은 지금 것을 적어 두고 점 없음 · 지금 쪽은 열었으니 지금 것으로 · 다른 쪽 지문이 다르면 메뉴 이름 옆 먹 점(휴대폰은 '메뉴' 단추에도 하나) · 쿠키 아님 · 서버로 안 보냄
+  const nwEl = document.getElementById("nw");
+  if (nwEl) {
+    try {
+      const cur = JSON.parse(nwEl.textContent), hereA = document.querySelector('.top nav a[aria-current="page"]'), here = hereA && hereA.dataset.pg;
+      let seen = null;
+      try { seen = JSON.parse(localStorage.getItem("seen") || "null"); } catch (x) { /* 깨진 값 — 처음 온 사람처럼 */ }
+      const first = !seen || typeof seen !== "object";
+      if (first) seen = {};
+      Object.keys(cur).forEach(p => { if (first || !(p in seen)) seen[p] = cur[p]; });
+      if (here !== undefined && here !== null && here in cur) seen[here] = cur[here];
+      let any = false;
+      const dot = a => {
+        const s = document.createElement("span"); s.className = "nwd"; s.setAttribute("aria-hidden", "true");
+        const r = document.createElement("span"); r.className = "sr"; r.textContent = " " + uiText("nw_sr", "새 글 있음");
+        a.append(s, r);
+      };
+      document.querySelectorAll(".top nav a[data-pg], .mnu a[data-pg]").forEach(a => {
+        const p = a.dataset.pg;
+        if (p in cur && seen[p] !== cur[p]) { dot(a); any = true; }
+      });
+      const mb = document.querySelector(".top .mb");
+      if (any && mb) { const s = document.createElement("span"); s.className = "nwd"; s.setAttribute("aria-hidden", "true"); mb.append(s); }
+      try { localStorage.setItem("seen", JSON.stringify(seen)); } catch (x) { /* 사생활 모드 등 — 이번 쪽에만 */ }
+    } catch (x) { /* 표가 깨지면 점 없이 */ }
+  }
   // 글자 크기(11/3 '다정한 UX' ④ A): 보통 · 크게 · 더 크게 — html data-fs="l" · "xl"(빌드 fs_css가 읽는 글자 크기에 --fs를 곱함) · 이 기기에만 기억(localStorage fs — 쿠키 아님) · 머리 스크립트가 첫 그림 전에 붙임
   const fsz = document.querySelectorAll(".fsz button[data-fs]");
   if (fsz.length) {

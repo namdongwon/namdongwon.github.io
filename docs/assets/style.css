@@ -3,11 +3,11 @@
 
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=06086fa4aa") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=88748e4437") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=5e22e7c95f") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=f41ab6e26d") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=fa43430a44") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=4393196b79") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=cf195dae73") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=1aba7cea88") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=5137c37d85") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=8ec4c188cb") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -24,11 +24,11 @@ html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:l
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2?v=19b7c81683") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
 
 @font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-light.woff2?v=237255a497") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=a83722e436") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=cc1b74cdbc") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=3f4aa7d630") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=b14dac7000") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=4b86c0ec7c") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=9e8782e896") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=db0625b509") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=fbb89cd6cf") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=4d7f743e2f") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=e59b4c192e") format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2?v=1beaf3c9bd") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2?v=72b7718a65") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=d7c5d884d5") format("woff2");font-weight:300;font-display:swap}
@@ -989,5 +989,7 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .colo .mot input:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .colo .mot small{margin-left:8px;color:var(--faint);font-size:calc(11px * var(--fs))}
 
+
+.nwd{display:inline-block;width:6px;height:6px;margin-left:5px;border-radius:50%;background:var(--ink);vertical-align:.45em}.mnu .nwd{width:7px;height:7px;margin-left:8px;vertical-align:.55em}
 :root{--fs:1}:root[data-fs="l"]{--fs:1.125}:root[data-fs="xl"]{--fs:1.25}
 .colo .fsz button span{font:500 13px/1 var(--sans)}.colo .fsz button+button span{font-size:16px}.colo .fsz button+button+button span{font-size:19px}

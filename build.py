@@ -1557,6 +1557,17 @@ def render(site, poem, videos, photos, lang="ko"):
   </section>
 """,
     }
+    # 지난번 뒤 새로 생긴 것 점(11/3 동원 '다정한 UX' ⑥ → 칸 정의 `기준/웹사이트 새것 점 칸 정의_v1.md` → 목업 새것점시안_v1 'A 먹 점 6px (권장)'):
+    # 쪽마다 지금 보이는 항목 열쇠의 지문(sha1 8자) — 판과 상관없이 한국어 원고 기준(번역만 고친 것은 새것 아님) · 모든 쪽에 다섯 쪽 표(#nw)를 실어 main.js가 이 기기의 지난 지문과 견줌
+    def mark(*keys):
+        return hashlib.sha1("\n".join(map(str, keys)).encode("utf-8")).hexdigest()[:8]
+    open_months = [m["month"] for m in mk if m["month"] <= day.strftime("%Y-%m")]
+    nwm = {"": mark(tb["now"].get("updated", ""), len(tb["years"].get("items", []))),
+           "book": mark(*[x["date"] + x["text"] for x in tb["news"]["items"] if x.get("text") and date.fromisoformat(x["date"]) <= day], *sorted(open_months)[-1:]),
+           "photo": mark(*[x.get("file", "") for x in photos.get("items", [])]),
+           "video": mark((videos.get("upcoming") or {}).get("title", ""), *[x.get("youtube_id", "") for x in videos.get("items", [])]),
+           "guestbook": mark(*[x["date"] + x["text"][:20] for x in gbook])}
+    nw_js = json.dumps(nwm, separators=(",", ":"))
     items = [list(x) for k in ix for x in ix[k]]
     top_of = {"": "me", "book": "poem", "photo": "photo", "video": "video", "guestbook": "guestbook", "contact": "contact"}  # 메뉴 이름 · 쪽 제목에 쓰는 칸
 
@@ -1578,12 +1589,12 @@ def render(site, poem, videos, photos, lang="ko"):
                 return href
             return link(pg) if PAGES[pg][0] == href[1:] else link(pg) + href
         # 맨 위 띠: 메뉴 넷(소개 · 시집 · 인스타그램 · 유튜브 — 쪽 차례와 같게, 지금 쪽은 먹 · 밑줄 · aria-current) | 언어 · 찾기 · [연락하기](10/28 차례 그대로)
-        nav = "".join(f'<a href="{link(pg)}"' + (' class="on" aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a>' for pg in ("", "book", "photo", "video", "guestbook"))
+        nav = "".join(f'<a href="{link(pg)}" data-pg="{pg}"' + (' class="on" aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a>' for pg in ("", "book", "photo", "video", "guestbook"))  # data-pg — 새것 점(11/3)이 쪽을 앎
         # 맨 위 띠(10/31 동원 "gnb 이거 있잖아 가운데로 넣어" · "언어 설정 하단 푸터로 빼"): 이름 | 메뉴 넷(가운데) | 찾기 · [연락하기] — 언어는 바닥글 판권면 '언어' 줄로
         act = f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
         act += f'<a class="cta{" on" if k == "contact" else ""}" href="{link("contact")}"' + (' aria-current="page"' if k == "contact" else "") + f'>{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(연락 쪽에선 맨 위에서도 먹 — 지금 쪽 표시)
         # 휴대폰 메뉴 단추의 목록(11/1 밤 동원 버튼 "B 메뉴 단추"): 메뉴와 같은 쪽 · 같은 차례, 쪽 이름만 큰 명조로(동원 "url 은 빼") — 띠 밖(</header> 뒤)에 둠: 띠의 흐림(backdrop-filter)이 안쪽 fixed를 띠 높이에 가둠
-        mnu = "".join(f'<li><a href="{link(pg)}"' + (' aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a></li>' for pg in ("", "book", "photo", "video", "guestbook"))
+        mnu = "".join(f'<li><a href="{link(pg)}" data-pg="{pg}"' + (' aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a></li>' for pg in ("", "book", "photo", "video", "guestbook"))
         lang_href = {x: f'{PP}{"" if x == "ko" else x + "/"}{kp}' for x in others}  # 같은 쪽의 다른 판 — 바닥글 '언어' 줄(~L:말~)
         ptitle = title if not k else f'{L["nav"][("me", "poem", "photo", "video", "contact", "guestbook").index(top_of[k])]} — {S["name"]}'
         h1 = "" if bpg else f'<h1 class="sr">{e(S["name"] if not k else ptitle)}</h1>\n'  # 시집 쪽은 첫 화면 h1(이름 · 첫 시집) 그대로, 다른 쪽은 읽기 도구용 쪽 제목
@@ -1637,7 +1648,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <footer class="foot">{colo}</footer>
 <button type="button" class="totop" aria-label="{t("totop")}" hidden><svg viewBox="0 0 8 6" aria-hidden="true" focusable="false"><path d="M.4 4.8 4 1.2l3.6 3.6"/></svg></button>
 {sheet if bpg else ""}
-{pv if k == "photo" else ""}{srch}<script id="sidx" type="application/json">{sidx}</script>
+{pv if k == "photo" else ""}{srch}<script id="sidx" type="application/json">{sidx}</script><script id="nw" type="application/json">{nw_js}</script>
 <script id="ui" type="application/json">{ui_js}</script>
 <script src="{P}assets/main.js" defer onerror="document.documentElement.classList.remove('js','intro')"></script>
 {consent_html(L, ga, urlparse(base).netloc or base) + f'<script src="{P}assets/consent.js" defer></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>

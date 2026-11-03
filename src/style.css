@@ -1079,5 +1079,7 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .colo .mot input:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .colo .mot small{margin-left:8px;color:var(--faint);font-size:11px}
 /* 글자 크기(11/3 동원 '다정한 UX' ④ — 목업 글자크기시안_v1 'A 판권면 셋째 줄 (권장)'): --fs를 빌드(fs_css)가 20px 이하 글자에 곱함 · 단계는 Apple Dynamic Type 본문 17 → 19 · 21pt 비율 */
+/* 지난번 뒤 새로 생긴 것 점(11/3 '다정한 UX' ⑥ — 목업 새것점시안_v1 'A 먹 점 6px (권장)'): 메뉴 이름 오른쪽 위 먹 점 — 백오피스 방명록 점과 한 벌 · 40곳 보고서 '점 6–10px · 색 대신 자리' */
+.nwd{display:inline-block;width:6px;height:6px;margin-left:5px;border-radius:50%;background:var(--ink);vertical-align:.45em}.mnu .nwd{width:7px;height:7px;margin-left:8px;vertical-align:.55em}
 :root{--fs:1}:root[data-fs="l"]{--fs:1.125}:root[data-fs="xl"]{--fs:1.25}
 .colo .fsz button span{font:500 13px/1 var(--sans)}.colo .fsz button+button span{font-size:16px}.colo .fsz button+button+button span{font-size:19px}
