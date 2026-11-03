@@ -86,6 +86,7 @@ button{font:inherit;color:inherit}
 .tt{display:inline-block;text-wrap:balance}  /* 작품 제목(+붙은 조사 · 문장부호)은 한 덩어리 — 칸에 들어가면 통째로 다음 줄, 칸보다 길면 그 안에서만 갈림(10/25 마지막 점검 ②③, build.py rich · 첫 화면 라벨) · 토막이 칸보다 길어 그 안에서 갈릴 때는 고르게(태블릿 라벨 'Step / Out,' 같은 외톨이 줄이 남지 않게) */
 .cap p,.colo .c,.ask .agree,.empty{text-wrap:pretty}
 #home .lab dd,.pbook .plab dd,.now dd,#home .kick,#home .tip,.bhead{text-wrap:pretty}  /* 줄 끝 한두 글자 · 한 낱말(10/27 점검 남은 것 가2 — '지금' 첫 편 · 범례 '엽니다' · 영어 첫 줄 'exhibition' 등) */
+#home .lab dd,.pgno{max-width:42em}  /* 한 줄 길이(11/3 UX 점검 ④ — 영어판 컴퓨터에서 라벨 한 줄 105자 · 쪽수 줄 95자, 45–75자 관행) — 한국어는 짧아 그대로 */
 .skip{position:absolute;left:-9999px;top:8px;z-index:60;padding:8px 12px;background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans)}
 .skip:focus{left:8px}
 
@@ -94,7 +95,7 @@ button{font:inherit;color:inherit}
 .top.sc{box-shadow:0 1px 0 var(--barline)}  /* 내려가면 띠 아래 가는 선 — 어두운 모드에서도 보이게 색 낱말(10/28 모양 점검 ⑧ — 검정 값이라 어둡게에서 사라졌음) */
 /* 메뉴가 띠보다 넓으면(글 간격을 넓힌 읽기 도구 · 폭 280px 영어판) 두 줄로 내려가고 띠가 그만큼 높아짐 — 전엔 'About'이 화면 왼쪽 밖으로 밀려 볼 수 없었음(10/27 점검 a11y 13 · WCAG 1.4.12). 보통 화면에서는 한 줄 그대로 */
 @media (max-width:767px){.top nav{margin:0 auto}}  /* 10/31 동원 'gnb 가운데로' — 휴대폰은 오른쪽 찾기 · 연락하기 앞 남는 자리의 가운데(한가운데면 상자와 겹침). 넓은 읽기 도구면 전처럼 두 줄로 */  /* 두 줄로 내려가기 전에 왼쪽 여백 20px까지는 씀 — 한국어판 280px처럼 여백 안에서 한 줄로 들어가던 화면은 전과 같게 */
-.top .logo{display:none;font:400 12px/1 var(--sans);letter-spacing:.3em;white-space:nowrap}  /* 표장 NAM DONGWON(11/3 동원 '이름 표기 여덟' → 버튼 "2 자간 넓게 가늘게" — 목업 사이트헤더이름표기시안_v2_여덟 · 바닥글 표장 NAMDONGWON.COM과 한 결) — 전엔 '남 동원' 본명조 굵게 18 */
+.top .logo{display:none;position:relative;font:400 12px/1 var(--sans);letter-spacing:.3em;white-space:nowrap}  /* 표장 NAM DONGWON(11/3 동원 '이름 표기 여덟' → 버튼 "2 자간 넓게 가늘게" — 목업 사이트헤더이름표기시안_v2_여덟 · 바닥글 표장 NAMDONGWON.COM과 한 결) — 전엔 '남 동원' 본명조 굵게 18 */
 /* 휴대폰 띠 가운데 이름(11/3 목업 사이트헤더자리시안_v1 → 버튼 "지금 + 휴대폰 P (권장)" — 휴대폰 맨 위에 이름이 없었음) · 컴퓨터는 왼쪽 그대로(NN/g 2016 가운데 로고 실패 6배) ·
    390px보다 좁으면 한 단계 작게 — 실측 320에서 찾기 단추와 겹침 · 375에서 8px */
 @media (max-width:767px){.js .top .logo{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;letter-spacing:.24em}}
@@ -104,7 +105,7 @@ button{font:inherit;color:inherit}
 @media (max-width:359px){.js:lang(ja) .top .logo{display:none}}
 .top nav{position:relative;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:16px;font:600 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  /* 한글 메뉴 자간 .12 → .04em(10/29 동원 'B 이름은 그대로' — 새 눈 비평 그 밖 2: 한글은 자간을 벌리면 낱말 덩어리가 깨짐) */
 .top nav a{position:relative;padding:6px 0}
-.top nav a::before,.top .act a::before,.js .top .sq::before,.top .mb::before{content:"";position:absolute;inset:-10px -6px}  /* 누르는 자리 44px 안팎(10/28 모양 점검 ⑥ — 글자 칸은 26px) — 여백을 늘리면 띠 · 구분선 모양이 바뀌어 보이지 않는 자리만 넓힘 */
+.top nav a::before,.top .act a::before,.js .top .sq::before,.top .mb::before,.top .logo::before{content:"";position:absolute;inset:-10px -6px}  /* 누르는 자리 44px 안팎(10/28 모양 점검 ⑥ — 글자 칸은 26px) — 여백을 늘리면 띠 · 구분선 모양이 바뀌어 보이지 않는 자리만 넓힘 */
 /* 지금 보는 칸(10/24 B) — 그 칸 이름만 먹색 + 아래 가는 밑줄(main.js가 붙임, 칸을 따라 미끄러짐). 첫 화면에선 없음 */
 .top nav a.on{color:var(--ink)}
 .top nav .ul{position:absolute;left:0;bottom:1px;width:0;height:1.5px;background:var(--ink);opacity:0;pointer-events:none}
@@ -870,6 +871,7 @@ html.sr-on{overflow:hidden}
 @media (max-width:374px){.top .act{gap:8px;margin-left:8px}}
 /* 바닥글 언어 줄(10/31 동원 '언어 설정 하단 푸터로') — 화면 줄 바로 아래, 지금 판은 먹 글자 · 다른 판은 밑줄 링크 */
 .colo .lng span{color:var(--ink)}.colo .lng a{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}
+.colo .lng a{position:relative}.colo .lng a::before{content:"";position:absolute;inset:-8px -4px}  /* 누르는 자리 24px 넘게(11/3 UX 점검 ② — 실측 English 35×14 · 日本語 29×14 · WCAG 2.2 2.5.8) */
 @media (hover:hover){.colo .lng a:hover{color:var(--ink)}}
 /* 동의 창(11/1 동원 "고야드 식으로 하긴 하는데 좀 정확히 따라해봐" · 안 1 고야드 문구 바탕 · "동의 관리는 고야드 동의 관리를 참고해서 적은거야?") — 고야드(Didomi) 세 단계를 그대로.
    값은 goyard.com/kr_ko 창에서 잰 것(11/1 04:5x 앱 안 브라우저 · 1134px 폭 getComputedStyle): 글은 명조(고야드 Newsreader + 한글 명조 → 우리 --serif) · 제목 · 단추는 고딕(Arial · Goyard → --sans)
@@ -1098,4 +1100,4 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 /* 지난번 뒤 새로 생긴 것 점(11/3 '다정한 UX' ⑥ — 목업 새것점시안_v1 'A 먹 점 6px (권장)'): 메뉴 이름 오른쪽 위 먹 점 — 백오피스 방명록 점과 한 벌 · 40곳 보고서 '점 6–10px · 색 대신 자리' */
 .nwd{display:inline-block;width:6px;height:6px;margin-left:5px;border-radius:50%;background:var(--ink);vertical-align:.45em}.mnu .nwd{width:7px;height:7px;margin-left:8px;vertical-align:.55em}
 :root{--fs:1}:root[data-fs="l"]{--fs:1.125}:root[data-fs="xl"]{--fs:1.25}
-.colo .fsz button span{font:500 13px/1 var(--sans)}.colo .fsz button+button span{font-size:16px}.colo .fsz button+button+button span{font-size:19px}
+.colo .fsz button span{font:400 13px/1 var(--sans)}.colo .fsz button+button span{font-size:16px}.colo .fsz button+button+button span{font-size:19px}
