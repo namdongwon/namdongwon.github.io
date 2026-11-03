@@ -829,6 +829,16 @@ html.sr-on{overflow:hidden}
 
 /* 쪽 나누기(10/31 동원 "랜딩페이지는 내 소개를 넣고 … 따로 페이지를 분리") — 판권면은 모든 쪽 끝 바닥글(컴퓨터는 전처럼 오른쪽 단) · 소개 쪽 갈래 넷은 10/31 동원 '소개에서 링크를 깔 필요가 없잖아'로 뺌(쪽 사이 길은 맨 위 띠 메뉴) */
 /* 바닥글 — 고야드 꼴(11/2 동원 '푸터 고야드처럼' → 목업 A · 고야드 실측 기준/레퍼런스/고야드푸터_실측_1102/): 네 단 가운데 정렬 → 이름 표장 → 원 아이콘 → 맺음 인사 → 아래 띠. 색은 따르지 않음 */
+/* 쪽 끝 다음 쪽 카드(11/3 동원 '다정한 UX' ② — 목업 쪽끝다음걸음시안_v3 'C1 명조 18 (권장)'): 이름 명조 18 = 맨 위 띠 이름 · 찾기 추천 크기(칸 제목 28보다 한참 아래) ·
+   한 줄 14 = 바닥글 링크 · '다음 쪽' = 바닥글 단 이름(.fh)과 같은 칸 머리 · 테두리 · 모서리는 단추와 한 벌 · 컴퓨터는 오른쪽 반(다음은 오른쪽 — 쪽 넘김 관행) */
+.nxp{margin:56px 0 8px;padding:0 20px}
+.nxp a{display:block;padding:16px 18px 15px;border:1px solid var(--line);border-radius:var(--btn-r);color:var(--ink);text-decoration:none}
+.nxp .k{display:block;margin:0 0 8px;font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
+.nxp .n{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font:400 18px/1.3 var(--serif)}
+.nxp .n i{font-style:normal;font-size:14px}
+.nxp .d{display:block;margin-top:4px;font:400 14px/1.6 var(--sans);color:var(--muted)}
+@media (min-width:768px){.nxp{display:flex;justify-content:flex-end;max-width:1120px;margin:56px auto 8px;padding:0 64px;box-sizing:content-box}.nxp a{width:calc(50% - 36px)}}
+@media (hover:hover){.nxp a:hover{background:var(--ph)}}
 .foot{padding:0 20px}
 .foot .colo{max-width:1120px;margin:0 auto;padding-top:64px;border-top:1px solid var(--rule);text-align:center}
 .fcols{display:grid;gap:36px}

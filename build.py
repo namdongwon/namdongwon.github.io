@@ -499,6 +499,7 @@ HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", CIN_JS), HEAD_JS_PLAIN.repla
 # 쪽 나누기(10/31 동원 "랜딩페이지는 내 소개를 넣고, 다른 시집, 인스타그램, 유튜브 이런 것들은 따로 페이지를 분리 … 연락페이지도 따로 빼는 게 좋다고 생각해"
 # · 버튼 '같은 도메인 아래 주소 (권장)' · "지금 구조 만들어"): 쪽 열쇠(주소 폴더) → 그 쪽에 담는 칸 id, 첫째가 그 쪽 맨 위 칸. "" = 첫 화면(소개)
 PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "guestbook": ("guestbook",), "contact": ("contact",)}  # 11/2 방명록 쪽(동원 "방명록 사이트를 먼저 추가") — 연락 칸 안에서 떼어 /guestbook/
+NEXT_PAGE = {"": "book", "book": "photo", "photo": "video", "video": "guestbook", "guestbook": "", "contact": "guestbook"}  # 쪽 끝 다음 쪽 카드 — 메뉴 차례대로 한 칸씩 · 방명록 다음은 처음(소개) · 연락 다음은 방명록(11/3)
 PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "y": "", "p": "photo"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p)
 
 
@@ -1560,6 +1561,11 @@ def render(site, poem, videos, photos, lang="ko"):
         oimg, otitle, odesc = (og_img, og_title, og_desc) if k in ("", "book") else (f"og-{lang}.jpg" if tr_ else "og.jpg", ptitle, S["description"])
         sidx = json.dumps([[*x[:3], go(x[3]), *x[4:]] for x in items], ensure_ascii=False).replace("</", "<\\/")
         body = "".join(sec[s] for s in PAGES[k])
+        # 쪽 끝 다음 쪽 카드(11/3 동원 '다정한 UX 7가지' ② → 목업 쪽끝다음걸음시안_v1 'B 다음 쪽 카드' → "글자 크기를 손봐야" v2 → "크기가 좀 큰 거 같아" v3 'C1 명조 18 (권장)'):
+        # 바닥글 '둘러보기'에 쪽 다섯이 있으므로 목록이 아니라 이어질 한 곳 + 그곳으로 가는 까닭 한 줄(머물게 하는 40곳 원리 8 '끝 = 다음 걸음 하나')
+        nx = NEXT_PAGE[k]
+        nxp = (f'<nav class="nxp" aria-label="{t("next_k")}"><a href="{link(nx)}"><span class="k">{t("next_k")}</span>'
+               f'<span class="n">{e(navname[top_of[nx]])}<i aria-hidden="true">→</i></span><span class="d">{t("next_d_" + (nx or "me"))}</span></a></nav>\n')
         html_ = f"""<!doctype html>
 <html lang="{lang}">
 <head>
@@ -1598,7 +1604,7 @@ def render(site, poem, videos, photos, lang="ko"):
   <nav aria-label="{t("nav_label")}">{nav}</nav><div class="act">{act}</div></header>
 <nav class="mnu" id="mnu" aria-label="{t("nav_label")}" hidden><ol>{mnu}</ol></nav>
 <main id="main">
-{h1}{body}</main>
+{h1}{body}{nxp}</main>
 <footer class="foot">{colo}</footer>
 <button type="button" class="totop" aria-label="{t("totop")}" hidden><svg viewBox="0 0 8 6" aria-hidden="true" focusable="false"><path d="M.4 4.8 4 1.2l3.6 3.6"/></svg></button>
 {sheet if bpg else ""}

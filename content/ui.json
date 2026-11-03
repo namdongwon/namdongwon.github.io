@@ -1168,5 +1168,35 @@
     "ko": "남기신 글은 구글 폼(Google, 미국)에 담깁니다. 실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있습니다. {privacy}",
     "en": "Notes are stored in a Google Form (Google, United States). Notes not published are deleted within 30 days, and you keep the copyright. {privacy}",
     "ja": "メッセージはGoogleフォーム（Google、米国）に保存されます。掲載されなかったメッセージは30日以内に削除し、著作権は書いた方にあります。{privacy}"
+  },
+  "next_k": {
+    "ko": "다음 쪽",
+    "en": "Next",
+    "ja": "次のページ"
+  },
+  "next_d_book": {
+    "ko": "시 예순 편, 차례와 「탁본」",
+    "en": "Sixty poems — the contents and “Rubbing”",
+    "ja": "詩六十篇、目次と「拓本」"
+  },
+  "next_d_photo": {
+    "ko": "시가 되기 전의 날들을 사진으로",
+    "en": "The days before the poems, in photographs",
+    "ja": "詩になる前の日々を、写真で"
+  },
+  "next_d_video": {
+    "ko": "본 것을 이야기로 — 영화 · 책 · 전시",
+    "en": "What I’ve seen, talked through — films, books, exhibitions",
+    "ja": "観たものを言葉に — 映画・本・展示"
+  },
+  "next_d_guestbook": {
+    "ko": "다녀가신 자리에 한 줄",
+    "en": "Leave a line on your way out",
+    "ja": "立ち寄った印に、ひとこと"
+  },
+  "next_d_me": {
+    "ko": "쓰는 사람과 지나온 기록",
+    "en": "The writer, and the record so far",
+    "ja": "書く人と、これまでの記録"
   }
 }
