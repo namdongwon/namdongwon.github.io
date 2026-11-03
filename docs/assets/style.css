@@ -84,7 +84,7 @@ button{font:inherit;color:inherit}
 
 
 .top{position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;align-items:center;min-height:var(--top);padding:0 20px;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);transition:box-shadow .4s}  
-.top.sc{box-shadow:0 1px 0 var(--barline)}  
+.top{box-shadow:0 1px 0 var(--barline)}  
 
 @media (max-width:767px){.top nav{margin:0 auto}}    
 .top .logo{display:none;position:relative;font:400 12px/1 var(--sans);letter-spacing:.3em;white-space:nowrap}  

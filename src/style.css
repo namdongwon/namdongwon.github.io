@@ -93,7 +93,7 @@ button{font:inherit;color:inherit}
 
 /* 맨 위: 휴대폰은 메뉴만, 컴퓨터는 이름 로고 + 메뉴 */
 .top{position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;align-items:center;min-height:var(--top);padding:0 20px;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);transition:box-shadow .4s}  /* 아래 재생 띠(.mini)와 같은 흰 86% · 흐림 16px(10/24 ⑨) */
-.top.sc{box-shadow:0 1px 0 var(--barline)}  /* 내려가면 띠 아래 가는 선 — 어두운 모드에서도 보이게 색 낱말(10/28 모양 점검 ⑧ — 검정 값이라 어둡게에서 사라졌음) */
+.top{box-shadow:0 1px 0 var(--barline)}  /* 띠 아래 가는 선 — 맨 위에서도 늘(11/3 동원 '이 선 … 맨위로 올려도 보였으면' — 전엔 내려가야(.sc) 보였음) — 어두운 모드에서도 보이게 색 낱말(10/28 모양 점검 ⑧ — 검정 값이라 어둡게에서 사라졌음) */
 /* 메뉴가 띠보다 넓으면(글 간격을 넓힌 읽기 도구 · 폭 280px 영어판) 두 줄로 내려가고 띠가 그만큼 높아짐 — 전엔 'About'이 화면 왼쪽 밖으로 밀려 볼 수 없었음(10/27 점검 a11y 13 · WCAG 1.4.12). 보통 화면에서는 한 줄 그대로 */
 @media (max-width:767px){.top nav{margin:0 auto}}  /* 10/31 동원 'gnb 가운데로' — 휴대폰은 오른쪽 찾기 · 연락하기 앞 남는 자리의 가운데(한가운데면 상자와 겹침). 넓은 읽기 도구면 전처럼 두 줄로 */  /* 두 줄로 내려가기 전에 왼쪽 여백 20px까지는 씀 — 한국어판 280px처럼 여백 안에서 한 줄로 들어가던 화면은 전과 같게 */
 .top .logo{display:none;position:relative;font:400 12px/1 var(--sans);letter-spacing:.3em;white-space:nowrap}  /* 표장 NAM DONGWON(11/3 동원 '이름 표기 여덟' → 버튼 "2 자간 넓게 가늘게" — 목업 사이트헤더이름표기시안_v2_여덟 · 바닥글 표장 NAMDONGWON.COM과 한 결) — 전엔 '남 동원' 본명조 굵게 18 */
