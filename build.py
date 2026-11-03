@@ -1044,7 +1044,7 @@ def render(site, poem, videos, photos, lang="ko"):
         lis.append(f'<li id="y{len(lis) + 1}"><b>{e(r["year"])}</b><span>{rich(r["text"])}' + (f'<sup class="fr">{len(notes)}</sup>' if r["note"] else '') + '</span></li>')
         ix["me"].append((tg["me"], f'{r["year"]} {plain(r["text"])}', L["search_timeline"], f"#y{len(lis)}"))
     years = "".join(lis)
-    fnb = ('<ol class="fn">' + "".join(f'<li><b>{i}</b><span>{note_html(x, lang)}</span></li>' for i, x in enumerate(notes, 1)) + '</ol>') if notes else ""
+    fnb = ('<ol class="fn">' + "".join(f'<li><b>{i}</b><span>{note_html(x, lang)}</span></li>' for i, x in enumerate(notes, 1)) + '</ol>') if notes else '<ol class="fn" hidden></ol>'  # 각주가 없을 때도 빈 자리(숨김)는 둠 — 관리 화면 미리 보기가 '.years, .fn' 자리를 찾음(11/3 동원 '이거 없애자'로 각주 글을 비움)
     # 소개 칸의 지금(10/25 ⑥ A — William Jansson 'Now'식): 연표 아래 읽는 책 · 편집 중인 편 · 쓰는 시 + 고친 날(손으로 적는 날). 빈 줄은 안 보임
     nw = {**tb["now"], "items": row_lang(tb["now"]["items"], lang)}  # 말 규칙은 줄마다(고친 날 · 세 줄을 담은 겉은 그대로)
     now_rows = "".join(f'<div><dt>{e(x["label"])}</dt><dd>{rich(x["text"]) if en else note_html(x["text"], lang)}</dd></div>' for x in nw.get("items", []) if x.get("text"))  # 한국어도 〈 〉 안 띄어쓰기를 붙임(10/27 가2 — 320에서 '〈릴리 슈슈의 모든 / 것〉')
