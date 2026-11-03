@@ -1610,6 +1610,7 @@ def render(site, poem, videos, photos, lang="ko"):
         mnu = "".join(f'<li><a href="{link(pg)}" data-pg="{pg}"' + (' aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a></li>' for pg in ("", "book", "photo", "video", "guestbook"))
         lang_href = {x: f'{PP}{"" if x == "ko" else x + "/"}{kp}' for x in others}  # 같은 쪽의 다른 판 — 바닥글 '언어' 줄(~L:말~)
         ptitle = title if not k else f'{L["nav"][("me", "poem", "photo", "video", "contact", "guestbook").index(top_of[k])]} — {S["name"]}'
+        tab = S["logo"] if not k else f'{S["logo"]} — {L["nav"][("me", "poem", "photo", "video", "contact", "guestbook").index(top_of[k])]}'  # 탭 제목은 표장 먼저(11/3 동원 "내 지금 웹사이트 이렇게 나오는 것도 바꾸자" → 목업 탭제목시안_v1 'B 표장만') — 링크 미리보기(og) · 읽기 도구용 h1은 이름 · 소개 그대로
         h1 = "" if bpg else f'<h1 class="sr">{e(S["name"] if not k else ptitle)}</h1>\n'  # 시집 쪽은 첫 화면 h1(이름 · 첫 시집) 그대로, 다른 쪽은 읽기 도구용 쪽 제목
         oimg, otitle, odesc = (og_img, og_title, og_desc) if k in ("", "book") else (f"og-{lang}.jpg" if tr_ else "og.jpg", ptitle, S["description"])
         sidx = json.dumps([[*x[:3], go(x[3]), *x[4:]] for x in items], ensure_ascii=False).replace("</", "<\\/")
@@ -1624,7 +1625,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{e(ptitle)}</title>
+<title>{e(tab)}</title>
 <meta name="description" content="{e(S["description"])}">{"" if tr_ else verify_tags(site)}
 <link rel="canonical" href="{e(url)}">
 <link rel="alternate" hreflang="ko" href="{e(base)}/{kp}">
@@ -1706,7 +1707,7 @@ def page_privacy(site, lang):
         ckp = f'<p class="ckp"><button type="button" class="cz-open">{e(Lp["cz_open"])}</button></p>\n'
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{g(p["title"])} — {e(localize(site, lang)["name"] if tr_ else site["name"])}</title><meta name="robots" content="noindex">
+<title>{e(site["logo"])} — {g(p["title"])}</title><meta name="robots" content="noindex">
 <link rel="canonical" href="{e(base)}{"/" + lang if tr_ else ""}/privacy/"><meta name="theme-color" content="#ffffff">
 <link rel="icon" href="{R}favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="{R}assets/style.css">
 <script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
@@ -1734,7 +1735,7 @@ def page_404(site, ja=True):
     jp = (f'\n<p class="lead" lang="ja">{jl("nf_title")}。{jl("nf_lead")}</p>\n<p lang="ja"><a class="buy" href="/ja/">{jl("nf_back")}</a></p>\n{five("ja", "/ja/")}') if jl else ""
     return f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{k("nf_title")} — {e(site["name"])}</title><meta name="robots" content="noindex">
+<title>{e(site["logo"])} — {k("nf_title")}</title><meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"><script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
 <body><main class="nf" style="min-height:100vh;display:grid;place-content:center;gap:18px;padding:28px;text-align:center">
 <p class="label" style="justify-content:center">404</p>
