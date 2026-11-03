@@ -255,6 +255,102 @@
           "venue": ""
         }
       }
+    },
+    {
+      "post": "DV2MI0yk9Rz",
+      "where": "",
+      "alt": "붉은 커튼 앞 나무 소파에 앉아 찻잔을 든 사람",
+      "art": {
+        "artist": "",
+        "title": "",
+        "year": "",
+        "show": "",
+        "venue": ""
+      },
+      "en": {
+        "where": "",
+        "alt": "A person in black holding a cup of tea on a wooden sofa in front of a red curtain",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "ja": {
+        "where": "",
+        "alt": "赤いカーテンの前、木のソファで湯のみを手にする人",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      }
+    },
+    {
+      "post": "DVV6bBFkqbY",
+      "where": "",
+      "alt": "겨울 숲이 보이는 통창 앞, 검은 탁자에 앉은 사람",
+      "art": {
+        "artist": "",
+        "title": "",
+        "year": "",
+        "show": "",
+        "venue": ""
+      },
+      "en": {
+        "where": "",
+        "alt": "A person seated at a black table by a tall window looking out on a winter forest",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "ja": {
+        "where": "",
+        "alt": "冬の林が見える大きな窓辺、黒いテーブルに座る人",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      }
+    },
+    {
+      "post": "DVQtJj9ku7H",
+      "where": "",
+      "alt": "한옥 문 너머 마당을 바라보고 앉은 뒷모습",
+      "art": {
+        "artist": "",
+        "title": "",
+        "year": "",
+        "show": "",
+        "venue": ""
+      },
+      "en": {
+        "where": "",
+        "alt": "Seen from behind, a person sitting at an open hanok door, looking out at the courtyard",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "ja": {
+        "where": "",
+        "alt": "韓屋の戸の向こう、庭を眺めて座る後ろ姿",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      }
     }
   ]
 }
