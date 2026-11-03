@@ -1747,7 +1747,8 @@ def page_404(site, ja=True):
 # 단 밖인데 일부러 둔 값은 (선택자 머리, 속성): 까닭으로 허용 — 새로 일부러 둘 값이 생기면 까닭과 함께 여기에
 SCALE_SP = {0, 2, 4, 6, 8, 12, 16, 22, 30, 36, 44, 64, 20, 72, *range(48, 61)}  # 간격 열한 단 + 자리 값(옆 여백 20 · 64 · 두 단 틈 72 · 창 안쪽 48–60)
 SCALE_LH = {"1", "1.05", "1.2", "1.3", "1.5", "1.6", "1.7", "1.9", "2"}
-SCALE_FS = {11, 12.5, 13, 14, 15}  # 16px 아래 작은 글자 — 고딕 11 · 12.5 · 14 · 명조 13 · 14 · 15
+SCALE_FS = {11, 12.5, 13, 14, 15}
+SCALE_LS = {"0", "normal", "inherit", "-.05em", "-.04em", "-.035em", "-.02em", "-.01em", ".04em", ".12em", ".3em"}  # 자간 다섯 단(11/3 UX 점검 ⑦ → 목업 자간정리시안_v1 'A 다섯 단 (권장)') — 큰 제목 보정(음수) · 0 · 작은 머리 · 메뉴 · 라벨 0.04 · 대문자 · 영어 머리 0.12 · 표장 0.3  # 16px 아래 작은 글자 — 고딕 11 · 12.5 · 14 · 명조 13 · 14 · 15
 SCALE_ALLOW = {
     (".skip", "left"): "화면 밖에 숨김", (".hp", "left"): "방명록 빈칸 함정 — 화면 밖",
     (".top nav a::before", "inset"): "누르는 자리 44px", (".tk-w", "font"): "첫 화면 큰 영어 이름 — 두 줄 간격 .86(시안 그대로)", (".pbook .bk .sh", "bottom"): "책 그림자 자리",
@@ -1757,9 +1758,9 @@ SCALE_ALLOW = {
     ("#poem>.l", "top"): "띠 아래 제목 자리", ("#me>.l", "top"): "띠 아래 제목 자리",
     ("#contact>.l", "top"): "띠 아래 제목 자리", ("#palette>.l", "top"): "띠 아래 제목 자리",
     # 표장(11/3 동원 '이름 표기 여덟' → "2 자간 넓게 가늘게" · 실측 겹침으로 좁은 폭 한 단계 작게)
-    (".top .logo", "font"): "표장 12px — 고른 꼴", (".js .top .logo", "font-size"): "휴대폰 표장 10px — 390 아래 찾기 단추와 겹침", (".js:lang(ja) .top .logo", "font-size"): "일본어판 표장 9px — 430 아래 겹침",
+    (".top .logo", "font"): "표장 12px — 고른 꼴", (".js .top .logo", "letter-spacing"): "휴대폰 표장 자간 0.24 · 0.18em — 폭 따라 줄임", (".js:lang(ja) .top .logo", "letter-spacing"): "일본어판 표장 자간 0.1em — 430 아래", (".js .top .logo", "font-size"): "휴대폰 표장 10px — 390 아래 찾기 단추와 겹침", (".js:lang(ja) .top .logo", "font-size"): "일본어판 표장 9px — 430 아래 겹침",
     # 동의 창(.cz…) — 고야드 창에서 잰 값 그대로(11/1 동원 '좀 정확히 따라해봐' · 단 검사 29곳에 버튼 '고야드 값 그대로 (권장)')
-    **{(".cz", p): "동의 창 — 고야드에서 잰 값" for p in ("padding", "margin", "margin-top", "gap", "top", "right", "left", "inset", "font")},
+    **{(".cz", p): "동의 창 — 고야드에서 잰 값" for p in ("padding", "margin", "margin-top", "gap", "top", "right", "left", "inset", "font", "letter-spacing")},
 }
 
 
@@ -1780,6 +1781,8 @@ def scale_check():
                 lh = re.search(r"/\s*(\d*\.?\d+)(?![\w%])", val) if prop == "font" else None
                 off += [lh.group(1)] if lh and lh.group(1) not in SCALE_LH else []
             elif prop == "line-height" and re.fullmatch(r"\d*\.?\d+", val) and val not in SCALE_LH:
+                off = [val]
+            elif prop == "letter-spacing" and "calc(" not in val and re.sub(r"^(-?)0\.", r"\1.", val) not in SCALE_LS:
                 off = [val]
             if not off:
                 continue
