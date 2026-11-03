@@ -1228,5 +1228,20 @@
     "ko": "새 글 있음",
     "en": "new",
     "ja": "新着あり"
+  },
+  "rdl_k": {
+    "ko": "읽은 사람의 한 줄",
+    "en": "A reader’s line",
+    "ja": "読んだ人のひとこと"
+  },
+  "rdl_from": {
+    "ko": "방명록에서 · {day}",
+    "en": "From the guestbook · {day}",
+    "ja": "芳名録より · {day}"
+  },
+  "rdl_go": {
+    "ko": "방명록에 남기기 →",
+    "en": "Leave a note →",
+    "ja": "芳名録に書く →"
   }
 }

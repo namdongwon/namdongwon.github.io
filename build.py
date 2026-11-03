@@ -1497,6 +1497,16 @@ def render(site, poem, videos, photos, lang="ko"):
               else re.sub(r",\s*\*[^*]+\*", "", S["bio"]))
     if lang == "ko":  # 휴대폰에서 '… 태어났다. 2026년 / 첫 시집으로'로 갈리지 않게 둘째 문장 머리를 붙임 공백으로 — 줄은 문장 끝에서 갈림(10/25 마지막 점검 ③의 뜻)
         bio_me = re.sub(r"(\d{4}년) (첫) (시집으로)", rf"\1{NB}\2{NB}\3", bio_me)
+    # 읽은 사람의 한 줄(11/3 동원 '추천 리스트 더' ① → 목업 읽은사람한줄시안_v1 'A 고른 한 줄 (권장)' — 칸 정의 `기준/웹사이트 읽은 사람의 한 줄 칸 정의_v1.md`):
+    # 실린 방명록 글 가운데 동원이 백오피스에서 '시집 쪽에' 건 하나(guestbook.json book: true · 여럿이면 날짜가 늦은 것) → 「탁본」 아래 · 글은 원문 그대로(옮기지 않음) · 이름 없음 · 걸린 글이 없으면 칸 없음
+    pin = next((x for x in gbook if x.get("book")), None)
+    rdl = ""
+    if pin:
+        pd = date.fromisoformat(pin["date"][:10])
+        pday = f"{MONTHS[pd.month - 1]} {pd.day}" if en else f"{pd.month}月{pd.day}日" if tr_ else f"{pd.month}월{NB}{pd.day}일"
+        lk = ' lang="ko"' if tr_ and re.search(r"[가-힣]", pin["text"]) else ""
+        rdl = (f'<figure class="rdl"><figcaption class="k">{t("rdl_k")}</figcaption><blockquote{lk}>“{e(" ".join(pin["text"].split()))}”</blockquote>'
+               f'<p class="w">{t("rdl_from", day=pday)}</p><a href="~R~guestbook/">{t("rdl_go")}</a></figure>')
     sec = {
         # 시집 쪽 h1(11/1 동원 버튼 "함께 넣어 (권장)" — 명품 사이트 조사 제안 ①: 상품 쪽 h1은 상품 이름): 이름 · 첫 시집 줄 + 큰 제목 + 작은 제목을 한 h1로 — 보이는 모양은 그대로(전엔 h1이 위 작은 줄뿐).
         # 휴대폰의 작은 제목은 책 옆(.side .hs — 읽기 도구에는 숨김)이 보이고, h1 안의 작은 제목(.hsl)은 휴대폰에선 화면 밖 글(읽기 도구만) · 768px부터 보임
@@ -1511,7 +1521,7 @@ def render(site, poem, videos, photos, lang="ko"):
 """,
         "poem": f"""  <section id="poem" aria-labelledby="poem-t">
     <p class="label">{t("label_poem")}</p>
-    <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>
+    <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>{rdl}
       <p class="pgno">{pgno}</p><p class="pbr">{t("sheet_bridge")}</p></div>
     <div class="l pbook" id="bookcard"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
       {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}{plab}</div>
@@ -1563,7 +1573,8 @@ def render(site, poem, videos, photos, lang="ko"):
         return hashlib.sha1("\n".join(map(str, keys)).encode("utf-8")).hexdigest()[:8]
     open_months = [m["month"] for m in mk if m["month"] <= day.strftime("%Y-%m")]
     nwm = {"": mark(tb["now"].get("updated", ""), len(tb["years"].get("items", []))),
-           "book": mark(*[x["date"] + x["text"] for x in tb["news"]["items"] if x.get("text") and date.fromisoformat(x["date"]) <= day], *sorted(open_months)[-1:]),
+           "book": mark(*[x["date"] + x["text"] for x in tb["news"]["items"] if x.get("text") and date.fromisoformat(x["date"]) <= day], *sorted(open_months)[-1:],
+                        *([pin["date"] + pin["text"][:20]] if pin else [])),  # 읽은 사람의 한 줄(11/3)이 바뀌면 시집 쪽에 점
            "photo": mark(*[x.get("file", "") for x in photos.get("items", [])]),
            "video": mark((videos.get("upcoming") or {}).get("title", ""), *[x.get("youtube_id", "") for x in videos.get("items", [])]),
            "guestbook": mark(*[x["date"] + x["text"][:20] for x in gbook])}

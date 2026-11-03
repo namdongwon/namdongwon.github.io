@@ -26,9 +26,9 @@
       "items": [
         {
           "when": "guestbook",
-          "ko": "방명록 — 남기신 글만 받아, 방명록에 골라 싣는 데 씁니다. 보내실 때 구글 폼이 보낸 시각을 함께 적고, 구글은 자기 처리방침에 따라 접속 정보(IP 주소 등)를 처리할 수 있습니다.",
-          "en": "Guestbook — only your note, used only to choose notes for the guestbook. When you send, Google Forms also records the time, and Google may process connection details (such as the IP address) under its own privacy policy.",
-          "ja": "芳名録 — メッセージのみを受け取り、芳名録に選んで掲載するために利用します。送信される際、Googleフォームが送信日時を記録し、Googleは自社のプライバシーポリシーに基づき接続情報（IPアドレスなど）を処理することがあります。"
+          "ko": "방명록 — 남기신 글만 받아, 방명록에 골라 싣는 데 씁니다. 실린 글 가운데 하나를 시집 쪽에 한 줄로 걸 수 있습니다. 보내실 때 구글 폼이 보낸 시각을 함께 적고, 구글은 자기 처리방침에 따라 접속 정보(IP 주소 등)를 처리할 수 있습니다.",
+          "en": "Guestbook — only your note, used only to choose notes for the guestbook. One published note may also be shown as a single line on the book page. When you send, Google Forms also records the time, and Google may process connection details (such as the IP address) under its own privacy policy.",
+          "ja": "芳名録 — メッセージのみを受け取り、芳名録に選んで掲載するために利用します。掲載したメッセージのうち一つを、詩集のページにひとことで掲げることがあります。送信される際、Googleフォームが送信日時を記録し、Googleは自社のプライバシーポリシーに基づき接続情報（IPアドレスなど）を処理することがあります。"
         },
         {
           "ko": "메일 · 인스타그램 메시지 — 보내신 이름 · 메일 · 내용은 답장하는 데만 씁니다.",

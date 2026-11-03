@@ -1086,6 +1086,12 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .colo .mot input:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .colo .mot small{margin-left:8px;color:var(--faint);font-size:11px}
 /* 글자 크기(11/3 동원 '다정한 UX' ④ — 목업 글자크기시안_v1 'A 판권면 셋째 줄 (권장)'): --fs를 빌드(fs_css)가 20px 이하 글자에 곱함 · 단계는 Apple Dynamic Type 본문 17 → 19 · 21pt 비율 */
+/* 읽은 사람의 한 줄(11/3 — 목업 읽은사람한줄시안_v1 'A 고른 한 줄 (권장)'): 「탁본」 아래 가는 선 뒤 · 꼬리표는 칸 머리 꼴 · 글은 본명조 17 · 날짜 흐림 · 방명록으로 잇는 밑줄 링크 */
+.rdl{margin:48px 0 0;padding-top:20px;border-top:1px solid var(--rule)}
+.rdl .k{margin:0 0 14px;font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
+.rdl blockquote{margin:0;font:400 17px/1.8 var(--serif);color:var(--ink);word-break:keep-all}
+.rdl .w{margin:6px 0 0;font:400 12px/1.5 var(--sans);color:var(--faint)}
+.rdl a{display:inline-block;margin-top:14px;font:400 13px/1.6 var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 /* 지난번 뒤 새로 생긴 것 점(11/3 '다정한 UX' ⑥ — 목업 새것점시안_v1 'A 먹 점 6px (권장)'): 메뉴 이름 오른쪽 위 먹 점 — 백오피스 방명록 점과 한 벌 · 40곳 보고서 '점 6–10px · 색 대신 자리' */
 .nwd{display:inline-block;width:6px;height:6px;margin-left:5px;border-radius:50%;background:var(--ink);vertical-align:.45em}.mnu .nwd{width:7px;height:7px;margin-left:8px;vertical-align:.55em}
 :root{--fs:1}:root[data-fs="l"]{--fs:1.125}:root[data-fs="xl"]{--fs:1.25}

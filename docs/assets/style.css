@@ -996,6 +996,12 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .colo .mot small{margin-left:8px;color:var(--faint);font-size:calc(11px * var(--fs))}
 
 
+.rdl{margin:48px 0 0;padding-top:20px;border-top:1px solid var(--rule)}
+.rdl .k{margin:0 0 14px;font:600 calc(11px * var(--fs))/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
+.rdl blockquote{margin:0;font:400 calc(17px * var(--fs))/1.8 var(--serif);color:var(--ink);word-break:keep-all}
+.rdl .w{margin:6px 0 0;font:400 calc(12px * var(--fs))/1.5 var(--sans);color:var(--faint)}
+.rdl a{display:inline-block;margin-top:14px;font:400 calc(13px * var(--fs))/1.6 var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+
 .nwd{display:inline-block;width:6px;height:6px;margin-left:5px;border-radius:50%;background:var(--ink);vertical-align:.45em}.mnu .nwd{width:7px;height:7px;margin-left:8px;vertical-align:.55em}
 :root{--fs:1}:root[data-fs="l"]{--fs:1.125}:root[data-fs="xl"]{--fs:1.25}
 .colo .fsz button span{font:500 13px/1 var(--sans)}.colo .fsz button+button span{font-size:16px}.colo .fsz button+button+button span{font-size:19px}
