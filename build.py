@@ -955,6 +955,14 @@ def make_icons():
         ImageDraw.Draw(im).ellipse((m, m, big - m, big - m), fill=(17, 17, 17, 255))
         im = im.resize((size, size), Image.LANCZOS)
         (im.convert("RGB") if paper else im).save(DOCS / name)
+    # 바탕 투명 아이콘 둘 더(11/3 동원 "네이버 검색하면 … 왜 아이콘 검은색 원만 들어간 게 아니라 흰색 네모도 들어가있어?" → '투명 아이콘 더하기 (권장)'):
+    # 검색 로봇이 먼저 찾는 /favicon.ico(16 · 32 · 48)가 없어(404) 흰 바탕 홈 화면 그림을 가져간 것으로 봄[추정] — 같은 먹 동그라미 · 바탕 투명. 홈 화면 그림(흰 바탕)은 그대로
+    big = 512 * 4
+    im = Image.new("RGBA", (big, big), (255, 255, 255, 0))
+    m = big * 12 / 64
+    ImageDraw.Draw(im).ellipse((m, m, big - m, big - m), fill=(17, 17, 17, 255))
+    im.resize((192, 192), Image.LANCZOS).save(DOCS / "favicon-192.png")
+    im.resize((48, 48), Image.LANCZOS).save(DOCS / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
 
 
 def render(site, poem, videos, photos, lang="ko"):
@@ -1683,6 +1691,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="{P}favicon.svg?v={ICON_V}" type="image/svg+xml">
 <link rel="icon" href="{P}favicon-32.png?v={ICON_V}" sizes="32x32" type="image/png">
+<link rel="icon" href="{P}favicon-192.png?v={ICON_V}" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="{P}apple-touch-icon.png?v={ICON_V}">
 <link rel="manifest" href="{"/" + lang + "/" if tr_ else "/"}manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="NAM DONGWON">
