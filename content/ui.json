@@ -291,6 +291,11 @@
     "en": "{n} photos — swipe to browse",
     "ja": "写真{n}枚、横にめくって見る"
   },
+  "wall_label": {
+    "ko": "사진 {n}장 — 누르면 크게",
+    "en": "{n} photos — select one to enlarge",
+    "ja": "写真{n}枚 — 押すと大きく"
+  },
   "ask_off": {
     "ko": "인스타그램 메시지로 남기기",
     "en": "Leave a message on Instagram",

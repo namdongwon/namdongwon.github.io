@@ -1131,7 +1131,7 @@ def render(site, poem, videos, photos, lang="ko"):
     #  원고 site.json hero · 그림 칸 style.css .hb · .hpic은 남겨 둠, 되살리려면 2026-11-01 커밋 0983520의 hero_line)
 
     # 사진 칸
-    shots, caps = [], []
+    shots, caps, alts = [], [], []
     for i, p in enumerate(PH["items"]):
         # 전시 작품 사진("art")은 자르지 않음(10/24 ⑫ A 흰 벽 — style.css의 .art) · 캡션은 작품 틀
         # 대체 글은 사진 설명(photo_art.json의 alt · en.alt — 10/27 동원 "이대로 넣어", 정의 `기준/사진 설명 칸 정의_v1.md`)이 먼저, 없으면 작가 · 작품 · 해 / 인스타 글 첫 줄
@@ -1142,6 +1142,7 @@ def render(site, poem, videos, photos, lang="ko"):
         w, h = out_size(psrc(p), 1080)
         # 띠의 둘째 장부터는 data-src — main.js가 보는 장 + 다음 한 장만 받음(10/27 점검: 가까이 오면 큰 사진 3–5장을 한꺼번에 받아 첫 장이 늦었음)
         sa, lz = ("src", ' loading="lazy"') if i == 0 else ("data-src", "")
+        alts.append(alt)
         ko_alt = ' lang="ko"' if tr_ and re.search("[가-힣]", alt) else ""  # 영어판 · 일본어판에서 한국어 대체 글(인스타 글 첫 줄)은 한국어로 읽히게(10/27 점검 a11y 9)
         img = f'<img {sa}="{P}assets/img/photos/{e(Path(p["file"]).stem)}.{photo_pick(psrc(p))[0]}" alt="{e(alt)}"{ko_alt}{lz} width="{w}" height="{h}">'
         if p.get("kids"):  # 여러 장짜리 게시물(10/25 ⑤ A): 누르면 그 게시물 안 사진을 넘겨 보는 창 · 오른쪽 위 'N장'
@@ -1194,6 +1195,27 @@ def render(site, poem, videos, photos, lang="ko"):
     # 격자 끝 칸 '인스타그램에서 더 보기 ↗'(10/29 동원 'A 모아 보기 먼저' — 휴대폰 셋씩 셋째 줄 빈칸을 채움, 컴퓨터는 넷씩 두 줄이라 숨김)
     pgrid += (f'<a class="more" href="{e(acc["url"])}" target="_blank" rel="noopener" style="--i:{len(PH["items"])}" aria-label="{t("more_ig")}">'
               f'<span>{t("more_ig_a")}</span><b>{t("more_ig_b")} ↗</b></a>')
+
+    # 흐르는 벽(11/3 동원 "https://motionsites.ai/?prompt=atrium-mtl 내 인스타그램 페이지 이거로 하는 건 어때?" → 목업 인스타벽시안_v1 · 예시 영상 → 'A 흐르는 벽 (권장)'):
+    # 게시물마다 첫 사진 + 안쪽 사진을 작은 판(photos/wall 480px)으로 세 줄에 차례로(휴대폰은 두 줄) · 줄마다 두 벌을 이어 끝없이 흐름(둘째 벌은 화면 읽기 · Tab에서 뺌) ·
+    # 누르면 게시물 창이 그 사진에서 열림(.pop · data-k) · 넷째 자리마다 옅은 빈칸(레퍼런스의 색 블록 자리 — 흰 바탕 · 무채색)
+    wsrc = lambda f: f'{P}assets/img/photos/wall/{e(Path(f).stem)}.jpg'
+    wtiles = []
+    for i, p in enumerate(PH["items"]):
+        files = [psrc(p), *p.get("kids", [])]
+        for k, f in enumerate(files):
+            ww, wh = out_size(f, 480)
+            lab = f'{alts[i]} — {k + 1} / {len(files)}' if k == 0 else L["js"]["post_photo"].format(k=k + 1, n=len(files))
+            lang_ = ' lang="ko"' if tr_ and re.search("[가-힣]", lab) else ""
+            wtiles.append((k, i, f'<button type="button" class="pop wt{" art" if is_art(p) else ""}" data-i="{i}" data-k="{k}" aria-label="{e(lab)}"{lang_}>'
+                          f'<img src="{wsrc(f)}" alt="" loading="lazy" width="{ww}" height="{wh}"></button>'))
+    wtiles = [x for _, _, x in sorted(wtiles, key=lambda z: (z[0], z[1]))]  # 게시물을 섞어 늘어놓음(각 게시물의 첫 장들 → 둘째 장들 …) — 세 줄이 서로 다른 게시물로 시작
+
+    def wcol(c):
+        own = [x for j, x in enumerate(wtiles[c::3]) for x in ((x, '<i class="wb"></i>') if (j + c) % 4 == 3 else (x,))]  # 빈칸은 넷째마다 · 줄마다 자리를 엇갈림
+        dup = "".join(own).replace('<button type="button" class="pop', '<button type="button" tabindex="-1" class="pop')
+        return f'<div class="col"><div class="wv">{"".join(own)}</div><div class="wv dup" aria-hidden="true">{dup}</div></div>'
+    wall = "".join(wcol(c) for c in range(3))
 
     # 영상 칸 — 최신 한 편 크게 + 지난 편은 차례처럼(편 번호 없음)
     ch, items, kinds = {**S["channel"], "url": link_url(site, S["channel"]["link"])}, V["items"], L["kinds"]
@@ -1555,15 +1577,11 @@ def render(site, poem, videos, photos, lang="ko"):
     <div class="r"><ul class="years">{years}</ul>{fnb}{nowb}<div class="rec">{rec}</div></div>
   </section>
 """,
-        "photo": f"""  <section id="photo" aria-labelledby="photo-t">
-    <p class="label">{t("label_photo")}</p>
-    <div class="r top2"><div class="head"><h2 id="photo-t">{e(acc["handle"])}</h2>{f'<span>{e(acc["desc"])}</span>' if acc.get("desc") else ""}</div>
-      <p class="mode" role="group" aria-label="{t("mode_label")}"><button type="button" data-m="one" aria-pressed="true">{t("mode_one")}</button><button type="button" data-m="all" aria-pressed="false">{t("mode_all")}</button></p></div>
-    <div class="l"><div class="strip" tabindex="0" aria-label="{t("strip", n=n)}">{"".join(shots)}</div>
-      <div class="thumbs">{thumbs}</div><div class="pgrid" hidden>{pgrid}</div></div>
-    <div class="r info"><div class="caps"><span class="count" aria-live="polite">1 / {n}</span>{"".join(caps)}</div>
-      <p class="nav2"><button type="button" data-go="-1">{t("prev")}</button><button type="button" data-go="1">{t("next")}</button></p>
-      <a class="buy" href="{e(acc["url"])}" target="_blank" rel="noopener">{t("more_ig")} ↗</a></div>
+        "photo": f"""  <section id="photo" class="wallp" aria-labelledby="photo-t">
+    <div class="wall"><div class="wl"><p class="label">{t("label_photo")}</p><h2 id="photo-t">{e(acc["handle"])}</h2>{f'<p class="wd">{e(acc["desc"])}</p>' if acc.get("desc") else ""}
+      <a class="go" href="{e(acc["url"])}" target="_blank" rel="noopener">{t("more_ig")} ↗</a></div>
+      <div class="cols" role="group" aria-label="{t("wall_label", n=len(wtiles))}">{wall}</div></div>
+    <div class="caps" hidden>{"".join(caps)}</div>
   </section>
 """,
         "video": f"""  <section id="video"{' class="solo"' if solo else ""} aria-labelledby="video-t">
@@ -2055,6 +2073,8 @@ def main():
         x, data = photo_pick(psrc(p))  # 큰 사진 — WebP 80 또는 JPEG 가운데 작은 쪽(11/2)
         (ASSETS / "img/photos" / f'{Path(p["file"]).stem}.{x}').write_bytes(data)
         save_jpg(psrc(p), ASSETS / "img/photos/thumb" / (Path(p["file"]).stem + ".jpg"), 240, quality=72)
+        for f in (psrc(p), *p.get("kids", [])):  # 흐르는 벽 작은 판(11/3) — 480px JPEG 72(컴퓨터 한 줄 약 220px의 두 배)
+            save_jpg(f, ASSETS / "img/photos/wall" / (Path(f).stem + ".jpg"), 480, quality=72)
         for k in p.get("kids", []):  # 게시물 안 사진(10/25 ⑤ A) — instagram.py가 1080px로 줄여 받아 둔 JPEG, WebP 80이 더 작으면 WebP로(11/2)
             (ASSETS / "img/photos/post").mkdir(parents=True, exist_ok=True)
             x, data = photo_pick(k, keep=True)

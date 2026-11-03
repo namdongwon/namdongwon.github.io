@@ -689,16 +689,17 @@
       const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
       [k, k + 1].forEach(j => { const im = view.children[j] && view.children[j].querySelector("img"); if (im && im.dataset.src) { im.src = im.dataset.src; im.removeAttribute("data-src"); } });
     }, { passive: true });
-    const open = (i, btn) => {
+    const open = (i, btn, start = 0) => {  // start: 흐르는 벽(11/3)에서 누른 그 사진부터
       const list = posts[i] || [];
       if (list.length < 2) return;
       n = list.length;
       from = btn;
-      const sim = btn.querySelector("img") || {}, alt = sim.alt || "";
+      const cov = document.querySelector(`#photo .wt[data-i="${i}"][data-k="0"]`);  // 첫 장 설명 — 벽의 첫 사진 단추 이름에서 ' — 1 / n'을 뺀 것
+      const sim = cov ? { alt: cov.getAttribute("aria-label").replace(/ — \d+ \/ \d+$/, ""), lang: cov.lang } : btn.querySelector("img") || {}, alt = sim.alt || "";
       view.textContent = "";
       list.forEach((src, k) => {
         const f = document.createElement("figure"), img = document.createElement("img"), chip = document.createElement("span");
-        if (k > 1) img.dataset.src = src; else img.src = src;  // 셋째 장부터는 넘길 때 한 장 앞씩(10/27 점검 — 열 때 여러 장을 한꺼번에 받아 둘째 장이 늦었음)
+        if (Math.abs(k - start) > 1 && k > 1) img.dataset.src = src; else img.src = src;  // 셋째 장부터는 넘길 때 한 장 앞씩(10/27 점검 — 열 때 여러 장을 한꺼번에 받아 둘째 장이 늦었음)
         // 첫 장만 그 사진의 설명, 둘째 장부터는 '게시물 사진 2 / 20' — 첫 장 설명을 되풀이하면 다른 사진을 설명하게 됨(10/27 점검 남은 것 가4 · 장마다 설명은 출간 뒤)
         img.alt = k ? uiText("post_photo", "게시물 사진 {k} / {n}", { k: k + 1, n }) : `${alt} (1 / ${n})`;
         if (sim.lang && !k) img.lang = sim.lang;  // 영어판의 한국어 대체 글은 한국어로(띠의 사진과 같게)
@@ -714,7 +715,7 @@
       pv.hidden = false;
       H.classList.add("pv-on");
       others(true);
-      view.scrollLeft = 0;
+      view.scrollLeft = start * view.clientWidth;
       upd();
       view.querySelectorAll("figure").forEach(pin);  // 이미 받아 둔 사진은 창이 보인 지금 자리를 잼
       requestAnimationFrame(() => requestAnimationFrame(() => pv.classList.add("on")));
@@ -728,7 +729,7 @@
       setTimeout(() => { pv.hidden = true; view.textContent = ""; }, reduce ? 0 : 300);
       if (from) from.focus();
     };
-    document.querySelectorAll("#photo .pop").forEach(b => b.addEventListener("click", () => open(+b.dataset.i, b)));
+    document.querySelectorAll("#photo .pop").forEach(b => b.addEventListener("click", () => open(+b.dataset.i, b, +(b.dataset.k || 0))));
     x.addEventListener("click", shut);
     if (prev) { prev.addEventListener("click", () => step(-1)); next.addEventListener("click", () => step(1)); }
     document.addEventListener("keydown", ev => {  // 창 안 빈자리를 눌러 포커스가 쪽 바탕으로 빠져도 Esc · 좌우 키가 듣게 문서에서 받음(10/28 점검 3 — 「탁본」 한 장과 같게)
@@ -839,6 +840,11 @@
       if (fold && !fold.open) fold.open = true;
       const sec = el.matches("section"), big = el.offsetHeight > innerHeight * 0.6;  // 칸 · 큰 덩어리(차례 전체)는 머리를 위에, 한 줄은 화면 가운데에
       el.scrollIntoView({ block: sec || big ? "start" : "center", behavior: reduce ? "auto" : "smooth" });
+      if (p && document.querySelector("#photo .wt")) {  // 흐르는 벽(11/3) — 그 게시물을 창으로 엶(첫 사진 단추에 포커스를 두고 누름 — 창을 닫으면 그 자리로)
+        const b = document.querySelector(`#photo .wt[data-i="${+p[1]}"][data-k="0"]`);
+        if (b) { b.focus({ preventScroll: true }); b.click(); }
+        return;
+      }
       if (p) {  // 그 장으로 넘기고 포커스도 그 사진에(창이 닫히며 쪽 바탕으로 빠지지 않게, 10/27 점검) · 모아 보기였으면 한 장씩으로 먼저(10/28 점검 6)
         const m1 = document.querySelector('.mode [data-m="one"]');
         if (m1 && m1.getAttribute("aria-pressed") !== "true") m1.click();

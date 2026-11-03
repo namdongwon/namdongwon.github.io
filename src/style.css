@@ -1010,6 +1010,37 @@ html.cz-on{overflow:hidden}
 .ring .rh{position:absolute;left:0;right:0;bottom:0;margin:0;text-align:center;font:300 11px/1.5 var(--sans);letter-spacing:.04em;color:var(--muted)}
 /* ⑥ 고리를 쓰지 않는 마우스 기기('동작 줄이기')는 흑백 한 줄에 올리면 그 장만 색 — 휴대폰은 지금 그대로 */
 @media (hover:hover) and (pointer:fine){#photo .pgrid>button img{transition:filter .45s}#photo .pgrid>button:hover img{filter:none}}
+/* 흐르는 벽(11/3 동원 'A 흐르는 벽 (권장)' — 목업 인스타벽시안_v1 · 예시 영상 · 레퍼런스 Atrium MTL의 원리: 큰 머리 + 사진 줄이 세로로 끝없이 흐름 · 가운데 줄만 반대).
+   색 블록 · 둥근 모서리 · 굵은 산세리프는 따르지 않음(흰 바탕 · 무채색 · 단추 모서리 2px · 명조). 줄마다 같은 사진 두 벌(.wv · .dup)을 이어 -50%까지 흘려 끝이 이어짐.
+   손을 대면(마우스 · 포커스) 그 줄이 멈추고 그 사진만 색 · 움직임 줄이기면 멈춘 벽(줄 높이 그대로 다 보임) · 휴대폰은 두 줄(셋째 줄 숨김) */
+#photo.wallp{display:block}
+.wall{display:grid;gap:30px}
+.wall .wl{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.wall .wl .label{align-self:stretch}
+.wall h2{margin:0;font:300 46px/1.05 var(--serif);letter-spacing:-.035em;color:var(--ink);overflow-wrap:anywhere}
+.wall .wd{margin:0;font:400 14px/1.7 var(--sans);color:var(--muted)}
+.wall .go{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;background:var(--ink);color:var(--bg);border-radius:var(--btn-r);font:500 14px/1 var(--sans);text-decoration:none}
+.wall .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;height:min(560px,72svh);overflow:hidden;-webkit-mask:linear-gradient(transparent,#000 6%,#000 94%,transparent);mask:linear-gradient(transparent,#000 6%,#000 94%,transparent)}
+.wall .col{animation:wup 60s linear infinite}
+.wall .col:nth-child(2){animation-name:wdown}
+.wall .col:nth-child(3){display:none}
+.wall .col:hover,.wall .col:focus-within{animation-play-state:paused}
+.wall .wv{display:flex;flex-direction:column;gap:12px;padding-bottom:12px}
+@keyframes wup{to{transform:translateY(-50%)}}
+@keyframes wdown{from{transform:translateY(-50%)}to{transform:none}}
+.wall .wt{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;-webkit-tap-highlight-color:transparent}
+.wall .wt img{display:block;width:100%;height:auto;border-radius:var(--btn-r);filter:grayscale(1);transition:filter .45s}
+.wall .wt:hover img,.wall .wt:focus-visible img{filter:none}
+.wall .wt:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wall .wb{display:block;aspect-ratio:3/4;border-radius:var(--btn-r);background:var(--ph)}
+:root[data-motion="reduce"] .wall .cols{height:auto;-webkit-mask:none;mask:none}:root[data-motion="reduce"] .wall .col{animation:none}:root[data-motion="reduce"] .wall .dup{display:none}
+@media (prefers-reduced-motion:reduce){.wall .cols{height:auto;-webkit-mask:none;mask:none}.wall .col{animation:none}.wall .dup{display:none}}
+@media (min-width:768px){
+  .wall{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:72px;align-items:center}
+  .wall h2{font-size:clamp(46px,4.6vw,72px);overflow-wrap:normal}
+  .wall .cols{grid-template-columns:repeat(3,minmax(0,1fr));height:calc(100svh - var(--top) - 94px)}
+  .wall .col:nth-child(3){display:block}
+}
 /* ⑦ 유튜브 썸네일 스틸 넘김(← '올리면 재생되는 썸네일') — 넘기는 동안 아래 흰 칸 줄로 몇째 장인지 · 흑백은 그대로(준비 중) */
 .nt .sbar{position:absolute;left:0;right:0;bottom:0;height:2px;opacity:0;pointer-events:none;background:linear-gradient(90deg,transparent calc(var(--k,0) * 100% / var(--n,6)),#fff calc(var(--k,0) * 100% / var(--n,6)),#fff calc((var(--k,0) + 1) * 100% / var(--n,6)),transparent calc((var(--k,0) + 1) * 100% / var(--n,6)))}
 .nt.scrub .sbar{opacity:1}
