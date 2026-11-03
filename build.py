@@ -1316,7 +1316,7 @@ def render(site, poem, videos, photos, lang="ko"):
                + fli(e(book["buy_url"]), f'{e(book["store_label"])} ↗', f' target="_blank" rel="noopener"{gcc("판권면")}'))
     info_li = ((fli("~R~privacy/", t("gb_privacy")) if (CONTENT / "privacy.json").exists() else "")
                + (f'<li><button type="button" class="cz-open">{t("cz_open")}</button></li>' if ga else "")  # GA4를 켰을 때만 '쿠키 설정'(동의 관리 창 다시 열기 — consent.js)
-               + f'<li class="tx">{e(co["note"])}</li><li class="tx">{t("colo_cookie_ga") if ga else t("colo_cookie")}</li>')
+               )  # 안내 단 작은 글 두 줄('글과 사진을 가져다 쓰려면…' · '광고 · 저절로 재생되는…')은 뺌(11/3 동원 '이거 지우자') — 처리방침 · 쿠키 설정 두 줄만
     # 설정 — 화면 밝게 · 어둡게 · 시스템(10/26 A · 10/28 선 그림) · 움직임 줄이기(11/1 밤 명품 제안 ⑥ 'A 스위치')
     ctl = (f'<dl class="ctl"><dt class="thm">{t("theme")}</dt><dd class="thm"><div role="group" aria-label="{t("theme")}">{thm}</div></dd>'
            f'<dt class="mot">{t("motion")}</dt><dd class="mot"><label><input type="checkbox" role="switch" aria-label="{t("motion")} {t("motion_reduce")}">{t("motion_reduce")}</label>'
