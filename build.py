@@ -1721,7 +1721,12 @@ def page_404(site, ja=True):
     ui = load("ui.json")
     k, en = (lambda key: e(ui[key]["ko"])), (lambda key: e(ui[key]["en"]))
     jl = (lambda key: e(ui[key]["ja"])) if ja and all(ui[x].get("ja") for x in ("nf_title", "nf_lead", "nf_back")) else None
-    jp = (f'\n<p class="lead" lang="ja">{jl("nf_title")}。{jl("nf_lead")}</p>\n<p lang="ja"><a class="buy" href="/ja/">{jl("nf_back")}</a></p>') if jl else ""
+    # 다섯 쪽 길(11/3 동원 '추천 리스트 더' ③ → 목업 404길시안_v1 'B 다섯 쪽만' — NN/g 404 개선 글의 '주요 쪽으로 가는 길' 관행): 말마다 '첫 화면으로' 아래 그 판의 다섯 쪽
+    def five(lang, base):
+        names = ui["nav"][lang]
+        return (f'<nav class="nfp" lang="{lang}" aria-label="{e(ui["nav_label"][lang])}">'
+                + "".join(f'<a href="{base}{pg}">{e(names[i])}</a>' for i, pg in ((0, ""), (1, "book/"), (2, "photo/"), (3, "video/"), (5, "guestbook/"))) + "</nav>")
+    jp = (f'\n<p class="lead" lang="ja">{jl("nf_title")}。{jl("nf_lead")}</p>\n<p lang="ja"><a class="buy" href="/ja/">{jl("nf_back")}</a></p>\n{five("ja", "/ja/")}') if jl else ""
     return f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{k("nf_title")} — {e(site["name"])}</title><meta name="robots" content="noindex">
@@ -1731,8 +1736,10 @@ def page_404(site, ja=True):
 <h1 class="h2" style="margin-top:0">{k("nf_title")}</h1>
 <p class="lead">{k("nf_lead")}</p>
 <p><a class="buy" href="/">{k("nf_back")}</a></p>
+{five("ko", "/")}
 <p class="lead" lang="en">{en("nf_title")}. {en("nf_lead")}</p>
-<p lang="en"><a class="buy" href="/en/">{en("nf_back")}</a></p>{jp}</main>{cf_tag(site)}</body></html>
+<p lang="en"><a class="buy" href="/en/">{en("nf_back")}</a></p>
+{five("en", "/en/")}{jp}</main>{cf_tag(site)}</body></html>
 """
 
 
