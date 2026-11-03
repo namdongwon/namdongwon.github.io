@@ -1207,7 +1207,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 흐르는 벽(11/3 동원 "https://motionsites.ai/?prompt=atrium-mtl 내 인스타그램 페이지 이거로 하는 건 어때?" → 목업 인스타벽시안_v1 · 예시 영상 → 'A 흐르는 벽 (권장)'):
     # 게시물마다 첫 사진 + 안쪽 사진을 작은 판(photos/wall 480px)으로 세 줄에 차례로(휴대폰은 두 줄) · 줄마다 두 벌을 이어 끝없이 흐름(둘째 벌은 화면 읽기 · Tab에서 뺌) ·
     # 누르면 게시물 창이 그 사진에서 열림(.pop · data-k) · 넷째 자리마다 옅은 빈칸(레퍼런스의 색 블록 자리 — 흰 바탕 · 무채색)
-    wsrc = lambda f: f'{P}assets/img/photos/wall/{e(Path(f).stem)}.jpg'
+    wsrc = lambda f, sfx="": f'{P}assets/img/photos/wall/{e(Path(f).stem)}{sfx}.webp'
     wtiles = []
     for i, p in enumerate(PH["items"]):
         files = [psrc(p), *p.get("kids", [])]
@@ -1219,7 +1219,7 @@ def render(site, poem, videos, photos, lang="ko"):
             cap = " · ".join(x for x in (re.sub("<[^>]+>", "", hd) if hd else p.get("where", ""), p.get("date", "")) if x)  # ② 손 대면 사진 아래 한 줄(11/4) — 작품은 '작가, 〈작품〉' · 그 밖엔 글 첫 줄 · 날짜
             dc = f' data-cap="{e(html.unescape(cap))}"' if cap else ""
             wtiles.append((k, i, f'<button type="button" class="pop wt{" art" if is_art(p) else ""}" data-i="{i}" data-k="{k}" aria-label="{e(lab)}"{lang_}{dc}>'
-                          f'<img src="{wsrc(f)}" alt="" loading="lazy" width="{ww}" height="{wh}"></button>'))
+                          f'<img src="{wsrc(f)}" srcset="{wsrc(f, "-360")} 360w, {wsrc(f)} 480w" sizes="(min-width: 768px) 17vw, 46vw" alt="" loading="lazy" width="{ww}" height="{wh}"></button>'))  # 휴대폰 한 칸 약 170px(2배 화면 360) · 컴퓨터 약 230px
     wtiles = [x for _, _, x in sorted(wtiles, key=lambda z: (z[0], z[1]))]  # 게시물을 섞어 늘어놓음(각 게시물의 첫 장들 → 둘째 장들 …) — 세 줄이 서로 다른 게시물로 시작
 
     def wcol(c):
@@ -2085,8 +2085,12 @@ def main():
         x, data = photo_pick(psrc(p))  # 큰 사진 — WebP 80 또는 JPEG 가운데 작은 쪽(11/2)
         (ASSETS / "img/photos" / f'{Path(p["file"]).stem}.{x}').write_bytes(data)
         save_jpg(psrc(p), ASSETS / "img/photos/thumb" / (Path(p["file"]).stem + ".jpg"), 240, quality=72)
-        for f in (psrc(p), *p.get("kids", [])):  # 흐르는 벽 작은 판(11/3) — 480px JPEG 72(컴퓨터 한 줄 약 220px의 두 배)
-            save_jpg(f, ASSETS / "img/photos/wall" / (Path(f).stem + ".jpg"), 480, quality=72)
+        for f in (psrc(p), *p.get("kids", [])):  # 흐르는 벽 작은 판 — 11/4 동원 '① 하기 (권장)': WebP 72 두 벌(480 · 휴대폰 360) — 전엔 480px JPEG 72(73장 3.0MB)
+            im = ImageOps.exif_transpose(Image.open(f)).convert("RGB")  # 사진 속 정보(위치 등)는 남기지 않음
+            (ASSETS / "img/photos/wall").mkdir(parents=True, exist_ok=True)
+            for w, sfx in ((480, ""), (360, "-360")):
+                im2 = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS) if im.width > w else im
+                im2.save(ASSETS / "img/photos/wall" / f"{Path(f).stem}{sfx}.webp", "WEBP", quality=72, method=6)
         for k in p.get("kids", []):  # 게시물 안 사진(10/25 ⑤ A) — instagram.py가 1080px로 줄여 받아 둔 JPEG, WebP 80이 더 작으면 WebP로(11/2)
             (ASSETS / "img/photos/post").mkdir(parents=True, exist_ok=True)
             x, data = photo_pick(k, keep=True)
