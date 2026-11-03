@@ -190,6 +190,18 @@ def ga4(site):
     return gid
 
 
+def clarity(site):
+    # Microsoft Clarity 히트맵 · 녹화(11/3 동원 버튼 "붙이기 — A 파트너 줄 (권장)" — 기준/웹사이트 Clarity 히트맵 칸 정의_v1.md): site.json analytics.clarity에 프로젝트 ID를 넣으면 켜지고 비면 꺼짐(끄면 사이트 파일이 전과 같음).
+    # GA4와 같은 길 — 동의 창 파트너 줄 'M · Microsoft Clarity'에서 인증한 방문만 스크립트를 받음 · GA4가 켜져 있어야 함(동의 창이 GA4와 함께 뜸) · 켜려면 처리방침에 Clarity 문구(when "clarity")가 먼저
+    cid = ((site.get("analytics") or {}).get("clarity") or "").strip()
+    if cid and not re.fullmatch(r"[a-z0-9]{6,16}", cid):
+        raise SystemExit(f"Clarity 프로젝트 ID는 영문 소문자 · 숫자 6–16자(Settings → Setup) — 지금 '{cid}'")
+    if cid and not ga4(site):
+        raise SystemExit("Clarity는 GA4 동의 창을 함께 씀 — analytics.ga4가 비어 있으면 켤 수 없음")
+    if cid and not any(i.get("when") == "clarity" for s in (load("privacy.json")["sections"] if (CONTENT / "privacy.json").exists() else []) for i in s["items"]):
+        raise SystemExit("Clarity(analytics.clarity)를 켜려면 개인정보 처리방침(content/privacy.json)에 Clarity 문구(when \"clarity\")가 먼저 있어야 함")
+    return cid
+
 FS_SKIP = re.compile(r"\.cz|\.top\b|\.door|\.fsz|#palette|\.mnu|#home|\.buy\b|\.whr")  # 글자 크기에서 빼는 곳 — 동의 창(줄 높이를 px로 맞춤) · 맨 위 띠(휴대폰 한 줄에 단추 넷) · 문 장면 · 글자 단추 자신 · 팔레트 · 휴대폰 메뉴 목록 · 시집 첫 화면(책과 글이 한 줄에 — 320px 영어판 더 크게에서 책이 밀려 잘렸음, 스테이징 11/3) · 첫 화면 단추 .buy · 서점 이름 .whr(#home 밖 선택자로 꾸밈)
 
 
@@ -279,7 +291,7 @@ def gform(site):
     return g
 
 
-def consent_html(L, gid, site_label):
+def consent_html(L, gid, site_label, cid=""):  # cid: Clarity 프로젝트 ID(11/3) — 있으면 파트너가 둘
     # 동의 창(11/1 동원 "고야드 식으로 하긴 하는데 좀 정확히 따라해봐" · 버튼 "안 1 — 고야드 문구 바탕") — 고야드(Didomi)처럼 세 단계: 첫 창 · 동의 관리 · 파트너 선택.
     # 글은 ui.json cz_…(고야드 · Didomi · IAB 원문 바탕 — 기준/레퍼런스/동의 창_고야드 · 프라다 원문_2026-11-01.md) · 움직임은 consent.js · 처음엔 숨김(consent.js가 엶)
     g = lambda k: e(L[k])  # noqa: E731
@@ -302,7 +314,7 @@ def consent_html(L, gid, site_label):
     def head(n, title, back=""):
         return f'<div class="cz-h">{back}<h2 id="cz-t{n}">{title}</h2><button type="button" class="cz-c" aria-label="{g("cz_close")}">×</button></div>'
     site = e(site_label)
-    partner = f'<button type="button" class="cz-pt">{g("cz_partner")}</button>'  # 고야드처럼 파트너 선택 창을 바로 엶
+    partner = f'<button type="button" class="cz-pt">{g("cz_partner2" if cid else "cz_partner")}</button>'  # 고야드처럼 파트너 선택 창을 바로 엶
     privacy = f'<a href="~R~privacy/">{g("cz_privacy")}</a>'
     policy = f'<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">{g("cz_v_policy_l")}</a>'
     vendor = "Google Analytics Products"
@@ -317,15 +329,21 @@ def consent_html(L, gid, site_label):
           f'<p class="cz-f"><button type="button" class="cz-vb">{g("cz_partners")}</button></p>'
           f'<div class="cz-sr"><button type="button" class="cz-sv" aria-label="{g("cz_save_aria")}" disabled>{g("cz_save")}</button><em>{g("cz_note")}</em></div></div>')
     back = f'<button type="button" class="cz-bk" aria-label="{g("cz_back")}">←</button>'
+    policy_c = f'<a href="https://privacy.microsoft.com/privacystatement" target="_blank" rel="noopener">{g("cz_v_policy_l")}</a>'
+
+    def vrow(letter, key, name, pol):  # 파트너 한 줄(알파벳 머리 · 이름 + 차단/인증 · 펼치면 동의에 따른 처리 · 처리정책) — G Google(11/1) · M Microsoft Clarity(11/3)
+        return (f'<p class="cz-lt">{letter}</p><div class="cz-r cz-vr" data-k="{key}">{opener(name)}{radio(name, g("cz_v_no"), g("cz_v_ok"))}'
+                f'<div class="cz-d" hidden><div class="cz-vc">{opener(g("cz_v_consent"))}<span class="cz-rr"></span><ul class="cz-d" hidden><li>{g("cz_p2")}</li><li>{g("cz_p1")}</li></ul></div>'
+                f'<p>{pol}</p></div></div>')
     l3 = (f'<div class="cz-box cz-3" role="dialog" aria-modal="true" aria-labelledby="cz-t3" hidden>{head(3, g("cz_v_title").replace("{site}", site), back)}'
           f'<p class="cz-t">{g("cz_v_text")}</p><a class="cz-sk" href="#cz-sv3">{g("cz_v_skip")}</a>'
           f'<div class="cz-va"><b>{g("cz_v_all")}</b>{radio(L["cz_v_all"], g("cz_v_no"), g("cz_v_ok"))}</div><div class="cz-vl">'
-          f'<p class="cz-lt">G</p><div class="cz-r cz-vr" data-k="g">{opener(vendor)}{radio(vendor, g("cz_v_no"), g("cz_v_ok"))}'
-          f'<div class="cz-d" hidden><div class="cz-vc">{opener(g("cz_v_consent"))}<span class="cz-rr"></span><ul class="cz-d" hidden><li>{g("cz_p2")}</li><li>{g("cz_p1")}</li></ul></div>'
-          f'<p>{g("cz_v_policy").replace("{policy}", policy)}</p></div></div></div>'
+          + vrow("G", "g", vendor, g("cz_v_policy").replace("{policy}", policy))
+          + (vrow("M", "c", "Microsoft Clarity", g("cz_v_policy_c").replace("{policy}", policy_c)) if cid else "") + '</div>'
           f'{opener(g("cz_user"), " cz-u")}<div class="cz-d cz-ui" hidden data-none="{g("cz_user_none")}" data-at="{g("cz_user_at")}"></div>'
           f'<div class="cz-sr"><button type="button" class="cz-sv" id="cz-sv3" aria-label="{g("cz_save_aria")}">{g("cz_save")}</button></div></div>')
-    return f'<div class="cz" id="cz" data-ga="{e(gid)}" hidden>{l1}{l2}{l3}</div>\n'
+    ca = f' data-clarity="{e(cid)}"' if cid else ""
+    return f'<div class="cz" id="cz" data-ga="{e(gid)}"{ca} hidden>{l1}{l2}{l3}</div>\n'
 
 
 def book_card(site):
@@ -1224,7 +1242,7 @@ def render(site, poem, videos, photos, lang="ko"):
     lead = "<br>".join(e(x) for x in c["lead_lines"])
     sns = "".join(f'<a href="{e(l["url"])}" target="_blank" rel="noopener">{e(l["name"])} ↗</a>' for l in links)  # 밖으로 나가는 링크는 ↗(10/25 다듬기 가5)
     # 문의 폼(Formspree)을 붙이기 전에는 폼을 접고 인스타그램으로 — 다 쓰고 보낸 뒤에야 '연결 전'을 알게 되지 않게(10/25 다듬기 가4)
-    ask = (f'''<form class="ask" data-endpoint="{e(endpoint)}" method="post">
+    ask = (f'''<form class="ask" data-clarity-mask="true" data-endpoint="{e(endpoint)}" method="post">
         <label>{t("form_name")}<input type="text" name="name" autocomplete="name"></label>
         <label>{t("form_email")}<input type="email" name="email" autocomplete="email" required></label>
         <label>{t("form_message")}<textarea name="message" required></textarea></label>
@@ -1268,7 +1286,7 @@ def render(site, poem, videos, photos, lang="ko"):
     to = f'<p class="to">{t("gb_to")}</p>'
     if gb_id or gf:
         # 구글 폼이면 칸 이름이 그 폼의 칸 번호(entry.…) · data-kind="gform"(main.js가 글 칸만 no-cors로 보냄)
-        card = (to + (f'<form class="gbf" data-endpoint="{e(gf["action"])}" data-kind="gform" method="post">' if gf else f'<form class="gbf" data-endpoint="https://formspree.io/f/{e(gb_id)}" method="post">')
+        card = (to + (f'<form class="gbf" data-clarity-mask="true" data-endpoint="{e(gf["action"])}" data-kind="gform" method="post">' if gf else f'<form class="gbf" data-clarity-mask="true" data-endpoint="https://formspree.io/f/{e(gb_id)}" method="post">')
                 + f'<label>{t("gb_text")} <i>{t("gb_text_hint")}</i><textarea name="{e(gf["text"]) if gf else "message"}" maxlength="200" rows="4" required></textarea></label>'
                 + '<p class="cnt" hidden><span>0</span> / 200</p>'  # 글자 수 — main.js가 켜고 셈(자바스크립트가 없으면 숨김)
                 + '<input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">'
@@ -1276,7 +1294,7 @@ def render(site, poem, videos, photos, lang="ko"):
                 + f'<button class="send" type="submit">{t("gb_send")}</button><p class="msg" role="status">{t("gb_when")}</p></form>')  # 약속 한 줄 — 보내면 main.js가 상태로 바꿈
     else:  # 받는 곳이 없으면 쓰는 칸 대신 '곧 열립니다'
         card = to + f'<p class="when">{t("gb_soon")}</p><p class="msg">{t("gb_when")}</p>'
-    guest = f'<div class="gb"><h3 class="sr">{t("gb_write")}</h3><div class="card">{card}</div>{body}</div>'
+    guest = f'<div class="gb" data-clarity-mask="true"><h3 class="sr">{t("gb_write")}</h3><div class="card">{card}</div>{body}</div>'
     # 바닥글 아래 띠 오른쪽은 고야드 문구 그대로 'Copyright © 2026 남동원. All rights reserved'(11/2 동원 "이런 느낌으로 바꿔" — site.json copyright) ·
     # 판권면(10/24 A)에서 이어 온 고친 날 · 판 · 쇄 줄은 이때 뺌(쇄를 세던 printing_no도 함께 — 되살릴 땐 git 기록 56579fb). 다시 쓰기 안내(note)는 안내 단에
     co = S["colophon"]
@@ -1668,7 +1686,7 @@ def render(site, poem, videos, photos, lang="ko"):
 {pv if k == "photo" else ""}{srch}<script id="sidx" type="application/json">{sidx}</script><script id="nw" type="application/json">{nw_js}</script>
 <script id="ui" type="application/json">{ui_js}</script>
 <script src="{P}assets/main.js" defer onerror="document.documentElement.classList.remove('js','intro')"></script>
-{consent_html(L, ga, urlparse(base).netloc or base) + f'<script src="{P}assets/consent.js" defer></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
+{consent_html(L, ga, urlparse(base).netloc or base, clarity(site)) + f'<script src="{P}assets/consent.js" defer></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
 </html>
 """
         html_ = re.sub(r'href="(#[\w-]+)"', lambda m: f'href="{go(m.group(1))}"', html_)  # 칸 사이 링크(첫 화면 '「탁본」 읽기' · 차례 · 찾기 추천 …)를 쪽 주소로
@@ -1693,7 +1711,7 @@ def page_privacy(site, lang):
     # when이 붙은 줄은 그것을 켰을 때만(방문 셈 when "goatcounter" · 방명록 when "guestbook" — 10/27) · 칸에 보일 줄이 없으면 그 칸의 empty 한 줄 · 방문 셈을 켜면 첫 문단도 lead_counted로
     # GA4(11/1): when "ga4" 줄은 켰을 때만 · unless "ga4" 줄('쿠키를 쓰지 않습니다' · 저장소 둘)은 켜면 숨김 · 첫 문단은 lead_ga · 동의 창과 '쿠키 설정'(동의를 거두는 곳)도 이 쪽에
     ga = ga4(site)
-    on = {"goatcounter": bool(goatcounter(site)), "ga4": bool(ga), "cfwa": bool(cf_beacon(site)), "guestbook": bool(site["contact"].get("guestbook_formspree_id") or gform(site))}
+    on = {"goatcounter": bool(goatcounter(site)), "ga4": bool(ga), "clarity": bool(clarity(site)), "cfwa": bool(cf_beacon(site)), "guestbook": bool(site["contact"].get("guestbook_formspree_id") or gform(site))}
     shown = lambda items: [i for i in items if on.get(i.get("when"), True) and not on.get(i.get("unless"), False)]  # noqa: E731
     lead = p["lead_ga"] if on["ga4"] and p.get("lead_ga") else p["lead_counted"] if on["goatcounter"] and p.get("lead_counted") else p["lead"]
     secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{g(i)}</li>" for i in (shown(x["items"]) or [x["empty"]] * ("empty" in x)))}</ul>' for x in p["sections"])
@@ -1703,7 +1721,7 @@ def page_privacy(site, lang):
     if ga:
         Lp = ui_lang(load("ui.json"), lang)
         # 동의 창 안 '처리방침' 링크(~R~privacy/)는 그 판의 처리방침으로 — 영어 · 일본어판은 '../'(/en/privacy/ · /ja/privacy/) · 한국어판은 R(11/1 영어판이 한국어 처리방침으로 가던 것 고침)
-        cz = consent_html(Lp, ga, urlparse(base).netloc or base).replace("~R~", "../" if tr_ else R) + f'<script src="{R}assets/consent.js" defer></script>\n'
+        cz = consent_html(Lp, ga, urlparse(base).netloc or base, clarity(site)).replace("~R~", "../" if tr_ else R) + f'<script src="{R}assets/consent.js" defer></script>\n'
         ckp = f'<p class="ckp"><button type="button" class="cz-open">{e(Lp["cz_open"])}</button></p>\n'
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">

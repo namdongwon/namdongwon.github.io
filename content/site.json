@@ -768,6 +768,7 @@
   "analytics": {
     "goatcounter": "",
     "ga4": "G-NP0V369KRZ",
+    "clarity": "",
     "cloudflare": "bb52928d74de4e2590ca7ba3a808517a"
   },
   "verify": {
@@ -815,7 +816,7 @@
     "desc": "영화 · 시리즈 · 책 · 전시 리뷰",
     "en": {
       "name": "Beautiful Nam",
-      "desc": "Film, series, book and exhibition reviews · in\u00a0Korean"
+      "desc": "Film, series, book and exhibition reviews · in Korean"
     },
     "ja": {
       "name": "美しいナム",

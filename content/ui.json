@@ -674,6 +674,11 @@
     "en": "our 1 partner",
     "ja": "1社のパートナー"
   },
+  "cz_partner2": {
+    "ko": "2개 파트너사",
+    "en": "our 2 partners",
+    "ja": "2社のパートナー"
+  },
   "cz_list_h": {
     "ko": "이 사이트와 파트너사가 다음 데이터 처리를 수행합니다:",
     "en": "This site and its partner do the following data processing:",
@@ -843,6 +848,11 @@
     "ko": "{policy}에서 Google Analytics Products 및 해당 데이터의 처리에 대해 자세히 알아볼 수 있습니다.",
     "en": "You can learn more about Google Analytics Products and how it processes data in its {policy}.",
     "ja": "Google Analytics Productsとそのデータ処理の詳細については、{policy}をご覧ください。"
+  },
+  "cz_v_policy_c": {
+    "ko": "{policy}에서 Microsoft Clarity 및 해당 데이터의 처리에 대해 자세히 알아볼 수 있습니다.",
+    "en": "You can learn more about Microsoft Clarity and how it processes data in its {policy}.",
+    "ja": "Microsoft Clarityとそのデータ処理の詳細については、{policy}をご覧ください。"
   },
   "cz_v_policy_l": {
     "ko": "개인정보 처리정책",

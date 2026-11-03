@@ -7,14 +7,16 @@
 (() => {
   const w = document.getElementById("cz");
   if (!w) return;
-  const H = document.documentElement, KEY = "consent-ga", id = w.dataset.ga;
+  const H = document.documentElement, KEY = "consent-ga", id = w.dataset.ga, cid = w.dataset.clarity || "";  // cid: Microsoft Clarity(11/3 — 파트너 줄 'M', 비면 파트너 하나 그대로)
+  const KEYS = cid ? ["p1", "p2", "g", "c"] : ["p1", "p2", "g"];
   const box = [w.querySelector(".cz-1"), w.querySelector(".cz-2"), w.querySelector(".cz-3")];
   const live = /^(www\.)?namdongwon\.com$/.test(location.hostname) && !navigator.webdriver;
   H.classList.add("cz-js");  // 바닥글 · 처리방침의 '쿠키 설정'은 이 파일이 돌 때만 보임
   const read = () => { try { const v = JSON.parse(localStorage.getItem(KEY)); return v && typeof v === "object" ? v : null; } catch (x) { return null; } };
   const write = v => { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (x) { /* 저장소를 막은 브라우저 — 이번 방문에만 */ } };
   const ok = v => !!(v && v.p1 && v.p2 && v.g);
-  let saved = read(), draft = {}, loaded = false, back = null;
+  const okC = v => !!(cid && v && v.p1 && v.p2 && v.c);  // Clarity도 두 목적 + 그 파트너를 인증했을 때만
+  let saved = read(), draft = {}, loaded = false, loadedC = false, back = null;
   // 꼬리표 지우기(11/1 관리 화면 세션이 찾음 — GA4로 바뀌며 main.js의 GoatCounter 조건에 묶여 꺼져 있었음): 꼬리표 링크(utm_source · utm_medium · utm_campaign)를 받은 사람이
   // 주소창 주소를 다시 퍼뜨려도 같은 꼬리표로 쌓이지 않게, GA4가 이 방문을 꼬리표와 함께 받은 뒤(config의 page_location에 처음 주소) 또는 세지 않기로 한 때(거부)에 utm_*만 뺌.
   // 고르기 전(창이 떠 있는 동안)은 그대로 둠 · 다른 값 · # · 기록 상태는 그대로. GA4 판에서는 여기 한 곳에서만 뺌(main.js는 동의 창이 있으면 건너뜀)
@@ -45,6 +47,22 @@
     s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(id);
     document.head.appendChild(s);
   };
+  const loadC = () => {  // Clarity — 공식 꼴(clarity.ms/tag/<프로젝트 ID>)[출처 learn.microsoft.com/clarity/setup-and-installation/clarity-setup] · 동의 뒤에만 받고 바로 consentv2(분석 저장 인증 · 광고 저장 거절)
+    if (loadedC || !cid || !live) return;
+    loadedC = true;
+    window.clarity = window.clarity || function () { (window.clarity.q = window.clarity.q || []).push(arguments); };
+    window.clarity("consentv2", { ad_Storage: "denied", analytics_Storage: "granted" });
+    const s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.clarity.ms/tag/" + encodeURIComponent(cid);
+    document.head.appendChild(s);
+  };
+  const wipeC = () => {  // 동의를 거두면 Clarity 쿠키(_clck · _clsk)를 지우고 이번 쪽의 Clarity도 거절로[출처 learn.microsoft.com/clarity/setup-and-installation/consent-mode — clarity('consent', false)]
+    if (loadedC && window.clarity) window.clarity("consent", false);
+    const host = location.hostname.replace(/^www\./, "");
+    document.cookie.split(";").map(c => c.split("=")[0].trim()).filter(n => /^_cl(ck|sk)$/.test(n)).forEach(n =>
+      ["", ";domain=" + host, ";domain=." + host].forEach(d => { document.cookie = n + "=;max-age=0;path=/" + d; }));
+  };
   const wipe = () => {  // 동의를 거두면 GA 쿠키(_ga · _ga_…)를 지움 — 이미 받은 이번 쪽의 GA는 동의 없음으로 돌림
     if (loaded && window.gtag) window.gtag("consent", "update", { analytics_storage: "denied" });
     const host = location.hostname.replace(/^www\./, "");
@@ -52,16 +70,21 @@
       ["", ";domain=" + host, ";domain=." + host].forEach(d => { document.cookie = n + "=;max-age=0;path=/" + d; }));
   };
 
-  // 단추 짝(동의 안 함 · 동의 / 차단 · 인증) — 고른 쪽이 먹. '모든 파트너'는 파트너가 하나라 Google과 같은 값
-  const groups = k => [...w.querySelectorAll(k === "g" ? ".cz-va .cz-rd, .cz-vr .cz-rd" : `.cz-r[data-k="${k}"] .cz-rd`)];
+  // 단추 짝(동의 안 함 · 동의 / 차단 · 인증) — 고른 쪽이 먹. '모든 파트너'는 파트너 모두(Google · Clarity)를 한꺼번에 — 둘이 같을 때만 그 값이 먹
+  const groups = k => [...w.querySelectorAll(k === "all" ? ".cz-va .cz-rd" : `.cz-r[data-k="${k}"] .cz-rd`)];
+  const partners = () => (cid ? ["g", "c"] : ["g"]);
   const paint = () => {
-    ["p1", "p2", "g"].forEach(k => groups(k).forEach(gr => gr.querySelectorAll("[role=radio]").forEach(b =>
-      b.setAttribute("aria-checked", String(draft[k] !== undefined && String(+draft[k]) === b.dataset.v)))));
+    const all = partners().every(k => draft[k] === draft.g) ? draft.g : undefined;
+    [...KEYS, "all"].forEach(k => groups(k).forEach(gr => gr.querySelectorAll("[role=radio]").forEach(b => {
+      const v = k === "all" ? all : draft[k];
+      b.setAttribute("aria-checked", String(v !== undefined && String(+v) === b.dataset.v));
+    })));
     box[1].querySelector(".cz-sv").disabled = draft.p1 === undefined || draft.p2 === undefined;  // 고야드: 저장할 모든 환경설정을 설정해야 저장
   };
   w.querySelectorAll(".cz-rd [role=radio]").forEach(b => b.addEventListener("click", () => {
     const row = b.closest("[data-k]");
-    draft[row ? row.dataset.k : "g"] = b.dataset.v === "1";
+    if (row) draft[row.dataset.k] = b.dataset.v === "1";
+    else partners().forEach(k => { draft[k] = b.dataset.v === "1"; });  // 모든 파트너
     paint();
   }));
 
@@ -71,7 +94,7 @@
     const name = k => w.querySelector(`.cz-r[data-k="${k}"] > .cz-e`).textContent.replace(/^[+-]/, "");
     const word = (k, v) => groups(k)[0].querySelector(`[data-v="${v ? 1 : 0}"]`).textContent;
     const line = (label, value) => { const d = document.createElement("div"), b = document.createElement("b"); b.textContent = label + ": "; d.append(b, value); p.append(d); };
-    ["p1", "p2", "g"].forEach(k => line(name(k), word(k, saved[k])));
+    KEYS.forEach(k => line(name(k), word(k, saved[k])));
     line(p.dataset.at, (saved.at || "").replace("T", " ").slice(0, 16));
   };
   w.querySelectorAll(".cz-e").forEach(b => b.addEventListener("click", () => {  // '+' 펼침 — 바로 뒤의 .cz-d
@@ -101,7 +124,7 @@
   };
   const open = n => {
     if (w.hidden) { back = document.activeElement; w.hidden = false; rest(true); H.classList.add("cz-on"); }
-    draft = saved ? { p1: saved.p1, p2: saved.p2, g: saved.g } : {};
+    draft = saved ? Object.fromEntries(KEYS.map(k => [k, saved[k]])) : {};
     paint();
     show(n);
   };
@@ -117,16 +140,17 @@
     saved = v;
     write(v);
     if (ok(v)) load(); else { wipe(); unTag(); }  // 거부면 GA4가 세지 않으니 바로 뺌
+    if (okC(v)) loadC(); else wipeC();
     close();
   };
-  box[0].querySelector(".cz-x").addEventListener("click", () => decide({ p1: false, p2: false, g: false }));  // 동의 없이 계속하기
-  box[0].querySelector(".cz-yes").addEventListener("click", () => decide({ p1: true, p2: true, g: true }));  // 동의 후 닫기
+  box[0].querySelector(".cz-x").addEventListener("click", () => decide(Object.fromEntries(KEYS.map(k => [k, false]))));  // 동의 없이 계속하기
+  box[0].querySelector(".cz-yes").addEventListener("click", () => decide(Object.fromEntries(KEYS.map(k => [k, true]))));  // 동의 후 닫기
   box[0].querySelector(".cz-more").addEventListener("click", () => show(2));
   box[0].querySelector(".cz-pt").addEventListener("click", () => show(3));
   box[1].querySelector(".cz-vb").addEventListener("click", () => show(3));
   box[2].querySelector(".cz-bk").addEventListener("click", () => show(2));
   w.querySelectorAll(".cz-sv").forEach(b => b.addEventListener("click", () =>
-    decide({ p1: draft.p1 === true, p2: draft.p2 === true, g: draft.g !== false })));  // 파트너를 고르지 않았으면 목적 고른 대로
+    decide({ p1: draft.p1 === true, p2: draft.p2 === true, g: draft.g !== false, ...(cid ? { c: draft.c !== false } : {}) })));  // 파트너를 고르지 않았으면 목적 고른 대로
   const shut = () => (saved ? close() : show(1));  // × · Esc — 고른 적이 없으면 첫 창으로(고야드와 같음)
   w.querySelectorAll(".cz-c").forEach(b => b.addEventListener("click", shut));
   w.addEventListener("keydown", ev => { if (ev.key === "Escape" && box[0].hidden) { ev.preventDefault(); ev.stopPropagation(); shut(); } });
@@ -140,9 +164,12 @@
     if (a && loaded && window.gtag) window.gtag("event", "kyobo_click", { spot: a.dataset.gaClick });
   }, true);
 
-  if (ok(saved)) load();
-  else if (saved) unTag();  // 전에 거부한 기기 — 세지 않으니 바로 뺌
-  else if ((live || /[?&]consent=show\b/.test(location.search)) && !document.querySelector("main.pp")) {
+  if (okC(saved)) loadC();
+  const ask = !saved || (cid && saved.c === undefined);  // 파트너가 늘면(11/3 Clarity) 전에 고른 기기에도 한 번 다시 물음 — 동의 관리 도구(CMP)의 '파트너 목록이 바뀌면 다시 묻기' 관행
+  if (ok(saved) && !ask) load();
+  else if (saved && !ask) unTag();  // 전에 거부한 기기 — 세지 않으니 바로 뺌
+  else if (ok(saved)) load();  // 다시 묻는 동안에도 GA4는 전에 고른 대로
+  if (ask && (live || /[?&]consent=show\b/.test(location.search)) && !document.querySelector("main.pp")) {
     const go = () => open(1);
     if (H.classList.contains("intro")) {  // 시집 쪽 첫 방문 — 문 장면이 끝나면(main.js가 intro를 뗌)
       const mo = new MutationObserver(() => { if (!H.classList.contains("intro")) { mo.disconnect(); go(); } });
