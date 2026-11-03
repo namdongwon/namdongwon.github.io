@@ -62,6 +62,7 @@ THEME_ICONS = {k: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" st
 }.items()}  # 판권면 화면 고르기 그림(10/28 동원 "이모지로 하자 글자 말고" → "B 선 그림 먹") — 돋보기와 같은 20칸 · 선 1.4 · 모니터 · 해 · 달
 PAL_FONT = "bon-myeongjo.woff2"  # 글자 팔레트(10/28)의 글자 612가지는 본명조 보통 판에만 담음 — 굵게 · 고딕 판은 늘지 않게(main)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
+ARROW = ("bon-myeongjo-arrow.woff2", "←↑→↓↗")  # 화살표만 담은 본명조 작은 판(CSS ARW · unicode-range) — 영어 · 일본어판 명조(Newsreader)에 화살표가 없어 → · ↗ 하나 때문에 본명조 통째 판 131KB를 받던 것(11/3 Lighthouse 점검)
 # 첫 화면 작은 판(10/27 동원 "첫 화면 작은 글꼴은 B로 하자"): 한국어판 첫 화면에 보이는 글자만 담아 미리 받는 판(CSS BMJF · PTDF) — 통째 판(본명조 보통 · 굵게 182KB)을
 # 미리 받느라 style.css · main.js가 늦던 것을 덜어 냄(시험용 복사본 실측: 느린 4G 문 열림 3.6 → 3.1초 · 보통 LTE 1.5 → 1.3초, 다 선 화면 같음). 통째 판은 아래 칸에서 그대로 씀
 FIRST = {  # 작은 판: (같은 원본의 통째 판, 담을 글자 — first_text())
@@ -1298,13 +1299,13 @@ def render(site, poem, videos, photos, lang="ko"):
                + (f'<li><button type="button" class="cz-open">{t("cz_open")}</button></li>' if ga else "")  # GA4를 켰을 때만 '쿠키 설정'(동의 관리 창 다시 열기 — consent.js)
                + f'<li class="tx">{e(co["note"])}</li><li class="tx">{t("colo_cookie_ga") if ga else t("colo_cookie")}</li>')
     # 설정 — 화면 밝게 · 어둡게 · 시스템(10/26 A · 10/28 선 그림) · 움직임 줄이기(11/1 밤 명품 제안 ⑥ 'A 스위치')
-    ctl = (f'<dl class="ctl"><dt class="thm">{t("theme")}</dt><dd class="thm" role="group" aria-label="{t("theme")}">{thm}</dd>'
+    ctl = (f'<dl class="ctl"><dt class="thm">{t("theme")}</dt><dd class="thm"><div role="group" aria-label="{t("theme")}">{thm}</div></dd>'
            f'<dt class="mot">{t("motion")}</dt><dd class="mot"><label><input type="checkbox" role="switch" aria-label="{t("motion")} {t("motion_reduce")}">{t("motion_reduce")}</label>'
            f'<small data-on="{t("motion_on")}" data-off="{t("motion_off")}">{t("motion_off")}</small></dd>'
            # 글자(11/3 '다정한 UX' ④ A) — 보통 · 크게 · 더 크게, 단추 글자도 세 크기 · 화면 줄과 같은 꼴(고른 것 먹 + 밑줄)
-           f'<dt class="thm">{t("fs")}</dt><dd class="thm fsz" role="group" aria-label="{t("fs")}">'
+           f'<dt class="thm">{t("fs")}</dt><dd class="thm fsz"><div role="group" aria-label="{t("fs")}">'
            + "".join(f'<button type="button" data-fs="{v}" aria-pressed="{str(v == "m").lower()}" aria-label="{t("fs_" + v)}" title="{t("fs_" + v)}"><span>{t("fs_g")}</span></button>' for v in ("m", "l", "xl"))
-           + '</dd></dl>')
+           + '</div></dd></dl>')  # 묶음 이름(role=group)은 dd 안쪽 div에 — dd에 role을 주면 dl에 둘 수 없는 칸이 됨(11/3 Lighthouse 접근성 · axe definition-list)
     ext = ' target="_blank" rel="noopener"'
     icons = "".join(f'<li><a href="{h}" aria-label="{a}"{x}>{FOOT_ICONS[k]}</a></li>' for k, h, a, x in (
         ("ig", e(iu), e(L["nav"][2]), ext), ("yt", e(ch.get("url", "")), e(L["nav"][3]), ext),
@@ -1750,6 +1751,7 @@ SCALE_LH = {"1", "1.05", "1.2", "1.3", "1.5", "1.6", "1.7", "1.9", "2"}
 SCALE_FS = {11, 12.5, 13, 14, 15}
 SCALE_LS = {"0", "normal", "inherit", "-.05em", "-.04em", "-.035em", "-.02em", "-.01em", ".04em", ".12em", ".3em"}  # 자간 다섯 단(11/3 UX 점검 ⑦ → 목업 자간정리시안_v1 'A 다섯 단 (권장)') — 큰 제목 보정(음수) · 0 · 작은 머리 · 메뉴 · 라벨 0.04 · 대문자 · 영어 머리 0.12 · 표장 0.3  # 16px 아래 작은 글자 — 고딕 11 · 12.5 · 14 · 명조 13 · 14 · 15
 SCALE_ALLOW = {
+    (".colo .mot input", "margin"): "스위치 누르는 자리 24px의 줄 높이 되돌림(11/3)", (".colo .mot input::before", "top"): "스위치 틀 자리", (".colo .mot input::after", "left"): "스위치 손잡이 자리", (".colo .mot input:checked::after", "left"): "스위치 손잡이 자리(켬)",
     (".skip", "left"): "화면 밖에 숨김", (".hp", "left"): "방명록 빈칸 함정 — 화면 밖",
     (".top nav a::before", "inset"): "누르는 자리 44px", (".tk-w", "font"): "첫 화면 큰 영어 이름 — 두 줄 간격 .86(시안 그대로)", (".pbook .bk .sh", "bottom"): "책 그림자 자리",
     (".top nav .lang .fl", "line-height"): "국기 줄 높이 0", (".years sup.fr", "font"): "각주 위첨자 줄 높이 0",
@@ -1904,6 +1906,13 @@ def main():
             (ASSETS / "fonts" / out).write_bytes(keep[out])
         else:
             raise SystemExit(f"첫 화면 작은 판을 만들 원본을 찾지 못함: {name}")
+    name = next(n for n, _, _, o, _ in FONTS if o == "bon-myeongjo.woff2")
+    if name in srcs:
+        subset_font(srcs[name], ASSETS / "fonts" / ARROW[0], ARROW[1], next(r for n, _, _, o, r in FONTS if o == "bon-myeongjo.woff2"))
+    elif ARROW[0] in keep:
+        (ASSETS / "fonts" / ARROW[0]).write_bytes(keep[ARROW[0]])
+    else:
+        raise SystemExit(f"화살표 작은 판을 만들 원본을 찾지 못함: {name}")
     print(f"글꼴에 남긴 글자 {len(set(text))}자")
     # 영어판 글꼴(10/24 ⑤ B) — Newsreader 바로 · 기울임을 영어판의 글자만 남겨 줄임(가변 축 그대로, 예약된 이름 없어 이름 그대로)
     text_en = used_text([*(no_ja(h) for h in pages["en"].values()), page404_koen])  # 404의 영어 두 줄도 Newsreader로(10/28)

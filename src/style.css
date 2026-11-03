@@ -19,9 +19,10 @@ html:lang(ko) .door .t,html:lang(ko) #home .hs{font-family:"BMJF",var(--serif)}
 #home{--sans:"PTDF","PTD",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}  /* :root --sans 앞에 PTDF만 더함(PTDF는 ASCII도 담아 영어 첫 화면도) — --sans를 바꾸면 여기도 */
 @font-face{font-family:"NRDF";src:url("fonts/newsreader-first.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
 html:lang(en) .door .t,html:lang(en) #home .ht,html:lang(en) #home .hs{font-family:"NRDF",var(--serif)}  /* 영어판 첫 화면 작은 판(10/27 점검) */
-.nf [lang="en"]{font-family:"NRD","BMJ",serif}  /* 404의 영어 두 줄 — 한국어 쪽 안이라 영어 글꼴 규칙을 못 받아 본명조 라틴으로 그려졌음(10/28 일본 디테일 ⑤) */
+.nf [lang="en"]{font-family:"NRD","ARW","BMJ",serif}  /* 404의 영어 두 줄 — 한국어 쪽 안이라 영어 글꼴 규칙을 못 받아 본명조 라틴으로 그려졌음(10/28 일본 디테일 ⑤) */
 html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:lang(en) .sheet .sbk i{font-family:"NRD",serif;font-weight:400;font-size:1.15em;letter-spacing:0}  /* 작은 고딕 속 작품 제목은 Newsreader 기울인꼴 — 고딕엔 기울인꼴이 없어 브라우저가 비스듬히 밀어 그렸음(10/28 동원 'A 명조 기울인꼴로' — 모양 점검 ⑫) */
 /* 영어판(10/24 ⑤ B): Newsreader(Production Type · OFL) — 영어판만 씀(한국어판은 내려받지 않음). 가변 축 굵기 · 글자 크기 */
+@font-face{font-family:"ARW";src:url("fonts/bon-myeongjo-arrow.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+2190-2199}  /* 화살표만(11/3 Lighthouse) — 영어 · 일본어판 명조 줄에서 Newsreader 다음, 본명조 앞에 */
 @font-face{font-family:"NRD";src:url("fonts/newsreader.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
 /* 일본어판(11/1 동원 버튼 "A 源ノ明朝 (권장)"): 본명조 자리는 Source Han Serif JP(줄인 판 이름 NDW Serif JP · JMJ) · Pretendard 자리는 Pretendard JP(NDW Sans JP · JGO) — 일본어판 쪽 글자만 담아
@@ -39,7 +40,7 @@ html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:l
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-semibold-first.woff2") format("woff2");font-weight:600;font-display:swap}
 html:lang(ja) .door .t,html:lang(ja) #home .hs{font-family:"JMJF",var(--serif)}
 html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  /* 일본어판 첫 화면 작은 고딕 판 — 라벨의 한국어 원제는 한국어판 작은 판(PTDF)이 */
-.nf [lang="ja"]{--serif:"NRD","JMJ","BMJ",serif;--body:"JGO","PTD",-apple-system,"Hiragino Sans",sans-serif;--sans:"JGO","PTD",-apple-system,"Hiragino Sans",sans-serif}  /* 404의 일본어 두 줄(한국어 쪽 안) */
+.nf [lang="ja"]{--serif:"NRD","JMJ","ARW","BMJ",serif;--body:"JGO","PTD",-apple-system,"Hiragino Sans",sans-serif;--sans:"JGO","PTD",-apple-system,"Hiragino Sans",sans-serif}  /* 404의 일본어 두 줄(한국어 쪽 안) */
 
 /* 작은 고딕(Pretendard) 크기는 세 단만 — 11px(꼬리표 · 출처 · 날짜) · 12.5px(메뉴 · 메타) · 14px(단추)(10/25 ⑨, Éditions식). 새 칸을 만들 때도 이 셋 가운데서 고름 */
 :root{
@@ -61,8 +62,8 @@ html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino San
    대비: 먹 종이 #141414 위 글자 15.9:1 · --muted 7.9:1 · --faint 5.4:1 */
 :root[data-theme="dark"]{--barline:rgba(255,255,255,.07);--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:var(--bg);--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}
 @media (prefers-color-scheme:dark){:root[data-theme="system"]{--barline:rgba(255,255,255,.07);--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:var(--bg);--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}}
-:root:lang(en){--serif:"NRD","BMJ","AppleMyungjo",serif;--body:"PTD",-apple-system,"Apple SD Gothic Neo",sans-serif}  /* 라틴 글꼴 먼저, 한글 다음 — 섞인 한글(시 · 원제)은 본명조 */
-:root:lang(ja){--serif:"NRD","JMJ","BMJ","Hiragino Mincho ProN","Yu Mincho",serif;--body:"JGO","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;--sans:"JGO","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  /* 일본어판(11/1): 라틴 Newsreader → 일본어 → 섞인 한글은 본명조 · Pretendard */
+:root:lang(en){--serif:"NRD","ARW","BMJ","AppleMyungjo",serif;--body:"PTD",-apple-system,"Apple SD Gothic Neo",sans-serif}  /* 라틴 글꼴 먼저, 한글 다음 — 섞인 한글(시 · 원제)은 본명조 */
+:root:lang(ja){--serif:"NRD","JMJ","ARW","BMJ","Hiragino Mincho ProN","Yu Mincho",serif;--body:"JGO","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;--sans:"JGO","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  /* 일본어판(11/1): 라틴 Newsreader → 일본어 → 섞인 한글은 본명조 · Pretendard */
 /* 일본어 줄바꿈(11/1 번역 메모 — keep-all이면 빈칸 없는 일본어 문장이 거의 끊기지 않음): 일본어는 글자 사이에서 갈리고 줄 머리 금칙(、。」 등)은 strict로. 일본어판 속 한국어는 keep-all 그대로.
    (.tt — 작품 제목 『 』 「 」 — 은 한 덩어리 그대로 · 시집 제목은 표지 줄 나눔 자리에서만 갈림 — build.py tt) */
 html:lang(ja) :lang(ja){word-break:normal;line-break:strict}html:lang(ja) :lang(ko){word-break:keep-all}
@@ -1081,10 +1082,11 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 @media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}
 /* 판권면 '움직임 줄이기' 스위치(11/1 밤 명품 제안 ⑥ — 버튼 'A 스위치 (권장)'): 고야드 바닥글 스위치 실측(24×14 · 테두리 1px · 글자와 11px) — 모서리는 누르는 단추 한 벌(2px),
    끔은 옅은 회색 · 켬은 먹 채움에 흰 네모. 켜면 html data-motion="reduce"(빌드 motion_css가 움직임 규칙을 묶음) */
-.colo .mot label{display:inline-flex;align-items:center;gap:12px;color:var(--ink);cursor:pointer}
-.colo .mot input{-webkit-appearance:none;appearance:none;position:relative;flex:none;width:24px;height:14px;margin:0;border:1px solid var(--muted);border-radius:var(--btn-r);background:none;cursor:pointer}
-.colo .mot input::after{content:"";position:absolute;top:2px;left:2px;width:8px;height:8px;border-radius:1px;background:var(--muted)}
-.colo .mot input:checked{border-color:var(--ink);background:var(--ink)}.colo .mot input:checked::after{left:12px;background:var(--bg)}
+.colo .mot label{display:inline-flex;align-items:center;gap:12px;color:var(--ink);cursor:pointer;vertical-align:-5px}  /* −5px: 스위치 누르는 자리를 24px로 키운 뒤에도 줄 높이 · 옆 글 자리 그대로(11/3 실측 — 줄 20.8px · 옆 글 위치 같음) */
+.colo .mot input{-webkit-appearance:none;appearance:none;position:relative;flex:none;width:24px;height:24px;margin:-5px 0;border:0;border-radius:var(--btn-r);background:none;cursor:pointer}  /* 누르는 자리 24×24(11/3 Lighthouse — 24×14였음 · WCAG 2.2 2.5.8) · 보이는 틀 24×14는 ::before로 그대로 · 위아래 −5px로 줄 높이 그대로 */
+.colo .mot input::before{content:"";position:absolute;top:5px;left:0;box-sizing:border-box;width:24px;height:14px;border:1px solid var(--muted);border-radius:var(--btn-r)}
+.colo .mot input::after{content:"";position:absolute;top:8px;left:3px;width:8px;height:8px;border-radius:1px;background:var(--muted)}
+.colo .mot input:checked::before{border-color:var(--ink);background:var(--ink)}.colo .mot input:checked::after{left:13px;background:var(--bg)}
 .colo .mot input:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .colo .mot small{margin-left:8px;color:var(--faint);font-size:11px}
 /* 글자 크기(11/3 동원 '다정한 UX' ④ — 목업 글자크기시안_v1 'A 판권면 셋째 줄 (권장)'): --fs를 빌드(fs_css)가 20px 이하 글자에 곱함 · 단계는 Apple Dynamic Type 본문 17 → 19 · 21pt 비율 */
