@@ -1094,6 +1094,8 @@
     again.textContent = uiText("done_again", "새로 쓰기");
     home.textContent = uiText("done_home", "첫 화면으로");
     home.href = (document.querySelector(".top .logo") || {}).href || "/";
+    const folded = box.classList.contains("fold");  // ⑦ 접혀 올라간 뒤면 완료 화면이 떠오르며 원 → 체크가 그어짐
+    if (folded) { box.classList.remove("fold"); ok.classList.add("in"); }
     if (whole) { kids.forEach(k => k.remove()); box.append(ok); } else box.replaceWith(ok);
     ok.querySelector(".ot").focus({ preventScroll: true });
     again.addEventListener("click", () => {
@@ -1129,10 +1131,19 @@
       gbCnt.hidden = false;
     }
     gbSend.addEventListener("touchstart", () => {}, { passive: true });  // 아이폰 누름 모양(문의 단추와 같음)
+    // ⑦ 누르면 쓰던 칸이 0.32초에 위로 접혀 올라감 → 받으면 완료 화면(11/4 동원 'A 엽서가 접혀 올라감' — 방명록보냄_v1) · 못 보내면 다시 펼쳐 글을 돌려줌 · 움직임 줄이기면 지금처럼 바로
+    const gbCard = gbf.closest(".card");
+    const fold = () => {
+      if (!gbCard || H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches) return Promise.resolve();
+      gbCard.classList.add("fold");
+      return new Promise(r => setTimeout(r, 320));
+    };
+    const unfold = () => { if (gbCard) gbCard.classList.remove("fold"); };
     gbf.addEventListener("submit", async ev => {
       ev.preventDefault();
       gbMsg.textContent = uiText("sending", "보내는 중…");
       gbSend.disabled = true;
+      const folded = fold();
       try {
         if (gbf.dataset.kind === "gform") {
           // 구글 폼(11/1): 이름 · 글 두 칸만 보냄(동의 칸은 우리 쪽 확인) · 숨은 칸이 차 있으면 보낸 척만(스팸 프로그램).
@@ -1143,6 +1154,7 @@
             [...gbf.querySelectorAll("input[name^='entry.'], textarea[name^='entry.']")].forEach(x => body.append(x.name, fd.get(x.name) || ""));
             await fetch(gbf.dataset.endpoint, { method: "POST", mode: "no-cors", body });
           }
+          await folded;
           gbf.reset();
           gbSend.disabled = false;
           gbMsg.textContent = gbPromise;
@@ -1150,11 +1162,15 @@
           return;
         }
         const r = await fetch(gbf.dataset.endpoint, { method: "POST", body: new FormData(gbf), headers: { Accept: "application/json" } });
+        await folded;
+        if (!r.ok) unfold();
         gbMsg.textContent = r.ok ? gbPromise
           : r.status === 429 ? uiText("gb_full", "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다.")
           : uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
         if (r.ok) { gbf.reset(); done(gbf.closest(".card") || gbf, !!gbf.closest(".card"), uiText("gb_ok", "글을 보냈습니다."), uiText("gb_ok_sub", gbPromise)); }
       } catch {
+        await folded;
+        unfold();
         gbMsg.textContent = uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
       }
       gbSend.disabled = false;

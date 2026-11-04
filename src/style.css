@@ -573,6 +573,9 @@ html.sr-on{overflow:hidden}
 .ok svg{width:44px;height:44px;color:var(--muted)}
 .ok .ot{margin:16px 0 0;font:600 17px/1.3 var(--sans);color:var(--ink);outline:none}
 .ok .os{margin:8px 0 0;font:300 12.5px/1.6 var(--sans);color:var(--muted);word-break:keep-all}
+.gb .card>*{transform-origin:50% 0;transition:transform .32s cubic-bezier(.4,0,1,1),opacity .28s linear}.gb .card.fold>*{transform:translateY(-16px) scaleY(.05);opacity:0}  /* ⑦ 보내면 쓰던 칸이 위로 접혀 올라감(11/4 — 스크립트가 움직임 줄이기가 아닐 때만 fold를 붙임) */
+@keyframes okin{from{opacity:0;transform:translateY(10px)}}@keyframes okdraw{to{stroke-dashoffset:0}}
+.ok.in{animation:okin .35s var(--e2) both}.ok.in circle{stroke-dasharray:66;stroke-dashoffset:66;animation:okdraw .5s .1s var(--e2) forwards}.ok.in path{stroke-dasharray:13;stroke-dashoffset:13;animation:okdraw .28s .55s var(--e2) forwards}  /* 원(둘레 66) → 체크(길이 약 13)가 그어짐 */
 .ok .ob{display:flex;justify-content:center;gap:8px;margin-top:22px;padding-top:22px;border-top:1px solid var(--rule)}
 .ok .ob a,.ok .ob button{padding:12px 16px;border:1px solid var(--line);border-radius:var(--btn-r);background:var(--bg);font:400 12.5px/1 var(--sans);color:var(--ink);text-decoration:none;cursor:pointer}
 @media (hover:hover){.ok .ob a:hover,.ok .ob button:hover{border-color:var(--ink)}}  /* 실린 글은 카드 아래 — 글만, 가는 줄(11/2 '가는 줄 목록, 번호 없이') */
