@@ -1011,6 +1011,10 @@ html.cz-on{overflow:hidden}
 }
 @keyframes wopen{from{opacity:0;transform:scale(.98);filter:blur(4px)}}
 .srch:not([hidden]),.cz-box:not([hidden]){animation:wopen .22s var(--e2)}  
+@keyframes msh{from{clip-path:inset(0 0 100% 0)}}@keyframes mfd{from{opacity:0;transform:translateY(6px)}}.mnu:not([hidden]),.srch:not([hidden]){animation:msh .5s cubic-bezier(.2,0,0,1) both}.mnu:not([hidden]) ol,.srch:not([hidden])>.in{animation:mfd .3s .2s var(--e2) both}  
+:root[data-motion="reduce"] :is(.mnu,.srch,.mnu ol,.srch>.in){animation:none}@media (prefers-reduced-motion:reduce){:is(.mnu,.srch,.mnu ol,.srch>.in){animation:none}}:where(:root[data-motion="reduce"]) :is(.mnu,.srch,.mnu ol,.srch>.in),:where(:root[data-motion="reduce"]):is(.mnu,.srch,.mnu ol,.srch>.in){animation:none}
+@keyframes msh{from{clip-path:inset(0 0 100% 0)}}@keyframes mfd{from{opacity:0;transform:translateY(6px)}}.mnu:not([hidden]),.srch:not([hidden]){animation:msh .5s cubic-bezier(.2,0,0,1) both}.mnu:not([hidden]) ol,.srch:not([hidden])>.in{animation:mfd .3s .2s var(--e2) both}  
+:root[data-motion="reduce"] :is(.mnu,.srch,.mnu ol,.srch>.in){animation:none}@media (prefers-reduced-motion:reduce){:is(.mnu,.srch,.mnu ol,.srch>.in){animation:none}}:where(:root[data-motion="reduce"]) :is(.mnu,.srch,.mnu ol,.srch>.in),:where(:root[data-motion="reduce"]):is(.mnu,.srch,.mnu ol,.srch>.in){animation:none}
 :root[data-motion="reduce"] .ficons a:hover{transform:none}
 :root[data-motion="reduce"] :is(.srch,.cz-box){animation:none}:root[data-motion="reduce"] .pv{transform:none;filter:none}
 @media (prefers-reduced-motion:reduce){.ficons a:hover{transform:none}:is(.srch,.cz-box){animation:none}.pv{transform:none;filter:none}}:where(:root[data-motion="reduce"]) .ficons a:hover,:where(:root[data-motion="reduce"]).ficons a:hover{transform:none}:where(:root[data-motion="reduce"]) :is(.srch,.cz-box),:where(:root[data-motion="reduce"]):is(.srch,.cz-box){animation:none}:where(:root[data-motion="reduce"]) .pv,:where(:root[data-motion="reduce"]).pv{transform:none;filter:none}

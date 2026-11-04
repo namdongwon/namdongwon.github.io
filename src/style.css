@@ -1094,6 +1094,10 @@ html.cz-on{overflow:hidden}
 }
 @keyframes wopen{from{opacity:0;transform:scale(.98);filter:blur(4px)}}
 .srch:not([hidden]),.cz-box:not([hidden]){animation:wopen .22s var(--e2)}  /* ④ 찾기 · 동의 창 열림 */
+@keyframes msh{from{clip-path:inset(0 0 100% 0)}}@keyframes mfd{from{opacity:0;transform:translateY(6px)}}.mnu:not([hidden]),.srch:not([hidden]){animation:msh .5s cubic-bezier(.2,0,0,1) both}.mnu:not([hidden]) ol,.srch:not([hidden])>.in{animation:mfd .3s .2s var(--e2) both}  /* ② 메뉴 · 찾기 시트 — 흰 면이 0.5초에 내려오고 글은 0.2초 늦게(11/4 동원 'B 시트가 내려오고 글' — 갤러리UX열_v1 02 · 로에베 실측) — 찾기는 위 wopen 대신 */
+:root[data-motion="reduce"] :is(.mnu,.srch,.mnu ol,.srch>.in){animation:none}@media (prefers-reduced-motion:reduce){:is(.mnu,.srch,.mnu ol,.srch>.in){animation:none}}
+@keyframes msh{from{clip-path:inset(0 0 100% 0)}}@keyframes mfd{from{opacity:0;transform:translateY(6px)}}.mnu:not([hidden]),.srch:not([hidden]){animation:msh .5s cubic-bezier(.2,0,0,1) both}.mnu:not([hidden]) ol,.srch:not([hidden])>.in{animation:mfd .3s .2s var(--e2) both}  /* ② 메뉴 · 찾기 시트 — 흰 면이 0.5초에 내려오고 글은 0.2초 늦게(11/4 동원 'B 시트가 내려오고 글' — 갤러리UX열_v1 02 · 로에베 실측) — 찾기는 위 wopen 대신 */
+:root[data-motion="reduce"] :is(.mnu,.srch,.mnu ol,.srch>.in){animation:none}@media (prefers-reduced-motion:reduce){:is(.mnu,.srch,.mnu ol,.srch>.in){animation:none}}
 :root[data-motion="reduce"] .ficons a:hover{transform:none}
 :root[data-motion="reduce"] :is(.srch,.cz-box){animation:none}:root[data-motion="reduce"] .pv{transform:none;filter:none}
 @media (prefers-reduced-motion:reduce){.ficons a:hover{transform:none}:is(.srch,.cz-box){animation:none}.pv{transform:none;filter:none}}
