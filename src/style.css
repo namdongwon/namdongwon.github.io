@@ -112,6 +112,7 @@ button{font:inherit;color:inherit}
 .top nav a.on{color:var(--ink)}
 .top nav .ul{position:absolute;left:0;bottom:1px;width:0;height:1.5px;background:var(--ink);opacity:0;pointer-events:none}
 .top nav .ul.on{opacity:1}
+.top nav .dt{position:absolute;left:0;top:-1px;width:4px;height:4px;border-radius:50%;background:var(--ink);opacity:0;pointer-events:none}.top nav .dt.on{opacity:1}@media (prefers-reduced-motion:no-preference){.top nav .dt{transition:opacity .3s}}  /* 지금 쪽 이름 위 점(11/4 동원 · recent.design 꼴) — 글자 머리 2px 위 */
 /* 휴대폰 메뉴 단추(11/1 밤 동원 버튼 "B 메뉴 단추" — 방명록을 더하면 메뉴 다섯이 휴대폰 한 줄에 안 들어가, 명품 사이트 휴대폰 꼴로): 띠 왼쪽 '메뉴' → 띠 아래로 쪽 목록(쪽 이름만 큰 명조 · 가는 줄 — 11/1 동원 "url 은 빼").
    스크립트가 없으면 전처럼 메뉴 넷 · 컴퓨터 · 태블릿(768 위)은 그대로 */
 .top .mb{display:none;position:relative;margin-right:auto;padding:6px 0;border:0;background:none;font:600 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--ink);cursor:pointer}
@@ -1094,7 +1095,7 @@ html.cz-on{overflow:hidden}
 @media (hover:hover) and (pointer:fine){
   .ficons a:hover{transform:translateY(-4px) scale(1.03)}  /* ⑤ 바닥글 둥근 아이콘 — 4px 떠오름 · 103% */
   .wall .wt:hover::after,.wall .wt:focus-visible::after{opacity:1;transform:none}  /* ⑥ 사진 위 ↗ — 누르면 크게 */
-  .top nav:hover a:not(:hover){opacity:.4}  /* ③ 목록의 다른 줄 옅게 — 메뉴 · 바닥글 단(40%) */
+  /* ③ 메뉴는 다른 이름을 옅게 하지 않음(11/4 동원 '마우스 오버시 굳이 다른 것들 흐려지게 할 필요 없을 거 같아') — 바닥글 단만 */
   .fcols ul:hover li:not(:hover) :is(a,.cz-open){opacity:.4}
 }
 @keyframes wopen{from{opacity:0;transform:scale(.98);filter:blur(4px)}}

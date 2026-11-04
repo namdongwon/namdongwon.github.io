@@ -347,9 +347,12 @@
     const ul = document.createElement("i");
     ul.className = "ul";
     ul.setAttribute("aria-hidden", "true");
-    nav.append(ul);
+    const dt = document.createElement("i");  // 지금 쪽 이름 위 작은 먹 점(11/4 동원 '위에 점도 있으면 좋다' — recent.design 사이드바 점 실측 8px · 우리 메뉴 글자 12.5px라 4px)
+    dt.className = "dt";
+    dt.setAttribute("aria-hidden", "true");
+    nav.append(ul, dt);
     const on = nav.querySelector('a[aria-current="page"]');
-    const place = to => {  // to: 손 댄 메뉴(11/4 ⑨ 메뉴 밑줄 미끄러짐) — 없으면 지금 쪽
+    const place = to => {  // to: 누른 메뉴(아래 — 점이 튀어 감) — 없으면 지금 쪽
       const was = ul.classList.contains("on");
       const at0 = to || on, at = at0 && !at0.classList.contains("cta") ? at0 : null;  // 연락하기는 먹 상자라 밑줄을 그리지 않음(10/28 A — 상자가 곧 표시)
       if (at) {
@@ -357,15 +360,30 @@
         ul.style.width = at.offsetWidth - (parseFloat(getComputedStyle(at).letterSpacing) || 0) + "px";  // 글자 뒤 자간(.12em)만큼 빼서 글자 폭에 맞춤
         const dy = at.offsetTop + at.offsetHeight - nav.clientHeight;  // 메뉴가 두 줄이면(글 간격을 넓힌 읽기 도구 등 — 돋보기 · 언어 단추가 아랫줄로) 밑줄도 그 칸 이름의 줄 바닥으로
         ul.style.transform = `translate(${at.offsetLeft}px, ${Math.abs(dy) > 2 ? dy : 0}px)`;  // 한 줄일 때는 반올림 차이로 1px 흔들리지 않게 0
+        dt.style.transform = `translate(${at.offsetLeft + (at.offsetWidth - (parseFloat(getComputedStyle(at).letterSpacing) || 0)) / 2 - 2}px, ${at.offsetTop}px)`;  // 글자 폭 가운데 · 글자 위(CSS top)
         if (!was) { void ul.offsetWidth; ul.style.transition = ""; }
       }
       ul.classList.toggle("on", !!at);
+      dt.classList.toggle("on", !!at);
     };
     place();
-    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {  // ⑨ 메뉴에 손을 대면 밑줄이 그 메뉴로 미끄러지고, 떼면 제자리(11/4 동원 '넣기' — 손반응열_v1 09)
-      nav.querySelectorAll("a[data-pg]").forEach(a => a.addEventListener("mouseenter", () => place(a)));
-      nav.addEventListener("mouseleave", () => place());
-    }
+    // 메뉴를 누르면 점이 통 튀어 그 이름 위로 넘어가고 밑줄이 따라 미끄러짐 — 그동안 ⑩ 원이 그 자리로 닫히고(0.55초) 다음 쪽이 거기서 열림
+    // (11/4 동원 '공이 튀면서 옆으로 넘어가 … 우리도' · '밑줄은 클릭할 때만 딸려오면' — 손을 대기만 하면 그대로 · 11/4 ⑨ 손 대면 미끄러짐은 뺌)
+    // recent.design 실측: 0.4초 · 처음 빠르고 끝에 천천히 앉음 · 가는 길과 직각으로 휨(짧은 거리 18px · 긴 거리 58px) → 우리는 가로 메뉴라 위로 휘는 포물선(6~16px)
+    if (!reduce) nav.closest(".top").addEventListener("click", ev => {
+      const a = ev.target.closest("a[href]");
+      if (!a || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || a.target === "_blank" || !nav.offsetWidth) return;
+      const to = new URL(a.href, location.href);
+      if (to.origin !== location.origin || to.pathname === location.pathname) return;
+      const at = [...nav.querySelectorAll("a[data-pg]")].find(x => new URL(x.href, location.href).pathname === to.pathname);  // 이름(로고)을 눌러도 '소개'로
+      const x0 = dt.classList.contains("on") ? (/translate\(([-\d.]+)px, ([-\d.]+)px\)/.exec(dt.style.transform) || []).slice(1).map(Number) : [];
+      if (!at) { ul.classList.remove("on"); dt.classList.remove("on"); return; }  // 연락하기(먹 상자가 곧 표시)면 점 · 밑줄이 옅어져 사라짐
+      place(at);  // 밑줄은 0.28초 미끄러짐(CSS)
+      if (x0.length < 2) return;
+      const [x1, y1] = (/translate\(([-\d.]+)px, ([-\d.]+)px\)/.exec(dt.style.transform) || []).slice(1).map(Number), h = Math.min(16, 6 + Math.abs(x1 - x0[0]) * 0.04), ease = t => 1 - Math.pow(1 - t, 3), kf = [];
+      for (let k = 0; k <= 24; k++) { const p = ease(k / 24); kf.push({ transform: `translate(${x0[0] + (x1 - x0[0]) * p}px, ${x0[1] + (y1 - x0[1]) * p - h * 4 * p * (1 - p)}px)` }); }
+      dt.animate(kf, { duration: 450, easing: "linear" });
+    });
     // 글꼴이 늦게 오거나 화면 폭이 바뀌면 글자 폭이 달라지므로 밑줄 자리를 다시 잼
     if (document.fonts) document.fonts.ready.then(() => place());  // 인자 없이 — then이 넘기는 FontFaceSet을 손 댄 메뉴로 읽던 결함(11/4 점심 QA)
     let pt = 0;
