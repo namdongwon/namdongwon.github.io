@@ -757,6 +757,20 @@ def rename_font(font):
 
 
 def subset_font(src, dst, text, rename):
+    # 디스크 저장(11/4 점심 QA — 글꼴 25벌을 빌드마다 새로 줄여 17초 · 관리 화면 미리 보기의 넓은 글꼴 밖(일본어판 · 화살표 · 일본어 이름)은 미리 보기마다 다시 줄임):
+    # 원본 글꼴(경로 · 크기 · 고친 때) + 글자 모음 + 이름 바꾸기 + 표시 문구가 같으면 .cache/subset의 지난 결과를 그대로(photo_pick · 벽 사진과 같은 꼴)
+    st = Path(src).stat()
+    key = hashlib.sha1("|".join([str(src), str(st.st_size), str(st.st_mtime_ns), "".join(sorted(set(text))), str(bool(rename)), NOTE, "subset-v1"]).encode()).hexdigest()[:20]
+    hit = HERE / ".cache/subset" / f"{key}.woff2"
+    if hit.exists():
+        Path(dst).write_bytes(hit.read_bytes())
+        return
+    _subset_font(src, dst, text, rename)
+    hit.parent.mkdir(parents=True, exist_ok=True)
+    hit.write_bytes(Path(dst).read_bytes())
+
+
+def _subset_font(src, dst, text, rename):
     opts = ftsubset.Options()
     opts.flavor = "woff2"
     opts.layout_features = ["*"]      # 자간·대체 글자 같은 글꼴 기능은 모두 남김
