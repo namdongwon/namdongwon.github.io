@@ -1491,6 +1491,41 @@
       requestAnimationFrame(tick);
     }).observe(wcols);
   }
+  // 글자 팔레트에 손을 대면 그 글자 — 누른(마우스는 올린) 글자를 먹 바탕으로 뒤집고, 아래 줄을 '「빛」 14번 — 612가지 가운데 117번째로 많이 쓴 글자'로(11/4 동원 'A 아래 줄이 그 글자로' — 팔레트누름_v1 · Taper 「16 anna」)
+  // 글자 612개를 요소로 쪼개지 않고 글자 자리(Range)를 한 번 재어 둠(팔레트 크기가 바뀌면 다시) · 표시는 CSS Highlight API(없는 브라우저는 줄만 바뀜) · 빈 곳을 누르거나 마우스가 나가면 원래 줄
+  const pal = document.querySelector("#palette .pal"), pk = document.querySelector("#palette .pk");
+  if (pal && pk && pal.dataset.n) {
+    const N = pal.dataset.n.split(",").map(Number), orig = pk.textContent, HL = window.CSS && CSS.highlights && window.Highlight;
+    let cells = null, cw = 0, cur = -1;
+    const measure = () => {
+      const o = pal.getBoundingClientRect(), w = document.createTreeWalker(pal, NodeFilter.SHOW_TEXT);
+      cells = []; cw = o.width;
+      for (let n; (n = w.nextNode());) for (let k = 0; k < n.textContent.length; k++) {
+        const r = document.createRange(); r.setStart(n, k); r.setEnd(n, k + 1);
+        const b = r.getBoundingClientRect();
+        cells.push({ r, x0: b.left - o.left, x1: b.right - o.left, y0: b.top - o.top, y1: b.bottom - o.top });
+      }
+    };
+    const show = i => {
+      if (i === cur) return;
+      cur = i;
+      if (i < 0) { pk.textContent = orig; if (HL) CSS.highlights.delete("pg"); return; }
+      const c = cells[i], ch = c.r.toString(), num = v => v.toLocaleString(H.lang || "ko");
+      pk.textContent = uiText("pal_one", "「{ch}」 {n}번", { ch, n: num(N[i]), rank: num(i + 1), all: num(N.length) });
+      if (HL) CSS.highlights.set("pg", new Highlight(c.r));
+    };
+    const pick = ev => {
+      const o = pal.getBoundingClientRect();
+      if (!cells || Math.abs(o.width - cw) > 0.5) measure();
+      const x = ev.clientX - o.left, y = ev.clientY - o.top;
+      return cells.findIndex(c => x >= c.x0 && x < c.x1 && y >= c.y0 && y < c.y1);
+    };
+    addEventListener("resize", () => { cells = null; }, { passive: true });  // 글꼴이 늦게 오거나 폭이 바뀌면 다시 잼
+    if (document.fonts) document.fonts.addEventListener("loadingdone", () => { cells = null; });
+    pal.addEventListener("pointermove", ev => { if (ev.pointerType === "mouse") show(pick(ev)); });
+    pal.addEventListener("pointerleave", ev => { if (ev.pointerType === "mouse") show(-1); });
+    pal.addEventListener("click", ev => show(pick(ev)));
+  }
   // ⑤ 밑줄 단추 끝의 화살표(↗ · ↓)만 따로 — 손을 대면 그 방향으로 살짝(11/4 동원 '넣기' — 손반응열_v1 05)
   document.querySelectorAll(".buy").forEach(a => {
     const last = a.lastChild;

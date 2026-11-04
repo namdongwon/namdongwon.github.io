@@ -4,10 +4,10 @@
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=e574af6bf3") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=06bc1ca0f4") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=c2aafab474") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=244998fd45") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=cc643b0fdc") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=7c42339ef0") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=7746f2ee43") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=24c72e7bfd") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=92aca204b7") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -280,6 +280,7 @@ html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:
 #palette .g0{color:color-mix(in srgb,var(--ink) 18%,var(--bg))}#palette .g1{color:color-mix(in srgb,var(--ink) 27%,var(--bg))}#palette .g2{color:color-mix(in srgb,var(--ink) 36%,var(--bg))}
 #palette .g3{color:color-mix(in srgb,var(--ink) 45%,var(--bg))}#palette .g4{color:color-mix(in srgb,var(--ink) 54%,var(--bg))}#palette .g5{color:color-mix(in srgb,var(--ink) 64%,var(--bg))}
 #palette .g6{color:color-mix(in srgb,var(--ink) 73%,var(--bg))}#palette .g7{color:color-mix(in srgb,var(--ink) 82%,var(--bg))}#palette .g8{color:color-mix(in srgb,var(--ink) 91%,var(--bg))}#palette .g9{color:var(--ink)}
+::highlight(pg){color:var(--bg);background-color:var(--ink)}#palette .pal{cursor:default}  
 #palette .pk{margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted)}
 #poem .pbr{margin-top:22px;font:400 calc(15px * var(--fs))/1.7 var(--serif);color:var(--ink)}  
 .bio{margin-top:22px;font:calc(16px * var(--fs))/1.9 var(--body)}  

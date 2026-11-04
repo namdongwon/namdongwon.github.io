@@ -1121,7 +1121,7 @@ def render(site, poem, videos, photos, lang="ko"):
     ptop = (", ".join(f"{g} ({n})" for g, n in zip(pg[:3], pn[:3])) if en else " · ".join(f"{g} {n}{'回' if tr_ else '번'}" for g, n in zip(pg[:3], pn[:3])))  # 일본어판은 '回'(11/1)
     palette = (f'<section id="palette" aria-labelledby="palette-t">\n    <p class="label">{t("label_palette")}</p>\n'
                f'    <div class="l"><h2 class="h2" id="palette-t">{t("pal_title", n=len(pg))}</h2><p class="lead">{t("pal_lead", total=ptotal, n=len(pg))}</p></div>\n'
-               f'    <div class="r"><p class="pal" aria-hidden="true">{pal}</p><p class="pk">{t("pal_key", top=ptop, ones=pn.count(1))}</p></div>\n  </section>\n  ')  # 사진은 뺌(10/28 동원 "일단 팔레트 아래에 내 사진은 빼자")
+               f'    <div class="r"><p class="pal" aria-hidden="true" data-n="{",".join(map(str, pn))}">{pal}</p><p class="pk">{t("pal_key", top=ptop, ones=pn.count(1))}</p></div>\n  </section>\n  ')  # 사진은 뺌(10/28 동원 "일단 팔레트 아래에 내 사진은 빼자")
     # 칸 끝 길 '「탁본」 읽기 ↓'(10/28 A)는 10/29 '시집 칸 통째로 앞으로'(시가 팔레트 위로 감)와 함께 뺌 — 팔레트는 차례 뒤 '이 시집의 재료'
     medium = f'{keep(L["ex_medium_v"].format(n=len(pg), total=ptotal))} — <a class="go" href="#palette">{t("pal_go")} ↓</a>'  # 재료(10/28 — 미술관 라벨의 재료 칸, 팔레트로 가는 길) — 첫 화면 라벨 · 책 카드 라벨이 같이 씀
     exl = (f'<dl><div><dt>{t("ex_object")}</dt><dd>{work}</dd></div>'

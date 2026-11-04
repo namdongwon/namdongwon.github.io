@@ -301,6 +301,7 @@ html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:
 #palette .g0{color:color-mix(in srgb,var(--ink) 18%,var(--bg))}#palette .g1{color:color-mix(in srgb,var(--ink) 27%,var(--bg))}#palette .g2{color:color-mix(in srgb,var(--ink) 36%,var(--bg))}
 #palette .g3{color:color-mix(in srgb,var(--ink) 45%,var(--bg))}#palette .g4{color:color-mix(in srgb,var(--ink) 54%,var(--bg))}#palette .g5{color:color-mix(in srgb,var(--ink) 64%,var(--bg))}
 #palette .g6{color:color-mix(in srgb,var(--ink) 73%,var(--bg))}#palette .g7{color:color-mix(in srgb,var(--ink) 82%,var(--bg))}#palette .g8{color:color-mix(in srgb,var(--ink) 91%,var(--bg))}#palette .g9{color:var(--ink)}
+::highlight(pg){color:var(--bg);background-color:var(--ink)}#palette .pal{cursor:default}  /* 손을 댄 글자(11/4) */
 #palette .pk{margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted)}
 #poem .pbr{margin-top:22px;font:400 15px/1.7 var(--serif);color:var(--ink)}  /* 「탁본」 아래 다리 한 줄 '나머지 쉰아홉 편은 종이 위에 있습니다.'(10/29 동원 'A 시집 칸 통째로' — 새 눈 비평 고침 1, 「탁본」 한 장 끝 화면과 같은 말) — 이어서 책 카드의 교보 단추 · 팔레트 끝 '「탁본」 읽기 ↓'(10/28)는 시가 위로 가서 뺌 */
 .bio{margin-top:22px;font:16px/1.9 var(--body)}  /* 휴대폰 소개 · 시집 소개 · 연락 첫 글은 시 본문과 같은 16px(10/27 숨 재기 8, 동원 'A 16px' — 전 15–15.5px) */

@@ -1030,7 +1030,8 @@
       "keep_hold": "그림을 길게 눌러 사진에 저장하세요",
       "keep_alt": "뜬 「탁본」 한 장",
       "ring_hint": "끌어서 돌리기 · 누르면 크게",
-      "shared": "링크를 복사했습니다"
+      "shared": "링크를 복사했습니다",
+      "pal_one": "「{ch}」 {n}번 — {all}가지 가운데 {rank}번째로 많이 쓴 글자"
     },
     "en": {
       "play": "Play {title}",
@@ -1057,7 +1058,8 @@
       "keep_hold": "Press and hold the image to save it",
       "keep_alt": "Your rubbing of “Rubbing”",
       "ring_hint": "Drag to turn · click to open",
-      "shared": "Link copied"
+      "shared": "Link copied",
+      "pal_one": "“{ch}” — used {n} times, no. {rank} of {all}"
     },
     "ja": {
       "play": "{title}を再生",
@@ -1084,7 +1086,8 @@
       "keep_hold": "画像を長押しして、写真に保存してください",
       "keep_alt": "「拓本」をとった一枚",
       "ring_hint": "ドラッグして回す · クリックで大きく",
-      "shared": "リンクをコピーしました"
+      "shared": "リンクをコピーしました",
+      "pal_one": "「{ch}」 {n}回 — {all}種のうち{rank}番目に多く使った文字"
     }
   },
   "pop_post": {
