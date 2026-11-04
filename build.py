@@ -2193,9 +2193,15 @@ def main():
     save_jpg(CONTENT / site["book"]["back"], ASSETS / "img/back.jpg", 600, quality=84)
     save_jpg(CONTENT / site["book"]["spine"], ASSETS / "img/spine.jpg", 42, quality=88)
     # 소개 첫 화면의 사람(11/1) — 투명 바탕 그대로 WebP(원고 PNG 300KB → 52KB). 원본 사진 · 사람만 남기기는 기준/브랜드 시안/첫화면_TOKA시안_v1/
-    if ME_IMG.exists():
-        with Image.open(ME_IMG) as im:
-            im.convert("RGBA").save(ASSETS / "img/me.webp", "WEBP", quality=82, method=6)
+    if ME_IMG.exists():  # 디스크 저장(11/4 점심 QA — 이 한 장에 1.8초 · 원본 지문이 같으면 .cache/me의 지난 결과)
+        hit = HERE / ".cache/me" / (hashlib.sha1(ME_IMG.read_bytes() + b"|me82-v1").hexdigest()[:20] + ".webp")
+        if not hit.exists():
+            with Image.open(ME_IMG) as im:
+                b = io.BytesIO()
+                im.convert("RGBA").save(b, "WEBP", quality=82, method=6)
+            hit.parent.mkdir(parents=True, exist_ok=True)
+            hit.write_bytes(b.getvalue())
+        (ASSETS / "img/me.webp").write_bytes(hit.read_bytes())
     # 첫 편 준비 중(10/24)의 썸네일 시안 — 800px(휴대폰 2배·컴퓨터 칸 폭에 넉넉). 흑백은 CSS가 함
     up = videos.get("upcoming") or {}
     if not videos["items"] and up.get("thumb"):
