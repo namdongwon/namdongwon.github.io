@@ -1100,6 +1100,7 @@ def render(site, poem, videos, photos, lang="ko"):
          "datePublished": kb["published"], "numberOfPages": int(re.search(r"(\d+)쪽", kb["spec"]).group(1)),
          "publisher": {"@type": "Organization", "name": kb["spec"].split(" · ")[-1]}, "url": kb["buy_url"], "image": f"{base}/assets/img/cover.jpg"}]}
     poem_t = e(S["poem"]["title"])
+    read_n = max(1, round(len(re.sub(r"\s", "", poem)) / 300))  # 읽는 시간(11/4 동원 'A 시 머리') — 한국어 시 글자 수 ÷ 분당 300자(시는 천천히 · 어림)
     title_br = "<br>".join(e(x) for x in book["title_lines"])
     book_title = f"<i>{title_br}</i>" if en else f"『{title_br}』"  # 영어판 책 제목은 기울임, 아래에 한국어 원제(표지 · 교보는 한국어)
     # 첫 화면(10/25 A 시집을 전시하다 — 무채색): 동원이 보낸 웹 전시 그림의 원리만(물건 하나 · 아주 큰 제목 · 박물관 라벨), 색은 흰 바탕 · 먹 그대로.
@@ -1633,7 +1634,7 @@ def render(site, poem, videos, photos, lang="ko"):
 """,
         "poem": f"""  <section id="poem" aria-labelledby="poem-t">
     <p class="label">{t("label_poem")}</p>
-    <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>{rdl}
+    <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><span class="rt">{t("read_time", n=read_n)}</span><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>{rdl}
       <p class="pgno">{pgno}</p><p class="pbr">{t("sheet_bridge")}</p></div>
     <div class="l pbook" id="bookcard"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
       {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}{plab}</div>

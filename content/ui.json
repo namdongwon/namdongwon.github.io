@@ -201,6 +201,11 @@
     "en": "Poetry",
     "ja": "詩集"
   },
+  "read_time": {
+    "ko": "읽는 데 {n}분",
+    "en": "{n} min read",
+    "ja": "約{n}分"
+  },
   "hint": {
     "ko": "시를 길게 눌러 탁본을 떠 보세요",
     "en": "Press and hold the poem to take a rubbing",

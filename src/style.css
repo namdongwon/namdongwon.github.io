@@ -631,6 +631,7 @@ html.sr-on{overflow:hidden}
 .js :where(a,button):not(.send):active{transform:scale(.97);transition:none}
 :root[data-motion="reduce"] :where(a,button):not(.send):active{transform:none;opacity:.6}
 @media (prefers-reduced-motion:reduce){.js :where(a,button):not(.send):active{transform:none;opacity:.6}}
+.rt{display:inline-block;margin-top:12px;font:300 12.5px/1.5 var(--sans);color:var(--faint)}.js .rt::after{content:"\00a0·\00a0"}  /* 읽는 시간(11/4) — 안내 단추가 보일 때만 가운뎃점 */
 .js .hint{display:inline-block;margin-top:12px;padding:4px 0;background:none;border:0;font:300 12.5px/1.5 var(--sans);color:var(--faint);letter-spacing:0;cursor:pointer}
 .poem{transition:transform .5s var(--ease)}
 .poem.pressing{transform:scale(.992)}
