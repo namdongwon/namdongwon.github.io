@@ -1186,6 +1186,7 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .rdl blockquote{margin:0;font:400 17px/1.7 var(--serif);color:var(--ink);word-break:keep-all}
 .rdl .w{margin:6px 0 0;font:400 12.5px/1.5 var(--sans);color:var(--faint)}
 .rdl a{display:inline-block;margin-top:12px;font:400 12.5px/1.6 var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+@media (hover:hover){:is(.gbf .gbn,.nf .nfp,.rdl) a{text-decoration-color:color-mix(in srgb,var(--ink) 35%,transparent);transition:text-decoration-color .5s var(--e2)}:is(.gbf .gbn,.nf .nfp,.rdl) a:hover{text-decoration-color:var(--ink)}}  /* 본문 링크 밑줄 색 페이드(11/4 동원 'A 옅은 밑줄 → 먹' — 링크밑줄_v1 · Wendy Andrade): 마우스 기기만 · 휴대폰은 늘 먹 */
 /* 지난번 뒤 새로 생긴 것 점(11/3 '다정한 UX' ⑥ — 목업 새것점시안_v1 'A 먹 점 6px (권장)'): 메뉴 이름 오른쪽 위 먹 점 — 백오피스 방명록 점과 한 벌 · 40곳 보고서 '점 6–10px · 색 대신 자리' */
 .nwd{display:inline-block;width:6px;height:6px;margin-left:6px;border-radius:50%;background:var(--ink);vertical-align:.45em}.mnu .nwd{width:7px;height:7px;margin-left:8px;vertical-align:.55em}
 :root{--fs:1}:root[data-fs="l"]{--fs:1.125}:root[data-fs="xl"]{--fs:1.25}
