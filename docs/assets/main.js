@@ -367,7 +367,7 @@
       nav.addEventListener("mouseleave", () => place());
     }
     // 글꼴이 늦게 오거나 화면 폭이 바뀌면 글자 폭이 달라지므로 밑줄 자리를 다시 잼
-    if (document.fonts) document.fonts.ready.then(place);
+    if (document.fonts) document.fonts.ready.then(() => place());  // 인자 없이 — then이 넘기는 FontFaceSet을 손 댄 메뉴로 읽던 결함(11/4 점심 QA)
     let pt = 0;
     addEventListener("resize", () => { clearTimeout(pt); pt = setTimeout(place, 150); });
   }
