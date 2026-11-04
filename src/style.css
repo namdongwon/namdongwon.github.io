@@ -1071,6 +1071,7 @@ html.cz-on{overflow:hidden}
 .totop{border:1.5px solid transparent!important;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box!important}  /* ⑩A 테두리가 곧 진행 줄(원 하나) */
 .pv.fromt{transform-origin:var(--ox) var(--oy);transform:scale(.4)}.pv.fromt.on{transform:none}  /* ⑧ 누른 사진 자리에서 열림 */
 @view-transition{navigation:auto}  /* ⑦ 쪽이 0.25초 겹쳐 바뀜(크롬 · 사파리 18.2 위 — 그 밖엔 지금처럼) */
+:root.thx::view-transition-old(root),:root.thx::view-transition-new(root){animation-duration:.36s;animation-timing-function:ease}  /* ⑦ 화면 밝게 · 어둡게가 0.36초 겹쳐 바뀜(11/4) */
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.25s;animation-timing-function:var(--e2)}
 @media (hover:hover) and (pointer:fine){
   .wall .wt:hover::before,.wall .wt:focus-visible::before{opacity:1;transform:none}

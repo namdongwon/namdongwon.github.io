@@ -467,9 +467,16 @@
     };
     thm.forEach(b => b.addEventListener("click", () => {
       const th = b.dataset.th;
-      if (th === "light") H.removeAttribute("data-theme"); else H.setAttribute("data-theme", th);
-      try { localStorage.setItem("theme", th); } catch (x) { /* 사생활 모드 등 — 이번 쪽에만 */ }
-      paint();
+      const apply = () => {
+        if (th === "light") H.removeAttribute("data-theme"); else H.setAttribute("data-theme", th);
+        try { localStorage.setItem("theme", th); } catch (x) { /* 사생활 모드 등 — 이번 쪽에만 */ }
+        paint();
+      };
+      // ⑦ 번쩍 대신 화면이 0.36초 겹쳐 바뀜(11/4 동원 'A 화면이 겹쳐 바뀜' — 갤러리UX열_v1 07 · philipphafner.com 실측) · 못 하는 브라우저 · 움직임 줄이기면 바로
+      const still = H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!document.startViewTransition || still) return apply();
+      H.classList.add("thx");
+      document.startViewTransition(apply).finished.finally(() => H.classList.remove("thx"));
     }));
     sysDark.addEventListener("change", paint);
     paint();

@@ -988,6 +988,7 @@ html.cz-on{overflow:hidden}
 .totop{border:1.5px solid transparent!important;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box!important}  
 .pv.fromt{transform-origin:var(--ox) var(--oy);transform:scale(.4)}.pv.fromt.on{transform:none}  
 @view-transition{navigation:auto}  
+:root.thx::view-transition-old(root),:root.thx::view-transition-new(root){animation-duration:.36s;animation-timing-function:ease}  
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.25s;animation-timing-function:var(--e2)}
 @media (hover:hover) and (pointer:fine){
   .wall .wt:hover::before,.wall .wt:focus-visible::before{opacity:1;transform:none}
