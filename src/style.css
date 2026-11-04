@@ -397,8 +397,8 @@ html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:
 html.pv-on{overflow:hidden}
 .pv{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--bg);opacity:0;transform:scale(.98);filter:blur(4px);transition:opacity .22s var(--e2),transform .22s var(--e2),filter .22s var(--e2)}  /* ④ 창 열림 — 흐림 · 투명 · 98%에서(11/3 recent.design) */
 .pv.on{opacity:1;transform:none;filter:none}
-.pv :is(.pvh,.pva,.pvf){transition:opacity .3s ease}.pv.bare :is(.pvh,.pva,.pvf){opacity:0;pointer-events:none}  /* ① 사진만 남기기(11/4 — 사진을 누르면 숨김 · 다시 누르면 돌아옴) */
-.pv .pvs{touch-action:pan-x}.pv figure{transition:transform .25s var(--e2)}.pv.drag figure{transition:none}.pv.drag{background:color-mix(in srgb,var(--bg) calc(var(--pvbg,1) * 100%),transparent)}.pv.drag :is(.pvh,.pva,.pvf){opacity:0}  /* ④ 아래로 끌어 닫기(11/4) — 옆 넘김만 브라우저에, 세로는 스크립트가 */
+.pv :is(.pvh,.pva,.pvf,.pvd){transition:opacity .3s ease}.pv.bare :is(.pvh,.pva,.pvf,.pvd){opacity:0;pointer-events:none}  /* ① 사진만 남기기(11/4 — 사진을 누르면 숨김 · 다시 누르면 돌아옴) */
+.pv .pvs{touch-action:pan-x}.pv figure{transition:transform .25s var(--e2)}.pv.drag figure{transition:none}.pv.drag{background:color-mix(in srgb,var(--bg) calc(var(--pvbg,1) * 100%),transparent)}.pv.drag :is(.pvh,.pva,.pvf,.pvd){opacity:0}  /* ④ 아래로 끌어 닫기(11/4) — 옆 넘김만 브라우저에, 세로는 스크립트가 */
 .pvh{flex:none;display:flex;align-items:center;justify-content:space-between;height:var(--top);padding:0 20px;border-bottom:1px solid var(--rule)}
 .pvc{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}  /* 맨 위 '2 / 20'은 화면 읽기용으로만(넘길 때 읽어 줌) — 보이는 번호는 사진 위 칩(.pvk) */
 .pvx{margin-left:auto;padding:8px 0;border:0;background:none;font:600 12.5px/1 var(--sans);color:var(--muted);cursor:pointer}  /* 찾기 창 '닫기'와 같은 모양(10/28 모양 점검 ⑩) */
@@ -409,7 +409,8 @@ html.pv-on{overflow:hidden}
 /* 넘기기 단추(10/26 동원 "컴퓨터에서는 확대해도 안 넘어가는 거 같네") — 마우스로 보는 컴퓨터에서만(휴대폰 · 패드는 손으로 밀어 넘김) · 사진 양옆 빈자리에 둥근 선 단추 · 끝 장에서는 흐리게 */
 .pvw{flex:1;min-height:0;position:relative;display:flex}
 .pva{display:none}
-@media (hover:hover) and (pointer:fine){.pva{position:absolute;top:50%;z-index:1;display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin-top:-22px;padding:0;border:1px solid var(--rule);border-radius:50%;background:var(--bg);font:300 17px/1 var(--sans);color:var(--ink);cursor:pointer;transition:border-color .2s ease,opacity .2s ease}.pvp{left:12px}.pvn{right:12px}.pva:hover{border-color:var(--ink)}.pva[aria-disabled="true"]{opacity:.25;cursor:default;border-color:var(--rule)}}
+@media (hover:hover) and (pointer:fine){.pva{position:absolute;top:var(--im,50%);z-index:1;display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-top:-16px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.88);box-shadow:0 1px 4px rgba(0,0,0,.18);font:400 14px/1 var(--sans);color:#111;cursor:pointer;transition:background-color .2s ease,opacity .2s ease}.pvp{left:calc(var(--il,12px) + 12px)}.pvn{right:calc(var(--ir,12px) + 12px)}.pva:hover{background:#fff}.pva[aria-disabled="true"]{opacity:0;pointer-events:none}}  /* 11/4 동원 "화살표가 너무 먼 거 같아" — 사진 안쪽 가장자리 12px · 흰 원 32px(인스타그램 꼴) · 처음 · 끝 장에서는 숨김 */
+.pvd{position:absolute;left:calc(var(--il,0px) + (100% - var(--il,0px) - var(--ir,0px)) / 2);bottom:calc(var(--ib,16px) + 12px);z-index:1;display:flex;gap:4px;transform:translateX(-50%);pointer-events:none}.pvd i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.45);box-shadow:0 0 2px rgba(0,0,0,.3);transition:background-color .2s ease}.pvd i.on{background:#fff}  /* 몇째 장 — 숫자 대신 사진 아래 가운데 점(11/4 동원 "아래에 동그라미로 … 연한 동그라미였다가 해당되는 사진이면 하얀색") */
 .pvf{flex:none;padding:14px 20px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--rule)}
 .pvf p{font:14px/1.5 var(--body)}
 .pvf .aw{display:block;margin-top:4px}

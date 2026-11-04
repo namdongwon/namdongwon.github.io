@@ -613,21 +613,32 @@
     const pcaps = [...document.querySelectorAll("#photo .cap")], prev = pv.querySelector(".pvp"), next = pv.querySelector(".pvn");
     let from = null, n = 0;
     const others = on => [...document.body.children].forEach(el => { if (el !== pv && el.tagName !== "SCRIPT") el.inert = on; });
+    // 11/4 동원 "화살표가 너무 먼 거 같아 … 바로 화살표 옆에 두고, 정확히 몇장 남았는지 표현하지말고 … 아래에 동그라미로" (인스타그램 사진 보기 그대로):
+    // 넘기기 단추는 보이는 사진 안쪽 가장자리에, 몇째 장은 숫자 칩 대신 사진 아래 가운데 점(옅은 점 · 지금 장만 흰 점) — 화면 읽기는 맨 위 '2 / 20' 그대로
+    const wrap = pv.querySelector(".pvw"), dots = document.createElement("div");
+    dots.className = "pvd";
+    dots.setAttribute("aria-hidden", "true");
+    wrap.append(dots);
+    const place = () => {  // 지금 장 사진의 자리(그 장 안에서의 자리라 넘기는 동안 흔들리지 않음)
+      if (pv.hidden) return;
+      const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth)), f = view.children[k], img = f && f.querySelector("img");
+      if (!img || !img.naturalWidth) return;
+      const r = img.getBoundingClientRect(), fr = f.getBoundingClientRect();
+      wrap.style.setProperty("--il", `${r.left - fr.left}px`);
+      wrap.style.setProperty("--ir", `${fr.right - r.right}px`);
+      wrap.style.setProperty("--ib", `${fr.bottom - r.bottom}px`);
+      wrap.style.setProperty("--im", `${r.top - fr.top + r.height / 2}px`);
+    };
     const upd = () => {
       const k = Math.min(n, Math.round(view.scrollLeft / Math.max(1, view.clientWidth)) + 1);
       cnt.textContent = `${k} / ${n}`;
       if (prev) { prev.setAttribute("aria-disabled", k <= 1); next.setAttribute("aria-disabled", k >= n); }
+      [...dots.children].forEach((d, j) => d.classList.toggle("on", j === k - 1));
+      place();
     };
     const step = d => view.scrollBy({ left: d * view.clientWidth, behavior: reduce ? "auto" : "smooth" });
-    const pin = f => {  // 번호 칩(.pvk)을 맞춰 줄인 사진의 오른쪽 위에 — 사진이 온 뒤 · 창이 보인 뒤 · 화면 크기가 바뀐 뒤
-      const img = f.querySelector("img"), c = f.querySelector(".pvk");
-      if (!img || !c || !img.naturalWidth || pv.hidden) return;
-      const r = img.getBoundingClientRect(), fr = f.getBoundingClientRect();
-      c.style.top = `${r.top - fr.top + 10}px`;
-      c.style.right = `${fr.right - r.right + 10}px`;
-      c.hidden = false;
-    };
-    addEventListener("resize", () => view.querySelectorAll("figure").forEach(pin));
+    const pin = () => place();  // 사진이 온 뒤 · 창이 보인 뒤 · 화면 크기가 바뀐 뒤
+    addEventListener("resize", place);
     view.addEventListener("scroll", upd, { passive: true });
     view.addEventListener("scroll", () => {
       const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
@@ -642,20 +653,18 @@
       const sim = cov ? { alt: cov.getAttribute("aria-label").replace(/ — \d+ \/ \d+$/, ""), lang: cov.lang } : btn.querySelector("img") || {}, alt = sim.alt || "";
       view.textContent = "";
       list.forEach((src, k) => {
-        const f = document.createElement("figure"), img = document.createElement("img"), chip = document.createElement("span");
+        const f = document.createElement("figure"), img = document.createElement("img");
         if (Math.abs(k - start) > 1 && k > 1) img.dataset.src = src; else img.src = src;  // 셋째 장부터는 넘길 때 한 장 앞씩(10/27 점검 — 열 때 여러 장을 한꺼번에 받아 둘째 장이 늦었음)
         // 첫 장만 그 사진의 설명, 둘째 장부터는 '게시물 사진 2 / 20' — 첫 장 설명을 되풀이하면 다른 사진을 설명하게 됨(10/27 점검 남은 것 가4 · 장마다 설명은 출간 뒤)
         img.alt = k ? uiText("post_photo", "게시물 사진 {k} / {n}", { k: k + 1, n }) : `${alt} (1 / ${n})`;
         if (sim.lang && !k) img.lang = sim.lang;  // 영어판의 한국어 대체 글은 한국어로(띠의 사진과 같게)
-        chip.className = "pvk";
-        chip.setAttribute("aria-hidden", "true");  // 화면 읽기에는 맨 위 '2 / 20'(aria-live)이 알림
-        chip.hidden = true;
-        chip.textContent = `${k + 1}/${n}`;  // 지금 몇 번째인지 — 인스타그램처럼 사진 위(10/27 동원 "A 사진 위 칩")
         img.addEventListener("load", () => pin(f));
-        f.append(img, chip);
+        f.append(img);
         view.append(f);
       });
       foot.innerHTML = pcaps[i] ? pcaps[i].innerHTML : "";
+      dots.textContent = "";
+      list.forEach(() => dots.append(document.createElement("i")));
       if (btn && btn.classList.contains("wt")) {  // ⑧ 누른 사진 자리에서 창이 커지며 열림(11/4 동원 '넣기' — 손반응열_v1 08)
         const r = btn.getBoundingClientRect();
         pv.style.setProperty("--ox", `${r.left + r.width / 2}px`);
