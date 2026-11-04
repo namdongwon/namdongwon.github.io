@@ -1869,6 +1869,39 @@ def page_404(site, ja=True):
 """
 
 
+# 틈 점검(11/4 — 10/28 미뤄 둔 일본 브랜드 디테일 ④ · 새 후보 2차 ③): 만든 쪽 글에서 손으로 놓치기 쉬운 틈을 빌드마다 훑어 '알림'만(쪽은 그대로).
+# ① 바닥글 © 연도가 올해보다 옛 해 ② 쪽수 범위에 '-'(→ '–') ③ 『』「」〈〉《》 짝이 안 맞음 ④ 한 낱말뿐인 그림 대체 글 ⑤ 견본 낱말(lorem · TODO · 0000 · XXX)
+def gap_check():
+    from datetime import date
+    yr, hits = date.today().year, []
+    site = json.loads((CONTENT / "site.json").read_text(encoding="utf-8"))
+    for c in [site.get("copyright", "")] + [(site.get(lg) or {}).get("copyright", "") for lg in ("en", "ja")]:
+        m = re.search(r"©\s*(\d{4})(?:\s*[–-]\s*(\d{4}))?", c)
+        if m and int(m.group(2) or m.group(1)) < yr:
+            hits.append(f"© {m.group(0)[1:].strip()} → 올해 {yr}")
+    pairs = ("『』", "「」", "〈〉", "《》")
+    for f in sorted(DOCS.rglob("*.html")):
+        src = f.read_text(encoding="utf-8")
+        body = re.sub(r"<(script|style)\b.*?</\1>", " ", src, flags=re.S)
+        text = html.unescape(re.sub(r"<[^>]+>", " ", body))
+        where = str(f.relative_to(DOCS))
+        for m in re.finditer(r"\d+\s*-\s*\d+\s*(?:쪽|p\b|pp\b|頁)", text):
+            hits.append(f"{where} 쪽수 '-' {m.group(0)}")
+        for o, c in pairs:
+            if text.count(o) != text.count(c):
+                hits.append(f"{where} {o}{c} 짝 {text.count(o)}:{text.count(c)}")
+        for m in re.finditer(r'<img\b[^>]*\balt="([^"]*)"', body):
+            a = html.unescape(m.group(1)).strip()
+            if a and " " not in a and len(a) <= 4:
+                hits.append(f"{where} 대체 글 한 낱말 '{a}'")
+        for m in re.finditer(r"\b(?:lorem|ipsum|TODO|FIXME|XXX)\b|\b0000\b", text, flags=re.I):
+            hits.append(f"{where} 견본 낱말 '{m.group(0)}'")
+    if hits:
+        print(f"알림: 틈 점검 {len(hits)}곳 — " + " · ".join(hits[:6]) + (" …" if len(hits) > 6 else ""))
+    else:
+        print("틈 점검: 0곳")
+
+
 # 단 검사(10/28 동원 '고치고 검사기 넣어' — 기준/웹사이트 단 검사_2026-10-28.md): style.css가 10/28 단(머리 주석)을 지키는지 빌드마다 훑음.
 # 단 밖인데 일부러 둔 값은 (선택자 머리, 속성): 까닭으로 허용 — 새로 일부러 둘 값이 생기면 까닭과 함께 여기에
 SCALE_SP = {0, 2, 4, 6, 8, 12, 16, 22, 30, 36, 44, 64, 20, 72, *range(48, 61)}  # 간격 열한 단 + 자리 값(옆 여백 20 · 64 · 두 단 틈 72 · 창 안쪽 48–60)
@@ -2231,6 +2264,7 @@ def main():
     if (CONTENT / "CNAME").exists():  # 도메인을 산 뒤에만 둔다 — docs는 매번 새로 만들어지므로 여기서 옮겨 넣음
         shutil.copy2(CONTENT / "CNAME", DOCS / "CNAME")
 
+    gap_check()
     scale_check()  # 맨 끝 '합계' 줄 앞에(시험 묶음이 끝 줄을 읽음)
 
     # 무게 보고
