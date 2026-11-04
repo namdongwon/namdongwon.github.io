@@ -1040,6 +1040,7 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .tk{position:relative;height:calc(100svh - var(--top));min-height:560px;overflow:hidden;color:var(--ink)}
 .tk-w{position:absolute;left:0;right:0;top:12px;margin:0;text-align:center;font:600 calc((100vw - 40px) * .2397)/.86 "NRDF","NRD",serif;letter-spacing:-.035em;color:var(--mark);white-space:nowrap}  
 .tk-w span{display:block}
+.tk-c .tm .d{display:inline-block;position:relative;overflow:hidden;vertical-align:top;white-space:pre}.tk-c .tm .d>span{display:inline-block;transition:transform .45s var(--e2)}.tk-c .tm .d>.in{position:absolute;left:0;top:0;transform:translateY(100%)}.tk-c .tm .d>.in.go{transform:none}.tk-c .tm .d>.out{transform:translateY(-100%)}  
 @media (min-width:600px){.tk-w{font-size:min(calc((100vw - 140px) * .1574),30svh)}.tk-w span{display:inline-block}}  
 .tk-p{position:absolute;top:72px;left:-44px;width:auto;height:calc(100% - 286px);-webkit-mask-image:linear-gradient(#000 74%,transparent 99%);mask-image:linear-gradient(#000 74%,transparent 99%)}
 .tk-s{position:absolute;right:20px;top:calc(72px + (100% - 286px) * .42);width:max-content;margin:0}  

@@ -1545,9 +1545,26 @@
     const tm = tk.querySelector(".tk-c .tm");
     if (tm && window.Intl) {
       const fmt = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "Asia/Seoul" });  // 세 판 모두 영어 9:58 PM(11/1 밤 동원 "시계는 그냥 차라리 영어로 … AM PM")
-      const tick = () => { tm.textContent = fmt.format(new Date()); };
+      // 2차 ⑦ 분이 바뀌면 바뀐 숫자만 아래에서 굴러 올라옴 0.45초(11/4 동원 'A 바뀐 숫자만 굴러감' — 갤러리UX열_v1 17 · NumberFlow) · 화면 읽기는 시각 통째(aria-label)
+      // 분 경계에 맞춰 바뀜(전엔 30초마다 확인이라 최대 30초 늦었음) · 움직임 줄이기면 바로 바뀜
+      const cell = ch => { const d = document.createElement("span"), i = document.createElement("span"); d.className = "d"; d.dataset.ch = ch; i.textContent = ch; d.append(i); return d; };
+      const tick = () => {
+        const s = fmt.format(new Date()), still = H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches;
+        tm.setAttribute("aria-label", s);
+        if (still || tm.children.length !== s.length) { tm.textContent = ""; [...s].forEach(ch => tm.append(cell(ch))); return; }
+        [...s].forEach((ch, k) => {
+          const d = tm.children[k];
+          if (d.dataset.ch === ch) return;
+          d.dataset.ch = ch;
+          const o = d.firstChild, n = document.createElement("span");
+          n.textContent = ch; n.className = "in";
+          d.append(n);
+          requestAnimationFrame(() => requestAnimationFrame(() => { o.classList.add("out"); n.classList.add("go"); }));
+          setTimeout(() => { o.remove(); n.className = ""; }, 500);
+        });
+      };
       tick();
-      setInterval(tick, 30000);
+      setTimeout(() => { tick(); setInterval(tick, 60000); }, 60050 - Date.now() % 60000);
     }
   }
   addEventListener("pageshow", ev => { if (ev.persisted) H.classList.remove("cgo", "cout", "cin", "copen"); });
