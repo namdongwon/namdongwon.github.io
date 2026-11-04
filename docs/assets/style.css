@@ -377,6 +377,7 @@ html.pv-on{overflow:hidden}
 .pv{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--bg);opacity:0;transform:scale(.98);filter:blur(4px);transition:opacity .22s var(--e2),transform .22s var(--e2),filter .22s var(--e2)}  
 .pv.on{opacity:1;transform:none;filter:none}
 .pv :is(.pvh,.pva,.pvf){transition:opacity .3s ease}.pv.bare :is(.pvh,.pva,.pvf){opacity:0;pointer-events:none}  
+.pv .pvs{touch-action:pan-x}.pv figure{transition:transform .25s var(--e2)}.pv.drag figure{transition:none}.pv.drag{background:color-mix(in srgb,var(--bg) calc(var(--pvbg,1) * 100%),transparent)}.pv.drag :is(.pvh,.pva,.pvf){opacity:0}  
 .pvh{flex:none;display:flex;align-items:center;justify-content:space-between;height:var(--top);padding:0 20px;border-bottom:1px solid var(--rule)}
 .pvc{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}  
 .pvx{margin-left:auto;padding:8px 0;border:0;background:none;font:600 calc(12.5px * var(--fs))/1 var(--sans);color:var(--muted);cursor:pointer}  

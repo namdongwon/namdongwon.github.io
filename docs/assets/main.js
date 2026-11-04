@@ -678,6 +678,38 @@
     // ① 사진을 누르면 단추 · 글이 0.3초에 숨어 사진만 남고, 다시 누르면 돌아옴(11/4 동원 'A 누르면 숨김' — 갤러리UX열_v1 01 · 아이폰 사진 앱) · 키보드로 단추에 오면 늘 보임
     view.addEventListener("click", () => pv.classList.toggle("bare"));
     pv.addEventListener("focusin", ev => { if (ev.target !== view) pv.classList.remove("bare"); });
+    // ④ 손가락으로 사진을 아래로 끌면 사진만 작아지며 따라오고 바탕이 걷힘 → 120px 넘게 끌고 놓으면 닫힘, 덜 끌면 제자리(11/4 동원 'B 사진만 작아지며' — 갤러리UX열_v1 04 · 아이폰 사진 앱)
+    // 처음 8px로 방향을 가름 — 옆으로면 지금처럼 넘김(.pvs는 touch-action:pan-x) · 위로면 그대로 · 끄는 동안 옆 사진은 숨김
+    let py0 = null, px0 = 0, pdd = 0, pdrag = false, pfig = null;
+    const pfigs = () => [...view.querySelectorAll("figure")];
+    view.addEventListener("pointerdown", e => { if (e.pointerType !== "touch") return; py0 = e.clientY; px0 = e.clientX; pdd = 0; pdrag = false; });
+    view.addEventListener("pointermove", e => {
+      if (py0 == null) return;
+      const dy = e.clientY - py0, dx = e.clientX - px0;
+      if (!pdrag) {
+        if (Math.abs(dy) < 8 && Math.abs(dx) < 8) return;
+        if (dy <= 0 || Math.abs(dx) > Math.abs(dy)) { py0 = null; return; }
+        pdrag = true;
+        pfig = pfigs()[Math.round(view.scrollLeft / view.clientWidth)] || null;
+        pfigs().forEach(f => { if (f !== pfig) f.style.visibility = "hidden"; });
+        pv.classList.add("drag");
+      }
+      pdd = Math.max(0, dy);
+      if (pfig) pfig.style.transform = `translateY(${pdd}px) scale(${Math.max(.7, 1 - pdd / 900)})`;
+      pv.style.setProperty("--pvbg", Math.max(0, 1 - pdd / 300).toFixed(3));
+    });
+    const pend = () => {
+      if (py0 == null) return;
+      py0 = null;
+      if (!pdrag) return;
+      pdrag = false;
+      const f = pfig, done = () => { if (f) f.style.transform = ""; pfigs().forEach(g => { g.style.visibility = ""; }); pv.style.removeProperty("--pvbg"); };
+      pv.classList.remove("drag");
+      pfig = null;
+      if (pdd > 120) { shut(); setTimeout(done, reduce ? 0 : 320); } else done();
+    };
+    view.addEventListener("pointerup", pend);
+    view.addEventListener("pointercancel", pend);
     if (prev) { prev.addEventListener("click", () => step(-1)); next.addEventListener("click", () => step(1)); }
     document.addEventListener("keydown", ev => {  // 창 안 빈자리를 눌러 포커스가 쪽 바탕으로 빠져도 Esc · 좌우 키가 듣게 문서에서 받음(10/28 점검 3 — 「탁본」 한 장과 같게)
       if (pv.hidden) return;
