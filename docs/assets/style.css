@@ -11,8 +11,8 @@
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTDF";src:url("fonts/ndw-sans-light-first.woff2?v=3bf11b64c6") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTDF";src:url("fonts/ndw-sans-semibold-first.woff2?v=a2dbec7319") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"PTDF";src:url("fonts/ndw-sans-light-first.woff2?v=7971df236f") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTDF";src:url("fonts/ndw-sans-semibold-first.woff2?v=51904c9f64") format("woff2");font-weight:600;font-display:swap}
 html:lang(ko) .door .t,html:lang(ko) #home .hs{font-family:"BMJF",var(--serif)}
 #home{--sans:"PTDF","PTD",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}  
 @font-face{font-family:"NRDF";src:url("fonts/newsreader-first.woff2?v=0d2ce9c027") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
@@ -25,15 +25,15 @@ html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:l
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2?v=19b7c81683") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
 
 @font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-light.woff2?v=237255a497") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=f2bec1337b") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=81edf730c6") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=1f2d750c79") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=067f126bc3") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=e3ae454506") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=74dd104fb3") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=4ed926554f") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=31d7ab7f46") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=2e541061b8") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=6296f24825") format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2?v=1beaf3c9bd") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2?v=72b7718a65") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=d7c5d884d5") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-semibold-first.woff2?v=adb54c03d2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=2d92e4ca5f") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-semibold-first.woff2?v=6e3fcf2123") format("woff2");font-weight:600;font-display:swap}
 html:lang(ja) .door .t,html:lang(ja) #home .hs{font-family:"JMJF",var(--serif)}
 html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  
 .nf [lang="ja"]{--serif:"NRD","JMJ","ARW","BMJ",serif;--body:"JGO","PTD",-apple-system,"Hiragino Sans",sans-serif;--sans:"JGO","PTD",-apple-system,"Hiragino Sans",sans-serif}  
@@ -144,7 +144,8 @@ html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spaci
 #home dd{margin-top:4px;font:300 11px/1.6 var(--sans)}
 #home dd small{font:300 11px/1.5 var(--sans);color:var(--muted)}
 #home dd .go,.pbook .plab .go{display:inline-flex;padding-bottom:6px;border-bottom:1.5px solid var(--ink)}  
-.whr{font:300 11px/1.3 var(--sans);color:var(--muted)}  
+.whr{font:300 11px/1.3 var(--sans);color:var(--muted)}
+button.buy{background:none;border-width:0 0 1.5px;border-style:solid;border-color:var(--ink);border-radius:0;padding:0 0 6px;color:var(--ink);cursor:pointer}.buy.shr svg{margin-left:.35em;vertical-align:-2px}    
 
 @property --ry{syntax:"<angle>";inherits:false;initial-value:26deg}
 .bk{--w:200px;--h:293.75px;--t:14px;position:relative;width:var(--w);height:var(--h);perspective:1100px;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
@@ -965,7 +966,7 @@ html.cz-on{overflow:hidden}
 .js img.fi{opacity:0;transition:opacity .5s linear}.js img.fi.ld{opacity:1}  
 .wall .wt[data-cap]::before{content:attr(data-cap);position:absolute;left:0;right:0;bottom:0;z-index:1;padding:22px 12px 8px;border-radius:0 0 var(--btn-r) var(--btn-r);background:linear-gradient(transparent,rgba(0,0,0,.55));color:#fff;font:400 calc(12.5px * var(--fs))/1.3 var(--sans);text-align:left;opacity:0;transform:translateY(6px);transition:opacity var(--mid) var(--e2),transform var(--mid) var(--e2);pointer-events:none}  
 .top{transition:transform .25s var(--e2),box-shadow .4s}.top.hide{transform:translateY(-100%)}  
-.buy .ar{display:inline-block;transition:transform var(--mid) var(--e2)}  
+.buy .ar{display:inline-block;margin-left:.3em;transition:transform var(--mid) var(--e2)}  
 .totop{border:1.5px solid transparent!important;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box!important}  
 .pv.fromt{transform-origin:var(--ox) var(--oy);transform:scale(.4)}.pv.fromt.on{transform:none}  
 @view-transition{navigation:auto}  

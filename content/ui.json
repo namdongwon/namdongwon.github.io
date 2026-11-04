@@ -136,6 +136,11 @@
     "en": "Kyobo Book Centre · in Korean",
     "ja": "教保文庫 · 韓国語"
   },
+  "share": {
+    "ko": "공유",
+    "en": "Share",
+    "ja": "共有"
+  },
   "colo_pub": {
     "ko": "펴낸 곳",
     "en": "Publisher",
@@ -1019,7 +1024,8 @@
       "gb_full": "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다.",
       "keep_hold": "그림을 길게 눌러 사진에 저장하세요",
       "keep_alt": "뜬 「탁본」 한 장",
-      "ring_hint": "끌어서 돌리기 · 누르면 크게"
+      "ring_hint": "끌어서 돌리기 · 누르면 크게",
+      "shared": "링크를 복사했습니다"
     },
     "en": {
       "play": "Play {title}",
@@ -1045,7 +1051,8 @@
       "gb_full": "The guestbook is full for this month. Please try again next month.",
       "keep_hold": "Press and hold the image to save it",
       "keep_alt": "Your rubbing of “Rubbing”",
-      "ring_hint": "Drag to turn · click to open"
+      "ring_hint": "Drag to turn · click to open",
+      "shared": "Link copied"
     },
     "ja": {
       "play": "{title}を再生",
@@ -1071,7 +1078,8 @@
       "gb_full": "今月の受付枠がいっぱいになりました。来月あらためてお願いいたします。",
       "keep_hold": "画像を長押しして、写真に保存してください",
       "keep_alt": "「拓本」をとった一枚",
-      "ring_hint": "ドラッグして回す · クリックで大きく"
+      "ring_hint": "ドラッグして回す · クリックで大きく",
+      "shared": "リンクをコピーしました"
     }
   },
   "pop_post": {

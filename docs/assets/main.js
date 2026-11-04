@@ -1455,6 +1455,20 @@
     a.append(s);
   });
 
+  // 공유(11/4 동원 'A 단추 줄 끝' — 목업 공유단추시안_v1): 휴대폰은 기본 공유 시트(Web Share API — 카카오톡 · 메시지 …), 공유 시트가 없으면 주소를 복사하고 2초 동안 '링크를 복사했습니다'
+  document.querySelectorAll(".buy.shr").forEach(b => {
+    b.hidden = false;
+    b.addEventListener("click", async () => {
+      const title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;
+      const url = (document.querySelector('link[rel="canonical"]') || {}).href || location.href;
+      if (navigator.share) { try { await navigator.share({ title, url }); } catch (x) { /* 닫음 */ } return; }
+      try { await navigator.clipboard.writeText(url); } catch (x) { return; }
+      const lab = b.firstChild, was = lab.textContent;
+      lab.textContent = uiText("shared", "링크를 복사했습니다");
+      setTimeout(() => { lab.textContent = was; }, 2000);
+    });
+  });
+
   // 맨 위로(11/1 밤 — 고야드 실측): 360px 넘게 내리면 오른쪽 아래 동그라미가 나타나고, 누르면 맨 위로(동작 줄이기면 바로).
   // 키보드로 눌렀으면(detail 0) 맨 위 띠의 첫 링크로 초점을 옮겨 이어서 읽게. 자바스크립트가 없으면 숨은 채로(hidden)
   const toTop = document.querySelector(".totop");

@@ -55,6 +55,7 @@ FOOT_ICONS = {k: f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
     "mail": '<rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.6 7.2 12 13l8.4-5.8"/>',
     "book": '<path d="M12 7c-2.2-1.6-5.2-2-8-1.4v12.6c2.8-.6 5.8-.2 8 1.4 2.2-1.6 5.2-2 8-1.4V5.6c-2.8-.6-5.8-.2-8 1.4z"/><path d="M12 7v12.6"/>',
 }.items()}
+SHARE_ICON = '<svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 12.5V3M6.5 6.5 10 3l3.5 3.5"/><path d="M4.5 10v6.5h11V10"/></svg>'  # 공유 — 위로 나가는 화살표 + 상자(휴대폰 공유 표시 관행)
 THEME_ICONS = {k: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + v + '</svg>' for k, v in {
     "system": '<rect x="2.5" y="3.5" width="15" height="10" rx="1.5"/><path d="M7 17h6M10 13.5V17"/>',
     "light": '<circle cx="10" cy="10" r="3.4"/><path d="M10 1.8v2M10 16.2v2M1.8 10h2M16.2 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M4.2 15.8l1.4-1.4M14.4 5.6l1.4-1.4"/>',
@@ -1510,7 +1511,8 @@ def render(site, poem, videos, photos, lang="ko"):
         # 첫 화면 두 길(10/29 동원 'A' — 새 눈 비평 고침 2 · 10/24 '같은 무게'): 「탁본」 읽기 · 책장에 꽂기를 한자리에 — 휴대폰은 책 옆 아래(.ps · 책 아랫선),
         # 컴퓨터 · 태블릿은 작은 제목 아래 한 줄(.pl). 한 번에 하나만 보여 읽기 도구도 한 번만 읽음(.hs · .hsl과 같은 방식)
         return (f'<p class="paths {k}"><a class="buy" href="#poem">{t("read", poem=poem_t)}</a><span class="buyrow">'
-                f'<a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("첫화면")}>{e(book["buy_label"])} ↗</a><span class="whr">{t("buy_where")}</span></span></p>')
+                f'<a class="buy sb" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("첫화면")}>{e(book["buy_label"])} ↗</a>'
+                f'<button type="button" class="buy shr" hidden>{t("share")}{SHARE_ICON}</button><span class="whr">{t("buy_where")}</span></span></p>')  # 공유(11/4 동원 'A 단추 줄 끝' — 목업 공유단추시안_v1) · 자바스크립트가 있을 때만 보임(main.js)
 
     # 쪽 나누기(10/31 — PAGES): 칸은 전처럼 그리고 쪽마다 나눠 담음 — 소개(/) · 시집(/book/: 문 · 첫 화면 책 · 「탁본」 · 책 카드 · 소식 · 차례 · 글자 팔레트)
     # · 인스타그램(/photo/) · 유튜브(/video/) · 연락(/contact/ — 방명록 함께). 판권면은 연락 칸 끝에서 모든 쪽 끝 바닥글로

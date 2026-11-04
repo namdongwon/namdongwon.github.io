@@ -155,7 +155,8 @@ html:lang(en) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spaci
 #home dd{margin-top:4px;font:300 11px/1.6 var(--sans)}
 #home dd small{font:300 11px/1.5 var(--sans);color:var(--muted)}
 #home dd .go,.pbook .plab .go{display:inline-flex;padding-bottom:6px;border-bottom:1.5px solid var(--ink)}  /* 재료 줄 '팔레트 보기 ↓'(10/28) — 사는 길(14px)보다 작게, 라벨 글자 그대로 */
-.whr{font:300 11px/1.3 var(--sans);color:var(--muted)}  /* 사는 링크가 가는 곳 — '교보문고' · 'Kyobo Book Centre · in Korean'(10/28 동원 'A 한 · 영 모두') */
+.whr{font:300 11px/1.3 var(--sans);color:var(--muted)}
+button.buy{background:none;border-width:0 0 1.5px;border-style:solid;border-color:var(--ink);border-radius:0;padding:0 0 6px;color:var(--ink);cursor:pointer}.buy.shr svg{margin-left:.35em;vertical-align:-2px}  /* 공유 단추 — 옆 밑줄 단추와 같은 꼴(11/4) */  /* 사는 링크가 가는 곳 — '교보문고' · 'Kyobo Book Centre · in Korean'(10/28 동원 'A 한 · 영 모두') */
 /* 첫 화면 시집: 서 있는 책(10/24 A) — 앞표지·책등·뒤표지로 된 3D 책, CSS만(라이브러리 없음). 레퍼런스 Stripe Press(책등이 보이는 3D 책).
    크기는 표지 폭 200px(컴퓨터 250px), 두께는 책등 9mm 비율(200×9/128 = 14px). 26°로 비스듬히 서서 책등이 보임 — 돌리기는 main.js */
 @property --ry{syntax:"<angle>";inherits:false;initial-value:26deg}
@@ -1048,7 +1049,7 @@ html.cz-on{overflow:hidden}
 .js img.fi{opacity:0;transition:opacity .5s linear}.js img.fi.ld{opacity:1}  /* ① 스며듦 */
 .wall .wt[data-cap]::before{content:attr(data-cap);position:absolute;left:0;right:0;bottom:0;z-index:1;padding:22px 12px 8px;border-radius:0 0 var(--btn-r) var(--btn-r);background:linear-gradient(transparent,rgba(0,0,0,.55));color:#fff;font:400 12.5px/1.3 var(--sans);text-align:left;opacity:0;transform:translateY(6px);transition:opacity var(--mid) var(--e2),transform var(--mid) var(--e2);pointer-events:none}  /* ② 사진 아래 글 첫 줄 · 날짜 */
 .top{transition:transform .25s var(--e2),box-shadow .4s}.top.hide{transform:translateY(-100%)}  /* ⑥ 내리면 숨는 띠 */
-.buy .ar{display:inline-block;transition:transform var(--mid) var(--e2)}  /* ⑤ 화살표 */
+.buy .ar{display:inline-block;margin-left:.3em;transition:transform var(--mid) var(--e2)}  /* ⑤ 화살표 */
 .totop{border:1.5px solid transparent!important;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box!important}  /* ⑩A 테두리가 곧 진행 줄(원 하나) */
 .pv.fromt{transform-origin:var(--ox) var(--oy);transform:scale(.4)}.pv.fromt.on{transform:none}  /* ⑧ 누른 사진 자리에서 열림 */
 @view-transition{navigation:auto}  /* ⑦ 쪽이 0.25초 겹쳐 바뀜(크롬 · 사파리 18.2 위 — 그 밖엔 지금처럼) */
