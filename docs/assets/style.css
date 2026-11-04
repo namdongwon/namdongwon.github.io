@@ -235,6 +235,7 @@ html:lang(en) .btoc .parts,html:lang(ja) .btoc .parts{row-gap:0;border-top:1px s
 .btoc li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:.2em 0;font:calc(14px * var(--fs))/1.5 var(--body);color:var(--faint);word-break:keep-all}  
 .btoc li>span:last-child{flex:none;font:300 calc(11px * var(--fs))/1 var(--sans);font-variant-numeric:tabular-nums}
 .btoc li.on{color:var(--ink)}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){:root:where(:root:not([data-motion="reduce"])):not([data-motion="reduce"]):not(:lang(en)) .btoc li:not(.on):not(.mo)>span:first-child{transition:letter-spacing 30s var(--e2)}:root:where(:root:not([data-motion="reduce"])):not([data-motion="reduce"]):not(:lang(en)) .btoc li:not(.on):not(.mo):hover>span:first-child{letter-spacing:.3em;transition:letter-spacing .2s var(--e2)}}  
 .btoc li>span:first-child{text-wrap:balance;padding-left:1em;text-indent:-1em}  
 .btoc li small{margin-left:6px;font:300 calc(11px * var(--fs))/1 var(--sans);color:var(--faint)}  
 .btoc li.on small{color:var(--muted)}  

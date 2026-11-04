@@ -251,6 +251,7 @@ html:lang(en) .btoc .parts,html:lang(ja) .btoc .parts{row-gap:0;border-top:1px s
 .btoc li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:.2em 0;font:14px/1.5 var(--body);color:var(--faint);word-break:keep-all}  /* 줄 높이 1.9 → 1.5 + 위아래 .2em — 한 줄 간격은 그대로, 넘어간 제목은 붙어 보이게(10/25 다듬기 가7) */
 .btoc li>span:last-child{flex:none;font:300 11px/1 var(--sans);font-variant-numeric:tabular-nums}
 .btoc li.on{color:var(--ink)}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){:root:not([data-motion="reduce"]):not(:lang(en)) .btoc li:not(.on):not(.mo)>span:first-child{transition:letter-spacing 30s var(--e2)}:root:not([data-motion="reduce"]):not(:lang(en)) .btoc li:not(.on):not(.mo):hover>span:first-child{letter-spacing:.3em;transition:letter-spacing .2s var(--e2)}}  /* 차례 회색 제목의 숨(11/4 동원 'A 0.3em' — 차례숨_v1 · Filippou): 아직 못 읽는 줄에 마우스가 지나면 0.2초에 벌어졌다 30초에 모임 · 영어판은 소문자 자간 규칙(10/25)대로 뺌 */
 .btoc li>span:first-child{text-wrap:balance;padding-left:1em;text-indent:-1em}  /* 좁은 단에서 꺾이는 제목은 두 줄을 고르게(「들렸으면 했던 / 작은 소리」) */
 .btoc li small{margin-left:6px;font:300 11px/1 var(--sans);color:var(--faint)}  /* 영어판: 옮긴 제목 곁의 한국어 원제 */
 .btoc li.on small{color:var(--muted)}  /* 먹 줄의 원제는 한 단계 진하게 — 책 카드 제목 · 원제와 같은 짝 */
