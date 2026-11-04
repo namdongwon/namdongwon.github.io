@@ -25,11 +25,11 @@ html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:l
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2?v=19b7c81683") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
 
 @font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-light.woff2?v=237255a497") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=dcf020bdc4") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=472fc0dfdf") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=3d75689bd3") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=8935219e39") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=f2a2b00464") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=aacb51777b") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=d64acf33f0") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=428e282146") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=c58336e824") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=977179cfce") format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2?v=1beaf3c9bd") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2?v=72b7718a65") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=2d92e4ca5f") format("woff2");font-weight:300;font-display:swap}
@@ -102,6 +102,7 @@ button{font:inherit;color:inherit}
 .top nav a.on{color:var(--ink)}
 .top nav .ul{position:absolute;left:0;bottom:1px;width:0;height:1.5px;background:var(--ink);opacity:0;pointer-events:none}
 .top nav .ul.on{opacity:1}
+.top nav .dt{position:absolute;left:0;top:-1px;width:4px;height:4px;border-radius:50%;background:var(--ink);opacity:0;pointer-events:none}.top nav .dt.on{opacity:1}@media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .top nav .dt,:where(:root:not([data-motion="reduce"])).top nav .dt{transition:opacity .3s}}  
 
 .top .mb{display:none;position:relative;margin-right:auto;padding:6px 0;border:0;background:none;font:600 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--ink);cursor:pointer}
 @media (max-width:767px){.js .top .mb{display:block}.js .top nav{display:none}}
@@ -409,6 +410,7 @@ html.sr-on{overflow:hidden}
 .srch input{flex:1;min-width:0;padding:0;border:0;border-radius:0;outline:0;background:transparent;-webkit-appearance:none;appearance:none;font:400 21px/1.3 var(--serif);color:var(--ink)}
 .srch input::placeholder{color:var(--faint)}
 .srch input::-webkit-search-cancel-button{display:none}
+.srch .clr{flex:none;display:grid;place-items:center;width:32px;height:32px;margin:0 -6px 0 0;padding:0;border:0;background:none;color:var(--faint)}.srch .clr svg{width:18px;height:18px}.srch .clr circle{fill:currentColor}.srch .clr path{stroke:var(--bg);stroke-width:1.6;stroke-linecap:round}.srch .clr[hidden]{display:none}@media (hover:hover){.srch .clr:hover{color:var(--muted)}}  
 .srch .x{flex:none;padding:6px 0 6px 8px;border:0;background:none;font:600 calc(12.5px * var(--fs))/1 var(--sans);color:var(--muted)}
 .sr-lab{margin-top:30px;font:600 calc(11px * var(--fs))/1 var(--sans);letter-spacing:.3em;color:var(--muted)}
 .srch .sug{list-style:none;margin-top:8px}
@@ -425,7 +427,7 @@ html.sr-on{overflow:hidden}
 @media (max-width:599px){.sr-res a{grid-template-columns:52px 1fr}.sr-res .wh{grid-column:2;white-space:normal;line-height:1.5}}  
 .srch [role="option"].on{background:var(--ph);box-shadow:-14px 0 0 var(--ph),14px 0 0 var(--ph),-16px 0 0 var(--ink)}  
 .srch .on i,.srch .on .tg,.srch .on .wh{color:var(--muted)}  
-.sr-none{margin-top:16px;font:calc(14px * var(--fs))/1.7 var(--body);color:var(--faint)}
+.sr-none{margin-top:72px;text-align:center;font:calc(14px * var(--fs))/1.7 var(--body);color:var(--muted)}  
 .hit{background:var(--ph);transition:background 1.4s ease}  
 .hit[tabindex="-1"]:focus,.btoc[tabindex="-1"]:focus,section[tabindex="-1"]:focus{outline:none}  
 .btoc{scroll-margin-top:4px}  
@@ -1010,7 +1012,7 @@ html.cz-on{overflow:hidden}
 @media (hover:hover) and (pointer:fine){
   .ficons a:hover{transform:translateY(-4px) scale(1.03)}  
   .wall .wt:hover::after,.wall .wt:focus-visible::after{opacity:1;transform:none}  
-  .top nav:hover a:not(:hover){opacity:.4}  
+  
   .fcols ul:hover li:not(:hover) :is(a,.cz-open){opacity:.4}
 }
 @keyframes wopen{from{opacity:0;transform:scale(.98);filter:blur(4px)}}
