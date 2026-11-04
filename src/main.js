@@ -655,6 +655,7 @@
         pv.style.setProperty("--oy", `${r.top + r.height / 2}px`);
         pv.classList.add("fromt");
       } else pv.classList.remove("fromt");
+      pv.classList.remove("bare");  // 열 때는 늘 단추가 보이게
       pv.hidden = false;
       H.classList.add("pv-on");
       others(true);
@@ -674,6 +675,9 @@
     };
     document.querySelectorAll("#photo .pop").forEach(b => b.addEventListener("click", () => open(+b.dataset.i, b, +(b.dataset.k || 0))));
     x.addEventListener("click", shut);
+    // ① 사진을 누르면 단추 · 글이 0.3초에 숨어 사진만 남고, 다시 누르면 돌아옴(11/4 동원 'A 누르면 숨김' — 갤러리UX열_v1 01 · 아이폰 사진 앱) · 키보드로 단추에 오면 늘 보임
+    view.addEventListener("click", () => pv.classList.toggle("bare"));
+    pv.addEventListener("focusin", ev => { if (ev.target !== view) pv.classList.remove("bare"); });
     if (prev) { prev.addEventListener("click", () => step(-1)); next.addEventListener("click", () => step(1)); }
     document.addEventListener("keydown", ev => {  // 창 안 빈자리를 눌러 포커스가 쪽 바탕으로 빠져도 Esc · 좌우 키가 듣게 문서에서 받음(10/28 점검 3 — 「탁본」 한 장과 같게)
       if (pv.hidden) return;

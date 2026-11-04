@@ -397,6 +397,7 @@ html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:
 html.pv-on{overflow:hidden}
 .pv{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--bg);opacity:0;transform:scale(.98);filter:blur(4px);transition:opacity .22s var(--e2),transform .22s var(--e2),filter .22s var(--e2)}  /* ④ 창 열림 — 흐림 · 투명 · 98%에서(11/3 recent.design) */
 .pv.on{opacity:1;transform:none;filter:none}
+.pv :is(.pvh,.pva,.pvf){transition:opacity .3s ease}.pv.bare :is(.pvh,.pva,.pvf){opacity:0;pointer-events:none}  /* ① 사진만 남기기(11/4 — 사진을 누르면 숨김 · 다시 누르면 돌아옴) */
 .pvh{flex:none;display:flex;align-items:center;justify-content:space-between;height:var(--top);padding:0 20px;border-bottom:1px solid var(--rule)}
 .pvc{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}  /* 맨 위 '2 / 20'은 화면 읽기용으로만(넘길 때 읽어 줌) — 보이는 번호는 사진 위 칩(.pvk) */
 .pvx{margin-left:auto;padding:8px 0;border:0;background:none;font:600 12.5px/1 var(--sans);color:var(--muted);cursor:pointer}  /* 찾기 창 '닫기'와 같은 모양(10/28 모양 점검 ⑩) */
