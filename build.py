@@ -871,6 +871,75 @@ def make_og(site, cover, src, lang="ko", words=None):
     im.save(ASSETS / out, "JPEG", quality=86, optimize=True)
 
 
+OG_PAGES = ("photo", "video", "guestbook")  # 쪽마다 공유 카드(11/4 동원 'A 지금 틀 그대로 (권장)' — 목업 공유카드시안_v2): 이 쪽들은 이름 카드 대신 제 그림 · 제 한 줄
+
+
+def og_page_text(site, photos, lang, k):
+    # 쪽마다 공유 카드의 (쪽 이름, 한 줄) — 사이트 원고 글 그대로(새 문구 없음): 인스타그램 계정 이름 · 채널 이름 — 소개 · 방명록 안내
+    S, L = localize(site, lang), ui_lang(load("ui.json"), lang)
+    if k == "photo":
+        iu = link_url(site, (photos.get("account") or {}).get("link", "instagram"))
+        return L["nav"][2], iu.rstrip("/").rsplit("/", 1)[-1]
+    if k == "video":
+        return L["nav"][3], f'{S["channel"]["name"]} — {S["channel"]["desc"]}'
+    return L["nav"][5], L["gb_when"]
+
+
+def make_og_pages(site, photos, src, keep):
+    # 1200×630 · 이름 카드(make_og)와 같은 틀: 왼쪽 쪽 이름(굵은 명조) · 한 줄(보통 명조 · 회색) · 주소(쪽 주소까지), 오른쪽 그 쪽 그림(흑백 — 사진 넷 / 첫 편 스틸 / 엽서)
+    W, H = 1200, 630
+    covers = [psrc(p) for p in photos["items"][:4]]
+    still = psrc(photos["items"][5]) if len(photos["items"]) > 5 else covers[0]  # 유튜브 카드 그림은 동원이 직접 찍은 인스타 사진(다른 영화의 보도 자료 스틸은 출처 줄을 붙일 자리가 없어 쓰지 않음)
+    host = site["base_url"].replace("https://", "").rstrip("/")
+    for lang in LANGS:
+        L = ui_lang(load("ui.json"), lang)
+        if lang == "en":
+            need = ("NR", "Pretendard-Light.otf"); tf_ = lambda z, b: vfont(src["NR"], z, (650 if b else 400, min(z, 72))); af = font(src["Pretendard-Light.otf"], 24) if "Pretendard-Light.otf" in src else None
+        elif lang == "ja":
+            need = ("SourceHanSerifJP-Bold.otf", "SourceHanSerifJP-Regular.otf", "PretendardJP-Light.otf"); tf_ = lambda z, b: font(src["SourceHanSerifJP-Bold.otf" if b else "SourceHanSerifJP-Regular.otf"], z); af = None
+        else:
+            need = ("BonMyeongjoKR-Bold.ttf", "BonMyeongjoKR-Regular.ttf", "Pretendard-Light.otf"); tf_ = lambda z, b: font(src["BonMyeongjoKR-Bold.ttf" if b else "BonMyeongjoKR-Regular.ttf"], z); af = None
+        for k in OG_PAGES:
+            out = f"og-{k}-{lang}.jpg" if lang in TR else f"og-{k}.jpg"
+            if not all(n in src for n in need):
+                if out in keep:
+                    (ASSETS / out).write_bytes(keep[out])
+                continue
+            addr_f = font(src["PretendardJP-Light.otf" if lang == "ja" else "Pretendard-Light.otf"], 24)
+            title, line = og_page_text(site, photos, lang, k)
+            im = Image.new("RGB", (W, H), "white")
+            d = ImageDraw.Draw(im)
+            if k == "photo":
+                art = Image.new("RGB", (420, 500), "white")
+                for n, cp in enumerate(covers):
+                    ph = ImageOps.fit(ImageOps.exif_transpose(Image.open(cp)).convert("L").convert("RGB"), (206, 246), Image.LANCZOS)
+                    art.paste(ph, ((n % 2) * 214, (n // 2) * 254))
+            elif k == "video":
+                art = ImageOps.fit(ImageOps.exif_transpose(Image.open(still)).convert("L").convert("RGB"), (480, 270), Image.LANCZOS)
+            else:
+                art = Image.new("RGB", (420, 500), "#f6f6f4")
+                ad = ImageDraw.Draw(art)
+                ad.rectangle((0, 0, 419, 499), outline="#d9d9d9", width=2)
+                ad.text((32, 30), L["gb_to"], font=addr_f, fill="#717171")
+                ad.text((32, 70), L["gb_h"], font=tf_(40, True), fill="#111111")
+                for n in range(5):
+                    ad.line((32, 140 + n * 64, 388, 140 + n * 64), fill="#d0d0d0", width=2)
+            ax, ay = W - art.width - 110, (H - art.height) // 2
+            room = ax - 100 - 48
+            size = 110
+            while tf_(size, True).getlength(title) > room and size > 56:
+                size -= 2
+            d.text((96, 196 if lang != "ko" else 232), title, font=tf_(size, True), fill="#111111")
+            lf, yy = tf_(34, False), (196 if lang != "ko" else 232) + round(size * 1.25) + 30
+            for ln in (_wrap_ja(d, line, lf, room) if lang == "ja" else _wrap(d, line, lf, room))[:3]:
+                d.text((100, yy), ln, font=lf, fill="#555555")
+                yy += 50
+            d.text((100, 540), f'{host}{"/" + lang if lang in TR else ""}/{k}/', font=addr_f, fill="#717171")
+            d.rectangle((ax - 1, ay - 1, ax + art.width, ay + art.height), outline="#e2e2e2")
+            im.paste(art, (ax, ay))
+            im.save(ASSETS / out, "JPEG", quality=86, optimize=True)
+
+
 NO_HEAD = "、。，．・：；？！ー」』）〉》ぁぃぅぇぉっゃゅょゎァィゥェォッャュョヮヵヶ々…"  # 줄 머리에 오지 않는 글자(일본어 금칙 — JIS X 4051의 행두 금칙 가운데 흔한 것)
 
 
@@ -1650,6 +1719,8 @@ def render(site, poem, videos, photos, lang="ko"):
         tab = S["logo"] if not k else f'{S["logo"]} — {L["nav"][("me", "poem", "photo", "video", "contact", "guestbook").index(top_of[k])]}'  # 탭 제목은 표장 먼저(11/3 동원 "내 지금 웹사이트 이렇게 나오는 것도 바꾸자" → 목업 탭제목시안_v1 'B 표장만') — 링크 미리보기(og) · 읽기 도구용 h1은 이름 · 소개 그대로
         h1 = "" if bpg else f'<h1 class="sr">{e(S["name"] if not k else ptitle)}</h1>\n'  # 시집 쪽은 첫 화면 h1(이름 · 첫 시집) 그대로, 다른 쪽은 읽기 도구용 쪽 제목
         oimg, otitle, odesc = (og_img, og_title, og_desc) if k in ("", "book") else (f"og-{lang}.jpg" if tr_ else "og.jpg", ptitle, S["description"])
+        if k in OG_PAGES:  # 쪽마다 공유 카드(11/4) — 그 쪽 그림 · 그 쪽 한 줄
+            oimg, odesc = (f"og-{k}-{lang}.jpg" if tr_ else f"og-{k}.jpg"), og_page_text(site, photos, lang, k)[1]
         sidx = json.dumps([[*x[:3], go(x[3]), *x[4:]] for x in items], ensure_ascii=False).replace("</", "<\\/")
         body = "".join(sec[s] for s in PAGES[k])
         # 쪽 끝 다음 쪽 카드(11/3 동원 '다정한 UX 7가지' ② → 목업 쪽끝다음걸음시안_v1 'B 다음 쪽 카드' → "글자 크기를 손봐야" v2 → "크기가 좀 큰 거 같아" v3 'C1 명조 18 (권장)'):
@@ -1928,7 +1999,7 @@ def main():
 
     # docs/를 새로 만든다(옛 결과는 지운다 — docs는 빌드 결과라 원본이 아님). 줄인 글꼴·미리보기 그림은 원본을 못 찾을 때를 위해 먼저 옮겨 둔다
     keep = {}
-    for f in [*(ASSETS / "fonts").glob("*.woff2"), *(ASSETS / f"og{x}.jpg" for x in ("", "-en", "-ja", "-book", "-book-en", "-book-ja")), ASSETS / "img" / "takbon.jpg"]:
+    for f in [*(ASSETS / "fonts").glob("*.woff2"), *(ASSETS / f"og{x}.jpg" for x in ("", "-en", "-ja", "-book", "-book-en", "-book-ja")), *ASSETS.glob("og-photo*.jpg"), *ASSETS.glob("og-video*.jpg"), *ASSETS.glob("og-guestbook*.jpg"), ASSETS / "img" / "takbon.jpg"]:
         if f.exists():
             keep[f.name] = f.read_bytes()
     if DOCS.exists():
@@ -2098,6 +2169,7 @@ def main():
         make_og(localize(site, "ja"), cover, srcs, "ja")
     elif "og-ja.jpg" in keep:
         (ASSETS / "og-ja.jpg").write_bytes(keep["og-ja.jpg"])
+    make_og_pages(site, photos, srcs, keep)  # 쪽마다 공유 카드(11/4)
     if book_card(site):  # 출간일 책 카드 기간(10/27 B) — 쪽의 og 태그도 이 그림 · 책 제목을 가리킴(render)
         ui = load("ui.json")
         ptd = ("Pretendard-Light.otf", "Pretendard-SemiBold.otf")
