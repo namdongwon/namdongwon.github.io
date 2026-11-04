@@ -1594,6 +1594,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 입력 칸은 combobox — 추천 · 결과 목록(listbox) 가운데 보이는 쪽을 aria-controls로, 방향키로 고른 줄은 aria-activedescendant로(main.js)
     srch = (f'<div class="srch" role="dialog" aria-modal="true" aria-label="{t("search_label")}" hidden><div class="in">'
             f'<div class="bar">{SEARCH_ICON}<input type="search" name="q" role="combobox" aria-autocomplete="list" aria-expanded="true" aria-controls="sr-sug" placeholder="{t("search_ph")}" aria-label="{t("search_label")}" autocomplete="off" enterkeyhint="search">'
+            f'<button type="button" class="clr" aria-label="{t("search_clear")}" hidden><svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="9"/><path d="M6 6l6 6M12 6l-6 6"/></svg></button>'
             f'<button type="button" class="x">{t("close")}</button></div>'
             f'<p class="sr-lab" id="sr-lab">{t("search_suggest")}</p><ul class="sug" id="sr-sug" role="listbox" aria-labelledby="sr-lab">{"".join(sug_li(x, k) for k, x in enumerate(sj["suggest"]))}</ul>'
             f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden>{t("search_none")}</p></div></div>\n')

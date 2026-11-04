@@ -930,9 +930,14 @@
     "ja": "おすすめ"
   },
   "search_none": {
-    "ko": "찾는 글이 없습니다 — 추천 주제를 눌러 보세요.",
-    "en": "Nothing found — try a suggestion.",
-    "ja": "見つかりませんでした — おすすめのテーマを選んでみてください。"
+    "ko": "결과 없음",
+    "en": "No results",
+    "ja": "結果なし"
+  },
+  "search_clear": {
+    "ko": "지우기",
+    "en": "Clear",
+    "ja": "クリア"
   },
   "search_tags": {
     "ko": "차례|「탁본」|시집|소개|소식|사진|영상|연락|칸",

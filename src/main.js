@@ -745,6 +745,7 @@
     const items = JSON.parse(sidx.textContent);  // [갈래, 글, 자리, 갈 곳] · 칸 이름만 다섯째에 그 칸의 낱말(약력 · 차례 …)
     const inp = srch.querySelector("input"), res = srch.querySelector(".sr-res"), none = srch.querySelector(".sr-none");
     const cnt = srch.querySelector(".sr-n"), lab = srch.querySelector(".sr-lab"), sug = srch.querySelector(".sug");
+    const clr = srch.querySelector(".clr");  // 친 글 지우기(11/4 동원 '오른쪽 끝에 x 동그라미 … 누르면 글자 다 사라지는 거') — 글이 있을 때만
     const say = srch.querySelector('[role="status"]');  // 결과 수 · '없음'을 화면 읽기 프로그램에 — 늘 자리에 있는 한 줄에서 글만 바꿈(숨겼다 보이면 안 읽힘, 10/27 점검)
     let sayT = 0;
     const K = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
@@ -788,7 +789,8 @@
       const q = inp.value;
       if (q === lastQ) return;  // 글자가 그대로면(한글 한 글자 마침 등) 다시 그리지 않음 — 고른 줄을 지킴
       lastQ = q;
-      const empty = !q.trim(), hits = empty ? [] : find(q), showSug = empty || !hits.length;  // 찾는 글이 없으면 추천을 함께(10/28 점검 4 — 안내가 '추천 주제를 눌러 보세요')
+      const empty = !q.trim(), hits = empty ? [] : find(q), showSug = empty;  // 추천은 빈 칸일 때만 — 찾는 글이 없으면 '결과 없음' 한 줄(11/4 동원 '추천으로 나오거든? 차라리 … 결과 없음' — 노션 꼴 · 전엔 10/28 점검 4로 추천을 함께)
+      if (clr) clr.hidden = !q;
       lab.hidden = sug.hidden = !showSug;
       cnt.hidden = empty || !hits.length;
       cnt.textContent = uiText("search_count", "찾은 것 {n}", { n: hits.length });
@@ -847,6 +849,12 @@
     if (/^#p\d+$/.test(location.hash)) goTo(location.hash);  // 다른 쪽 찾기 결과로 사진 쪽에 온 사람(10/31 쪽 나누기 — photo/#p3) — 그 장으로 넘김
     sq.addEventListener("click", open);
     srch.querySelector(".x").addEventListener("click", () => shut(true));
+    if (clr) clr.addEventListener("click", () => { inp.value = ""; run(); inp.focus(); });
+    // 빈 곳을 누르면 닫힘(11/4 동원 '검색에서 빈화면 클릭하면 나가지는 거로') — 누른 곳 · 뗀 곳이 모두 빈 곳일 때만(입력 칸에서 끌어 고르다 밖에서 떼면 그대로)
+    const blank = el => el === srch || (el instanceof Element && el.matches(".srch .in, .sr-none, .sr-lab, .sr-n, .sug, .sr-res, .srch [role=status]"));
+    let downBlank = false;
+    srch.addEventListener("pointerdown", ev => { downBlank = blank(ev.target); });
+    srch.addEventListener("click", ev => { if (downBlank && blank(ev.target)) shut(true); downBlank = false; });
     // ↑↓ — 맨 아래 다음 · 맨 위 앞은 입력 칸(고른 줄 없음)으로, 검색창 자동 완성처럼 돎. Tab으로 줄에 가 있었으면 그 줄에서 이어서
     srch.addEventListener("keydown", ev => {
       if ((ev.key !== "ArrowDown" && ev.key !== "ArrowUp") || ev.altKey || ev.metaKey || ev.ctrlKey || ev.shiftKey) return;
