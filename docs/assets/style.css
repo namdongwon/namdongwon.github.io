@@ -3,11 +3,11 @@
 
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=2d465a1042") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=6625be75d7") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=d4c42c933d") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=a087b812b3") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=5aea61b6d9") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=e67212b32c") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=b49df07918") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=3cb5217f54") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=427c652eae") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=74a6d23171") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -25,11 +25,11 @@ html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:l
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2?v=19b7c81683") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
 
 @font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-light.woff2?v=237255a497") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=83aafbdcc0") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=712de988d0") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=6f561d2377") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=adcd873a4a") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=0e4fb7772e") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=dcf020bdc4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=472fc0dfdf") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=3d75689bd3") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=8935219e39") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=f2a2b00464") format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2?v=1beaf3c9bd") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2?v=72b7718a65") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=2d92e4ca5f") format("woff2");font-weight:300;font-display:swap}
@@ -499,6 +499,7 @@ html.sr-on{overflow:hidden}
 .mail{margin-top:16px;display:flex;align-items:baseline;gap:12px}
 .mail > span{font:300 calc(12.5px * var(--fs))/1 var(--sans);color:var(--muted)}
 .mail .ml{display:inline-block}  
+.mail .cp{align-self:center;padding:8px 12px;border:1px solid var(--line);border-radius:var(--btn-r);background:var(--bg);font:400 calc(11px * var(--fs))/1 var(--sans);color:var(--ink);cursor:pointer}.mail .cp.cpd{border-color:var(--ink);animation:cpop .18s ease-out}@keyframes cpop{from{transform:scale(1.03)}}:root[data-motion="reduce"] .mail .cp.cpd{animation:none}  
 .ask label{display:grid;gap:6px;font:600 calc(11px * var(--fs))/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
 .ask input[type=text],.ask input[type=email],.ask textarea{font:300 calc(16px * var(--fs))/1.5 var(--sys);color:var(--ink);border:0;border-bottom:1px solid var(--line);padding:8px 0;background:transparent;border-radius:0;outline:none;width:100%}
 .ask textarea{min-height:120px;border:1px solid var(--line);padding:12px;resize:vertical}

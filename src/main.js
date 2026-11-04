@@ -1201,6 +1201,26 @@
     const m = [...a.dataset.u].reverse().join("") + "@" + [...a.dataset.d].reverse().join("");
     a.textContent = m;
     a.href = "mailto:" + m;
+    // ③ 연락 쪽 메일 곁 '복사' 단추 — 누르면 주소를 복사하고 1.2초 동안 '복사됨 ✓'(11/4 동원 'B 곁에 복사 단추' — 갤러리UX열_v1 03 · dmcg.co) · 주소를 누르면 지금처럼 메일 앱
+    if (!a.closest(".mail")) return;
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "cp"; b.textContent = uiText("copy", "복사");
+    a.after(b);
+    const say = k => { b.textContent = uiText(k, k); b.classList.add("cpd"); setTimeout(() => { b.textContent = uiText("copy", "복사"); b.classList.remove("cpd"); }, 1200); };
+    const old = () => {  // 클립보드 API가 없거나 막힌 곳(오래된 브라우저 · http) — 잠깐 고른 글을 복사
+      const ta = Object.assign(document.createElement("textarea"), { value: m });
+      ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;opacity:0";
+      document.body.append(ta); ta.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch (x) { /* 못 함 */ }
+      ta.remove();
+      say(ok ? "copied" : "copy_fail");
+    };
+    b.addEventListener("click", () => {
+      if (b.classList.contains("cpd")) return;
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(m).then(() => say("copied"), old);
+      else old();
+    });
   });
 
   // 누름 반응 하나로(10/28 ⑧ A) — 아이폰 Safari는 터치를 듣는 곳이 있어야 :active를 그림. 문서에 하나 두면 모든 링크 · 단추가 닿는 동안 옅어짐(style.css hover:none)

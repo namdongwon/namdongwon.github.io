@@ -1036,7 +1036,10 @@
       "keep_alt": "뜬 「탁본」 한 장",
       "ring_hint": "끌어서 돌리기 · 누르면 크게",
       "shared": "링크를 복사했습니다",
-      "pal_one": "「{ch}」 {n}번 — {all}가지 가운데 {rank}번째로 많이 쓴 글자"
+      "pal_one": "「{ch}」 {n}번 — {all}가지 가운데 {rank}번째로 많이 쓴 글자",
+      "copy": "복사",
+      "copied": "복사됨 ✓",
+      "copy_fail": "복사하지 못했습니다"
     },
     "en": {
       "play": "Play {title}",
@@ -1064,7 +1067,10 @@
       "keep_alt": "Your rubbing of “Rubbing”",
       "ring_hint": "Drag to turn · click to open",
       "shared": "Link copied",
-      "pal_one": "“{ch}” — used {n} times, no. {rank} of {all}"
+      "pal_one": "“{ch}” — used {n} times, no. {rank} of {all}",
+      "copy": "Copy",
+      "copied": "Copied ✓",
+      "copy_fail": "Couldn’t copy"
     },
     "ja": {
       "play": "{title}を再生",
@@ -1092,7 +1098,10 @@
       "keep_alt": "「拓本」をとった一枚",
       "ring_hint": "ドラッグして回す · クリックで大きく",
       "shared": "リンクをコピーしました",
-      "pal_one": "「{ch}」 {n}回 — {all}種のうち{rank}番目に多く使った文字"
+      "pal_one": "「{ch}」 {n}回 — {all}種のうち{rank}番目に多く使った文字",
+      "copy": "コピー",
+      "copied": "コピーしました ✓",
+      "copy_fail": "コピーできませんでした"
     }
   },
   "pop_post": {
