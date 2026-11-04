@@ -1072,6 +1072,21 @@
       ly = y;
     };
     top.addEventListener("focusin", () => top.classList.remove("hide"));
+    // 가장자리 안개(11/4 동원 'A 위 · 아래 안개' — dmcg.co): 위 안개는 띠 바로 밑(띠가 숨으면 화면 맨 위) · 맨 위에선 없음 · 아래 안개는 맨 아래에 닿으면 없음
+    const fogT = document.createElement("i"), fogB = document.createElement("i");
+    fogT.className = "fog t"; fogB.className = "fog b";
+    fogT.setAttribute("aria-hidden", "true"); fogB.setAttribute("aria-hidden", "true");
+    document.body.append(fogT, fogB);
+    const fog = () => {
+      const y = scrollY;
+      fogT.classList.toggle("on", y > 8);
+      fogT.classList.toggle("up", top.classList.contains("hide"));
+      fogB.classList.toggle("on", innerHeight + y < document.documentElement.scrollHeight - 4);
+    };
+    const toph = () => H.style.setProperty("--toph", top.offsetHeight + "px");
+    toph(); fog();
+    addEventListener("scroll", () => requestAnimationFrame(fog), { passive: true });  // 띠 숨김(sc)이 먼저 정해진 뒤에
+    addEventListener("resize", () => { toph(); fog(); }, { passive: true });
     sc();  // 쪽 가운데에서 다시 열어도(새로 고침 · #주소) 처음부터 맞게 — 연락하기 상자의 테두리 · 먹 채움이 이 표시를 따름(10/29 고침 2)
     addEventListener("scroll", sc, { passive: true });
   }

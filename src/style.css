@@ -1057,12 +1057,14 @@ html.cz-on{overflow:hidden}
   .wall h2{font-size:clamp(46px,4.6vw,72px);overflow-wrap:normal}
   .wall .cols{grid-template-columns:repeat(3,minmax(0,1fr));height:calc(100svh - var(--top) - 94px)}
   .wall .col:nth-child(3){display:block}
+}  /* 11/4 고침: 이 닫는 괄호가 빠져 아래 손 반응 다섯 · 아홉 · 가장자리 안개가 컴퓨터(768px 위)에서만 걸렸음 — 휴대폰 띠 숨김 · 사진 스며듦 · 진행 테두리 · 쪽 겹쳐 바뀜 등 */
 
 /* 손에 닿는 반응 열 가운데 아홉(11/4 동원 "이런 시도가 좀 다양했으면 좋겠어 … 한 10개 정도 예시로 가져와줘 영상으로" → 영상 손반응열_v1 하나씩 → ①②④⑤⑥⑦⑧⑨ '넣기' · ⑩ 'A 테두리가 진행' · ③ 장수 뺌) */
 .js img.fi{opacity:0;transition:opacity .5s linear}.js img.fi.ld{opacity:1}  /* ① 스며듦 */
 .wall .wt[data-cap]::before{content:attr(data-cap);position:absolute;left:0;right:0;bottom:0;z-index:1;padding:22px 12px 8px;border-radius:0 0 var(--btn-r) var(--btn-r);background:linear-gradient(transparent,rgba(0,0,0,.55));color:#fff;font:400 12.5px/1.3 var(--sans);text-align:left;opacity:0;transform:translateY(6px);transition:opacity var(--mid) var(--e2),transform var(--mid) var(--e2);pointer-events:none}  /* ② 사진 아래 글 첫 줄 · 날짜 */
 .top{transition:transform .25s var(--e2),box-shadow .4s}.top.hide{transform:translateY(-100%)}  /* ⑥ 내리면 숨는 띠 */
 .buy .ar{display:inline-block;margin-left:.3em;transition:transform var(--mid) var(--e2)}  /* ⑤ 화살표 */
+.fog{position:fixed;left:0;right:0;z-index:8;pointer-events:none;opacity:0;transition:opacity .35s ease-out,transform .25s var(--e2)}.fog.t{top:0;height:96px;transform:translateY(var(--toph,56px));background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 100%,transparent) 0%,color-mix(in srgb,var(--bg) 97%,transparent) 10%,color-mix(in srgb,var(--bg) 90%,transparent) 20%,color-mix(in srgb,var(--bg) 78%,transparent) 30%,color-mix(in srgb,var(--bg) 65%,transparent) 40%,color-mix(in srgb,var(--bg) 50%,transparent) 50%,color-mix(in srgb,var(--bg) 35%,transparent) 60%,color-mix(in srgb,var(--bg) 22%,transparent) 70%,color-mix(in srgb,var(--bg) 10%,transparent) 80%,color-mix(in srgb,var(--bg) 3%,transparent) 90%,color-mix(in srgb,var(--bg) 0%,transparent) 100%)}.fog.t.up{transform:none}.fog.b{bottom:0;height:91px;background:linear-gradient(to top,color-mix(in srgb,var(--bg) 100%,transparent) 0%,color-mix(in srgb,var(--bg) 97%,transparent) 10%,color-mix(in srgb,var(--bg) 90%,transparent) 20%,color-mix(in srgb,var(--bg) 78%,transparent) 30%,color-mix(in srgb,var(--bg) 65%,transparent) 40%,color-mix(in srgb,var(--bg) 50%,transparent) 50%,color-mix(in srgb,var(--bg) 35%,transparent) 60%,color-mix(in srgb,var(--bg) 22%,transparent) 70%,color-mix(in srgb,var(--bg) 10%,transparent) 80%,color-mix(in srgb,var(--bg) 3%,transparent) 90%,color-mix(in srgb,var(--bg) 0%,transparent) 100%)}.fog.on{opacity:1}@media print{.fog{display:none}}  /* 가장자리 안개(11/4 동원 'A 위 · 아래 안개' — 갤러리UX열_v1 00 · dmcg.co 실측 11단 곡선 · 아래 91px): 글이 맨 위 띠 밑 · 화면 아래 끝에서 스며듦 · 위는 띠를 따라(숨으면 화면 맨 위) · 맨 위 · 맨 아래에선 0.35초에 사라짐 · 맨 위로 단추(9) · 띠(10) 아래 */
 .totop{border:1.5px solid transparent!important;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box!important}  /* ⑩A 테두리가 곧 진행 줄(원 하나) */
 .pv.fromt{transform-origin:var(--ox) var(--oy);transform:scale(.4)}.pv.fromt.on{transform:none}  /* ⑧ 누른 사진 자리에서 열림 */
 @view-transition{navigation:auto}  /* ⑦ 쪽이 0.25초 겹쳐 바뀜(크롬 · 사파리 18.2 위 — 그 밖엔 지금처럼) */
@@ -1094,7 +1096,7 @@ html.cz-on{overflow:hidden}
 :root[data-motion="reduce"] .ficons a:hover{transform:none}
 :root[data-motion="reduce"] :is(.srch,.cz-box){animation:none}:root[data-motion="reduce"] .pv{transform:none;filter:none}
 @media (prefers-reduced-motion:reduce){.ficons a:hover{transform:none}:is(.srch,.cz-box){animation:none}.pv{transform:none;filter:none}}
-}
+/* (11/4 고침 — 이 자리의 닫는 괄호를 위 벽 768 블록 끝으로 옮김) */
 /* ⑦ 유튜브 썸네일 스틸 넘김(← '올리면 재생되는 썸네일') — 넘기는 동안 아래 흰 칸 줄로 몇째 장인지 · 흑백은 그대로(준비 중) */
 .nt .sbar{position:absolute;left:0;right:0;bottom:0;height:2px;opacity:0;pointer-events:none;background:linear-gradient(90deg,transparent calc(var(--k,0) * 100% / var(--n,6)),#fff calc(var(--k,0) * 100% / var(--n,6)),#fff calc((var(--k,0) + 1) * 100% / var(--n,6)),transparent calc((var(--k,0) + 1) * 100% / var(--n,6)))}
 .nt.scrub .sbar{opacity:1}
