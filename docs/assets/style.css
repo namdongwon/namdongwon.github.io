@@ -947,6 +947,7 @@ html.cz-on{overflow:hidden}
 .wall .col:nth-child(2){animation-name:wdown}
 .wall .col:nth-child(3){display:none}
 .wall .col:hover,.wall .col:focus-within{animation-play-state:paused}
+.wall .cols.flow .col{animation:none}  
 .wall .wv{display:flex;flex-direction:column;gap:12px;padding-bottom:12px}
 @keyframes wup{to{transform:translateY(-50%)}}
 @keyframes wdown{from{transform:translateY(-50%)}to{transform:none}}

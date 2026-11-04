@@ -1442,6 +1442,39 @@
     im.addEventListener("load", done, { once: true });
     im.addEventListener("error", done, { once: true });
   });
+  // ⑥ 휴대폰에서 쪽을 내리는 손을 인스타 벽 흐름이 따라감 — 내린 빠르기만큼 왼쪽 줄은 손과 같은 쪽, 오른쪽 줄은 반대로 더 흐르고 0.12초에 걸쳐 원래 흐름(반 바퀴 60초)으로(11/4 동원 'A 손을 흐름이 따라감' — 벽끌기_v1)
+  // 쪽 스크롤은 막지 않음 · 화면에 보일 때만 돎 · 움직임 줄이기를 켜면 바로 멈추고 스타일 흐름으로 돌려줌
+  const wcols = document.querySelector(".wall .cols");
+  if (wcols && motion && matchMedia("(pointer: coarse)").matches) {
+    let S = [], run = false, lt = 0, ly = 0;
+    const ty = c => { const m = getComputedStyle(c).transform; return m && m !== "none" ? new DOMMatrixReadOnly(m).m42 : 0; };  // 스타일 흐름이 지금 있는 자리에서 이어받음
+    const tick = n => {
+      if (!run) return;
+      if (H.getAttribute("data-motion") === "reduce") { run = false; wcols.classList.remove("flow"); S.forEach(s => { s.c.style.transform = ""; }); return; }
+      const dt = Math.min(50, n - lt), sv = (scrollY - ly) / Math.max(1, dt);
+      lt = n; ly = scrollY;
+      S.forEach(s => {
+        const half = s.c.offsetHeight / 2;
+        if (!half) return;
+        s.v += (sv * 0.8 * s.dir - s.v) * Math.min(1, dt / 120);
+        if (!s.c.matches(":focus-within")) s.pos += (s.dir * half / 60000 + s.v) * dt;
+        s.pos = ((s.pos % half) - half) % half;
+        s.c.style.transform = `translateY(${s.pos}px)`;
+      });
+      requestAnimationFrame(tick);
+    };
+    new IntersectionObserver(([en]) => {
+      if (!en.isIntersecting) { run = false; return; }
+      if (run || H.getAttribute("data-motion") === "reduce") return;
+      S = [...wcols.querySelectorAll(".col")].filter(c => c.offsetParent).map((c, i) => {
+        const old = S.find(o => o.c === c);
+        return { c, dir: i % 2 ? 1 : -1, v: 0, pos: old ? old.pos : ty(c) };
+      });
+      wcols.classList.add("flow");
+      run = true; lt = performance.now(); ly = scrollY;
+      requestAnimationFrame(tick);
+    }).observe(wcols);
+  }
   // ⑤ 밑줄 단추 끝의 화살표(↗ · ↓)만 따로 — 손을 대면 그 방향으로 살짝(11/4 동원 '넣기' — 손반응열_v1 05)
   document.querySelectorAll(".buy").forEach(a => {
     const last = a.lastChild;
