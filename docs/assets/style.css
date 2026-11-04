@@ -966,8 +966,7 @@ html.cz-on{overflow:hidden}
 @keyframes wup{to{transform:translateY(-50%)}}
 @keyframes wdown{from{transform:translateY(-50%)}to{transform:none}}
 .wall .wt{display:block;width:100%;padding:0;border:0;border-radius:var(--btn-r);background:var(--ph);cursor:zoom-in;-webkit-tap-highlight-color:transparent}  
-.wall .wt img{display:block;width:100%;height:auto;border-radius:var(--btn-r);filter:grayscale(1);transition:filter var(--mid) var(--e2)}
-.wall .wt:hover img,.wall .wt:focus-visible img{filter:none}
+.wall .wt img{display:block;width:100%;height:auto;border-radius:var(--btn-r)}  
 .wall .wt:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .wall .wb{display:block;aspect-ratio:3/4;border-radius:var(--btn-r);background:var(--ph)}
 :root[data-motion="reduce"] .wall .cols{height:auto;-webkit-mask:none;mask:none}:root[data-motion="reduce"] .wall .col{animation:none}:root[data-motion="reduce"] .wall .dup{display:none}
