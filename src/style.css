@@ -1043,8 +1043,9 @@ html.cz-on{overflow:hidden}
 .wall .col{animation:wup 60s linear infinite}
 .wall .col:nth-child(2){animation-name:wdown}
 .wall .col:nth-child(3){display:none}
-.wall .col:hover,.wall .col:focus-within{animation-play-state:paused}
+.wall .col:hover,.wall .col:has(:focus-visible){animation-play-state:paused}  /* 키보드 초점일 때만(11/4 — 눌러서 남은 초점으로 멈춰 있던 것 고침) */
 .wall .cols.flow .col{animation:none}  /* ⑥ 휴대폰은 스크립트가 흐름을 맡음(쪽 내리는 손을 따라감 · 11/4) */
+.wall .wt{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}  /* 2차 ③ 꾹 누를 때 아이폰 이미지 저장 메뉴 · 글 고르기가 뜨지 않게(11/4) */
 .wall .wv{display:flex;flex-direction:column;gap:12px;padding-bottom:12px}
 @keyframes wup{to{transform:translateY(-50%)}}
 @keyframes wdown{from{transform:translateY(-50%)}to{transform:none}}

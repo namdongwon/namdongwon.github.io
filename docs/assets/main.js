@@ -1551,7 +1551,7 @@
         const half = s.c.offsetHeight / 2;
         if (!half) return;
         s.v += (sv * 0.8 * s.dir - s.v) * Math.min(1, dt / 120);
-        if (!s.c.matches(":focus-within")) s.pos += (s.dir * half / 60000 + s.v) * dt;
+        if (!s.c.querySelector(":focus-visible") && !s.c.classList.contains("hold")) s.pos += (s.dir * half / 60000 + s.v) * dt;  // 2차 ③ 꾹 누른 줄은 멈춤 · 키보드 초점(:focus-visible)일 때만 멈춤 — 손가락으로 누른 사진에 남는 초점으로는 멈추지 않게(11/4 고침)
         s.pos = ((s.pos % half) - half) % half;
         s.c.style.transform = `translateY(${s.pos}px)`;
       });
@@ -1568,6 +1568,13 @@
       run = true; lt = performance.now(); ly = scrollY;
       requestAnimationFrame(tick);
     }).observe(wcols);
+    // 2차 ③ 사진을 꾹 누르고 있으면 그 줄만 멈추고 떼면 다시 흐름(11/4 동원 'A 누른 줄만 멈춤' — 갤러리UX열_v1 13 · 인스타그램 스토리 관행 · 컴퓨터의 '올린 줄만 멈춤'과 같은 규칙)
+    // 0.5초 넘게 누르고 뗐으면 그 누름은 사진 열기로 치지 않음
+    let held = null, t0 = 0;
+    wcols.addEventListener("pointerdown", e => { if (e.pointerType !== "touch") return; held = e.target.closest(".col"); t0 = performance.now(); if (held) held.classList.add("hold"); });
+    const free = () => { if (held) held.classList.remove("hold"); held = null; };
+    addEventListener("pointerup", free); addEventListener("pointercancel", free);
+    wcols.addEventListener("click", e => { if (performance.now() - t0 > 500 && t0) { e.preventDefault(); e.stopImmediatePropagation(); } t0 = 0; }, true);
   }
   // 글자 팔레트에 손을 대면 그 글자 — 누른(마우스는 올린) 글자를 먹 바탕으로 뒤집고, 아래 줄을 '「빛」 14번 — 612가지 가운데 117번째로 많이 쓴 글자'로(11/4 동원 'A 아래 줄이 그 글자로' — 팔레트누름_v1 · Taper 「16 anna」)
   // 글자 612개를 요소로 쪼개지 않고 글자 자리(Range)를 한 번 재어 둠(팔레트 크기가 바뀌면 다시) · 표시는 CSS Highlight API(없는 브라우저는 줄만 바뀜) · 빈 곳을 누르거나 마우스가 나가면 원래 줄
