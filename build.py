@@ -1461,7 +1461,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 책 카드 박물관 라벨(10/29 동원 'A 라벨은 책 카드로' — 새 눈 비평 고침 2): 휴대폰은 첫 화면 라벨이 여기로 — 작품은 카드 제목이, 소장처는 사기 단추가 맡아
     # 지은이(만든 사람 줄 그대로) · 사양 · (이달의 한 줄) · 재료만. 제목 아래 사양 · 만든 사람 두 줄(small)은 컴퓨터 · 태블릿에서만 보임(그쪽은 첫 화면 라벨이 그대로)
     plab = (f'<dl class="plab"><div><dt>{t("ex_author")}</dt><dd>{credit_txt or e(S["name"])}</dd></div>'
-            f'<div><dt>{t("ex_spec")}</dt><dd>{keep(book["spec"])}</dd></div>\x00MONTH\x00'
+            + "".join(f'<div><dt>{e(r["k"])}</dt><dd>{keep(r["v"])}</dd></div>' for r in book["colophon"]) + '\x00MONTH\x00'  # 사양 → 판권면처럼 판 · 꼴 · 펴낸 곳 · ISBN(11/4 동원 'B 판권면처럼 칸 나눔' — 판권문장시안_v1 · Nieves · 七月堂 · 사실은 교보 상품 쪽 제작사양 그대로)
             f'<div><dt>{t("ex_medium")}</dt><dd>{medium}</dd></div></dl>')
     # 시집 소개 · 차례(10/25 A 아래로 이어 쌓기) — 책 카드 다음에 머리 두 줄 → 소개 한 단락 → 차례(「탁본」 줄만 먹)
     # 글은 교보에 올린 최종본 그대로. 영어판은 옮긴 제목 곁에 한국어 원제를 작게(「탁본」 대역과 같은 방식)
