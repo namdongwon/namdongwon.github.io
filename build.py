@@ -551,7 +551,7 @@ SPEC_RULES = ('<script type="speculationrules">' + json.dumps({"prefetch": [{"wh
 # · 버튼 '같은 도메인 아래 주소 (권장)' · "지금 구조 만들어"): 쪽 열쇠(주소 폴더) → 그 쪽에 담는 칸 id, 첫째가 그 쪽 맨 위 칸. "" = 첫 화면(소개)
 PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "guestbook": ("guestbook",), "contact": ("contact",)}  # 11/2 방명록 쪽(동원 "방명록 사이트를 먼저 추가") — 연락 칸 안에서 떼어 /guestbook/
 NEXT_PAGE = {"": "book", "book": "photo", "photo": "video", "video": "guestbook", "guestbook": "", "contact": "guestbook"}  # 쪽 끝 다음 쪽 카드 — 메뉴 차례대로 한 칸씩 · 방명록 다음은 처음(소개) · 연락 다음은 방명록(11/3)
-PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "y": "", "p": "photo"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p)
+PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "mline": "book", "y": "", "p": "photo"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p · 이달의 한 줄 무대 mline 11/4)
 
 
 def page_of(aid):
@@ -1484,6 +1484,7 @@ def render(site, poem, videos, photos, lang="ko"):
 
     tn = [0]
     month_row = [""]  # 첫 화면 라벨의 '이달의 한 줄' 줄 — 그달 줄이 열렸을 때만(toc_li가 채움)
+    stage = [""]  # 이달의 한 줄 무대(11/4 동원 'A 가운데 무대' — 3차 조사 ① · Chanel 문학 질문지 인용): 차례 바로 위 · 차례 안에는 월 꼬리표만(같은 글 두 번 금지)
 
     def toc_li(row, ko_row, part=None):
         tn[0] += 1  # 차례 줄마다 id(t1, t2 …) — 찾기 결과가 그 줄로 감
@@ -1504,14 +1505,16 @@ def render(site, poem, videos, photos, lang="ko"):
                 # 다음 날짜(10/27 동원 "A 꼬리표에 붙임" — 레퍼런스 제안 ⑦, 本屋 Title의 '매일 8시'처럼): 예약된 다음 달 줄이 있을 때만 '· 다음은 12월 1일'.
                 # 그날 아침 예약 올리기(site-release-MMDD)가 있어야 지키는 약속 — 다음 달 줄을 넣을 때 예약도 함께(README)
                 nx = min((x["month"] for x in mk if x["month"] > day.strftime("%Y-%m")), default=None)
-                nxt = t("month_next", m=f"{MONTHS[int(nx[5:]) - 1]}{NB}1" if en else f"{int(nx[5:])}月1日" if tr_ else f"{int(nx[5:])}월{NB}1일") if nx else ""
-                line = f'<em>{lines}{orig}<small>{t("month_line", m=MONTHS[mm - 1] if en else mm)}{nxt}</small></em>'
+                nxt = t("month_next_stage", m=f"{MONTHS[int(nx[5:]) - 1]}{NB}1" if en else f"{int(nx[5:])}月1日" if tr_ else f"{int(nx[5:])}월{NB}1일") if nx else ""
                 # 찾기 — 다시 온 사람이 '이달 · 11월 · 한 줄'로 그달 줄을 찾게(10/28 사용 편의 점검 ④ — 제목 줄만 있어 0건이었음)
                 mname = MONTHS[mm - 1] if en else mm
+                stage[0] = (f'<section class="mline" id="mline" aria-labelledby="mline-k"><p class="k" id="mline-k">{keep(L["search_month_where"].format(m=mname, title=row["title"], page=row["page"]))}</p>'
+                            f'<p class="t">{lines}</p>' + (f'<p class="o"{ko_tag}>{" / ".join(e(x) for x in month_ko[ko_row["title"]]["lines"])}</p>' if orig else "")
+                            + (f'<p class="nx">{nxt}</p>' if nxt else "") + '</section>')
                 month_row[0] = (f'<div><dt>{t("ex_month")}</dt><dd>{keep(L["ex_month_v"].format(m=mname, title=row["title"], page=row["page"]))} — '
-                                f'<a class="go" href="#t{tn[0]}">{t("ex_month_go")} ↓</a></dd></div>')
+                                f'<a class="go" href="#mline">{t("ex_month_go")} ↓</a></dd></div>')
                 ix["toc"].insert(0, (L["search_month_tag"], plain(" ".join(m["lines"])), L["search_month_where"].format(m=mname, title=row["title"], page=row["page"]),
-                                     f"#t{tn[0]}", L["search_month_keys"].format(m=mname.lower() if en else mname)))
+                                     "#mline", L["search_month_keys"].format(m=mname.lower() if en else mname)))
         attr = f' id="t{tn[0]}"' + (f' class="{cls}"' if cls else "")
         # 먹 줄(사이트에 올린 시)은 제목이 그 시로 가는 링크 + 화면 읽기용 '— 여기서 읽기'(10/27 점검 a11y 11 — 색으로만 구별되던 것)
         title = f'<a href="#poem">{e(row["title"])}</a>' if cls == "on" else e(row["title"])
@@ -1530,7 +1533,7 @@ def render(site, poem, videos, photos, lang="ko"):
     parts = "".join(part(p, kp) for p, kp in zip(toc["parts"], toc_ko["parts"]))
     bintro = (f'<div class="bintro"><p class="bhead">{"<br>".join(e(x) for x in bi["lead"])}</p>'
               f'<p class="btext">{keep(bi["text"])}</p>'
-              f'<div class="btoc" id="toc"><h3>{e(toc["label"])}</h3><div class="parts">{parts}</div>'
+              f'{stage[0]}<div class="btoc" id="toc"><h3>{e(toc["label"])}</h3><div class="parts">{parts}</div>'
               f'<ol class="tail">{"".join(toc_li(r, k) for r, k in zip(toc["tail"], toc_ko["tail"]))}</ol></div></div>')
     exl, plab = (x.replace("\x00MONTH\x00", month_row[0]) for x in (exl, plab))
     exl = exl.replace("<dl>", f'<dl class="n{6 if month_row[0] else 5}">', 1)  # 라벨 칸 수 — 컴퓨터 한 줄 짜임이 '이달의 한 줄'이 든 달(여섯 칸)에도 맞게(10/29 고침 2)  # 첫 화면 라벨의 '이달의 한 줄' — 차례에서 그달 줄을 찾은 뒤(열린 줄이 없으면 빈 칸)

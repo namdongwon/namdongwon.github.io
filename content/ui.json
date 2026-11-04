@@ -276,6 +276,11 @@
     "en": " · next on {m}",
     "ja": " · 次は{m}"
   },
+  "month_next_stage": {
+    "ko": "다음 줄은 {m}에",
+    "en": "Next lines on {m}",
+    "ja": "次の一行は{m}に"
+  },
   "label_me": {
     "ko": "소개",
     "en": "About",
