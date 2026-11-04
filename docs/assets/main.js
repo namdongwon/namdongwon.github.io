@@ -1491,6 +1491,40 @@
     });
     nt.addEventListener("mouseleave", () => { k = -1; img.src = first; nt.classList.remove("scrub"); });
   }
+  // 2차 ⑨ 휴대폰 — 손가락으로 가로로 쓸면 그 자리 장으로(컴퓨터의 마우스와 같은 규칙) · 떼면 1.2초 뒤 처음 썸네일로(11/4 동원 'A 떼면 처음으로' — 갤러리UX열_v1 19)
+  // 가로로 8px 넘게 움직였을 때부터 — 탭 · 세로 스크롤(touch-action:pan-y는 브라우저에)엔 반응하지 않음
+  if (nt && !fine) {
+    const img = nt.querySelector("img"), first = img.getAttribute("src"), list = nt.dataset.stills.split("|");
+    const bar = document.createElement("i");
+    bar.className = "sbar";
+    bar.style.setProperty("--n", list.length);
+    nt.appendChild(bar);
+    nt.style.touchAction = "pan-y";
+    let x0 = null, on = false, k = -1, back = 0, got = false;
+    const pick = ev => {
+      const r = nt.getBoundingClientRect(), n = Math.max(0, Math.min(list.length - 1, Math.floor((ev.clientX - r.left) / r.width * list.length)));
+      if (n !== k) { k = n; img.src = list[n]; bar.style.setProperty("--k", n); }
+      nt.classList.add("scrub");
+    };
+    nt.addEventListener("pointerdown", ev => {
+      if (ev.pointerType !== "touch") return;
+      x0 = ev.clientX; on = false;
+      if (!got) { got = true; list.forEach(u => { new Image().src = u; }); }
+    });
+    nt.addEventListener("pointermove", ev => {
+      if (x0 == null) return;
+      if (!on && Math.abs(ev.clientX - x0) > 8) { on = true; clearTimeout(back); }
+      if (on) pick(ev);
+    });
+    const end = () => {
+      x0 = null;
+      if (!on) return;
+      on = false;
+      back = setTimeout(() => { k = -1; img.src = first; nt.classList.remove("scrub"); }, 1200);
+    };
+    nt.addEventListener("pointerup", end);
+    nt.addEventListener("pointercancel", end);
+  }
 
   // ⑨ 연락 — '인스타그램 메시지로 남기기'가 커서 쪽으로 다가옴(← '마그네틱 버튼') · 단추 둘레 90px 안에서 0.32배 · 최대 18px · 1.04배(마우스 기기 · 움직임 허용)
   const ask = document.querySelector(".ask-off a");
