@@ -541,6 +541,11 @@ CIN_JS = ('try{var c=JSON.parse(sessionStorage.getItem("cto")||"null");sessionSt
           'if(c&&Date.now()-c[2]<5e3&&H.getAttribute("data-motion")!=="reduce"&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!H.classList.contains("intro"))'
           '{H.classList.add("cin");H.style.setProperty("--cx",c[0]+"px");H.style.setProperty("--cy",c[1]+"px")}}catch(x){}')
 HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", CIN_JS), HEAD_JS_PLAIN.replace("__CIN__", CIN_JS)
+# 쪽 넘김 미리 받기(11/4 동원 '넣기 (권장)' — Speculation Rules · 구글 검색 · Shopify가 씀): 같은 사이트 쪽 링크에 마우스를 올리거나 누르기 시작하면 그 쪽 HTML을 미리 받아 둠(moderate).
+# 미리 '그리기'(prerender)가 아니라 '받기'(prefetch) — 그리기는 원형 전환(cto) · 문 장면 · 들어오는 장면이 손님이 보기 전에 끝나 버림. 받기는 스크립트를 돌리지 않아 통계 · 동의에도 닿지 않음.
+# 지원: 크롬 · 엣지 · 안드로이드 크롬 · 사파리는 받기를 만드는 중(2026-05 WebKit 트렁크) — 모르는 브라우저는 이 줄을 그냥 넘김. 파일(점 있는 주소) · 새 탭 · 내려받기는 뺌
+SPEC_RULES = ('<script type="speculationrules">' + json.dumps({"prefetch": [{"where": {"and": [{"href_matches": "/*"}, {"not": {"href_matches": "/*.*"}},
+              {"not": {"selector_matches": "[target=_blank], [download]"}}]}, "eagerness": "moderate"}]}) + "</script>")
 
 # 쪽 나누기(10/31 동원 "랜딩페이지는 내 소개를 넣고, 다른 시집, 인스타그램, 유튜브 이런 것들은 따로 페이지를 분리 … 연락페이지도 따로 빼는 게 좋다고 생각해"
 # · 버튼 '같은 도메인 아래 주소 (권장)' · "지금 구조 만들어"): 쪽 열쇠(주소 폴더) → 그 쪽에 담는 칸 id, 첫째가 그 쪽 맨 위 칸. "" = 첫 화면(소개)
@@ -1765,6 +1770,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <link rel="manifest" href="{"/" + lang + "/" if tr_ else "/"}manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="NAM DONGWON">
 {HEAD_JS if bpg else HEAD_JS_PLAIN}
+{SPEC_RULES}
 {preload if bpg else ""}<link rel="stylesheet" href="{P}assets/style.css">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>{crumb}
 </head>
