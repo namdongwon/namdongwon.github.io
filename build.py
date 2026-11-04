@@ -2194,11 +2194,23 @@ def main():
         (ASSETS / "img/photos" / f'{Path(p["file"]).stem}.{x}').write_bytes(data)
         save_jpg(psrc(p), ASSETS / "img/photos/thumb" / (Path(p["file"]).stem + ".jpg"), 240, quality=72)
         for f in (psrc(p), *p.get("kids", [])):  # 흐르는 벽 작은 판 — 11/4 동원 '① 하기 (권장)': WebP 72 두 벌(480 · 휴대폰 360) — 전엔 480px JPEG 72(73장 3.0MB)
-            im = ImageOps.exif_transpose(Image.open(f)).convert("RGB")  # 사진 속 정보(위치 등)는 남기지 않음
+            # 디스크 저장(11/4 점심 QA — 빌드마다 147장을 새로 구워 5.5초 · 관리 화면 미리 보기가 3초 → 14.5초): 원본 지문으로 .cache/wall에 두고 같으면 그대로(photo_pick과 같은 꼴)
             (ASSETS / "img/photos/wall").mkdir(parents=True, exist_ok=True)
+            wc, im = HERE / ".cache/wall", None
+            key = hashlib.sha1(Path(f).read_bytes() + b"|wall72-v1").hexdigest()[:20]
             for w, sfx in ((480, ""), (360, "-360")):
+                out, hit = ASSETS / "img/photos/wall" / f"{Path(f).stem}{sfx}.webp", wc / f"{key}-{w}.webp"
+                if hit.exists():
+                    out.write_bytes(hit.read_bytes())
+                    continue
+                if im is None:
+                    im = ImageOps.exif_transpose(Image.open(f)).convert("RGB")  # 사진 속 정보(위치 등)는 남기지 않음
                 im2 = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS) if im.width > w else im
-                im2.save(ASSETS / "img/photos/wall" / f"{Path(f).stem}{sfx}.webp", "WEBP", quality=72, method=6)
+                b = io.BytesIO()
+                im2.save(b, "WEBP", quality=72, method=6)
+                wc.mkdir(parents=True, exist_ok=True)
+                hit.write_bytes(b.getvalue())
+                out.write_bytes(b.getvalue())
         for k in p.get("kids", []):  # 게시물 안 사진(10/25 ⑤ A) — instagram.py가 1080px로 줄여 받아 둔 JPEG, WebP 80이 더 작으면 WebP로(11/2)
             (ASSETS / "img/photos/post").mkdir(parents=True, exist_ok=True)
             x, data = photo_pick(k, keep=True)
