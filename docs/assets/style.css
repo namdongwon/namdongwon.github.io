@@ -289,6 +289,7 @@ html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:
 ::highlight(pg){color:var(--bg);background-color:var(--ink)}#palette .pal{cursor:default}  
 #palette .pk{margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted)}
 #poem .pbr{margin-top:22px;font:400 calc(15px * var(--fs))/1.7 var(--serif);color:var(--ink)}  
+@media (max-width:767px){#poem{margin-top:30svh}#poem .pbr{margin-bottom:20svh}}  
 .bio{margin-top:22px;font:calc(16px * var(--fs))/1.9 var(--body)}  
 .tagl{margin-top:12px;font:calc(14px * var(--fs))/1.6 var(--body);color:var(--muted);text-wrap:balance;word-break:keep-all}  
 .years{list-style:none;margin-top:30px;border-top:1px solid var(--rule)}

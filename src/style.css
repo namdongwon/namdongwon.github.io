@@ -310,6 +310,7 @@ html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:
 ::highlight(pg){color:var(--bg);background-color:var(--ink)}#palette .pal{cursor:default}  /* 손을 댄 글자(11/4) */
 #palette .pk{margin-top:12px;font:300 11px/1.6 var(--sans);color:var(--muted)}
 #poem .pbr{margin-top:22px;font:400 15px/1.7 var(--serif);color:var(--ink)}  /* 「탁본」 아래 다리 한 줄 '나머지 쉰아홉 편은 종이 위에 있습니다.'(10/29 동원 'A 시집 칸 통째로' — 새 눈 비평 고침 1, 「탁본」 한 장 끝 화면과 같은 말) — 이어서 책 카드의 교보 단추 · 팔레트 끝 '「탁본」 읽기 ↓'(10/28)는 시가 위로 가서 뺌 */
+@media (max-width:767px){#poem{margin-top:30svh}#poem .pbr{margin-bottom:20svh}}  /* 「탁본」 앞뒤 여백(11/4 동원 'A 앞 30 · 뒤 20svh' — 탁본여백시안_v1 · Wendy Andrade · LRB): 휴대폰에서 책 단추와 시를 떼어 시가 홀로 도착 · 칸 바깥 여백이라 「탁본」 읽기 ↓로 오면 제목이 맨 위에 · 컴퓨터는 책 카드가 옆에 따라와 그대로 */
 .bio{margin-top:22px;font:16px/1.9 var(--body)}  /* 휴대폰 소개 · 시집 소개 · 연락 첫 글은 시 본문과 같은 16px(10/27 숨 재기 8, 동원 'A 16px' — 전 15–15.5px) */
 .tagl{margin-top:12px;font:14px/1.6 var(--body);color:var(--muted);text-wrap:balance;word-break:keep-all}  /* 소개 이름 아래 한 문장(10/25 제안 ③ — 첫 화면 라벨에서 옮김) */
 .years{list-style:none;margin-top:30px;border-top:1px solid var(--rule)}
