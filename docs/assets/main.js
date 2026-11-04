@@ -1043,6 +1043,30 @@
     };
     close.addEventListener("click", shut);
     addEventListener("keydown", ev => { if (ev.key === "Escape") { if (open) viaKey = true; shut(); } });
+    // 2차 ④ 맨 위에서 아래로 끌면 시트가 손을 따라 내려가고 120px 넘으면 닫힘, 덜 끌면 제자리(11/4 동원 'A 끌면 닫힘' — 갤러리UX열_v1 14 · 사진 보기와 같은 손짓 · drasa.uk 곡선)
+    // 시를 내려 읽는 스크롤과 부딪치지 않게: 시트가 맨 위일 때 아래로 당기는 것만 — 터치 이벤트로 받아 그때만 스크롤을 막음
+    let sy0 = null, sdy = 0;
+    sheet.addEventListener("touchstart", e => { sy0 = open && sheet.scrollTop <= 0 && e.touches.length === 1 ? e.touches[0].clientY : null; sdy = 0; }, { passive: true });
+    sheet.addEventListener("touchmove", e => {
+      if (sy0 == null) return;
+      sdy = e.touches[0].clientY - sy0;
+      if (sdy <= 0) { if (sdy < -8) sy0 = null; return; }  // 위로 쓸면 시 읽기 스크롤
+      e.preventDefault();
+      sheet.style.transition = "none";
+      sheet.style.transform = `translateY(${sdy}px)`;
+    }, { passive: false });
+    const sEnd = () => {
+      if (sy0 == null) return;
+      sy0 = null;
+      if (sdy > 120) { shut(); return; }
+      if (sdy > 0) {
+        sheet.style.transition = "transform .3s cubic-bezier(.22,1,.36,1)";
+        sheet.style.transform = "translateY(0%)";  // 열 때 자리(898줄과 같은 값) — 빈 값이면 CSS 기본 102%로 내려가 버림
+        setTimeout(() => { sheet.style.transition = ""; }, 320);
+      }
+    };
+    sheet.addEventListener("touchend", sEnd);
+    sheet.addEventListener("touchcancel", sEnd);
     // 간직한 뒤(10/27 끝 화면 A) — '간직하기' 자리를 교보 단추로(나가는 길은 사기 · 닫기 둘). 포커스가 간직하기에 있었으면 교보 단추로 옮김
     const kept = () => {
       if (!kb || !open) return;
