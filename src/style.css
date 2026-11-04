@@ -871,14 +871,14 @@ html.sr-on{overflow:hidden}
 @media (min-width:768px){.nxp{display:flex;justify-content:flex-end;max-width:none;margin:56px auto 8px;padding:0 64px;box-sizing:content-box}.nxp a{width:calc(50% - 36px)}}
 @media (hover:hover){.nxp a:hover{background:var(--ph)}}
 .foot{padding:0 20px}
-.foot .colo{margin:0 auto;padding-top:64px;border-top:1px solid var(--rule);text-align:center}.foot .fcols{max-width:1120px;margin-left:auto;margin-right:auto}  /* 위 줄 · 아래 띠 · 다음 쪽 카드는 맨 위 띠와 같은 양옆 64px까지, 네 단만 가운데 1120px(11/3 동원 '푸터 띠 … 꽉 차게' → 목업 푸터꽉차게시안_v1 'A 줄 · 띠만 꽉 (권장)') */
+.foot .colo{margin:0 auto;padding-top:64px;border-top:1px solid var(--rule);text-align:left}.foot .fcols{max-width:1120px;margin-left:auto;margin-right:auto}  /* 위 줄 · 아래 띠 · 다음 쪽 카드는 맨 위 띠와 같은 양옆 64px까지, 네 단만 가운데 1120px(11/3 동원 '푸터 띠 … 꽉 차게' → 목업 푸터꽉차게시안_v1 'A 줄 · 띠만 꽉 (권장)') */
 .fcols{display:grid;gap:36px}
-.fh{margin:0 0 16px;font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  /* 단 이름 — '차례' · '지난 편'과 같은 칸 머리 */
+.fh{margin:0 0 14px;font:600 12px/1.33 var(--sans);letter-spacing:0;color:var(--ink)}  /* 11/4 밤 바닥글 정갈 A(동원 'A 애플 결' — 애플 실측 고딕 12px · 단 이름 진한 먹 · 왼쪽 맞춤) · 전엔 11px 흐린 먹 · 가운데 */  /* 단 이름 — '차례' · '지난 편'과 같은 칸 머리 */
 .fcols ul{list-style:none;margin:0;padding:0}
-.fcols li{font:14px/2 var(--body);color:var(--ink)}
+.fcols li{font:400 13px/1.35 var(--sans);color:var(--muted)}.fcols li+li{margin-top:11px}  /* 정갈 A — 고딕 13px · 줄 사이 29px(애플 12px · 26px · 이솝 14px · 24px 실측 사이) · 옅은 먹(전엔 명조 14px/2 먹) */
 .fcols li.tx{margin-top:4px;font:300 11px/1.6 var(--sans);color:var(--faint)}
 .fcols .cz-open{padding:0;border:0;background:none;font:inherit;color:inherit;cursor:pointer}
-.colo .ctl{display:inline-grid;margin-top:0;text-align:left}
+.foot .colo .ctl{display:grid;grid-template-columns:52px auto;column-gap:12px;row-gap:16px;align-items:center;margin-top:0;font:300 12px/1.4 var(--sans);text-align:left}.foot .colo .mot small{display:block;margin:6px 0 0;font-size:11px}.foot .colo .ctl .thm button:first-child{margin-left:-6px}  /* 설정 칸 — 이름 52px · 단추 줄을 표처럼 맞춤 · 움직임 풀이는 스위치 아래 줄(정갈 A — 전엔 옆으로 넘쳤음) */
 .fmark{margin-top:64px}
 .fmark .dm{font:400 11px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--ink)}  /* 표장 한 벌(11/3 UX 점검 ⑤ → 목업 표장두벌시안_v1 'A 바닥글을 위에 (권장)') — 맨 위 띠 NAM DONGWON과 같은 고딕 400 · 자간 0.3em · 먹(전엔 300 · 0.2em · 흐린 먹) */
 .ficons{display:flex;justify-content:center;gap:16px;margin:36px 0 0;padding:0;list-style:none}
@@ -889,6 +889,7 @@ html.sr-on{overflow:hidden}
 @font-face{font-family:"JPN";src:url("fonts/ndw-sans-jp-name.woff2") format("woff2");font-weight:300;font-display:swap;unicode-range:U+65E5,U+672C,U+8A9E}
 .lng a[lang="ja"]{font-family:"JPN",var(--sans)}  /* 한국어 · 영어판 바닥글의 '日本語' — 일본어판과 같은 고딕 가늘게(11/3 목업 'A 일본어판 고딕 (권장)') · 세 글자만 1.1KB · 그 글자가 그려질 때만 받음 */
 .fbar .lng [aria-current]{color:var(--ink)}
+@media (max-width:767px){.fcols{grid-template-columns:1fr 1fr;gap:40px 20px}.fcols>div:last-child{grid-column:1/-1}}  /* 휴대폰 두 단 · 설정은 한 줄 통째(정갈 A) */
 @media (min-width:768px){.foot{padding:0 64px}.fcols{grid-template-columns:repeat(4,1fr);gap:30px}.fbar{padding-bottom:30px}}
 /* 맨 위 띠 오른쪽 찾기 · 연락하기(10/31 메뉴를 가운데로 — 메뉴 밖 묶음) · 휴대폰은 메뉴와 사이 구분선(전엔 언어 단추 앞) → 11/2 구분선 뺌 */
 .top .act a{position:relative}  /* 누르는 자리(::before)가 연락하기 상자 기준으로 — 없으면 띠 전체 기준이라 컴퓨터에서 옆으로 6px 넘쳤음(실측) */
@@ -1096,7 +1097,7 @@ html.cz-on{overflow:hidden}
   .ficons a:hover{transform:translateY(-4px) scale(1.03)}  /* ⑤ 바닥글 둥근 아이콘 — 4px 떠오름 · 103% */
   .wall .wt:hover::after,.wall .wt:focus-visible::after{opacity:1;transform:none}  /* ⑥ 사진 위 ↗ — 누르면 크게 */
   /* ③ 메뉴는 다른 이름을 옅게 하지 않음(11/4 동원 '마우스 오버시 굳이 다른 것들 흐려지게 할 필요 없을 거 같아') — 바닥글 단만 */
-  .fcols ul:hover li:not(:hover) :is(a,.cz-open){opacity:.4}
+  /* 바닥글 단도 다른 줄을 옅게 하지 않음(11/4 밤 정갈 A — 메뉴와 같이) */
 }
 @keyframes wopen{from{opacity:0;transform:scale(.98);filter:blur(4px)}}
 .srch:not([hidden]),.cz-box:not([hidden]){animation:wopen .22s var(--e2)}  /* ④ 찾기 · 동의 창 열림 */
