@@ -1888,6 +1888,19 @@ def page_404(site, ja=True):
 
 # 틈 점검(11/4 — 10/28 미뤄 둔 일본 브랜드 디테일 ④ · 새 후보 2차 ③): 만든 쪽 글에서 손으로 놓치기 쉬운 틈을 빌드마다 훑어 '알림'만(쪽은 그대로).
 # ① 바닥글 © 연도가 올해보다 옛 해 ② 쪽수 범위에 '-'(→ '–') ③ 『』「」〈〉《》 짝이 안 맞음 ④ 한 낱말뿐인 그림 대체 글 ⑤ 견본 낱말(lorem · TODO · 0000 · XXX)
+def brace_check():
+    # 괄호 점검(11/4 점심 뒤 — 벽 768 블록의 닫는 괄호가 빠져 그 아래 손 반응 아홉 · 다섯이 컴퓨터에서만 걸렸음): style.css는 @media 안 규칙을 늘 들여 씀 →
+    # 블록 안(깊이 1 이상)에 들여 쓰지 않은 규칙 줄이 있으면 '닫는 괄호가 빠졌을 수 있음'으로 알림(첫 자리 하나)
+    depth, hit = 0, None
+    for i, l in enumerate((HERE / "src/style.css").read_text(encoding="utf-8").split("\n"), 1):
+        s = re.sub(r"/\*.*?\*/", "", l)
+        if depth > 0 and hit is None and s[:1] not in ("", " ", "}", "@", "\t") and "{" in s:
+            hit = i
+        depth += s.count("{") - s.count("}")
+    if hit or depth:
+        print(f"알림: 괄호 점검 — style.css {hit or '끝'}줄 근처에서 @media 블록이 닫히지 않은 채 규칙이 이어짐(깊이 {depth}) — 닫는 괄호를 확인할 것")
+
+
 def gap_check():
     from datetime import date
     yr, hits = date.today().year, []
@@ -2300,6 +2313,7 @@ def main():
         shutil.copy2(CONTENT / "CNAME", DOCS / "CNAME")
 
     gap_check()
+    brace_check()
     scale_check()  # 맨 끝 '합계' 줄 앞에(시험 묶음이 끝 줄을 읽음)
 
     # 무게 보고
