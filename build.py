@@ -1695,6 +1695,10 @@ def render(site, poem, videos, photos, lang="ko"):
         PP = R + ("../" if tr_ else "")  # docs 맨 위(assets · 아이콘)까지
         kp = f"{k}/" if k else ""
         url = f"{base}{'/' + lang if tr_ else ''}/{kp}"
+        # 검색 결과 이동 경로(11/4 동원 '④ 넣기 (권장)' — Schema.org BreadcrumbList · 구글 결과에 'namdongwon.com › 시집'): 첫 화면(이름) › 이 쪽 — 첫 화면은 없음
+        crumb = ("" if not k else '\n<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": S["name"], "item": f"{base}{'/' + lang if tr_ else ''}/"},
+            {"@type": "ListItem", "position": 2, "name": L["nav"][("me", "poem", "photo", "video", "contact", "guestbook").index(top_of[k])], "item": url}]}, ensure_ascii=False) + "</script>")
         bpg = k == "book"
 
         def link(pg):  # 같은 판의 쪽 주소 — 이 쪽에서 본 상대 주소
@@ -1761,7 +1765,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <meta name="apple-mobile-web-app-title" content="NAM DONGWON">
 {HEAD_JS if bpg else HEAD_JS_PLAIN}
 {preload if bpg else ""}<link rel="stylesheet" href="{P}assets/style.css">
-<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
+<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>{crumb}
 </head>
 <body>
 {door if bpg else ""}
