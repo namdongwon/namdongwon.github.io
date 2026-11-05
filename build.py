@@ -1108,6 +1108,9 @@ def render(site, poem, videos, photos, lang="ko"):
     og_img = (f"og-book-{lang}.jpg" if tr_ else "og-book.jpg") if card else (f"og-{lang}.jpg" if tr_ else "og.jpg")
     og_title = L["og_book_title"].format(title=book["title"], name=S["name"]) if card else title
     og_desc = L["og_book_desc"] if card else S["description"]  # 책 카드 기간 설명은 그림 · 제목에 없는 사실만(10/27 밤 '이대로 넣어' — 카톡에서 책 제목이 세 번 겹쳤음)
+    # 검색 미리 보기(11/5 동원 백 오피스 'A Yoast 꼴 (권장)'): content/seo.json 쪽마다 제목 · 설명 — 채운 칸만 <title> · meta description · og에, 빈 칸은 지금 값 그대로
+    # 한국어는 item.title · desc, 옮긴 판은 item[lang]. 책 카드 기간(card)의 첫 화면 · 시집 og는 책 카드가 먼저
+    seo = {x["path"]: (x if not tr_ else x.get(lang, {})) for x in (load("seo.json").get("items", []) if (CONTENT / "seo.json").exists() else []) if x.get("path")}
     links = [l for l in S["links"] if l["url"]]
     # 구조화 데이터(10/27 점검 남은 것 가5): 사람 + 사이트 이름(검색 결과 윗줄) + 책. 값 · ISBN은 넣지 않음(10/24 동원 "값과 ISBN은 지금은 넣지 말자")
     me, kb = f"{base}/#me", site["book"]
@@ -1749,6 +1752,13 @@ def render(site, poem, videos, photos, lang="ko"):
         oimg, otitle, odesc = (og_img, og_title, og_desc) if k in ("", "book") else (f"og-{lang}.jpg" if tr_ else "og.jpg", ptitle, S["description"])
         if k in OG_PAGES:  # 쪽마다 공유 카드(11/4) — 그 쪽 그림 · 그 쪽 한 줄
             oimg, odesc = (f"og-{k}-{lang}.jpg" if tr_ else f"og-{k}.jpg"), og_page_text(site, photos, lang, k)[1]
+        so = seo.get(f"/{kp}", {})
+        stitle, sdesc = (so.get("title") or "").strip(), (so.get("desc") or "").strip()
+        desc = sdesc or S["description"]
+        if stitle:
+            tab = stitle
+        if not (card and k in ("", "book")):
+            otitle, odesc = stitle or otitle, sdesc or odesc
         sidx = json.dumps([[*x[:3], go(x[3]), *x[4:]] for x in items], ensure_ascii=False).replace("</", "<\\/")
         body = "".join(sec[s] for s in PAGES[k])
         # 쪽 끝 다음 쪽 카드(11/3 동원 '다정한 UX 7가지' ② → 목업 쪽끝다음걸음시안_v1 'B 다음 쪽 카드' → "글자 크기를 손봐야" v2 → "크기가 좀 큰 거 같아" v3 'C1 명조 18 (권장)'):
@@ -1762,7 +1772,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{e(tab)}</title>
-<meta name="description" content="{e(S["description"])}">{"" if tr_ else verify_tags(site)}
+<meta name="description" content="{e(desc)}">{"" if tr_ else verify_tags(site)}
 <link rel="canonical" href="{e(url)}">
 <link rel="alternate" hreflang="ko" href="{e(base)}/{kp}">
 <link rel="alternate" hreflang="en" href="{e(base)}/en/{kp}">
