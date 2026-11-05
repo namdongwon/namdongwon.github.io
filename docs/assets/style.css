@@ -3,11 +3,11 @@
 
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=91573bbb94") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=c7af7c23a2") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=f4c1add245") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=635f5d4b9f") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=dda607ef5c") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=18cfba67fa") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=1b9e2f33b3") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=d16909d351") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=0636ee8527") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=9444a107d2") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -1047,6 +1047,14 @@ html.cz-on{overflow:hidden}
 .fog{position:fixed;left:0;right:0;z-index:8;pointer-events:none;opacity:0;transition:opacity .35s ease-out,transform .25s var(--e2)}.fog.t{top:0;height:96px;transform:translateY(var(--toph,56px));background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 100%,transparent) 0%,color-mix(in srgb,var(--bg) 97%,transparent) 10%,color-mix(in srgb,var(--bg) 90%,transparent) 20%,color-mix(in srgb,var(--bg) 78%,transparent) 30%,color-mix(in srgb,var(--bg) 65%,transparent) 40%,color-mix(in srgb,var(--bg) 50%,transparent) 50%,color-mix(in srgb,var(--bg) 35%,transparent) 60%,color-mix(in srgb,var(--bg) 22%,transparent) 70%,color-mix(in srgb,var(--bg) 10%,transparent) 80%,color-mix(in srgb,var(--bg) 3%,transparent) 90%,color-mix(in srgb,var(--bg) 0%,transparent) 100%)}.fog.t.up{transform:none}.fog.b{bottom:0;height:91px;background:linear-gradient(to top,color-mix(in srgb,var(--bg) 100%,transparent) 0%,color-mix(in srgb,var(--bg) 97%,transparent) 10%,color-mix(in srgb,var(--bg) 90%,transparent) 20%,color-mix(in srgb,var(--bg) 78%,transparent) 30%,color-mix(in srgb,var(--bg) 65%,transparent) 40%,color-mix(in srgb,var(--bg) 50%,transparent) 50%,color-mix(in srgb,var(--bg) 35%,transparent) 60%,color-mix(in srgb,var(--bg) 22%,transparent) 70%,color-mix(in srgb,var(--bg) 10%,transparent) 80%,color-mix(in srgb,var(--bg) 3%,transparent) 90%,color-mix(in srgb,var(--bg) 0%,transparent) 100%)}.fog.on{opacity:1}@media print{.fog{display:none}}  
 .totop{border:1.5px solid transparent!important;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box!important}  
 @media (hover:hover){.totop:hover{background:linear-gradient(var(--ink),var(--ink)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box!important}}  
+
+.spin{display:inline-block;width:22px;height:22px;box-sizing:border-box;border:1.5px solid transparent;border-radius:50%;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) .75turn,var(--line) 0) border-box;vertical-align:middle;opacity:0;animation:spin .8s linear infinite,spin-in 0s .3s forwards;pointer-events:none}
+@keyframes spin{to{transform:rotate(1turn)}}@keyframes spin-in{to{opacity:1}}
+.pvs figure .spin{position:absolute;left:50%;top:50%;translate:-50% -50%}.pvs figure.ok .spin{display:none}
+.vbox .vsp{position:absolute;left:50%;top:50%;z-index:2;translate:-50% -50%}
+.msg .msp{width:14px;height:14px;margin:-2px 8px 0 0}
+.navsp{position:fixed;left:50%;bottom:36px;z-index:1000;translate:-50% 0}  
+@media (prefers-reduced-motion:reduce){.spin{animation:spin-in 0s .3s forwards}}:where(:root[data-motion="reduce"]) .spin,:where(:root[data-motion="reduce"]).spin{animation:spin-in 0s .3s forwards}:root[data-motion="reduce"] .spin{animation:spin-in 0s .3s forwards}
 .pv.fromt{transform-origin:var(--ox) var(--oy);transform:scale(.4)}.pv.fromt.on{transform:none}  
 @view-transition{navigation:auto}  
 :root.thx::view-transition-old(root),:root.thx::view-transition-new(root){animation-duration:.36s;animation-timing-function:ease}  

@@ -11,6 +11,8 @@
   // 그림 자리는 이 스크립트가 있는 assets 폴더 기준(영어판은 한 칸 아래 폴더라 "assets/…"로는 못 찾음)
   const UI = (() => { try { return JSON.parse(document.getElementById("ui").textContent); } catch (x) { return {}; } })();
   const uiText = (k, d, v = {}) => (UI[k] || d).replace(/\{(\w+)\}/g, (m, n) => (n in v ? v[n] : m));
+  // 불러오는 중 고리(11/6 동원 "로딩중인 게 있다면 이런 표시" → 목업 불러오는중표시시안_v1 → "B로 가자" — '맨 위로' · 당겨서 새로 고침과 같은 먹 고리) — 화면 읽기에는 숨김(곁의 글 · 상태 줄이 알림)
+  const spinEl = (extra = "") => { const x = document.createElement("span"); x.className = "spin" + (extra ? " " + extra : ""); x.setAttribute("aria-hidden", "true"); return x; };
   const ASSET = document.currentScript ? new URL("./", document.currentScript.src).href : "assets/";
   // 화면에 한 번 들어오면 fn을 부르고 그만 봄
   const once = (els, fn, opt) => {
@@ -586,11 +588,14 @@
     btn.addEventListener("click", async ev => {
       const viaKey = ev.detail === 0;
       btn.disabled = true;
+      const sp = spinEl("vsp");  // 불러오는 중 고리 — 재생기가 준비되면(onReady) 걷음 · 못 불러와도 걷음
+      vbox.append(sp);
       try {
         await api();
       } catch {  // 유튜브를 못 불러오면 유튜브로 가는 링크로 되돌림(한 번 더 누르면 유튜브에서 열림)
         link.append(thumb);
         btn.replaceWith(link);
+        sp.remove();
         return;
       }
       const spot = document.createElement("div");
@@ -603,6 +608,7 @@
         playerVars: { autoplay: 1, playsinline: 1, rel: 0 },
         events: {
           onReady: e => {
+            sp.remove();
             const f = e.target.getIframe();
             f.title = title;
             if (viaKey) f.focus({ preventScroll: true });
@@ -689,8 +695,10 @@
         // 첫 장만 그 사진의 설명, 둘째 장부터는 '게시물 사진 2 / 20' — 첫 장 설명을 되풀이하면 다른 사진을 설명하게 됨(10/27 점검 남은 것 가4 · 장마다 설명은 출간 뒤)
         img.alt = k ? uiText("post_photo", "게시물 사진 {k} / {n}", { k: k + 1, n }) : `${alt} (1 / ${n})`;
         if (sim.lang && !k) img.lang = sim.lang;  // 영어판의 한국어 대체 글은 한국어로(띠의 사진과 같게)
-        img.addEventListener("load", () => pin(f));
-        f.append(img);
+        img.addEventListener("load", () => { f.classList.add("ok"); pin(f); });
+        img.addEventListener("error", () => f.classList.add("ok"));
+        f.append(img, spinEl());  // 불러오는 중 고리(11/6 'B 둥근 고리') — 0.3초 넘게 걸릴 때만 보임(CSS) · 사진이 오면 숨김
+        if (img.complete && img.naturalWidth) f.classList.add("ok");
         view.append(f);
       });
       foot.innerHTML = pcaps[i] ? pcaps[i].innerHTML : "";
@@ -1433,6 +1441,7 @@
     gbf.addEventListener("submit", async ev => {
       ev.preventDefault();
       gbMsg.textContent = uiText("sending", "보내는 중…");
+      gbMsg.prepend(spinEl("msp"));  // 불러오는 중 고리 — 다음 글로 바뀌면 함께 사라짐
       gbSend.disabled = true;
       const folded = fold();
       try {
@@ -1944,6 +1953,18 @@
       if (!ev.detail) { const f = document.querySelector("header.top a"); if (f) f.focus({ preventScroll: true }); }
     });
   }
+
+  // 느린 쪽 이동(11/6 'B') — 사이트 안 다른 쪽으로 가는 링크를 누르고 0.4초가 지나도 새 쪽이 안 오면 화면 아래 가운데에 고리 · 새 탭 · 수정 키 · 같은 쪽 안(#)은 그대로 · 뒤로 오면(bfcache) 걷음
+  let navT = 0, navS = null;
+  document.addEventListener("click", ev => {
+    const a = ev.target.closest && ev.target.closest("a[href]");
+    if (!a || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || a.target === "_blank" || a.hasAttribute("download")) return;  // 맨 위 띠 메뉴는 원 전환이 누름을 먼저 가져가도(preventDefault) 결국 넘어가므로 그대로 셈
+    const to = new URL(a.href, location.href);
+    if (to.origin !== location.origin || (to.pathname === location.pathname && to.search === location.search)) return;
+    clearTimeout(navT);
+    navT = setTimeout(() => { if (!navS) { navS = spinEl("navsp"); document.body.append(navS); } }, 400 + (H.classList.contains("cto") || a.closest("header.top") ? 550 : 0));  // 원 전환(0.55초) 뒤부터 셈
+  });
+  addEventListener("pageshow", () => { clearTimeout(navT); if (navS) { navS.remove(); navS = null; } });
 
   // 연결 끊김 한 장(11/5 'A' — sw.js): 쪽을 열다 연결이 없으면 회색 오류 대신 우리 모양 안내 · 받아 두는 것은 없음
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
