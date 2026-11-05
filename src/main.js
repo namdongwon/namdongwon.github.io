@@ -629,7 +629,8 @@
   if (pv && postsEl) {
     const posts = JSON.parse(postsEl.textContent), view = pv.querySelector(".pvs"), cnt = pv.querySelector(".pvc"), foot = pv.querySelector(".pvf"), x = pv.querySelector(".pvx");
     const pcaps = [...document.querySelectorAll("#photo .cap")], prev = pv.querySelector(".pvp"), next = pv.querySelector(".pvn");
-    let from = null, n = 0;
+    let from = null, n = 0, cur = 0;
+    const pid = i => { const a = pcaps[i] && pcaps[i].querySelector('a[href*="instagram.com/p/"]'), m = a && /\/p\/([\w-]+)/.exec(a.href); return m ? m[1] : String(i); };
     const others = on => [...document.body.children].forEach(el => { if (el !== pv && el.tagName !== "SCRIPT") el.inert = on; });
     // 11/4 동원 "화살표가 너무 먼 거 같아 … 바로 화살표 옆에 두고, 정확히 몇장 남았는지 표현하지말고 … 아래에 동그라미로" (인스타그램 사진 보기 그대로):
     // 넘기기 단추는 보이는 사진 안쪽 가장자리에, 몇째 장은 숫자 칩 대신 사진 아래 가운데 점(옅은 점 · 지금 장만 흰 점) — 화면 읽기는 맨 위 '2 / 20' 그대로
@@ -681,6 +682,27 @@
         view.append(f);
       });
       foot.innerHTML = pcaps[i] ? pcaps[i].innerHTML : "";
+      cur = i;
+      // ⑬ 사진 한 장 링크(11/5 동원 'B 아래 줄 링크 복사 (권장)' — 목업 사진한장링크시안_v1): '게시물 ↗' 옆 글 단추 · 주소는 photo/#v{게시물}-{장}
+      // 휴대폰은 공유 시트, 없으면 복사하고 2초 동안 '링크를 복사했습니다'(쪽 공유 단추와 같은 손) · 받은 사람은 그 사진이 열린 채로 ·
+      // 게시물은 차례 번호가 아니라 인스타그램 게시물 주소의 끝 조각(/p/…/)으로 — 새 게시물이 앞에 붙어도 나눈 링크가 같은 사진을 엶(없으면 차례 번호)
+      const fa = [...foot.querySelectorAll("a")].pop();
+      if (fa) {
+        const lk = document.createElement("button");
+        lk.type = "button";
+        lk.className = "pvl";
+        lk.textContent = uiText("pv_link", "링크 복사");
+        fa.after(document.createTextNode(" · "), lk);
+        lk.addEventListener("click", async ev => {
+          ev.stopPropagation();
+          const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
+          const url = ((document.querySelector('link[rel="canonical"]') || {}).href || location.origin + location.pathname).split("#")[0] + `#v-${pid(cur)}-${k + 1}`;
+          if (navigator.share && matchMedia("(hover: none)").matches) { try { await navigator.share({ url }); } catch (x) { /* 닫음 */ } return; }
+          try { await navigator.clipboard.writeText(url); } catch (x) { return; }
+          lk.textContent = uiText("shared", "링크를 복사했습니다");
+          setTimeout(() => { lk.textContent = uiText("pv_link", "링크 복사"); }, 2000);
+        });
+      }
       dots.textContent = "";
       list.forEach(() => dots.append(document.createElement("i")));
       if (btn && btn.classList.contains("wt")) {  // ⑧ 누른 사진 자리에서 창이 커지며 열림(11/4 동원 '넣기' — 손반응열_v1 08)
@@ -831,6 +853,13 @@
         step(ev.key === "ArrowRight" ? 1 : -1);
       }
     });
+    const vh = /^#v-([\w-]+)-(\d+)$/.exec(location.hash);  // ⑬ 받은 사진 한 장 링크 — 그 게시물을 그 장에서 열고 주소의 #은 지움(나눈 주소가 다시 나뉘지 않게)
+    const vi = vh ? posts.findIndex((_, i) => pid(i) === vh[1]) : -1;
+    if (vi >= 0) {
+      const b = document.querySelector(`#photo .pop[data-i="${vi}"]`);
+      history.replaceState(history.state, "", location.pathname + location.search);
+      if (b) open(vi, b, Math.min(posts[vi].length - 1, Math.max(0, +vh[2] - 1)));
+    }
   }
 
   // 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기(또는 ⌘K · Ctrl+K)로 흰 한 장을 열고, 빌드가 쪽에 넣은 찾을 거리(#sidx)에서 찾음.
