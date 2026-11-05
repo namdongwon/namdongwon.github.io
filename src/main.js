@@ -925,13 +925,38 @@
       if (act < 0) inp.removeAttribute("aria-activedescendant");
       else { inp.setAttribute("aria-activedescendant", o[act].id); o[act].scrollIntoView({ block: "nearest" }); }
     };
+    // 최근 찾은 말(11/6 동원 "아래에 남겨도 좋겠다 우리 검색어" · 무인양품 검색 창 → "웹은 왼쪽 오른쪽으로 보여달라니까? 앱은 최근 검색어가 위에"):
+    // 넓은 창은 왼쪽 최근 찾은 말 · 오른쪽 추천 두 단, 휴대폰은 추천 위에 칩 한 줄 · 이 기기에만(localStorage srch-recent — 서버로 보내지 않음) · 최근 다섯 ·
+    // 결과로 갈 때 친 글을 남김 · 누르면 그 말로 다시 찾음 · ×로 하나 · '모두 지우기' · 없으면 '최근 찾은 말이 없습니다'(무인양품 꼴) · 인기 검색어는 넣지 않음(검색어를 모아야 해서)
+    const RK = "srch-recent", srh = document.createElement("div"), rc = document.createElement("div"), rec = document.createElement("div");
+    srh.className = "srh"; rc.className = "rc"; rec.className = "sr-rec";
+    lab.before(srh); rec.append(lab, sug); srh.append(rc, rec);
+    const recent = () => { try { const a = JSON.parse(localStorage.getItem(RK) || "[]"); return Array.isArray(a) ? a.filter(x => typeof x === "string").slice(0, 5) : []; } catch (x) { return []; } };
+    const keepR = a => { try { if (a.length) localStorage.setItem(RK, JSON.stringify(a.slice(0, 5))); else localStorage.removeItem(RK); } catch (x) { /* 저장소가 막힌 창 */ } };
+    const remember = q => { q = q.trim().slice(0, 40); if (q) keepR([q, ...recent().filter(x => x !== q)]); };
+    const drawR = () => {
+      const a = recent();
+      rc.innerHTML = `<div class="rc-h"><p class="sr-lab">${esc(uiText("recent_title", "최근 찾은 말"))}</p>` + (a.length ? `<button type="button" class="rc-x">${esc(uiText("recent_clear", "모두 지우기"))}</button>` : "") + "</div>" +
+        (a.length ? '<ul class="rc-l">' + a.map(q => `<li><button type="button" class="rc-q" data-q="${esc(q)}">${esc(q)}</button><button type="button" class="rc-d" data-rm="${esc(q)}" aria-label="${esc(uiText("recent_del", "{q} 지우기", { q }))}"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M5 5l8 8M13 5l-8 8"/></svg></button></li>`).join("") + "</ul>"
+          : `<p class="rc-n">${esc(uiText("recent_none", "최근 찾은 말이 없습니다"))}</p>`);
+    };
+    rc.addEventListener("click", ev => {
+      const d = ev.target.closest(".rc-d, .rc-x");
+      if (!d) return;
+      ev.stopPropagation();
+      keepR(d.classList.contains("rc-x") ? [] : recent().filter(x => x !== d.dataset.rm));
+      drawR();
+      inp.focus();
+    });
+    drawR();
     const run = () => {
       const q = inp.value;
       if (q === lastQ) return;  // 글자가 그대로면(한글 한 글자 마침 등) 다시 그리지 않음 — 고른 줄을 지킴
       lastQ = q;
       const empty = !q.trim(), hits = empty ? [] : find(q), showSug = empty;  // 추천은 빈 칸일 때만 — 찾는 글이 없으면 '결과 없음' 한 줄(11/4 동원 '추천으로 나오거든? 차라리 … 결과 없음' — 노션 꼴 · 전엔 10/28 점검 4로 추천을 함께)
       if (clr) clr.hidden = !q;
-      lab.hidden = sug.hidden = !showSug;
+      lab.hidden = sug.hidden = srh.hidden = !showSug;
+      if (showSug) drawR();
       cnt.hidden = empty || !hits.length;
       cnt.textContent = uiText("search_count", "찾은 것 {n}", { n: hits.length });
       res.innerHTML = hits.map((h, i) => {
@@ -991,7 +1016,7 @@
     srch.querySelector(".x").addEventListener("click", () => shut(true));
     if (clr) clr.addEventListener("click", () => { inp.value = ""; run(); inp.focus(); });
     // 빈 곳을 누르면 닫힘(11/4 동원 '검색에서 빈화면 클릭하면 나가지는 거로') — 누른 곳 · 뗀 곳이 모두 빈 곳일 때만(입력 칸에서 끌어 고르다 밖에서 떼면 그대로)
-    const blank = el => el === srch || (el instanceof Element && el.matches(".srch .in, .sr-none, .sr-lab, .sr-n, .sug, .sr-res, .srch [role=status]"));
+    const blank = el => el === srch || (el instanceof Element && el.matches(".srch .in, .sr-none, .sr-lab, .sr-n, .sug, .sr-res, .srch [role=status], .srh, .rc, .sr-rec, .rc-h, .rc-n, .rc-l"));
     let downBlank = false;
     srch.addEventListener("pointerdown", ev => { downBlank = blank(ev.target); });
     srch.addEventListener("click", ev => { if (downBlank && blank(ev.target)) shut(true); downBlank = false; });
@@ -1016,6 +1041,7 @@
       const a = ev.target.closest("a, button[data-q]");
       if (!a) return;
       if (a.dataset.q) { inp.value = a.dataset.q; run(); inp.focus(); return; }
+      if (res.contains(a)) remember(inp.value);  // 결과로 가는 말만 최근 찾은 말로
       const href = a.getAttribute("href") || "";
       if (!href.startsWith("#") && a.target !== "_blank") {  // 사이트 안 다른 쪽(10/31 쪽 나누기 — book/#toc 등): 창을 닫고 쌓아 둔 기록 칸을 그 쪽 주소로 바꿔 옮김(뒤로 가기는 찾기 전 자리로)
         ev.preventDefault();

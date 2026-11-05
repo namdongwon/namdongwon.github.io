@@ -439,6 +439,24 @@ html.sr-on{overflow:hidden}
 .srch .clr{flex:none;display:grid;place-items:center;width:32px;height:32px;margin:0 -6px 0 0;padding:0;border:0;background:none;color:var(--faint)}.srch .clr svg{width:18px;height:18px}.srch .clr circle{fill:currentColor}.srch .clr path{stroke:var(--bg);stroke-width:1.6;stroke-linecap:round}.srch .clr[hidden]{display:none}@media (hover:hover){.srch .clr:hover{color:var(--muted)}}  /* 친 글 지우기 — 입력 칸 오른쪽 끝 옅은 동그라미 ×(11/4 동원 · iOS · 노션 꼴) · 누르는 자리 32px */
 .srch .x{flex:none;padding:6px 0 6px 8px;border:0;background:none;font:600 12.5px/1 var(--sans);color:var(--muted)}
 .sr-lab{margin-top:30px;font:600 11px/1 var(--sans);letter-spacing:.3em;color:var(--muted)}
+/* 최근 찾은 말(11/6 — 무인양품 검색 창 원리 · 색은 우리 무채색): 휴대폰은 추천 위 칩 한 줄, 넓은 창(768+)은 왼쪽 최근 · 오른쪽 추천 두 단 */
+.rc-h{display:flex;justify-content:space-between;align-items:baseline}.rc .sr-lab{margin-top:30px}
+.rc-x{padding:0;border:0;background:none;font:300 11px/1 var(--sans);color:var(--faint);cursor:pointer}
+.rc-n{margin:16px 0 0;font:300 14px/1.3 var(--sans);color:var(--faint)}
+.rc-l{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.rc-l li{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px}
+.rc-q{padding:8px 0 8px 12px;border:0;background:none;font:400 14px/1 var(--sans);color:var(--ink);cursor:pointer}
+.rc-d{display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;background:none;color:var(--faint);cursor:pointer}
+.rc-d svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round}
+@media (hover:hover){.rc-x:hover,.rc-d:hover{color:var(--ink)}.rc-q:hover{text-decoration:underline;text-underline-offset:4px}}
+@media (min-width:768px){
+  .srch .in{max-width:960px}
+  .srh{display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:start;margin-top:30px}.srh .sr-lab{margin-top:0}  /* 두 단의 머리 줄(최근 찾은 말 · 추천)을 한 높이로 */
+  .rc-l{display:block}.rc-l li{display:flex;justify-content:space-between;border:0;border-bottom:1px solid var(--rule);border-radius:0}
+  .rc-q{flex:1;padding:16px 0;text-align:left;font:400 18px/1.3 var(--serif)}
+  .rc-n{padding:16px 0;border-bottom:1px solid var(--rule)}
+}
+.srh[hidden]{display:none}
 .srch .sug{list-style:none;margin-top:8px}
 .srch .sug a,.srch .sug button{display:flex;width:100%;justify-content:space-between;align-items:baseline;gap:12px;padding:16px 0;border:0;border-bottom:1px solid var(--rule);background:none;text-align:left;font:400 18px/1.3 var(--serif);color:var(--ink)}
 .srch .sug i{flex:none;font:300 11px/1 var(--sans);font-style:normal;color:var(--faint);text-indent:0}
