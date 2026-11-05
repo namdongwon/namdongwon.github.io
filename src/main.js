@@ -642,11 +642,23 @@
       if (pv.hidden) return;
       const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth)), f = view.children[k], img = f && f.querySelector("img");
       if (!img || !img.naturalWidth) return;
-      const r = img.getBoundingClientRect(), fr = f.getBoundingClientRect();
-      wrap.style.setProperty("--il", `${r.left - fr.left}px`);
-      wrap.style.setProperty("--ir", `${fr.right - r.right}px`);
-      wrap.style.setProperty("--ib", `${fr.bottom - r.bottom}px`);
-      wrap.style.setProperty("--im", `${r.top - fr.top + r.height / 2}px`);
+      // 사진 칸(.pvs)이 창보다 좁을 수 있어(⑭) 칸의 자리(vr − wr)를 더함 — 그 장 안에서의 자리는 그대로라 넘기는 동안 흔들리지 않음
+      const r = img.getBoundingClientRect(), fr = f.getBoundingClientRect(), vr = view.getBoundingClientRect(), wr = wrap.getBoundingClientRect();
+      wrap.style.setProperty("--il", `${vr.left - wr.left + r.left - fr.left}px`);
+      wrap.style.setProperty("--ir", `${wr.right - vr.right + fr.right - r.right}px`);
+      wrap.style.setProperty("--ib", `${wr.bottom - vr.bottom + fr.bottom - r.bottom}px`);
+      wrap.style.setProperty("--im", `${vr.top - wr.top + r.top - fr.top + r.height / 2}px`);
+    };
+    // ⑭ 사진 칸 안에서 넘김(11/5 동원 "오른쪽으로 넘길때 너무 크게 된쪽으로 빠진다 딱 사진 칸 안에서 왼쪽으로 넘어가는 느낌으로"):
+    // 넘기는 칸(.pvs)의 폭을 지금 장 사진의 폭으로 줄여 가운데에 — 사진은 그 칸 안에서만 옆으로 밀려 들고 나감(넓은 창에서 화면 끝까지 가로지르지 않음).
+    // 열 때 · 사진이 온 때 · 창 크기가 바뀔 때만 잼(넘기는 동안은 그대로) · 양옆은 휴대폰 20 · 넓은 창 64 띄움
+    const fit = () => {
+      if (pv.hidden || zm.z > 1) return;
+      const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth)), f = view.children[k], img = f && f.querySelector("img");
+      if (!img || !img.naturalWidth) return;
+      const cs = getComputedStyle(f), padV = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom), side = innerWidth >= 768 ? 64 : 20;
+      const w = Math.max(160, Math.min(wrap.clientWidth - side * 2, Math.round((view.clientHeight - padV) * img.naturalWidth / img.naturalHeight)));
+      if (Math.abs(view.offsetWidth - w) > 1) { view.style.width = `${w}px`; view.scrollLeft = k * w; }
     };
     const upd = () => {
       const k = Math.min(n, Math.round(view.scrollLeft / Math.max(1, view.clientWidth)) + 1);
@@ -656,8 +668,8 @@
       place();
     };
     const step = d => view.scrollBy({ left: d * view.clientWidth, behavior: reduce ? "auto" : "smooth" });
-    const pin = () => place();  // 사진이 온 뒤 · 창이 보인 뒤 · 화면 크기가 바뀐 뒤
-    addEventListener("resize", place);
+    const pin = () => { fit(); place(); };  // 사진이 온 뒤 · 창이 보인 뒤 · 화면 크기가 바뀐 뒤
+    addEventListener("resize", pin);
     view.addEventListener("scroll", upd, { passive: true });
     view.addEventListener("scroll", () => {
       const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
@@ -712,12 +724,15 @@
         pv.classList.add("fromt");
       } else pv.classList.remove("fromt");
       pv.classList.remove("bare");  // 열 때는 늘 단추가 보이게
+      pv.classList.add("fit");
+      view.style.width = "";  // 앞 게시물의 폭은 버리고 이 게시물 사진으로 다시 잼(⑭)
       pv.hidden = false;
       H.classList.add("pv-on");
       others(true);
       view.scrollLeft = start * view.clientWidth;
       upd();
       view.querySelectorAll("figure").forEach(pin);  // 이미 받아 둔 사진은 창이 보인 지금 자리를 잼
+      setTimeout(pin, reduce ? 0 : 360);  // 창이 커지며 열리는 0.22초 동안 잰 자리는 비틀려 있어(⑭ 칸 폭을 바꾼 뒤 단추가 옛 자리에 남았음) 다 열린 뒤 한 번 더
       requestAnimationFrame(() => requestAnimationFrame(() => pv.classList.add("on")));
       x.focus();
     };

@@ -1354,6 +1354,12 @@ def render(site, poem, videos, photos, lang="ko"):
         raise SystemExit("문의 폼(contact.formspree_id)은 10/27 B로 쓰지 않기로 함 — 다시 켜려면 동의 두 칸(시안 A)과 처리방침 1 · 2절을 먼저 맞출 것")
     endpoint = ""
     lead = "<br>".join(e(x) for x in c["lead_lines"])
+    # 자주 묻는 질문(11/5 동원 "FAQ를 넣는다고 한다면" → 원고 기준/웹사이트 FAQ 원고_v1.md · 목업 FAQ시안_v1 'A 접힘 (권장)' — 프라다 · 고야드 고객 서비스 꼴):
+    # 연락 칸 오른쪽 메일 · 링크 아래 · 브라우저 접힘 칸(details — 자바스크립트 없이도 열림) · 첫 질문만 펼침 · 찾기(⌘K)로 오면 그 질문이 펼쳐진 채(main.js 깊은 링크)
+    fq = c.get("faq") or []
+    faq = (f'<div class="faq"><h3 class="fqh">{t("faq_title")}</h3>'
+           + "".join(f'<details class="fq" id="fq{i}"{" open" if i == 1 else ""}><summary>{note_html(x["q"], lang)}</summary><p>{note_html(x["a"], lang)}</p></details>' for i, x in enumerate(fq, 1))
+           + '</div>') if fq else ""
     sns = "".join(f'<a href="{e(l["url"])}" target="_blank" rel="noopener">{e(l["name"])} ↗</a>' for l in links)  # 밖으로 나가는 링크는 ↗(10/25 다듬기 가5)
     # 문의 폼(Formspree)을 붙이기 전에는 폼을 접고 인스타그램으로 — 다 쓰고 보낸 뒤에야 '연결 전'을 알게 되지 않게(10/25 다듬기 가4)
     ask = (f'''<form class="ask" data-clarity-mask="true" data-endpoint="{e(endpoint)}" method="post">
@@ -1575,6 +1581,7 @@ def render(site, poem, videos, photos, lang="ko"):
     ix["me"] += [(tg["me"], f'{x["label"]} · {plain(x["text"])}', "", "#me") for x in nw.get("items", []) if x.get("text")]  # 이름표와 글 사이는 가운뎃점(10/28 점검 10 — 글 안의 줄표와 겹쳤음)
     ix["news"] += [(tg["news"], plain(x["text"]), dtxt(x["date"]), f"#n{k}", L["search_news_keys"]) for k, x in enumerate(news, 1)]  # 소식 줄도 '소식 · 새로'로(10/28 사용 편의 점검 ④)
     ix["contact"] += [(tg["contact"], L["label_contact"] if endpoint else L["ask_off"], "", "#contact")] + [(tg["contact"], l["name"], "", l["url"]) for l in links]
+    ix["contact"] += [(tg["contact"], plain(x["q"]), L["faq_title"], f"#fq{i}") for i, x in enumerate(S["contact"].get("faq") or [], 1)]  # 자주 묻는 질문 — 질문 글로 찾고 그 질문으로(펼쳐짐)
     sj = load("search.json") if (CONTENT / "search.json").exists() else {"suggest": []}
 
     def sug_li(x, k):  # 추천 주제 한 줄 — go: 쪽 안 자리 · 'buy'(교보) / q: 그 말로 찾기 · 줄마다 모든 칸, 안 쓰는 쪽은 ""(설계서 7절) · 방향키로 고르는 줄(option, id sg{k})
@@ -1692,7 +1699,7 @@ def render(site, poem, videos, photos, lang="ko"):
     <p class="label">{t("label_contact")}</p>
     <div class="l"><h2 class="h2" id="contact-t">{t("contact_title")}</h2><p class="lead">{lead}</p></div>
     <div class="r">{ask}{mail}
-      <p class="sns">{sns}</p></div>
+      <p class="sns">{sns}</p>{faq}</div>
   </section>
 """,
         "guestbook": f"""  <section id="guestbook" aria-labelledby="guestbook-t">

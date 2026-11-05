@@ -410,6 +410,7 @@ html.pv-on{overflow:hidden}
 .pvs::-webkit-scrollbar{display:none}
 .pvs figure{position:relative;flex:0 0 100%;margin:0;display:flex;align-items:center;justify-content:center;padding:16px 20px;scroll-snap-align:start}
 .pvs img{display:block;max-width:100%;max-height:100%;object-fit:contain}
+.pv.fit .pvs{flex:none;margin:0 auto}.pv.fit .pvs figure{padding-left:0;padding-right:0}  /* ⑭ 사진 칸 안에서 넘김(11/5) — 칸 폭은 main.js가 지금 장 사진 폭으로 · 양옆 띄움은 칸 밖에서 */
 /* 넘기기 단추(10/26 동원 "컴퓨터에서는 확대해도 안 넘어가는 거 같네") — 마우스로 보는 컴퓨터에서만(휴대폰 · 패드는 손으로 밀어 넘김) · 사진 양옆 빈자리에 둥근 선 단추 · 끝 장에서는 흐리게 */
 .pvw{flex:1;min-height:0;position:relative;display:flex}
 .pva{display:none}
@@ -549,6 +550,16 @@ html.sr-on{overflow:hidden}
 .msg{min-height:1.4em;font:300 12.5px/1.5 var(--sans);color:var(--muted)}
 .hp{position:absolute;left:-9999px}
 .sns{margin-top:30px;display:flex;gap:16px;font:300 12.5px/1 var(--sans);color:var(--muted)}
+/* 자주 묻는 질문(11/5 'A 접힘' — 목업 FAQ시안_v1 · 프라다 · 고야드 고객 서비스 꼴): 연락 칸 오른쪽 아래 · 질문은 명조 16 · 답은 고딕 15 옅게 · 줄 사이 가는 선 · +/− */
+.faq{margin-top:64px}
+.fqh{margin:0 0 16px;font:600 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
+.fq{border-top:1px solid var(--rule)}.fq:last-child{border-bottom:1px solid var(--rule)}
+.fq summary{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;list-style:none;font:400 16px/1.5 var(--serif);color:var(--ink);cursor:pointer}
+.fq summary::-webkit-details-marker{display:none}
+.fq summary::after{content:"+";flex:none;font:300 20px/1 var(--sans);color:var(--ink)}.fq[open] summary::after{content:"−"}
+.fq summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.fq p{margin:-4px 0 16px;font:300 15px/1.7 var(--sans);color:var(--muted)}
+@media (hover:hover){.fq summary:hover{text-decoration:underline;text-underline-offset:4px}}
 /* 바닥글: 판권면(10/24 A) — 시집 마지막 쪽 판권면의 틀. 첫 화면에서 세운 책의 마지막 쪽 */
 /* 방명록(10/26 A 같은 글자 목록 — Shu Ding · Manu · 형당의 원리) — 글은 명조 본문, 아래 '이름 · 받은 날' 회색 한 줄, 답은 들여 쓴 회색 '— 남동원'.
    머리 가르는 한 문장 · 폼 앞 '언제' 한 줄 · 동의 둘. 색은 모두 색 낱말(어두운 모드 그대로) */

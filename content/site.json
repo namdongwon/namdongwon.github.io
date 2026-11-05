@@ -781,7 +781,33 @@
     "email": {
       "user": "namdonwon",
       "domain": "gmail.com"
-    }
+    },
+    "faq": [
+      {
+        "q": "시를 SNS나 블로그에 옮겨 적어도 되나요?",
+        "a": "한두 연까지는 출처를 함께 적어 주시면 자유롭게 옮기셔도 됩니다. 출처는 '남동원, 『문을 열고 나오면 살아 있는 것들로 가득 차 있다』'처럼 적어 주세요. 시 전문이나 상업적인 쓰임은 먼저 메일로 연락해 주세요."
+      },
+      {
+        "q": "시를 낭독해 영상으로 올려도 되나요?",
+        "a": "광고나 판매가 없는 낭독이라면 출처를 밝혀 올려 주셔도 됩니다. 결혼식이나 낭독 모임에서 읽으시는 것도 괜찮습니다. 광고 · 판매에 쓰이는 영상은 먼저 연락해 주세요."
+      },
+      {
+        "q": "시집은 어디서 살 수 있나요?",
+        "a": "교보문고 퍼플에서 구하실 수 있습니다."
+      },
+      {
+        "q": "강연 · 협업 · 번역 · 인터뷰 문의는 어디로 하나요?",
+        "a": "위의 메일로 보내 주세요. 제목에 [강연] · [협업]처럼 갈래를 적어 주시면 먼저 확인하고, 사흘 안에 답장드립니다."
+      },
+      {
+        "q": "제 시를 읽고 조언해 주실 수 있나요?",
+        "a": "마음은 감사합니다. 다만 보내 주시는 원고를 따로 읽고 평해 드리지는 못합니다."
+      },
+      {
+        "q": "회사 다니면서 시는 언제 쓰시나요?",
+        "a": "출퇴근 길이나 점심시간에 떠오른 줄을 휴대폰 메모장에 적어 둡니다. 시는 그 메모들 사이에서 천천히 자랍니다."
+      }
+    ]
   },
   "analytics": {
     "goatcounter": "",
@@ -917,7 +943,33 @@
         "For collaborations or questions,",
         "send a message or an email."
       ],
-      "privacy": "Your name and email will be used only to reply."
+      "privacy": "Your name and email will be used only to reply.",
+      "faq": [
+        {
+          "q": "May I share the poems on social media or a blog?",
+          "a": "Yes — a stanza or two is fine, as long as you credit the source, e.g. ‘Dongwon Nam, *Open the Door, Step Out, and It Is Full of Living Things*.’ For a full poem or any commercial use, please email me first."
+        },
+        {
+          "q": "May I read a poem aloud and post the video?",
+          "a": "Readings with no advertising or sales are welcome, with the source credited. Reading one at a wedding or a poetry gathering is fine too. For videos used in ads or sales, please get in touch first."
+        },
+        {
+          "q": "Where can I buy the book?",
+          "a": "It is available from Kyobo PubPle."
+        },
+        {
+          "q": "Where should I send talk, collaboration, translation or interview requests?",
+          "a": "Please use the email above. Put the kind of request in the subject, like [Talk] or [Collaboration], and I will reply within three days."
+        },
+        {
+          "q": "Could you read my poems and give me advice?",
+          "a": "Thank you for thinking of me. I’m sorry, but I can’t read or comment on manuscripts individually."
+        },
+        {
+          "q": "When do you write, with a day job?",
+          "a": "I jot down lines that come to me on the commute or at lunch in the notes app on my phone. The poems grow slowly among those notes."
+        }
+      ]
     },
     "copyright": "Copyright © 2026 Dongwon Nam. All rights reserved",
     "colophon": {
@@ -998,7 +1050,33 @@
         "お仕事のご相談やご質問は",
         "メッセージかメールでお寄せください。"
       ],
-      "privacy": "お送りいただいたお名前とメールアドレスは、返信にのみ使います。"
+      "privacy": "お送りいただいたお名前とメールアドレスは、返信にのみ使います。",
+      "faq": [
+        {
+          "q": "詩をSNSやブログに書き写してもいいですか？",
+          "a": "一、二連までなら、出典を添えていただければ自由に書き写していただけます。出典は「ナム・ドンウォン『扉をあけて出ると、生きているものたちで満ちている』」のようにお書きください。全文や商業的な利用は、先にメールでご連絡ください。"
+        },
+        {
+          "q": "詩を朗読して動画で公開してもいいですか？",
+          "a": "広告や販売のない朗読であれば、出典を明記して公開していただいて構いません。結婚式や朗読会で読んでいただくのも大丈夫です。広告・販売に使われる動画は、先にご連絡ください。"
+        },
+        {
+          "q": "詩集はどこで買えますか？",
+          "a": "教保文庫 PubPleでお求めいただけます。"
+        },
+        {
+          "q": "講演・コラボ・翻訳・取材のご依頼はどちらへ？",
+          "a": "上のメールにお送りください。件名に［講演］［コラボ］のように種類を書いていただければ先に確認し、三日以内にお返事します。"
+        },
+        {
+          "q": "私の詩を読んで、アドバイスをいただけますか？",
+          "a": "お気持ちはありがたく受け取ります。ただ、お送りいただく原稿を個別に読んで講評することはできません。"
+        },
+        {
+          "q": "会社に勤めながら、いつ詩を書いていますか？",
+          "a": "通勤の道や昼休みに浮かんだ一行を、スマートフォンのメモに書き留めています。詩はそのメモのあいだで、ゆっくり育っていきます。"
+        }
+      ]
     },
     "copyright": "Copyright © 2026 ナム・ドンウォン. All rights reserved",
     "colophon": {
