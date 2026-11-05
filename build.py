@@ -2320,6 +2320,8 @@ def main():
     for lg, xml in feeds(site, base).items():  # RSS(11/3) — 판마다 그 판 맨 위에
         (DOCS / (f"{lg}/feed.xml" if lg in TR else "feed.xml")).write_text(xml, encoding="utf-8")
     (DOCS / ".nojekyll").write_text("", encoding="utf-8")  # GitHub Pages가 파일을 다시 가공하지 않게
+    # 연결 끊김 한 장(11/5 'A') — 서비스 워커는 사이트 맨 위(/sw.js)라야 세 판 모두를 지킴 · 글은 ui.json offline
+    (DOCS / "sw.js").write_text((SRC / "sw.js").read_text(encoding="utf-8").replace("__TEXT__", json.dumps(load("ui.json")["offline"], ensure_ascii=False)), encoding="utf-8")
     if (CONTENT / "CNAME").exists():  # 도메인을 산 뒤에만 둔다 — docs는 매번 새로 만들어지므로 여기서 옮겨 넣음
         shutil.copy2(CONTENT / "CNAME", DOCS / "CNAME")
 

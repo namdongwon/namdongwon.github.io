@@ -1014,6 +1014,11 @@
     "en": "Back to the home page →",
     "ja": "トップページへ →"
   },
+  "offline": {
+    "ko": {"title": "연결 없음 — 남동원", "kicker": "연결 없음", "head": "지금은 연결이<br>닿지 않습니다", "sub": "연결이 돌아오면 이 쪽이 저절로 다시 열립니다.", "retry": "다시 시도"},
+    "en": {"title": "Offline — Dongwon Nam", "kicker": "Offline", "head": "No connection<br>right now", "sub": "This page will reopen on its own once you are back online.", "retry": "Try again"},
+    "ja": {"title": "オフライン — ナム・ドンウォン", "kicker": "オフライン", "head": "ただいま接続が<br>ありません", "sub": "接続が戻ると、このページは自動で開き直します。", "retry": "再読み込み"}
+  },
   "js": {
     "ko": {
       "play": "{title} 재생",
