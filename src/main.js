@@ -704,13 +704,21 @@
       pv.classList.remove("on");
       others(false);
       H.classList.remove("pv-on");
-      setTimeout(() => { pv.hidden = true; view.textContent = ""; }, reduce ? 0 : 300);
+      setTimeout(() => { pv.hidden = true; view.textContent = ""; zm.img = null; zm.z = 1; pv.classList.remove("zoom", "zg"); }, reduce ? 0 : 300);
       if (from) from.focus();
     };
     document.querySelectorAll("#photo .pop").forEach(b => b.addEventListener("click", () => open(+b.dataset.i, b, +(b.dataset.k || 0))));
     x.addEventListener("click", shut);
     // ① 사진을 누르면 단추 · 글이 0.3초에 숨어 사진만 남고, 다시 누르면 돌아옴(11/4 동원 'A 누르면 숨김' — 갤러리UX열_v1 01 · 아이폰 사진 앱) · 키보드로 단추에 오면 늘 보임
-    view.addEventListener("click", () => pv.classList.toggle("bare"));
+    // 손가락으로 연 창만 두 번 톡을 기다림(0.28초) — 두 번째 톡이 오면 숨기기 대신 확대(아래 ⑫) · 마우스 · 키보드는 지금처럼 바로
+    let ptype = "", tapT = 0, tapX = 0, tapY = 0;
+    view.addEventListener("pointerdown", e => { ptype = e.pointerType; }, true);
+    view.addEventListener("click", e => {
+      if (ptype !== "touch" || !e.detail) { pv.classList.toggle("bare"); return; }
+      if (tapT && Math.hypot(e.clientX - tapX, e.clientY - tapY) < 30) { clearTimeout(tapT); tapT = 0; zoomAt(e.clientX, e.clientY); return; }
+      tapX = e.clientX; tapY = e.clientY;
+      tapT = setTimeout(() => { tapT = 0; pv.classList.toggle("bare"); }, 280);
+    });
     pv.addEventListener("focusin", ev => { if (ev.target !== view) pv.classList.remove("bare"); });
     // ④ 손가락으로 사진을 아래로 끌면 사진만 작아지며 따라오고 바탕이 걷힘 → 120px 넘게 끌고 놓으면 닫힘, 덜 끌면 제자리(11/4 동원 'B 사진만 작아지며' — 갤러리UX열_v1 04 · 아이폰 사진 앱)
     // 처음 8px로 방향을 가름 — 옆으로면 지금처럼 넘김(.pvs는 touch-action:pan-x) · 위로면 그대로 · 끄는 동안 옆 사진은 숨김
@@ -719,6 +727,7 @@
     view.addEventListener("pointerdown", e => { if (e.pointerType !== "touch") return; py0 = e.clientY; px0 = e.clientX; pdd = 0; pdrag = false; });
     view.addEventListener("pointermove", e => {
       if (py0 == null) return;
+      if (zm.z > 1) { py0 = null; return; }  // 커진 동안 끌기는 사진 안 둘러보기(⑫)
       const dy = e.clientY - py0, dx = e.clientX - px0;
       if (!pdrag) {
         if (Math.abs(dy) < 8 && Math.abs(dx) < 8) return;
@@ -744,6 +753,75 @@
     };
     view.addEventListener("pointerup", pend);
     view.addEventListener("pointercancel", pend);
+    // ⑫ 사진 확대(11/5 동원 "편의 부분 또 없나" → 목업 기준/브랜드 시안/사진확대시안_v1_휴대폰_A·B.png → 'A 손짓만 (권장)' — 아이폰 사진 앱 · 인스타그램 앱 손짓):
+    // 두 번 톡 = 그 자리로 2.5배 · 다시 두 번 톡 = 원래대로 · 두 손가락 벌리기 1–4배 · 커진 동안 한 손가락 끌기 = 사진 안 둘러보기(옆 넘김 · 아래로 끌어 닫기는 쉼).
+    // 사진은 제 칸(원래 크기의 테두리) 밖으로 안쪽 가장자리가 들어오지 않게 묶음 · 1.05배 아래로 놓으면 원래대로 · 넘기면(창을 닫거나 크기가 바뀌면) 원래대로
+    const zm = { z: 1, x: 0, y: 0, img: null, r: null, g: null };
+    const zImg = () => { const f = pfigs()[Math.round(view.scrollLeft / Math.max(1, view.clientWidth))]; return f && f.querySelector("img"); };
+    const zDraw = () => {
+      const { img, r } = zm;
+      if (!img) return;
+      zm.x = Math.min(0, Math.max(r.width * (1 - zm.z), zm.x));
+      zm.y = Math.min(0, Math.max(r.height * (1 - zm.z), zm.y));
+      img.style.transform = zm.z > 1 ? `translate(${zm.x}px,${zm.y}px) scale(${zm.z})` : "";
+      pv.classList.toggle("zoom", zm.z > 1);
+    };
+    const zStart = () => {  // 원래 크기일 때 그 장 사진의 자리를 잼(바꾼 크기는 이 자리 기준)
+      if (zm.z > 1 && zm.img) return true;
+      const img = zImg();
+      if (!img || !img.naturalWidth) return false;
+      zm.img = img; img.style.transform = ""; zm.r = img.getBoundingClientRect(); zm.x = zm.y = 0;
+      return true;
+    };
+    const zReset = () => { if (zm.img) { zm.z = 1; zDraw(); zm.img = null; } };
+    const zoomAt = (cx, cy) => {
+      if (zm.z > 1) { zReset(); return; }
+      if (!zStart()) return;
+      const px = cx - zm.r.left, py = cy - zm.r.top;
+      if (px < 0 || py < 0 || px > zm.r.width || py > zm.r.height) { zm.img = null; return; }  // 사진 밖 빈자리 두 번 톡은 그대로 둠
+      zm.z = 2.5; zm.x = px * (1 - zm.z); zm.y = py * (1 - zm.z);
+      pv.classList.add("bare");
+      zDraw();
+    };
+    const tp = (t, r) => [t.clientX - r.left, t.clientY - r.top];
+    view.addEventListener("touchstart", e => {
+      if (e.touches.length === 2 && zStart()) {
+        const [a, b] = [...e.touches].map(t => tp(t, zm.r));
+        zm.g = { d: Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, m: [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], z: zm.z, x: zm.x, y: zm.y };
+        pv.classList.add("zg");
+      } else if (e.touches.length === 1 && zm.z > 1) {
+        const [a] = [...e.touches].map(t => tp(t, zm.r));
+        zm.g = { p: a, x: zm.x, y: zm.y };
+        pv.classList.add("zg");
+      }
+    }, { passive: true });
+    view.addEventListener("touchmove", e => {
+      if (!zm.g) return;
+      e.preventDefault();  // 커진 사진을 끄는 동안 · 두 손가락 동안은 옆 넘김을 막음
+      const g = zm.g;
+      if (e.touches.length === 2 && g.d) {
+        const [a, b] = [...e.touches].map(t => tp(t, zm.r)), m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+        zm.z = Math.min(4, Math.max(1, g.z * Math.hypot(a[0] - b[0], a[1] - b[1]) / g.d));
+        const k = zm.z / g.z;  // 손가락 가운데 아래 점이 그대로 손가락을 따라오게
+        zm.x = m[0] - (g.m[0] - g.x) * k;
+        zm.y = m[1] - (g.m[1] - g.y) * k;
+      } else if (e.touches.length === 1 && g.p) {
+        const [a] = [...e.touches].map(t => tp(t, zm.r));
+        zm.x = g.x + a[0] - g.p[0];
+        zm.y = g.y + a[1] - g.p[1];
+      }
+      zDraw();
+    }, { passive: false });
+    const zEnd = e => {
+      if (!zm.g) return;
+      if (e.touches.length) { zm.g = null; if (e.touches.length === 1 && zm.z > 1) { const [a] = [...e.touches].map(t => tp(t, zm.r)); zm.g = { p: a, x: zm.x, y: zm.y }; } return; }  // 두 손가락 중 하나만 뗌 → 남은 손가락으로 둘러보기
+      zm.g = null;
+      pv.classList.remove("zg");
+      if (zm.z < 1.05) zReset();
+    };
+    view.addEventListener("touchend", zEnd);
+    view.addEventListener("touchcancel", zEnd);
+    addEventListener("resize", zReset);
     if (prev) { prev.addEventListener("click", () => step(-1)); next.addEventListener("click", () => step(1)); }
     document.addEventListener("keydown", ev => {  // 창 안 빈자리를 눌러 포커스가 쪽 바탕으로 빠져도 Esc · 좌우 키가 듣게 문서에서 받음(10/28 점검 3 — 「탁본」 한 장과 같게)
       if (pv.hidden) return;
