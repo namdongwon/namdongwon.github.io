@@ -564,6 +564,16 @@ html.sr-on{overflow:hidden}
 .top nav a::after,.js .top .sq::after{content:"";position:absolute;z-index:-1;border-radius:var(--btn-r);background:transparent}
 .top nav a::after{inset:-2px -8px}.js .top .sq::after{inset:-2px -4px}
 @media (hover:hover){.top nav a:hover::after,.js .top .sq:hover::after{background:var(--ph)}}
+/* 마우스 올림 빈 곳 채우기(11/6 동원 "이거 웹사이트도 똑같아" — 전수 점검 기준/브랜드 시안/site_hover_audit_v1.py 119개 중 35개 반응 없음 → 예시 사이트마우스올림시안_v1 'A 사이트 결 (권장)'):
+   글 링크는 밑줄 · 밑줄 단추(.buy · .go)는 한 단 옅게 · 선 단추는 옅은 바탕 · 먹 단추(시집 보기)는 한 단 옅게(#3a3a3a) · 이미 정한 올림(연락하기 · 남기기 · 사진 칸 ↗)은 그대로 · 0.12초 · 마우스 기기에서만 */
+@media (hover:hover) and (pointer:fine){
+  :is(.logo,.mail .ml,main a:not([class]),.pvf small a,.pvl,.ctl label):hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+  :is(.buy,.go):hover{color:var(--muted);border-color:var(--muted)}
+  :is(.cp,.colo .thm button,.rc-d,.rc-x):hover{background:var(--ph);border-radius:var(--btn-r)}
+  .tk-btn:hover{background:#3a3a3a}
+  :is(main a:not([class]),.pvf small a,#poem a:not([class]),#guestbook a:not([class])):hover{color:var(--muted)}  /* 이미 밑줄이 있는 글 링크(「탁본」 속 · 처리방침)는 한 단 옅게 */
+  :is(.logo,.buy,.go,.cp,.colo .thm button,.tk-btn,.ctl label){transition:color .12s,background-color .12s,border-color .12s,text-decoration-color .12s,transform .12s cubic-bezier(.2,0,0,1)}
+}
 .send:active{background:var(--ink);color:var(--bg)}  /* 누르는 동안 먹으로(10/24 ⑨ A) */
 .msg{min-height:1.4em;font:300 12.5px/1.5 var(--sans);color:var(--muted)}
 .hp{position:absolute;left:-9999px}
@@ -653,6 +663,7 @@ html.sr-on{overflow:hidden}
 .colo .thm{display:none}.js .colo .thm{display:block}.colo .mot{display:none}.js .colo .mot{display:block}  /* 움직임 줄이기 줄도 자바스크립트가 있을 때만(11/1 밤) */  /* 화면 고르기 — 자바스크립트가 있어야 바뀌므로 그때만 */
 .colo .thm button{display:inline-grid;place-items:center;width:28px;height:28px;margin:-8px 0;padding:0;border:0;background:none;font:inherit;color:var(--muted);vertical-align:middle;cursor:pointer;-webkit-tap-highlight-color:transparent}.colo .thm button+button{margin-left:12px}.colo .thm button svg{width:16px;height:16px}  /* 그림 단추(10/28 B 선 그림) — 누르는 칸 28px, 줄 높이는 글자 줄 그대로(-8px) · 그림은 돋보기와 같은 16px */
 .colo .thm button[aria-pressed="true"]{color:var(--ink);background:linear-gradient(currentColor,currentColor) no-repeat 50% calc(50% + 12px)/16px 1.5px}  /* 고른 것은 먹 + 그림 너비만큼 밑줄 1.5px */
+@media (hover:hover) and (pointer:fine){.colo .thm button[aria-pressed="true"]:hover{background-color:var(--ph)}}  /* 고른 단추도 올리면 옅은 바탕(11/6 A) — 밑줄 그림은 그대로 */
 
 
 /* 첫 방문의 문 — '문을 열고 나오면'이 적힌 검은 두 문짝 → 문틈의 빛 → 열리면 사이트(html.intro일 때만, head의 짧은 스크립트가 붙임) */
@@ -684,10 +695,11 @@ html.sr-on{overflow:hidden}
 /* 누름 반응 ① 살짝 눌림(11/3 동원 "recent.design … 버튼이나 이런 거 누르면 기분이 좋아" → 예시 영상 누름반응시안_v1 → '① 살짝 눌림 (권장)' — 10/28 '옅게 .5'를 바꿈):
    누르는 동안 97%로 바로 눌리고(전환 없음), 떼면 0.12초 cubic-bezier(.2,0,0,1)로 돌아옴 — recent.design 실측 값. 마우스 · 손가락 모두. 제 전환이 있는 단추는 그 전환대로 돌아옴(:where — 우선순위 0).
    글줄 속 링크(inline)는 transform이 듣지 않아 그대로 · 보내기(먹 반전)는 제 누름 모양 · 움직임 줄이기면 눌림 대신 살짝 옅게 */
-:where(a,button){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
-.js :where(a,button):not(.send):active{transform:scale(.97);transition:none}
-:root[data-motion="reduce"] :where(a,button):not(.send):active{transform:none;opacity:.6}
-@media (prefers-reduced-motion:reduce){.js :where(a,button):not(.send):active{transform:none;opacity:.6}}
+/* 11/6 넓힘(동원 'A 사이트 결' — 점검에서 눌러도 반응 없던 FAQ 질문 줄 · 움직임 스위치 · 남기기까지): 펼침 줄(summary) · 스위치 글(label) · [role=button]도 · 남기기는 먹 반전에 더해 눌림 */
+:where(a,button,summary,label,[role=button]){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
+.js :where(a,button,summary,label,[role=button]):active{transform:scale(.97);transition:none}
+:root[data-motion="reduce"] :where(a,button,summary,label,[role=button]):active{transform:none;opacity:.6}
+@media (prefers-reduced-motion:reduce){.js :where(a,button,summary,label,[role=button]):active{transform:none;opacity:.6}}
 .rt{display:inline-block;margin-top:12px;font:300 12.5px/1.5 var(--sans);color:var(--faint)}.js .rt::after{content:"\00a0·\00a0"}  /* 읽는 시간(11/4) — 안내 단추가 보일 때만 가운뎃점 */
 .js .hint{display:inline-block;margin-top:12px;padding:4px 0;background:none;border:0;font:300 12.5px/1.5 var(--sans);color:var(--faint);letter-spacing:0;cursor:pointer}
 .poem{transition:transform .5s var(--ease)}
