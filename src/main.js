@@ -1227,18 +1227,44 @@
     const gbSend = gbf.querySelector(".send"), gbMsg = gbf.querySelector(".msg"), gbPromise = gbMsg.textContent;  // 단추 아래 약속 한 줄(보내는 동안 상태로 바뀌었다가 되돌림)
     // 글자 수(11/2 엽서 한 장) — 글 칸 아래 '0 / 200'을 켜고 칠 때마다 셈 · 보낸 뒤 비우면 다시 0
     const gbTa = gbf.querySelector("textarea"), gbCnt = gbf.querySelector(".cnt");
-    // 쓰던 글 지켜 두기(11/3 동원 '다정한 UX 7가지' ① → 목업 기준/브랜드 시안/방명록임시저장시안_v1_휴대폰_A·B.png → 'A 조용히 되살림 (권장)'):
-    // 칠 때마다 이 기기의 브라우저 저장소(localStorage gb-draft — 쿠키 아님 · 서버로 보내지 않음)에 글과 적은 때를 둠 → 다시 열면 안내 없이 그대로(Gmail 임시보관함 꼴)
-    // 보내면(reset) 지움 · 7일 지나면 지움(같이 쓰는 PC 대비) · 저장소가 막힌 브라우저(사생활 보호 창 등)는 지금처럼 그냥 둠
-    const DK = "gb-draft", WEEK = 7 * 864e5;
+    // 쓰던 글 지켜 두기(11/3 동원 '다정한 UX 7가지' ① → 'A 조용히 되살림') → 11/5 되돌리기 화살표로 바꿈(동원 "화살표로 되돌리기라던가" → 목업 기준/브랜드 시안/방명록임시저장시안_v3_되돌리기.png
+    // → 버튼 "C 되돌리기로 넣기 (권장)" · "쓰다가 지웠을때도"): 쓴 글은 이 기기의 브라우저 저장소(localStorage gb-draft — 쿠키 아님 · 서버로 보내지 않음)에 둠.
+    // 다시 열면 칸은 비어 있고 '↶ 쓰던 글 되돌리기' — 누를 때만 글이 뜸(같이 쓰는 기기에서 다음 사람 화면에 바로 뜨지 않게 · Gmail 실행취소 · 아이폰 메모 되돌리기 꼴).
+    // 쓰다가 10자 넘게 지우거나 다 비우면 '↶ 지운 글 되돌리기' — 간직하는 것은 가장 길었던 판(snap) · 다시 그보다 길게 쓰면 그 판으로 바뀌고 버튼은 숨음.
+    // 보내면(reset) 지움 · 7일 지나면 지움(같이 쓰는 PC 대비) · 저장소가 막힌 브라우저(사생활 보호 창 등)도 지운 글 되돌리기는 이 쪽에 있는 동안 됨
+    const DK = "gb-draft", WEEK = 7 * 864e5, CUT = 10;
     const dSet = v => { try { if (v) localStorage.setItem(DK, JSON.stringify({ t: v, at: Date.now() })); else localStorage.removeItem(DK); } catch {} };
     if (gbTa) {
+      let snap = "";
       try {
         const d = JSON.parse(localStorage.getItem(DK) || "null");
-        if (d && Date.now() - d.at < WEEK) { if (!gbTa.value) gbTa.value = d.t; } else if (d) dSet("");
+        if (d && Date.now() - d.at < WEEK) snap = d.t || ""; else if (d) dSet("");
       } catch { dSet(""); }
-      gbTa.addEventListener("input", () => dSet(gbTa.value));
-      gbf.addEventListener("reset", () => dSet(""));
+      const back = document.createElement("button");
+      back.type = "button";
+      back.className = "gbback";
+      back.hidden = true;
+      back.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5 2.5 6.5l3 3"/><path d="M2.5 6.5h7a4 4 0 0 1 0 8H7"/></svg><span></span>';
+      const say = k => { back.lastChild.textContent = k === "undo" ? uiText("gb_undo", "지운 글 되돌리기") : uiText("gb_back", "쓰던 글 되돌리기"); back.hidden = false; };
+      const row = document.createElement("div");
+      row.className = "gbrow";
+      (gbCnt || gbTa.closest("label")).before(row);
+      row.appendChild(back);
+      if (gbCnt) row.appendChild(gbCnt);
+      if (snap && !gbTa.value) say("back");
+      gbTa.addEventListener("input", () => {
+        const v = gbTa.value;
+        if (v.length >= snap.length) { snap = v; dSet(v); back.hidden = true; }
+        else if (!v.trim() || v.length <= snap.length - CUT) say("undo");
+      });
+      back.addEventListener("click", () => {
+        gbTa.value = snap;
+        gbTa.dispatchEvent(new Event("input", { bubbles: true }));
+        back.hidden = true;
+        gbTa.focus({ preventScroll: true });
+        gbTa.setSelectionRange(snap.length, snap.length);
+      });
+      gbf.addEventListener("reset", () => { snap = ""; dSet(""); back.hidden = true; });
     }
     if (gbTa && gbCnt) {
       const n = gbCnt.querySelector("span"), count = () => { n.textContent = gbTa.value.length; };

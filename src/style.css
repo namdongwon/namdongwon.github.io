@@ -578,6 +578,14 @@ html.sr-on{overflow:hidden}
 .gb .to{margin:0;font:300 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
 .gb .card .gbf{margin-top:20px}
 .gb .card textarea{min-height:128px;field-sizing:content;resize:none;padding:0;border:0;font:16px/32px var(--body);background:repeating-linear-gradient(to bottom,transparent 0,transparent 31px,var(--rule) 31px,var(--rule) 32px)}
+.gb .gbrow{display:flex;align-items:center;margin:-8px 0 0;min-height:11px}  /* 되돌리기 버튼(왼쪽) · 글자 수(오른쪽) 한 줄(11/5 'C 되돌리기') */
+.gb .gbrow .cnt{margin:0 0 0 auto}
+.gbback{position:relative;display:inline-flex;align-items:center;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:none;font:600 12.5px/1 var(--sans);color:var(--ink);cursor:pointer}
+.gbback[hidden]{display:none}
+.gbback::before{content:"";position:absolute;inset:-8px}  /* 손가락 닿는 곳 44px 가까이 */
+.gbback svg{width:14px;height:14px;margin-right:6px;fill:none;stroke:currentColor;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+@media (hover:hover){.gbback:hover{background:var(--ph)}}
+.gbback:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .gb .cnt{margin:-8px 0 0;text-align:right;font:300 11px/1 var(--sans);color:var(--faint);font-variant-numeric:tabular-nums}
 .gb .card>.when,.gb .card>.msg{margin-top:12px}
 @media (max-width:767px){.gb .card{margin-top:30px}}  /* 휴대폰 — 머리말과 띄움(두 단인 컴퓨터는 오른쪽 단 맨 위) */
