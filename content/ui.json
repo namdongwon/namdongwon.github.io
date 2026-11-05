@@ -1215,6 +1215,11 @@
     "en": "Motion",
     "ja": "動き"
   },
+  "motion_aria": {
+    "ko": "움직임 줄이기",
+    "en": "Reduce motion",
+    "ja": "動きを減らす"
+  },
   "motion_reduce": {
     "ko": "줄이기",
     "en": "Reduce",

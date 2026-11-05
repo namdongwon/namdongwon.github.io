@@ -551,7 +551,7 @@ SPEC_RULES = ('<script type="speculationrules">' + json.dumps({"prefetch": [{"wh
 # · 버튼 '같은 도메인 아래 주소 (권장)' · "지금 구조 만들어"): 쪽 열쇠(주소 폴더) → 그 쪽에 담는 칸 id, 첫째가 그 쪽 맨 위 칸. "" = 첫 화면(소개)
 PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "guestbook": ("guestbook",), "contact": ("contact",)}  # 11/2 방명록 쪽(동원 "방명록 사이트를 먼저 추가") — 연락 칸 안에서 떼어 /guestbook/
 NEXT_PAGE = {"": "book", "book": "photo", "photo": "video", "video": "guestbook", "guestbook": "", "contact": "guestbook"}  # 쪽 끝 다음 쪽 카드 — 메뉴 차례대로 한 칸씩 · 방명록 다음은 처음(소개) · 연락 다음은 방명록(11/3)
-PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "mline": "book", "y": "", "p": "photo"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p · 이달의 한 줄 무대 mline 11/4)
+PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "mline": "book", "y": "", "p": "photo", "fq": "contact"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p · 이달의 한 줄 무대 mline 11/4)
 
 
 def page_of(aid):
@@ -1439,7 +1439,7 @@ def render(site, poem, videos, photos, lang="ko"):
                )  # 안내 단 작은 글 두 줄('글과 사진을 가져다 쓰려면…' · '광고 · 저절로 재생되는…')은 뺌(11/3 동원 '이거 지우자') — 처리방침 · 쿠키 설정 두 줄만
     # 설정 — 화면 밝게 · 어둡게 · 시스템(10/26 A · 10/28 선 그림) · 움직임 줄이기(11/1 밤 명품 제안 ⑥ 'A 스위치')
     ctl = (f'<dl class="ctl"><dt class="thm">{t("theme")}</dt><dd class="thm"><div role="group" aria-label="{t("theme")}">{thm}</div></dd>'
-           f'<dt class="mot">{t("motion")}</dt><dd class="mot"><label><input type="checkbox" role="switch" aria-label="{t("motion")} {t("motion_reduce")}"></label></dd>'  # 스위치만(11/6 동원 "끔 - 기기 설정을 따름 이런 설명 없어도 되잖아" · "줄이기도 없어도 되지") — 이름은 화면 읽기(aria-label)에만
+           f'<dt class="mot">{t("motion")}</dt><dd class="mot"><label><input type="checkbox" role="switch" aria-label="{t("motion_aria")}"></label></dd>'  # 스위치만(11/6 동원 "끔 - 기기 설정을 따름 이런 설명 없어도 되잖아" · "줄이기도 없어도 되지") — 이름은 화면 읽기(aria-label)에만
            # 글자(11/3 '다정한 UX' ④ A) — 보통 · 크게 · 더 크게, 단추 글자도 세 크기 · 화면 줄과 같은 꼴(고른 것 먹 + 밑줄)
            f'<dt class="thm">{t("fs")}</dt><dd class="thm fsz"><div role="group" aria-label="{t("fs")}">'
            + "".join(f'<button type="button" data-fs="{v}" aria-pressed="{str(v == "m").lower()}" aria-label="{t("fs_" + v)}" title="{t("fs_" + v)}"><span>{t("fs_g")}</span></button>' for v in ("m", "l", "xl"))
