@@ -936,7 +936,7 @@ html.sr-on{overflow:hidden}
 .ficons{display:flex;justify-content:center;gap:16px;margin:36px 0 0;padding:0;list-style:none}
 .ficons a{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;color:var(--ink)}
 .ficons svg{width:20px;height:20px}
-@media (hover:hover){.fcols a:hover{text-decoration:underline;text-underline-offset:4px}.ficons a:hover{background:var(--ph)}}  /* 호버 — 글은 밑줄, 아이콘은 옅은 회색(11/2 맨 위 띠와 같은 결) */
+@media (hover:hover){.fcols :is(a,button):hover{text-decoration:underline;text-underline-offset:4px}.ficons a:hover{background:var(--ph)}}  /* 호버 — 글은 밑줄, 아이콘은 옅은 회색(11/2 맨 위 띠와 같은 결) */
 .fbar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;margin-top:44px;padding:16px 0 72px;border-top:1px solid var(--rule);font:300 11px/1.6 var(--sans);color:var(--faint);text-align:left}  /* 휴대폰 — 맨 위로 단추(오른쪽 아래 고정) 자리를 비움 */
 @font-face{font-family:"JPN";src:url("fonts/ndw-sans-jp-name.woff2") format("woff2");font-weight:300;font-display:swap;unicode-range:U+65E5,U+672C,U+8A9E}
 .lng a[lang="ja"]{font-family:"JPN",var(--sans)}  /* 한국어 · 영어판 바닥글의 '日本語' — 일본어판과 같은 고딕 가늘게(11/3 목업 'A 일본어판 고딕 (권장)') · 세 글자만 1.1KB · 그 글자가 그려질 때만 받음 */
