@@ -642,11 +642,23 @@
       if (pv.hidden) return;
       const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth)), f = view.children[k], img = f && f.querySelector("img");
       if (!img || !img.naturalWidth) return;
-      const r = img.getBoundingClientRect(), fr = f.getBoundingClientRect();
-      wrap.style.setProperty("--il", `${r.left - fr.left}px`);
-      wrap.style.setProperty("--ir", `${fr.right - r.right}px`);
-      wrap.style.setProperty("--ib", `${fr.bottom - r.bottom}px`);
-      wrap.style.setProperty("--im", `${r.top - fr.top + r.height / 2}px`);
+      // 사진 칸(.pvs)이 창보다 좁을 수 있어(⑭) 칸의 자리(vr − wr)를 더함 — 그 장 안에서의 자리는 그대로라 넘기는 동안 흔들리지 않음
+      const r = img.getBoundingClientRect(), fr = f.getBoundingClientRect(), vr = view.getBoundingClientRect(), wr = wrap.getBoundingClientRect();
+      wrap.style.setProperty("--il", `${vr.left - wr.left + r.left - fr.left}px`);
+      wrap.style.setProperty("--ir", `${wr.right - vr.right + fr.right - r.right}px`);
+      wrap.style.setProperty("--ib", `${wr.bottom - vr.bottom + fr.bottom - r.bottom}px`);
+      wrap.style.setProperty("--im", `${vr.top - wr.top + r.top - fr.top + r.height / 2}px`);
+    };
+    // ⑭ 사진 칸 안에서 넘김(11/5 동원 "오른쪽으로 넘길때 너무 크게 된쪽으로 빠진다 딱 사진 칸 안에서 왼쪽으로 넘어가는 느낌으로"):
+    // 넘기는 칸(.pvs)의 폭을 지금 장 사진의 폭으로 줄여 가운데에 — 사진은 그 칸 안에서만 옆으로 밀려 들고 나감(넓은 창에서 화면 끝까지 가로지르지 않음).
+    // 열 때 · 사진이 온 때 · 창 크기가 바뀔 때만 잼(넘기는 동안은 그대로) · 양옆은 휴대폰 20 · 넓은 창 64 띄움
+    const fit = () => {
+      if (pv.hidden || zm.z > 1) return;
+      const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth)), f = view.children[k], img = f && f.querySelector("img");
+      if (!img || !img.naturalWidth) return;
+      const cs = getComputedStyle(f), padV = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom), side = innerWidth >= 768 ? 64 : 20;
+      const w = Math.max(160, Math.min(wrap.clientWidth - side * 2, Math.round((view.clientHeight - padV) * img.naturalWidth / img.naturalHeight)));
+      if (Math.abs(view.offsetWidth - w) > 1) { view.style.width = `${w}px`; view.scrollLeft = k * w; }
     };
     const upd = () => {
       const k = Math.min(n, Math.round(view.scrollLeft / Math.max(1, view.clientWidth)) + 1);
@@ -656,8 +668,8 @@
       place();
     };
     const step = d => view.scrollBy({ left: d * view.clientWidth, behavior: reduce ? "auto" : "smooth" });
-    const pin = () => place();  // 사진이 온 뒤 · 창이 보인 뒤 · 화면 크기가 바뀐 뒤
-    addEventListener("resize", place);
+    const pin = () => { fit(); place(); };  // 사진이 온 뒤 · 창이 보인 뒤 · 화면 크기가 바뀐 뒤
+    addEventListener("resize", pin);
     view.addEventListener("scroll", upd, { passive: true });
     view.addEventListener("scroll", () => {
       const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
@@ -712,12 +724,15 @@
         pv.classList.add("fromt");
       } else pv.classList.remove("fromt");
       pv.classList.remove("bare");  // 열 때는 늘 단추가 보이게
+      pv.classList.add("fit");
+      view.style.width = "";  // 앞 게시물의 폭은 버리고 이 게시물 사진으로 다시 잼(⑭)
       pv.hidden = false;
       H.classList.add("pv-on");
       others(true);
       view.scrollLeft = start * view.clientWidth;
       upd();
       view.querySelectorAll("figure").forEach(pin);  // 이미 받아 둔 사진은 창이 보인 지금 자리를 잼
+      setTimeout(pin, reduce ? 0 : 360);  // 창이 커지며 열리는 0.22초 동안 잰 자리는 비틀려 있어(⑭ 칸 폭을 바꾼 뒤 단추가 옛 자리에 남았음) 다 열린 뒤 한 번 더
       requestAnimationFrame(() => requestAnimationFrame(() => pv.classList.add("on")));
       x.focus();
     };
@@ -910,13 +925,38 @@
       if (act < 0) inp.removeAttribute("aria-activedescendant");
       else { inp.setAttribute("aria-activedescendant", o[act].id); o[act].scrollIntoView({ block: "nearest" }); }
     };
+    // 최근 찾은 말(11/6 동원 "아래에 남겨도 좋겠다 우리 검색어" · 무인양품 검색 창 → "웹은 왼쪽 오른쪽으로 보여달라니까? 앱은 최근 검색어가 위에"):
+    // 넓은 창은 왼쪽 최근 찾은 말 · 오른쪽 추천 두 단, 휴대폰은 추천 위에 칩 한 줄 · 이 기기에만(localStorage srch-recent — 서버로 보내지 않음) · 최근 다섯 ·
+    // 결과로 갈 때 친 글을 남김 · 누르면 그 말로 다시 찾음 · ×로 하나 · '모두 지우기' · 없으면 '최근 찾은 말이 없습니다'(무인양품 꼴) · 인기 검색어는 넣지 않음(검색어를 모아야 해서)
+    const RK = "srch-recent", srh = document.createElement("div"), rc = document.createElement("div"), rec = document.createElement("div");
+    srh.className = "srh"; rc.className = "rc"; rec.className = "sr-rec";
+    lab.before(srh); rec.append(lab, sug); srh.append(rc, rec);
+    const recent = () => { try { const a = JSON.parse(localStorage.getItem(RK) || "[]"); return Array.isArray(a) ? a.filter(x => typeof x === "string").slice(0, 5) : []; } catch (x) { return []; } };
+    const keepR = a => { try { if (a.length) localStorage.setItem(RK, JSON.stringify(a.slice(0, 5))); else localStorage.removeItem(RK); } catch (x) { /* 저장소가 막힌 창 */ } };
+    const remember = q => { q = q.trim().slice(0, 40); if (q) keepR([q, ...recent().filter(x => x !== q)]); };
+    const drawR = () => {
+      const a = recent();
+      rc.innerHTML = `<div class="rc-h"><p class="sr-lab">${esc(uiText("recent_title", "최근 찾은 말"))}</p>` + (a.length ? `<button type="button" class="rc-x">${esc(uiText("recent_clear", "모두 지우기"))}</button>` : "") + "</div>" +
+        (a.length ? '<ul class="rc-l">' + a.map(q => `<li><button type="button" class="rc-q" data-q="${esc(q)}">${esc(q)}</button><button type="button" class="rc-d" data-rm="${esc(q)}" aria-label="${esc(uiText("recent_del", "{q} 지우기", { q }))}"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M5 5l8 8M13 5l-8 8"/></svg></button></li>`).join("") + "</ul>"
+          : `<p class="rc-n">${esc(uiText("recent_none", "최근 찾은 말이 없습니다"))}</p>`);
+    };
+    rc.addEventListener("click", ev => {
+      const d = ev.target.closest(".rc-d, .rc-x");
+      if (!d) return;
+      ev.stopPropagation();
+      keepR(d.classList.contains("rc-x") ? [] : recent().filter(x => x !== d.dataset.rm));
+      drawR();
+      inp.focus();
+    });
+    drawR();
     const run = () => {
       const q = inp.value;
       if (q === lastQ) return;  // 글자가 그대로면(한글 한 글자 마침 등) 다시 그리지 않음 — 고른 줄을 지킴
       lastQ = q;
       const empty = !q.trim(), hits = empty ? [] : find(q), showSug = empty;  // 추천은 빈 칸일 때만 — 찾는 글이 없으면 '결과 없음' 한 줄(11/4 동원 '추천으로 나오거든? 차라리 … 결과 없음' — 노션 꼴 · 전엔 10/28 점검 4로 추천을 함께)
       if (clr) clr.hidden = !q;
-      lab.hidden = sug.hidden = !showSug;
+      lab.hidden = sug.hidden = srh.hidden = !showSug;
+      if (showSug) drawR();
       cnt.hidden = empty || !hits.length;
       cnt.textContent = uiText("search_count", "찾은 것 {n}", { n: hits.length });
       res.innerHTML = hits.map((h, i) => {
@@ -976,7 +1016,7 @@
     srch.querySelector(".x").addEventListener("click", () => shut(true));
     if (clr) clr.addEventListener("click", () => { inp.value = ""; run(); inp.focus(); });
     // 빈 곳을 누르면 닫힘(11/4 동원 '검색에서 빈화면 클릭하면 나가지는 거로') — 누른 곳 · 뗀 곳이 모두 빈 곳일 때만(입력 칸에서 끌어 고르다 밖에서 떼면 그대로)
-    const blank = el => el === srch || (el instanceof Element && el.matches(".srch .in, .sr-none, .sr-lab, .sr-n, .sug, .sr-res, .srch [role=status]"));
+    const blank = el => el === srch || (el instanceof Element && el.matches(".srch .in, .sr-none, .sr-lab, .sr-n, .sug, .sr-res, .srch [role=status], .srh, .rc, .sr-rec, .rc-h, .rc-n, .rc-l"));
     let downBlank = false;
     srch.addEventListener("pointerdown", ev => { downBlank = blank(ev.target); });
     srch.addEventListener("click", ev => { if (downBlank && blank(ev.target)) shut(true); downBlank = false; });
@@ -1001,6 +1041,7 @@
       const a = ev.target.closest("a, button[data-q]");
       if (!a) return;
       if (a.dataset.q) { inp.value = a.dataset.q; run(); inp.focus(); return; }
+      if (res.contains(a)) remember(inp.value);  // 결과로 가는 말만 최근 찾은 말로
       const href = a.getAttribute("href") || "";
       if (!href.startsWith("#") && a.target !== "_blank") {  // 사이트 안 다른 쪽(10/31 쪽 나누기 — book/#toc 등): 창을 닫고 쌓아 둔 기록 칸을 그 쪽 주소로 바꿔 옮김(뒤로 가기는 찾기 전 자리로)
         ev.preventDefault();
@@ -1711,9 +1752,15 @@
         const L = Math.hypot(tx, ty);
         if (L > 18) { tx *= 18 / L; ty *= 18 / L; }
         ask.classList.add("pull");
-        ask.style.transform = `translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px) scale(1.04)`;
-      } else if (ask.classList.contains("pull")) { ask.classList.remove("pull"); ask.style.transform = ""; }
+        at = `translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px)`;
+        ask.style.transform = `${at} scale(${down ? .97 : 1.04})`;
+      } else if (ask.classList.contains("pull")) { ask.classList.remove("pull"); ask.style.transform = ""; at = ""; }
     }, { passive: true });
+    // 누르면 끌려온 자리에서 0.97로 바로 들어감(11/6 — 끌림이 단추 모양을 직접 써서 사이트 누름 반응이 가려졌음 · 점검 site_hover_audit_v1) · 떼면 1.04로
+    let at = "", down = false;
+    const press = on => { down = on; ask.style.transition = on ? "none" : ""; ask.style.transform = at ? `${at} scale(${on ? .97 : 1.04})` : (on ? "scale(.97)" : ""); };
+    ask.addEventListener("pointerdown", () => press(true));
+    ["pointerup", "pointerleave", "pointercancel"].forEach(k => ask.addEventListener(k, () => { if (down) press(false); }));
   }
 
   // ⑩ 쪽 사이 원형 전환(← '페이지 인트로') — 맨 위 띠의 쪽 링크(이름 · 메뉴 넷 · 연락하기)를 누르면 누른 자리로 원이 닫히고(0.55초) 다음 쪽이 그 자리에서 열림(0.8초 —
