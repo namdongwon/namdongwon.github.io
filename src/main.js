@@ -1752,9 +1752,15 @@
         const L = Math.hypot(tx, ty);
         if (L > 18) { tx *= 18 / L; ty *= 18 / L; }
         ask.classList.add("pull");
-        ask.style.transform = `translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px) scale(1.04)`;
-      } else if (ask.classList.contains("pull")) { ask.classList.remove("pull"); ask.style.transform = ""; }
+        at = `translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px)`;
+        ask.style.transform = `${at} scale(${down ? .97 : 1.04})`;
+      } else if (ask.classList.contains("pull")) { ask.classList.remove("pull"); ask.style.transform = ""; at = ""; }
     }, { passive: true });
+    // 누르면 끌려온 자리에서 0.97로 바로 들어감(11/6 — 끌림이 단추 모양을 직접 써서 사이트 누름 반응이 가려졌음 · 점검 site_hover_audit_v1) · 떼면 1.04로
+    let at = "", down = false;
+    const press = on => { down = on; ask.style.transition = on ? "none" : ""; ask.style.transform = at ? `${at} scale(${on ? .97 : 1.04})` : (on ? "scale(.97)" : ""); };
+    ask.addEventListener("pointerdown", () => press(true));
+    ["pointerup", "pointerleave", "pointercancel"].forEach(k => ask.addEventListener(k, () => { if (down) press(false); }));
   }
 
   // ⑩ 쪽 사이 원형 전환(← '페이지 인트로') — 맨 위 띠의 쪽 링크(이름 · 메뉴 넷 · 연락하기)를 누르면 누른 자리로 원이 닫히고(0.55초) 다음 쪽이 그 자리에서 열림(0.8초 —
