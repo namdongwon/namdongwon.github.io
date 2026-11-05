@@ -629,7 +629,8 @@
   if (pv && postsEl) {
     const posts = JSON.parse(postsEl.textContent), view = pv.querySelector(".pvs"), cnt = pv.querySelector(".pvc"), foot = pv.querySelector(".pvf"), x = pv.querySelector(".pvx");
     const pcaps = [...document.querySelectorAll("#photo .cap")], prev = pv.querySelector(".pvp"), next = pv.querySelector(".pvn");
-    let from = null, n = 0;
+    let from = null, n = 0, cur = 0;
+    const pid = i => { const a = pcaps[i] && pcaps[i].querySelector('a[href*="instagram.com/p/"]'), m = a && /\/p\/([\w-]+)/.exec(a.href); return m ? m[1] : String(i); };
     const others = on => [...document.body.children].forEach(el => { if (el !== pv && el.tagName !== "SCRIPT") el.inert = on; });
     // 11/4 동원 "화살표가 너무 먼 거 같아 … 바로 화살표 옆에 두고, 정확히 몇장 남았는지 표현하지말고 … 아래에 동그라미로" (인스타그램 사진 보기 그대로):
     // 넘기기 단추는 보이는 사진 안쪽 가장자리에, 몇째 장은 숫자 칩 대신 사진 아래 가운데 점(옅은 점 · 지금 장만 흰 점) — 화면 읽기는 맨 위 '2 / 20' 그대로
@@ -681,6 +682,27 @@
         view.append(f);
       });
       foot.innerHTML = pcaps[i] ? pcaps[i].innerHTML : "";
+      cur = i;
+      // ⑬ 사진 한 장 링크(11/5 동원 'B 아래 줄 링크 복사 (권장)' — 목업 사진한장링크시안_v1): '게시물 ↗' 옆 글 단추 · 주소는 photo/#v{게시물}-{장}
+      // 휴대폰은 공유 시트, 없으면 복사하고 2초 동안 '링크를 복사했습니다'(쪽 공유 단추와 같은 손) · 받은 사람은 그 사진이 열린 채로 ·
+      // 게시물은 차례 번호가 아니라 인스타그램 게시물 주소의 끝 조각(/p/…/)으로 — 새 게시물이 앞에 붙어도 나눈 링크가 같은 사진을 엶(없으면 차례 번호)
+      const fa = [...foot.querySelectorAll("a")].pop();
+      if (fa) {
+        const lk = document.createElement("button");
+        lk.type = "button";
+        lk.className = "pvl";
+        lk.textContent = uiText("pv_link", "링크 복사");
+        fa.after(document.createTextNode(" · "), lk);
+        lk.addEventListener("click", async ev => {
+          ev.stopPropagation();
+          const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
+          const url = ((document.querySelector('link[rel="canonical"]') || {}).href || location.origin + location.pathname).split("#")[0] + `#v-${pid(cur)}-${k + 1}`;
+          if (navigator.share && matchMedia("(hover: none)").matches) { try { await navigator.share({ url }); } catch (x) { /* 닫음 */ } return; }
+          try { await navigator.clipboard.writeText(url); } catch (x) { return; }
+          lk.textContent = uiText("shared", "링크를 복사했습니다");
+          setTimeout(() => { lk.textContent = uiText("pv_link", "링크 복사"); }, 2000);
+        });
+      }
       dots.textContent = "";
       list.forEach(() => dots.append(document.createElement("i")));
       if (btn && btn.classList.contains("wt")) {  // ⑧ 누른 사진 자리에서 창이 커지며 열림(11/4 동원 '넣기' — 손반응열_v1 08)
@@ -704,13 +726,21 @@
       pv.classList.remove("on");
       others(false);
       H.classList.remove("pv-on");
-      setTimeout(() => { pv.hidden = true; view.textContent = ""; }, reduce ? 0 : 300);
+      setTimeout(() => { pv.hidden = true; view.textContent = ""; zm.img = null; zm.z = 1; pv.classList.remove("zoom", "zg"); }, reduce ? 0 : 300);
       if (from) from.focus();
     };
     document.querySelectorAll("#photo .pop").forEach(b => b.addEventListener("click", () => open(+b.dataset.i, b, +(b.dataset.k || 0))));
     x.addEventListener("click", shut);
     // ① 사진을 누르면 단추 · 글이 0.3초에 숨어 사진만 남고, 다시 누르면 돌아옴(11/4 동원 'A 누르면 숨김' — 갤러리UX열_v1 01 · 아이폰 사진 앱) · 키보드로 단추에 오면 늘 보임
-    view.addEventListener("click", () => pv.classList.toggle("bare"));
+    // 손가락으로 연 창만 두 번 톡을 기다림(0.28초) — 두 번째 톡이 오면 숨기기 대신 확대(아래 ⑫) · 마우스 · 키보드는 지금처럼 바로
+    let ptype = "", tapT = 0, tapX = 0, tapY = 0;
+    view.addEventListener("pointerdown", e => { ptype = e.pointerType; }, true);
+    view.addEventListener("click", e => {
+      if (ptype !== "touch" || !e.detail) { pv.classList.toggle("bare"); return; }
+      if (tapT && Math.hypot(e.clientX - tapX, e.clientY - tapY) < 30) { clearTimeout(tapT); tapT = 0; zoomAt(e.clientX, e.clientY); return; }
+      tapX = e.clientX; tapY = e.clientY;
+      tapT = setTimeout(() => { tapT = 0; pv.classList.toggle("bare"); }, 280);
+    });
     pv.addEventListener("focusin", ev => { if (ev.target !== view) pv.classList.remove("bare"); });
     // ④ 손가락으로 사진을 아래로 끌면 사진만 작아지며 따라오고 바탕이 걷힘 → 120px 넘게 끌고 놓으면 닫힘, 덜 끌면 제자리(11/4 동원 'B 사진만 작아지며' — 갤러리UX열_v1 04 · 아이폰 사진 앱)
     // 처음 8px로 방향을 가름 — 옆으로면 지금처럼 넘김(.pvs는 touch-action:pan-x) · 위로면 그대로 · 끄는 동안 옆 사진은 숨김
@@ -719,6 +749,7 @@
     view.addEventListener("pointerdown", e => { if (e.pointerType !== "touch") return; py0 = e.clientY; px0 = e.clientX; pdd = 0; pdrag = false; });
     view.addEventListener("pointermove", e => {
       if (py0 == null) return;
+      if (zm.z > 1) { py0 = null; return; }  // 커진 동안 끌기는 사진 안 둘러보기(⑫)
       const dy = e.clientY - py0, dx = e.clientX - px0;
       if (!pdrag) {
         if (Math.abs(dy) < 8 && Math.abs(dx) < 8) return;
@@ -744,6 +775,75 @@
     };
     view.addEventListener("pointerup", pend);
     view.addEventListener("pointercancel", pend);
+    // ⑫ 사진 확대(11/5 동원 "편의 부분 또 없나" → 목업 기준/브랜드 시안/사진확대시안_v1_휴대폰_A·B.png → 'A 손짓만 (권장)' — 아이폰 사진 앱 · 인스타그램 앱 손짓):
+    // 두 번 톡 = 그 자리로 2.5배 · 다시 두 번 톡 = 원래대로 · 두 손가락 벌리기 1–4배 · 커진 동안 한 손가락 끌기 = 사진 안 둘러보기(옆 넘김 · 아래로 끌어 닫기는 쉼).
+    // 사진은 제 칸(원래 크기의 테두리) 밖으로 안쪽 가장자리가 들어오지 않게 묶음 · 1.05배 아래로 놓으면 원래대로 · 넘기면(창을 닫거나 크기가 바뀌면) 원래대로
+    const zm = { z: 1, x: 0, y: 0, img: null, r: null, g: null };
+    const zImg = () => { const f = pfigs()[Math.round(view.scrollLeft / Math.max(1, view.clientWidth))]; return f && f.querySelector("img"); };
+    const zDraw = () => {
+      const { img, r } = zm;
+      if (!img) return;
+      zm.x = Math.min(0, Math.max(r.width * (1 - zm.z), zm.x));
+      zm.y = Math.min(0, Math.max(r.height * (1 - zm.z), zm.y));
+      img.style.transform = zm.z > 1 ? `translate(${zm.x}px,${zm.y}px) scale(${zm.z})` : "";
+      pv.classList.toggle("zoom", zm.z > 1);
+    };
+    const zStart = () => {  // 원래 크기일 때 그 장 사진의 자리를 잼(바꾼 크기는 이 자리 기준)
+      if (zm.z > 1 && zm.img) return true;
+      const img = zImg();
+      if (!img || !img.naturalWidth) return false;
+      zm.img = img; img.style.transform = ""; zm.r = img.getBoundingClientRect(); zm.x = zm.y = 0;
+      return true;
+    };
+    const zReset = () => { if (zm.img) { zm.z = 1; zDraw(); zm.img = null; } };
+    const zoomAt = (cx, cy) => {
+      if (zm.z > 1) { zReset(); return; }
+      if (!zStart()) return;
+      const px = cx - zm.r.left, py = cy - zm.r.top;
+      if (px < 0 || py < 0 || px > zm.r.width || py > zm.r.height) { zm.img = null; return; }  // 사진 밖 빈자리 두 번 톡은 그대로 둠
+      zm.z = 2.5; zm.x = px * (1 - zm.z); zm.y = py * (1 - zm.z);
+      pv.classList.add("bare");
+      zDraw();
+    };
+    const tp = (t, r) => [t.clientX - r.left, t.clientY - r.top];
+    view.addEventListener("touchstart", e => {
+      if (e.touches.length === 2 && zStart()) {
+        const [a, b] = [...e.touches].map(t => tp(t, zm.r));
+        zm.g = { d: Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, m: [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], z: zm.z, x: zm.x, y: zm.y };
+        pv.classList.add("zg");
+      } else if (e.touches.length === 1 && zm.z > 1) {
+        const [a] = [...e.touches].map(t => tp(t, zm.r));
+        zm.g = { p: a, x: zm.x, y: zm.y };
+        pv.classList.add("zg");
+      }
+    }, { passive: true });
+    view.addEventListener("touchmove", e => {
+      if (!zm.g) return;
+      e.preventDefault();  // 커진 사진을 끄는 동안 · 두 손가락 동안은 옆 넘김을 막음
+      const g = zm.g;
+      if (e.touches.length === 2 && g.d) {
+        const [a, b] = [...e.touches].map(t => tp(t, zm.r)), m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+        zm.z = Math.min(4, Math.max(1, g.z * Math.hypot(a[0] - b[0], a[1] - b[1]) / g.d));
+        const k = zm.z / g.z;  // 손가락 가운데 아래 점이 그대로 손가락을 따라오게
+        zm.x = m[0] - (g.m[0] - g.x) * k;
+        zm.y = m[1] - (g.m[1] - g.y) * k;
+      } else if (e.touches.length === 1 && g.p) {
+        const [a] = [...e.touches].map(t => tp(t, zm.r));
+        zm.x = g.x + a[0] - g.p[0];
+        zm.y = g.y + a[1] - g.p[1];
+      }
+      zDraw();
+    }, { passive: false });
+    const zEnd = e => {
+      if (!zm.g) return;
+      if (e.touches.length) { zm.g = null; if (e.touches.length === 1 && zm.z > 1) { const [a] = [...e.touches].map(t => tp(t, zm.r)); zm.g = { p: a, x: zm.x, y: zm.y }; } return; }  // 두 손가락 중 하나만 뗌 → 남은 손가락으로 둘러보기
+      zm.g = null;
+      pv.classList.remove("zg");
+      if (zm.z < 1.05) zReset();
+    };
+    view.addEventListener("touchend", zEnd);
+    view.addEventListener("touchcancel", zEnd);
+    addEventListener("resize", zReset);
     if (prev) { prev.addEventListener("click", () => step(-1)); next.addEventListener("click", () => step(1)); }
     document.addEventListener("keydown", ev => {  // 창 안 빈자리를 눌러 포커스가 쪽 바탕으로 빠져도 Esc · 좌우 키가 듣게 문서에서 받음(10/28 점검 3 — 「탁본」 한 장과 같게)
       if (pv.hidden) return;
@@ -753,6 +853,13 @@
         step(ev.key === "ArrowRight" ? 1 : -1);
       }
     });
+    const vh = /^#v-([\w-]+)-(\d+)$/.exec(location.hash);  // ⑬ 받은 사진 한 장 링크 — 그 게시물을 그 장에서 열고 주소의 #은 지움(나눈 주소가 다시 나뉘지 않게)
+    const vi = vh ? posts.findIndex((_, i) => pid(i) === vh[1]) : -1;
+    if (vi >= 0) {
+      const b = document.querySelector(`#photo .pop[data-i="${vi}"]`);
+      history.replaceState(history.state, "", location.pathname + location.search);
+      if (b) open(vi, b, Math.min(posts[vi].length - 1, Math.max(0, +vh[2] - 1)));
+    }
   }
 
   // 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기(또는 ⌘K · Ctrl+K)로 흰 한 장을 열고, 빌드가 쪽에 넣은 찾을 거리(#sidx)에서 찾음.
@@ -1227,18 +1334,44 @@
     const gbSend = gbf.querySelector(".send"), gbMsg = gbf.querySelector(".msg"), gbPromise = gbMsg.textContent;  // 단추 아래 약속 한 줄(보내는 동안 상태로 바뀌었다가 되돌림)
     // 글자 수(11/2 엽서 한 장) — 글 칸 아래 '0 / 200'을 켜고 칠 때마다 셈 · 보낸 뒤 비우면 다시 0
     const gbTa = gbf.querySelector("textarea"), gbCnt = gbf.querySelector(".cnt");
-    // 쓰던 글 지켜 두기(11/3 동원 '다정한 UX 7가지' ① → 목업 기준/브랜드 시안/방명록임시저장시안_v1_휴대폰_A·B.png → 'A 조용히 되살림 (권장)'):
-    // 칠 때마다 이 기기의 브라우저 저장소(localStorage gb-draft — 쿠키 아님 · 서버로 보내지 않음)에 글과 적은 때를 둠 → 다시 열면 안내 없이 그대로(Gmail 임시보관함 꼴)
-    // 보내면(reset) 지움 · 7일 지나면 지움(같이 쓰는 PC 대비) · 저장소가 막힌 브라우저(사생활 보호 창 등)는 지금처럼 그냥 둠
-    const DK = "gb-draft", WEEK = 7 * 864e5;
+    // 쓰던 글 지켜 두기(11/3 동원 '다정한 UX 7가지' ① → 'A 조용히 되살림') → 11/5 되돌리기 화살표로 바꿈(동원 "화살표로 되돌리기라던가" → 목업 기준/브랜드 시안/방명록임시저장시안_v3_되돌리기.png
+    // → 버튼 "C 되돌리기로 넣기 (권장)" · "쓰다가 지웠을때도"): 쓴 글은 이 기기의 브라우저 저장소(localStorage gb-draft — 쿠키 아님 · 서버로 보내지 않음)에 둠.
+    // 다시 열면 칸은 비어 있고 '↶ 쓰던 글 되돌리기' — 누를 때만 글이 뜸(같이 쓰는 기기에서 다음 사람 화면에 바로 뜨지 않게 · Gmail 실행취소 · 아이폰 메모 되돌리기 꼴).
+    // 쓰다가 10자 넘게 지우거나 다 비우면 '↶ 지운 글 되돌리기' — 간직하는 것은 가장 길었던 판(snap) · 다시 그보다 길게 쓰면 그 판으로 바뀌고 버튼은 숨음.
+    // 보내면(reset) 지움 · 7일 지나면 지움(같이 쓰는 PC 대비) · 저장소가 막힌 브라우저(사생활 보호 창 등)도 지운 글 되돌리기는 이 쪽에 있는 동안 됨
+    const DK = "gb-draft", WEEK = 7 * 864e5, CUT = 10;
     const dSet = v => { try { if (v) localStorage.setItem(DK, JSON.stringify({ t: v, at: Date.now() })); else localStorage.removeItem(DK); } catch {} };
     if (gbTa) {
+      let snap = "";
       try {
         const d = JSON.parse(localStorage.getItem(DK) || "null");
-        if (d && Date.now() - d.at < WEEK) { if (!gbTa.value) gbTa.value = d.t; } else if (d) dSet("");
+        if (d && Date.now() - d.at < WEEK) snap = d.t || ""; else if (d) dSet("");
       } catch { dSet(""); }
-      gbTa.addEventListener("input", () => dSet(gbTa.value));
-      gbf.addEventListener("reset", () => dSet(""));
+      const back = document.createElement("button");
+      back.type = "button";
+      back.className = "gbback";
+      back.hidden = true;
+      back.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5 2.5 6.5l3 3"/><path d="M2.5 6.5h7a4 4 0 0 1 0 8H7"/></svg><span></span>';
+      const say = k => { back.lastChild.textContent = k === "undo" ? uiText("gb_undo", "지운 글 되돌리기") : uiText("gb_back", "쓰던 글 되돌리기"); back.hidden = false; };
+      const row = document.createElement("div");
+      row.className = "gbrow";
+      (gbCnt || gbTa.closest("label")).before(row);
+      row.appendChild(back);
+      if (gbCnt) row.appendChild(gbCnt);
+      if (snap && !gbTa.value) say("back");
+      gbTa.addEventListener("input", () => {
+        const v = gbTa.value;
+        if (v.length >= snap.length) { snap = v; dSet(v); back.hidden = true; }
+        else if (!v.trim() || v.length <= snap.length - CUT) say("undo");
+      });
+      back.addEventListener("click", () => {
+        gbTa.value = snap;
+        gbTa.dispatchEvent(new Event("input", { bubbles: true }));
+        back.hidden = true;
+        gbTa.focus({ preventScroll: true });
+        gbTa.setSelectionRange(snap.length, snap.length);
+      });
+      gbf.addEventListener("reset", () => { snap = ""; dSet(""); back.hidden = true; });
     }
     if (gbTa && gbCnt) {
       const n = gbCnt.querySelector("span"), count = () => { n.textContent = gbTa.value.length; };
@@ -1763,5 +1896,38 @@
       scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
       if (!ev.detail) { const f = document.querySelector("header.top a"); if (f) f.focus({ preventScroll: true }); }
     });
+  }
+
+  // 연결 끊김 한 장(11/5 'A' — sw.js): 쪽을 열다 연결이 없으면 회색 오류 대신 우리 모양 안내 · 받아 두는 것은 없음
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+
+  // 당겨서 새로 고침(11/5 동원 "아래로 당기면 새로고침 될 수 있게") — Safari · Chrome은 브라우저가 이미 해 주므로, 그게 없는 앱 안 브라우저(네이버 · 카카오톡 · 인스타그램 …)와
+  // 홈 화면 앱(standalone)에서만. 맨 위에서 아래로 당기면 띠 아래 동그라미 테두리가 '맨 위로'와 같은 꼴로 채워지고, 다 찬 채 놓으면 새로 고침 · 덜 당기면 제자리.
+  // 터치는 막지 않음(passive) — 앱의 고무줄 스크롤은 그대로 · 메뉴 · 사진 보기 · 찾기 · 쿠키 · 시 종이가 열려 있으면 하지 않음
+  const ptrOn = /Instagram|FBAN|FBAV|KAKAOTALK|NAVER\(inapp|Line\/|; wv\)/i.test(navigator.userAgent) || matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  if (ptrOn && matchMedia("(hover: none)").matches) {
+    const ring = document.createElement("div");
+    ring.className = "ptr";
+    ring.setAttribute("aria-hidden", "true");
+    document.body.appendChild(ring);
+    const PULL = 72;  // 손가락 72px(×0.5 → 동그라미 36px 내려옴)이면 다 참 — 네이티브 당겨서 새로 고침의 문턱과 비슷한 길이(추정)
+    let y0 = null, p = 0;
+    const set = v => { p = v; ring.style.setProperty("--p", Math.min(1, v).toFixed(3)); ring.style.setProperty("--y", Math.min(1, v) * 36 + "px"); ring.classList.toggle("on", v > 0.05); };
+    addEventListener("touchstart", e => {
+      y0 = scrollY <= 0 && e.touches.length === 1 && !/(^| )(mnu|pv|sr|cz)-on( |$)/.test(H.className) && !e.target.closest(".sheet, .door") ? e.touches[0].clientY : null;
+    }, { passive: true });
+    addEventListener("touchmove", e => {
+      if (y0 === null) return;
+      const dy = e.touches[0].clientY - y0;
+      if (dy <= 0 || scrollY > 0) { y0 = null; set(0); return; }
+      set(dy / PULL / 2);
+    }, { passive: true });
+    const end = () => {
+      if (y0 === null) return;
+      y0 = null;
+      if (p >= 1) { ring.classList.add("go"); location.reload(); } else set(0);
+    };
+    addEventListener("touchend", end, { passive: true });
+    addEventListener("touchcancel", () => { y0 = null; set(0); }, { passive: true });
   }
 })();
