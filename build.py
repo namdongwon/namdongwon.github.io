@@ -1439,8 +1439,7 @@ def render(site, poem, videos, photos, lang="ko"):
                )  # 안내 단 작은 글 두 줄('글과 사진을 가져다 쓰려면…' · '광고 · 저절로 재생되는…')은 뺌(11/3 동원 '이거 지우자') — 처리방침 · 쿠키 설정 두 줄만
     # 설정 — 화면 밝게 · 어둡게 · 시스템(10/26 A · 10/28 선 그림) · 움직임 줄이기(11/1 밤 명품 제안 ⑥ 'A 스위치')
     ctl = (f'<dl class="ctl"><dt class="thm">{t("theme")}</dt><dd class="thm"><div role="group" aria-label="{t("theme")}">{thm}</div></dd>'
-           f'<dt class="mot">{t("motion")}</dt><dd class="mot"><label><input type="checkbox" role="switch" aria-label="{t("motion")} {t("motion_reduce")}">{t("motion_reduce")}</label>'
-           f'<small data-on="{t("motion_on")}" data-off="{t("motion_off")}">{t("motion_off")}</small></dd>'
+           f'<dt class="mot">{t("motion")}</dt><dd class="mot"><label><input type="checkbox" role="switch" aria-label="{t("motion")} {t("motion_reduce")}"></label></dd>'  # 스위치만(11/6 동원 "끔 - 기기 설정을 따름 이런 설명 없어도 되잖아" · "줄이기도 없어도 되지") — 이름은 화면 읽기(aria-label)에만
            # 글자(11/3 '다정한 UX' ④ A) — 보통 · 크게 · 더 크게, 단추 글자도 세 크기 · 화면 줄과 같은 꼴(고른 것 먹 + 밑줄)
            f'<dt class="thm">{t("fs")}</dt><dd class="thm fsz"><div role="group" aria-label="{t("fs")}">'
            + "".join(f'<button type="button" data-fs="{v}" aria-pressed="{str(v == "m").lower()}" aria-label="{t("fs_" + v)}" title="{t("fs_" + v)}"><span>{t("fs_g")}</span></button>' for v in ("m", "l", "xl"))
@@ -1677,7 +1676,7 @@ def render(site, poem, videos, photos, lang="ko"):
         "palette": "  " + palette.rstrip() + "\n",
         "me": f"""  {tk}  <section id="me" aria-labelledby="me-t">
     <p class="label">{t("label_me")}</p>
-    <div class="l"><h2 class="h2 sr" id="me-t">{e(S["name"])}</h2><p class="bio">{rich(bio_me)}</p></div>
+    <div class="l"><h2 class="h2" id="me-t">{t("me_h")}</h2><p class="bio">{rich(bio_me)}</p></div>
     <div class="r"><ul class="years">{years}</ul>{fnb}{nowb}<div class="rec">{rec}</div></div>
   </section>
 """,

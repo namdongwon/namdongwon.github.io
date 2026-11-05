@@ -584,6 +584,11 @@
     "en": "Frequently asked",
     "ja": "よくある質問"
   },
+  "me_h": {
+    "ko": "About Me",
+    "en": "About Me",
+    "ja": "About Me"
+  },
   "label_contact": {
     "ko": "연락",
     "en": "Contact",
