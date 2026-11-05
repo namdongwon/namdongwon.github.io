@@ -1764,4 +1764,34 @@
       if (!ev.detail) { const f = document.querySelector("header.top a"); if (f) f.focus({ preventScroll: true }); }
     });
   }
+
+  // 당겨서 새로 고침(11/5 동원 "아래로 당기면 새로고침 될 수 있게") — Safari · Chrome은 브라우저가 이미 해 주므로, 그게 없는 앱 안 브라우저(네이버 · 카카오톡 · 인스타그램 …)와
+  // 홈 화면 앱(standalone)에서만. 맨 위에서 아래로 당기면 띠 아래 동그라미 테두리가 '맨 위로'와 같은 꼴로 채워지고, 다 찬 채 놓으면 새로 고침 · 덜 당기면 제자리.
+  // 터치는 막지 않음(passive) — 앱의 고무줄 스크롤은 그대로 · 메뉴 · 사진 보기 · 찾기 · 쿠키 · 시 종이가 열려 있으면 하지 않음
+  const ptrOn = /Instagram|FBAN|FBAV|KAKAOTALK|NAVER\(inapp|Line\/|; wv\)/i.test(navigator.userAgent) || matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  if (ptrOn && matchMedia("(hover: none)").matches) {
+    const ring = document.createElement("div");
+    ring.className = "ptr";
+    ring.setAttribute("aria-hidden", "true");
+    document.body.appendChild(ring);
+    const PULL = 72;  // 손가락 72px(×0.5 → 동그라미 36px 내려옴)이면 다 참 — 네이티브 당겨서 새로 고침의 문턱과 비슷한 길이(추정)
+    let y0 = null, p = 0;
+    const set = v => { p = v; ring.style.setProperty("--p", Math.min(1, v).toFixed(3)); ring.style.setProperty("--y", Math.min(1, v) * 36 + "px"); ring.classList.toggle("on", v > 0.05); };
+    addEventListener("touchstart", e => {
+      y0 = scrollY <= 0 && e.touches.length === 1 && !/(^| )(mnu|pv|sr|cz)-on( |$)/.test(H.className) && !e.target.closest(".sheet, .door") ? e.touches[0].clientY : null;
+    }, { passive: true });
+    addEventListener("touchmove", e => {
+      if (y0 === null) return;
+      const dy = e.touches[0].clientY - y0;
+      if (dy <= 0 || scrollY > 0) { y0 = null; set(0); return; }
+      set(dy / PULL / 2);
+    }, { passive: true });
+    const end = () => {
+      if (y0 === null) return;
+      y0 = null;
+      if (p >= 1) { ring.classList.add("go"); location.reload(); } else set(0);
+    };
+    addEventListener("touchend", end, { passive: true });
+    addEventListener("touchcancel", () => { y0 = null; set(0); }, { passive: true });
+  }
 })();
