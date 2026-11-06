@@ -1695,7 +1695,7 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<button type="button" class="clr" aria-label="{t("search_clear")}" hidden><svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="9"/><path d="M6 6l6 6M12 6l-6 6"/></svg></button>'
             f'<button type="button" class="x">{t("close")}</button></div>'
             f'<p class="sr-lab" id="sr-lab">{t("search_suggest")}</p><ul class="sug" id="sr-sug" role="listbox" aria-labelledby="sr-lab">{"".join(sug_li(x, k) for k, x in enumerate(sj["suggest"]))}</ul>'
-            f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden>{t("search_none")}</p></div></div>\n')
+            f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden><span>{t("search_none")}</span><small>{t("search_none_hint")}</small></p></div></div>\n')
     # 찾을 거리(#sidx)는 쪽마다 page()가 — 갈 곳(#t3 등)을 그 쪽에서 본 주소로 바꿔 넣음
 
     def paths(k):

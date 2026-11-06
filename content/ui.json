@@ -1304,7 +1304,9 @@
       "copy": "복사",
       "copied": "복사됨 ✓",
       "copy_fail": "복사하지 못했습니다",
-      "gb_cut": "붙여 넣은 글 중 {max}자까지만 담겼습니다. 뒤의 {n}자는 메일로 보내 주세요."
+      "gb_cut": "붙여 넣은 글 중 {max}자까지만 담겼습니다. 뒤의 {n}자는 메일로 보내 주세요.",
+      "search_none_q": "“{q}”에 맞는 것이 없습니다.",
+      "nw_sr": "새 글 있음"
     },
     "en": {
       "play": "Play {title}",
@@ -1345,7 +1347,9 @@
       "copy": "Copy",
       "copied": "Copied ✓",
       "copy_fail": "Couldn’t copy",
-      "gb_cut": "Only the first {max} characters fit. Please send the remaining {n} by email."
+      "gb_cut": "Only the first {max} characters fit. Please send the remaining {n} by email.",
+      "search_none_q": "Nothing matches “{q}”.",
+      "nw_sr": "new"
     },
     "ja": {
       "play": "{title}を再生",
@@ -1386,7 +1390,9 @@
       "copy": "コピー",
       "copied": "コピーしました ✓",
       "copy_fail": "コピーできませんでした",
-      "gb_cut": "貼り付けた文のうち{max}字までが入りました。残りの{n}字はメールでお送りください。"
+      "gb_cut": "貼り付けた文のうち{max}字までが入りました。残りの{n}字はメールでお送りください。",
+      "search_none_q": "「{q}」に合うものはありません。",
+      "nw_sr": "新着あり"
     },
     "ru": {
       "play": "Воспроизвести: {title}",
@@ -1427,7 +1433,9 @@
       "copy": "Копировать",
       "copied": "Скопировано ✓",
       "copy_fail": "Не удалось скопировать",
-      "gb_cut": "Поместились только первые {max} символов. Оставшиеся {n} пришлите, пожалуйста, по почте."
+      "gb_cut": "Поместились только первые {max} символов. Оставшиеся {n} пришлите, пожалуйста, по почте.",
+      "search_none_q": "По запросу «{q}» ничего не найдено.",
+      "nw_sr": "новое"
     }
   },
   "pop_post": {
@@ -1657,5 +1665,11 @@
     "en": "Leave a note →",
     "ja": "芳名録に書く →",
     "ru": "Оставить запись →"
+  },
+  "search_none_hint": {
+    "ko": "시 제목 · 작품 이름의 한 낱말로 찾아 보세요.",
+    "en": "Try a single word from a poem or work title.",
+    "ja": "詩や作品の題名の一語で探してみてください。",
+    "ru": "Попробуйте одно слово из названия стихотворения или работы."
   }
 }

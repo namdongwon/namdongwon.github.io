@@ -973,11 +973,13 @@
           `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}</span><span class="wh">${ko(esc(h.it[2]))}</span></a></li>`;  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
       }).join("");
       none.hidden = empty || hits.length > 0;
+      // 결과 없음(11/6 섬세한 배려 2차 ① — 동원 'A 친 말 + 길 한 줄' · 알라딘 · Toteme · 예스24): 친 말을 그 판의 따옴표로 되돌려 보이고 아래에 해 볼 길 한 줄 — 친 말은 글자로만(textContent)
+      if (!none.hidden) none.firstElementChild.textContent = uiText("search_none_q", "“{q}”에 맞는 것이 없습니다.", { q: q.trim() });
       inp.setAttribute("aria-controls", showSug ? sug.id : res.id);
       inp.setAttribute("aria-expanded", opts().length ? "true" : "false");
       pick(-1);
       clearTimeout(sayT);
-      const msg = empty ? "" : hits.length ? cnt.textContent : none.textContent;
+      const msg = empty ? "" : hits.length ? cnt.textContent : none.firstElementChild.textContent;
       sayT = setTimeout(() => { if (say) say.textContent = msg; }, 400);  // 치는 동안 글자마다 읽지 않게 잠깐 멈춘 뒤
     };
     let from = null;
