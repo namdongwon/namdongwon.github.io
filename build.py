@@ -1834,6 +1834,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
 <title>{e(tab)}</title>
 <meta name="description" content="{e(desc)}">{"" if tr_ else verify_tags(site)}
 <link rel="canonical" href="{e(url)}">
