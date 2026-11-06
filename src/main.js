@@ -1040,6 +1040,20 @@
       pick(k);
     });
     inp.addEventListener("input", run);
+    // 돋보기를 누르는 단추로(11/6 동원 "돋보기도 마우스 오버시 뭐 엔터기능이라던가 그런 게 없어") — 친 글이 있으면 Enter와 같게(고른 줄 · 없으면 첫 결과로) · 비어 있으면 입력 칸으로
+    const glass = srch.querySelector(".bar > svg");
+    if (glass) {
+      const gb = document.createElement("button");
+      gb.type = "button";
+      gb.className = "sgo";
+      gb.setAttribute("aria-label", uiText("search_go", "찾기"));
+      glass.replaceWith(gb);
+      gb.append(glass);
+      gb.addEventListener("click", () => {
+        const to = inp.value.trim() && (opts()[act] || res.querySelector("a"));
+        if (to) to.click(); else inp.focus();
+      });
+    }
     inp.addEventListener("keydown", ev => {  // Enter(휴대폰 자판 '검색')면 고른 줄로, 고른 줄이 없으면 첫 결과로 — 한글을 짜는 중의 Enter는 글자 마침이라 건너뜀
       if (ev.key !== "Enter" || ev.isComposing || ev.keyCode === 229) return;
       const to = opts()[act] || res.querySelector("a");
