@@ -25,11 +25,11 @@ html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:l
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2?v=19b7c81683") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
 
 @font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-light.woff2?v=237255a497") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=f3f1ba66b2") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=4e9ccdc338") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=2c79e7bfd2") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=77157c52d0") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=ee9c92333a") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=01318b6ebf") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=45d12b943d") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=be116d9f41") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=28e4d711ba") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=5438d0dba7") format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2?v=1beaf3c9bd") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2?v=72b7718a65") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=2d92e4ca5f") format("woff2");font-weight:300;font-display:swap}
