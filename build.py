@@ -219,6 +219,18 @@ def clarity(site):
 FS_SKIP = re.compile(r"\.cz|\.top\b|\.door|\.fsz|#palette|\.mnu|#home|\.buy\b|\.whr")  # 글자 크기에서 빼는 곳 — 동의 창(줄 높이를 px로 맞춤) · 맨 위 띠(휴대폰 한 줄에 단추 넷) · 문 장면 · 글자 단추 자신 · 팔레트 · 휴대폰 메뉴 목록 · 시집 첫 화면(책과 글이 한 줄에 — 320px 영어판 더 크게에서 책이 밀려 잘렸음, 스테이징 11/3) · 첫 화면 단추 .buy · 서점 이름 .whr(#home 밖 선택자로 꾸밈)
 
 
+def split_sel(sel):
+    # 쉼표로 선택자를 나누되 괄호 안 쉼표는 그대로 — :is(html:lang(en),html:lang(ru))처럼 괄호가 겹쳐도(11/6 러시아어판: 정규식 쪼개기가 겹친 괄호를 잘못 갈라 style.css가 271줄에서 끊겼음)
+    parts, d, cur = [], 0, ""
+    for ch in sel:
+        d += (ch == "(") - (ch == ")")
+        if ch == "," and d == 0:
+            parts.append(cur); cur = ""
+        else:
+            cur += ch
+    return parts + [cur]
+
+
 def fs_css(css):
     # 판권면 '글자'(11/3 동원 '다정한 UX 7가지' ④ → 목업 글자크기시안_v1 'A 판권면 셋째 줄 (권장)'): html data-fs="l" · "xl"이면 읽는 글자를 112.5 · 125%로
     # (단계는 Apple Dynamic Type 본문 17 → 19 · 21pt의 비율과 같은 결). 사이트 글자가 px라 빌드가 20px 이하 글자 크기만 calc(Npx * var(--fs))로 바꿈 —
@@ -229,7 +241,7 @@ def fs_css(css):
 
     def rule(m):
         sel, body = m.group(1), m.group(2)
-        parts = re.split(r",(?![^()]*\))", sel)  # 묶은 선택자는 하나씩 — 뺄 곳만 원래 크기로 남기고 나머지는 키움
+        parts = split_sel(sel)  # 묶은 선택자는 하나씩 — 뺄 곳만 원래 크기로 남기고 나머지는 키움
         keep = [x for x in parts if FS_SKIP.search(x)]
         if len(keep) == len(parts):
             return m.group(0)
@@ -1249,7 +1261,7 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<div class="p r"><div class="t">{door_t}</div></div><i class="gap"></i></div>')
     # 탁본 한 장 — 「탁본」을 길게 누르면 열리는 검은 먹 종이(움직임·간직하기는 main.js). 자바스크립트가 없으면 숨은 채로.
     # 영어판도 시는 한국어 원문 그대로(10/24 ③)
-    sheet_title = tt(e(book["title"]), not en)  # 출처의 시집 제목도 표지 줄 나눔 자리에서만 나뉘게(10/25 다듬기 가9 — '있다』'만 넘어가던 것)
+    sheet_title = tt(e(book["title"]), not en, q=RQ if ru else None)  # 출처의 시집 제목도 표지 줄 나눔 자리에서만 나뉘게(10/25 다듬기 가9 — '있다』'만 넘어가던 것)
     # 끝 화면(10/27 동원 "A 같은 먹 종이" · "① 나머지 쉰아홉 편" — 레퍼런스 제안 ①): 다 찍히면 판권면과 같은 인사 · 종이책으로 가는 다리 한 문장,
     # '간직하기'를 마치면 그 자리가 교보 단추로(main.js) — 나가는 길은 사기 · 닫기 둘. 화면 읽기는 종이의 설명(aria-describedby)으로 두 줄을 읽음
     sheet = (f'<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t" aria-describedby="sheet-e" hidden>'
@@ -1517,7 +1529,7 @@ def render(site, poem, videos, photos, lang="ko"):
         a, z = SPLIT[bt]
         ptitle = f'<span class="tt"><i><span class="tt">{a}</span></i> <span class="tt"><i>{z}</i>{tail}</span></span>'
     else:
-        ptitle = tt(bt, not en, tail)
+        ptitle = tt(bt, not en, tail, q=RQ if ru else None)
     pgno = head + ptitle + (f'<br>{t("translated")}' if L["translated"] and pair else "")  # 일본어판 「韓国語からの翻訳」도 같은 자리(번역이 있을 때만)
     note = f'<p class="note">{t("ship_note")}</p>' if L["ship_note"] else ""
     # 만든 사람 한 줄(10/28 동원 '모두 직접 했어' — 일본 디테일 보고서 ⑨, 書肆侃侃房 · 港の人가 장정까지 역할어로 적는 방식) — 책 카드 사양 아래, 이름은 한 덩어리
@@ -1711,7 +1723,7 @@ def render(site, poem, videos, photos, lang="ko"):
 """,
         "poem": f"""  <section id="poem" aria-labelledby="poem-t">
     <p class="label">{t("label_poem")}</p>
-    <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"「{poem_t}」"}</h2><span class="rt">{t("read_time", n=read_n)}</span><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>{rdl}
+    <div class="r"><h2 class="h2" id="poem-t">{poem_t if en else f"«{poem_t}»" if ru else f"「{poem_t}」"}</h2><span class="rt">{t("read_time", n=read_n)}</span><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem">{poem_html}</div>{rdl}
       <p class="pgno">{pgno}</p><p class="pbr">{t("sheet_bridge")}</p></div>
     <div class="l pbook" id="bookcard"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
       {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}{plab}</div>

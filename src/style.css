@@ -1046,7 +1046,8 @@ html.cz-on{overflow:hidden}
 @media (hover:hover){.cz .cz-rd button:hover,.cz .cz-vb:hover{border-color:var(--cz-b3)}.cz-open:hover{color:var(--ink)}}
 @media (max-width:767px){
   .cz-1{padding:40px 20px}.cz .cz-x{top:28px;right:20px}.cz-m{margin-top:44px}.cz-b{gap:48px}
-  .cz-2,.cz-3{padding:16px 16px 0}.cz-t{margin-top:22px}.cz-r{grid-template-columns:1fr}.cz-r>.cz-rd{justify-self:end;margin:2px 0 6px}.cz-vc{grid-template-columns:1fr}.cz-vc>.cz-rd{justify-self:end;margin:2px 0 6px}  /* 파트너 안 목적 줄도 단추를 아래 줄로(11/6 — 일본어 · 영어 320에서 5 · 30px 넘쳤음) */
+  .cz-2,.cz-3{padding:16px 16px 0}.cz-t{margin-top:22px}.cz-r{grid-template-columns:1fr}.cz-r>.cz-rd{justify-self:end;margin:2px 0 6px}.cz-vc{grid-template-columns:1fr}.cz-vc>.cz-rd{justify-self:end;margin:2px 0 6px}  /* 파트너 안 목적 줄도 단추를 아래 줄로(11/6 — 일본어 · 영어 320에서 5 · 30px 넘쳤음) · '모든 파트너' 줄과 동의 줄은 모자랄 때만 단추를 다음 줄로(러시아어 320에서 36 · 15px 넘쳤음) */
+  .cz-va,.cz-rr{flex-wrap:wrap;row-gap:6px}.cz-va>.cz-rd{margin-left:auto}
   .cz-dd,.cz-ex{text-align:left}  /* 좁은 폭의 양쪽 맞춤은 한글 낱말 사이가 크게 벌어져 휴대폰만 왼쪽 맞춤(실측 11/1) */
 }
 

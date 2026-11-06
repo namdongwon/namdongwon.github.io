@@ -268,9 +268,9 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}
 .top nav .lang .fl{margin-right:6px;font:14px/1 "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;letter-spacing:0;vertical-align:-1px;line-height:0}  
 :is(html:lang(en),html:lang(ru)) .top nav{letter-spacing:.04em;gap:12px}  
 @media (max-width:374px){.top nav{gap:7px;font-size:12.5px;letter-spacing:0}.top nav .lang{padding-left:8px}.top nav .lang .fl{margin-right:4px}}
-@media (max-width:409px){html:lang(ru)) .top nav{gap:7px;font-size:12.5px;letter-spacing:0}:is(html:lang(en){gap:7px;font-size:calc(12.5px * var(--fs));letter-spacing:0}:is(html:lang(en),html:lang(ru)) .top nav .lang{padding-left:8px}:is(html:lang(en),html:lang(ru)) .top nav .lang .fl{margin-right:4px}}  
-@media (max-width:359px){html:lang(ru)) .top nav{gap:6px;font-size:11px}:is(html:lang(en){gap:6px;font-size:calc(11px * var(--fs))}:is(html:lang(en),html:lang(ru)) .top nav .lang{padding-left:7px}:is(html:lang(en),html:lang(ru)) .top nav .lang .lt{display:none}:is(html:lang(en),html:lang(ru)) .top nav .lang .fl{margin-right:0}}    
-@media (max-width:339px){html:lang(ru)) .top nav{gap:6px;font-size:11px}:is(html:lang(en){gap:6px;font-size:calc(11px * var(--fs))}}  
+@media (max-width:409px){:is(html:lang(en),html:lang(ru)) .top nav{gap:7px;font-size:12.5px;letter-spacing:0}:is(html:lang(en),html:lang(ru)) .top nav .lang{padding-left:8px}:is(html:lang(en),html:lang(ru)) .top nav .lang .fl{margin-right:4px}}  
+@media (max-width:359px){:is(html:lang(en),html:lang(ru)) .top nav{gap:6px;font-size:11px}:is(html:lang(en),html:lang(ru)) .top nav .lang{padding-left:7px}:is(html:lang(en),html:lang(ru)) .top nav .lang .lt{display:none}:is(html:lang(en),html:lang(ru)) .top nav .lang .fl{margin-right:0}}    
+@media (max-width:339px){:is(html:lang(en),html:lang(ru)) .top nav{gap:6px;font-size:11px}}  
 
 
 .top .act a.cta{display:inline-flex;align-items:center;margin:-4px 0;padding:8px 12px;border-radius:var(--btn-r);background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);letter-spacing:.04em;white-space:nowrap}
@@ -279,7 +279,7 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}
 @media (min-width:375px) and (max-width:419px){html:lang(ko) .top nav{gap:10px}}
 @media (min-width:410px) and (max-width:419px){:is(html:lang(en),html:lang(ru)) .top nav{gap:7px;letter-spacing:0}:is(html:lang(en),html:lang(ru)) .top nav .lang{padding-left:8px}:is(html:lang(en),html:lang(ru)) .top nav .lang .fl{margin-right:4px}}
 @media (max-width:374px){.top .act a.cta{padding:6px 8px;letter-spacing:0}:is(html:lang(en),html:lang(ru)) .top nav .lang .lt{display:none}:is(html:lang(en),html:lang(ru)) .top nav .lang .fl{margin-right:0}}
-@media (max-width:359px){html:lang(ko) .top nav{gap:6px}html:lang(ru)) .top .act a.cta{font-size:11px}:is(html:lang(en){font-size:calc(11px * var(--fs))}}
+@media (max-width:359px){html:lang(ko) .top nav{gap:6px}:is(html:lang(en),html:lang(ru)) .top .act a.cta{font-size:11px}}
 @media (min-width:375px) and (max-width:389px){html:lang(ko) .top nav{gap:9px}:is(html:lang(en),html:lang(ru)) .top nav{gap:6px}}@media (min-width:420px) and (max-width:449px){:is(html:lang(en),html:lang(ru)) .top nav{gap:12px}}  
 
 @media (max-width:449px){html:lang(ja) .top nav{gap:8px;letter-spacing:0}html:lang(ja) .top .act a.cta{letter-spacing:0}}
@@ -979,6 +979,7 @@ html.cz-on{overflow:hidden}
 @media (max-width:767px){
   .cz-1{padding:40px 20px}.cz .cz-x{top:28px;right:20px}.cz-m{margin-top:44px}.cz-b{gap:48px}
   .cz-2,.cz-3{padding:16px 16px 0}.cz-t{margin-top:22px}.cz-r{grid-template-columns:1fr}.cz-r>.cz-rd{justify-self:end;margin:2px 0 6px}.cz-vc{grid-template-columns:1fr}.cz-vc>.cz-rd{justify-self:end;margin:2px 0 6px}  
+  .cz-va,.cz-rr{flex-wrap:wrap;row-gap:6px}.cz-va>.cz-rd{margin-left:auto}
   .cz-dd,.cz-ex{text-align:left}  
 }
 
