@@ -2323,8 +2323,17 @@ def main():
         shutil.copy2(SRC / "consent.js", ASSETS / "consent.js")  # 동의 창 움직임(11/1) — GA4를 켰을 때만(끄면 사이트 파일이 전과 같음)
     ver.update({x: fp((ASSETS / x).read_bytes()) for x in ("style.css", "main.js", "consent.js") if (ASSETS / x).exists()})
 
-    def stamp(h):  # 쪽 안의 assets/style.css · main.js · consent.js · fonts/….woff2 주소 끝에 그 파일의 지문
-        return re.sub(r'(assets/(style\.css|main\.js|consent\.js|fonts/[\w.-]+\.woff2))(?=")', lambda m: m.group(1) + (f"?v={ver[m.group(2)]}" if m.group(2) in ver else ""), h)
+    ogv = {}
+
+    def og_fp(name):  # 공유 카드 그림 지문(11/7 관리 화면 '공유 카드' 점검 — og:image 24장에 판 표시가 없어 그림을 바꿔도 카톡 · 페이스북에 옛 그림이 남음) — 쪽을 쓸 때 그림은 이미 만들어져 있음
+        if name not in ogv:
+            f = ASSETS / name
+            ogv[name] = fp(f.read_bytes()) if f.exists() else ""
+        return ogv[name]
+
+    def stamp(h):  # 쪽 안의 assets/style.css · main.js · consent.js · fonts/….woff2 주소 끝에 그 파일의 지문 · 공유 카드 og-….jpg도
+        h = re.sub(r'(assets/(style\.css|main\.js|consent\.js|fonts/[\w.-]+\.woff2))(?=")', lambda m: m.group(1) + (f"?v={ver[m.group(2)]}" if m.group(2) in ver else ""), h)
+        return re.sub(r'(assets/(og[\w.-]*\.(?:jpg|png)))(?=")', lambda m: m.group(1) + (f"?v={og_fp(m.group(2))}" if og_fp(m.group(2)) else ""), h)
 
     cover = CONTENT / site["book"]["cover"]
     save_jpg(cover, ASSETS / "img/cover.jpg", 600, quality=84)
