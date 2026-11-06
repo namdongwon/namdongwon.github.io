@@ -1478,9 +1478,18 @@
       gbf.addEventListener("reset", () => { snap = ""; dSet(""); back.hidden = true; });
     }
     if (gbTa && gbCnt) {
-      const n = gbCnt.querySelector("span"), count = () => { n.textContent = gbTa.value.length; };
+      const n = gbCnt.querySelector("span"), count = () => { n.textContent = gbTa.value.length.toLocaleString(H.lang); };
       gbTa.addEventListener("input", count);
       gbf.addEventListener("reset", () => setTimeout(count));
+      // 한도보다 길게 붙여 넣으면 조용히 잘리지 않게(11/6 섬세한 배려 ⑫ A — 동원 '1,000자' · GOV.UK '잘린 걸 모르게 하지 않기'): 잘린 글자 수를 약속 줄 자리에 알림 · 다시 고치면 약속 줄로
+      const max = +gbTa.getAttribute("maxlength") || 0;
+      gbTa.addEventListener("paste", ev => {
+        const add = (ev.clipboardData && ev.clipboardData.getData("text")) || "";
+        const over = gbTa.value.length - (gbTa.selectionEnd - gbTa.selectionStart) + add.length - max;
+        if (!max || over <= 0) return;
+        setTimeout(() => { gbMsg.textContent = uiText("gb_cut", "붙여 넣은 글 중 {max}자까지만 담겼습니다. 뒤의 {n}자는 메일로 보내 주세요.", { max: max.toLocaleString(H.lang), n: over.toLocaleString(H.lang) }); gbMsg.classList.add("cut"); });
+      });
+      gbTa.addEventListener("input", ev => { if (ev.inputType !== "insertFromPaste" && gbMsg.classList.contains("cut")) { gbMsg.textContent = gbPromise; gbMsg.classList.remove("cut"); } });
       count();
       gbCnt.hidden = false;
     }

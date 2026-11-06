@@ -1307,3 +1307,4 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
   .colo .mot input:checked::before{border-color:Highlight;background:Highlight}.colo .mot input:checked::after{background:Canvas}
   .tk-w{opacity:.22}  /* GrayText는 윈도 고대비(검정)에서 초록이라 더 튐 — 시스템 글 색 그대로 투명도만 낮춤 */
 }
+.gbf .msg.cut{color:var(--ink)}  /* 붙여 넣은 글이 잘렸다는 알림은 먹으로(11/6 ⑫) */

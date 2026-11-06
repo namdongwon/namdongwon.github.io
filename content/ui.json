@@ -461,10 +461,10 @@
     "ru": "Запись"
   },
   "gb_text_hint": {
-    "ko": "200자 · 길게 하실 말은 메일로",
-    "en": "Up to 200 characters · longer messages by email",
-    "ja": "200字まで · 長くなるときはメールで",
-    "ru": "До 200 символов · длинные сообщения — по почте"
+    "ko": "1,000자 · 길게 하실 말은 메일로",
+    "en": "Up to 1,000 characters · longer messages by email",
+    "ja": "1,000字まで · 長くなるときはメールで",
+    "ru": "До 1 000 символов · длинные сообщения — по почте"
   },
   "gb_note": {
     "ko": "남기신 글은 Formspree(미국)를 거쳐 남동원의 메일함으로 옵니다. 실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있습니다. {privacy}",
@@ -1303,7 +1303,8 @@
       "pal_one": "「{ch}」 {n}번 — {all}가지 가운데 {rank}번째로 많이 쓴 글자",
       "copy": "복사",
       "copied": "복사됨 ✓",
-      "copy_fail": "복사하지 못했습니다"
+      "copy_fail": "복사하지 못했습니다",
+      "gb_cut": "붙여 넣은 글 중 {max}자까지만 담겼습니다. 뒤의 {n}자는 메일로 보내 주세요."
     },
     "en": {
       "play": "Play {title}",
@@ -1343,7 +1344,8 @@
       "pal_one": "“{ch}” — used {n} times, no. {rank} of {all}",
       "copy": "Copy",
       "copied": "Copied ✓",
-      "copy_fail": "Couldn’t copy"
+      "copy_fail": "Couldn’t copy",
+      "gb_cut": "Only the first {max} characters fit. Please send the remaining {n} by email."
     },
     "ja": {
       "play": "{title}を再生",
@@ -1383,7 +1385,8 @@
       "pal_one": "「{ch}」 {n}回 — {all}種のうち{rank}番目に多く使った文字",
       "copy": "コピー",
       "copied": "コピーしました ✓",
-      "copy_fail": "コピーできませんでした"
+      "copy_fail": "コピーできませんでした",
+      "gb_cut": "貼り付けた文のうち{max}字までが入りました。残りの{n}字はメールでお送りください。"
     },
     "ru": {
       "play": "Воспроизвести: {title}",
@@ -1423,7 +1426,8 @@
       "pal_one": "«{ch}» — использований: {n}, № {rank} из {all}",
       "copy": "Копировать",
       "copied": "Скопировано ✓",
-      "copy_fail": "Не удалось скопировать"
+      "copy_fail": "Не удалось скопировать",
+      "gb_cut": "Поместились только первые {max} символов. Оставшиеся {n} пришлите, пожалуйста, по почте."
     }
   },
   "pop_post": {

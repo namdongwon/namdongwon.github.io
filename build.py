@@ -431,6 +431,13 @@ def art_line(a, lang="ko"):
     return head + (" — " + tail if tail else "")
 
 
+GB_MAX = 1000  # 방명록 글 한도(11/6 동원 "쓰는 사람이 진심으로 쓰고 싶은데 막히면 짜증 날 거 같아서" → 다른 곳 실측(다음 댓글 300 · 인스타 댓글 2,200 · 네이버 뉴스는 2006년 제한 없앰) → 버튼 "1,000자 (권장)" · 전엔 200)
+
+
+def gb_max_txt(lang):
+    return f"{GB_MAX:,}".replace(",", NB) if lang == "ru" else f"{GB_MAX:,}"  # 러시아어는 천 단위를 붙임 공백으로
+
+
 ORIG_LABEL = {"ko": "원제", "en": "Original title", "ja": "原題", "ru": "Оригинальное название"}  # 영상 사실 줄의 원제 앞 낱말(11/6)
 
 
@@ -1485,8 +1492,8 @@ def render(site, poem, videos, photos, lang="ko"):
     if gb_id or gf:
         # 구글 폼이면 칸 이름이 그 폼의 칸 번호(entry.…) · data-kind="gform"(main.js가 글 칸만 no-cors로 보냄)
         card = (to + (f'<form class="gbf" data-clarity-mask="true" data-endpoint="{e(gf["action"])}" data-kind="gform" method="post">' if gf else f'<form class="gbf" data-clarity-mask="true" data-endpoint="https://formspree.io/f/{e(gb_id)}" method="post">')
-                + f'<label>{t("gb_text")} <i>{t("gb_text_hint")}</i><textarea name="{e(gf["text"]) if gf else "message"}" maxlength="200" rows="4" required></textarea></label>'
-                + '<p class="cnt" hidden><span>0</span> / 200</p>'  # 글자 수 — main.js가 켜고 셈(자바스크립트가 없으면 숨김)
+                + f'<label>{t("gb_text")} <i>{t("gb_text_hint")}</i><textarea name="{e(gf["text"]) if gf else "message"}" maxlength="{GB_MAX}" rows="4" required></textarea></label>'
+                + f'<p class="cnt" hidden><span>0</span> / {gb_max_txt(lang)}</p>'  # 글자 수 — main.js가 켜고 셈(자바스크립트가 없으면 숨김)
                 + '<input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">'
                 + f'<p class="gbn">{t("gb_note_g" if gf else "gb_note", privacy=priv)}</p>'
                 + f'<button class="send" type="submit">{t("gb_send")}</button><p class="msg" role="status">{t("gb_when")}</p></form>')  # 약속 한 줄 — 보내면 main.js가 상태로 바꿈
