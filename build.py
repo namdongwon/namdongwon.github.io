@@ -431,17 +431,24 @@ def art_line(a, lang="ko"):
     return head + (" — " + tail if tail else "")
 
 
+ORIG_LABEL = {"ko": "원제", "en": "Original title", "ja": "原題", "ru": "Оригинальное название"}  # 영상 사실 줄의 원제 앞 낱말(11/6)
+
+
 def sentence(w, lang="ko", kinds=None):
     # 대표 편 정보 한 문장(10/24 ⑩ A — Le Cinéma Club식): '영화 〈제목〉 만든 이. 2001. 일본.' / 'Film *Title* Maker. 2001. Japan.'
     # 제목 · 만든 이만 먹, 갈래 낱말과 나머지는 옅게(Kunsthalle Basel식 진하기 위계). 사람 이름은 한 덩어리로.
     # data-title은 부호 없는 제목 — 재생 단추 · 플레이어 이름(main.js). 영어판 제목은 <cite>가 기울임(style.css)
     who = e(w["creator"]).replace(" ", NB)
-    tail = "".join(f" {keep(x)}." for x in w.get("facts", []))
+    # 원제(11/6 동원 'B 사실 줄 끝' — 시안 영상원제시안_v1 · Letterboxd · MUBI · Filmarks): videos.json의 orig · orig_lang(판마다 같음) —
+    # 그 판의 제목과 다를 때만 사실 줄 끝에 '원제 リリイ・シュシュのすべて.' · 원제 글은 그 말의 lang으로
+    orig, olang = (w.get("orig") or "").strip(), (w.get("orig_lang") or "").strip()
+    ospan = f'{ORIG_LABEL.get(lang, "원제")}{"" if lang == "ja" else NB}<span lang="{e(olang)}">{e(orig)}</span>' if orig and orig != w["title"] else ""
+    tail = "".join(f" {keep(x)}." for x in [*w.get("facts", [])]) + (f" {ospan}." if ospan else "")
     kind = e((kinds or {}).get(w["kind"], w["kind"]))
     name = e(w["title"]) if lang == "en" else marked(w["kind"], w["title"], lang)  # 일본어판은 『 』 「 」(11/1)
     if lang == "ja":  # 일본어판(11/1): 부호 앞뒤 빈칸 없이 · 마침은 '。' — '映画『제목』만든 이。2001。日本。'(일본어 관행 — 『 』 안팎에 빈칸을 두지 않음)
         return (f'<p class="vt" data-title="{e(w["title"])}">{kind}<b><cite>{name}</cite>{who}</b>。'
-                + "".join(f"{keep(x)}。" for x in w.get("facts", [])) + "</p>")
+                + "".join(f"{keep(x)}。" for x in w.get("facts", [])) + (f"{ospan}。" if ospan else "") + "</p>")
     return (f'<p class="vt" data-title="{e(w["title"])}">{kind} <b><cite>{name}</cite> {who}</b>.{tail}</p>')
 
 
@@ -476,7 +483,7 @@ def localize(obj, lang):
 TABLES = {"now": "now.json", "news": "news.json", "monthly": "monthly.json", "years": "years.json"}
 # 영어가 비면(설계서 5절 — 빈 글 ""과 칸 없음은 같은 뜻): 문장 칸(글 · 각주 · 영상 사실 · 스틸 출처)은 영어판에서 숨김(빈 글) · 이름 칸은 한국어 그대로 · 말이 없는 칸은 그대로
 NAME_KEYS = {"label", "title", "creator", "artist", "show", "venue", "where", "name"}
-PLAIN_KEYS = {"updated", "date", "month", "year", "kind", "thumb", "stills", "youtube_id", "post", "page", "n", "link", "url", "id"}  # stills(11/1 — 그림 자리 목록, 말과 상관없음 · 빠져 있어 영어 · 일본어판에 스틸이 안 나왔음)
+PLAIN_KEYS = {"updated", "date", "month", "year", "kind", "thumb", "stills", "youtube_id", "post", "page", "n", "link", "url", "id", "orig", "orig_lang"}  # stills(11/1 — 그림 자리 목록, 말과 상관없음 · 빠져 있어 영어 · 일본어판에 스틸이 안 나왔음)
 
 
 def tables(site):

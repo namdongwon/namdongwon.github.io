@@ -5,9 +5,9 @@
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=f031c733f4") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=80dcc31085") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=8fb66d2a04") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=c0285e9415") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=e21b80ec6c") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=09e590f211") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=15dff4b157") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=1bc481d6ed") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -35,12 +35,12 @@ html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:l
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=2d92e4ca5f") format("woff2");font-weight:300;font-display:swap}
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-semibold-first.woff2?v=6e3fcf2123") format("woff2");font-weight:600;font-display:swap}
 
-@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-light.woff2?v=66df129edb") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru.woff2?v=524d69acd3") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-bold.woff2?v=bbe6438670") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-light.woff2?v=28de798d8f") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-regular.woff2?v=8adecbe024") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-semibold.woff2?v=a98550538a") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-light.woff2?v=dbdfefb6c3") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru.woff2?v=ca99dc4c90") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-bold.woff2?v=6e6710395e") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-light.woff2?v=136023510c") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-regular.woff2?v=dd5604c60f") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-semibold.woff2?v=2cca9092a6") format("woff2");font-weight:600;font-display:swap}
 html:lang(ru) #home{--sans:"RGO","PTDF","PTD",-apple-system,sans-serif}
 html:lang(ja) .door .t,html:lang(ja) #home .hs{font-family:"JMJF",var(--serif)}
 html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  
