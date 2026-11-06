@@ -556,7 +556,8 @@ html.sr-on{overflow:hidden}
 @media (hover:hover){.top nav a:hover::after,.js .top .sq:hover::after{background:var(--ph)}}
 
 @media (hover:hover) and (pointer:fine){
-  :is(.logo,.mail .ml,main a:not([class]),.pvf small a,.pvl,.ctl label):hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+  :is(.mail .ml,main a:not([class]),.pvf small a,.pvl,.ctl label):hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+  .top .logo:hover{color:var(--muted)}  
   :is(.buy,.go):hover{color:var(--muted);border-color:var(--muted)}
   :is(.cp,.colo .thm button,.rc-d,.rc-x):hover{background:var(--ph);border-radius:var(--btn-r)}
   .tk-btn:hover{background:color-mix(in srgb,var(--ink) 80%,var(--bg))}  
