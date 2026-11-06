@@ -136,6 +136,18 @@ def keep(s):
     return names(s.replace(" · ", NB + "· "))
 
 
+RU_SHORT = re.compile(r"(?<![A-Za-zА-Яа-яЁё\-])(в|во|и|с|со|к|ко|о|об|обо|у|а|я|на|по|за|из|от|до|не|ни|но) (?=\S)", re.I)
+RU_SKIP = re.compile(r"(<script\b.*?</script>|<style\b.*?</style>|<[^>]+>)", re.S)
+
+
+def ru_bind(html):
+    # 러시아어판 줄 끝(11/6 동원 'A 러시아어만' — 시안 러시아어줄끝묶기시안_v1 · 러시아 조판 관행 · Typograf 규칙): 한두 글자 전치사 · 접속사(в · с · о · и · на …)는
+    # 다음 낱말과 붙임 공백으로 묶어 줄 끝에 홀로 남지 않게, 줄표(—)는 앞 낱말에 붙여 줄 머리에 오지 않게 — 태그 · 스크립트 · 스타일 밖 글에만(원고는 그대로)
+    def fix(t):
+        return re.sub(r"(?<![А-Яа-яЁё])с\. (?=\d)", "с." + NB, RU_SHORT.sub(lambda m: m.group(1) + NB, t)).replace(" —", NB + "—")  # 쪽수 'с. 45'도 한 덩어리
+    return "".join(x if i % 2 else fix(x) for i, x in enumerate(RU_SKIP.split(html)))
+
+
 def names(s):
     # 채널 이름(아름다울 남 · Beautiful Nam)도 한 덩어리 — 10/25 마지막 점검 ②③을 고친 뒤 영어 '지금' 320px에서 'Beautiful / Nam'으로 갈려서
     for n in NAMES:
@@ -2379,13 +2391,13 @@ def main():
         for k, h in pg.items():
             d = DOCS.joinpath(*(x for x in (lg if lg in TR else "", k) if x))
             d.mkdir(parents=True, exist_ok=True)
-            (d / "index.html").write_text(stamp(h), encoding="utf-8")
+            (d / "index.html").write_text(stamp(ru_bind(h) if lg == "ru" else h), encoding="utf-8")
     (DOCS / "404.html").write_text(stamp(page404), encoding="utf-8")
     for lg, html in priv.items():
         if html:
             d = DOCS / (f"{lg}/privacy" if lg in TR else "privacy")
             d.mkdir(parents=True, exist_ok=True)
-            (d / "index.html").write_text(stamp(html), encoding="utf-8")
+            (d / "index.html").write_text(stamp(ru_bind(html) if lg == "ru" else html), encoding="utf-8")
     (DOCS / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n", encoding="utf-8")
     (DOCS / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
