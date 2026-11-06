@@ -1812,33 +1812,7 @@
     nt.addEventListener("pointercancel", end);
   }
 
-  // ⑨ 연락 — '인스타그램 메시지로 남기기'가 커서 쪽으로 다가옴(← '마그네틱 버튼') · 단추 둘레 90px 안에서 0.32배 · 최대 18px · 1.04배(마우스 기기 · 움직임 허용)
-  const ask = document.querySelector(".ask-off a");
-  if (ask && fine && !reduce) {
-    let box = null;
-    addEventListener("resize", () => { box = null; }, { passive: true });
-    addEventListener("mousemove", ev => {
-      if (!box) {
-        ask.style.transform = "";
-        const r = ask.getBoundingClientRect();
-        box = { x: r.left + r.width / 2, y: r.top + scrollY + r.height / 2, R: Math.max(r.width, r.height) / 2 + 90 };
-      }
-      const dx = ev.clientX - box.x, dy = ev.clientY + scrollY - box.y;
-      if (Math.hypot(dx, dy) < box.R) {
-        let tx = dx * .32, ty = dy * .4;
-        const L = Math.hypot(tx, ty);
-        if (L > 18) { tx *= 18 / L; ty *= 18 / L; }
-        ask.classList.add("pull");
-        at = `translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px)`;
-        ask.style.transform = `${at} scale(${down ? .97 : 1.04})`;
-      } else if (ask.classList.contains("pull")) { ask.classList.remove("pull"); ask.style.transform = ""; at = ""; }
-    }, { passive: true });
-    // 누르면 끌려온 자리에서 0.97로 바로 들어감(11/6 — 끌림이 단추 모양을 직접 써서 사이트 누름 반응이 가려졌음 · 점검 site_hover_audit_v1) · 떼면 1.04로
-    let at = "", down = false;
-    const press = on => { down = on; ask.style.transition = on ? "none" : ""; ask.style.transform = at ? `${at} scale(${on ? .97 : 1.04})` : (on ? "scale(.97)" : ""); };
-    ask.addEventListener("pointerdown", () => press(true));
-    ["pointerup", "pointerleave", "pointercancel"].forEach(k => ask.addEventListener(k, () => { if (down) press(false); }));
-  }
+  // ⑨ 연락 — '인스타그램 메시지로 남기기' 커서 쪽으로 다가옴(마그네틱 버튼)은 11/6 밤 뺌(동원 "이거 따라다니는 거 별로같아") — 올림 · 누름 반응은 사이트 공통 그대로
 
   // ⑩ 쪽 사이 원형 전환(← '페이지 인트로') — 맨 위 띠의 쪽 링크(이름 · 메뉴 넷 · 연락하기)를 누르면 누른 자리로 원이 닫히고(0.55초) 다음 쪽이 그 자리에서 열림(0.8초 —
   //   머리 스크립트가 남긴 cin을 여기서 copen으로). 새 탭 · 수정 키 · 같은 쪽 · '동작 줄이기'면 그대로 · 뒤로 가기로 돌아오면(bfcache) 원을 거둠

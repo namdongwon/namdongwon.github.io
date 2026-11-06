@@ -606,7 +606,8 @@ html.sr-on{overflow:hidden}
 .fq summary::after{content:"+";flex:none;font:300 20px/1 var(--sans);color:var(--ink)}.fq[open] summary::after{content:"−"}
 .fq summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .fq p{margin:-4px 0 16px;font:300 15px/1.7 var(--sans);color:var(--muted)}
-@media (hover:hover){.fq summary:hover{text-decoration:underline;text-underline-offset:4px}}
+.fq summary{margin:0 -12px;padding-inline:12px;border-radius:var(--btn-r);transition:background-color .12s}  /* 줄 전체가 누르는 칸 — 글 자리는 그대로(바깥으로 12px 넓힘) */
+@media (hover:hover){.fq summary:hover{background:var(--ph)}}  /* 자주 묻는 질문 줄은 밑줄 대신 칸 색(11/6 밤 동원 '이 칸으로 되어있으니까 마우스 오버시 칸색깔이 변하는 게 더 낫지 않을까') */
 /* 바닥글: 판권면(10/24 A) — 시집 마지막 쪽 판권면의 틀. 첫 화면에서 세운 책의 마지막 쪽 */
 /* 방명록(10/26 A 같은 글자 목록 — Shu Ding · Manu · 형당의 원리) — 글은 명조 본문, 아래 '이름 · 받은 날' 회색 한 줄, 답은 들여 쓴 회색 '— 남동원'.
    머리 가르는 한 문장 · 폼 앞 '언제' 한 줄 · 동의 둘. 색은 모두 색 낱말(어두운 모드 그대로) */

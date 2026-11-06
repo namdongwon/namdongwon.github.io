@@ -580,7 +580,8 @@ html.sr-on{overflow:hidden}
 .fq summary::after{content:"+";flex:none;font:300 calc(20px * var(--fs))/1 var(--sans);color:var(--ink)}.fq[open] summary::after{content:"−"}
 .fq summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .fq p{margin:-4px 0 16px;font:300 calc(15px * var(--fs))/1.7 var(--sans);color:var(--muted)}
-@media (hover:hover){.fq summary:hover{text-decoration:underline;text-underline-offset:4px}}
+.fq summary{margin:0 -12px;padding-inline:12px;border-radius:var(--btn-r);transition:background-color .12s}  
+@media (hover:hover){.fq summary:hover{background:var(--ph)}}  
 
 
 .gb{margin-top:36px;padding-top:16px;border-top:1px solid var(--rule)}
