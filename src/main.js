@@ -1440,6 +1440,8 @@
     const unfold = () => { if (gbCard) gbCard.classList.remove("fold"); };
     gbf.addEventListener("submit", async ev => {
       ev.preventDefault();
+      // 스테이징(staging.namdongwon.com · *.pages.dev)에서는 보내지 않음(11/6 — 시험 글이 진짜 받은 글에 섞이지 않게) · 이 맥 시험 주소(127.0.0.1)는 시험이 보내기를 흉내 내므로 그대로
+      if (/^staging\.|\.pages\.dev$/.test(location.hostname)) { gbMsg.textContent = uiText("gb_staging", "스테이징 서버라 보내지 않았습니다 — 운영 사이트에서만 보내집니다."); return; }
       gbMsg.textContent = uiText("sending", "보내는 중…");
       gbMsg.prepend(spinEl("msp"));  // 불러오는 중 고리 — 다음 글로 바뀌면 함께 사라짐
       gbSend.disabled = true;
