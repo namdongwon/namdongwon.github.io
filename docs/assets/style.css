@@ -557,14 +557,14 @@ html.sr-on{overflow:hidden}
 
 
 @media (hover:hover) and (pointer:fine){
-  :is(.mail .ml,main a:not([class]),.pvf small a,.pvl,.ctl label):hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+  :is(.mail .ml,main a:not([class]):not(.nxp a),.pvf small a,.pvl,.ctl label):hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}  
   :is(.buy,.go):hover{color:var(--muted);border-color:var(--muted)}
   :is(.cp,.colo .thm button,.rc-d,.rc-x):hover{background:var(--ph);border-radius:var(--btn-r)}
   .tk-btn:hover{background:color-mix(in srgb,var(--ink) 80%,var(--bg))}  
   .btoc summary:hover{color:var(--ink)}
   :is(#home dd .go,.pbook .plab .go):hover{border-bottom-color:var(--muted)}  
   .ask-off a.buy:hover{background:color-mix(in srgb,var(--ink) 80%,var(--bg))}  
-  :is(main a:not([class]),.pvf small a,#poem a:not([class]),#guestbook a:not([class])):hover{color:var(--muted)}  
+  :is(main a:not([class]):not(.nxp a),.pvf small a,#poem a:not([class]),#guestbook a:not([class]):not(.nxp a)):hover{color:var(--muted)}  
   :is(.buy,.go,.cp,.colo .thm button,.tk-btn,.ctl label){transition:color .12s,background-color .12s,border-color .12s,text-decoration-color .12s,transform .12s cubic-bezier(.2,0,0,1)}
 }
 .send:not(:disabled):active{background:var(--ink);color:var(--bg)}  

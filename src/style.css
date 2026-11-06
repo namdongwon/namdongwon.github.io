@@ -583,14 +583,14 @@ html.sr-on{overflow:hidden}
 /* 마우스 올림 빈 곳 채우기(11/6 동원 "이거 웹사이트도 똑같아" — 전수 점검 기준/브랜드 시안/site_hover_audit_v1.py 119개 중 35개 반응 없음 → 예시 사이트마우스올림시안_v1 'A 사이트 결 (권장)'):
    글 링크는 밑줄 · 밑줄 단추(.buy · .go)는 한 단 옅게 · 선 단추는 옅은 바탕 · 먹 단추(시집 보기)는 한 단 옅게(#3a3a3a) · 이미 정한 올림(연락하기 · 남기기 · 사진 칸 ↗)은 그대로 · 0.12초 · 마우스 기기에서만 */
 @media (hover:hover) and (pointer:fine){
-  :is(.mail .ml,main a:not([class]),.pvf small a,.pvl,.ctl label):hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+  :is(.mail .ml,main a:not([class]):not(.nxp a),.pvf small a,.pvl,.ctl label):hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}  /* 다음 쪽 카드(.nxp)는 밑줄 없이 옅은 바탕만(11/6 동원 '카드 같은 것들은 글자가 밑줄까지는 필요 없을 거 같아') */
   :is(.buy,.go):hover{color:var(--muted);border-color:var(--muted)}
   :is(.cp,.colo .thm button,.rc-d,.rc-x):hover{background:var(--ph);border-radius:var(--btn-r)}
   .tk-btn:hover{background:color-mix(in srgb,var(--ink) 80%,var(--bg))}  /* 먹 단추 한 단 옅게 — 밝게는 #3a3a3a 꼴 · 어둡게는 밝은 단추가 한 단 어둡게(11/6 전체 점검: #3a3a3a 그대로면 어둡게에서 글자가 묻혔음 · 대비 1.6) */
   .btoc summary:hover{color:var(--ink)}
   :is(#home dd .go,.pbook .plab .go):hover{border-bottom-color:var(--muted)}  /* 더 센 선택자의 밑줄도 함께 옅게 */
   .ask-off a.buy:hover{background:color-mix(in srgb,var(--ink) 80%,var(--bg))}  /* 차례 부 줄(접힘) — 옅은 글이 먹으로(점검에서 반응 없음) */
-  :is(main a:not([class]),.pvf small a,#poem a:not([class]),#guestbook a:not([class])):hover{color:var(--muted)}  /* 이미 밑줄이 있는 글 링크(「탁본」 속 · 처리방침)는 한 단 옅게 */
+  :is(main a:not([class]):not(.nxp a),.pvf small a,#poem a:not([class]),#guestbook a:not([class]):not(.nxp a)):hover{color:var(--muted)}  /* 이미 밑줄이 있는 글 링크(「탁본」 속 · 처리방침)는 한 단 옅게 */
   :is(.buy,.go,.cp,.colo .thm button,.tk-btn,.ctl label){transition:color .12s,background-color .12s,border-color .12s,text-decoration-color .12s,transform .12s cubic-bezier(.2,0,0,1)}
 }
 .send:not(:disabled):active{background:var(--ink);color:var(--bg)}  /* 누르는 동안 먹으로(10/24 ⑨ A) */
