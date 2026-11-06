@@ -998,6 +998,7 @@ html.cz-on{overflow:hidden}
 .cz .cz-rd button{position:relative;height:25px;padding:0 20px;border:1px solid var(--cz-b1);background:var(--bg);box-shadow:1px 1px 0 rgba(0,0,0,.1);font:600 12px/12px var(--sans);color:var(--faint);white-space:nowrap}
 .cz .cz-rd button::before{content:"";position:absolute;inset:-10px -2px}  /* 누르는 자리 44px 안팎 */
 .cz .cz-rd button{display:inline-flex;align-items:center;justify-content:center;gap:4px}
+@media (max-width:359px){.cz-rd button{padding:0 12px}}  /* 320 휴대폰 — 파트너 단추를 同意しない/同意する · 동의 안 함/동의로 맞춘 뒤(11/6) 파트너 목록이 5px 넘쳐 양옆 띄움만 줄임 */
 .cz .cz-rd [aria-checked="true"]{background:var(--ink);border-color:var(--cz-b3);color:var(--bg)}  /* 고야드는 고른 '동의 안 함' 빨강 · '동의' 초록 → 먹 */
 .cz .cz-rd [aria-checked="true"]::after{order:-1;font-weight:700}.cz .cz-rd [data-v="0"][aria-checked="true"]::after{content:"×"}.cz .cz-rd [data-v="1"][aria-checked="true"]::after{content:"✓"}  /* 고른 단추 앞 표시(고야드 × · ✓) */
 .cz-d{grid-column:1/-1;margin:0 0 8px}
