@@ -104,18 +104,18 @@
     },
     {
       "year": "2026",
-      "text": "웹사이트 NAMDONGWON.COM",
+      "text": "웹사이트 ‘namdongwon.com’",
       "note": "",
       "en": {
-        "text": "Website NAMDONGWON.COM",
+        "text": "Website namdongwon.com",
         "note": ""
       },
       "ja": {
-        "text": "ウェブサイト NAMDONGWON.COM",
+        "text": "ウェブサイト「namdongwon.com」",
         "note": ""
       },
       "ru": {
-        "text": "Сайт NAMDONGWON.COM",
+        "text": "Сайт «namdongwon.com»",
         "note": ""
       }
     }
