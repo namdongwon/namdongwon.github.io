@@ -6,7 +6,7 @@ const TEXT = __TEXT__;
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", e => e.waitUntil(self.clients.claim()));
 const page = path => {
-  const lang = /^\/(en|ja)\//.test(path) ? path.slice(1, 3) : "ko", t = TEXT[lang];
+  const lang = /^\/(en|ja|ru)\//.test(path) ? path.slice(1, 3) : "ko", t = TEXT[lang];
   return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>${t.title}</title>
 <meta name="color-scheme" content="light dark"><style>
 :root{--bg:#fff;--ink:#111;--muted:#555;--faint:#717171;--line:#ececec}

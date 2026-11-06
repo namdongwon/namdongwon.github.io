@@ -3,22 +3,26 @@
   "og_locale": {
     "ko": "ko_KR",
     "en": "en_US",
-    "ja": "ja_JP"
+    "ja": "ja_JP",
+    "ru": "ru_RU"
   },
   "skip": {
     "ko": "본문으로 건너뛰기",
     "en": "Skip to content",
-    "ja": "本文へスキップ"
+    "ja": "本文へスキップ",
+    "ru": "Перейти к содержанию"
   },
   "nav_label": {
     "ko": "쪽 이동",
     "en": "Pages",
-    "ja": "ページ移動"
+    "ja": "ページ移動",
+    "ru": "Разделы"
   },
   "menu": {
     "ko": "메뉴",
     "en": "Menu",
-    "ja": "メニュー"
+    "ja": "メニュー",
+    "ru": "Меню"
   },
   "nav": {
     "ko": [
@@ -44,472 +48,573 @@
       "YouTube",
       "お問い合わせ",
       "芳名録"
+    ],
+    "ru": [
+      "Обо мне",
+      "Стихи",
+      "Instagram",
+      "YouTube",
+      "Контакты",
+      "Гостевая книга"
     ]
   },
   "nav_cta": {
     "ko": "연락하기",
     "en": "Contact",
-    "ja": "お問い合わせ"
+    "ja": "お問い合わせ",
+    "ru": "Написать"
   },
   "switch": {
     "ko": "KO",
     "en": "EN",
-    "ja": "JA"
+    "ja": "JA",
+    "ru": "RU"
   },
   "switch_flag": {
     "ko": "🇰🇷",
     "en": "🇬🇧",
-    "ja": "🇯🇵"
+    "ja": "🇯🇵",
+    "ru": "🇷🇺"
   },
   "switch_label": {
     "ko": "KO — English",
     "en": "EN — Korean",
-    "ja": "JA — 韓国語"
+    "ja": "JA — 韓国語",
+    "ru": "RU — Корейский"
   },
   "home_label": {
     "ko": "첫 화면",
     "en": "Home",
-    "ja": "トップ"
+    "ja": "トップ",
+    "ru": "Главная"
   },
   "cover_alt": {
     "ko": "시집 『{book}』 표지",
     "en": "Cover of the poetry collection “{book}”",
-    "ja": "詩集『{book}』の表紙"
+    "ja": "詩集『{book}』の表紙",
+    "ru": "Обложка сборника стихов «{book}»"
   },
   "read": {
     "ko": "「{poem}」 읽기 ↓",
     "en": "Read “{poem}” ↓",
-    "ja": "「{poem}」を読む ↓"
+    "ja": "「{poem}」を読む ↓",
+    "ru": "Читать «{poem}» ↓"
   },
   "ex_kick": {
     "ko": "시집",
     "en": "Poetry collection",
-    "ja": "詩集"
+    "ja": "詩集",
+    "ru": "Сборник стихов"
   },
   "ex_tip": {
     "ko": "눌러서 책등 · 뒤표지 보기",
     "en": "Tap to see the spine and back",
-    "ja": "押して背表紙 · 裏表紙を見る"
+    "ja": "押して背表紙 · 裏表紙を見る",
+    "ru": "Нажмите, чтобы увидеть корешок и оборот"
   },
   "ex_object": {
     "ko": "작품",
     "en": "Object",
-    "ja": "作品"
+    "ja": "作品",
+    "ru": "Произведение"
   },
   "ex_author": {
     "ko": "지은이",
     "en": "Author",
-    "ja": "著者"
+    "ja": "著者",
+    "ru": "Автор"
   },
   "ex_spec": {
     "ko": "사양",
     "en": "Details",
-    "ja": "仕様"
+    "ja": "仕様",
+    "ru": "Параметры"
   },
   "ex_collection": {
     "ko": "소장처",
     "en": "Collection",
-    "ja": "所蔵"
+    "ja": "所蔵",
+    "ru": "Собрание"
   },
   "ex_shelf": {
     "ko": "당신의 책장",
     "en": "Your bookshelf",
-    "ja": "あなたの本棚"
+    "ja": "あなたの本棚",
+    "ru": "Ваша книжная полка"
   },
   "ex_month": {
     "ko": "이달의 한 줄",
     "en": "This month",
-    "ja": "今月の一行"
+    "ja": "今月の一行",
+    "ru": "В этом месяце"
   },
   "ex_month_v": {
     "ko": "{m}월 · 「{title}」 {page}쪽",
     "en": "{m} · “{title},” p. {page}",
-    "ja": "{m}月 · 「{title}」 {page}ページ"
+    "ja": "{m}月 · 「{title}」 {page}ページ",
+    "ru": "{m} · «{title}», с. {page}"
   },
   "ex_month_go": {
     "ko": "한 줄 읽기",
     "en": "Read the line",
-    "ja": "一行を読む"
+    "ja": "一行を読む",
+    "ru": "Читать строку"
   },
   "buy_where": {
     "ko": "교보문고",
     "en": "Kyobo Book Centre · in Korean",
-    "ja": "教保文庫 · 韓国語"
+    "ja": "教保文庫 · 韓国語",
+    "ru": "Kyobo Book Centre · на корейском"
   },
   "share": {
     "ko": "공유",
     "en": "Share",
-    "ja": "共有"
+    "ja": "共有",
+    "ru": "Поделиться"
   },
   "colo_pub": {
     "ko": "펴낸 곳",
     "en": "Publisher",
-    "ja": "発行所"
+    "ja": "発行所",
+    "ru": "Издатель"
   },
   "ex_medium": {
     "ko": "재료",
     "en": "Medium",
-    "ja": "素材"
+    "ja": "素材",
+    "ru": "Материал"
   },
   "ex_medium_v": {
     "ko": "글자 {n}가지 · {total}자",
     "en": "{n} syllables · {total} in all",
-    "ja": "{n}種の文字 · {total}字"
+    "ja": "{n}種の文字 · {total}字",
+    "ru": "Слогов: {n} · всего: {total}"
   },
   "pal_go": {
     "ko": "팔레트 보기",
     "en": "See the palette",
-    "ja": "パレットを見る"
+    "ja": "パレットを見る",
+    "ru": "Смотреть палитру"
   },
   "label_palette": {
     "ko": "팔레트",
     "en": "Palette",
-    "ja": "パレット"
+    "ja": "パレット",
+    "ru": "Палитра"
   },
   "pal_title": {
     "ko": "글자 {n}가지",
     "en": "{n} syllables",
-    "ja": "{n}種の文字"
+    "ja": "{n}種の文字",
+    "ru": "Слогов: {n}"
   },
   "pal_lead": {
     "ko": "이 시집은 {total}자, 서로 다른 글자 {n}가지로 지었습니다. 색이 아니라 글자로 만든 팔레트입니다. 많이 쓴 글자부터 한 번씩 놓았습니다.",
     "en": "This book is made of {total} Korean syllables, {n} of them different. A palette of letters rather than colors — each set down once, the most used first.",
-    "ja": "この詩集は、{total}字、異なる{n}種の文字で編みました。色ではなく、文字でつくったパレットです。多く使った文字から順に、一度ずつ置きました。"
+    "ja": "この詩集は、{total}字、異なる{n}種の文字で編みました。色ではなく、文字でつくったパレットです。多く使った文字から順に、一度ずつ置きました。",
+    "ru": "Корейских слогов в этой книге — {total}, различных среди них — {n}. Это палитра из букв, а не из красок: каждый слог положен по одному разу, начиная с самых частых."
   },
   "pal_key": {
     "ko": "진할수록 많이 쓴 글자 — {top} … 한 번만 쓴 글자 {ones}가지",
     "en": "The darker, the more often used — {top} … {ones} used only once",
-    "ja": "濃いほど多く使った文字 — {top} … 一度だけ使った文字 {ones}種"
+    "ja": "濃いほど多く使った文字 — {top} … 一度だけ使った文字 {ones}種",
+    "ru": "Чем темнее, тем чаще — {top} … использованных лишь однажды: {ones}"
   },
   "pal_alt": {
     "ko": "풀이 자란 높은 바위 절벽 아래 물가에 한 사람이 서 있는 흑백 사진",
     "en": "A black-and-white photo of a person standing at the water below a tall, overgrown rock cliff",
-    "ja": "草の茂る高い岩壁の下の水辺に、ひとりの人が立っているモノクロ写真"
+    "ja": "草の茂る高い岩壁の下の水辺に、ひとりの人が立っているモノクロ写真",
+    "ru": "Чёрно-белая фотография: человек стоит у воды под высокой скалой, поросшей травой"
   },
   "pal_where": {
     "ko": "시집에 쓴 글자 {n}가지",
     "en": "The {n} syllables used in the book",
-    "ja": "詩集に使った{n}種の文字"
+    "ja": "詩集に使った{n}種の文字",
+    "ru": "Слоги, использованные в книге: {n}"
   },
   "pal_keys": {
     "ko": "글자 팔레트 재료 낱자 한글 색",
     "en": "palette letters syllables medium hangul colors",
-    "ja": "文字 パレット 素材 字 ハングル 色 もじ"
+    "ja": "文字 パレット 素材 字 ハングル 色 もじ",
+    "ru": "палитра буквы слоги материал хангыль цвета"
   },
   "label_poem": {
     "ko": "시집",
     "en": "Poetry",
-    "ja": "詩集"
+    "ja": "詩集",
+    "ru": "Стихи"
   },
   "read_time": {
     "ko": "읽는 데 {n}분",
     "en": "{n} min read",
-    "ja": "約{n}分"
+    "ja": "約{n}分",
+    "ru": "{n} мин чтения"
   },
   "hint": {
     "ko": "시를 길게 눌러 탁본을 떠 보세요",
     "en": "Press and hold the poem to take a rubbing",
-    "ja": "詩を長押しして、拓本をとってみてください"
+    "ja": "詩を長押しして、拓本をとってみてください",
+    "ru": "Нажмите на стихотворение и удерживайте, чтобы снять оттиск"
   },
   "pgno": {
     "ko": "{book} — {pages}",
     "en": "{book}, {pages}",
-    "ja": "{book} — {pages}"
+    "ja": "{book} — {pages}",
+    "ru": "{book}, {pages}"
   },
   "translated": {
     "ko": "",
     "en": "Translated from the Korean",
-    "ja": "韓国語からの翻訳"
+    "ja": "韓国語からの翻訳",
+    "ru": "Перевод с корейского"
   },
   "ship_note": {
     "ko": "",
     "en": "Printed on demand in Korea. Kyobo ships internationally; its site is in Korean.",
-    "ja": "韓国でオンデマンド印刷されます。教保文庫は海外にも発送していますが、サイトは韓国語のみです。"
+    "ja": "韓国でオンデマンド印刷されます。教保文庫は海外にも発送していますが、サイトは韓国語のみです。",
+    "ru": "Печать по требованию в Корее. Kyobo доставляет книги за рубеж; сайт магазина — на корейском языке."
   },
   "book_soon": {
     "ko": "출간 예정",
     "en": "Forthcoming",
-    "ja": "刊行予定"
+    "ja": "刊行予定",
+    "ru": "Готовится к выходу"
   },
   "book_on": {
     "ko": "판매 중",
     "en": "On sale",
-    "ja": "発売中"
+    "ja": "発売中",
+    "ru": "В продаже"
   },
   "og_book_kick": {
     "ko": "{name} 첫 시집",
     "en": "{name}’s first poetry collection",
-    "ja": "{name} 第一詩集"
+    "ja": "{name} 第一詩集",
+    "ru": "{name} — первый сборник стихов"
   },
   "og_book_title": {
     "ko": "『{title}』 — {name} 첫 시집",
     "en": "{title} — {name}",
-    "ja": "『{title}』 — {name} 第一詩集"
+    "ja": "『{title}』 — {name} 第一詩集",
+    "ru": "«{title}» — {name}"
   },
   "og_book_desc": {
     "ko": "시 예순 편 · 2026년 11월 1일 · 교보문고 퍼플",
     "en": "Sixty poems in Korean · November 1, 2026 · Kyobo PubPle",
-    "ja": "韓国語の詩六十篇 · 2026年11月1日 · 教保文庫 PubPle"
+    "ja": "韓国語の詩六十篇 · 2026年11月1日 · 教保文庫 PubPle",
+    "ru": "Шестьдесят стихотворений на корейском · 1 ноября 2026 г. · Kyobo PubPle"
   },
   "news": {
     "ko": "시집 소식",
     "en": "Book news",
-    "ja": "詩集のお知らせ"
+    "ja": "詩集のお知らせ",
+    "ru": "Новости книги"
   },
   "news_more": {
     "ko": "지난 소식 ↓",
     "en": "Earlier news ↓",
-    "ja": "以前のお知らせ ↓"
+    "ja": "以前のお知らせ ↓",
+    "ru": "Прежние новости ↓"
   },
   "toc_key": {
     "ko": "먹 줄은 여기서 읽을 수 있는 시 · 달마다 한 편에서 한 줄씩 엽니다",
     "en": "Titles in ink can be read here · each month, a line or two opens from one poem",
-    "ja": "墨色の行は、ここで読める詩 · 毎月、一篇から一行ずつひらきます"
+    "ja": "墨色の行は、ここで読める詩 · 毎月、一篇から一行ずつひらきます",
+    "ru": "Названия, набранные тушью, можно прочитать здесь · каждый месяц открывается строка-другая из одного стихотворения"
   },
   "month_line": {
     "ko": "{m}월의 한 줄",
     "en": "{m}’s lines",
-    "ja": "{m}月の一行"
+    "ja": "{m}月の一行",
+    "ru": "Строки месяца: {m}"
   },
   "month_next": {
     "ko": " · 다음은 {m}",
     "en": " · next on {m}",
-    "ja": " · 次は{m}"
+    "ja": " · 次は{m}",
+    "ru": " · следующие — {m}"
   },
   "month_next_stage": {
     "ko": "다음 줄은 {m}에",
     "en": "Next lines on {m}",
-    "ja": "次の一行は{m}に"
+    "ja": "次の一行は{m}に",
+    "ru": "Следующие строки — {m}"
   },
   "label_me": {
     "ko": "소개",
     "en": "Profile",
-    "ja": "紹介"
+    "ja": "紹介",
+    "ru": "Профиль"
   },
   "rec": {
     "ko": "{unit} · {note}",
     "en": "{unit} {note}",
-    "ja": "{unit} · {note}"
+    "ja": "{unit} · {note}",
+    "ru": "{unit} {note}"
   },
   "rec_year": {
     "ko": " · 올해 {n}{unit}",
     "en": " · {n} this year",
-    "ja": " · 今年{n}{unit}"
+    "ja": " · 今年{n}{unit}",
+    "ru": " · в этом году: {n}"
   },
   "label_photo": {
     "ko": "인스타그램",
     "en": "Instagram",
-    "ja": "Instagram"
+    "ja": "Instagram",
+    "ru": "Instagram"
   },
   "strip": {
     "ko": "사진 {n}장, 옆으로 넘겨 보기",
     "en": "{n} photos — swipe to browse",
-    "ja": "写真{n}枚、横にめくって見る"
+    "ja": "写真{n}枚、横にめくって見る",
+    "ru": "{n} фото — листайте"
   },
   "wall_label": {
     "ko": "사진 {n}장 — 누르면 크게",
     "en": "{n} photos — select one to enlarge",
-    "ja": "写真{n}枚 — 押すと大きく"
+    "ja": "写真{n}枚 — 押すと大きく",
+    "ru": "{n} фото — выберите, чтобы увеличить"
   },
   "ask_off": {
     "ko": "인스타그램 메시지로 남기기",
     "en": "Leave a message on Instagram",
-    "ja": "Instagramでメッセージを残す"
+    "ja": "Instagramでメッセージを残す",
+    "ru": "Написать в Instagram"
   },
   "mail": {
     "ko": "메일",
     "en": "Email",
-    "ja": "メール"
+    "ja": "メール",
+    "ru": "Почта"
   },
   "gb_title": {
     "ko": "방명록",
     "en": "Guestbook",
-    "ja": "芳名録"
+    "ja": "芳名録",
+    "ru": "Гостевая книга"
   },
   "gb_to": {
     "ko": "받는 사람 — 남동원",
     "en": "To — Dongwon Nam",
-    "ja": "宛先 — ナム・ドンウォン"
+    "ja": "宛先 — ナム・ドンウォン",
+    "ru": "Кому — Нам Донвон"
   },
   "gb_sep": {
     "ko": "남동원에게만 하실 말씀은 인스타그램 메시지나 메일로 보내 주세요.",
     "en": "For anything meant only for Dongwon Nam, please use Instagram or email.",
-    "ja": "ナム・ドンウォンだけに伝えたいことは、Instagramのメッセージかメールでお送りください。"
+    "ja": "ナム・ドンウォンだけに伝えたいことは、Instagramのメッセージかメールでお送りください。",
+    "ru": "Если ваши слова предназначены только Нам Донвону, напишите в Instagram или на почту."
   },
   "gb_empty": {
     "ko": "아직 실린 글이 없습니다. 첫 글을 기다립니다.",
     "en": "No notes yet. The first one is still to be written.",
-    "ja": "まだ載っているメッセージはありません。最初のメッセージをお待ちしています。"
+    "ja": "まだ載っているメッセージはありません。最初のメッセージをお待ちしています。",
+    "ru": "Записей пока нет. Первая ещё ждёт своего автора."
   },
   "gb_more": {
     "ko": "지난 글 ↓",
     "en": "Earlier notes ↓",
-    "ja": "以前のメッセージ ↓"
+    "ja": "以前のメッセージ ↓",
+    "ru": "Прежние записи ↓"
   },
   "gb_anon": {
     "ko": "이름 없이",
     "en": "Anonymous",
-    "ja": "無記名"
+    "ja": "無記名",
+    "ru": "Без имени"
   },
   "gb_reply_by": {
     "ko": "남동원",
     "en": "Dongwon Nam",
-    "ja": "ナム・ドンウォン"
+    "ja": "ナム・ドンウォン",
+    "ru": "Нам Донвон"
   },
   "gb_write": {
     "ko": "방명록 남기기",
     "en": "Leave a note",
-    "ja": "芳名録に書く"
+    "ja": "芳名録に書く",
+    "ru": "Оставить запись"
   },
   "gb_when": {
     "ko": "모든 글을 읽고, 월요일에 일부를 골라 싣습니다.",
     "en": "Every note is read, and a few are chosen on Mondays to appear here.",
-    "ja": "すべてのメッセージを読み、月曜日に一部を選んで掲載します。"
+    "ja": "すべてのメッセージを読み、月曜日に一部を選んで掲載します。",
+    "ru": "Все записи прочитываются; по понедельникам несколько из них выбираются для публикации здесь."
   },
   "gb_name": {
     "ko": "이름",
     "en": "Name",
-    "ja": "お名前"
+    "ja": "お名前",
+    "ru": "Имя"
   },
   "gb_name_hint": {
     "ko": "선택 · 실리면 그대로 보입니다",
     "en": "Optional · shown as written if published",
-    "ja": "任意 · 掲載されると、そのまま表示されます"
+    "ja": "任意 · 掲載されると、そのまま表示されます",
+    "ru": "Необязательно · при публикации будет показано как есть"
   },
   "gb_text": {
     "ko": "글",
     "en": "Note",
-    "ja": "メッセージ"
+    "ja": "メッセージ",
+    "ru": "Запись"
   },
   "gb_text_hint": {
     "ko": "200자 · 길게 하실 말은 메일로",
     "en": "Up to 200 characters · longer messages by email",
-    "ja": "200字まで · 長くなるときはメールで"
+    "ja": "200字まで · 長くなるときはメールで",
+    "ru": "До 200 символов · длинные сообщения — по почте"
   },
   "gb_note": {
     "ko": "남기신 글은 Formspree(미국)를 거쳐 남동원의 메일함으로 옵니다. 실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있습니다. {privacy}",
     "en": "Notes travel through Formspree (United States) to Dongwon Nam’s mailbox. Notes not published are deleted within 30 days, and you keep the copyright. {privacy}",
-    "ja": "メッセージはFormspree（米国）を経由して、ナム・ドンウォンのメールボックスに届きます。掲載されなかったメッセージは30日以内に削除し、著作権は書いた方にあります。{privacy}"
+    "ja": "メッセージはFormspree（米国）を経由して、ナム・ドンウォンのメールボックスに届きます。掲載されなかったメッセージは30日以内に削除し、著作権は書いた方にあります。{privacy}",
+    "ru": "Записи передаются через Formspree (США) на почту Нам Донвона. Неопубликованные записи удаляются в течение 30 дней; авторские права остаются за вами. {privacy}"
   },
   "gb_privacy": {
     "ko": "개인정보 처리방침",
     "en": "Privacy policy",
-    "ja": "プライバシーポリシー"
+    "ja": "プライバシーポリシー",
+    "ru": "Политика конфиденциальности"
   },
   "gb_h": {
     "ko": "다녀갑니다",
     "en": "Passing Through",
-    "ja": "立ち寄りました"
+    "ja": "立ち寄りました",
+    "ru": "Проходя мимо"
   },
   "gb_soon": {
     "ko": "글 남기기는 곧 열립니다.",
     "en": "Leaving a note opens soon.",
-    "ja": "書き込みは、まもなく始まります。"
+    "ja": "書き込みは、まもなく始まります。",
+    "ru": "Оставить запись можно будет совсем скоро."
   },
   "gb_send": {
     "ko": "남기기",
     "en": "Send",
-    "ja": "送る"
+    "ja": "送る",
+    "ru": "Отправить"
   },
   "many": {
     "ko": "1/{n}",
     "en": "1/{n}",
-    "ja": "1/{n}"
+    "ja": "1/{n}",
+    "ru": "1/{n}"
   },
   "pop": {
     "ko": "이 게시물 사진 {n}장 보기",
     "en": "view all {n} photos in this post",
-    "ja": "この投稿の写真{n}枚を見る"
+    "ja": "この投稿の写真{n}枚を見る",
+    "ru": "смотреть все {n} фото этого поста"
   },
   "pv_label": {
     "ko": "게시물 사진",
     "en": "Post photos",
-    "ja": "投稿の写真"
+    "ja": "投稿の写真",
+    "ru": "Фото поста"
   },
   "pv_prev": {
     "ko": "이전 사진",
     "en": "Previous photo",
-    "ja": "前の写真"
+    "ja": "前の写真",
+    "ru": "Предыдущее фото"
   },
   "pv_next": {
     "ko": "다음 사진",
     "en": "Next photo",
-    "ja": "次の写真"
+    "ja": "次の写真",
+    "ru": "Следующее фото"
   },
   "photo_alt": {
     "ko": "직접 찍은 사진",
     "en": "Photo by Dongwon Nam",
-    "ja": "自分で撮った写真"
+    "ja": "自分で撮った写真",
+    "ru": "Фото Нам Донвона"
   },
   "thumb": {
     "ko": "{i}번째 사진 보기",
     "en": "Show photo {i}",
-    "ja": "{i}枚目の写真を見る"
+    "ja": "{i}枚目の写真を見る",
+    "ru": "Показать фото {i}"
   },
   "grid": {
     "ko": "{i}번째 사진 크게 보기",
     "en": "Open photo {i}",
-    "ja": "{i}枚目の写真を大きく見る"
+    "ja": "{i}枚目の写真を大きく見る",
+    "ru": "Открыть фото {i}"
   },
   "mode_label": {
     "ko": "사진 보기 방식",
     "en": "View",
-    "ja": "写真の表示方法"
+    "ja": "写真の表示方法",
+    "ru": "Вид"
   },
   "mode_one": {
     "ko": "한 장씩",
     "en": "One at a time",
-    "ja": "一枚ずつ"
+    "ja": "一枚ずつ",
+    "ru": "По одному"
   },
   "mode_all": {
     "ko": "모아 보기",
     "en": "Grid",
-    "ja": "一覧"
+    "ja": "一覧",
+    "ru": "Сетка"
   },
   "cap_where": {
     "ko": "어디서 · 언제",
     "en": "Where · When",
-    "ja": "どこで · いつ"
+    "ja": "どこで · いつ",
+    "ru": "Где · Когда"
   },
   "cap_art": {
     "ko": "작가, 〈작품〉, 해 — 《전시》, 미술관",
     "en": "Artist, *Title*, year — *Exhibition*, venue",
-    "ja": "作家、「作品」、年 — 「展示」、美術館"
+    "ja": "作家、「作品」、年 — 「展示」、美術館",
+    "ru": "Художник, «Название», год — «Выставка», место"
   },
   "prev": {
     "ko": "← 이전",
     "en": "← Previous",
-    "ja": "← 前へ"
+    "ja": "← 前へ",
+    "ru": "← Назад"
   },
   "next": {
     "ko": "다음 →",
     "en": "Next →",
-    "ja": "次へ →"
+    "ja": "次へ →",
+    "ru": "Далее →"
   },
   "more_ig": {
     "ko": "인스타그램에서 더 보기",
     "en": "More on Instagram",
-    "ja": "Instagramでもっと見る"
+    "ja": "Instagramでもっと見る",
+    "ru": "Ещё в Instagram"
   },
   "more_ig_a": {
     "ko": "인스타그램에서",
     "en": "More on",
-    "ja": "Instagramで"
+    "ja": "Instagramで",
+    "ru": "Ещё в"
   },
   "more_ig_b": {
     "ko": "더 보기",
     "en": "Instagram",
-    "ja": "もっと見る"
+    "ja": "もっと見る",
+    "ru": "Instagram"
   },
   "ig_post": {
     "ko": "게시물",
     "en": "Post",
-    "ja": "投稿"
+    "ja": "投稿",
+    "ru": "Пост"
   },
   "label_video": {
     "ko": "유튜브",
     "en": "YouTube",
-    "ja": "YouTube"
+    "ja": "YouTube",
+    "ru": "YouTube"
   },
   "kinds": {
     "ko": {
@@ -532,502 +637,632 @@
       "전시": "展示",
       "시": "詩",
       "작품": "作品"
+    },
+    "ru": {
+      "영화": "Фильм",
+      "책": "Книга",
+      "전시": "Выставка",
+      "시": "Стихотворение",
+      "작품": "Произведение"
     }
   },
   "coming": {
     "ko": "준비 중",
     "en": "Coming soon",
-    "ja": "準備中"
+    "ja": "準備中",
+    "ru": "Скоро"
   },
   "first_alt": {
     "ko": "첫 편 {title} 썸네일 — 준비 중",
     "en": "First episode, {title} — thumbnail, coming soon",
-    "ja": "第1回 {title}のサムネイル — 準備中"
+    "ja": "第1回 {title}のサムネイル — 準備中",
+    "ru": "Первый выпуск, {title} — превью, скоро"
   },
   "first_soon": {
     "ko": "첫 편 준비 중",
     "en": "First episode coming soon",
-    "ja": "第1回 準備中"
+    "ja": "第1回 準備中",
+    "ru": "Первый выпуск — скоро"
   },
   "video_alt": {
     "ko": "{title} 썸네일",
     "en": "{title} — thumbnail",
-    "ja": "{title}のサムネイル"
+    "ja": "{title}のサムネイル",
+    "ru": "{title} — превью"
   },
   "toc_part_n": {
     "ko": "{n}편",
     "en": "{n} poems",
-    "ja": "{n}篇"
+    "ja": "{n}篇",
+    "ru": "Стихов: {n}"
   },
   "past": {
     "ko": "지난 편",
     "en": "Past episodes",
-    "ja": "これまでの回"
+    "ja": "これまでの回",
+    "ru": "Прошлые выпуски"
   },
   "empty": {
     "ko": "편이 쌓이면 여기에 차례로 남습니다.",
     "en": "Episodes will be listed here as they come.",
-    "ja": "回を重ねるごとに、ここに順に残っていきます。"
+    "ja": "回を重ねるごとに、ここに順に残っていきます。",
+    "ru": "Выпуски будут появляться здесь по мере выхода."
   },
   "go_channel": {
     "ko": "유튜브 채널 보기",
     "en": "Visit the channel on YouTube",
-    "ja": "YouTubeチャンネルを見る"
+    "ja": "YouTubeチャンネルを見る",
+    "ru": "Перейти на канал YouTube"
   },
   "go_watch": {
     "ko": "유튜브에서 보기",
     "en": "Watch on YouTube",
-    "ja": "YouTubeで見る"
+    "ja": "YouTubeで見る",
+    "ru": "Смотреть на YouTube"
   },
   "faq_title": {
     "ko": "자주 묻는 질문",
     "en": "Frequently asked",
-    "ja": "よくある質問"
+    "ja": "よくある質問",
+    "ru": "Частые вопросы"
   },
   "me_h": {
     "ko": "About Me",
     "en": "About Me",
-    "ja": "About Me"
+    "ja": "About Me",
+    "ru": "About Me"
   },
   "label_contact": {
     "ko": "연락",
     "en": "Contact",
-    "ja": "お問い合わせ"
+    "ja": "お問い合わせ",
+    "ru": "Контакты"
   },
   "contact_title": {
     "ko": "남동원에게",
     "en": "Dear Dongwon",
-    "ja": "ナム・ドンウォンへ"
+    "ja": "ナム・ドンウォンへ",
+    "ru": "Нам Донвону"
   },
   "form_name": {
     "ko": "이름 (선택)",
     "en": "Name (optional)",
-    "ja": "お名前（任意）"
+    "ja": "お名前（任意）",
+    "ru": "Имя (необязательно)"
   },
   "form_email": {
     "ko": "메일",
     "en": "Email",
-    "ja": "メールアドレス"
+    "ja": "メールアドレス",
+    "ru": "Эл. почта"
   },
   "form_message": {
     "ko": "내용",
     "en": "Message",
-    "ja": "内容"
+    "ja": "内容",
+    "ru": "Сообщение"
   },
   "agree": {
     "ko": "{privacy} 동의합니다.",
     "en": "{privacy} I agree.",
-    "ja": "{privacy} 同意します。"
+    "ja": "{privacy} 同意します。",
+    "ru": "{privacy} Я соглашаюсь."
   },
   "send": {
     "ko": "보내기",
     "en": "Send",
-    "ja": "送信する"
+    "ja": "送信する",
+    "ru": "Отправить"
   },
   "colo_updated": {
     "ko": "고친 날",
     "en": "Updated",
-    "ja": "更新日"
+    "ja": "更新日",
+    "ru": "Обновлено"
   },
   "now_label": {
     "ko": "지금",
     "en": "Now",
-    "ja": "いま"
+    "ja": "いま",
+    "ru": "Сейчас"
   },
   "now_updated": {
     "ko": "{date} 고침",
     "en": "Updated {date}",
-    "ja": "{date} 更新"
+    "ja": "{date} 更新",
+    "ru": "Обновлено {date}"
   },
   "now_season": {
     "ko": "· {name} 무렵",
     "en": "· around {name}",
-    "ja": "· {name}のころ"
+    "ja": "· {name}のころ",
+    "ru": "· пора: {name}"
   },
   "colo_author": {
     "ko": "지은이",
     "en": "Author",
-    "ja": "著者"
+    "ja": "著者",
+    "ru": "Автор"
   },
   "colo_lang": {
     "ko": "언어",
     "en": "Language",
-    "ja": "言語"
+    "ja": "言語",
+    "ru": "Язык"
   },
   "colo_made": {
     "ko": "만든 곳",
     "en": "Made",
-    "ja": "制作"
+    "ja": "制作",
+    "ru": "Создано"
   },
   "theme": {
     "ko": "화면",
     "en": "Display",
-    "ja": "表示"
+    "ja": "表示",
+    "ru": "Тема"
   },
   "theme_opts": {
     "ko": "시스템|밝게|어둡게",
     "en": "System|Light|Dark",
-    "ja": "システム|ライト|ダーク"
+    "ja": "システム|ライト|ダーク",
+    "ru": "Системная|Светлая|Тёмная"
   },
   "colo_cookie": {
     "ko": "쿠키 · 광고 · 저절로 재생되는 것이 없습니다.",
     "en": "No cookies, ads or autoplay.",
-    "ja": "クッキー · 広告 · 自動再生はありません。"
+    "ja": "クッキー · 広告 · 自動再生はありません。",
+    "ru": "Без cookie, рекламы и автовоспроизведения."
   },
   "colo_cookie_ga": {
     "ko": "광고 · 저절로 재생되는 것이 없습니다.",
     "en": "No ads or autoplay.",
-    "ja": "広告 · 自動再生はありません。"
+    "ja": "広告 · 自動再生はありません。",
+    "ru": "Без рекламы и автовоспроизведения."
   },
   "cz_open": {
     "ko": "쿠키 설정",
     "en": "Cookie settings",
-    "ja": "クッキー設定"
+    "ja": "クッキー設定",
+    "ru": "Настройки cookie"
   },
   "cz_label": {
     "ko": "쿠키 동의",
     "en": "Cookie consent",
-    "ja": "クッキーの同意"
+    "ja": "クッキーの同意",
+    "ru": "Согласие на использование cookie"
   },
   "cz_skip": {
     "ko": "동의 없이 계속하기 →",
     "en": "Continue without agreeing →",
-    "ja": "同意しないで続行する →"
+    "ja": "同意しないで続行する →",
+    "ru": "Продолжить без согласия →"
   },
   "cz_text": {
     "ko": "귀하의 동의에 따라 이 사이트와 {partner}는 쿠키 또는 유사한 기술을 사용하여 본 웹사이트 방문, 쿠키 식별자와 같은 개인 데이터를 저장, 액세스 및 처리합니다. 귀하는 '자세히 알아보기'를 클릭하거나 본 웹사이트의 개인정보 처리방침을 클릭하여 언제든지 동의를 철회할 수 있습니다.",
     "en": "With your agreement, this site and {partner} use cookies or similar technologies to store, access, and process personal data like your visit on this website and cookie identifiers. You can withdraw your consent at any time by clicking on \"Learn More\" or in the privacy policy on this website.",
-    "ja": "お客様の同意に基づき、このサイトと{partner}は、クッキーまたは同様のテクノロジーを使用して、このウェブサイトへのアクセス、クッキー識別子などの個人データを保存、アクセス、処理します。「詳細」をクリックするか、このウェブサイトのプライバシーポリシーをクリックすることで、いつでも同意を撤回することができます。"
+    "ja": "お客様の同意に基づき、このサイトと{partner}は、クッキーまたは同様のテクノロジーを使用して、このウェブサイトへのアクセス、クッキー識別子などの個人データを保存、アクセス、処理します。「詳細」をクリックするか、このウェブサイトのプライバシーポリシーをクリックすることで、いつでも同意を撤回することができます。",
+    "ru": "С вашего согласия этот сайт и {partner} используют файлы cookie или аналогичные технологии для хранения, доступа и обработки персональных данных, таких как ваше посещение этого веб-сайта и идентификаторы cookie. Вы можете в любое время отозвать своё согласие, нажав «Подробнее» или перейдя к политике конфиденциальности этого веб-сайта."
   },
   "cz_partner": {
     "ko": "1개 파트너사",
     "en": "our 1 partner",
-    "ja": "1社のパートナー"
+    "ja": "1社のパートナー",
+    "ru": "наш 1 партнёр"
   },
   "cz_partner2": {
     "ko": "2개 파트너사",
     "en": "our 2 partners",
-    "ja": "2社のパートナー"
+    "ja": "2社のパートナー",
+    "ru": "наши 2 партнёра"
   },
   "cz_list_h": {
     "ko": "이 사이트와 파트너사가 다음 데이터 처리를 수행합니다:",
     "en": "This site and its partner do the following data processing:",
-    "ja": "このサイトとパートナーは、次のデータ処理を行います："
+    "ja": "このサイトとパートナーは、次のデータ処理を行います：",
+    "ru": "Этот сайт и его партнёр выполняют следующую обработку данных:"
   },
   "cz_list": {
     "ko": "콘텐츠 성과 측정, 기기에 정보 저장 및/또는 액세스",
     "en": "Measure content performance, Store and/or access information on a device",
-    "ja": "コンテンツのパフォーマンスを測定する、情報をデバイスに保存および／またはアクセスする"
+    "ja": "コンテンツのパフォーマンスを測定する、情報をデバイスに保存および／またはアクセスする",
+    "ru": "Измерение эффективности контента, Хранение и/или доступ к информации на устройстве"
   },
   "cz_more": {
     "ko": "자세히 알아보기 →",
     "en": "Learn More →",
-    "ja": "詳細 →"
+    "ja": "詳細 →",
+    "ru": "Подробнее →"
   },
   "cz_more_aria": {
     "ko": "자세히 알아보기: 동의 구성",
     "en": "Learn More: Configure your consent",
-    "ja": "詳細：同意を設定してください"
+    "ja": "詳細：同意を設定してください",
+    "ru": "Подробнее: настроить согласие"
   },
   "cz_yes": {
     "ko": "동의 후 닫기",
     "en": "Agree and close",
-    "ja": "同意して閉じる"
+    "ja": "同意して閉じる",
+    "ru": "Согласиться и закрыть"
   },
   "cz_yes_aria": {
     "ko": "동의 후 닫기: 데이터 처리에 동의하고 닫기",
     "en": "Agree and close: Agree to our data processing and close",
-    "ja": "同意して閉じる：データ処理に同意して閉じます"
+    "ja": "同意して閉じる：データ処理に同意して閉じます",
+    "ru": "Согласиться и закрыть: согласиться на обработку данных и закрыть"
   },
   "cz_p_title": {
     "ko": "동의 관리",
     "en": "Manage your consent",
-    "ja": "同意の管理"
+    "ja": "同意の管理",
+    "ru": "Управление согласием"
   },
   "cz_p_text": {
     "ko": "이 사이트와 파트너는 기기의 중요하지 않은 정보를 사용하여 사이트를 개선합니다. 귀하는 작업의 전부 또는 일부를 수락할 수 있습니다. 쿠키, 파트너 및 데이터 사용 방법에 대해 자세히 알아보거나, 각 파트너에 대한 옵션 또는 작업을 검토하려면, {privacy}을 방문하십시오.",
     "en": "This site and its partner use non-sensitive information about your device to improve this site. You can accept all or part of these operations. To learn more about cookies, partners, and how we use your data, to review your options or these operations for each partner, visit our {privacy}.",
-    "ja": "このサイトとパートナーは、お客様のデバイスの機密性の低い情報を使用して、このサイトを改善します。お客様はこれらの操作の全部または一部に同意することができます。クッキー、パートナー、およびデータの使用方法の詳細、各パートナーのオプションまたはこれらの操作を確認するには、{privacy}にアクセスしてください。"
+    "ja": "このサイトとパートナーは、お客様のデバイスの機密性の低い情報を使用して、このサイトを改善します。お客様はこれらの操作の全部または一部に同意することができます。クッキー、パートナー、およびデータの使用方法の詳細、各パートナーのオプションまたはこれらの操作を確認するには、{privacy}にアクセスしてください。",
+    "ru": "Этот сайт и его партнёр используют неконфиденциальную информацию о вашем устройстве для улучшения сайта. Вы можете принять все эти операции или их часть. Чтобы узнать больше о файлах cookie, партнёрах и о том, как мы используем ваши данные, а также просмотреть доступные варианты или эти операции для каждого партнёра, ознакомьтесь с нашей {privacy}."
   },
   "cz_privacy": {
     "ko": "개인정보 처리방침",
     "en": "privacy policy",
-    "ja": "プライバシーポリシー"
+    "ja": "プライバシーポリシー",
+    "ru": "политикой конфиденциальности"
   },
   "cz_allow": {
     "ko": "허용",
     "en": "Allow",
-    "ja": "許可"
+    "ja": "許可",
+    "ru": "Разрешить"
   },
   "cz_p1": {
     "ko": "콘텐츠 성과 측정",
     "en": "Measure content performance",
-    "ja": "コンテンツのパフォーマンスを測定する"
+    "ja": "コンテンツのパフォーマンスを測定する",
+    "ru": "Измерение эффективности контента"
   },
   "cz_p1_d": {
     "ko": "사용자에게 표시되는 콘텐츠와 사용자가 콘텐츠와 상호 작용하는 방식에 관한 정보를 사용하여 (광고가 아닌) 콘텐츠가 의도한 대상에게 도달했는지, 사용자의 관심사와 일치하는지 등을 판단할 수 있습니다. 예를 들어, 기사를 읽었는지, 동영상을 시청했는지, 팟캐스트를 들었는지, 제품 설명을 읽었는지, 이 서비스에서 보낸 시간과 방문한 웹 페이지 등의 정보를 활용합니다. 이는 사용자에게 표시되는 (광고가 아닌) 콘텐츠의 관련성을 파악하는 데 매우 유용합니다.",
     "en": "Information regarding which content is presented to you and how you interact with it can be used to determine whether the (non-advertising) content e.g. reached its intended audience and matched your interests. For instance, whether you read an article, watch a video, listen to a podcast or look at a product description, how long you spent on this service and the web pages you visit etc. This is very helpful to understand the relevance of (non-advertising) content that is shown to you.",
-    "ja": "どのコンテンツをユーザーに表示するか、ユーザーがどのようにそのコンテンツを取り扱うかに関する情報は、その（広告以外の）コンテンツが、例えば、意図されたユーザー層に届けられているか、ユーザーの関心にマッチしているかを判断するために利用されることがあります。例えば、ユーザーが記事を読んでいるか、動画を視聴しているか、ポッドキャストを聞いているかまたは製品説明を見ているか、どのくらい長い時間を本サービスに費やしているか、どのくらい長い時間ウェブページを閲覧しているかなど。これは、ユーザーに表示される（広告以外の）コンテンツの関連性を把握するうえでたいへん有用です。"
+    "ja": "どのコンテンツをユーザーに表示するか、ユーザーがどのようにそのコンテンツを取り扱うかに関する情報は、その（広告以外の）コンテンツが、例えば、意図されたユーザー層に届けられているか、ユーザーの関心にマッチしているかを判断するために利用されることがあります。例えば、ユーザーが記事を読んでいるか、動画を視聴しているか、ポッドキャストを聞いているかまたは製品説明を見ているか、どのくらい長い時間を本サービスに費やしているか、どのくらい長い時間ウェブページを閲覧しているかなど。これは、ユーザーに表示される（広告以外の）コンテンツの関連性を把握するうえでたいへん有用です。",
+    "ru": "Информация о том, какой контент вам показывается и как вы с ним взаимодействуете, может использоваться для определения того, достиг ли (нерекламный) контент, например, своей целевой аудитории и соответствовал ли он вашим интересам. Например, прочитали ли вы статью, посмотрели ли видео, прослушали ли подкаст или ознакомились с описанием продукта, сколько времени вы провели на этом сервисе, какие веб-страницы посетили и т. д. Это очень помогает понять, насколько релевантен показываемый вам (нерекламный) контент."
   },
   "cz_p1_x": {
     "ko": "퍼블리셔의 모바일 앱에서 하이킹에 관한 블로그 게시물을 읽고 추천 및 관련 게시물로 연결되는 링크를 클릭했습니다. 사용자의 상호 작용은 처음 본 하이킹 게시물이 유용하고 관련 게시물에 관심을 갖도록 유도한 것으로 기록됩니다. 이는 향후 하이킹에 관한 게시물을 더 제작할지 여부와 모바일 앱의 홈 화면에 게시물을 배치할 위치를 판단하기 위해 측정합니다.|패션 트렌드에 대한 동영상이 표시되었지만 사용자와 다른 여러 사용자가 30초 후에 시청을 중단했습니다. 이 정보를 사용하여 향후 패션 트렌드에 대한 동영상의 적절한 길이를 평가합니다.",
     "en": "You have read a blog post about hiking on a mobile app of a publisher and followed a link to a recommended and related post. Your interactions will be recorded as showing that the initial hiking post was useful to you and that it was successful in interesting you in the related post. This will be measured to know whether to produce more posts on hiking in the future and where to place them on the home screen of the mobile app.|You were presented a video on fashion trends, but you and several other users stopped watching after 30 seconds. This information is then used to evaluate the right length of future videos on fashion trends.",
-    "ja": "ユーザーが、あるパブリッシャーのモバイルアプリ上でハイキングに関するブログ投稿を読んでおり、推奨された関係する投稿へのリンクをたどっています。ユーザーのインタラクションは、ハイキングに関する最初の投稿がユーザーにとって有益であり、関連する投稿にユーザーの関心を引きつけるのに成功したことを示すかたちで記録されます。これは、将来、ハイキングに関する投稿を増やすべきか、モバイルアプリのホーム画面上のどこにそれを掲載すべきかを把握するために測定されます。|ユーザーにファッションの流行に関する動画が表示されましたが、ユーザーおよび何人かの他のユーザーは30秒後に閲覧するのを止めました。この情報は、後に、ファッションの流行に関する動画を今後制作するにあたって、適切な動画の長さを評価するために利用されます。"
+    "ja": "ユーザーが、あるパブリッシャーのモバイルアプリ上でハイキングに関するブログ投稿を読んでおり、推奨された関係する投稿へのリンクをたどっています。ユーザーのインタラクションは、ハイキングに関する最初の投稿がユーザーにとって有益であり、関連する投稿にユーザーの関心を引きつけるのに成功したことを示すかたちで記録されます。これは、将来、ハイキングに関する投稿を増やすべきか、モバイルアプリのホーム画面上のどこにそれを掲載すべきかを把握するために測定されます。|ユーザーにファッションの流行に関する動画が表示されましたが、ユーザーおよび何人かの他のユーザーは30秒後に閲覧するのを止めました。この情報は、後に、ファッションの流行に関する動画を今後制作するにあたって、適切な動画の長さを評価するために利用されます。",
+    "ru": "Вы прочитали запись в блоге о пеших походах в мобильном приложении издателя и перешли по ссылке на рекомендованную связанную запись. Ваши взаимодействия будут зафиксированы как свидетельство того, что исходная запись о походах оказалась для вас полезной и сумела заинтересовать вас связанной записью. Это будет измерено, чтобы понять, стоит ли в будущем создавать больше записей о походах и где размещать их на главном экране мобильного приложения.|Вам было показано видео о модных тенденциях, но вы и несколько других пользователей перестали его смотреть через 30 секунд. Эта информация затем используется для оценки подходящей длительности будущих видео о модных тенденциях."
   },
   "cz_p2": {
     "ko": "기기에 정보 저장 및/또는 액세스",
     "en": "Store and/or access information on a device",
-    "ja": "情報をデバイスに保存および／またはアクセスする"
+    "ja": "情報をデバイスに保存および／またはアクセスする",
+    "ru": "Хранение и/или доступ к информации на устройстве"
   },
   "cz_p2_d": {
     "ko": "쿠키, 기기 또는 유사한 온라인 식별자(예: 로그인 기반 식별자, 무작위로 할당된 식별자, 네트워크 기반 식별자)와 기타 정보(예: 브라우저 유형 및 정보, 언어, 화면 크기, 지원되는 기술 등)는 여기에 제시된 한 가지 또는 여러 목적을 위해 앱이나 웹사이트에 연결할 때마다 이를 인식하도록 기기에 저장되거나 읽혀질 수 있습니다.",
     "en": "Cookies, device or similar online identifiers (e.g. login-based identifiers, randomly assigned identifiers, network based identifiers) together with other information (e.g. browser type and information, language, screen size, supported technologies etc.) can be stored or read on your device to recognise it each time it connects to an app or to a website, for one or several of the purposes presented here.",
-    "ja": "本書に記載する1つまたは複数の目的のために、クッキー、デバイスまたは類似のオンラインID（例：ログインID、ランダムに割り当てられるID、ネットワークベースのID）は、アプリまたはウェブサイトに接続するたびにユーザーのデバイスを認識できるように、その他の情報（例：ブラウザの種別および情報、言語、スクリーンの画面寸法、サポートされる言語テクノロジーなど）とともにそのデバイス上に保存または読み込まれることがあります。"
+    "ja": "本書に記載する1つまたは複数の目的のために、クッキー、デバイスまたは類似のオンラインID（例：ログインID、ランダムに割り当てられるID、ネットワークベースのID）は、アプリまたはウェブサイトに接続するたびにユーザーのデバイスを認識できるように、その他の情報（例：ブラウザの種別および情報、言語、スクリーンの画面寸法、サポートされる言語テクノロジーなど）とともにそのデバイス上に保存または読み込まれることがあります。",
+    "ru": "Файлы cookie, идентификаторы устройства или аналогичные онлайн-идентификаторы (например, идентификаторы на основе входа в систему, случайно присвоенные идентификаторы, сетевые идентификаторы) вместе с другой информацией (например, тип браузера и сведения о нём, язык, размер экрана, поддерживаемые технологии и т. д.) могут сохраняться на вашем устройстве или считываться с него, чтобы распознавать его при каждом подключении к приложению или веб-сайту, для одной или нескольких из представленных здесь целей."
   },
   "cz_p2_x": {
     "ko": "이 고지에 설명된 대부분의 목적은 앱을 사용하거나 웹사이트를 방문할 때 기기에 정보를 저장하거나 이에 접근하는 방식으로 이루어집니다. 예를 들어, 벤더 또는 퍼블리셔는 사용자가 웹사이트를 처음 방문할 때 사용자의 기기에 쿠키를 저장해야 다음 방문 시 (매번 이 쿠키에 접근하여) 사용자의 기기를 인식할 수 있습니다.",
     "en": "Most purposes explained in this notice rely on the storage or accessing of information from your device when you use an app or visit a website. For example, a vendor or publisher might need to store a cookie on your device during your first visit on a website, to be able to recognise your device during your next visits (by accessing this cookie each time).",
-    "ja": "この通知で説明するほとんどの目的は、ユーザーがアプリを使用し、またはウェブサイトを閲覧する際に、ユーザーのデバイスで情報を保存し、またはユーザーのデバイスからアクセスすることを前提にしています。例えば、あるベンダーまたはパブリッシャーは、ユーザーがウェブサイトを再訪問するときに（その都度クッキーにアクセスすることにより）ユーザーのデバイスを認識できるように、ユーザーの初訪問時にユーザーのデバイス上にクッキーを保存しなければならない場合があります。"
+    "ja": "この通知で説明するほとんどの目的は、ユーザーがアプリを使用し、またはウェブサイトを閲覧する際に、ユーザーのデバイスで情報を保存し、またはユーザーのデバイスからアクセスすることを前提にしています。例えば、あるベンダーまたはパブリッシャーは、ユーザーがウェブサイトを再訪問するときに（その都度クッキーにアクセスすることにより）ユーザーのデバイスを認識できるように、ユーザーの初訪問時にユーザーのデバイス上にクッキーを保存しなければならない場合があります。",
+    "ru": "Большинство целей, описанных в этом уведомлении, основаны на хранении информации на вашем устройстве или доступе к ней при использовании приложения или посещении веб-сайта. Например, поставщику или издателю может потребоваться сохранить файл cookie на вашем устройстве при первом посещении веб-сайта, чтобы распознавать ваше устройство при последующих посещениях (каждый раз обращаясь к этому файлу cookie)."
   },
   "cz_ex_h": {
     "ko": "파트너사가 이러한 목적에 따라 데이터를 처리하는 방법을 보여주는 예:",
     "en": "Examples of how partners may process data for this purpose:",
-    "ja": "この目的に基づいて、パートナーがどのようにデータを処理するかを示す例："
+    "ja": "この目的に基づいて、パートナーがどのようにデータを処理するかを示す例：",
+    "ru": "Примеры того, как партнёры могут обрабатывать данные для этой цели:"
   },
   "cz_no": {
     "ko": "동의 안 함",
     "en": "Disagree",
-    "ja": "同意しない"
+    "ja": "同意しない",
+    "ru": "Отклонить"
   },
   "cz_ok": {
     "ko": "동의",
     "en": "Agree",
-    "ja": "同意する"
+    "ja": "同意する",
+    "ru": "Принять"
   },
   "cz_rr": {
     "ko": "동의",
     "en": "Consent",
-    "ja": "同意"
+    "ja": "同意",
+    "ru": "Согласие"
   },
   "cz_partners": {
     "ko": "파트너 보기",
     "en": "View our partners",
-    "ja": "パートナーを見る"
+    "ja": "パートナーを見る",
+    "ru": "Просмотреть партнёров"
   },
   "cz_save": {
     "ko": "저장",
     "en": "Save",
-    "ja": "保存"
+    "ja": "保存",
+    "ru": "Сохранить"
   },
   "cz_save_aria": {
     "ko": "저장: 선택을 저장하고 닫기",
     "en": "Save: Save your choices and close",
-    "ja": "保存：選択内容を保存して閉じます"
+    "ja": "保存：選択内容を保存して閉じます",
+    "ru": "Сохранить: сохранить выбор и закрыть"
   },
   "cz_note": {
     "ko": "저장할 모든 환경설정을 설정하고 계속합니다",
     "en": "Set all your preferences to save and continue",
-    "ja": "保存して続行するには、すべての環境設定を設定してください"
+    "ja": "保存して続行するには、すべての環境設定を設定してください",
+    "ru": "Задайте все настройки, чтобы сохранить и продолжить"
   },
   "cz_close": {
     "ko": "닫기",
     "en": "Close",
-    "ja": "閉じる"
+    "ja": "閉じる",
+    "ru": "Закрыть"
   },
   "cz_back": {
     "ko": "뒤로",
     "en": "Back",
-    "ja": "戻る"
+    "ja": "戻る",
+    "ru": "Назад"
   },
   "cz_v_title": {
     "ko": "{site}의 파트너 선택",
     "en": "Select partners for {site}",
-    "ja": "{site}のパートナーを選択"
+    "ja": "{site}のパートナーを選択",
+    "ru": "Выбор партнёров для {site}"
   },
   "cz_v_text": {
     "ko": "아래에 나열된 모든 파트너에 대한 동의 환경설정을 개별적으로 설정할 수 있습니다. 파트너 이름을 클릭하면 파트너가 수행하는 작업, 수집하는 데이터 및 파트너가 사용하는 방법에 대한 자세한 정보를 볼 수 있습니다.",
     "en": "You can set your consent preferences for every partner listed below individually. Click on a partner name to get more information on what it does, what data it is collecting and how it is using it.",
-    "ja": "以下にリストされているすべてのパートナーに対して、個別に同意設定を設定できます。パートナー名をクリックすると、パートナーの機能、収集しているデータ、およびデータの使用方法に関する詳細情報が表示されます。"
+    "ja": "以下にリストされているすべてのパートナーに対して、個別に同意設定を設定できます。パートナー名をクリックすると、パートナーの機能、収集しているデータ、およびデータの使用方法に関する詳細情報が表示されます。",
+    "ru": "Вы можете задать настройки согласия отдельно для каждого из перечисленных ниже партнёров. Нажмите на название партнёра, чтобы узнать подробнее, что он делает, какие данные собирает и как их использует."
   },
   "cz_v_skip": {
     "ko": "\"저장\"으로 건너뛰기",
     "en": "Skip to \"Save\"",
-    "ja": "「保存」にスキップ"
+    "ja": "「保存」にスキップ",
+    "ru": "Перейти к «Сохранить»"
   },
   "cz_v_all": {
     "ko": "모든 파트너",
     "en": "All partners",
-    "ja": "すべてのパートナー"
+    "ja": "すべてのパートナー",
+    "ru": "Все партнёры"
   },
   "cz_v_no": {
     "ko": "동의 안 함",
     "en": "Disagree",
-    "ja": "同意しない"
+    "ja": "同意しない",
+    "ru": "Отклонить"
   },
   "cz_v_ok": {
     "ko": "동의",
     "en": "Agree",
-    "ja": "同意する"
+    "ja": "同意する",
+    "ru": "Принять"
   },
   "cz_v_consent": {
     "ko": "동의에 따른 데이터 처리",
     "en": "Data processing based on consent",
-    "ja": "同意に基づくデータ処理"
+    "ja": "同意に基づくデータ処理",
+    "ru": "Обработка данных на основании согласия"
   },
   "cz_v_policy": {
     "ko": "{policy}에서 Google Analytics Products 및 해당 데이터의 처리에 대해 자세히 알아볼 수 있습니다.",
     "en": "You can learn more about Google Analytics Products and how it processes data in its {policy}.",
-    "ja": "Google Analytics Productsとそのデータ処理の詳細については、{policy}をご覧ください。"
+    "ja": "Google Analytics Productsとそのデータ処理の詳細については、{policy}をご覧ください。",
+    "ru": "Подробнее о продуктах Google Analytics и о том, как они обрабатывают данные, можно узнать в их {policy}."
   },
   "cz_v_policy_c": {
     "ko": "{policy}에서 Microsoft Clarity 및 해당 데이터의 처리에 대해 자세히 알아볼 수 있습니다.",
     "en": "You can learn more about Microsoft Clarity and how it processes data in its {policy}.",
-    "ja": "Microsoft Clarityとそのデータ処理の詳細については、{policy}をご覧ください。"
+    "ja": "Microsoft Clarityとそのデータ処理の詳細については、{policy}をご覧ください。",
+    "ru": "Подробнее о Microsoft Clarity и о том, как этот сервис обрабатывает данные, можно узнать в его {policy}."
   },
   "cz_v_policy_l": {
     "ko": "개인정보 처리정책",
     "en": "privacy policy",
-    "ja": "プライバシーポリシー"
+    "ja": "プライバシーポリシー",
+    "ru": "политике конфиденциальности"
   },
   "cz_user": {
     "ko": "사용자 정보 보기",
     "en": "View user information",
-    "ja": "ユーザー情報を表示する"
+    "ja": "ユーザー情報を表示する",
+    "ru": "Сведения о пользователе"
   },
   "cz_user_at": {
     "ko": "저장한 때",
     "en": "Saved",
-    "ja": "保存日時"
+    "ja": "保存日時",
+    "ru": "Сохранено"
   },
   "cz_user_none": {
     "ko": "이 기기에 저장한 선택이 아직 없습니다.",
     "en": "No choices saved on this device yet.",
-    "ja": "このデバイスに保存された選択内容はまだありません。"
+    "ja": "このデバイスに保存された選択内容はまだありません。",
+    "ru": "На этом устройстве пока нет сохранённых настроек."
   },
   "sheet_book": {
     "ko": "{name} 시집 · {pages}",
     "en": "Poems by {name} · {pages}",
-    "ja": "{name}詩集 · {pages}"
+    "ja": "{name}詩集 · {pages}",
+    "ru": "{name}. Стихи · {pages}"
   },
   "keep": {
     "ko": "간직하기",
     "en": "Keep",
-    "ja": "とっておく"
+    "ja": "とっておく",
+    "ru": "Сохранить"
   },
   "close": {
     "ko": "닫기",
     "en": "Close",
-    "ja": "閉じる"
+    "ja": "閉じる",
+    "ru": "Закрыть"
   },
   "sheet_bridge": {
     "ko": "나머지 쉰아홉 편은 종이 위에 있습니다.",
     "en": "The other fifty-nine poems are on paper.",
-    "ja": "残りの五十九篇は、紙の上にあります。"
+    "ja": "残りの五十九篇は、紙の上にあります。",
+    "ru": "Остальные пятьдесят девять стихотворений — на бумаге."
   },
   "search_label": {
     "ko": "사이트 안 찾기",
     "en": "Search this site",
-    "ja": "サイト内検索"
+    "ja": "サイト内検索",
+    "ru": "Поиск по сайту"
   },
   "search_ph": {
     "ko": "시 제목 · 작품 · 전시",
     "en": "Poems, works, exhibitions",
-    "ja": "詩の題名 · 作品 · 展示"
+    "ja": "詩の題名 · 作品 · 展示",
+    "ru": "Стихи, произведения, выставки"
   },
   "search_suggest": {
     "ko": "추천",
     "en": "Suggested",
-    "ja": "おすすめ"
+    "ja": "おすすめ",
+    "ru": "Подсказки"
   },
   "search_none": {
     "ko": "결과 없음",
     "en": "No results",
-    "ja": "結果なし"
+    "ja": "結果なし",
+    "ru": "Ничего не найдено"
   },
   "search_clear": {
     "ko": "지우기",
     "en": "Clear",
-    "ja": "クリア"
+    "ja": "クリア",
+    "ru": "Очистить"
   },
   "search_tags": {
     "ko": "차례|「탁본」|시집|소개|소식|사진|영상|연락|칸",
     "en": "Contents|“Rubbing”|Book|About|News|Photo|Video|Contact|Section",
-    "ja": "目次|「拓本」|詩集|紹介|お知らせ|写真|動画|連絡|ページ"
+    "ja": "目次|「拓本」|詩集|紹介|お知らせ|写真|動画|連絡|ページ",
+    "ru": "Содержание|«Оттиск»|Книга|Обо мне|Новости|Фото|Видео|Контакты|Раздел"
   },
   "search_sec_where": {
     "ko": "약력 · 연표 · 지금|「탁본」 · 책 · 차례|사진 · 게시물|영상 · 리뷰|메일 · 인스타그램 메시지|남긴 글 · 남기기",
     "en": "Bio · timeline · now|“Rubbing” · book · contents|Photos · posts|Videos · reviews|Email · Instagram message|Notes · leave a note",
-    "ja": "略歴 · 年表 · いま|「拓本」 · 本 · 目次|写真 · 投稿|動画 · レビュー|メール · Instagramのメッセージ|メッセージ · 書き込み"
+    "ja": "略歴 · 年表 · いま|「拓本」 · 本 · 目次|写真 · 投稿|動画 · レビュー|メール · Instagramのメッセージ|メッセージ · 書き込み",
+    "ru": "Биография · хронология · сейчас|«Оттиск» · книга · содержание|Фото · посты|Видео · обзоры|Почта · сообщение в Instagram|Записи · оставить запись"
   },
   "search_month_tag": {
     "ko": "이달",
     "en": "This month",
-    "ja": "今月"
+    "ja": "今月",
+    "ru": "Этот месяц"
   },
   "search_month_where": {
     "ko": "{m}월의 한 줄 · 「{title}」 {page}쪽",
     "en": "{m}’s line · “{title},” p. {page}",
-    "ja": "{m}月の一行 · 「{title}」 {page}ページ"
+    "ja": "{m}月の一行 · 「{title}」 {page}ページ",
+    "ru": "Строки месяца: {m} · «{title}», с. {page}"
   },
   "search_month_keys": {
     "ko": "이달 이번 달 한 줄 {m}월 새 새로",
     "en": "this month line {m} new",
-    "ja": "今月 一行 {m}月 新着 新しい こんげつ"
+    "ja": "今月 一行 {m}月 新着 新しい こんげつ",
+    "ru": "этот месяц строка строки {m} новое новый"
   },
   "search_news_keys": {
     "ko": "소식 새 새로 나옴 출간",
     "en": "news new out release",
-    "ja": "お知らせ ニュース 新着 新刊 刊行 発売 出版 おしらせ"
+    "ja": "お知らせ ニュース 新着 新刊 刊行 発売 出版 おしらせ",
+    "ru": "новости новое новинка вышла выход издание"
   },
   "search_buy_keys": {
     "ko": "교보 교보문고 퍼플 서점 구매 구입 사기 판매 판매처 주문 가격 배송 사는 곳",
     "en": "kyobo pubple buy purchase order price shipping shop store",
-    "ja": "教保 教保文庫 kyobo pubple 書店 本屋 購入 買う 販売 販売店 注文 価格 値段 配送 発送 海外発送 買える場所 こうにゅう"
+    "ja": "教保 教保文庫 kyobo pubple 書店 本屋 購入 買う 販売 販売店 注文 価格 値段 配送 発送 海外発送 買える場所 こうにゅう",
+    "ru": "kyobo pubple купить покупка заказ цена доставка магазин"
   },
   "search_sec_keys": {
     "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 교보문고 퍼플 서점 구매 구입 사기 신간 출간 판매 쪽수 사는 곳 소식 주문 가격 배송 판매처 출간일 발행 영어|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지 화면 어둡게 다크 이메일 연락처 협업 디엠 dm|방명록 남긴 글 글 남기기 방문 다녀감",
     "en": "bio timeline now name|poem poems book contents rubbing kyobo pubple buy purchase shop release published pages news translated translation korean ships shipping price order|photos instagram posts exhibitions|videos reviews film films channel beautiful nam|email gmail mail message display dark collaboration collaborations questions|guestbook notes note visitors sign",
-    "ja": "略歴 年表 いま 今 名前 プロフィール ナム・ドンウォン ナムドンウォン 남동원 りゃくれき|詩 本 目次 拓本 教保 教保文庫 kyobo pubple 書店 本屋 購入 買う 新刊 刊行 出版 発売 販売 ページ数 頁 買える場所 お知らせ 注文 価格 値段 配送 発送 海外発送 販売店 発売日 発行 韓国語 翻訳 日本語 ししゅう たくほん|写真 インスタ instagram 投稿 展示 展覧会 しゃしん|動画 映像 レビュー 映画 チャンネル 아름다울 남 美しいナム youtube どうが|メール メールアドレス gmail 問い合わせ お問い合わせ 連絡 連絡先 メッセージ 表示 ダーク ダークモード コラボ 依頼 DM dm めーる|芳名録 ゲストブック 書き込み 訪問 ほうめいろく"
+    "ja": "略歴 年表 いま 今 名前 プロフィール ナム・ドンウォン ナムドンウォン 남동원 りゃくれき|詩 本 目次 拓本 教保 教保文庫 kyobo pubple 書店 本屋 購入 買う 新刊 刊行 出版 発売 販売 ページ数 頁 買える場所 お知らせ 注文 価格 値段 配送 発送 海外発送 販売店 発売日 発行 韓国語 翻訳 日本語 ししゅう たくほん|写真 インスタ instagram 投稿 展示 展覧会 しゃしん|動画 映像 レビュー 映画 チャンネル 아름다울 남 美しいナム youtube どうが|メール メールアドレス gmail 問い合わせ お問い合わせ 連絡 連絡先 メッセージ 表示 ダーク ダークモード コラボ 依頼 DM dm めーる|芳名録 ゲストブック 書き込み 訪問 ほうめいろく",
+    "ru": "биография хронология сейчас имя донвон нам nam dongwon|стихи стихотворение стихотворения книга сборник содержание оттиск kyobo pubple купить покупка магазин выход издание страницы новости перевод корейский доставка цена заказ|фото фотографии instagram инстаграм посты выставки|видео обзоры рецензии фильм фильмы кино канал youtube ютуб 아름다울 남 nam|почта email gmail письмо сообщение экран тёмная тема сотрудничество вопросы контакты|гостевая книга записи запись посетители"
   },
   "search_toc_where": {
     "ko": "{part} · {page}쪽",
     "en": "{part} · p. {page}",
-    "ja": "{part} · {page}ページ"
+    "ja": "{part} · {page}ページ",
+    "ru": "{part} · с. {page}"
   },
   "search_page": {
     "ko": "{page}쪽",
     "en": "p. {page}",
-    "ja": "{page}ページ"
+    "ja": "{page}ページ",
+    "ru": "с. {page}"
   },
   "search_timeline": {
     "ko": "연표",
     "en": "Timeline",
-    "ja": "年表"
+    "ja": "年表",
+    "ru": "Хронология"
   },
   "search_soon": {
     "ko": "준비 중",
     "en": "Coming soon",
-    "ja": "準備中"
+    "ja": "準備中",
+    "ru": "Скоро"
   },
   "nf_title": {
     "ko": "지금 찾으신 쪽은 없는 쪽입니다",
     "en": "The page you have dialed is not in service",
-    "ja": "お探しのページは、現在使われておりません"
+    "ja": "お探しのページは、現在使われておりません",
+    "ru": "Страницы, которую вы набрали, не существует"
   },
   "nf_lead": {
     "ko": "주소가 바뀌었거나 지워진 쪽입니다.",
     "en": "The address may have changed, or the page was removed.",
-    "ja": "アドレスが変わったか、削除されたページです。"
+    "ja": "アドレスが変わったか、削除されたページです。",
+    "ru": "Возможно, адрес изменился или страница была удалена."
   },
   "nf_back": {
     "ko": "첫 화면으로 →",
     "en": "Back to the home page →",
-    "ja": "トップページへ →"
+    "ja": "トップページへ →",
+    "ru": "На главную →"
   },
   "offline": {
-    "ko": {"title": "연결 없음 — 남동원", "kicker": "연결 없음", "head": "지금은 연결이<br>닿지 않습니다", "sub": "연결이 돌아오면 이 쪽이 저절로 다시 열립니다.", "retry": "다시 시도"},
-    "en": {"title": "Offline — Dongwon Nam", "kicker": "Offline", "head": "No connection<br>right now", "sub": "This page will reopen on its own once you are back online.", "retry": "Try again"},
-    "ja": {"title": "オフライン — ナム・ドンウォン", "kicker": "オフライン", "head": "ただいま接続が<br>ありません", "sub": "接続が戻ると、このページは自動で開き直します。", "retry": "再読み込み"}
+    "ko": {
+      "title": "연결 없음 — 남동원",
+      "kicker": "연결 없음",
+      "head": "지금은 연결이<br>닿지 않습니다",
+      "sub": "연결이 돌아오면 이 쪽이 저절로 다시 열립니다.",
+      "retry": "다시 시도"
+    },
+    "en": {
+      "title": "Offline — Dongwon Nam",
+      "kicker": "Offline",
+      "head": "No connection<br>right now",
+      "sub": "This page will reopen on its own once you are back online.",
+      "retry": "Try again"
+    },
+    "ja": {
+      "title": "オフライン — ナム・ドンウォン",
+      "kicker": "オフライン",
+      "head": "ただいま接続が<br>ありません",
+      "sub": "接続が戻ると、このページは自動で開き直します。",
+      "retry": "再読み込み"
+    },
+    "ru": {
+      "title": "Нет связи — Нам Донвон",
+      "kicker": "Нет связи",
+      "head": "Сейчас нет<br>подключения",
+      "sub": "Страница откроется сама, как только связь восстановится.",
+      "retry": "Повторить"
+    }
   },
   "js": {
     "ko": {
@@ -1149,196 +1384,274 @@
       "copy": "コピー",
       "copied": "コピーしました ✓",
       "copy_fail": "コピーできませんでした"
+    },
+    "ru": {
+      "play": "Воспроизвести: {title}",
+      "paused": "Видео на паузе",
+      "close_mini": "Закрыть мини-плеер",
+      "paused_at": "Пауза на {t} · Продолжить",
+      "file": "донвон-нам_оттиск.jpg",
+      "share": "«Оттиск» — Нам Донвон",
+      "kept_on": "Снято {d}",
+      "post_photo": "Фото поста {k} из {n}",
+      "form_off": "Форма пока не подключена — пожалуйста, напишите мне в Instagram.",
+      "sending": "Отправка…",
+      "sent": "Получено. Скоро отвечу.",
+      "failed": "Не удалось отправить. Ваше сообщение сохранилось — попробуйте ещё раз чуть позже.",
+      "search_count": "Найдено: {n}",
+      "search_go": "Найти",
+      "recent_title": "Недавние запросы",
+      "recent_clear": "Очистить всё",
+      "recent_none": "Недавних запросов нет",
+      "recent_del": "Удалить {q}",
+      "gb_sent": "Отправлено. Прочитаю в понедельник.",
+      "gb_back": "Вернуть черновик",
+      "gb_undo": "Отменить удаление",
+      "gb_staging": "Не отправлено — это тестовый сервер (staging). Записи отправляются только с рабочего сайта.",
+      "gb_ok": "Ваша запись отправлена.",
+      "gb_ok_sub": "Все записи прочитываются; по понедельникам несколько из них выбираются для публикации здесь.",
+      "ask_ok": "Ваше сообщение отправлено.",
+      "ask_ok_sub": "Скоро отвечу.",
+      "done_again": "Написать ещё",
+      "done_home": "На главную",
+      "gb_full": "В этом месяце гостевая книга заполнена. Пожалуйста, попробуйте в следующем месяце.",
+      "keep_hold": "Нажмите на изображение и удерживайте, чтобы сохранить его",
+      "keep_alt": "Ваш оттиск стихотворения «Оттиск»",
+      "ring_hint": "Потяните, чтобы повернуть · нажмите, чтобы открыть",
+      "shared": "Ссылка скопирована",
+      "pv_link": "Копировать ссылку",
+      "pal_one": "«{ch}» — использований: {n}, № {rank} из {all}",
+      "copy": "Копировать",
+      "copied": "Скопировано ✓",
+      "copy_fail": "Не удалось скопировать"
     }
   },
   "pop_post": {
     "ko": "게시물 {i} / {n}",
     "en": "Post {i} of {n}",
-    "ja": "投稿 {i} / {n}"
+    "ja": "投稿 {i} / {n}",
+    "ru": "Пост {i} из {n}"
   },
   "toc_here": {
     "ko": "— 여기서 읽기",
     "en": "— read it here",
-    "ja": "— ここで読めます"
+    "ja": "— ここで読めます",
+    "ru": "— читать здесь"
   },
   "turn_label": {
     "ko": "시집 『{book}』 — 눌러서 책등 · 뒤표지 보기",
     "en": "“{book}” — press to see the spine and back",
-    "ja": "詩集『{book}』 — 押して背表紙 · 裏表紙を見る"
+    "ja": "詩集『{book}』 — 押して背表紙 · 裏表紙を見る",
+    "ru": "«{book}» — нажмите, чтобы увидеть корешок и оборот"
   },
   "foot_pages": {
     "ko": "둘러보기",
     "en": "Explore",
-    "ja": "メニュー"
+    "ja": "メニュー",
+    "ru": "Разделы"
   },
   "foot_info": {
     "ko": "안내",
     "en": "Information",
-    "ja": "ご案内"
+    "ja": "ご案内",
+    "ru": "Информация"
   },
   "foot_settings": {
     "ko": "설정",
     "en": "Settings",
-    "ja": "設定"
+    "ja": "設定",
+    "ru": "Настройки"
   },
   "colo_end": {
     "ko": "좋은 아침이었으면 합니다.",
     "en": "I hope your morning is a good one.",
-    "ja": "よい朝でありますように。"
+    "ja": "よい朝でありますように。",
+    "ru": "Пусть ваше утро будет добрым."
   },
   "tk_kick": {
     "ko": "시집 · 2026",
     "en": "Poetry collection · 2026",
-    "ja": "詩集 · 2026"
+    "ja": "詩集 · 2026",
+    "ru": "Сборник стихов · 2026"
   },
   "tk_cta": {
     "ko": "시집 보기",
     "en": "See the book",
-    "ja": "詩集を見る"
+    "ja": "詩集を見る",
+    "ru": "Смотреть книгу"
   },
   "tk_city": {
     "ko": "서울",
     "en": "Seoul",
-    "ja": "ソウル"
+    "ja": "ソウル",
+    "ru": "Сеул"
   },
   "tk_word": {
     "ko": "nam dongwon",
     "en": "nam dongwon",
-    "ja": "nam dongwon"
+    "ja": "nam dongwon",
+    "ru": "nam dongwon"
   },
   "totop": {
     "ko": "맨 위로",
     "en": "Back to top",
-    "ja": "ページの先頭へ"
+    "ja": "ページの先頭へ",
+    "ru": "Наверх"
   },
   "tk_title": {
     "ko": "『문을 열고 나오면|살아 있는 것들로 가득 차 있다』",
     "en": "Open the Door, Step Out,|and It Is Full of Living Things",
-    "ja": "『扉をあけて出ると、|生きているものたちで満ちている』"
+    "ja": "『扉をあけて出ると、|生きているものたちで満ちている』",
+    "ru": "Открой дверь и выйди —|всё полно живого"
   },
   "motion": {
     "ko": "움직임",
     "en": "Motion",
-    "ja": "動き"
+    "ja": "動き",
+    "ru": "Анимация"
   },
   "motion_aria": {
     "ko": "움직임 줄이기",
     "en": "Reduce motion",
-    "ja": "動きを減らす"
+    "ja": "動きを減らす",
+    "ru": "Уменьшить анимацию"
   },
   "motion_reduce": {
     "ko": "줄이기",
     "en": "Reduce",
-    "ja": "減らす"
+    "ja": "減らす",
+    "ru": "Уменьшить"
   },
   "motion_off": {
     "ko": "끔 — 기기 설정을 따름",
     "en": "Off — follows your device",
-    "ja": "オフ — 端末の設定に従う"
+    "ja": "オフ — 端末の設定に従う",
+    "ru": "Выкл. — как на устройстве"
   },
   "motion_on": {
     "ko": "켬 — 움직임 없이 머문 자리로",
     "en": "On — everything stays still",
-    "ja": "オン — 動きを止めて表示"
+    "ja": "オン — 動きを止めて表示",
+    "ru": "Вкл. — всё неподвижно"
   },
   "me_alt": {
     "ko": "등을 돌린 채 옆을 바라보는 남동원의 흑백 사진",
     "en": "Black-and-white photo of Dongwon Nam, seen from behind, looking to the side",
-    "ja": "背を向けて横を見るナム・ドンウォンのモノクロ写真"
+    "ja": "背を向けて横を見るナム・ドンウォンのモノクロ写真",
+    "ru": "Чёрно-белая фотография Нам Донвона: он стоит спиной и смотрит в сторону"
   },
   "tk_big": {
     "ko": "CREATIVE|STUDIO",
     "en": "CREATIVE|STUDIO",
-    "ja": "CREATIVE|STUDIO"
+    "ja": "CREATIVE|STUDIO",
+    "ru": "CREATIVE|STUDIO"
   },
   "tk_about": {
     "ko": "{city}에서 영화 · 전시 · 책을 보고 리뷰하고, 시를 쓰는 크리에이티브 스튜디오.",
     "en": "A creative studio based in {city}, reviewing films, exhibitions and books, and writing poems.",
-    "ja": "{city}を拠点に、映画・展示・本をレビューし、詩を書くクリエイティブスタジオ。"
+    "ja": "{city}を拠点に、映画・展示・本をレビューし、詩を書くクリエイティブスタジオ。",
+    "ru": "{city}. Творческая студия: обзоры фильмов, выставок и книг — и стихи."
   },
   "tk_clock": {
     "ko": "SEOUL, KOREA",
     "en": "SEOUL, KOREA",
-    "ja": "SEOUL, KOREA"
+    "ja": "SEOUL, KOREA",
+    "ru": "SEOUL, KOREA"
   },
   "gb_note_g": {
     "ko": "남기신 글은 구글 폼(Google, 미국)에 담깁니다. 실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있습니다. {privacy}",
     "en": "Notes are stored in a Google Form (Google, United States). Notes not published are deleted within 30 days, and you keep the copyright. {privacy}",
-    "ja": "メッセージはGoogleフォーム（Google、米国）に保存されます。掲載されなかったメッセージは30日以内に削除し、著作権は書いた方にあります。{privacy}"
+    "ja": "メッセージはGoogleフォーム（Google、米国）に保存されます。掲載されなかったメッセージは30日以内に削除し、著作権は書いた方にあります。{privacy}",
+    "ru": "Записи хранятся в Google Форме (Google, США). Неопубликованные записи удаляются в течение 30 дней; авторские права остаются за вами. {privacy}"
   },
   "next_k": {
     "ko": "다음 쪽",
     "en": "Next",
-    "ja": "次のページ"
+    "ja": "次のページ",
+    "ru": "Далее"
   },
   "next_d_book": {
     "ko": "시 예순 편, 차례와 「탁본」",
     "en": "Sixty poems — the contents and “Rubbing”",
-    "ja": "詩六十篇、目次と「拓本」"
+    "ja": "詩六十篇、目次と「拓本」",
+    "ru": "Шестьдесят стихотворений — содержание и «Оттиск»"
   },
   "next_d_photo": {
     "ko": "시가 되기 전의 날들을 사진으로",
     "en": "The days before the poems, in photographs",
-    "ja": "詩になる前の日々を、写真で"
+    "ja": "詩になる前の日々を、写真で",
+    "ru": "Дни до стихов — в фотографиях"
   },
   "next_d_video": {
     "ko": "본 것을 이야기로 — 영화 · 책 · 전시",
     "en": "What I’ve seen, talked through — films, books, exhibitions",
-    "ja": "観たものを言葉に — 映画・本・展示"
+    "ja": "観たものを言葉に — 映画・本・展示",
+    "ru": "Об увиденном — фильмы, книги, выставки"
   },
   "next_d_guestbook": {
     "ko": "다녀가신 자리에 한 줄",
     "en": "Leave a line on your way out",
-    "ja": "立ち寄った印に、ひとこと"
+    "ja": "立ち寄った印に、ひとこと",
+    "ru": "Оставьте строку на прощание"
   },
   "next_d_me": {
     "ko": "쓰는 사람과 지나온 기록",
     "en": "The writer, and the record so far",
-    "ja": "書く人と、これまでの記録"
+    "ja": "書く人と、これまでの記録",
+    "ru": "Автор и его хроника"
   },
   "fs": {
     "ko": "글자",
     "en": "Text",
-    "ja": "文字"
+    "ja": "文字",
+    "ru": "Текст"
   },
   "fs_g": {
     "ko": "가",
     "en": "A",
-    "ja": "あ"
+    "ja": "あ",
+    "ru": "А"
   },
   "fs_m": {
     "ko": "보통",
     "en": "Default",
-    "ja": "標準"
+    "ja": "標準",
+    "ru": "Обычный"
   },
   "fs_l": {
     "ko": "크게",
     "en": "Large",
-    "ja": "大きく"
+    "ja": "大きく",
+    "ru": "Крупный"
   },
   "fs_xl": {
     "ko": "더 크게",
     "en": "Larger",
-    "ja": "さらに大きく"
+    "ja": "さらに大きく",
+    "ru": "Крупнее"
   },
   "nw_sr": {
     "ko": "새 글 있음",
     "en": "new",
-    "ja": "新着あり"
+    "ja": "新着あり",
+    "ru": "новое"
   },
   "rdl_k": {
     "ko": "읽은 사람의 한 줄",
     "en": "A reader’s line",
-    "ja": "読んだ人のひとこと"
+    "ja": "読んだ人のひとこと",
+    "ru": "Строка читателя"
   },
   "rdl_from": {
     "ko": "방명록에서 · {day}",
     "en": "From the guestbook · {day}",
-    "ja": "芳名録より · {day}"
+    "ja": "芳名録より · {day}",
+    "ru": "Из гостевой книги · {day}"
   },
   "rdl_go": {
     "ko": "방명록에 남기기 →",
     "en": "Leave a note →",
-    "ja": "芳名録に書く →"
+    "ja": "芳名録に書く →",
+    "ru": "Оставить запись →"
   }
 }

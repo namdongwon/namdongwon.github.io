@@ -1145,7 +1145,7 @@
       const plain = () => fetch(ASSET + "img/takbon.jpg").then(r => r.blob()).catch(() => null);
       try {
         const bmp = await createImageBitmap(await (await fetch(ASSET + "img/takbon.jpg")).blob());
-        const sans = H.lang === "ja" ? "JGO, PTD" : "PTD";  // 일본어판(11/1)은 Pretendard JP 판 먼저
+        const sans = H.lang === "ja" ? "JGO, PTD" : H.lang === "ru" ? "RGO, PTD" : "PTD";  // 러시아어판(11/6)은 키릴 판 먼저  // 일본어판(11/1)은 Pretendard JP 판 먼저
         await document.fonts.load(`300 27px ${sans}`);
         const c = document.createElement("canvas");
         c.width = bmp.width;
@@ -1155,6 +1155,7 @@
         const now = new Date();
         const d = H.lang === "en" ? now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
           : H.lang === "ja" ? now.toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })  // 2026年11月1日(일본어판 날짜 꼴)
+          : H.lang === "ru" ? now.toLocaleDateString("ru-RU", { year: "numeric", month: "long", day: "numeric" })  // 1 ноября 2026 г.(11/6)
           : `${now.getFullYear()}. ${now.getMonth() + 1}. ${now.getDate()}.`;
         g.font = `300 27px ${sans}, -apple-system, sans-serif`;
         g.fillStyle = "#626262";

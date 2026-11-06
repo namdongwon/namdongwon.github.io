@@ -2,11 +2,11 @@
 // 쪽을 열 때(navigate)만 지켜봄: 연결이 되면 손대지 않고 그대로, 연결이 없어 받지 못하면 회색 오류 대신 우리 모양 안내 한 장.
 // 아무것도 받아 두지 않음(Cache API 없음) — 배포 뒤 옛 화면이 남을 일이 없음. 글은 ui.json offline(빌드가 아래 TEXT 자리에 넣음).
 // 끄려면: 이 파일을 self.registration.unregister()만 하는 판으로 배포
-const TEXT = {"ko": {"title": "연결 없음 — 남동원", "kicker": "연결 없음", "head": "지금은 연결이<br>닿지 않습니다", "sub": "연결이 돌아오면 이 쪽이 저절로 다시 열립니다.", "retry": "다시 시도"}, "en": {"title": "Offline — Dongwon Nam", "kicker": "Offline", "head": "No connection<br>right now", "sub": "This page will reopen on its own once you are back online.", "retry": "Try again"}, "ja": {"title": "オフライン — ナム・ドンウォン", "kicker": "オフライン", "head": "ただいま接続が<br>ありません", "sub": "接続が戻ると、このページは自動で開き直します。", "retry": "再読み込み"}};
+const TEXT = {"ko": {"title": "연결 없음 — 남동원", "kicker": "연결 없음", "head": "지금은 연결이<br>닿지 않습니다", "sub": "연결이 돌아오면 이 쪽이 저절로 다시 열립니다.", "retry": "다시 시도"}, "en": {"title": "Offline — Dongwon Nam", "kicker": "Offline", "head": "No connection<br>right now", "sub": "This page will reopen on its own once you are back online.", "retry": "Try again"}, "ja": {"title": "オフライン — ナム・ドンウォン", "kicker": "オフライン", "head": "ただいま接続が<br>ありません", "sub": "接続が戻ると、このページは自動で開き直します。", "retry": "再読み込み"}, "ru": {"title": "Нет связи — Нам Донвон", "kicker": "Нет связи", "head": "Сейчас нет<br>подключения", "sub": "Страница откроется сама, как только связь восстановится.", "retry": "Повторить"}};
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", e => e.waitUntil(self.clients.claim()));
 const page = path => {
-  const lang = /^\/(en|ja)\//.test(path) ? path.slice(1, 3) : "ko", t = TEXT[lang];
+  const lang = /^\/(en|ja|ru)\//.test(path) ? path.slice(1, 3) : "ko", t = TEXT[lang];
   return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>${t.title}</title>
 <meta name="color-scheme" content="light dark"><style>
 :root{--bg:#fff;--ink:#111;--muted:#555;--faint:#717171;--line:#ececec}

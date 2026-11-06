@@ -79,9 +79,9 @@ EN_FONTS = [("Newsreader[opsz,wght].ttf", "newsreader.woff2"), ("Newsreader-Ital
 EN_FIRST = "newsreader-first.woff2"  # 영어판 첫 화면 작은 판(10/27 점검 큼 — 영어판 문이 한국어판보다 0.7초 늦었음): 문 글자 · 첫 화면 글자만 담은 Newsreader(가변 축 그대로)
 # 판 셋(11/1 동원 "그리고 언어도 일본어도 넣자" → 버튼 "영어판처럼 전체 (권장)" — 기준/일본어판 칸 정의서_v1.md): 한국어 / · 영어 /en/ · 일본어 /ja/.
 # 옮긴 판(TR)은 원고마다 한국어 옆 'en' · 'ja' 칸(같은 꼴) · ui.json은 {"ko", "en", "ja"}. 일본어판 짜임은 영어판을 따르고(원문 곁 한국어 · 대역 · 차례 접기), 표기는 일본어 관행(기울임 없음 · 『』「」 · 2026年11月1日)
-LANGS = ("ko", "en", "ja")
-TR = ("en", "ja")
-LANG_NAME = {"ko": "한국어", "en": "English", "ja": "日本語"}  # 판권면 '언어' 줄 · 처리방침 다른 판 링크 — 낱말은 그 말 그대로
+LANGS = ("ko", "en", "ja", "ru")
+TR = ("en", "ja", "ru")
+LANG_NAME = {"ko": "한국어", "en": "English", "ja": "日本語", "ru": "Русский"}  # 러시아어판(11/6 동원 "지인들이 러시아인들이 있어서" → "만들기 (권장)")  # 판권면 '언어' 줄 · 처리방침 다른 판 링크 — 낱말은 그 말 그대로
 # 일본어판 글꼴(11/1 동원 버튼 "A 源ノ明朝 (권장)" — 시안 기준/브랜드 시안/일본어판_글꼴시안_v1_휴대폰.png): 본명조 자리는 Source Han Serif JP(Light · Regular · Bold),
 # Pretendard 자리는 Pretendard JP(Light · Regular · SemiBold — Regular는 11/2 본문 고딕) — 기준/폰트/일본어/. 둘 다 OFL 예약 이름('Source' · 'Pretendard')이 있어 줄인 판 이름을 NDW Serif JP · NDW Sans JP로 바꿈(rename_font).
 # 일본어판 쪽(+ 404 · 처리방침의 일본어)에 쓰인 글자만 담고, 한국어 · 영어판 글꼴은 전과 같은 글자로(일본어 글자를 섞지 않음 — 한국어판 손님이 받는 무게 그대로)
@@ -93,6 +93,15 @@ JA_FONTS = [
     ("PretendardJP-Light.otf", "ndw-sans-jp-light.woff2"),
     ("PretendardJP-Regular.otf", "ndw-sans-jp-regular.woff2"),  # 일본어판 본문(11/2 본문 고딕 'A Regular 400' — 한국어 · 영어판과 같은 굵기)
     ("PretendardJP-SemiBold.otf", "ndw-sans-jp-semibold.woff2"),
+]
+# 러시아어판 글꼴(11/6): 키릴 글자가 있는 원본 — 명조는 Source Han Serif JP(본명조와 같은 가족), 고딕은 Pretendard(Inter 키릴). 러시아어판 글자만 남김 · 이름은 NDW …(rename)
+RU_FONTS = [
+    ("SourceHanSerifJP-Light.otf", "ndw-serif-ru-light.woff2"),
+    ("SourceHanSerifJP-Regular.otf", "ndw-serif-ru.woff2"),
+    ("SourceHanSerifJP-Bold.otf", "ndw-serif-ru-bold.woff2"),
+    ("Pretendard-Light.otf", "ndw-sans-ru-light.woff2"),
+    ("Pretendard-Regular.otf", "ndw-sans-ru-regular.woff2"),
+    ("Pretendard-SemiBold.otf", "ndw-sans-ru-semibold.woff2"),
 ]
 JA_LIGHT_ONLY = "ndw-serif-jp-light.woff2"  # 굵기 300은 일본어판 첫 화면 큰 제목에만(한국어판 LIGHT_ONLY와 같은 규칙)
 JA_NAME = "ndw-sans-jp-name.woff2"  # 한국어 · 영어판 바닥글 언어 줄의 '日本語'만 담은 작은 판(CSS JPN · unicode-range) — 우리 고딕에 한자가 없어 기기 글꼴로 그려지던 것(11/3 Lighthouse 덤 → 목업 일본어이름글꼴시안_v1 'A 일본어판 고딕 (권장)')
@@ -110,6 +119,9 @@ NOSP = set()  # SPLIT 가운데 두 토막을 빈칸 없이 잇는 제목 — �
 NAMES = []  # 채널 이름(한 · 영) — render()가 videos.json에서 채움(names())
 NOWRAP = []  # 일본어판 사람 이름(ナム・ドンウォン) — 빈칸이 없어 붙임 공백으로 못 묶음, 한 덩어리 span(.nw)으로(11/1 — 소개 첫 문장 'ナム・ド / ンウォン')
 MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+MONTHS_RU = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"]  # 러시아어판(11/6) — 날짜는 생격(1 ноября 2026 г.)
+MONTHS_RU_NOM = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"]
+MONTHS_RU_SHORT = ["янв.", "февр.", "март", "апр.", "май", "июнь", "июль", "авг.", "сент.", "окт.", "нояб.", "дек."]
 
 
 def keep(s):
@@ -118,6 +130,7 @@ def keep(s):
     # 영어판(10/24): 치수 '128 × 188 mm'와 날짜 'November 1, 2026'도 한 덩어리로
     s = re.sub(r"(\d+) × (\d+) (mm|cm)", rf"\1{NB}×{NB}\2{NB}\3", s)
     s = re.sub(r"\b(" + "|".join(MONTHS) + r") (\d{1,2}), (\d{4})", rf"\1{NB}\2,{NB}\3", s)
+    s = re.sub(r"(\d{1,2}) (" + "|".join(MONTHS_RU) + r") (\d{4}) г\.", rf"\1{NB}\2{NB}\3{NB}г.", s)  # 러시아어 날짜 한 덩어리(11/6)
     s = s.replace("교보문고 퍼플", f"교보문고{NB}퍼플").replace("Kyobo PubPle", f"Kyobo{NB}PubPle")  # 상호는 한 덩어리(10/27 점검 남은 것 가2 — 1280 첫 화면 라벨에서 '교보문고 / 퍼플'로 갈렸음)
     s = s.replace("教保文庫 ", f"教保文庫{NB}")  # 일본어판(11/1)도 상호 '教保文庫 PubPle' 따위는 한 덩어리
     return names(s.replace(" · ", NB + "· "))
@@ -365,6 +378,8 @@ def marked(kind, title, lang="ko"):
         raise ValueError(f"갈래 '{kind}'에 맞는 부호가 없음 — {' · '.join(MARKS)} 중 하나로")
     if lang == "en":  # 영어판(10/24): 영화 · 책 · 전시 · 작품은 기울임, 시는 따옴표(영어 관행)
         return f"“{e(title)}”" if kind == "시" else f"<i>{e(title)}</i>"
+    if lang == "ru":  # 러시아어판(11/6): 작품 제목은 모두 «»(러시아 관행 — 기울임 없음)
+        return f"«{e(title)}»"
     m = MARKS_JA[kind] if lang == "ja" else MARKS[kind]
     return m[0] + e(title) + m[1]
 
@@ -372,6 +387,11 @@ def marked(kind, title, lang="ko"):
 def jday(d):
     # 일본어판 날짜(11/1 칸 정의서 8절) — 2026年11月1日(숫자는 반각, 사이 빈칸 없음)
     return f"{d.year}年{d.month}月{d.day}日"
+
+
+def rday(d, year=True):
+    # 러시아어판 날짜(11/6) — 1 ноября 2026 г.(붙임 공백으로 한 덩어리)
+    return f"{d.day}{NB}{MONTHS_RU[d.month - 1]}" + (f"{NB}{d.year}{NB}г." if year else "")
 
 
 def art_parts(a, lang="ko"):
@@ -472,15 +492,18 @@ def is_art(p):
     return bool(p.get("art")) and any(str(x).strip() for x in p["art"].values())
 
 
-def tt(t, ko, tail=""):
+def tt(t, ko, tail="", q=None):
     # 작품 제목은 바로 붙은 문장부호 · 조사까지 한 덩어리(.tt — 칸에 들어가면 통째로 다음 줄, 칸보다 길면 그 안에서만 갈림 · 10/25 마지막 점검 ②③).
     # 시집 제목은 그 안을 표지 줄 나눔(큰 제목 | 작은 제목) 두 토막으로 다시 감쌈 — 칸보다 길 때(휴대폰 약력 등)도 '문을 열고 나오면 / 살아 있는 …' 자리에서만 나뉨
     if t in SPLIT:
         a, z = SPLIT[t]
-        if ko:
+        if ko or q:
+            o, c = q or ("『", "』")  # q — 러시아어판 «»(11/6)
             sp = "" if t in NOSP else " "  # 일본어 제목은 두 토막 사이 빈칸 없이(토막 사이에서만 갈림)
-            return f'<span class="tt"><span class="tt">『{a}</span>{sp}<span class="tt">{z}』{tail}</span></span>'
+            return f'<span class="tt"><span class="tt">{o}{a}</span>{sp}<span class="tt">{z}{c}{tail}</span></span>'
         return f'<span class="tt"><i><span class="tt">{a}</span> <span class="tt">{z}</span></i>{tail}</span>'  # 기울임은 한 제목에 하나
+    if q:
+        return f'<span class="tt">{q[0]}{t}{q[1]}{tail}</span>'
     return f'<span class="tt">『{t}』{tail}</span>' if ko else f'<span class="tt"><i>{t}</i>{tail}</span>'
 
 
@@ -498,6 +521,8 @@ def note_html(s, lang):
         return re.sub(r"\*([^*]+)\*", lambda m: "<i>" + m.group(1).replace(" ", NB) + "</i>", s)
     if lang == "ja":  # 일본어는 글자 사이에서 갈려 붙임 공백만으로는 못 막음 — 제목을 한 덩어리(.tt)로
         return re.sub(r"[『「][^』」]*[』」]", lambda m: '<span class="tt">' + m.group(0).replace(" ", NB) + "</span>", s)
+    if lang == "ru":  # 러시아어(11/6): «제목» 안 빈칸은 붙여 한 덩어리
+        return re.sub(r"«[^»]*»", lambda m: m.group(0).replace(" ", NB), s)
     return re.sub(r"[〈《][^〉》]*[〉》]", lambda m: m.group(0).replace(" ", NB), s)
 
 
@@ -678,9 +703,9 @@ def ig_items(feed, overrides):
         d = datetime.strptime(f["timestamp"], "%Y-%m-%dT%H:%M:%S%z").astimezone(ZoneInfo("Asia/Seoul"))
         code = f["permalink"].rstrip("/").rsplit("/", 1)[-1]
         it = {"file": f"ig_{f['id']}.jpg", "src": f["src"], "kids": [k for k in f.get("kids", []) if Path(k).exists()], "where": first_line(f["caption"]), "when": "", "credit": "",
-              "date": f"{d.year}년 {d.month}월 {d.day}일", "link": f["permalink"], "en": {"date": f"{MONTHS[d.month - 1]} {d.day}, {d.year}"}, "ja": {"date": jday(d)}}
+              "date": f"{d.year}년 {d.month}월 {d.day}일", "link": f["permalink"], "en": {"date": f"{MONTHS[d.month - 1]} {d.day}, {d.year}"}, "ja": {"date": jday(d)}, "ru": {"date": rday(d)}}
         over = overrides.get(code, {})  # photo_art.json의 그 게시물 줄(10/25 원고 옮기기 — 전에는 photos.json instagram.overrides)
-        ko = {k: v for k, v in over.items() if k not in ("en", "ja", "post") and v not in ("", None)}
+        ko = {k: v for k, v in over.items() if k not in (*TR, "post") and v not in ("", None)}
         if "art" in ko and not is_art(ko):
             del ko["art"]
         # 영어가 빈 칸은 덮지 않음 — 이름 · 캡션 첫 줄은 한국어 그대로(설계서 5절) · 일본어(11/1)도 같은 규칙
@@ -816,6 +841,7 @@ def og_book(d, site, src, lang, words, room):
     # 출간일 책 카드(10/27 B — 시안 기준/브랜드 시안/공유카드시안_v1): 사이트 첫 화면과 같은 차례 — '이름 첫 시집' → 큰 제목(가는 본명조 ·
     # 영어판 Newsreader · 일본어판 Source Han Serif JP Light) → 굵은 부제 → '● 판매 중 · 교보문고 퍼플' → 주소. 칸(room)보다 긴 줄은 글자를 줄임
     bk, en, ja = site["book"], lang == "en", lang == "ja"
+    jf = ja or lang == "ru"  # 러시아어판(11/6) 명조는 Source Han Serif JP(키릴 글자 있음)
     sans = ({600: src["PretendardJP-SemiBold.otf"], 300: src["PretendardJP-Light.otf"]} if ja  # 일본어판(11/1)은 Pretendard JP
             else {600: src["Pretendard-SemiBold.otf"], 300: src["Pretendard-Light.otf"]})
 
@@ -828,7 +854,7 @@ def og_book(d, site, src, lang, words, room):
     kf, _ = fit(lambda s: font(sans[600], s), [kick], 34, 22)
     d.text((100, 92), kick, font=kf, fill="#111111")
     big, small = bk["display"]["big"], ("" if ja else " ").join(bk["display"]["small"])  # 일본어는 토막 사이 빈칸 없이
-    serif = (lambda w: src[f"SourceHanSerifJP-{w}.otf"]) if ja else (lambda w: src[f"BonMyeongjoKR-{w}.ttf"])
+    serif = (lambda w: src[f"SourceHanSerifJP-{w}.otf"]) if jf else (lambda w: src[f"BonMyeongjoKR-{w}.ttf"])
     tf, ts = fit((lambda s: vfont(src["NR"], s, (380, 72))) if en else (lambda s: font(serif("Light"), s)), big, 100, 60)
     lh, y = round(ts * 1.12), 150
     for t in big:
@@ -868,6 +894,18 @@ def make_og(site, cover, src, lang="ko", words=None):
             yy += 52
         d.text((100, 540), site["base_url"].replace("https://", "") + "/ja", font=font(src["PretendardJP-Light.otf"], 24), fill="#717171")
         out = "og-ja.jpg"
+    elif lang == "ru":  # 러시아어판 이름 카드(11/6) — 영어 카드와 같은 짜임, 글꼴은 키릴 글자가 있는 Source Han Serif JP · Pretendard
+        room = x - 100 - 48
+        size = 108
+        while font(src["SourceHanSerifJP-Bold.otf"], size).getlength(site["name"]) > room and size > 60:
+            size -= 2
+        d.text((96, 196), site["name"], font=font(src["SourceHanSerifJP-Bold.otf"], size), fill="#111111")
+        tf, yy = font(src["SourceHanSerifJP-Regular.otf"], 34), 196 + round(size * 1.2) + 44
+        for line in _wrap(d, site["tagline"], tf, room):
+            d.text((100, yy), line, font=tf, fill="#555555")
+            yy += 50
+        d.text((100, 540), site["base_url"].replace("https://", "") + "/ru", font=font(src["Pretendard-Light.otf"], 24), fill="#717171")
+        out = "og-ru.jpg"
     elif lang == "ko":
         d.text((96, 232), site["name"], font=font(src["BonMyeongjoKR-Bold.ttf"], 118), fill="#111111")
         d.text((100, 392), site["tagline"], font=font(src["BonMyeongjoKR-Regular.ttf"], 34), fill="#555555")  # 회색은 사이트 토큰과 같이(10/24 ⑨ --muted)
@@ -914,6 +952,8 @@ def make_og_pages(site, photos, src, keep):
         L = ui_lang(load("ui.json"), lang)
         if lang == "en":
             need = ("NR", "Pretendard-Light.otf"); tf_ = lambda z, b: vfont(src["NR"], z, (650 if b else 400, min(z, 72))); af = font(src["Pretendard-Light.otf"], 24) if "Pretendard-Light.otf" in src else None
+        elif lang == "ru":  # 러시아어판(11/6)
+            need = ("SourceHanSerifJP-Bold.otf", "SourceHanSerifJP-Regular.otf", "Pretendard-Light.otf"); tf_ = lambda z, b: font(src["SourceHanSerifJP-Bold.otf" if b else "SourceHanSerifJP-Regular.otf"], z); af = None
         elif lang == "ja":
             need = ("SourceHanSerifJP-Bold.otf", "SourceHanSerifJP-Regular.otf", "PretendardJP-Light.otf"); tf_ = lambda z, b: font(src["SourceHanSerifJP-Bold.otf" if b else "SourceHanSerifJP-Regular.otf"], z); af = None
         else:
@@ -1073,13 +1113,15 @@ def render(site, poem, videos, photos, lang="ko"):
     en = lang == "en"
     # 옮긴 판(영어 · 일본어 — 11/1): 짜임은 영어판을 따름(원문 곁 한국어 · 「탁본」 대역 · 차례 접기 · 한국어 글은 lang="ko"). en은 영어 표기(기울임 · 서수 · 영어 날짜)에만
     tr_ = lang in TR
+    ja, ru = lang == "ja", lang == "ru"  # 일본어 · 러시아어판(러시아어 11/6 — 짜임은 영어판을 따르고 날짜 · 제목 부호만 러시아 관행)
+    RQ = ("«", "»")
     P = "~P~"  # assets 자리 — 쪽 깊이에 따라 page()가 채움(한국어 소개 "" · 그 밖 쪽 "../" · 옮긴 판은 한 칸 더 위)
     base = S["base_url"].rstrip("/")
     here = f"{base}/{lang}/" if tr_ else f"{base}/"
     book = S["book"]
     SPLIT.clear()  # tt()가 쓰는 시집 제목 두 토막 — 한 · 영 · 일 모두(옮긴 판 라벨에도 한국어 원제가 나옴)
     NOSP.clear()
-    for bk in (site["book"], site.get("en", {}).get("book", {})):
+    for bk in (site["book"], site.get("en", {}).get("book", {}), site.get("ru", {}).get("book", {})):
         d = bk.get("display", {})
         if d.get("big") and d.get("small"):
             a, z = " ".join(d["big"]), " ".join(d["small"])
@@ -1103,7 +1145,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 일본어판(11/1 칸 정의서 1절)은 끝에 -ja — 12가지에서 18가지
     gcc = lambda where: ((f' data-goatcounter-click="{e("책장에 꽂기-" + where + (f"-{lang}" if tr_ else ""))}"' if gc else "")  # noqa: E731
                          + (f' data-ga-click="{e("책장에 꽂기-" + where + (f"-{lang}" if tr_ else ""))}"' if ga else ""))
-    dtxt = lambda s: (lambda d: f"{MONTHS[d.month - 1]}{NB}{d.day}, {d.year}" if en else jday(d))(date.fromisoformat(s)) if tr_ else s.replace("-", ".")  # noqa: E731  소식 · 방명록 날짜 — 한국어 2026.11.01 · 영어 November 1, 2026(같은 쪽 다른 영어 날짜와 같은 꼴, 10/27 점검) · 일본어 2026年11月1日
+    dtxt = lambda s: (lambda d: f"{MONTHS[d.month - 1]}{NB}{d.day}, {d.year}" if en else rday(d) if ru else jday(d))(date.fromisoformat(s)) if tr_ else s.replace("-", ".")  # noqa: E731  소식 · 방명록 날짜 — 한국어 2026.11.01 · 영어 November 1, 2026(같은 쪽 다른 영어 날짜와 같은 꼴, 10/27 점검) · 일본어 2026年11月1日
     gc_tag = f'<script data-goatcounter="https://{gc}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n' if gc else ""
     og_img = (f"og-book-{lang}.jpg" if tr_ else "og-book.jpg") if card else (f"og-{lang}.jpg" if tr_ else "og.jpg")
     og_title = L["og_book_title"].format(title=book["title"], name=S["name"]) if card else title
@@ -1124,13 +1166,14 @@ def render(site, poem, videos, photos, lang="ko"):
     poem_t = e(S["poem"]["title"])
     read_n = max(1, round(len(re.sub(r"\s", "", poem)) / 300))  # 읽는 시간(11/4 동원 'A 시 머리') — 한국어 시 글자 수 ÷ 분당 300자(시는 천천히 · 어림)
     title_br = "<br>".join(e(x) for x in book["title_lines"])
-    book_title = f"<i>{title_br}</i>" if en else f"『{title_br}』"  # 영어판 책 제목은 기울임, 아래에 한국어 원제(표지 · 교보는 한국어)
+    book_title = f"<i>{title_br}</i>" if en else f"«{title_br}»" if ru else f"『{title_br}』"  # 영어판 책 제목은 기울임, 아래에 한국어 원제(표지 · 교보는 한국어)
     # 첫 화면(10/25 A 시집을 전시하다 — 무채색): 동원이 보낸 웹 전시 그림의 원리만(물건 하나 · 아주 큰 제목 · 박물관 라벨), 색은 흰 바탕 · 먹 그대로.
     # 이름 · '첫 시집 · 웹 전시' → 아주 큰 제목 → 떠 있는 3D 책(옆으로 밀어 돌림) → 라벨: 작품 · 지은이(한 문장) · 사양 · 소장처 '당신의 책장 — 책장에 꽂기 ↗'.
     # 화살표 규칙: 밖으로 나가는 링크는 ↗, 사이트 안에서 내려가는 링크는 ↓
     disp = book["display"]
     ht, hs = ("<br>".join(e(x) for x in disp[k]) for k in ("big", "small"))
     work = (f'Poetry collection, {tt(e(book["title"]), False)} <small lang="ko">{tt(e(site["book"]["title"]), True)}</small>' if en
+            else f'Сборник стихов {tt(e(book["title"]), False, q=RQ)} <small lang="ko">{tt(e(site["book"]["title"]), True)}</small>' if ru  # 러시아어판(11/6)
             else f'詩集{tt(e(book["title"]), True)} <small lang="ko">{tt(e(site["book"]["title"]), True)}</small>' if tr_  # 일본어판(11/1): '詩集『…』' + 한국어 원제(영어판과 같은 자리)
             else f'시집 {tt(e(book["title"]), True)}')
     # 글자 팔레트(10/28 동원 'B 첫 화면 바로 아래' — 10/26 동원 제안 '색의 팔레트가 아닌 글자의 팔레트'): 시집 본문에 쓴 글자를 많이 쓴 글자부터 한 번씩(content/palette.json).
@@ -1140,7 +1183,7 @@ def render(site, poem, videos, photos, lang="ko"):
     ptotal = f'{pl["total"]:,}'
     pal = "".join(f'<span class="g{k}">{"".join(g for g, _ in grp)}</span>'
                   for k, grp in itertools.groupby(zip(pg, (round(9 * math.log(n) / math.log(pn[0])) for n in pn)), key=lambda x: x[1]))
-    ptop = (", ".join(f"{g} ({n})" for g, n in zip(pg[:3], pn[:3])) if en else " · ".join(f"{g} {n}{'回' if tr_ else '번'}" for g, n in zip(pg[:3], pn[:3])))  # 일본어판은 '回'(11/1)
+    ptop = (", ".join(f"{g} ({n})" for g, n in zip(pg[:3], pn[:3])) if en or ru else " · ".join(f"{g} {n}{'回' if tr_ else '번'}" for g, n in zip(pg[:3], pn[:3])))  # 일본어판은 '回'(11/1)
     palette = (f'<section id="palette" aria-labelledby="palette-t">\n    <p class="label">{t("label_palette")}</p>\n'
                f'    <div class="l"><h2 class="h2" id="palette-t">{t("pal_title", n=len(pg))}</h2><p class="lead">{t("pal_lead", total=ptotal, n=len(pg))}</p></div>\n'
                f'    <div class="r"><p class="pal" aria-hidden="true" data-n="{",".join(map(str, pn))}">{pal}</p><p class="pk">{t("pal_key", top=ptop, ones=pn.count(1))}</p></div>\n  </section>\n  ')  # 사진은 뺌(10/28 동원 "일단 팔레트 아래에 내 사진은 빼자")
@@ -1168,10 +1211,10 @@ def render(site, poem, videos, photos, lang="ko"):
     nw = {**tb["now"], "items": row_lang(tb["now"]["items"], lang)}  # 말 규칙은 줄마다(고친 날 · 세 줄을 담은 겉은 그대로)
     now_rows = "".join(f'<div><dt>{e(x["label"])}</dt><dd>{rich(x["text"]) if en else note_html(x["text"], lang)}</dd></div>' for x in nw.get("items", []) if x.get("text"))  # 한국어도 〈 〉 안 띄어쓰기를 붙임(10/27 가2 — 320에서 '〈릴리 슈슈의 모든 / 것〉')
     nd = date.fromisoformat(nw["updated"]) if nw.get("updated") else None
-    nday = (f"{MONTHS[nd.month - 1]}{NB}{nd.day}, {nd.year}" if en else jday(nd) if tr_ else f"{nd.year}년{NB}{nd.month}월{NB}{nd.day}일") if nd else ""
+    nday = (f"{MONTHS[nd.month - 1]}{NB}{nd.day}, {nd.year}" if en else rday(nd) if ru else jday(nd) if tr_ else f"{nd.year}년{NB}{nd.month}월{NB}{nd.day}일") if nd else ""
     # '지금' 꼬리표 옆 절기 한 낱말(10/25 40곳 2차 ⑤ A) — 고친 날이 든 절기, 줄이 갈리지 않게 붙임
     sn = season_of(nd) if nd else None
-    nlab = t("now_label") + (f'<i>{t("now_season", name=e(sn[1] if en else sn[2] if tr_ else sn[0])).replace(" ", NB)}</i>' if sn else "")
+    nlab = t("now_label") + (f'<i>{t("now_season", name=e(sn[1] if en else sn[2] if tr_ else sn[0])).replace(" ", NB)}</i>' if sn and not ru else "")  # 러시아어판은 절기 이름 없이(11/6 — 절기 표에 러시아어 칸이 없음)
     nowb = (f'<div class="now"><p class="nk"><span class="nl">{nlab}</span><span>{t("now_updated", date=nday)}</span></p><dl>{now_rows}</dl></div>' if now_rows else "")
 
     ko_attr = ' lang="ko"' if tr_ else ""  # 옮긴 판 안의 한국어(시 원문 · 탁본 한 장 · 채널 이름)는 한국어로 읽히게
@@ -1237,7 +1280,7 @@ def render(site, poem, videos, photos, lang="ko"):
         # 전시 작품 사진("art")은 자르지 않음(10/24 ⑫ A 흰 벽 — style.css의 .art) · 캡션은 작품 틀
         # 대체 글은 사진 설명(photo_art.json의 alt · en.alt — 10/27 동원 "이대로 넣어", 정의 `기준/사진 설명 칸 정의_v1.md`)이 먼저, 없으면 작가 · 작품 · 해 / 인스타 글 첫 줄
         a = p["art"] if is_art(p) else None
-        alt = p.get("alt") or (", ".join(x for x in (a.get("artist"), (a["title"] if en else f'「{a["title"]}」' if tr_ else f'〈{a["title"]}〉') if a.get("title") else "", a.get("year")) if x)
+        alt = p.get("alt") or (", ".join(x for x in (a.get("artist"), (a["title"] if en else f'«{a["title"]}»' if ru else f'「{a["title"]}」' if tr_ else f'〈{a["title"]}〉') if a.get("title") else "", a.get("year")) if x)
                                if a else (p["where"] or L["photo_alt"]))
         art = ' class="art"' if a else ""
         w, h = out_size(psrc(p), 1080)
@@ -1464,7 +1507,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 맨 위 띠는 쪽마다 page()가 만듦(10/31 쪽 나누기 — 메뉴가 칸 자리 #… 대신 쪽 주소)
     preload = ("".join(f'<link rel="preload" href="{P}assets/fonts/{f}" as="font" type="font/woff2" crossorigin>\n' for f in
                        ((EN_FIRST, "ndw-sans-light-first.woff2", "ndw-sans-semibold-first.woff2") if en
-                        else (JA_LIGHT_ONLY, *JA_FIRST) if tr_ else ("bon-myeongjo-light.woff2", *FIRST))))  # 일본어판(11/1)은 일본어 첫 화면 작은 판
+                        else () if ru else (JA_LIGHT_ONLY, *JA_FIRST) if tr_ else ("bon-myeongjo-light.woff2", *FIRST))))  # 러시아어판(11/6)은 첫 화면 작은 판 없이(러시아어 글꼴 한 벌)  # 일본어판(11/1)은 일본어 첫 화면 작은 판
     # 첫 화면 작은 판만 미리 받음(한국어 10/27 B · 영어 10/27 점검 — 영어 첫 화면은 본명조를 한 자도 안 그리는데 통째 판을 받아 문이 늦었음). 작은 고딕 판(PTDF)은 ASCII를 늘 담아 영어 첫 화면에도 씀
     # 시 아래 출처 줄은 시집 제목 · 쪽수(10/27 동원 "탁본 - 61쪽 이런식으로 쓰는 게 아니라 문을 열고 나오면 살아 있는 것들로 가득 차 있다 - 61쪽") — 제목은 표지 줄 나눔 자리에서만 갈리고,
     # 쪽수는 제목 끝 토막 안에 붙여 함께 넘어감(토막 밖에 두면 영어 390에서 'Living Things' / ', pages 61–62'로 갈렸음). 영어는 기울임을 제목에만
@@ -1518,7 +1561,7 @@ def render(site, poem, videos, photos, lang="ko"):
         tag = line = ""
         if m:
             mm = int(m["month"][5:])
-            tag = f'<span class="mt">{MONTHS[mm - 1][:3] if en else f"{mm}月" if tr_ else str(mm) + "월"}</span>'
+            tag = f'<span class="mt">{MONTHS[mm - 1][:3] if en else MONTHS_RU_SHORT[mm - 1] if ru else f"{mm}月" if tr_ else str(mm) + "월"}</span>'
             if ko_row["title"] == cur:
                 orig = f'<small{ko_tag}>{" / ".join(e(x) for x in month_ko[ko_row["title"]]["lines"])}</small>' if tr_ else ""
                 lines = "<br>".join(e(x) for x in m["lines"])
@@ -1527,9 +1570,9 @@ def render(site, poem, videos, photos, lang="ko"):
                 # 다음 날짜(10/27 동원 "A 꼬리표에 붙임" — 레퍼런스 제안 ⑦, 本屋 Title의 '매일 8시'처럼): 예약된 다음 달 줄이 있을 때만 '· 다음은 12월 1일'.
                 # 그날 아침 예약 올리기(site-release-MMDD)가 있어야 지키는 약속 — 다음 달 줄을 넣을 때 예약도 함께(README)
                 nx = min((x["month"] for x in mk if x["month"] > day.strftime("%Y-%m")), default=None)
-                nxt = t("month_next_stage", m=f"{MONTHS[int(nx[5:]) - 1]}{NB}1" if en else f"{int(nx[5:])}月1日" if tr_ else f"{int(nx[5:])}월{NB}1일") if nx else ""
+                nxt = t("month_next_stage", m=f"{MONTHS[int(nx[5:]) - 1]}{NB}1" if en else f"1{NB}{MONTHS_RU[int(nx[5:]) - 1]}" if ru else f"{int(nx[5:])}月1日" if tr_ else f"{int(nx[5:])}월{NB}1일") if nx else ""
                 # 찾기 — 다시 온 사람이 '이달 · 11월 · 한 줄'로 그달 줄을 찾게(10/28 사용 편의 점검 ④ — 제목 줄만 있어 0건이었음)
-                mname = MONTHS[mm - 1] if en else mm
+                mname = MONTHS[mm - 1] if en else MONTHS_RU_NOM[mm - 1].capitalize() if ru else mm
                 stage[0] = (f'<section class="mline" id="mline" aria-labelledby="mline-k"><p class="k" id="mline-k">{keep(L["search_month_where"].format(m=mname, title=row["title"], page=row["page"]))}</p>'
                             f'<p class="t">{lines}</p>' + (f'<p class="o"{ko_tag}>{" / ".join(e(x) for x in month_ko[ko_row["title"]]["lines"])}</p>' if orig else "")
                             + (f'<p class="nx">{nxt}</p>' if nxt else "") + '</section>')
@@ -1639,6 +1682,8 @@ def render(site, poem, videos, photos, lang="ko"):
           f'<p class="tk-c" aria-hidden="true" lang="en"><span class="tm"></span><span class="ct">{t("tk_clock")}</span></p></div>\n')
     # 아래 소개 칸의 약력은 첫 화면 왼쪽 책 제목과 겹치지 않게 제목을 뺌(11/1 밤) — '첫 시집 『…』로' → '첫 시집으로' · 第一詩集『…』で → 第一詩集で · 영어 ', *…*' 뺌. 검색 · 다른 곳의 약력은 그대로
     bio_me = (re.sub(r"\s*『[^』]*』로", "으로", S["bio"]) if lang == "ko" else re.sub(r"『[^』]*』", "", S["bio"]) if lang == "ja"
+              else re.sub(r"\s*«[^»]*»", "", S["bio"]) if lang == "ru"  # 러시아어판(11/6) — '… сборником стихов «…».' → '… сборником стихов.'
+
               else re.sub(r",\s*\*[^*]+\*", "", S["bio"]))
     if lang == "ko":  # 휴대폰에서 '… 태어났다. 2026년 / 첫 시집으로'로 갈리지 않게 둘째 문장 머리를 붙임 공백으로 — 줄은 문장 끝에서 갈림(10/25 마지막 점검 ③의 뜻)
         bio_me = re.sub(r"(\d{4}년) (첫) (시집으로)", rf"\1{NB}\2{NB}\3", bio_me)
@@ -1648,7 +1693,7 @@ def render(site, poem, videos, photos, lang="ko"):
     rdl = ""
     if pin:
         pd = date.fromisoformat(pin["date"][:10])
-        pday = f"{MONTHS[pd.month - 1]} {pd.day}" if en else f"{pd.month}月{pd.day}日" if tr_ else f"{pd.month}월{NB}{pd.day}일"
+        pday = f"{MONTHS[pd.month - 1]} {pd.day}" if en else rday(pd, False) if ru else f"{pd.month}月{pd.day}日" if tr_ else f"{pd.month}월{NB}{pd.day}일"
         lk = ' lang="ko"' if tr_ and re.search(r"[가-힣]", pin["text"]) else ""
         rdl = (f'<figure class="rdl"><figcaption class="k">{t("rdl_k")}</figcaption><blockquote{lk}>“{e(" ".join(pin["text"].split()))}”</blockquote>'
                f'<p class="w">{t("rdl_from", day=pday)}</p><a href="~R~guestbook/">{t("rdl_go")}</a></figure>')
@@ -1783,6 +1828,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <link rel="alternate" hreflang="ko" href="{e(base)}/{kp}">
 <link rel="alternate" hreflang="en" href="{e(base)}/en/{kp}">
 <link rel="alternate" hreflang="ja" href="{e(base)}/ja/{kp}">
+<link rel="alternate" hreflang="ru" href="{e(base)}/ru/{kp}">
 <link rel="alternate" hreflang="x-default" href="{e(base)}/{kp}">
 <link rel="alternate" type="application/rss+xml" title="{e(S["name"])}" href="{e(base)}{"/" + lang if tr_ else ""}/feed.xml">
 <meta property="og:type" content="website">
@@ -1839,11 +1885,11 @@ def page_privacy(site, lang):
     if not (CONTENT / "privacy.json").exists():
         return None
     p, en, tr_ = load("privacy.json"), lang == "en", lang in TR
-    g = lambda d: e(d["en"] if en else d["ja"] if lang == "ja" and d.get("ja") else d["ko"])  # noqa: E731 — 일본어가 아직 없는 줄은 한국어(빈 칸 알림은 ja_gaps)
+    g = lambda d: e(d["en"] if en else d[lang] if lang in TR and d.get(lang) else d["ko"])  # noqa: E731 — 일본어 · 러시아어(11/6)가 아직 없는 줄은 한국어(빈 칸 알림은 ja_gaps)
     R = "../../" if tr_ else "../"  # 쪽 자리에서 docs/ 맨 위까지
     base = site["base_url"].rstrip("/")
     d = date.fromisoformat(p["updated"])
-    when = f"{MONTHS[d.month - 1]} {d.day}, {d.year}" if en else jday(d) if tr_ else f"{d.year}년 {d.month}월 {d.day}일"
+    when = f"{MONTHS[d.month - 1]} {d.day}, {d.year}" if en else rday(d) if lang == "ru" else jday(d) if tr_ else f"{d.year}년 {d.month}월 {d.day}일"
     # when이 붙은 줄은 그것을 켰을 때만(방문 셈 when "goatcounter" · 방명록 when "guestbook" — 10/27) · 칸에 보일 줄이 없으면 그 칸의 empty 한 줄 · 방문 셈을 켜면 첫 문단도 lead_counted로
     # GA4(11/1): when "ga4" 줄은 켰을 때만 · unless "ga4" 줄('쿠키를 쓰지 않습니다' · 저장소 둘)은 켜면 숨김 · 첫 문단은 lead_ga · 동의 창과 '쿠키 설정'(동의를 거두는 곳)도 이 쪽에
     ga = ga4(site)
@@ -1887,6 +1933,8 @@ def page_404(site, ja=True):
         return (f'<nav class="nfp" lang="{lang}" aria-label="{e(ui["nav_label"][lang])}">'
                 + "".join(f'<a href="{base}{pg}">{e(names[i])}</a>' for i, pg in ((0, ""), (1, "book/"), (2, "photo/"), (3, "video/"), (5, "guestbook/"))) + "</nav>")
     jp = (f'\n<p class="lead" lang="ja">{jl("nf_title")}。{jl("nf_lead")}</p>\n<p lang="ja"><a class="buy" href="/ja/">{jl("nf_back")}</a></p>\n{five("ja", "/ja/")}') if jl else ""
+    rl = (lambda key: e(ui[key]["ru"])) if ja and all(ui[x].get("ru") for x in ("nf_title", "nf_lead", "nf_back")) else None  # 러시아어 두 줄(11/6) — 일본어와 같은 자리 · 같은 규칙
+    jp += (f'\n<p class="lead" lang="ru">{rl("nf_title")}. {rl("nf_lead")}</p>\n<p lang="ru"><a class="buy" href="/ru/">{rl("nf_back")}</a></p>\n{five("ru", "/ru/")}') if rl else ""
     return f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(site["logo"])} — {k("nf_title")}</title><meta name="robots" content="noindex">
@@ -2090,7 +2138,7 @@ def main():
 
     # docs/를 새로 만든다(옛 결과는 지운다 — docs는 빌드 결과라 원본이 아님). 줄인 글꼴·미리보기 그림은 원본을 못 찾을 때를 위해 먼저 옮겨 둔다
     keep = {}
-    for f in [*(ASSETS / "fonts").glob("*.woff2"), *(ASSETS / f"og{x}.jpg" for x in ("", "-en", "-ja", "-book", "-book-en", "-book-ja")), *ASSETS.glob("og-photo*.jpg"), *ASSETS.glob("og-video*.jpg"), *ASSETS.glob("og-guestbook*.jpg"), ASSETS / "img" / "takbon.jpg"]:
+    for f in [*(ASSETS / "fonts").glob("*.woff2"), *(ASSETS / f"og{x}.jpg" for x in ("", "-en", "-ja", "-ru", "-book", "-book-en", "-book-ja", "-book-ru")), *ASSETS.glob("og-photo*.jpg"), *ASSETS.glob("og-video*.jpg"), *ASSETS.glob("og-guestbook*.jpg"), ASSETS / "img" / "takbon.jpg"]:
         if f.exists():
             keep[f.name] = f.read_bytes()
     if DOCS.exists():
@@ -2196,6 +2244,18 @@ def main():
         else:
             raise SystemExit(f"일본어판 첫 화면 작은 판을 만들 원본을 찾지 못함: {name}")
     print(f"일본어판 글꼴에 남긴 글자 {len(set(text_ja))}자")
+    # 러시아어판 글꼴(11/6 — RU_FONTS): 러시아어판 쪽 · 처리방침의 글자만(한글은 뺌 — 러시아어판의 한국어는 본명조 · Pretendard 한국어 판이 그림)
+    text_ru = HANGUL.sub("", used_text([*(no_pal(h) for h in pages["ru"].values()), *([priv["ru"]] if priv.get("ru") else [])]))
+    for name, out in RU_FONTS:
+        src = srcs.get(name) or find(JA_DIR if name.startswith("Source") else PTD_DIR, name)
+        if src:
+            subset_font(src, ASSETS / "fonts" / out, text_ru, True)
+        elif out in keep:
+            (ASSETS / "fonts" / out).write_bytes(keep[out])
+            print(f"알림: 러시아어판 원본 {name}을 찾지 못해 지난 줄인 판을 씀")
+        else:
+            raise SystemExit(f"러시아어판 글꼴을 찾지 못함: {name}")
+    print(f"러시아어판 글꼴에 남긴 글자 {len(set(text_ru))}자")
 
 
     # 글꼴 라이선스 전문은 글꼴 옆에 함께 둔다(OFL·GPL 조건)
@@ -2278,13 +2338,18 @@ def main():
         make_og(localize(site, "ja"), cover, srcs, "ja")
     elif "og-ja.jpg" in keep:
         (ASSETS / "og-ja.jpg").write_bytes(keep["og-ja.jpg"])
+    if all(k in srcs for k in ("SourceHanSerifJP-Bold.otf", "SourceHanSerifJP-Regular.otf", "Pretendard-Light.otf")):  # 러시아어판 이름 카드(11/6)
+        make_og(localize(site, "ru"), cover, srcs, "ru")
+    elif "og-ru.jpg" in keep:
+        (ASSETS / "og-ru.jpg").write_bytes(keep["og-ru.jpg"])
     make_og_pages(site, photos, srcs, keep)  # 쪽마다 공유 카드(11/4)
     if book_card(site):  # 출간일 책 카드 기간(10/27 B) — 쪽의 og 태그도 이 그림 · 책 제목을 가리킴(render)
         ui = load("ui.json")
         ptd = ("Pretendard-Light.otf", "Pretendard-SemiBold.otf")
         for lg, sl, out, need in (("ko", site, "og-book.jpg", ("BonMyeongjoKR-Light.ttf", "BonMyeongjoKR-Bold.ttf", *ptd)),
                                   ("en", localize(site, "en"), "og-book-en.jpg", ("NR", *ptd)),
-                                  ("ja", localize(site, "ja"), "og-book-ja.jpg", ("SourceHanSerifJP-Light.otf", "SourceHanSerifJP-Bold.otf", "PretendardJP-Light.otf", "PretendardJP-SemiBold.otf"))):
+                                  ("ja", localize(site, "ja"), "og-book-ja.jpg", ("SourceHanSerifJP-Light.otf", "SourceHanSerifJP-Bold.otf", "PretendardJP-Light.otf", "PretendardJP-SemiBold.otf")),
+                                  ("ru", localize(site, "ru"), "og-book-ru.jpg", ("SourceHanSerifJP-Light.otf", "SourceHanSerifJP-Bold.otf", *ptd))):
             if all(k in srcs for k in need):
                 uw = ui_lang(ui, lg)  # 일본어 낱말이 아직 없으면 한국어(빈 칸 알림)
                 make_og(sl, cover, srcs, lg, {"kick": uw["og_book_kick"], "on": uw["book_on"]})
@@ -2312,9 +2377,9 @@ def main():
     (DOCS / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
         + "".join(f'<url><loc>{e(base)}{pre}/{kp}</loc><lastmod>{build_day().isoformat()}</lastmod><xhtml:link rel="alternate" hreflang="ko" href="{e(base)}/{kp}"/>'
-                  f'<xhtml:link rel="alternate" hreflang="en" href="{e(base)}/en/{kp}"/><xhtml:link rel="alternate" hreflang="ja" href="{e(base)}/ja/{kp}"/>'
+                  f'<xhtml:link rel="alternate" hreflang="en" href="{e(base)}/en/{kp}"/><xhtml:link rel="alternate" hreflang="ja" href="{e(base)}/ja/{kp}"/><xhtml:link rel="alternate" hreflang="ru" href="{e(base)}/ru/{kp}"/>'
                   f'<xhtml:link rel="alternate" hreflang="x-default" href="{e(base)}/{kp}"/></url>'
-                  for pre in ("", "/en", "/ja") for kp in (f"{k}/" if k else "" for k in PAGES))  # lastmod는 빌드한 날 · x-default는 머리말과 같게(10/27 가5) · 쪽마다(10/31) · 일본어판(11/1)
+                  for pre in ("", "/en", "/ja", "/ru") for kp in (f"{k}/" if k else "" for k in PAGES))  # lastmod는 빌드한 날 · x-default는 머리말과 같게(10/27 가5) · 쪽마다(10/31) · 일본어판(11/1)
         + "</urlset>\n", encoding="utf-8")
     for lg in LANGS:  # 웹 앱 매니페스트(11/3 동원 버튼 "B NAM DONGWON" — 목업 기준/브랜드 시안/홈화면이름시안_v1): 홈 화면 이름은 맨 위 띠 표장과 같은 말 · 세 판 같음,
         # 판마다 시작 주소만 그 판 · display는 browser(주소창 · 공유가 그대로인 바로가기 — 앱처럼 감싸지 않음, 담백하게) · 바탕 · 띠 색은 흰 바탕

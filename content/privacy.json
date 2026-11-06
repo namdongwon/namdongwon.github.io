@@ -4,42 +4,49 @@
   "title": {
     "ko": "개인정보 처리방침",
     "en": "Privacy policy",
-    "ja": "プライバシーポリシー"
+    "ja": "プライバシーポリシー",
+    "ru": "Политика конфиденциальности"
   },
   "lead": {
     "ko": "이 사이트는 남동원이 직접 운영하는 개인 사이트입니다. 방문하시는 것만으로는 남동원이 개인정보를 모으지 않고, 쿠키를 쓰지 않습니다. 직접 글을 남기실 때만 아래 정보를 받습니다.",
     "en": "This is a personal site run by Dongwon Nam. Dongwon Nam collects no personal information from your visit, and the site uses no cookies. Information is received only when you choose to leave a note or message, as described below.",
-    "ja": "このサイトは、ナム・ドンウォンが自ら運営する個人サイトです。訪問されるだけでは、ナム・ドンウォンが個人情報を収集することはなく、クッキーも使用しません。ご自身でメッセージを残された場合に限り、以下の情報を受け取ります。"
+    "ja": "このサイトは、ナム・ドンウォンが自ら運営する個人サイトです。訪問されるだけでは、ナム・ドンウォンが個人情報を収集することはなく、クッキーも使用しません。ご自身でメッセージを残された場合に限り、以下の情報を受け取ります。",
+    "ru": "Этот сайт — личный сайт, который ведёт лично Нам Донвон. Само по себе посещение сайта не приводит к сбору Нам Донвоном персональных данных; файлы cookie на сайте не используются. Указанные ниже сведения получаются только в тех случаях, когда вы сами оставляете запись или сообщение."
   },
   "lead_counted": {
     "ko": "이 사이트는 남동원이 직접 운영하는 개인 사이트입니다. 쿠키를 쓰지 않고, 남동원은 방문하신 분이 누구인지 알 수 있는 정보를 저장하지 않습니다. 방문 수만 쿠키 없이 셉니다(4절). 직접 글을 남기실 때만 아래 정보를 받습니다.",
     "en": "This is a personal site run by Dongwon Nam. It uses no cookies, and Dongwon Nam stores nothing that identifies you. Visits are counted without cookies (section 4). Information is received only when you choose to leave a note or message, as described below.",
-    "ja": "このサイトは、ナム・ドンウォンが自ら運営する個人サイトです。クッキーは使用せず、ナム・ドンウォンは訪問された方が誰であるかを特定できる情報を保存しません。アクセス数のみを、クッキーを使わずに計測します（第4項）。ご自身でメッセージを残された場合に限り、以下の情報を受け取ります。"
+    "ja": "このサイトは、ナム・ドンウォンが自ら運営する個人サイトです。クッキーは使用せず、ナム・ドンウォンは訪問された方が誰であるかを特定できる情報を保存しません。アクセス数のみを、クッキーを使わずに計測します（第4項）。ご自身でメッセージを残された場合に限り、以下の情報を受け取ります。",
+    "ru": "Этот сайт — личный сайт, который ведёт лично Нам Донвон. Файлы cookie не используются, и Нам Донвон не хранит сведений, позволяющих установить вашу личность. Ведётся только подсчёт посещений — без файлов cookie (раздел 4). Указанные ниже сведения получаются только в тех случаях, когда вы сами оставляете запись или сообщение."
   },
   "sections": [
     {
       "h": {
         "ko": "1. 받는 정보와 쓰는 곳",
         "en": "1. What is received and why",
-        "ja": "1. 受け取る情報と利用目的"
+        "ja": "1. 受け取る情報と利用目的",
+        "ru": "1. Какие сведения получаются и для чего"
       },
       "items": [
         {
           "when": "guestbook",
           "ko": "방명록 — 남기신 글만 받아, 방명록에 골라 싣는 데 씁니다. 실린 글 가운데 하나를 시집 쪽에 한 줄로 걸 수 있습니다. 보내실 때 구글 폼이 보낸 시각을 함께 적고, 구글은 자기 처리방침에 따라 접속 정보(IP 주소 등)를 처리할 수 있습니다.",
           "en": "Guestbook — only your note, used only to choose notes for the guestbook. One published note may also be shown as a single line on the book page. When you send, Google Forms also records the time, and Google may process connection details (such as the IP address) under its own privacy policy.",
-          "ja": "芳名録 — メッセージのみを受け取り、芳名録に選んで掲載するために利用します。掲載したメッセージのうち一つを、詩集のページにひとことで掲げることがあります。送信される際、Googleフォームが送信日時を記録し、Googleは自社のプライバシーポリシーに基づき接続情報（IPアドレスなど）を処理することがあります。"
+          "ja": "芳名録 — メッセージのみを受け取り、芳名録に選んで掲載するために利用します。掲載したメッセージのうち一つを、詩集のページにひとことで掲げることがあります。送信される際、Googleフォームが送信日時を記録し、Googleは自社のプライバシーポリシーに基づき接続情報（IPアドレスなど）を処理することがあります。",
+          "ru": "Гостевая книга — получается только оставленная вами запись; она используется исключительно для отбора записей к публикации в гостевой книге. Одна из опубликованных записей может быть также размещена одной строкой на странице сборника стихов. При отправке Google Forms дополнительно фиксирует время отправки, а Google может обрабатывать сведения о подключении (например, IP-адрес) в соответствии со своей политикой конфиденциальности."
         },
         {
           "ko": "메일 · 인스타그램 메시지 — 보내신 이름 · 메일 · 내용은 답장하는 데만 씁니다.",
           "en": "Email or Instagram message — your name, email and message are used only to reply.",
-          "ja": "メール・Instagramのメッセージ — お送りいただいたお名前・メールアドレス・内容は、返信のためにのみ利用します。"
+          "ja": "メール・Instagramのメッセージ — お送りいただいたお名前・メールアドレス・内容は、返信のためにのみ利用します。",
+          "ru": "Электронная почта и сообщения в Instagram — указанные вами имя, адрес электронной почты и текст сообщения используются только для ответа вам."
         },
         {
           "when": "guestbook",
           "ko": "방명록에서는 메일 · 전화번호 같은 연락처를 받지 않습니다.",
           "en": "The guestbook does not ask for an email address, phone number or other contact details.",
-          "ja": "芳名録では、メールアドレス・電話番号などの連絡先は受け取りません。"
+          "ja": "芳名録では、メールアドレス・電話番号などの連絡先は受け取りません。",
+          "ru": "В гостевой книге не запрашиваются адрес электронной почты, номер телефона и иные контактные данные."
         }
       ]
     },
@@ -47,25 +54,29 @@
       "h": {
         "ko": "2. 얼마나 두고, 언제 지우나",
         "en": "2. How long it is kept",
-        "ja": "2. 保存期間と削除の時期"
+        "ja": "2. 保存期間と削除の時期",
+        "ru": "2. Сроки хранения и удаления"
       },
       "items": [
         {
           "when": "guestbook",
           "ko": "방명록에 실리지 않은 글은 받은 날부터 30일 안에 지웁니다.",
           "en": "Guestbook notes that are not published are deleted within 30 days of receipt.",
-          "ja": "芳名録に掲載されなかったメッセージは、受け取った日から30日以内に削除します。"
+          "ja": "芳名録に掲載されなかったメッセージは、受け取った日から30日以内に削除します。",
+          "ru": "Записи гостевой книги, не опубликованные на сайте, удаляются в течение 30 дней с даты получения."
         },
         {
           "when": "guestbook",
           "ko": "방명록에 실린 글은 사이트에 남습니다. 내려 달라고 하시면 바로 내립니다.",
           "en": "Published notes stay on the site and are removed as soon as you ask.",
-          "ja": "芳名録に掲載されたメッセージは、サイトに残ります。取り下げのお申し出があれば、すぐに取り下げます。"
+          "ja": "芳名録に掲載されたメッセージは、サイトに残ります。取り下げのお申し出があれば、すぐに取り下げます。",
+          "ru": "Опубликованные записи гостевой книги остаются на сайте. По вашей просьбе они незамедлительно снимаются с публикации."
         },
         {
           "ko": "메일 · 인스타그램 메시지로 받은 연락은 답장한 뒤 6개월 안에 지웁니다.",
           "en": "Emails and Instagram messages are deleted within six months of a reply.",
-          "ja": "メール・Instagramのメッセージでいただいたご連絡は、返信してから6か月以内に削除します。"
+          "ja": "メール・Instagramのメッセージでいただいたご連絡は、返信してから6か月以内に削除します。",
+          "ru": "Обращения, полученные по электронной почте и в сообщениях Instagram, удаляются в течение шести месяцев после ответа."
         }
       ]
     },
@@ -73,123 +84,143 @@
       "h": {
         "ko": "3. 국외로 옮겨지는 정보",
         "en": "3. Transfer outside Korea",
-        "ja": "3. 韓国国外へ移転される情報"
+        "ja": "3. 韓国国外へ移転される情報",
+        "ru": "3. Передача сведений за пределы Республики Корея"
       },
       "items": [
         {
           "when": "guestbook",
           "ko": "받는 자: Google LLC(미국 등) — 남기신 글은 남동원의 구글 폼에 담기고, 그 폼에 연결된 구글 시트로도 옵니다.",
           "en": "Recipient: Google LLC (United States and elsewhere) — your note is stored in Dongwon Nam’s Google Form and also copied to the Google Sheet linked to it.",
-          "ja": "移転先：Google LLC（米国など） — 残していただいたメッセージは、ナム・ドンウォンのGoogleフォームに保存され、そのフォームにリンクされたGoogleスプレッドシートにも届きます。"
+          "ja": "移転先：Google LLC（米国など） — 残していただいたメッセージは、ナム・ドンウォンのGoogleフォームに保存され、そのフォームにリンクされたGoogleスプレッドシートにも届きます。",
+          "ru": "Получатель: Google LLC (США и другие страны) — оставленная вами запись сохраняется в форме Google Forms, принадлежащей Нам Донвону, а также поступает в связанную с этой формой таблицу Google Sheets."
         },
         {
           "when": "guestbook",
           "ko": "옮겨지는 정보: 방명록에 남기신 정보(1절).",
           "en": "What is transferred: the guestbook information listed in section 1.",
-          "ja": "移転される情報：芳名録に残していただいた情報（第1項）。"
+          "ja": "移転される情報：芳名録に残していただいた情報（第1項）。",
+          "ru": "Передаваемые сведения: сведения, оставленные вами в гостевой книге (раздел 1)."
         },
         {
           "when": "guestbook",
           "ko": "때와 방법: 남기기를 누를 때, 인터넷으로.",
           "en": "When and how: when you press send, over the internet.",
-          "ja": "時期と方法：「送る」ボタンを押したときに、インターネットを通じて。"
+          "ja": "時期と方法：「送る」ボタンを押したときに、インターネットを通じて。",
+          "ru": "Время и способ передачи: при нажатии кнопки «Отправить», через интернет."
         },
         {
           "when": "guestbook",
           "ko": "받는 자가 쓰는 곳과 두는 기간: 구글 폼과 연결된 구글 시트에 보관 · 실리지 않은 글은 받은 날부터 30일 안에 둘 다에서 지움.",
           "en": "Purpose and retention at the recipient: kept in the Google Form and the Google Sheet linked to it; notes that are not published are deleted from both within 30 days of receipt.",
-          "ja": "移転先での利用目的と保存期間：Googleフォームと、リンクされたGoogleスプレッドシートに保管し、掲載されなかったメッセージは受け取った日から30日以内に両方から削除。"
+          "ja": "移転先での利用目的と保存期間：Googleフォームと、リンクされたGoogleスプレッドシートに保管し、掲載されなかったメッセージは受け取った日から30日以内に両方から削除。",
+          "ru": "Цель использования и срок хранения у получателя: хранение в форме Google Forms и связанной с ней таблице Google Sheets; неопубликованные записи удаляются из обеих в течение 30 дней с даты получения."
         },
         {
           "when": "guestbook",
           "ko": "거부하는 법: 남기기를 누르지 않으시면 보내지지 않습니다. 이때는 인스타그램 메시지나 메일로 연락하실 수 있습니다.",
           "en": "How to refuse: if you don’t press Send, nothing is sent. You can still reach Dongwon Nam by Instagram message or email.",
-          "ja": "拒否の方法：「送る」を押さなければ、送信されません。その場合は、Instagramのメッセージまたはメールでご連絡いただけます。"
+          "ja": "拒否の方法：「送る」を押さなければ、送信されません。その場合は、Instagramのメッセージまたはメールでご連絡いただけます。",
+          "ru": "Как отказаться: если не нажимать кнопку «Отправить», ничего не передаётся. В этом случае вы можете связаться с Нам Донвоном через сообщения в Instagram или по электронной почте."
         },
         {
           "when": "goatcounter",
           "ko": "방문 수를 셀 때 — 받는 자: GoatCounter(운영 Martin Tournoij, 아일랜드 · 서버 독일 · 핀란드). 옮겨지는 정보: 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 · 브라우저 정보)와 본 쪽 · 들어온 곳 · 누른 교보문고 링크. 때와 방법: 쪽을 열 때와 교보문고 링크를 누를 때, 인터넷으로. 쓰는 곳과 두는 기간: 방문 수 세기 — IP 주소는 저장하지 않고, 같은 방문을 한 번으로 세는 값은 8시간까지 기억에만 둡니다. 거부하는 법: 브라우저의 추적 막기 · 광고 차단 기능을 켜거나 자바스크립트를 끄시면 세지 않습니다.",
           "en": "When visits are counted — Recipient: GoatCounter (run by Martin Tournoij, Ireland; servers in Germany and Finland). What is transferred: the connection details your browser sends when a page opens (IP address, browser details), the page viewed, the referring site and any click on a link to Kyobo Book Centre. When and how: when a page opens or a link to Kyobo Book Centre is clicked, over the internet. Purpose and retention: counting visits — IP addresses are not stored, and the value used to count one visit once is kept in memory for up to 8 hours. How to refuse: turn on your browser’s tracking or ad blocking, or turn off JavaScript, and nothing is counted.",
-          "ja": "アクセス数を計測するとき — 移転先：GoatCounter（アイルランドのMartin Tournoijが運営、サーバーはドイツ・フィンランド）。移転される情報：ページを開くときにブラウザが送信する接続情報（IPアドレス・ブラウザ情報）と、閲覧したページ・参照元・教保文庫へのリンクのクリック。時期と方法：ページを開いたときと、教保文庫へのリンクをクリックしたときに、インターネットを通じて。利用目的と保存期間：アクセス数の計測 — IPアドレスは保存せず、同じ訪問を1回として数えるための値は、最大8時間、メモリ上にのみ保持します。拒否の方法：ブラウザのトラッキング防止・広告ブロック機能をオンにするか、JavaScriptをオフにすると、計測されません。"
+          "ja": "アクセス数を計測するとき — 移転先：GoatCounter（アイルランドのMartin Tournoijが運営、サーバーはドイツ・フィンランド）。移転される情報：ページを開くときにブラウザが送信する接続情報（IPアドレス・ブラウザ情報）と、閲覧したページ・参照元・教保文庫へのリンクのクリック。時期と方法：ページを開いたときと、教保文庫へのリンクをクリックしたときに、インターネットを通じて。利用目的と保存期間：アクセス数の計測 — IPアドレスは保存せず、同じ訪問を1回として数えるための値は、最大8時間、メモリ上にのみ保持します。拒否の方法：ブラウザのトラッキング防止・広告ブロック機能をオンにするか、JavaScriptをオフにすると、計測されません。",
+          "ru": "При подсчёте посещений — Получатель: GoatCounter (оператор — Martin Tournoij, Ирландия; серверы в Германии и Финляндии). Передаваемые сведения: сведения о подключении, которые браузер отправляет при открытии страницы (IP-адрес, сведения о браузере), а также просмотренная страница, сайт-источник перехода и нажатия на ссылки на Kyobo Book Centre. Время и способ передачи: при открытии страницы и при нажатии на ссылку на Kyobo Book Centre, через интернет. Цель использования и срок хранения: подсчёт посещений — IP-адреса не сохраняются, а значение, позволяющее учитывать одно посещение один раз, хранится только в оперативной памяти не более 8 часов. Как отказаться: если включить в браузере защиту от отслеживания или блокировку рекламы либо отключить JavaScript, посещения не учитываются."
         },
         {
           "when": "ga4",
           "ko": "방문 통계를 낼 때(동의하신 경우에만) — 받는 자: Google LLC(미국 · Google 애널리틱스). 옮겨지는 정보: 쿠키 식별자, 본 쪽 · 들어온 곳 · 누른 교보문고 링크, 브라우저 · 기기 정보, 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 — 나라 · 도시를 짐작하는 데 쓰이며, Google 애널리틱스는 IP 주소를 기록하거나 저장하지 않습니다). 때와 방법: 동의하신 뒤 쪽을 열 때와 교보문고 링크를 누를 때, 인터넷으로. 쓰는 곳과 두는 기간: 방문 통계 — 통계 자료는 14개월 뒤 지워집니다. 거부하는 법: 동의 창에서 '동의 없이 계속하기'를 누르시거나, 각 쪽 아래 '쿠키 설정'에서 언제든 거두실 수 있습니다.",
           "en": "When visitor statistics are produced (only if you agree) — Recipient: Google LLC (United States · Google Analytics). What is transferred: a cookie identifier, the page viewed, the referring site and any click on a link to Kyobo Book Centre, browser and device details, and the connection details your browser sends when a page opens (IP address — used to estimate country and city; Google Analytics does not log or store IP addresses). When and how: after you agree, when a page opens or a link to Kyobo Book Centre is clicked, over the internet. Purpose and retention: visitor statistics — the statistics are deleted after 14 months. How to refuse: choose ‘Continue without agreeing’ in the consent window, or withdraw at any time under ‘Cookie settings’ at the bottom of each page.",
-          "ja": "アクセス統計を取るとき（同意された場合のみ） — 移転先：Google LLC（米国・Google Analytics）。移転される情報：クッキー識別子、閲覧したページ・参照元・教保文庫へのリンクのクリック、ブラウザ・デバイスの情報、ページを開くときにブラウザが送信する接続情報（IPアドレス — 国・都市の推定に使われ、Google AnalyticsはIPアドレスを記録・保存しません）。時期と方法：同意された後、ページを開いたときと、教保文庫へのリンクをクリックしたときに、インターネットを通じて。利用目的と保存期間：アクセス統計 — 統計データは14か月後に削除されます。拒否の方法：同意画面で「同意しないで続行する」を押すか、各ページ下部の「クッキー設定」から、いつでも同意を撤回できます。"
+          "ja": "アクセス統計を取るとき（同意された場合のみ） — 移転先：Google LLC（米国・Google Analytics）。移転される情報：クッキー識別子、閲覧したページ・参照元・教保文庫へのリンクのクリック、ブラウザ・デバイスの情報、ページを開くときにブラウザが送信する接続情報（IPアドレス — 国・都市の推定に使われ、Google AnalyticsはIPアドレスを記録・保存しません）。時期と方法：同意された後、ページを開いたときと、教保文庫へのリンクをクリックしたときに、インターネットを通じて。利用目的と保存期間：アクセス統計 — 統計データは14か月後に削除されます。拒否の方法：同意画面で「同意しないで続行する」を押すか、各ページ下部の「クッキー設定」から、いつでも同意を撤回できます。",
+          "ru": "При формировании статистики посещений (только с вашего согласия) — Получатель: Google LLC (США; Google Analytics). Передаваемые сведения: идентификатор cookie; просмотренная страница, сайт-источник перехода и нажатия на ссылки на Kyobo Book Centre; сведения о браузере и устройстве; сведения о подключении, которые браузер отправляет при открытии страницы (IP-адрес — используется для приблизительного определения страны и города; Google Analytics не регистрирует и не хранит IP-адреса). Время и способ передачи: после получения вашего согласия — при открытии страницы и при нажатии на ссылку на Kyobo Book Centre, через интернет. Цель использования и срок хранения: статистика посещений — статистические данные удаляются через 14 месяцев. Как отказаться: нажмите «Продолжить без согласия» в окне запроса согласия либо в любой момент отзовите согласие в разделе «Настройки cookie» внизу каждой страницы."
         },
         {
           "when": "clarity",
           "ko": "화면 쓰임 기록을 낼 때(동의하신 경우에만) — 받는 자: Microsoft Corporation(미국 · Microsoft Clarity). 옮겨지는 정보: 쿠키 식별자, 본 쪽에서 누른 곳 · 내린 정도 · 마우스와 손가락의 움직임(방명록 · 연락 칸에 쓰신 글은 가려져 옮겨지지 않습니다), 브라우저 · 기기 정보, 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 — 나라를 짐작하는 데 쓰임). 때와 방법: 동의하신 뒤 쪽을 볼 때, 인터넷으로. 쓰는 곳과 두는 기간: 쪽을 읽기 좋게 고치는 데 — 화면 기록은 30일 뒤 지워집니다. 거부하는 법: 동의 창의 파트너 선택에서 Microsoft Clarity를 '차단'하시거나, 각 쪽 아래 '쿠키 설정'에서 언제든 거두실 수 있습니다.",
           "en": "When page-use records are produced (only if you agree) — Recipient: Microsoft Corporation (United States · Microsoft Clarity). What is transferred: a cookie identifier, where you click and how far you scroll on the page you view, mouse and touch movements (anything you type in the guestbook or contact form is masked and not transferred), browser and device information, and the connection information your browser sends when opening a page (IP address — used to estimate your country). When and how: when you view pages after agreeing, over the internet. Purpose and retention: to make the pages easier to read — page recordings are deleted after 30 days. How to refuse: choose “Reject” for Microsoft Clarity in the partner list of the consent window, or withdraw at any time under “Cookie settings” at the bottom of each page.",
-          "ja": "画面の使われ方の記録をとるとき(同意された場合のみ) — 受け取る者:Microsoft Corporation(米国 · Microsoft Clarity)。移される情報:Cookie識別子、ご覧のページでクリックした場所 · スクロールした深さ · マウスや指の動き(芳名録 · お問い合わせ欄に書かれた文字は隠され、移されません)、ブラウザ · 端末の情報、ページを開くときにブラウザが送る接続情報(IPアドレス — 国の推定に使われます)。時期と方法:同意された後にページを見るとき、インターネットで。利用目的と保存期間:ページを読みやすく直すため — 画面の記録は30日後に削除されます。拒否する方法:同意ウィンドウのパートナー選択でMicrosoft Clarityを「拒否」にするか、各ページ下の「Cookie設定」からいつでも撤回できます。"
+          "ja": "画面の使われ方の記録をとるとき(同意された場合のみ) — 受け取る者:Microsoft Corporation(米国 · Microsoft Clarity)。移される情報:Cookie識別子、ご覧のページでクリックした場所 · スクロールした深さ · マウスや指の動き(芳名録 · お問い合わせ欄に書かれた文字は隠され、移されません)、ブラウザ · 端末の情報、ページを開くときにブラウザが送る接続情報(IPアドレス — 国の推定に使われます)。時期と方法:同意された後にページを見るとき、インターネットで。利用目的と保存期間:ページを読みやすく直すため — 画面の記録は30日後に削除されます。拒否する方法:同意ウィンドウのパートナー選択でMicrosoft Clarityを「拒否」にするか、各ページ下の「Cookie設定」からいつでも撤回できます。",
+          "ru": "При ведении записей использования страниц (только с вашего согласия) — Получатель: Microsoft Corporation (США; Microsoft Clarity). Передаваемые сведения: идентификатор cookie; места нажатий и глубина прокрутки на просматриваемой странице, движения мыши и касания (текст, вводимый вами в гостевой книге и в форме связи, скрывается и не передаётся); сведения о браузере и устройстве; сведения о подключении, которые браузер отправляет при открытии страницы (IP-адрес — используется для приблизительного определения страны). Время и способ передачи: при просмотре страниц после получения вашего согласия, через интернет. Цель использования и срок хранения: улучшение страниц для удобства чтения — записи просмотра страниц удаляются через 30 дней. Как отказаться: выберите «Отклонить» для Microsoft Clarity в списке партнёров в окне запроса согласия либо в любой момент отзовите согласие в разделе «Настройки cookie» внизу каждой страницы."
         },
         {
           "when": "cfwa",
           "ko": "방문 수를 셀 때 — 받는 자: Cloudflare, Inc.(미국 · Cloudflare Web Analytics). 옮겨지는 정보: 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 · 브라우저 정보)와 본 쪽 주소 · 들어온 곳 · 쪽이 열리는 속도. 때와 방법: 쪽을 열 때, 인터넷으로. 쓰는 곳: 방문 수 세기 — 쿠키나 기기 저장소를 쓰지 않고 '몇 명'으로만 합쳐 셉니다. 거부하는 법: 브라우저의 추적 막기 · 광고 차단 기능을 켜거나 자바스크립트를 끄시면 세지 않습니다.",
           "en": "When visits are counted — Recipient: Cloudflare, Inc. (United States · Cloudflare Web Analytics). What is transferred: the connection details your browser sends when a page opens (IP address, browser information), plus the page address, where you came from and how fast the page loads. When and how: when a page opens, over the internet. Purpose: counting visits — no cookies or device storage are used, and visits are only added up as totals. How to refuse: turn on your browser’s tracking protection or an ad blocker, or turn off JavaScript, and nothing is counted.",
-          "ja": "アクセス数を計測するとき — 移転先：Cloudflare, Inc.（米国・Cloudflare Web Analytics）。移転される情報：ページを開くときにブラウザが送る接続情報（IPアドレス・ブラウザ情報）と、閲覧したページのアドレス・参照元・ページの表示速度。時期と方法：ページを開くとき、インターネットで。利用目的：アクセス数の計測 — クッキーや端末の保存領域は使わず、「何人」という合計としてのみ数えます。拒否の方法：ブラウザのトラッキング防止・広告ブロック機能を有効にするか、JavaScriptをオフにすると計測されません。"
+          "ja": "アクセス数を計測するとき — 移転先：Cloudflare, Inc.（米国・Cloudflare Web Analytics）。移転される情報：ページを開くときにブラウザが送る接続情報（IPアドレス・ブラウザ情報）と、閲覧したページのアドレス・参照元・ページの表示速度。時期と方法：ページを開くとき、インターネットで。利用目的：アクセス数の計測 — クッキーや端末の保存領域は使わず、「何人」という合計としてのみ数えます。拒否の方法：ブラウザのトラッキング防止・広告ブロック機能を有効にするか、JavaScriptをオフにすると計測されません。",
+          "ru": "При подсчёте посещений — Получатель: Cloudflare, Inc. (США; Cloudflare Web Analytics). Передаваемые сведения: сведения о подключении, которые браузер отправляет при открытии страницы (IP-адрес, сведения о браузере), а также адрес просмотренной страницы, сайт-источник перехода и скорость загрузки страницы. Время и способ передачи: при открытии страницы, через интернет. Цель использования: подсчёт посещений — файлы cookie и хранилище устройства не используются, посещения учитываются только в виде общего количества. Как отказаться: если включить в браузере защиту от отслеживания или блокировку рекламы либо отключить JavaScript, посещения не учитываются."
         }
       ],
       "empty": {
         "ko": "지금은 남동원이 이 사이트로 받는 정보가 없어, 국외로 옮기는 정보도 없습니다. 메일 · 인스타그램 메시지는 각 서비스에 보관됩니다.",
         "en": "Dongwon Nam currently receives no information through this site, so none is transferred outside Korea. Emails and Instagram messages are kept by those services.",
-        "ja": "現在、ナム・ドンウォンがこのサイトを通じて受け取る情報はないため、韓国国外へ移転する情報もありません。メール・Instagramのメッセージは、それぞれのサービスに保管されます。"
+        "ja": "現在、ナム・ドンウォンがこのサイトを通じて受け取る情報はないため、韓国国外へ移転する情報もありません。メール・Instagramのメッセージは、それぞれのサービスに保管されます。",
+        "ru": "В настоящее время Нам Донвон не получает через этот сайт никаких сведений, поэтому сведения за пределы Республики Корея не передаются. Электронные письма и сообщения в Instagram хранятся в соответствующих сервисах."
       }
     },
     {
       "h": {
         "ko": "4. 저절로 모이는 정보",
         "en": "4. Information stored automatically",
-        "ja": "4. 自動的に収集される情報"
+        "ja": "4. 自動的に収集される情報",
+        "ru": "4. Сведения, сохраняемые автоматически"
       },
       "items": [
         {
           "when": "ga4",
           "ko": "방문 통계에 동의하신 경우에만 Google 애널리틱스 쿠키 두 개(_ga · _ga_로 시작하는 것)를 이 사이트 주소로 저장합니다. 방문하신 기기를 구분하는 데 쓰고 2년 뒤 사라지며, 동의를 거두시면 지웁니다. 본 쪽 · 들어온 곳 · 교보문고 링크를 누른 일 · 브라우저 · 기기 · 나라와 도시(IP 주소로 짐작) · 언어 · 화면 크기를 '몇 명'으로 합쳐 보고, 이름이나 연락처는 모으지 않습니다(3절).",
           "en": "Only if you agree to visitor statistics, two Google Analytics cookies (_ga and one starting with _ga_) are stored under this site’s address. They are used to tell your device apart, expire after two years, and are deleted if you withdraw your consent. The page viewed, referring site, clicks on links to Kyobo Book Centre, browser, device, country and city (estimated from the IP address), language and screen size are looked at only as totals, and no name or contact details are collected (section 3).",
-          "ja": "アクセス統計に同意された場合に限り、Google Analyticsのクッキー（_gaと、_ga_で始まるものの2つ）を、このサイトのドメインで保存します。訪問されたデバイスを区別するために使い、2年後に失効します。同意を撤回された場合は削除します。閲覧したページ・参照元・教保文庫へのリンクのクリック・ブラウザ・デバイス・国と都市（IPアドレスから推定）・言語・画面サイズを「何人」という人数にまとめて確認し、お名前や連絡先は収集しません（第3項）。"
+          "ja": "アクセス統計に同意された場合に限り、Google Analyticsのクッキー（_gaと、_ga_で始まるものの2つ）を、このサイトのドメインで保存します。訪問されたデバイスを区別するために使い、2年後に失効します。同意を撤回された場合は削除します。閲覧したページ・参照元・教保文庫へのリンクのクリック・ブラウザ・デバイス・国と都市（IPアドレスから推定）・言語・画面サイズを「何人」という人数にまとめて確認し、お名前や連絡先は収集しません（第3項）。",
+          "ru": "Только при вашем согласии на сбор статистики посещений для адреса этого сайта сохраняются два файла cookie Google Analytics (_ga и файл, имя которого начинается с _ga_). Они используются для различения вашего устройства, истекают через два года и удаляются при отзыве вами согласия. Просмотренные страницы, сайт-источник перехода, нажатия на ссылки на Kyobo Book Centre, браузер, устройство, страна и город (определяемые приблизительно по IP-адресу), язык и размер экрана рассматриваются только в обобщённом виде (как количество посетителей); имена и контактные данные не собираются (раздел 3)."
         },
         {
           "ko": "쿠키를 쓰지 않습니다.",
           "en": "No cookies are used.",
           "ja": "クッキーは使用しません。",
+          "ru": "Файлы cookie не используются.",
           "unless": "ga4"
         },
         {
           "ko": "이 기기의 브라우저 저장소에 여섯을 적어 둡니다 — 첫 방문 문 장면을 한 번 보았는지, 고른 화면(시스템 · 밝게 · 어둡게), 움직임 줄이기를 켰는지, 고른 글자 크기, 쪽마다 지난번에 본 목록의 짧은 지문(새로 생긴 것 점), 방명록에 쓰다 아직 보내지 않은 글(보내거나 7일이 지나면 지움). 이 기기에만 남고 남동원에게 보내지지 않으며, 브라우저의 사이트 데이터 지우기로 지울 수 있습니다.",
           "en": "Six small things are kept in this browser’s storage — whether you have already seen the opening door scene, your display setting (system, light or dark), whether you turned on Reduce motion, your text size, a short fingerprint of what each page listed when you last saw it (for the “new” dot), and a guestbook note you started but haven’t sent (removed once sent or after 7 days). They stay on this device, are never sent to Dongwon Nam, and can be removed by clearing this site’s data in your browser.",
           "ja": "このデバイスのブラウザのストレージに、次の6つを記録しておきます — 初回訪問時の扉のシーンを一度ご覧になったかどうか、「表示」で選ばれた設定（システム・ライト・ダーク）、「動き」を減らす設定にしたかどうか、選ばれた文字の大きさ、ページごとに前回ご覧になった一覧の短い指紋（新着の点）、ゲストブックに書きかけでまだ送っていないメッセージ（送信後または7日後に削除）。これらはこのデバイスにのみ残り、ナム・ドンウォンに送信されることはなく、ブラウザでサイトデータを消去すると削除できます。",
+          "ru": "В хранилище браузера на этом устройстве записываются шесть значений: была ли уже показана вступительная сцена с дверью при первом посещении; выбранный режим отображения (системный, светлый или тёмный); включено ли уменьшение движения; выбранный размер текста; краткий «отпечаток» списка, который вы видели на каждой странице в прошлый раз (для точки, отмечающей новое); запись в гостевой книге, которую вы начали, но ещё не отправили (удаляется после отправки или по истечении 7 дней). Эти значения остаются только на этом устройстве, не передаются Нам Донвону и могут быть удалены путём очистки данных сайта в браузере.",
           "unless": "ga4"
         },
         {
           "when": "ga4",
           "ko": "이 기기의 브라우저 저장소에 일곱을 적어 둡니다 — 첫 방문 문 장면을 한 번 보았는지, 고른 화면(시스템 · 밝게 · 어둡게), 움직임 줄이기를 켰는지, 고른 글자 크기, 쪽마다 지난번에 본 목록의 짧은 지문(새로 생긴 것 점), 쿠키 동의에서 고르신 것, 방명록에 쓰다 아직 보내지 않은 글(보내거나 7일이 지나면 지움). 이 기기에만 남고 남동원에게 보내지지 않으며, 브라우저의 사이트 데이터 지우기로 지울 수 있습니다.",
           "en": "Seven small things are kept in this browser’s storage — whether you have already seen the opening door scene, your display setting (system, light or dark), whether you turned on Reduce motion, your text size, a short fingerprint of what each page listed when you last saw it (for the “new” dot), your cookie consent choice, and a guestbook note you started but haven’t sent (removed once sent or after 7 days). They stay on this device, are never sent to Dongwon Nam, and can be removed by clearing this site’s data in your browser.",
-          "ja": "このデバイスのブラウザのストレージに、次の7つを記録しておきます — 初回訪問時の扉のシーンを一度ご覧になったかどうか、「表示」で選ばれた設定（システム・ライト・ダーク）、「動き」を減らす設定にしたかどうか、選ばれた文字の大きさ、ページごとに前回ご覧になった一覧の短い指紋（新着の点）、クッキーの同意についての選択、ゲストブックに書きかけでまだ送っていないメッセージ（送信後または7日後に削除）。これらはこのデバイスにのみ残り、ナム・ドンウォンに送信されることはなく、ブラウザでサイトデータを消去すると削除できます。"
+          "ja": "このデバイスのブラウザのストレージに、次の7つを記録しておきます — 初回訪問時の扉のシーンを一度ご覧になったかどうか、「表示」で選ばれた設定（システム・ライト・ダーク）、「動き」を減らす設定にしたかどうか、選ばれた文字の大きさ、ページごとに前回ご覧になった一覧の短い指紋（新着の点）、クッキーの同意についての選択、ゲストブックに書きかけでまだ送っていないメッセージ（送信後または7日後に削除）。これらはこのデバイスにのみ残り、ナム・ドンウォンに送信されることはなく、ブラウザでサイトデータを消去すると削除できます。",
+          "ru": "В хранилище браузера на этом устройстве записываются семь значений: была ли уже показана вступительная сцена с дверью при первом посещении; выбранный режим отображения (системный, светлый или тёмный); включено ли уменьшение движения; выбранный размер текста; краткий «отпечаток» списка, который вы видели на каждой странице в прошлый раз (для точки, отмечающей новое); выбор, сделанный вами в окне согласия на использование cookie; запись в гостевой книге, которую вы начали, но ещё не отправили (удаляется после отправки или по истечении 7 дней). Эти значения остаются только на этом устройстве, не передаются Нам Донвону и могут быть удалены путём очистки данных сайта в браузере."
         },
         {
           "when": "clarity",
           "ko": "화면 쓰임 기록에 동의하신 경우에만 Microsoft Clarity 쿠키 두 개(_clck · _clsk)를 이 사이트 주소로 저장합니다. _clck는 방문하신 기기를, _clsk는 한 번의 방문을 이어 보는 데 쓰며, 동의를 거두시면 지웁니다. 누른 곳 · 내린 정도를 모아 쪽을 고치는 데만 쓰고, 이름이나 연락처는 모으지 않습니다(3절).",
           "en": "Only if you agree to page-use records, two Microsoft Clarity cookies (_clck and _clsk) are stored under this site’s address. _clck tells your device apart and _clsk links the pages of a single visit; both are deleted if you withdraw your consent. Clicks and scroll depth are used only to improve the pages; no names or contact details are collected (section 3).",
-          "ja": "画面の使われ方の記録に同意された場合のみ、Microsoft ClarityのCookie二つ(_clck · _clsk)をこのサイトのアドレスで保存します。_clckは端末の区別に、_clskは一回の訪問をつなげて見るのに使い、同意を撤回されると削除します。クリックした場所 · スクロールの深さはページを直すことだけに使い、名前や連絡先は集めません(3節)。"
+          "ja": "画面の使われ方の記録に同意された場合のみ、Microsoft ClarityのCookie二つ(_clck · _clsk)をこのサイトのアドレスで保存します。_clckは端末の区別に、_clskは一回の訪問をつなげて見るのに使い、同意を撤回されると削除します。クリックした場所 · スクロールの深さはページを直すことだけに使い、名前や連絡先は集めません(3節)。",
+          "ru": "Только при вашем согласии на ведение записей использования страниц для адреса этого сайта сохраняются два файла cookie Microsoft Clarity (_clck и _clsk). _clck используется для различения вашего устройства, _clsk — для связывания страниц в рамках одного посещения; оба удаляются при отзыве вами согласия. Сведения о местах нажатий и глубине прокрутки используются только для улучшения страниц; имена и контактные данные не собираются (раздел 3)."
         },
         {
           "ko": "이 사이트는 GitHub Pages(GitHub, 미국)에 올려 두었습니다. GitHub는 보안을 위해 방문하신 분의 IP 주소를 기록하며, 남동원은 이 기록을 받거나 보지 않습니다.",
           "en": "This site is hosted on GitHub Pages (GitHub, United States), which logs visitors’ IP addresses for security purposes. Dongwon Nam does not receive or see these logs.",
-          "ja": "このサイトはGitHub Pages（GitHub、米国）で公開しています。GitHubはセキュリティのために訪問された方のIPアドレスを記録しますが、ナム・ドンウォンはこの記録を受け取ったり見たりすることはありません。"
+          "ja": "このサイトはGitHub Pages（GitHub、米国）で公開しています。GitHubはセキュリティのために訪問された方のIPアドレスを記録しますが、ナム・ドンウォンはこの記録を受け取ったり見たりすることはありません。",
+          "ru": "Этот сайт размещён на GitHub Pages (GitHub, США). В целях безопасности GitHub регистрирует IP-адреса посетителей; Нам Донвон эти журналы не получает и не просматривает."
         },
         {
           "when": "goatcounter",
           "ko": "방문 수는 GoatCounter로 쿠키 없이 셉니다. 본 쪽 · 들어온 곳 · 교보문고 링크를 누른 수 · 브라우저 · 운영체제 · 나라(IP 주소로 짐작) · 언어 · 화면 폭을 '몇 명'으로만 합쳐 세고, 한 사람을 따로 알아볼 수 있게 남기지 않습니다(3절).",
           "en": "Visits are counted with GoatCounter, without cookies. The page viewed, referring site, clicks on links to Kyobo Book Centre, browser, operating system, country (estimated from the IP address), language and screen width are counted only as totals, and nothing is kept that singles out a person (section 3).",
-          "ja": "アクセス数は、GoatCounterを使ってクッキーなしで計測します。閲覧したページ・参照元・教保文庫へのリンクのクリック数・ブラウザ・OS・国（IPアドレスから推定）・言語・画面幅を「何人」という人数にまとめて数えるだけで、特定の個人を識別できる形では残しません（第3項）。"
+          "ja": "アクセス数は、GoatCounterを使ってクッキーなしで計測します。閲覧したページ・参照元・教保文庫へのリンクのクリック数・ブラウザ・OS・国（IPアドレスから推定）・言語・画面幅を「何人」という人数にまとめて数えるだけで、特定の個人を識別できる形では残しません（第3項）。",
+          "ru": "Посещения подсчитываются с помощью GoatCounter без использования файлов cookie. Просмотренная страница, сайт-источник перехода, количество нажатий на ссылки на Kyobo Book Centre, браузер, операционная система, страна (определяемая приблизительно по IP-адресу), язык и ширина экрана учитываются только в обобщённом виде (как количество посетителей); сведения, позволяющие выделить отдельного человека, не сохраняются (раздел 3)."
         },
         {
           "when": "cfwa",
           "ko": "방문 수는 Cloudflare Web Analytics로 쿠키 없이 셉니다. 본 쪽 · 들어온 곳 · 브라우저 · 운영체제 · 쪽이 열리는 속도를 '몇 명'으로만 합쳐 보고, 한 사람을 따로 알아볼 수 있게 남기지 않습니다(3절).",
           "en": "Visits are counted without cookies through Cloudflare Web Analytics. Pages viewed, where visitors came from, browser, operating system and page speed are seen only as totals, and nothing is kept that singles out one person (section 3).",
-          "ja": "アクセス数はCloudflare Web Analyticsでクッキーを使わずに数えます。閲覧したページ・参照元・ブラウザ・OS・ページの表示速度を「何人」という人数にまとめて確認し、一人ひとりを見分けられる形では残しません（第3項）。"
+          "ja": "アクセス数はCloudflare Web Analyticsでクッキーを使わずに数えます。閲覧したページ・参照元・ブラウザ・OS・ページの表示速度を「何人」という人数にまとめて確認し、一人ひとりを見分けられる形では残しません（第3項）。",
+          "ru": "Посещения подсчитываются с помощью Cloudflare Web Analytics без использования файлов cookie. Просмотренные страницы, сайт-источник перехода, браузер, операционная система и скорость загрузки страниц рассматриваются только в обобщённом виде (как количество посетителей); сведения, позволяющие выделить отдельного человека, не сохраняются (раздел 3)."
         }
       ]
     },
@@ -197,13 +228,15 @@
       "h": {
         "ko": "5. 요청하는 법",
         "en": "5. Your requests",
-        "ja": "5. ご請求の方法"
+        "ja": "5. ご請求の方法",
+        "ru": "5. Ваши запросы"
       },
       "items": [
         {
           "ko": "남기신 정보를 보거나, 고치거나, 지우거나, 쓰지 말아 달라고 하실 수 있습니다. 연락 칸의 인스타그램 메시지나 메일로 말씀해 주세요. 개인정보 보호책임자는 남동원입니다.",
           "en": "You can ask to see, correct, delete or stop the use of anything you have left. Please get in touch by Instagram message or email (see the contact section). The person responsible for personal information is Dongwon Nam.",
-          "ja": "残していただいた情報の開示・訂正・削除・利用停止をご請求いただけます。「お問い合わせ」にあるInstagramのメッセージ、またはメールでお申し出ください。個人情報保護責任者は、ナム・ドンウォンです。"
+          "ja": "残していただいた情報の開示・訂正・削除・利用停止をご請求いただけます。「お問い合わせ」にあるInstagramのメッセージ、またはメールでお申し出ください。個人情報保護責任者は、ナム・ドンウォンです。",
+          "ru": "Вы можете запросить доступ к оставленным вами сведениям, их исправление, удаление или прекращение их использования. Пожалуйста, обратитесь через сообщения в Instagram или по электронной почте (см. раздел «Контакты»). Ответственным за защиту персональных данных является Нам Донвон."
         }
       ]
     }
@@ -211,21 +244,25 @@
   "updated_label": {
     "ko": "고친 날",
     "en": "Last updated",
-    "ja": "最終更新日"
+    "ja": "最終更新日",
+    "ru": "Последнее обновление"
   },
   "back": {
     "ko": "← 남동원으로",
     "en": "← Back to Dongwon Nam",
-    "ja": "← ナム・ドンウォンへ戻る"
+    "ja": "← ナム・ドンウォンへ戻る",
+    "ru": "← На сайт Нам Донвона"
   },
   "other": {
     "ko": "English",
     "en": "한국어",
-    "ja": "한국어"
+    "ja": "한국어",
+    "ru": "한국어"
   },
   "lead_ga": {
     "ko": "이 사이트는 남동원이 직접 운영하는 개인 사이트입니다. 방문 통계에 동의하신 경우에만 쿠키를 쓰고, 남동원은 방문하신 분이 누구인지 알 수 있는 정보를 저장하지 않습니다(4절). 직접 글을 남기실 때만 아래 정보를 받습니다.",
     "en": "This is a personal site run by Dongwon Nam. Cookies are used only if you agree to visitor statistics, and Dongwon Nam stores nothing that identifies you (section 4). Information is received only when you choose to leave a note or message, as described below.",
-    "ja": "このサイトは、ナム・ドンウォンが自ら運営する個人サイトです。アクセス統計に同意された場合にのみクッキーを使用し、ナム・ドンウォンは訪問された方が誰であるかを特定できる情報を保存しません（第4項）。ご自身でメッセージを残された場合に限り、以下の情報を受け取ります。"
+    "ja": "このサイトは、ナム・ドンウォンが自ら運営する個人サイトです。アクセス統計に同意された場合にのみクッキーを使用し、ナム・ドンウォンは訪問された方が誰であるかを特定できる情報を保存しません（第4項）。ご自身でメッセージを残された場合に限り、以下の情報を受け取ります。",
+    "ru": "Этот сайт — личный сайт, который ведёт лично Нам Донвон. Файлы cookie используются только при вашем согласии на сбор статистики посещений, и Нам Донвон не хранит сведений, позволяющих установить вашу личность (раздел 4). Указанные ниже сведения получаются только в тех случаях, когда вы сами оставляете запись или сообщение."
   }
 }
