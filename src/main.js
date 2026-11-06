@@ -1332,6 +1332,16 @@
     });
   }
 
+  // 시를 복사하면 출처가 따라붙게(11/6 동원 'A 출처 따라붙음' — Apple Books 결): 「탁본」에서 세 줄 이상 고를 때만 끝에 빈 줄 + 출처 한 줄(build.py data-cite)
+  // 한두 줄 · 다른 칸은 고른 그대로(짧은 인용까지 고치면 '멋대로 바꿨다'가 됨)
+  const poemEl = document.querySelector(".poem[data-cite]");
+  if (poemEl) poemEl.addEventListener("copy", ev => {
+    const sel = getSelection(), txt = sel ? sel.toString() : "";
+    if (!ev.clipboardData || txt.split("\n").filter(l => l.trim()).length < 3) return;
+    ev.clipboardData.setData("text/plain", txt.replace(/\s+$/, "") + "\n\n" + poemEl.dataset.cite);
+    ev.preventDefault();
+  });
+
   // 언어 안내 띠(11/6 동원 "이런 섬세한 ux" → 목업 언어안내시안_v1 → "A 헤더 아래 띠 (권장)"): 기기 언어(navigator.languages — 사는 곳이 아니라 기기에 정한 말)가
   // 이 쪽과 다른 판이면 그 사람의 말로 한 줄 · 자동으로 옮기지 않음(Google 다국어 지침) · 이 기기에서 한 번만(보인 순간 표시 — 닫거나 넘어가면 다시 안 뜸) · 서버로 보내는 것 없음
   // 글은 '안내받는 사람의 말'이라 쪽의 ui 글이 아닌 여기 넷 — 우리 판에 없는 말(독일어 등)이면 한국어판에서만 영어판을 안내
