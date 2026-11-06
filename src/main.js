@@ -1332,6 +1332,36 @@
     });
   }
 
+  // 언어 안내 띠(11/6 동원 "이런 섬세한 ux" → 목업 언어안내시안_v1 → "A 헤더 아래 띠 (권장)"): 기기 언어(navigator.languages — 사는 곳이 아니라 기기에 정한 말)가
+  // 이 쪽과 다른 판이면 그 사람의 말로 한 줄 · 자동으로 옮기지 않음(Google 다국어 지침) · 이 기기에서 한 번만(보인 순간 표시 — 닫거나 넘어가면 다시 안 뜸) · 서버로 보내는 것 없음
+  // 글은 '안내받는 사람의 말'이라 쪽의 ui 글이 아닌 여기 넷 — 우리 판에 없는 말(독일어 등)이면 한국어판에서만 영어판을 안내
+  (() => {
+    const LS = { ko: ["한국어판이 있습니다", "열기", "닫기"], en: ["This site is also in English", "Open", "Close"],
+      ja: ["日本語版があります", "開く", "閉じる"], ru: ["Есть русская версия сайта", "Открыть", "Закрыть"] };
+    const here = H.lang, hd = document.querySelector("header.top");
+    try { if (!hd || localStorage.getItem("lsug")) return; } catch (x) { return; }
+    const want = (navigator.languages || [navigator.language || ""]).map(l => String(l).toLowerCase().split("-")[0]);
+    let to = want.find(l => l in LS);
+    if (!to && want[0] && here === "ko") to = "en";
+    // 가는 길은 쪽의 언어 줄 링크(상대 주소 — 스테이징에선 스테이징으로 · 누르면 그 링크를 눌러 '보던 칸으로'도 같게)
+    const alt = to && to !== here && document.querySelector(`a.lang[hreflang="${to}"], a.oth[hreflang="${to}"]`);
+    if (!alt) return;
+    try { localStorage.setItem("lsug", "1"); } catch (x) { /* 못 적으면 다음에도 뜸 */ }
+    const [say, go, close] = LS[to];
+    const bar = document.createElement("div");
+    bar.className = "lsug"; bar.lang = to; bar.setAttribute("role", "note");
+    bar.innerHTML = `<span></span><a hreflang="${to}"></a><button type="button" class="lsx">×</button>`;
+    bar.children[0].textContent = say;
+    bar.children[1].textContent = go + " →"; bar.children[1].href = alt.getAttribute("href");
+    bar.children[1].addEventListener("click", ev => { if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return; ev.preventDefault(); alt.click(); });
+    bar.children[2].setAttribute("aria-label", close);
+    bar.children[2].addEventListener("click", () => {
+      if (reduce) { bar.remove(); return; }
+      bar.classList.add("out"); setTimeout(() => bar.remove(), 180);
+    });
+    hd.after(bar);
+  })();
+
   // 맨 위 띠: 넘기면 아래 선이 생기고 뒤가 흐리게 비침
   const top = document.querySelector(".top");
   if (top) {

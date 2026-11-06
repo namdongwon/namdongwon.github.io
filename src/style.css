@@ -1290,3 +1290,10 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .nwd{display:inline-block;width:6px;height:6px;margin-left:6px;border-radius:50%;background:var(--ink);vertical-align:.45em}.mnu .nwd{width:7px;height:7px;margin-left:8px;vertical-align:.55em}
 :root{--fs:1}:root[data-fs="l"]{--fs:1.125}:root[data-fs="xl"]{--fs:1.25}
 .colo .fsz button span{font:400 13px/1 var(--sans)}.colo .fsz button+button span{font-size:16px}.colo .fsz button+button+button span{font-size:19px}
+/* 언어 안내 띠(11/6 '이런 섬세한 ux' → 언어안내시안_v1 'A 헤더 아래 띠') — 헤더 아래 흐름 안(내리면 함께 지나감 · 첫 화면을 덮지 않음) · 옅은 바탕 한 줄 · 좁으면 두 줄 */
+.lsug{position:relative;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 12px;min-height:40px;padding:8px 48px;background:var(--ph);font:400 12.5px/1.5 var(--sans);color:var(--ink);text-align:center;transition:opacity .18s}
+.lsug.out{opacity:0}
+.lsug a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;white-space:nowrap}
+.lsug .lsx{position:absolute;right:8px;top:50%;translate:0 -50%;width:32px;height:32px;border:0;border-radius:var(--btn-r);background:none;color:var(--faint);font:300 18px/1 var(--sans);cursor:pointer}
+.lsug .lsx::before{content:"";position:absolute;inset:-6px}  /* 누르는 자리 44px */
+@media (hover:hover) and (pointer:fine){.lsug a:hover{color:var(--muted)}.lsug .lsx:hover{color:var(--ink);background:var(--bg)}.lsug .lsx{transition:color .12s,background-color .12s}}
