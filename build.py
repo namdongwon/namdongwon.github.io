@@ -449,13 +449,17 @@ def sentence(w, lang="ko", kinds=None):
     # 원제(11/6 동원 'B 사실 줄 끝' — 시안 영상원제시안_v1 · Letterboxd · MUBI · Filmarks): videos.json의 orig · orig_lang(판마다 같음) —
     # 그 판의 제목과 다를 때만 사실 줄 끝에 '원제 リリイ・シュシュのすべて.' · 원제 글은 그 말의 lang으로
     orig, olang = (w.get("orig") or "").strip(), (w.get("orig_lang") or "").strip()
-    ospan = f'{ORIG_LABEL.get(lang, "원제")}{"" if lang == "ja" else NB}<span lang="{e(olang)}">{e(orig)}</span>' if orig and orig != w["title"] else ""
-    tail = "".join(f" {keep(x)}." for x in [*w.get("facts", [])]) + (f" {ospan}." if ospan else "")
+    lab = ORIG_LABEL.get(lang, "원제")
+    lab = lab if lang == "ru" else lab.replace(" ", NB)  # 'Original title'은 한 덩어리 · 러시아어 두 낱말은 좁은 칸(768 옆 단)에서 낱말 사이로 갈리게
+    ospan = (f'<span class="og">{lab}{"" if lang == "ja" else " "}<span class="on"><span lang="{e(olang)}">{e(orig)}</span>{"。" if lang == "ja" else "."}</span></span>'
+             if orig and orig != w["title"] else "")  # 원제 + 마침표는 한 덩어리(.on) — 들어가면 통째로, 줄보다 길면 그 안에서 갈림
+    facts = w.get("facts", [])
+    tail = (" " + NB.join(f"{keep(x)}." for x in facts) if facts else "") + (f" {ospan}" if ospan else "")  # 연도 · 나라는 한 덩어리(11/6 — 원제가 붙은 뒤 '2001. / 일본.'으로 갈렸음 · 시안 B처럼 '만든 이.' 뒤에서 갈리게)
     kind = e((kinds or {}).get(w["kind"], w["kind"]))
     name = e(w["title"]) if lang == "en" else marked(w["kind"], w["title"], lang)  # 일본어판은 『 』 「 」(11/1)
     if lang == "ja":  # 일본어판(11/1): 부호 앞뒤 빈칸 없이 · 마침은 '。' — '映画『제목』만든 이。2001。日本。'(일본어 관행 — 『 』 안팎에 빈칸을 두지 않음)
         return (f'<p class="vt" data-title="{e(w["title"])}">{kind}<b><cite>{name}</cite>{who}</b>。'
-                + "".join(f"{keep(x)}。" for x in w.get("facts", [])) + (f"{ospan}。" if ospan else "") + "</p>")
+                + "".join(f"{keep(x)}。" for x in w.get("facts", [])) + ospan + "</p>")
     return (f'<p class="vt" data-title="{e(w["title"])}">{kind} <b><cite>{name}</cite> {who}</b>.{tail}</p>')
 
 
