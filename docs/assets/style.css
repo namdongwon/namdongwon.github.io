@@ -1201,3 +1201,12 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .lsug .lsx{position:absolute;right:8px;top:50%;translate:0 -50%;width:32px;height:32px;border:0;border-radius:var(--btn-r);background:none;color:var(--faint);font:300 calc(18px * var(--fs))/1 var(--sans);cursor:pointer}
 .lsug .lsx::before{content:"";position:absolute;inset:-6px}  
 @media (hover:hover) and (pointer:fine){.lsug a:hover{color:var(--muted)}.lsug .lsx:hover{color:var(--ink);background:var(--bg)}.lsug .lsx{transition:color .12s,background-color .12s}}
+
+@media (forced-colors:active){
+  .gb .card textarea{border:1px solid CanvasText;padding:0 8px}
+  .colo .thm button[aria-pressed="true"],.colo .fsz button[aria-pressed="true"]{outline:1px solid Highlight;outline-offset:2px}
+  .colo .mot input::before,.colo .mot input::after{forced-color-adjust:none}
+  .colo .mot input::before{border-color:CanvasText}.colo .mot input::after{background:CanvasText}
+  .colo .mot input:checked::before{border-color:Highlight;background:Highlight}.colo .mot input:checked::after{background:Canvas}
+  .tk-w{opacity:.22}  
+}

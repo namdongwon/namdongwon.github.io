@@ -1297,3 +1297,13 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .lsug .lsx{position:absolute;right:8px;top:50%;translate:0 -50%;width:32px;height:32px;border:0;border-radius:var(--btn-r);background:none;color:var(--faint);font:300 18px/1 var(--sans);cursor:pointer}
 .lsug .lsx::before{content:"";position:absolute;inset:-6px}  /* 누르는 자리 44px */
 @media (hover:hover) and (pointer:fine){.lsug a:hover{color:var(--muted)}.lsug .lsx:hover{color:var(--ink);background:var(--bg)}.lsug .lsx{transition:color .12s,background-color .12s}}
+/* 고대비(강제 색상) 모드 보정(11/6 섬세한 배려 후보 ⑦ — 동원 '네 곳 고치기' · 실측: 윈도 고대비에서 그림자 · 그라디언트 · 칠한 바탕이 꺼져 넷이 깨졌음 · MDN '작은 보정만'):
+   방명록 쓰는 칸 줄 → 테두리 · 화면/글자 고른 것 밑줄 → 시스템 강조 테 · 움직임 스위치 손잡이 → 시스템 색으로 다시 칠함 · 첫 화면 배경 이름 → 시스템 글 색을 옅게(장식이 가장 센 요소가 되지 않게) */
+@media (forced-colors:active){
+  .gb .card textarea{border:1px solid CanvasText;padding:0 8px}
+  .colo .thm button[aria-pressed="true"],.colo .fsz button[aria-pressed="true"]{outline:1px solid Highlight;outline-offset:2px}
+  .colo .mot input::before,.colo .mot input::after{forced-color-adjust:none}
+  .colo .mot input::before{border-color:CanvasText}.colo .mot input::after{background:CanvasText}
+  .colo .mot input:checked::before{border-color:Highlight;background:Highlight}.colo .mot input:checked::after{background:Canvas}
+  .tk-w{opacity:.22}  /* GrayText는 윈도 고대비(검정)에서 초록이라 더 튐 — 시스템 글 색 그대로 투명도만 낮춤 */
+}
