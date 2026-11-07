@@ -232,7 +232,7 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}
 .bnews details ol{margin-top:4px}
 
 .bintro{margin-top:44px;padding-top:30px;border-top:1px solid var(--rule)}
-.bhead{font:400 calc(19px * var(--fs))/1.7 var(--serif);word-break:keep-all;text-wrap:balance}
+.bhead{font:400 calc(19px * var(--fs))/1.7 var(--serif);word-break:keep-all;text-wrap:pretty}  
 .btext{margin-top:16px;font:calc(16px * var(--fs))/1.9 var(--body);word-break:keep-all;text-wrap:pretty}
 .btoc{margin-top:36px}
 .btoc h3{font:600 calc(11px * var(--fs))/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  
@@ -285,7 +285,7 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}
 @media (max-width:449px){html:lang(ja) .top nav{gap:8px;letter-spacing:0}html:lang(ja) .top .act a.cta{letter-spacing:0}}
 @media (max-width:389px){html:lang(ja) .top nav{gap:6px}html:lang(ja) .top .act{gap:8px;margin-left:8px}html:lang(ja) .top .act a.cta{padding:6px 8px}}
 @media (max-width:359px){html:lang(ja) .top nav{gap:6px;font-size:11px}html:lang(ja) .top .act a.cta{font-size:11px}}
-html:lang(ja) #home .hs,html:lang(ja) .hb{text-wrap:balance}.nw{white-space:nowrap}html:lang(ja) :is(.hb,#home .hs,.bhead,.tagl,.h2,#poem .pbr,.plab dd):lang(ja){word-break:auto-phrase}  
+html:lang(ja) #home .hs,html:lang(ja) .hb{text-wrap:balance}.nw{white-space:nowrap}html:lang(ja) :is(.hb,#home .hs,.bhead,.tagl,.h2,#poem .pbr,.plab dd,#home p.tt,.years li span,.mline .t):lang(ja){word-break:auto-phrase}  
 :is(html:lang(en),html:lang(ru)) .label,:is(html:lang(en),html:lang(ru)) .sub{text-transform:uppercase;letter-spacing:.12em}  
 html:lang(en) .vt cite{font-style:italic;white-space:nowrap}html:lang(ru) .vt cite{white-space:nowrap}    
 html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:400}  
@@ -307,7 +307,7 @@ html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:
 .tagl{margin-top:12px;font:calc(14px * var(--fs))/1.6 var(--body);color:var(--muted);text-wrap:balance;word-break:keep-all}  
 .years{list-style:none;margin-top:30px;border-top:1px solid var(--rule)}
 .years li{display:grid;grid-template-columns:64px 1fr;align-items:baseline;gap:12px;padding:16px 0;border-bottom:1px solid var(--rule);font:calc(15px * var(--fs))/1.5 var(--body)}
-.years li span{text-wrap:pretty}  
+.years li span{text-wrap:balance}  
 .years b{font:600 calc(14px * var(--fs))/1.5 var(--sans);letter-spacing:.04em}
 .years sup.fr{font:300 calc(11px * var(--fs))/0 var(--sans);vertical-align:super;margin-left:4px;color:var(--muted)}  
 .fn{list-style:none;margin-top:12px;display:grid;gap:6px}  
@@ -646,7 +646,7 @@ html.sr-on{overflow:hidden}
 
 .pp{max-width:640px;margin:0 auto;padding:56px 20px calc(72px + env(safe-area-inset-bottom))}
 .pp h1{margin-top:0}
-.pp h2{margin-top:36px;font:600 calc(11px * var(--fs))/1.5 var(--sans);letter-spacing:.04em;color:var(--muted)}
+.pp h2{margin-top:36px;font:600 calc(11px * var(--fs))/1.5 var(--sans);letter-spacing:.04em;color:var(--muted);text-wrap:balance}  
 .pp ul{list-style:none;margin:12px 0 0;padding:0}
 .pp li{padding:12px 0;border-top:1px solid var(--rule);font:calc(15px * var(--fs))/1.7 var(--body);color:var(--ink);word-break:keep-all;text-wrap:pretty}
 .pp ul li:last-child{border-bottom:1px solid var(--rule)}
@@ -688,10 +688,13 @@ html.sr-on{overflow:hidden}
 
 :where(a,button,summary,label,[role=button]){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
 .js :where(a,button,summary,label,[role=button]):active{transform:scale(.97);transition:none}
+:is(.nf,.pp) :where(a,button):active{transform:scale(.97);transition:none}  
+.nf .nfp a{display:inline-block}  
+@media (prefers-reduced-motion:reduce){:is(.nf,.pp) :where(a,button):active{transform:none;opacity:.6}}:where(:root[data-motion="reduce"]) :is(.nf,.pp) :where(a,button):active,:where(:root[data-motion="reduce"]):is(.nf,.pp) :where(a,button):active{transform:none;opacity:.6}
 :root[data-motion="reduce"] :where(a,button,summary,label,[role=button]):active{transform:none;opacity:.6}
 @media (prefers-reduced-motion:reduce){.js :where(a,button,summary,label,[role=button]):active{transform:none;opacity:.6}}:where(:root[data-motion="reduce"]) .js :where(a,button,summary,label,[role=button]):active,:where(:root[data-motion="reduce"]).js :where(a,button,summary,label,[role=button]):active{transform:none;opacity:.6}
 .rt{display:inline-block;margin-top:12px;font:300 calc(12.5px * var(--fs))/1.5 var(--sans);color:var(--faint)}.js .rt::after{content:"\00a0·\00a0"}  
-.js .hint{display:inline-block;margin-top:12px;padding:4px 0;background:none;border:0;font:300 calc(12.5px * var(--fs))/1.5 var(--sans);color:var(--faint);letter-spacing:0;cursor:pointer}
+.js .hint{display:inline-block;margin-top:12px;padding:4px 0;background:none;border:0;font:300 calc(12.5px * var(--fs))/1.5 var(--sans);color:var(--faint);letter-spacing:0;cursor:pointer;text-wrap:balance}  
 .poem{transition:transform .5s var(--ease)}
 .poem.pressing{transform:scale(.992)}
 @media (hover:none){.js .poem{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}}  
@@ -740,7 +743,6 @@ html.sr-on{overflow:hidden}
 
 @media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .nt.in b i,:where(:root:not([data-motion="reduce"])).nt.in b i{animation:nxp 2.4s ease-in-out 3}:where(:root:not([data-motion="reduce"])) .top nav a,:where(:root:not([data-motion="reduce"])).top nav a{transition:color var(--fast) var(--e2),opacity var(--fast) var(--e2)}:where(:root:not([data-motion="reduce"])) .top nav a::after,:where(:root:not([data-motion="reduce"])).top nav a::after,:where(:root:not([data-motion="reduce"])) .js .top .sq::after,:where(:root:not([data-motion="reduce"])).js .top .sq::after{transition:background-color .2s var(--ease)}:where(:root:not([data-motion="reduce"])) .buy2,:where(:root:not([data-motion="reduce"])).buy2{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease)}:where(:root:not([data-motion="reduce"])) .top .act a.cta,:where(:root:not([data-motion="reduce"])).top .act a.cta{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),opacity .4s}:where(:root:not([data-motion="reduce"])) .top nav .ul,:where(:root:not([data-motion="reduce"])).top nav .ul{transition:transform .28s var(--e2),width .28s var(--e2),opacity .3s}:where(:root:not([data-motion="reduce"])) .mini,:where(:root:not([data-motion="reduce"])).mini{transition:transform .5s var(--ease),visibility 0s .5s}:where(:root:not([data-motion="reduce"])) .mini.on,:where(:root:not([data-motion="reduce"])).mini.on{transition:transform .5s var(--ease)}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .name:not(.ty),:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .name:not(.ty){color:transparent;animation:name-show 0s 3s forwards}:where(:root:not([data-motion="reduce"])) .js .name .caret,:where(:root:not([data-motion="reduce"])).js .name .caret{display:inline-block;width:.06em;height:.8em;margin-left:.16em;background:currentColor;vertical-align:-.04em;animation:caret 1s steps(1) infinite}:where(:root:not([data-motion="reduce"])) .js .name .caret.off,:where(:root:not([data-motion="reduce"])).js .name .caret.off{opacity:0;width:0;margin-left:0;transition:opacity .4s,width 0s .4s,margin-left 0s .4s;animation:none}:where(:root:not([data-motion="reduce"])) .intro #home .book,:where(:root:not([data-motion="reduce"])).intro #home .book{opacity:0;transform:translateY(26px);filter:blur(3px);animation:intro-safe .8s var(--ease) 4s forwards}:where(:root:not([data-motion="reduce"])) .intro .door,:where(:root:not([data-motion="reduce"])).intro .door{animation:door-safe .6s ease 4s forwards}:where(:root:not([data-motion="reduce"])) .opened #home .book,:where(:root:not([data-motion="reduce"])).opened #home .book{opacity:1;transform:none;filter:none;transition:opacity .8s var(--ease) .6s,transform .8s var(--ease) .6s,filter .8s var(--ease) .6s}:where(:root:not([data-motion="reduce"])) .js:not(.seen) .bk:not(.on) .b,:where(:root:not([data-motion="reduce"])).js:not(.seen) .bk:not(.on) .b{--ry:78deg;animation:bk-safe 1.7s var(--ease) 4s forwards}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .bk:not(.on) .win::before,:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .bk:not(.on) .win::before{animation:win-safe 1.7s var(--ease) 4s both}:where(:root:not([data-motion="reduce"])) .js:not(.seen) #home .bk.on .win::before,:where(:root:not([data-motion="reduce"])).js:not(.seen) #home .bk.on .win::before{animation:win-in 4s cubic-bezier(.4,0,.3,1) backwards}:where(:root:not([data-motion="reduce"])) .js .rv,:where(:root:not([data-motion="reduce"])).js .rv{opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;transition-delay:calc(var(--i,0)*.04s)}:where(:root:not([data-motion="reduce"])) .js .rv.in,:where(:root:not([data-motion="reduce"])).js .rv.in{opacity:1;transform:none}:where(:root:not([data-motion="reduce"])) .js .label::after,:where(:root:not([data-motion="reduce"])).js .label::after{transform:scaleX(0);transform-origin:0 50%;transition:transform 1.3s var(--ease) .1s}:where(:root:not([data-motion="reduce"])) .js .label.in::after,:where(:root:not([data-motion="reduce"])).js .label.in::after{transform:scaleX(1)}}
 
-@media (max-width:374px){.bhead{text-wrap:pretty}}  
 @media (min-width:355px) and (max-width:374px){.poem{font-size:calc(15px * var(--fs))}}  
 @media (min-width:355px) and (max-width:370px){.pbook .t{font-size:calc(14px * var(--fs))}}  
 @media (max-width:370px){.nt,.vbox:not(:has(iframe)){min-height:0}}  
@@ -873,7 +875,7 @@ html.sr-on{overflow:hidden}
 .nxp .k{display:block;margin:0 0 8px;font:600 calc(11px * var(--fs))/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
 .nxp .n{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font:400 calc(18px * var(--fs))/1.3 var(--serif)}
 .nxp .n i{font-style:normal;font-size:calc(14px * var(--fs))}
-.nxp .d{display:block;margin-top:4px;font:400 calc(14px * var(--fs))/1.6 var(--sans);color:var(--muted)}
+.nxp .d{display:block;margin-top:4px;font:400 calc(14px * var(--fs))/1.6 var(--sans);color:var(--muted);text-wrap:balance}  
 @media (min-width:768px){.nxp{display:flex;justify-content:flex-end;max-width:none;margin:56px auto 8px;padding:0 64px;box-sizing:content-box}.nxp a{width:calc(50% - 36px)}}
 @media (hover:hover){.nxp a:hover{background:var(--ph)}}
 .foot{padding:0 20px}

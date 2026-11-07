@@ -1672,9 +1672,9 @@ def render(site, poem, videos, photos, lang="ko"):
         # 영어판은 부마다 접음(10/29 동원 'B 접고 첫 세 편' — 새 눈 비평 그 밖 9: 휴대폰 한 단 60줄이라 차례가 1,894px) — 「Rubbing」 · 이달의 줄이 든 부만 펼침,
         # 접힌 부는 첫 세 편 제목을 미리 보임 · 쪽 안 링크(첫 화면 '이달의 한 줄' · 찾기)로 그 줄에 가면 main.js가 펼침. 한국어판은 두 단이라 그대로
         op = any(k["title"] == site["poem"]["title"] or (k["title"] == cur and k["title"] in mo) for k in kp["items"])
-        pv = " · ".join(e(r["title"]) for r in p["items"][:3])
+        pv = f"{NB}· ".join(e(r["title"]) for r in p["items"][:3])  # 하10 — 가운뎃점 · 말줄임이 줄 머리로 가지 않게 앞 낱말에 붙임
         return (f'<details{" open" if op else ""}><summary><span class="lb"><b>{e(p["name"])}</b> · {t("toc_part_n", n=len(p["items"]))}</span>'
-                f'<small class="pv3">{pv} …</small></summary><ol>{lis}</ol></details>')
+                f'<small class="pv3">{pv}{NB}…</small></summary><ol>{lis}</ol></details>')
     parts = "".join(part(p, kp) for p, kp in zip(toc["parts"], toc_ko["parts"]))
     bintro = (f'<div class="bintro"><p class="bhead">{"<br>".join(e(x) for x in bi["lead"])}</p>'
               f'<p class="btext">{keep(bi["text"])}</p>'
@@ -1974,10 +1974,13 @@ def page_privacy(site, lang):
     # when이 붙은 줄은 그것을 켰을 때만(방문 셈 when "goatcounter" · 방명록 when "guestbook" — 10/27) · 칸에 보일 줄이 없으면 그 칸의 empty 한 줄 · 방문 셈을 켜면 첫 문단도 lead_counted로
     # GA4(11/1): when "ga4" 줄은 켰을 때만 · unless "ga4" 줄('쿠키를 쓰지 않습니다' · 저장소 둘)은 켜면 숨김 · 첫 문단은 lead_ga · 동의 창과 '쿠키 설정'(동의를 거두는 곳)도 이 쪽에
     ga = ga4(site)
-    on = {"goatcounter": bool(goatcounter(site)), "ga4": bool(ga), "clarity": bool(clarity(site)), "cfwa": bool(cf_beacon(site)), "guestbook": bool(site["contact"].get("guestbook_formspree_id") or gform(site))}
+    on = {"goatcounter": bool(goatcounter(site)), "ga4": bool(ga), "clarity": bool(clarity(site)), "cfwa": bool(cf_beacon(site)), "guestbook": bool(site["contact"].get("guestbook_formspree_id") or gform(site)),
+          "youtube": bool((load("videos.json") if (CONTENT / "videos.json").exists() else {}).get("items"))}  # 영상 칸 재생(유튜브 퍼가기 재생기 — 11/7 관리 화면 개인정보 데이터 맵 실측) — 실린 영상이 있을 때만
     shown = lambda items: [i for i in items if on.get(i.get("when"), True) and not on.get(i.get("unless"), False)]  # noqa: E731
     lead = p["lead_ga"] if on["ga4"] and p.get("lead_ga") else p["lead_counted"] if on["goatcounter"] and p.get("lead_counted") else p["lead"]
-    secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{g(i)}</li>" for i in (shown(x["items"]) or [x["empty"]] * ("empty" in x)))}</ul>' for x in p["sections"])
+    # 하9 — 목록 안 가운뎃점(이름 · 메일 · 내용)이 줄 머리로 가지 않게 앞 낱말에 붙임
+    dotb = lambda h: re.sub(r"(?<![\w/.])(policies\.google\.com/privacy)", r'<a href="https://\1" target="_blank" rel="noopener">\1</a>', h.replace(" · ", NB + "· "))  # Google 처리방침은 눌러 가게(YouTube API 서비스 정책 III.A.2 '링크')
+    secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{dotb(g(i))}</li>" for i in (shown(x["items"]) or [x["empty"]] * ("empty" in x)))}</ul>' for x in p["sections"])
     # 다른 판 처리방침 — 11/1 일본어판부터 둘(한국어 · English · 日本語 가운데 지금 판 빼고 같은 차례) · 낱말은 그 말 제 이름(판권면 언어 줄과 같음)
     oth = "".join(f'<a class="oth" href="{R}{"" if x == "ko" else x + "/"}privacy/" lang="{x}" hreflang="{x}">{LANG_NAME[x]}</a>' for x in LANGS if x != lang)
     cz = ckp = ""
@@ -1992,7 +1995,7 @@ def page_privacy(site, lang):
 <link rel="canonical" href="{e(base)}{"/" + lang if tr_ else ""}/privacy/"><meta name="theme-color" content="#ffffff">
 <link rel="icon" href="{R}favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="{R}assets/style.css">
 <script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
-<body><main class="pp">
+<body ontouchstart=""><main class="pp">
 <h1 class="h2">{g(p["title"])}</h1>
 <p class="lead">{g(lead)}</p>
 {ckp}{secs}
@@ -2020,7 +2023,7 @@ def page_404(site, ja=True):
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(site["logo"])} — {k("nf_title")}</title><meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"><script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
-<body><main class="nf" style="min-height:100vh;display:grid;place-content:center;gap:18px;padding:28px;text-align:center">
+<body ontouchstart=""><main class="nf" style="min-height:100vh;display:grid;place-content:center;gap:18px;padding:28px;text-align:center">
 <p class="label" style="justify-content:center">404</p>
 <h1 class="h2" style="margin-top:0">{k("nf_title")}</h1>
 <p class="lead">{k("nf_lead")}</p>

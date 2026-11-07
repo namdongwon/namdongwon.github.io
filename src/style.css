@@ -248,7 +248,7 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}  /* 『 첫 �
 .bnews details ol{margin-top:4px}
 /* 시집 소개 · 차례(10/25 A 아래로 이어 쌓기) — 책 카드 다음에 머리 두 줄(명조) → 소개 한 단락(은바탕) → 차례(휴대폰 두 단 · 쪽 숫자 고정폭 · 「탁본」 줄만 먹) */
 .bintro{margin-top:44px;padding-top:30px;border-top:1px solid var(--rule)}
-.bhead{font:400 19px/1.7 var(--serif);word-break:keep-all;text-wrap:balance}
+.bhead{font:400 19px/1.7 var(--serif);word-break:keep-all;text-wrap:pretty}  /* 하1 — 고르게(balance)는 여섯 줄이 넘으면 크롬이 풀어 '크게 · 더 크게'에서 '… 옮기는 / 시' 한 글자가 남았음 · 마지막 줄만 지키는 pretty로 모든 폭 */
 .btext{margin-top:16px;font:16px/1.9 var(--body);word-break:keep-all;text-wrap:pretty}
 .btoc{margin-top:36px}
 .btoc h3{font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  /* '차례' 굵게 — '지난 편'(.sub)과 같은 칸 머리(11/2 동원 '차례는 굵은 표시로') */
@@ -304,7 +304,7 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}  /* 『 첫 �
 @media (max-width:449px){html:lang(ja) .top nav{gap:8px;letter-spacing:0}html:lang(ja) .top .act a.cta{letter-spacing:0}}
 @media (max-width:389px){html:lang(ja) .top nav{gap:6px}html:lang(ja) .top .act{gap:8px;margin-left:8px}html:lang(ja) .top .act a.cta{padding:6px 8px}}
 @media (max-width:359px){html:lang(ja) .top nav{gap:6px;font-size:11px}html:lang(ja) .top .act a.cta{font-size:11px}}
-html:lang(ja) #home .hs,html:lang(ja) .hb{text-wrap:balance}.nw{white-space:nowrap}html:lang(ja) :is(.hb,#home .hs,.bhead,.tagl,.h2,#poem .pbr,.plab dd):lang(ja){word-break:auto-phrase}  /* 일본어 부제 · 소개 첫 문장은 줄을 고르게(글자 사이에서 갈려 '生きているものた / ちで'처럼 남던 것) · 사람 이름은 한 덩어리(build.py names — 'ナム・ド / ンウォン') · 크게 쓰는 줄은 말마디에서 갈림(word-break:auto-phrase — 크롬 119부터, 모르는 브라우저는 normal 그대로) */
+html:lang(ja) #home .hs,html:lang(ja) .hb{text-wrap:balance}.nw{white-space:nowrap}html:lang(ja) :is(.hb,#home .hs,.bhead,.tagl,.h2,#poem .pbr,.plab dd,#home p.tt,.years li span,.mline .t):lang(ja){word-break:auto-phrase}  /* 일본어 부제 · 소개 첫 문장은 줄을 고르게(글자 사이에서 갈려 '生きているものた / ちで'처럼 남던 것) · 사람 이름은 한 덩어리(build.py names — 'ナム・ド / ンウォン') · 크게 쓰는 줄은 말마디에서 갈림(word-break:auto-phrase — 크롬 119부터, 모르는 브라우저는 normal 그대로) */
 :is(html:lang(en),html:lang(ru)) .label,:is(html:lang(en),html:lang(ru)) .sub{text-transform:uppercase;letter-spacing:.12em}  /* 영어 꼬리표는 대문자 + 자간 조금(Oui Non · Fitzcarraldo) */
 html:lang(en) .vt cite{font-style:italic;white-space:nowrap}html:lang(ru) .vt cite{white-space:nowrap}  /* 러시아어 «제목»도 한 줄에(11/6 — 원제가 붙은 뒤 390에서 «…Чоу- / Чоу»로 갈렸음) */  /* 영어 관행: 작품 제목은 기울임, 짧은 제목은 한 줄에 */
 html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:400}  /* 일본어판(11/1): 『제목』은 한 덩어리(기울임 없음) · 「拓本」 번역 행은 명조 보통 굵기(영어 360은 Newsreader 가변 굵기 — 源ノ明朝는 300이 큰 제목 글자뿐) */
@@ -328,7 +328,7 @@ html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:
 .tagl{margin-top:12px;font:14px/1.6 var(--body);color:var(--muted);text-wrap:balance;word-break:keep-all}  /* 소개 이름 아래 한 문장(10/25 제안 ③ — 첫 화면 라벨에서 옮김) */
 .years{list-style:none;margin-top:30px;border-top:1px solid var(--rule)}
 .years li{display:grid;grid-template-columns:64px 1fr;align-items:baseline;gap:12px;padding:16px 0;border-bottom:1px solid var(--rule);font:15px/1.5 var(--body)}
-.years li span{text-wrap:pretty}  /* 영어 연표 'log²'처럼 각주 번호가 한 낱말과 혼자 떨어지지 않게(10/28 모양 점검 ⑪) */
+.years li span{text-wrap:balance}  /* 하6 — 768 더 크게에서 러시아어 · 일본어 줄 끝 낱말 홀로(pretty로는 남았음 — 연표 줄은 짧아 고르게) · 영어 연표 'log²'처럼 각주 번호가 한 낱말과 혼자 떨어지지 않게(10/28 모양 점검 ⑪) */
 .years b{font:600 14px/1.5 var(--sans);letter-spacing:.04em}
 .years sup.fr{font:300 11px/0 var(--sans);vertical-align:super;margin-left:4px;color:var(--muted)}  /* 연표 각주 번호(10/25 40곳 2차 ④ A — Andrew Trousdale식) */
 .fn{list-style:none;margin-top:12px;display:grid;gap:6px}  /* 각주: 번호(Pretendard 11px) + 명조 13px 회색 #555(7.46:1) — 연표 줄 높이는 그대로 */
@@ -673,7 +673,7 @@ html.sr-on{overflow:hidden}
 /* 개인정보 처리방침 쪽(10/27) — 한 단 640px · 칸 제목은 작은 고딕 · 항목은 명조 본문에 가는 줄(시집 소식 · 방명록과 같은 결) */
 .pp{max-width:640px;margin:0 auto;padding:56px 20px calc(72px + env(safe-area-inset-bottom))}
 .pp h1{margin-top:0}
-.pp h2{margin-top:36px;font:600 11px/1.5 var(--sans);letter-spacing:.04em;color:var(--muted)}
+.pp h2{margin-top:36px;font:600 11px/1.5 var(--sans);letter-spacing:.04em;color:var(--muted);text-wrap:balance}  /* 하4 — «…Республики / Корея» */
 .pp ul{list-style:none;margin:12px 0 0;padding:0}
 .pp li{padding:12px 0;border-top:1px solid var(--rule);font:15px/1.7 var(--body);color:var(--ink);word-break:keep-all;text-wrap:pretty}
 .pp ul li:last-child{border-bottom:1px solid var(--rule)}
@@ -718,10 +718,13 @@ html.sr-on{overflow:hidden}
 /* 11/6 넓힘(동원 'A 사이트 결' — 점검에서 눌러도 반응 없던 FAQ 질문 줄 · 움직임 스위치 · 남기기까지): 펼침 줄(summary) · 스위치 글(label) · [role=button]도 · 남기기는 먹 반전에 더해 눌림 */
 :where(a,button,summary,label,[role=button]){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
 .js :where(a,button,summary,label,[role=button]):active{transform:scale(.97);transition:none}
+:is(.nf,.pp) :where(a,button):active{transform:scale(.97);transition:none}  /* 하11 — 404 · 처리방침 쪽은 main.js가 없어(.js 없음) 누름 모양이 빠졌던 것 · 아이폰은 body ontouchstart(build.py)가 있어야 :active를 그림 · a는 인라인이라 줄어듦이 안 보이는 글 링크도 있어 아래 inline-block */
+.nf .nfp a{display:inline-block}  /* .buy는 이미 inline-flex */
+@media (prefers-reduced-motion:reduce){:is(.nf,.pp) :where(a,button):active{transform:none;opacity:.6}}
 :root[data-motion="reduce"] :where(a,button,summary,label,[role=button]):active{transform:none;opacity:.6}
 @media (prefers-reduced-motion:reduce){.js :where(a,button,summary,label,[role=button]):active{transform:none;opacity:.6}}
 .rt{display:inline-block;margin-top:12px;font:300 12.5px/1.5 var(--sans);color:var(--faint)}.js .rt::after{content:"\00a0·\00a0"}  /* 읽는 시간(11/4) — 안내 단추가 보일 때만 가운뎃점 */
-.js .hint{display:inline-block;margin-top:12px;padding:4px 0;background:none;border:0;font:300 12.5px/1.5 var(--sans);color:var(--faint);letter-spacing:0;cursor:pointer}
+.js .hint{display:inline-block;margin-top:12px;padding:4px 0;background:none;border:0;font:300 12.5px/1.5 var(--sans);color:var(--faint);letter-spacing:0;cursor:pointer;text-wrap:balance}  /* 하2 — 시 옆 안내 마지막 낱말 홀로(«оттиск» · 'rubbing') */
 .poem{transition:transform .5s var(--ease)}
 .poem.pressing{transform:scale(.992)}
 @media (hover:none){.js .poem{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}}  /* 휴대폰은 길게 누르면 글자 선택 대신 탁본(컴퓨터는 복사 그대로) */
@@ -804,7 +807,6 @@ html.sr-on{overflow:hidden}
   
 }
 
-@media (max-width:374px){.bhead{text-wrap:pretty}}  /* 갤럭시 기본 폭(360)에서 줄 끝에 한두 글자만 남던 것 — 머리글 '… 옮기는 / 시'(10/27 점검) */
 @media (min-width:355px) and (max-width:374px){.poem{font-size:15px}}  /* 「탁본」 첫 행 '… 가득 차 / 있다'가 360에서 한 줄로. 320 · 340은 15px로도 안 들어가고 '있다'만 남아 16px 그대로 */
 @media (min-width:355px) and (max-width:370px){.pbook .t{font-size:14px}}  /* 책 카드 제목 '… 가득 차 / 있다』'가 360에서 두 줄로(320 · 340은 14px로도 세 줄이라 그대로) */
 @media (max-width:370px){.nt,.vbox:not(:has(iframe)){min-height:0}}  /* 좁은 폰은 재생 전 썸네일을 16:9 그대로 — 최소 높이 200px 때문에 좌우가 잘려 썸네일 제목이 깎였음(10/27 점검). 재생기를 불러오면 200px */
@@ -939,7 +941,7 @@ html.sr-on{overflow:hidden}
 .nxp .k{display:block;margin:0 0 8px;font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
 .nxp .n{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font:400 18px/1.3 var(--serif)}
 .nxp .n i{font-style:normal;font-size:14px}
-.nxp .d{display:block;margin-top:4px;font:400 14px/1.6 var(--sans);color:var(--muted)}
+.nxp .d{display:block;margin-top:4px;font:400 14px/1.6 var(--sans);color:var(--muted);text-wrap:balance}  /* 하3 — 다음 쪽 설명 마지막 낱말 홀로('Rubbing' 등) */
 @media (min-width:768px){.nxp{display:flex;justify-content:flex-end;max-width:none;margin:56px auto 8px;padding:0 64px;box-sizing:content-box}.nxp a{width:calc(50% - 36px)}}
 @media (hover:hover){.nxp a:hover{background:var(--ph)}}
 .foot{padding:0 20px}
