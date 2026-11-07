@@ -57,7 +57,7 @@ html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino San
      맨 위 띠(흰 86%)가 검은 그림 위에 얹혀도 --muted 메뉴 5.38:1 */
   --shadow:0 0 0 1px #e2e2e2,0 14px 30px rgba(0,0,0,.10);
   --bar:rgba(255,255,255,.86);--chip:rgba(255,255,255,.9);--wall:#fff;--mark:#ececec;--winf:none;--winb:multiply;--dot-off:#efefef;--dot-lead:#c9c9c9;--cell-off:#e9e9e9;  /* 어두운 모드에서 바뀌는 것(아래 data-theme) */
-  --serif:"BMJ","AppleMyungjo",serif;
+  --serif:"BMJ","ARW","AppleMyungjo",serif;  /* ARW: 본명조에 없는 ↗(찾기 결과의 바깥 줄)만 화살표 판이 그림(11/7 밤) */
   --body:"PTD",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;  /* 본문은 고딕 Pretendard Regular(11/2 동원 '기본적인 글씨체들 전부 고딕체로' → 목업 본문고딕시안_v1 'A Regular 400') — 큰 제목 · 히어로 · 로고 · 시 본문은 명조(--serif) */
   --sans:"PTD",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   --sys:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;  /* 방문자가 치는 글(폼)은 기기 글꼴 — 줄인 글꼴에 없는 글자가 섞이지 않게 */

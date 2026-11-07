@@ -63,7 +63,7 @@ THEME_ICONS = {k: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" st
 }.items()}  # 판권면 화면 고르기 그림(10/28 동원 "이모지로 하자 글자 말고" → "B 선 그림 먹") — 돋보기와 같은 20칸 · 선 1.4 · 모니터 · 해 · 달
 PAL_FONT = "bon-myeongjo.woff2"  # 글자 팔레트(10/28)의 글자 612가지는 본명조 보통 판에만 담음 — 굵게 · 고딕 판은 늘지 않게(main)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
-ARROW = ("bon-myeongjo-arrow.woff2", "←↑→↓↗")  # 화살표만 담은 본명조 작은 판(CSS ARW · unicode-range) — 영어 · 일본어판 명조(Newsreader)에 화살표가 없어 → · ↗ 하나 때문에 본명조 통째 판 131KB를 받던 것(11/3 Lighthouse 점검)
+ARROW = ("bon-myeongjo-arrow.woff2", "←↑→↓↗")  # 화살표만 담은 작은 판(11/7 밤부터 源ノ明朝 Regular에서 — 본명조와 같은 꼴 · ↗ 있음 · 파일 이름은 그대로)(CSS ARW · unicode-range) — 영어 · 일본어판 명조(Newsreader)에 화살표가 없어 → · ↗ 하나 때문에 본명조 통째 판 131KB를 받던 것(11/3 Lighthouse 점검)
 # 첫 화면 작은 판(10/27 동원 "첫 화면 작은 글꼴은 B로 하자"): 한국어판 첫 화면에 보이는 글자만 담아 미리 받는 판(CSS BMJF · PTDF) — 통째 판(본명조 보통 · 굵게 182KB)을
 # 미리 받느라 style.css · main.js가 늦던 것을 덜어 냄(시험용 복사본 실측: 느린 4G 문 열림 3.6 → 3.1초 · 보통 LTE 1.5 → 1.3초, 다 선 화면 같음). 통째 판은 아래 칸에서 그대로 씀
 FIRST = {  # 작은 판: (같은 원본의 통째 판, 담을 글자 — first_text())
@@ -2289,13 +2289,6 @@ def main():
             (ASSETS / "fonts" / out).write_bytes(keep[out])
         else:
             raise SystemExit(f"첫 화면 작은 판을 만들 원본을 찾지 못함: {name}")
-    name = next(n for n, _, _, o, _ in FONTS if o == "bon-myeongjo.woff2")
-    if name in srcs:
-        subset_font(srcs[name], ASSETS / "fonts" / ARROW[0], ARROW[1], next(r for n, _, _, o, r in FONTS if o == "bon-myeongjo.woff2"))
-    elif ARROW[0] in keep:
-        (ASSETS / "fonts" / ARROW[0]).write_bytes(keep[ARROW[0]])
-    else:
-        raise SystemExit(f"화살표 작은 판을 만들 원본을 찾지 못함: {name}")
     print(f"글꼴에 남긴 글자 {len(set(text))}자")
     # 영어판 글꼴(10/24 ⑤ B) — Newsreader 바로 · 기울임을 영어판의 글자만 남겨 줄임(가변 축 그대로, 예약된 이름 없어 이름 그대로)
     text_en = used_text([*(no_ja(h) for h in pages["en"].values()), page404_koen])  # 404의 영어 두 줄도 Newsreader로(10/28)
@@ -2342,6 +2335,15 @@ def main():
         (ASSETS / "fonts" / JA_NAME).write_bytes(keep[JA_NAME])
     else:
         raise SystemExit(f"'日本語' 작은 판을 만들 원본을 찾지 못함: {name}")
+    # 화살표 작은 판(11/7 밤 — 본명조에 ↗가 없어 찾기 결과의 ↗만 기기 글꼴로 그려지던 것 · 동원 버튼 "같은 꼴로 맞추기 (권장)"):
+    # 源ノ明朝 Regular에서 — 본명조와 같은 Adobe Source Han 계열이라 ← → 꼴이 윤곽까지 같고(실측) ↗도 있음. 예약 이름 'Source'를 쓰지 않게 이름 바꿈
+    name = "SourceHanSerifJP-Regular.otf"
+    if name in srcs:
+        subset_font(srcs[name], ASSETS / "fonts" / ARROW[0], ARROW[1], True)
+    elif ARROW[0] in keep:
+        (ASSETS / "fonts" / ARROW[0]).write_bytes(keep[ARROW[0]])
+    else:
+        raise SystemExit(f"화살표 작은 판을 만들 원본을 찾지 못함: {name}")
     ftj = first_text(pages["ja"]["book"])  # 일본어판 첫 화면 작은 판(JA_FIRST)
     for out, (whole, kind) in JA_FIRST.items():
         name = next(n for n, o in JA_FONTS if o == whole)
