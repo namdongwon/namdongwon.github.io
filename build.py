@@ -114,6 +114,25 @@ JA_FIRST = {  # 일본어판 첫 화면 작은 판(한국어판 FIRST와 같은 
 HANGUL = re.compile("[ᄀ-ᇿ㄰-㆏가-힣]")  # 한글 — Source Han Serif JP에는 한글이 없어 일본어판의 한국어(시 원문 · 원제)는 본명조 · Pretendard 판이 그림
 e = html.escape
 NB = "\u00a0"  # 줄 안 바뀜 공백
+# 일본어판 「拓本」 행의 말마디(文節) 끊을 자리(하7 — 11/7 동원 'B 말마디 (권장)') — 행 글 그대로: '|'로 나눈 꼴
+JA_PHRASE = {
+    "扉をあけて出ると生きているものたちで満ちている": "扉をあけて|出ると|生きている|ものたちで|満ちている",
+    "息をするものたち": "息をする|ものたち",
+    "動くものたちとは違う": "動く|ものたちとは|違う",
+    "死んでいるものも動ける": "死んでいる|ものも|動ける",
+    "乾いているだろう": "乾いている|だろう",
+    "あまりに乾いているだろう": "あまりに|乾いている|だろう",
+    "建物の壁にさわってみる": "建物の|壁に|さわってみる",
+    "かさりと何かが落ちる": "かさりと|何かが|落ちる",
+    "水気ひとつなく黒い朱肉をつけたようだ": "水気|ひとつなく|黒い|朱肉を|つけたようだ",
+    "風に押されていくごみや": "風に|押されていく|ごみや",
+    "一定の速度で転がっていく車輪": "一定の|速度で|転がっていく|車輪",
+    "生きているふりをしようか": "生きている|ふりを|しようか",
+    "死んでいるふりをしようか": "死んでいる|ふりを|しようか",
+    "手についた朱肉を払い落とす": "手に|ついた|朱肉を|払い落とす",
+    "風が吹く": "風が|吹く",
+    "いま歩き出す": "いま|歩き出す",
+}
 SPLIT = {}  # 시집 제목 → (큰 제목, 작은 제목) — render()가 원고의 book.display에서 채움(이스케이프한 글, tt())
 NOSP = set()  # SPLIT 가운데 두 토막을 빈칸 없이 잇는 제목 — 일본어(11/1 번역 메모: 일본어 제목은 빈칸 없이)
 NAMES = []  # 채널 이름(한 · 영) — render()가 videos.json에서 채움(names())
@@ -1308,12 +1327,17 @@ def render(site, poem, videos, photos, lang="ko"):
     if [len(x) for x in tr] != [len(x) for x in ko_st]:
         raise SystemExit(f"번역의 연 · 행 수가 원문과 다름: 원문 {[len(x) for x in ko_st]} · 번역 {[len(x) for x in tr]}")
     stz, ln_no = [], 0
+    # 하7(11/7 동원 'B 말마디 (권장)' — 시안 일본어시줄바꿈_v1): 일본어 번역 행은 말마디(文節)에서만 꺾임 — 끊을 자리에 <wbr> + keep-all(.le.ph).
+    # 브라우저의 word-break:auto-phrase는 크롬 155 시험에서 먹지 않아 손으로 표시 · 행 글이 바뀌어 표에 없으면 예전처럼 글자 사이에서 꺾임(넘치지 않음)
+    def le(b):
+        ph = JA_PHRASE.get(b) if lang == "ja" else None
+        return f'<span class="le ph">{"<wbr>".join(e(x) for x in ph.split("|"))}</span>' if ph and ph.replace("|", "") == b else f'<span class="le">{e(b)}</span>'
     for st, tl in zip(ko_st, tr):
         spans = []
         for a, b in zip(st, tl):
             ln_no += 1
             if pair:
-                spans.append(f'<span class="pair" id="l{ln_no}"><span class="ln" lang="ko">{e(a)}</span><span class="le">{e(b)}</span></span>')
+                spans.append(f'<span class="pair" id="l{ln_no}"><span class="ln" lang="ko">{e(a)}</span>{le(b)}</span>')
                 ix["poem"] += [(tg["poem"], b, S["poem"]["pages"], f"#l{ln_no}"), (tg["poem"], a, S["poem"]["pages"], f"#l{ln_no}")]  # 어디 칸에 쪽수(10/27 출처 한 줄 — 레퍼런스 제안 ⑥)
             else:
                 spans.append(f'<span class="ln" id="l{ln_no}"{ko_attr}>{e(a)}</span>')
