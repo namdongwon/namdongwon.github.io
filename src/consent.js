@@ -164,6 +164,14 @@
     if (a && loaded && window.gtag) window.gtag("event", "kyobo_click", { spot: a.dataset.gaClick });
   }, true);
 
+  // 찾기 검색어 · 「탁본」 끝까지 읽음(11/7 관리 화면 이벤트 사전 — 동원 '넣기' 두 번) — main.js가 쏘는 ndw-ga 신호를 동의한 방문에서만 GA4로 · 이름은 GA4 권장 이름(search) · 우리 이름(poem_read)
+  document.addEventListener("ndw-ga", ev => {
+    const d = ev.detail || {};
+    if (!loaded || !window.gtag) return;
+    if (d.n === "search") window.gtag("event", "search", { search_term: d.q, results: d.r });
+    else if (d.n === "poem_read") window.gtag("event", "poem_read", { lang: d.lang });
+  });
+
   if (okC(saved)) loadC();
   const ask = !saved || (cid && saved.c === undefined);  // 파트너가 늘면(11/3 Clarity) 전에 고른 기기에도 한 번 다시 물음 — 동의 관리 도구(CMP)의 '파트너 목록이 바뀌면 다시 묻기' 관행
   if (ok(saved) && !ask) load();

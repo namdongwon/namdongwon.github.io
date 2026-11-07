@@ -957,6 +957,14 @@
       inp.focus();
     });
     drawR();
+    let gaT = 0;
+    const gaSent = new Set();
+    const gaSearch = (q, n) => {
+      const t = q.trim().slice(0, 100);
+      if (!t || gaSent.has(t) || /@|\d[\d\s-]{6,}\d/.test(t)) return;  // 메일 주소 · 전화번호 꼴은 보내지 않음(GA4 정책 — 개인 식별 정보 금지)
+      gaSent.add(t);
+      document.dispatchEvent(new CustomEvent("ndw-ga", { detail: { n: "search", q: t, r: n } }));
+    };
     const run = () => {
       const q = inp.value;
       if (q === lastQ) return;  // 글자가 그대로면(한글 한 글자 마침 등) 다시 그리지 않음 — 고른 줄을 지킴
@@ -979,6 +987,9 @@
       inp.setAttribute("aria-expanded", opts().length ? "true" : "false");
       pick(-1);
       clearTimeout(sayT);
+      // GA4 search(11/7 관리 화면 이벤트 사전 — 동원 '넣기'): 입력이 1.5초 멈추면(엔터면 바로) 검색어 · 결과 수를 한 번 — 같은 창을 연 동안 같은 말은 한 번만 · 보내기는 consent.js(동의한 방문만)
+      clearTimeout(gaT);
+      if (!empty) gaT = setTimeout(() => gaSearch(q, hits.length), 1500);
       const msg = empty ? "" : hits.length ? cnt.textContent : none.firstElementChild.textContent;
       sayT = setTimeout(() => { if (say) say.textContent = msg; }, 400);  // 치는 동안 글자마다 읽지 않게 잠깐 멈춘 뒤
     };
@@ -986,6 +997,7 @@
     const others = on => [...document.body.children].forEach(el => { if (el !== srch && el.tagName !== "SCRIPT") el.inert = on; });
     const open = () => {
       if (!srch.hidden) return;
+      gaSent.clear();
       from = document.activeElement;
       srch.inert = false;
       srch.hidden = false;
@@ -1058,6 +1070,7 @@
     }
     inp.addEventListener("keydown", ev => {  // Enter(휴대폰 자판 '검색')면 고른 줄로, 고른 줄이 없으면 첫 결과로 — 한글을 짜는 중의 Enter는 글자 마침이라 건너뜀
       if (ev.key !== "Enter" || ev.isComposing || ev.keyCode === 229) return;
+      if (inp.value.trim()) { clearTimeout(gaT); gaSearch(inp.value, res.querySelectorAll("a").length); }  // 엔터면 기다리지 않고 바로
       const to = opts()[act] || res.querySelector("a");
       if (to) { ev.preventDefault(); to.click(); }
     });
@@ -1343,6 +1356,17 @@
     ev.clipboardData.setData("text/plain", txt.replace(/\s+$/, "") + "\n\n" + poemEl.dataset.cite);
     ev.preventDefault();
   });
+
+  // GA4 poem_read(11/7 관리 화면 이벤트 사전 — 동원 '넣기'): 시집 쪽 「탁본」 마지막 줄이 화면에 들어오면 쪽 보기마다 한 번 · 그 쪽 언어판 · 보내기는 consent.js(동의한 방문만)
+  const lastLn = [...document.querySelectorAll(".poem .ln")].pop();
+  if (lastLn && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(es => {
+      if (!es.some(e => e.isIntersecting)) return;
+      io.disconnect();
+      document.dispatchEvent(new CustomEvent("ndw-ga", { detail: { n: "poem_read", lang: H.lang } }));
+    });
+    io.observe(lastLn);
+  }
 
   // 언어 안내 띠(11/6 동원 "이런 섬세한 ux" → 목업 언어안내시안_v1 → "A 헤더 아래 띠 (권장)"): 기기 언어(navigator.languages — 사는 곳이 아니라 기기에 정한 말)가
   // 이 쪽과 다른 판이면 그 사람의 말로 한 줄 · 자동으로 옮기지 않음(Google 다국어 지침) · 이 기기에서 한 번만(보인 순간 표시 — 닫거나 넘어가면 다시 안 뜸) · 서버로 보내는 것 없음
