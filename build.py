@@ -243,6 +243,38 @@ def split_sel(sel):
     return parts + [cur]
 
 
+REDIR_OK = re.compile(r"/(?:[A-Za-z0-9._~%-]+/?)*")
+
+
+def redirect_pages(items, base, docs):
+    # 넘겨주는 작은 쪽(11/7 관리 화면 '404 · 넘겨주기' — 동원 'A 탭 둘'): content/redirects.json의 줄마다(off가 없는 것) 옛 주소 자리에 jekyll-redirect-from 꼴 다섯 겹 —
+    # canonical · noindex · meta refresh · location.replace(+#꼬리) · 본문 한 줄. GitHub Pages는 서버 넘겨주기(301)를 못 해서 쪽으로 넘김 · 사이트맵 · 찾기 색인엔 넣지 않음
+    # 관리 화면은 앞 4,000자 안의 'http-equiv="refresh"'로 넘겨주는 쪽을 알아봄 — 이 낱말을 머리 맨 앞에 둠 · 빌드가 docs를 통째로 새로 쓰므로 끈 줄은 저절로 사라짐
+    made, skipped = [], []
+    for it in items:
+        if it.get("off"):
+            continue
+        fr, to = (it.get("from") or "").strip(), (it.get("to") or "").strip()
+        bad = (not REDIR_OK.fullmatch(fr) or ".." in fr or "//" in fr or fr == "/"
+               or not to.startswith("/") or to.startswith("//") or any(c in to for c in '"<>\\ '))
+        rel = fr.strip("/")
+        out = docs / (rel + "/index.html" if fr.endswith("/") else rel if rel.endswith(".html") else rel + ".html")  # /x/ → x/index.html · /x → x.html · /x.html → 그대로
+        if bad or out.exists():  # 꼴이 틀렸거나 우리 쪽과 겹치면 찍지 않음(관리 화면도 막지만 한 번 더)
+            skipped.append(fr)
+            continue
+        out.parent.mkdir(parents=True, exist_ok=True)
+        href = e(to)
+        out.write_text(
+            f'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url={href}">'
+            f'<title>옮겨졌습니다</title><link rel="canonical" href="{e(base)}{href}"><meta name="robots" content="noindex">'
+            f'<meta name="viewport" content="width=device-width, initial-scale=1">'
+            f'<script>location.replace({json.dumps(to)}{"" if "#" in to else " + location.hash"})</script></head>'  # 가는 곳에 #꼬리가 있으면 그대로 · 없으면 들어온 #꼬리를 이어 줌
+            f'<body><p>옮겨졌습니다 → <a href="{href}">{href}</a></p><p lang="en">This page has moved → <a href="{href}">{href}</a></p></body></html>\n',
+            encoding="utf-8")
+        made.append(fr)
+    return made, skipped
+
+
 def fs_css(css):
     # 판권면 '글자'(11/3 동원 '다정한 UX 7가지' ④ → 목업 글자크기시안_v1 'A 판권면 셋째 줄 (권장)'): html data-fs="l" · "xl"이면 읽는 글자를 112.5 · 125%로
     # (단계는 Apple Dynamic Type 본문 17 → 19 · 21pt의 비율과 같은 결). 사이트 글자가 px라 빌드가 20px 이하 글자 크기만 calc(Npx * var(--fs))로 바꿈 —
@@ -2426,6 +2458,9 @@ def main():
             d.mkdir(parents=True, exist_ok=True)
             (d / "index.html").write_text(stamp(ru_bind(h) if lg == "ru" else h), encoding="utf-8")
     (DOCS / "404.html").write_text(stamp(page404), encoding="utf-8")
+    if (CONTENT / "redirects.json").exists():  # 넘겨주는 작은 쪽(11/7) — 쪽들을 다 쓴 뒤라 '우리 쪽과 겹침'을 알 수 있음
+        made, skipped = redirect_pages(load("redirects.json").get("items", []), base, DOCS)
+        print(f"넘겨주기 {len(made)}쪽" + (f" · 찍지 않음 {len(skipped)}: {', '.join(skipped)}" if skipped else ""))
     for lg, html in priv.items():
         if html:
             d = DOCS / (f"{lg}/privacy" if lg in TR else "privacy")
