@@ -485,6 +485,10 @@ html.sr-on{overflow:hidden}
 .sr-res .wh{font:300 11px/1 var(--sans);color:var(--faint);white-space:nowrap}
 @media (max-width:599px){.sr-res a{grid-template-columns:52px 1fr}.sr-res .wh{grid-column:2;white-space:normal;line-height:1.5}}  /* 폰은 자리 · 설명을 제목 아래 줄로 — 책 설명(110쪽 · … · 교보문고 퍼플)이 제목 칸을 45px로 눌러 낱말마다 세로로 쪼개졌음(10/27 점검) */
 .srch [role="option"].on{background:var(--ph);box-shadow:-14px 0 0 var(--ph),14px 0 0 var(--ph),-16px 0 0 var(--ink)}  /* 방향키로 고른 줄(10/27) — 찾기로 간 줄(.hit)과 같은 옅은 바탕을 양옆으로 조금 넓혀 · 왼쪽 2px 먹 줄(10/28 동원 'B 왼쪽 먹 줄 더하기' — 옅은 바탕만으로는 어둡게 1.09:1이라 거의 안 보였음) */
+/* 찾기 창 줄 호버(11/9 밤 동원 "마우스 오버시 아무런 일도 없잖아 그 칸이 색이 변해야지 회색으로") — 방향키로 고른 줄(.on)과 같은 옅은 회색을 양옆 14px까지(먹 막대는 방향키에만) · 인기 검색어 · 검색 결과 · 넓은 창 최근 검색어 */
+.srch :is(.sug a,.sug button,.sr-res a),.srh .rc-l li{transition:background-color var(--fast) var(--e2),box-shadow var(--fast) var(--e2)}
+@media (hover:hover){.srch :is(.sug a,.sug button,.sr-res a):hover{background:var(--ph);box-shadow:-14px 0 0 var(--ph),14px 0 0 var(--ph)}.srch :is(.sug a,.sug button,.sr-res a):hover :is(i,.tg,.wh){color:var(--muted)}}
+@media (hover:hover) and (min-width:768px){.srh .rc-l li:hover{background:var(--ph);box-shadow:-14px 0 0 var(--ph),14px 0 0 var(--ph)}.srh .rc-q:hover{text-decoration:none}}  /* 넓은 창 최근 검색어는 밑줄 대신 칸 회색(동원 "밑줄이 아니라 칸에서 회색이 나와야해") · 휴대폰 칩은 그대로 */
 .srch .on i,.srch .on .tg,.srch .on .wh{color:var(--muted)}  /* 옅은 바탕 위 작은 글자는 한 단 진하게(대비 4.5 넘게) */
 .sr-none{margin-top:72px;text-align:center;font:14px/1.7 var(--body);color:var(--muted)}.sr-none span{display:block;color:var(--ink);overflow-wrap:anywhere}.sr-none small{display:block;margin-top:6px;font-size:12.5px}  /* 친 말 되돌림은 먹 · 길 한 줄은 옅게(11/6 2차 ①) */  /* 결과 없음 — 추천 대신 가운데 한 줄(11/4 동원 · 노션 꼴) */
 .hit{background:var(--ph);transition:background 1.4s ease}  /* 찾기 결과로 간 줄을 잠깐 */
