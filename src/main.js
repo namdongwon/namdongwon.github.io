@@ -950,9 +950,9 @@
     const remember = q => { q = q.trim().slice(0, 40); if (q) keepR([q, ...recent().filter(x => x !== q)]); };
     const drawR = () => {
       const a = recent();
-      rc.innerHTML = `<div class="rc-h"><p class="sr-lab">${esc(uiText("recent_title", "최근 찾은 말"))}</p>` + (a.length ? `<button type="button" class="rc-x">${esc(uiText("recent_clear", "모두 지우기"))}</button>` : "") + "</div>" +
+      rc.innerHTML = `<div class="rc-h"><p class="sr-lab">${esc(uiText("recent_title", "최근 검색어"))}</p>` + (a.length ? `<button type="button" class="rc-x">${esc(uiText("recent_clear", "모두 지우기"))}</button>` : "") + "</div>" +
         (a.length ? '<ul class="rc-l">' + a.map(q => `<li><button type="button" class="rc-q" data-q="${esc(q)}">${esc(q)}</button><button type="button" class="rc-d" data-rm="${esc(q)}" aria-label="${esc(uiText("recent_del", "{q} 지우기", { q }))}"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M5 5l8 8M13 5l-8 8"/></svg></button></li>`).join("") + "</ul>"
-          : `<p class="rc-n">${esc(uiText("recent_none", "최근 찾은 말이 없습니다"))}</p>`);
+          : `<p class="rc-n">${esc(uiText("recent_none", "최근 검색어가 없습니다"))}</p>`);
     };
     rc.addEventListener("click", ev => {
       const d = ev.target.closest(".rc-d, .rc-x");
