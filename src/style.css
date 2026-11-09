@@ -1331,3 +1331,11 @@ html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja
   :is(#home .n6 a.go,#home .lab a.go,.pp .oth,.gbn a){transition:color .12s,border-color .12s}
 }
 .wall .wt .wcap{content:normal}  /* 글 칸은 제 글을 그대로(가상 요소 규칙과 묶여 있어 content만 풀어 둠) */
+/* 커서 점 · 누르면 파동(11/9 동원 "A 점만 (권장)" — 시안 기준/브랜드 시안/커서시안_v1 · 움직임은 cursor.js) — 마우스 기기에서만 기본 화살표를 숨김(.cur-on은 cursor.js가 붙임 · 스크립트가 없으면 기본 그대로) · 글 칸은 기본 글 커서 */
+.cur-on,.cur-on *{cursor:none!important}.cur-on :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),textarea,[contenteditable=true]){cursor:text!important}
+.cur{position:fixed;left:0;top:0;width:8px;height:8px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 1px color-mix(in srgb,var(--bg) 75%,transparent);pointer-events:none;z-index:2147483647;transform:translate3d(-100px,-100px,0);transition:width .28s var(--e2,cubic-bezier(.2,.7,.3,1)),height .28s var(--e2,cubic-bezier(.2,.7,.3,1)),background-color .2s,box-shadow .2s,opacity .2s}
+.cur.lnk{width:38px;height:38px;background:transparent;box-shadow:inset 0 0 0 1px var(--ink),0 0 0 1px color-mix(in srgb,var(--bg) 60%,transparent)}
+.cur.dn{width:6px;height:6px}.cur.lnk.dn{width:30px;height:30px}.cur.off{opacity:0}
+.rip{position:fixed;left:0;top:0;width:14px;height:14px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ink) 55%,transparent);pointer-events:none;z-index:2147483646;transform:translate(-50%,-50%);animation:rip .6s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes rip{to{transform:translate(-50%,-50%) scale(5.5);opacity:0}}
+@media (prefers-reduced-motion:reduce){.cur,.rip{display:none}}:root[data-motion="reduce"] :is(.cur,.rip){display:none}

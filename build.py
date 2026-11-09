@@ -1978,6 +1978,7 @@ def render(site, poem, videos, photos, lang="ko"):
 {pv if k == "photo" else ""}{srch}<script id="sidx" type="application/json">{sidx}</script><script id="nw" type="application/json">{nw_js}</script>
 <script id="ui" type="application/json">{ui_js}</script>
 <script src="{P}assets/main.js" defer onerror="document.documentElement.classList.remove('js','intro')"></script>
+<script src="{P}assets/cursor.js" defer></script>
 {consent_html(L, ga, urlparse(base).netloc or base, clarity(site)) + f'<script src="{P}assets/consent.js" defer></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
 </html>
 """
@@ -2030,7 +2031,7 @@ def page_privacy(site, lang):
 {ckp}{secs}
 <p class="up">{g(p["updated_label"])} <time datetime="{d.isoformat()}">{when}</time></p>
 <p class="back"><a class="buy" href="../">{g(p["back"])}</a>{oth}</p>
-</main>{cz}{cf_tag(site)}</body></html>
+</main>{cz}<script src="{R}assets/cursor.js" defer></script>{cf_tag(site)}</body></html>
 """
 
 
@@ -2060,7 +2061,7 @@ def page_404(site, ja=True):
 {five("ko", "/")}
 <p class="lead" lang="en">{en("nf_title")}. {en("nf_lead")}</p>
 <p lang="en"><a class="buy" href="/en/">{en("nf_back")}</a></p>
-{five("en", "/en/")}{jp}</main>{cf_tag(site)}</body></html>
+{five("en", "/en/")}{jp}</main><script src="/assets/cursor.js" defer></script>{cf_tag(site)}</body></html>
 """
 
 
@@ -2385,9 +2386,10 @@ def main():
     css = re.sub(r'url\("(fonts/[\w.-]+\.woff2)"\)', lambda m: f'url("{m.group(1)}' + (f'?v={ver[m.group(1)]}' if m.group(1) in ver else "") + '")', css)
     (ASSETS / "style.css").write_text(css, encoding="utf-8")
     shutil.copy2(SRC / "main.js", ASSETS / "main.js")
+    shutil.copy2(SRC / "cursor.js", ASSETS / "cursor.js")  # 커서 점 · 누르면 파동(11/9 'A 점만') — 모든 쪽(처리방침 · 404 포함)
     if ga4(site):
         shutil.copy2(SRC / "consent.js", ASSETS / "consent.js")  # 동의 창 움직임(11/1) — GA4를 켰을 때만(끄면 사이트 파일이 전과 같음)
-    ver.update({x: fp((ASSETS / x).read_bytes()) for x in ("style.css", "main.js", "consent.js") if (ASSETS / x).exists()})
+    ver.update({x: fp((ASSETS / x).read_bytes()) for x in ("style.css", "main.js", "consent.js", "cursor.js") if (ASSETS / x).exists()})
 
     ogv = {}
 
@@ -2398,7 +2400,7 @@ def main():
         return ogv[name]
 
     def stamp(h):  # 쪽 안의 assets/style.css · main.js · consent.js · fonts/….woff2 주소 끝에 그 파일의 지문 · 공유 카드 og-….jpg도
-        h = re.sub(r'(assets/(style\.css|main\.js|consent\.js|fonts/[\w.-]+\.woff2))(?=")', lambda m: m.group(1) + (f"?v={ver[m.group(2)]}" if m.group(2) in ver else ""), h)
+        h = re.sub(r'(assets/(style\.css|main\.js|consent\.js|cursor\.js|fonts/[\w.-]+\.woff2))(?=")', lambda m: m.group(1) + (f"?v={ver[m.group(2)]}" if m.group(2) in ver else ""), h)
         return re.sub(r'(assets/(og[\w.-]*\.(?:jpg|png)))(?=")', lambda m: m.group(1) + (f"?v={og_fp(m.group(2))}" if og_fp(m.group(2)) else ""), h)
 
     cover = CONTENT / site["book"]["cover"]
