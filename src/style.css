@@ -1342,7 +1342,7 @@ html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja
    → 동원 "포인트를 좀 더 줄이자 14로 할까?" → 14 · 16 · 18 · 22 견줌(커서크기시안_v3 — 14는 글자 일부만 뒤집혀 반전이 안 보임) → 버튼 "18px (권장)" — 메뉴 글자 한 자가 통째로 뒤집힘 → 스테이징에서 보고 동원 "14로 가자" — 14px(누름 11px) */
 .cur-on,.cur-on *{cursor:none!important}.cur-on :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),textarea,[contenteditable=true]){cursor:text!important}
 .cur{position:fixed;left:0;top:0;width:14px;height:14px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;z-index:2147483647;transform:translate3d(-100px,-100px,0);transition:width .2s var(--e2),height .2s var(--e2),opacity .2s}
-.cur.dn{width:11px;height:11px}.cur.off{opacity:0}
+.cur.dn{width:11px;height:11px}.cur.off{opacity:0}.cur.lt{mix-blend-mode:normal}  /* 어두운 바탕 위 순흰 점(cursor.js가 바탕 밝기를 읽어 붙임 — 11/9 밤 동원 '아예 흰색') */
 .rip{position:fixed;left:0;top:0;width:14px;height:14px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ink) 55%,transparent);pointer-events:none;z-index:2147483646;transform:translate(-50%,-50%);animation:rip .6s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes rip{to{transform:translate(-50%,-50%) scale(5.5);opacity:0}}
 @media (prefers-reduced-motion:reduce){.cur,.rip{display:none}}:root[data-motion="reduce"] :is(.cur,.rip){display:none}
