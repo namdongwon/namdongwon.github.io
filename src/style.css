@@ -1333,10 +1333,11 @@ html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja
 .wall .wt .wcap{content:normal}  /* 글 칸은 제 글을 그대로(가상 요소 규칙과 묶여 있어 content만 풀어 둠) */
 /* 커서 점 · 누르면 파동(11/9 동원 "A 점만 (권장)" — 시안 기준/브랜드 시안/커서시안_v1 · 움직임은 cursor.js) — 마우스 기기에서만 기본 화살표를 숨김(.cur-on은 cursor.js가 붙임 · 스크립트가 없으면 기본 그대로) · 글 칸은 기본 글 커서
    11/9 밤 동원 "마우스 오버시 원이 커지지 않았으면" · "기본 마우스포인터 크기가 좀 작지 않아?" → 수상작 실측(Architecture.Film — Awwwards HM: 22.4px 꽉 찬 원 · 링크 위 변화 없음 · mix-blend-mode difference) → 버튼 "14px · 뒤집기 (권장)"
-   흰 점 + difference: 흰 바탕에선 먹 점, 사진 · 어두운 화면에선 밝은 점, 점 밑 글자는 뒤집혀 비침(무채색 그대로) · 링크 위에서도 같은 크기(누를 수 있다는 신호는 링크 스스로의 호버 반응으로) */
+   흰 점 + difference: 흰 바탕에선 먹 점, 사진 · 어두운 화면에선 밝은 점, 점 밑 글자는 뒤집혀 비침(무채색 그대로) · 링크 위에서도 같은 크기(누를 수 있다는 신호는 링크 스스로의 호버 반응으로)
+   11/9 밤 동원 "색반전 없는데?" · "https://www.architecture.film/ 이것처럼" → 색 견줌(커서색시안_v1 — AF 주황은 흰 바탕에서 파랑으로 바뀜 · 사이트 첫 색이 됨) → 버튼 "B 흰 점 22px (권장)" — AF와 같은 크기로 글자가 통째로 뒤집힘 · 무채색 그대로 */
 .cur-on,.cur-on *{cursor:none!important}.cur-on :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),textarea,[contenteditable=true]){cursor:text!important}
-.cur{position:fixed;left:0;top:0;width:14px;height:14px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;z-index:2147483647;transform:translate3d(-100px,-100px,0);transition:width .2s var(--e2),height .2s var(--e2),opacity .2s}
-.cur.dn{width:11px;height:11px}.cur.off{opacity:0}
+.cur{position:fixed;left:0;top:0;width:22px;height:22px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;z-index:2147483647;transform:translate3d(-100px,-100px,0);transition:width .2s var(--e2),height .2s var(--e2),opacity .2s}
+.cur.dn{width:17px;height:17px}.cur.off{opacity:0}
 .rip{position:fixed;left:0;top:0;width:14px;height:14px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ink) 55%,transparent);pointer-events:none;z-index:2147483646;transform:translate(-50%,-50%);animation:rip .6s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes rip{to{transform:translate(-50%,-50%) scale(5.5);opacity:0}}
 @media (prefers-reduced-motion:reduce){.cur,.rip{display:none}}:root[data-motion="reduce"] :is(.cur,.rip){display:none}
