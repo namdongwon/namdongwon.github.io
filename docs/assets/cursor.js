@@ -1,5 +1,5 @@
 // 커서 점 · 누르면 파동(11/9 동원 "시안 영상에서 보여준 마우스 포인터랑 누르면 파동 … 내 웹사이트 들어와도 똑같이" → 시안 커서시안_v1 → "A 점만 (권장)")
-// 마우스가 있는 기기: 기본 화살표를 숨기고 먹 점 하나가 따라옴 · 누를 수 있는 것 위에선 테두리 원 · 글 칸 위에선 점을 숨기고 기본 글 커서
+// 마우스가 있는 기기: 기본 화살표를 숨기고 점 하나(14px · 뒤집기)가 따라옴 · 링크 위에서도 같은 모양(11/9 밤 동원 '커지지 않았으면') · 글 칸 위에선 점을 숨기고 기본 글 커서
 // 휴대폰 · 손가락: 점 없이 누른 자리에 파동만 · 움직임 줄이기(기기 설정 · 판권면 스위치 — 켜고 끄는 즉시)면 점 · 파동 모두 끔
 // 모양은 style.css(.cur · .rip) — 처리방침 · 404처럼 main.js가 없는 쪽에도 따로 실림
 (() => {
@@ -7,7 +7,6 @@
   const sysReduce = matchMedia("(prefers-reduced-motion: reduce)");
   const fine = matchMedia("(hover: hover) and (pointer: fine)");
   const calm = () => sysReduce.matches || H.getAttribute("data-motion") === "reduce";
-  const LINK = "a[href],button,summary,label,select,[role=button],[role=tab],[role=switch],input[type=checkbox],input[type=radio]";
   const TEXT = "input:not([type=checkbox]):not([type=radio]):not([type=range]),textarea,[contenteditable=true]";
   let dot = null, x = 0, y = 0, tx = 0, ty = 0, seen = false, run = false;
   const sync = () => {  // 마우스 기기 · 움직임 켬일 때만 점(스위치를 바꾸면 바로 따라감)
@@ -31,7 +30,6 @@
     tx = e.clientX; ty = e.clientY;
     if (!seen) { x = tx; y = ty; seen = true; }
     const t = e.target instanceof Element ? e.target : null;
-    dot.classList.toggle("lnk", !!(t && t.closest(LINK)));
     dot.classList.toggle("off", !!(t && t.closest(TEXT)));
     if (!run) { run = true; requestAnimationFrame(tick); }
   }, { passive: true });
