@@ -961,8 +961,7 @@ html.sr-on{overflow:hidden}
 @media (hover:hover){.fcols :is(a,button):hover{text-decoration:underline;text-underline-offset:4px}.ficons a:hover{background:var(--ph)}}  /* 호버 — 글은 밑줄, 아이콘은 옅은 회색(11/2 맨 위 띠와 같은 결) */
 .fbar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;margin-top:44px;padding:16px 0 72px;border-top:1px solid var(--rule);font:300 11px/1.6 var(--sans);color:var(--faint);text-align:left}  /* 휴대폰 — 맨 위로 단추(오른쪽 아래 고정) 자리를 비움 */
 @font-face{font-family:"JPN";src:url("fonts/ndw-sans-jp-name.woff2") format("woff2");font-weight:300;font-display:swap;unicode-range:U+65E5,U+672C,U+8A9E}
-.lng a[lang="ja"]{font-family:"JPN",var(--sans)}  /* 한국어 · 영어판 바닥글의 '日本語' — 일본어판과 같은 고딕 가늘게(11/3 목업 'A 일본어판 고딕 (권장)') · 세 글자만 1.1KB · 그 글자가 그려질 때만 받음 */
-.fbar .lng [aria-current]{color:var(--ink)}
+.lsw a[lang="ja"]{font-family:"JPN",var(--sans)}  /* 한국어 · 영어판 바닥글의 '日本語' — 일본어판과 같은 고딕 가늘게(11/3 목업 'A 일본어판 고딕 (권장)') · 세 글자만 1.1KB · 그 글자가 그려질 때만 받음 */
 @media (max-width:767px){.fcols{grid-template-columns:1fr 1fr;gap:36px 20px}.fcols>div:last-child{grid-column:1/-1}}  /* 휴대폰 두 단 · 설정은 한 줄 통째(정갈 A) */
 @media (min-width:768px){.foot{padding:0 64px}.fcols{grid-template-columns:repeat(4,1fr);gap:30px}.fbar{padding-bottom:30px}}
 /* 맨 위 띠 오른쪽 찾기 · 연락하기(10/31 메뉴를 가운데로 — 메뉴 밖 묶음) · 휴대폰은 메뉴와 사이 구분선(전엔 언어 단추 앞) → 11/2 구분선 뺌 */
@@ -970,9 +969,17 @@ html.sr-on{overflow:hidden}
 .top .act{display:flex;align-items:center;gap:16px;margin-left:12px;white-space:nowrap}  /* 돋보기 앞 구분선 뺌(11/2 동원 '돋보기 왼쪽에 선 없애고') */
 @media (max-width:374px){.top .act{gap:8px;margin-left:8px}}
 /* 바닥글 언어 줄(10/31 동원 '언어 설정 하단 푸터로') — 화면 줄 바로 아래, 지금 판은 먹 글자 · 다른 판은 밑줄 링크 */
-.colo .lng span{color:var(--ink)}.colo .lng a{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}
-.colo .lng a{position:relative}.colo .lng a::before{content:"";position:absolute;inset:-8px -4px}  /* 누르는 자리 24px 넘게(11/3 UX 점검 ② — 실측 English 35×14 · 日本語 29×14 · WCAG 2.2 2.5.8) */
-@media (hover:hover){.colo .lng a:hover{color:var(--ink)}}
+/* 11/9 네 개 나열 → '🌐 KO ▾' + 위로 펼침(동원 레퍼런스 그림 · 목업 푸터언어고르기시안_v1 "A 지구본 (권장)") — 펼친 상자만 둥근 모서리 · 옅은 그림자, 색은 먹 · 고른 판 굵게 + ✓ */
+.lsw{position:relative}
+.lsw summary{display:inline-flex;align-items:center;gap:6px;padding:8px 2px;margin:-8px -2px;list-style:none;cursor:pointer;font:400 12px/1 var(--sans);letter-spacing:.04em;color:var(--ink);-webkit-tap-highlight-color:transparent}
+.lsw summary::-webkit-details-marker{display:none}
+.lsw .gl{width:15px;height:15px}.lsw .cr{width:8px;height:8px;color:var(--muted);transition:transform .2s}.lsw[open] .cr{transform:rotate(180deg)}
+.lsw ul{position:absolute;left:-8px;bottom:calc(100% + 10px);z-index:5;min-width:168px;margin:0;padding:6px;list-style:none;background:var(--bg);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08)}
+.lsw li>*{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:8px;font:300 14px/1.2 var(--sans);color:var(--ink);text-decoration:none}
+.lsw li>[aria-current]{font-weight:600}.lsw li>[aria-current]::after{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat;mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat}
+.lsw li>a:active{background:var(--ph)}.lsw summary:active{opacity:.6}
+@media (hover:hover){.lsw li>a:hover{background:var(--ph)}.lsw summary:hover>span[lang]{text-decoration:underline;text-underline-offset:4px}}
+.lsw summary:focus-visible,.lsw li>a:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
 /* 동의 창(11/1 동원 "고야드 식으로 하긴 하는데 좀 정확히 따라해봐" · 안 1 고야드 문구 바탕 · "동의 관리는 고야드 동의 관리를 참고해서 적은거야?") — 고야드(Didomi) 세 단계를 그대로.
    값은 goyard.com/kr_ko 창에서 잰 것(11/1 04:5x 앱 안 브라우저 · 1134px 폭 getComputedStyle): 글은 명조(고야드 Newsreader + 한글 명조 → 우리 --serif) · 제목 · 단추는 고딕(Arial · Goyard → --sans)
    색만 무채색: 짙은 초록 테두리 · 금색 → 먹 / 푸른 회색 #526e7a → --faint / 글 #333 → 먹 82% / 단추 글 #757575 → --faint / 고른 단추(빨강 · 초록) → 먹 · 이름은 모두 cz-(사이트 .skip · .bk와 겹쳤던 일 뒤) */

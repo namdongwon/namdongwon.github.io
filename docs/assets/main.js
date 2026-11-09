@@ -512,6 +512,12 @@
     const to = hit ? "#" + hit.id : "";  // 같은 쪽의 다른 판으로(10/31 쪽 나누기 — 언어 단추가 그 쪽 주소를 가리킴)
     if (to) { ev.preventDefault(); location.href = swap.getAttribute("href") + to; }
   }));
+  // 11/9 언어 고르기 펼침(<details>) — 바깥을 누르거나 Esc면 닫힘(Esc는 닫고 '🌐 KO'로 초점을 돌림 · 스크립트 없는 쪽은 다시 눌러 닫음)
+  const lsw = document.querySelector(".lsw");
+  if (lsw) {
+    document.addEventListener("click", ev => { if (lsw.open && !lsw.contains(ev.target)) lsw.open = false; });
+    lsw.addEventListener("keydown", ev => { if (ev.key === "Escape" && lsw.open) { lsw.open = false; lsw.querySelector("summary").focus(); } });
+  }
 
   // 사진 칸의 한 장씩 · 모아 보기 · 3D 고리(10/24–11/1)는 11/3 흐르는 벽으로 바뀌며 뺌(11/4 정리 — git 기록 9cec51b 앞에 있음)
 

@@ -61,6 +61,8 @@ THEME_ICONS = {k: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" st
     "light": '<circle cx="10" cy="10" r="3.4"/><path d="M10 1.8v2M10 16.2v2M1.8 10h2M16.2 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M4.2 15.8l1.4-1.4M14.4 5.6l1.4-1.4"/>',
     "dark": '<path d="M16.6 12.4A7 7 0 0 1 7.6 3.4a7 7 0 1 0 9 9z"/>',
 }.items()}  # 판권면 화면 고르기 그림(10/28 동원 "이모지로 하자 글자 말고" → "B 선 그림 먹") — 돋보기와 같은 20칸 · 선 1.4 · 모니터 · 해 · 달
+GLOBE_ICON = '<svg class="gl" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.5"/><path d="M2.5 10h15M10 2.5c2.2 2.3 3.2 4.8 3.2 7.5s-1 5.2-3.2 7.5M10 2.5C7.8 4.8 6.8 7.3 6.8 10s1 5.2 3.2 7.5"/></svg>'  # 바닥글 언어 고르기(11/9 A 지구본) — 국기 대신(나라 ≠ 언어)
+CARET_ICON = '<svg class="cr" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true" focusable="false"><path d="M1.5 3.5h7L5 7.5z"/></svg>'  # 펼침 표시 — 열리면 CSS가 뒤집음
 PAL_FONT = "bon-myeongjo.woff2"  # 글자 팔레트(10/28)의 글자 612가지는 본명조 보통 판에만 담음 — 굵게 · 고딕 판은 늘지 않게(main)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
 ARROW = ("bon-myeongjo-arrow.woff2", "←↑→↓↗")  # 화살표만 담은 작은 판(11/7 밤부터 源ノ明朝 Regular에서 — 본명조와 같은 꼴 · ↗ 있음 · 파일 이름은 그대로)(CSS ARW · unicode-range) — 영어 · 일본어판 명조(Newsreader)에 화살표가 없어 → · ↗ 하나 때문에 본명조 통째 판 131KB를 받던 것(11/3 Lighthouse 점검)
@@ -1595,15 +1597,18 @@ def render(site, poem, videos, photos, lang="ko"):
     icons = "".join(f'<li><a href="{h}" aria-label="{a}"{x}>{FOOT_ICONS[k]}</a></li>' for k, h, a, x in (
         ("ig", e(iu), e(L["nav"][2]), ext), ("yt", e(ch.get("url", "")), e(L["nav"][3]), ext),
         ("mail", "~R~contact/", L["nav_cta"], ""), ("book", e(book["buy_url"]), e(book["store_label"]), ext + gcc("판권면 아이콘"))))
-    # 언어(10/31 동원 "언어 설정 하단 푸터로 빼" · 11/1 세 판 '한국어 · English · 日本語') — 아래 띠 왼쪽: 지금 판은 먹 글자 · 다른 두 판은 그 쪽의 같은 자리로(~L:말~)
-    langs = f"{NB}· ".join(lang_item(x) for x in LANGS)
+    # 언어(10/31 동원 "언어 설정 하단 푸터로 빼" · 11/1 세 판 '한국어 · English · 日本語') — 아래 띠 왼쪽: 지금 판은 먹 글자 · 다른 판은 그 쪽의 같은 자리로(~L:말~)
+    # 11/9 네 개 나열 → '🌐 KO ▾' 하나 + 위로 펼침(동원 레퍼런스 그림 · 목업 기준/브랜드 시안/푸터언어고르기시안_v1 → "A 지구본 (권장)" — 국기는 나라라 언어에 쓰지 않음)
+    # <details>라 스크립트 없이도 열림(처리방침 · 404처럼 main.js 없는 쪽도 같음) · 바깥 누름 · Esc로 닫기는 main.js · 고른 판의 ✓는 CSS(글자에 섞지 않음)
+    langs = (f'<details class="lsw"><summary><span class="sr">{t("lng_pick")}: </span>{GLOBE_ICON}<span lang="{lang}">{lang.upper()}</span>{CARET_ICON}</summary>'
+             f'<ul>{"".join(f"<li>{lang_item(x)}</li>" for x in LANGS)}</ul></details>')
     colo = (f'<div class="colo"><div class="fcols"><div><h2 class="fh">{t("foot_pages")}</h2><ul>{nav_li}</ul></div>'
             f'<div><h2 class="fh">{e(L["nav"][1])}</h2><ul>{book_li}</ul></div>'
             f'<div><h2 class="fh">{t("foot_info")}</h2><ul>{info_li}</ul></div>'
             f'<div><h2 class="fh">{t("foot_settings")}</h2>{ctl}</div></div>'
             f'<div class="fmark"><p class="dm">{e(urlparse(base).netloc or base)}</p></div>'  # 가운데 이름 '남 동원'은 뺌(11/2 동원 '두 줄 뺀 상태')
             f'<ul class="ficons">{icons}</ul>'  # 맺음 인사(10/27 '좋은 아침')는 바닥글에서 뺌(11/2) — 탁본 한 장에는 그대로
-            f'<div class="fbar"><p class="lng">{langs}</p><p class="cp">{e(S["copyright"])}</p></div></div>')
+            f'<div class="fbar"><div class="lng">{langs}</div><p class="cp">{e(S["copyright"])}</p></div></div>')
 
     secs = ("me", "poem", "photo", "video", "contact", "guestbook")  # 방명록(11/2)은 ui.json nav 여섯째 낱말 — 앞 다섯 차례는 그대로
     navname = dict(zip(secs, L["nav"]))  # 낱말은 ui.json nav 그대로(찾기 칸 이름도 이 차례로 씀)
