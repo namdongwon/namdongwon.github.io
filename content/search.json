@@ -43,27 +43,6 @@
       }
     },
     {
-      "label": "책장에 꽂기",
-      "note": "교보문고",
-      "go": "buy",
-      "q": "",
-      "en": {
-        "label": "Add to your shelf",
-        "note": "Kyobo Book Centre",
-        "q": ""
-      },
-      "ja": {
-        "label": "本棚に並べる",
-        "note": "教保文庫",
-        "q": ""
-      },
-      "ru": {
-        "label": "Поставить на полку",
-        "note": "Kyobo Book Centre",
-        "q": ""
-      }
-    },
-    {
       "label": "영화 리뷰",
       "note": "유튜브",
       "go": "",
