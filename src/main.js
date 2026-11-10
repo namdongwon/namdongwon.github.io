@@ -1426,7 +1426,7 @@
       const y = scrollY;
       fogT.classList.toggle("on", y > 8);
       fogT.classList.toggle("up", top.classList.contains("hide"));
-      fogB.classList.toggle("on", innerHeight + y < document.documentElement.scrollHeight - 4);
+      fogB.classList.toggle("on", innerHeight + y < document.documentElement.scrollHeight - fogB.offsetHeight);  // 맨 아래 줄(언어 · 저작권)이 보이기 시작하면 끔 — 덮인 채면 글자가 옅고 커서 원 안도 회색(11/10 동원 "이것도 흰색이 아니잖아")
     };
     const toph = () => H.style.setProperty("--toph", top.offsetHeight + "px");
     toph(); fog();
