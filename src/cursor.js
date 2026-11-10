@@ -42,7 +42,8 @@
     dot.classList.toggle("sl", !!sl && !f);
     const L = !f && !sl && t ? t.closest(LINK) : null;
     dot.classList.toggle("lk", !!L);
-    if (L !== ink) { if (ink) ink.classList.remove("cur-ink"); ink = L && L.getBoundingClientRect().height <= 44 && (faded(L) || faded(t)) ? L : null; if (ink) ink.classList.add("cur-ink"); }  // 원이 덮은 회색 글자는 먹색으로 — 반전되면 순흰(어둡게는 순검정)(11/10 동원 "푸터 글자들 마우스 오버시 회색이지? 흰색으로 해야지 … 전부 흰색으로") · 한 줄짜리 링크만(높이 44px 이하) — 카드 · 큰 링크는 글 색 그대로(11/10 동원 "마우스 오버시 글이 왜 더 진해져?" → 버튼 "카드 · 큰 링크는 빼기 (권장)")  // 링크 · 단추 위 — 점이 32px로 커져 글자를 반전(11/10 동원 "닿았을때 원이 좀 더 커졌으면" → 버튼 "32px (권장)")
+    dot.classList.toggle("pl", !!(L && L.closest(".lsw li")));  // 언어 목록 줄 위에선 반전 없는 테두리 원 — 국기가 본래 색 그대로(11/10 동원 "국가의 국기들 내가 마우스 오버해도 그 국가의 본연의 색깔 그대로")
+    if (L !== ink) { if (ink) ink.classList.remove("cur-ink"); ink = L && !L.closest(".lsw li") && L.getBoundingClientRect().height <= 44 && (faded(L) || faded(t)) ? L : null; if (ink) ink.classList.add("cur-ink"); }  // 원이 덮은 회색 글자는 먹색으로 — 반전되면 순흰(어둡게는 순검정)(11/10 동원 "푸터 글자들 마우스 오버시 회색이지? 흰색으로 해야지 … 전부 흰색으로") · 한 줄짜리 링크만(높이 44px 이하) — 카드 · 큰 링크는 글 색 그대로(11/10 동원 "마우스 오버시 글이 왜 더 진해져?" → 버튼 "카드 · 큰 링크는 빼기 (권장)")  // 링크 · 단추 위 — 점이 32px로 커져 글자를 반전(11/10 동원 "닿았을때 원이 좀 더 커졌으면" → 버튼 "32px (권장)")
     dot.classList.remove("off");
     if (!run) { run = true; requestAnimationFrame(tick); }
   }, { passive: true });
