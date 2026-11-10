@@ -1325,7 +1325,7 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .gbf .msg.cut{color:var(--ink)}  /* 붙여 넣은 글이 잘렸다는 알림은 먹으로(11/6 ⑫) */
 .vt .og .on{display:inline-block}  /* 원제 + 마침표는 들어가면 한 덩어리(11/6 — 'リリイ・ / シュシュ' · 마침표 홀로 갈렸음) · 줄보다 길면 그 안에서 갈림 */
 /* 11/6 밤 전수 점검 넘김(웹사이트 전수 점검_2026-11-06 · 동원 '점심 열차로 넘기기' — 지금 처리) */
-html:lang(ru) #home .tip{white-space:normal;max-width:calc(100% - 12px);text-align:center}  /* 상1(책 단이 320에서 화면 밖으로 6px — 그만큼 좁혀 가운데) — 러시아어 안내 «Нажмите, чтобы увидеть корешок и оборот»가 320 · 375에서 잘림 → 러시아어만 줄바꿈 허용 */
+:is(html:lang(ru),html:lang(es),html:lang(fr)) #home .tip{white-space:normal;max-width:calc(100% - 12px);text-align:center}  /* 스페인어 · 프랑스어 안내 줄도 길어 휴대폰에서 잘렸음(11/10 — 'Touchez pour voir le dos et la quatrième de couverture') */  /* 상1(책 단이 320에서 화면 밖으로 6px — 그만큼 좁혀 가운데) — 러시아어 안내 «Нажмите, чтобы увидеть корешок и оборот»가 320 · 375에서 잘림 → 러시아어만 줄바꿈 허용 */
 @media (max-width:389px){html:lang(ja) .wall h2{font-size:clamp(32px,10.5vw,46px);overflow-wrap:normal}}  /* 중1 — 일본어 제목 글꼴이 넓어 320에서 'nam_dong_wo / n_' → 좁은 화면만 한 단 작게 */
 html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja) .lead{word-break:auto-phrase}  /* 중2 — 'メー / ル' · 'コ / ピー' 쪼개짐 · 리드 끝 'い。' 홀로(auto-phrase는 되는 브라우저만) */
 .gbn a{white-space:nowrap}  /* 중8 — '개인정보 / 처리방침' 두 줄로 갈림 */

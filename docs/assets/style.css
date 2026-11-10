@@ -1228,7 +1228,7 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .gbf .msg.cut{color:var(--ink)}  
 .vt .og .on{display:inline-block}  
 
-html:lang(ru) #home .tip{white-space:normal;max-width:calc(100% - 12px);text-align:center}  
+:is(html:lang(ru),html:lang(es),html:lang(fr)) #home .tip{white-space:normal;max-width:calc(100% - 12px);text-align:center}    
 @media (max-width:389px){html:lang(ja) .wall h2{font-size:clamp(32px,10.5vw,46px);overflow-wrap:normal}}  
 html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja) .lead{word-break:auto-phrase}  
 .gbn a{white-space:nowrap}  
