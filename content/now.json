@@ -19,6 +19,10 @@
       "es": {
         "label": "Leyendo",
         "text": ""
+      },
+      "fr": {
+        "label": "En lecture",
+        "text": ""
       }
     },
     {
@@ -39,6 +43,10 @@
       "es": {
         "label": "Editando",
         "text": "Película *Todo sobre Lily Chou-Chou* — el primer episodio de «Bello Nam»"
+      },
+      "fr": {
+        "label": "En montage",
+        "text": "Film *All About Lily Chou-Chou* — le premier épisode de « Beau Nam »"
       }
     },
     {
@@ -58,6 +66,10 @@
       },
       "es": {
         "label": "Escribiendo",
+        "text": ""
+      },
+      "fr": {
+        "label": "En écriture",
         "text": ""
       }
     }

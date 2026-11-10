@@ -76,6 +76,9 @@
               },
               "es": {
                 "title": "Sueño blanco"
+              },
+              "fr": {
+                "title": "Sommeil blanc"
               }
             },
             {
@@ -92,6 +95,9 @@
               },
               "es": {
                 "title": "Campo de visión"
+              },
+              "fr": {
+                "title": "Champ de vision"
               }
             },
             {
@@ -108,6 +114,9 @@
               },
               "es": {
                 "title": "Un peso que no se hunde"
+              },
+              "fr": {
+                "title": "Un poids qui ne coule pas"
               }
             },
             {
@@ -124,6 +133,9 @@
               },
               "es": {
                 "title": "¿Siente dolor?"
+              },
+              "fr": {
+                "title": "Avez-vous mal ?"
               }
             },
             {
@@ -140,6 +152,9 @@
               },
               "es": {
                 "title": "Vidrio"
+              },
+              "fr": {
+                "title": "Verre"
               }
             },
             {
@@ -156,6 +171,9 @@
               },
               "es": {
                 "title": "Punto de fuga"
+              },
+              "fr": {
+                "title": "Point de fuite"
               }
             },
             {
@@ -171,6 +189,9 @@
                 "title": "Сонар"
               },
               "es": {
+                "title": "Sonar"
+              },
+              "fr": {
                 "title": "Sonar"
               }
             },
@@ -188,6 +209,9 @@
               },
               "es": {
                 "title": "Aviso"
+              },
+              "fr": {
+                "title": "Annonce"
               }
             },
             {
@@ -204,6 +228,9 @@
               },
               "es": {
                 "title": "Luz de luna, luz de estrellas"
+              },
+              "fr": {
+                "title": "Clair de lune, clair d’étoiles"
               }
             },
             {
@@ -219,7 +246,10 @@
                 "title": "Тихий звук, который хотелось донести"
               },
               "es": {
-                "title": "Un pequeño sonido que quise que oyeras"
+                "title": "Un pequeño sonido que esperaba que se oyera"
+              },
+              "fr": {
+                "title": "Un petit son qu’on espérait entendre"
               }
             },
             {
@@ -236,6 +266,9 @@
               },
               "es": {
                 "title": "Cardo"
+              },
+              "fr": {
+                "title": "Chardon"
               }
             },
             {
@@ -252,6 +285,9 @@
               },
               "es": {
                 "title": "El pulso de la vida"
+              },
+              "fr": {
+                "title": "Le pouls de la vie"
               }
             },
             {
@@ -268,6 +304,9 @@
               },
               "es": {
                 "title": "Luz azul"
+              },
+              "fr": {
+                "title": "Lumière bleue"
               }
             },
             {
@@ -283,7 +322,10 @@
                 "title": "Просмотр"
               },
               "es": {
-                "title": "Contemplación"
+                "title": "La visita"
+              },
+              "fr": {
+                "title": "Visite"
               }
             },
             {
@@ -300,6 +342,9 @@
               },
               "es": {
                 "title": "Umbral"
+              },
+              "fr": {
+                "title": "Seuil"
               }
             }
           ],
@@ -314,6 +359,9 @@
           },
           "es": {
             "name": "Parte I"
+          },
+          "fr": {
+            "name": "Partie I"
           }
         },
         {
@@ -333,6 +381,9 @@
               },
               "es": {
                 "title": "Un día que queda en los brazos vacíos"
+              },
+              "fr": {
+                "title": "Un jour resté dans les bras vides"
               }
             },
             {
@@ -349,6 +400,9 @@
               },
               "es": {
                 "title": "Pendiente"
+              },
+              "fr": {
+                "title": "Pente"
               }
             },
             {
@@ -365,6 +419,9 @@
               },
               "es": {
                 "title": "Rendijas"
+              },
+              "fr": {
+                "title": "Interstices"
               }
             },
             {
@@ -381,6 +438,9 @@
               },
               "es": {
                 "title": "Reloj"
+              },
+              "fr": {
+                "title": "Horloge"
               }
             },
             {
@@ -397,6 +457,9 @@
               },
               "es": {
                 "title": "Juego"
+              },
+              "fr": {
+                "title": "Jeu"
               }
             },
             {
@@ -413,6 +476,9 @@
               },
               "es": {
                 "title": "Ángulo"
+              },
+              "fr": {
+                "title": "Angle"
               }
             },
             {
@@ -429,6 +495,9 @@
               },
               "es": {
                 "title": "Lectura del medidor"
+              },
+              "fr": {
+                "title": "Relevé de compteur"
               }
             },
             {
@@ -445,6 +514,9 @@
               },
               "es": {
                 "title": "Encendido"
+              },
+              "fr": {
+                "title": "Lampes allumées"
               }
             },
             {
@@ -461,6 +533,9 @@
               },
               "es": {
                 "title": "Retazos"
+              },
+              "fr": {
+                "title": "Fragments"
               }
             },
             {
@@ -477,6 +552,9 @@
               },
               "es": {
                 "title": "Pecera"
+              },
+              "fr": {
+                "title": "Aquarium"
               }
             },
             {
@@ -493,6 +571,9 @@
               },
               "es": {
                 "title": "Entre los dientes"
+              },
+              "fr": {
+                "title": "Entre les dents"
               }
             },
             {
@@ -509,6 +590,9 @@
               },
               "es": {
                 "title": "Porque sí"
+              },
+              "fr": {
+                "title": "Comme ça"
               }
             },
             {
@@ -524,7 +608,10 @@
                 "title": "Почерк"
               },
               "es": {
-                "title": "Caligrafía"
+                "title": "Letra"
+              },
+              "fr": {
+                "title": "Écriture"
               }
             },
             {
@@ -541,6 +628,9 @@
               },
               "es": {
                 "title": "Una tarde cualquiera"
+              },
+              "fr": {
+                "title": "Un soir ordinaire"
               }
             },
             {
@@ -557,6 +647,9 @@
               },
               "es": {
                 "title": "Hace mucho"
+              },
+              "fr": {
+                "title": "Il y a longtemps"
               }
             }
           ],
@@ -571,6 +664,9 @@
           },
           "es": {
             "name": "Parte II"
+          },
+          "fr": {
+            "name": "Partie II"
           }
         },
         {
@@ -590,6 +686,9 @@
               },
               "es": {
                 "title": "Calco"
+              },
+              "fr": {
+                "title": "Estampage"
               }
             },
             {
@@ -606,6 +705,9 @@
               },
               "es": {
                 "title": "Prórroga"
+              },
+              "fr": {
+                "title": "Sursis"
               }
             },
             {
@@ -622,6 +724,9 @@
               },
               "es": {
                 "title": "Plena floración"
+              },
+              "fr": {
+                "title": "Pleine floraison"
               }
             },
             {
@@ -638,6 +743,9 @@
               },
               "es": {
                 "title": "Llegar tarde"
+              },
+              "fr": {
+                "title": "Retard"
               }
             },
             {
@@ -654,6 +762,9 @@
               },
               "es": {
                 "title": "Por orden numérico"
+              },
+              "fr": {
+                "title": "Par ordre numérique"
               }
             },
             {
@@ -670,6 +781,9 @@
               },
               "es": {
                 "title": "Fuera, dentro"
+              },
+              "fr": {
+                "title": "Dehors, dedans"
               }
             },
             {
@@ -685,6 +799,9 @@
                 "title": "Ван Гог"
               },
               "es": {
+                "title": "Van Gogh"
+              },
+              "fr": {
                 "title": "Van Gogh"
               }
             },
@@ -702,6 +819,9 @@
               },
               "es": {
                 "title": "Cara a cara"
+              },
+              "fr": {
+                "title": "Face à face"
               }
             },
             {
@@ -718,6 +838,9 @@
               },
               "es": {
                 "title": "Contracorriente"
+              },
+              "fr": {
+                "title": "À contre-courant"
               }
             },
             {
@@ -734,6 +857,9 @@
               },
               "es": {
                 "title": "Agua salobre"
+              },
+              "fr": {
+                "title": "Eau saumâtre"
               }
             },
             {
@@ -750,6 +876,9 @@
               },
               "es": {
                 "title": "Carabela portuguesa"
+              },
+              "fr": {
+                "title": "Galère portugaise"
               }
             },
             {
@@ -766,6 +895,9 @@
               },
               "es": {
                 "title": "Melocotón"
+              },
+              "fr": {
+                "title": "Pêche"
               }
             },
             {
@@ -782,6 +914,9 @@
               },
               "es": {
                 "title": "Subrayado"
+              },
+              "fr": {
+                "title": "Soulignement"
               }
             },
             {
@@ -798,6 +933,9 @@
               },
               "es": {
                 "title": "Las cuatro de la tarde"
+              },
+              "fr": {
+                "title": "Quatre heures de l’après-midi"
               }
             },
             {
@@ -814,6 +952,9 @@
               },
               "es": {
                 "title": "Solo ida"
+              },
+              "fr": {
+                "title": "Aller simple"
               }
             }
           ],
@@ -828,6 +969,9 @@
           },
           "es": {
             "name": "Parte III"
+          },
+          "fr": {
+            "name": "Partie III"
           }
         },
         {
@@ -847,6 +991,9 @@
               },
               "es": {
                 "title": "Tipos de imprenta"
+              },
+              "fr": {
+                "title": "Caractères"
               }
             },
             {
@@ -863,6 +1010,9 @@
               },
               "es": {
                 "title": "Escuela"
+              },
+              "fr": {
+                "title": "École"
               }
             },
             {
@@ -879,6 +1029,9 @@
               },
               "es": {
                 "title": "En la última mañana"
+              },
+              "fr": {
+                "title": "Au dernier matin"
               }
             },
             {
@@ -895,6 +1048,9 @@
               },
               "es": {
                 "title": "Página en blanco"
+              },
+              "fr": {
+                "title": "Feuille blanche"
               }
             },
             {
@@ -911,6 +1067,9 @@
               },
               "es": {
                 "title": "Memoria"
+              },
+              "fr": {
+                "title": "Mémoire"
               }
             },
             {
@@ -927,6 +1086,9 @@
               },
               "es": {
                 "title": "Mezcla de colores"
+              },
+              "fr": {
+                "title": "Mélange des couleurs"
               }
             },
             {
@@ -943,6 +1105,9 @@
               },
               "es": {
                 "title": "Gramática"
+              },
+              "fr": {
+                "title": "Grammaire"
               }
             },
             {
@@ -959,6 +1124,9 @@
               },
               "es": {
                 "title": "Palma"
+              },
+              "fr": {
+                "title": "Paume"
               }
             },
             {
@@ -975,6 +1143,9 @@
               },
               "es": {
                 "title": "En el camino"
+              },
+              "fr": {
+                "title": "En chemin"
               }
             },
             {
@@ -991,6 +1162,9 @@
               },
               "es": {
                 "title": "Nieve espesa"
+              },
+              "fr": {
+                "title": "Neige drue"
               }
             },
             {
@@ -1007,6 +1181,9 @@
               },
               "es": {
                 "title": "Cáliz"
+              },
+              "fr": {
+                "title": "Calice"
               }
             },
             {
@@ -1023,6 +1200,9 @@
               },
               "es": {
                 "title": "Clavo"
+              },
+              "fr": {
+                "title": "Clou"
               }
             },
             {
@@ -1039,6 +1219,9 @@
               },
               "es": {
                 "title": "De espaldas"
+              },
+              "fr": {
+                "title": "De dos"
               }
             },
             {
@@ -1055,6 +1238,9 @@
               },
               "es": {
                 "title": "Lo que es ligero"
+              },
+              "fr": {
+                "title": "Ce qui est léger"
               }
             },
             {
@@ -1071,6 +1257,9 @@
               },
               "es": {
                 "title": "Por casualidad"
+              },
+              "fr": {
+                "title": "Par hasard"
               }
             }
           ],
@@ -1085,6 +1274,9 @@
           },
           "es": {
             "name": "Parte IV"
+          },
+          "fr": {
+            "name": "Partie IV"
           }
         }
       ],
@@ -1103,6 +1295,9 @@
           },
           "es": {
             "title": "Nota del autor"
+          },
+          "fr": {
+            "title": "Mot de l’auteur"
           }
         },
         {
@@ -1119,6 +1314,9 @@
           },
           "es": {
             "title": "A quienes leen"
+          },
+          "fr": {
+            "title": "À celles et ceux qui ont lu"
           }
         }
       ]
@@ -1152,6 +1350,10 @@
       "es": {
         "unit": "películas",
         "note": "registradas desde 2013"
+      },
+      "fr": {
+        "unit": "films",
+        "note": "consignés depuis 2013"
       }
     },
     {
@@ -1175,6 +1377,10 @@
       "es": {
         "unit": "exposiciones",
         "note": "registradas desde 2023"
+      },
+      "fr": {
+        "unit": "expositions",
+        "note": "consignées depuis 2023"
       }
     }
   ],
@@ -1247,6 +1453,9 @@
       },
       "es": {
         "name": "Instagram"
+      },
+      "fr": {
+        "name": "Instagram"
       }
     },
     {
@@ -1264,6 +1473,9 @@
       },
       "es": {
         "name": "YouTube"
+      },
+      "fr": {
+        "name": "YouTube"
       }
     },
     {
@@ -1280,6 +1492,9 @@
         "name": "Brunch"
       },
       "es": {
+        "name": "Brunch"
+      },
+      "fr": {
         "name": "Brunch"
       }
     }
@@ -1303,6 +1518,10 @@
     "es": {
       "name": "Bello Nam",
       "desc": "Reseñas de cine, series, libros y exposiciones · en coreano"
+    },
+    "fr": {
+      "name": "Beau Nam",
+      "desc": "Critiques de films, séries, livres et expositions · en coréen"
     }
   },
   "copyright": "Copyright © 2026 남동원. All rights reserved",
@@ -1739,6 +1958,113 @@
       "Dongwon Nam {photo},",
       "un oficinista que escribe {book} poemas",
       "y reseña {still} lo que ve"
+    ]
+  },
+  "fr": {
+    "name": "Dongwon Nam",
+    "logo": "NAM DONGWON",
+    "tagline": "Un employé de bureau qui écrit des poèmes et commente ce qu’il voit",
+    "tab_title": "Dongwon Nam — employé de bureau qui écrit des poèmes",
+    "description": "Dongwon Nam, employé de bureau qui écrit des poèmes. Premier recueil : « Ouvre la porte, sors, et tout est plein d’êtres vivants ».",
+    "book": {
+      "title": "Ouvre la porte, sors, et tout est plein d’êtres vivants",
+      "title_lines": [
+        "Ouvre la porte, sors,",
+        "et tout est plein d’êtres vivants"
+      ],
+      "display": {
+        "big": [
+          "Ouvre la porte,",
+          "sors,"
+        ],
+        "small": [
+          "et tout est plein",
+          "d’êtres vivants"
+        ]
+      },
+      "door": "Ouvre la porte",
+      "buy_label": "Ajouter à votre bibliothèque",
+      "spec": "110 pages · 128 × 188 mm · 1er novembre 2026 · Kyobo PubPle",
+      "colophon": [
+        {
+          "k": "Édition",
+          "v": "Première édition, 1er novembre 2026 · impression à la demande"
+        },
+        {
+          "k": "Format",
+          "v": "110 pages · 128 × 188 mm · couverture en couleur · intérieur en noir et blanc · rabats"
+        },
+        {
+          "k": "Éditeur",
+          "v": "Kyobo PubPle"
+        },
+        {
+          "k": "ISBN",
+          "v": "9788924266283"
+        }
+      ],
+      "credit": "Texte, couverture et mise en page : Dongwon Nam",
+      "store_label": "Acheter chez Kyobo Book Centre",
+      "store": "Kyobo PubPle",
+      "intro": {
+        "lead": [
+          "Entre faire semblant d’être vivant et faire semblant d’être mort,",
+          "des poèmes qui essuient l’encre restée sur la main et se remettent en marche"
+        ],
+        "text": "Les poèmes de Dongwon Nam distinguent ce qui respire de ce qui ne fait que bouger. Entre des murs d’immeubles d’où quelque chose de sec s’effrite au moindre contact, des déchets poussés par le vent et des roues qui tournent à vitesse constante, le poète se demande s’il doit faire semblant d’être vivant ou faire semblant d’être mort — puis, au lieu de répondre, il essuie l’encre du sceau restée sur sa main. Des phrases fermes, qui consignent ce qu’il a vu sans mettre le sentiment en avant, forment le socle de ce recueil."
+      },
+      "toc": {
+        "label": "Table des matières"
+      }
+    },
+    "poem": {
+      "title": "Estampage",
+      "file": "poem_fr.txt",
+      "pages": "p. 61–62"
+    },
+    "bio": "Né à Séoul à l’hiver 1995. Il a commencé à publier en 2026 avec son premier recueil de poèmes, *Ouvre la porte, sors, et tout est plein d’êtres vivants*.",
+    "contact": {
+      "lead_lines": [
+        "Pour une collaboration ou une question,",
+        "envoyez-moi un message ou un e-mail."
+      ],
+      "privacy": "Votre nom et votre adresse e-mail ne serviront qu’à vous répondre.",
+      "faq": [
+        {
+          "q": "Puis-je partager les poèmes sur les réseaux sociaux ou sur un blog ?",
+          "a": "Oui, une ou deux strophes, à condition d’en citer la source, par exemple : « Dongwon Nam, *Ouvre la porte, sors, et tout est plein d’êtres vivants* ». Pour un poème entier ou tout usage commercial, merci de m’écrire d’abord par e-mail."
+        },
+        {
+          "q": "Puis-je lire un poème à voix haute et publier la vidéo ?",
+          "a": "Les lectures sans publicité ni vente sont les bienvenues, à condition d’en citer la source. Vous pouvez aussi le lire lors d’un mariage ou d’une rencontre de poésie. Si la vidéo doit servir à de la publicité ou à la vente, contactez-moi d’abord."
+        },
+        {
+          "q": "Où puis-je acheter le recueil ?",
+          "a": "Il est disponible chez Kyobo PubPle."
+        },
+        {
+          "q": "À qui adresser les demandes de conférence, de collaboration, de traduction ou d’entretien ?",
+          "a": "Écrivez-moi à l’adresse e-mail ci-dessus. Indiquez le type de demande dans l’objet, par exemple [Conférence] ou [Collaboration], et je vous répondrai sous trois jours."
+        },
+        {
+          "q": "Pourriez-vous lire mes poèmes et me donner des conseils ?",
+          "a": "Merci d’avoir pensé à moi. Je suis désolé, mais je ne peux ni lire ni commenter les manuscrits au cas par cas."
+        },
+        {
+          "q": "Avec un emploi de bureau, quand écrivez-vous ?",
+          "a": "Je note dans le bloc-notes de mon téléphone les vers qui me viennent sur le trajet du travail ou à la pause déjeuner. Les poèmes grandissent lentement parmi ces notes."
+        }
+      ]
+    },
+    "copyright": "Copyright © 2026 Dongwon Nam. Tous droits réservés",
+    "colophon": {
+      "note": "Merci de demander avant de réutiliser les textes ou les photos.",
+      "made": "Écrit, photographié et composé à Séoul"
+    },
+    "hero": [
+      "Dongwon Nam {photo},",
+      "un employé de bureau qui écrit {book} des poèmes",
+      "et {still} commente ce qu’il voit"
     ]
   },
   "hero": [

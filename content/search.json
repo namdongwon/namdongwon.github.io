@@ -24,6 +24,11 @@
         "label": "Leer «Calco»",
         "note": "El poema",
         "q": ""
+      },
+      "fr": {
+        "label": "Lire « Estampage »",
+        "note": "Le poème",
+        "q": ""
       }
     },
     {
@@ -49,6 +54,11 @@
       "es": {
         "label": "Índice",
         "note": "Sesenta poemas, cuatro partes",
+        "q": ""
+      },
+      "fr": {
+        "label": "Sommaire",
+        "note": "Soixante poèmes, quatre parties",
         "q": ""
       }
     },
@@ -76,6 +86,11 @@
         "label": "Reseñas de cine",
         "note": "YouTube",
         "q": "cine"
+      },
+      "fr": {
+        "label": "Critiques de films",
+        "note": "YouTube",
+        "q": "film"
       }
     },
     {
@@ -102,6 +117,11 @@
         "label": "Exposiciones",
         "note": "Instagram",
         "q": "exposici"
+      },
+      "fr": {
+        "label": "Expositions",
+        "note": "Instagram",
+        "q": "expos"
       }
     },
     {
@@ -127,6 +147,11 @@
       "es": {
         "label": "Contacto",
         "note": "Correo · mensaje de Instagram",
+        "q": ""
+      },
+      "fr": {
+        "label": "Contact",
+        "note": "E-mail · message Instagram",
         "q": ""
       }
     }

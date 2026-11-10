@@ -50,6 +50,16 @@
           "show": "Patricia Piccinini: Kinship",
           "venue": "Museo de Arte de Suwon"
         }
+      },
+      "fr": {
+        "where": "",
+        "alt": "Sculpture de forme humaine allongée face contre terre sur un sol jaune, vue d’en haut : le dos nu et une longue chevelure noire et bouclée étalée sur le sol",
+        "art": {
+          "artist": "Patricia Piccinini",
+          "title": "",
+          "show": "Patricia Piccinini: Kinship",
+          "venue": "Musée d’art de Suwon"
+        }
       }
     },
     {
@@ -96,6 +106,16 @@
       "es": {
         "where": "",
         "alt": "Vista hacia arriba de un techo circular de paneles de espejo hexagonales; en el centro asoman hojas verdes",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "fr": {
+        "where": "",
+        "alt": "Vue en contre-plongée d’un plafond circulaire fait de panneaux de miroir hexagonaux ; au centre apparaissent des feuilles vertes",
         "art": {
           "artist": "",
           "title": "",
@@ -154,6 +174,16 @@
           "show": "",
           "venue": ""
         }
+      },
+      "fr": {
+        "where": "",
+        "alt": "Bord de rivière la nuit : un long pont illuminé, ses lumières reflétées dans l’eau, et des gens qui marchent le long de la berge",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
       }
     },
     {
@@ -200,6 +230,16 @@
       "es": {
         "where": "",
         "alt": "Una gran roca cubierta de musgo sobre el suelo blanco de una sala de exposición; arriba a la derecha, una persona sentada en un saliente",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "fr": {
+        "where": "",
+        "alt": "Un grand rocher couvert de mousse sur le sol blanc d’une salle d’exposition ; en haut à droite, une personne assise sur une corniche",
         "art": {
           "artist": "",
           "title": "",
@@ -258,6 +298,16 @@
           "show": "",
           "venue": ""
         }
+      },
+      "fr": {
+        "where": "",
+        "alt": "Des pierres grandes et petites qui émergent d’une eau sombre et courante, au bord de l’eau",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
       }
     },
     {
@@ -309,6 +359,16 @@
           "title": "The Secret Sharer",
           "show": "APMA, CHAPTER FIVE",
           "venue": "Museo de Arte Amorepacific"
+        }
+      },
+      "fr": {
+        "where": "",
+        "alt": "Vue rapprochée d’un amas d’éclats d’acrylique transparent et de fragments de miroir",
+        "art": {
+          "artist": "Lee Bul",
+          "title": "The Secret Sharer",
+          "show": "APMA, CHAPTER FIVE",
+          "venue": "Musée d’art Amorepacific"
         }
       }
     },
@@ -362,6 +422,16 @@
           "show": "Yoo Youngkuk: A Mountain Within Me",
           "venue": "Museo de Arte de Seúl"
         }
+      },
+      "fr": {
+        "where": "",
+        "alt": "Une personne vêtue de noir, debout, la main au menton, devant une peinture abstraite jaune, bleue et verte",
+        "art": {
+          "artist": "Yoo Youngkuk",
+          "title": "",
+          "show": "Yoo Youngkuk: A Mountain Within Me",
+          "venue": "Musée d’art de Séoul"
+        }
       }
     },
     {
@@ -408,6 +478,16 @@
       "es": {
         "where": "",
         "alt": "Una persona de pie junto a un agua verde, al pie de un alto acantilado de roca cubierto de hierba",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "fr": {
+        "where": "",
+        "alt": "Une personne debout au bord d’une eau verte, au pied d’une haute falaise rocheuse couverte d’herbe",
         "art": {
           "artist": "",
           "title": "",
@@ -466,6 +546,16 @@
           "show": "",
           "venue": ""
         }
+      },
+      "fr": {
+        "where": "",
+        "alt": "Une personne vêtue de noir, une tasse de thé à la main, assise sur un canapé en bois devant un rideau rouge",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
       }
     },
     {
@@ -518,6 +608,16 @@
           "show": "",
           "venue": ""
         }
+      },
+      "fr": {
+        "where": "",
+        "alt": "Une personne assise à une table noire devant une grande baie vitrée donnant sur une forêt en hiver",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
       }
     },
     {
@@ -564,6 +664,16 @@
       "es": {
         "where": "",
         "alt": "De espaldas, una persona sentada ante la puerta abierta de un hanok, mirando hacia el patio",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "fr": {
+        "where": "",
+        "alt": "De dos, une personne assise devant la porte ouverte d’un hanok, regardant la cour",
         "art": {
           "artist": "",
           "title": "",

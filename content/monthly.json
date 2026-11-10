@@ -30,6 +30,12 @@
           "Ese breve instante",
           "era la manera en que se iluminaba la habitación"
         ]
+      },
+      "fr": {
+        "lines": [
+          "Ce bref instant",
+          "était la façon dont la pièce s’éclairait"
+        ]
       }
     },
     {
@@ -61,6 +67,12 @@
         "lines": [
           "En una noche de nieve blanca y copiosa",
           "entro en casa en silencio y enciendo la luz"
+        ]
+      },
+      "fr": {
+        "lines": [
+          "Par une nuit où la neige blanche tombe à gros flocons",
+          "je rentre sans bruit et j’allume la lumière"
         ]
       }
     }

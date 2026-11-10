@@ -19,6 +19,10 @@
       "es": {
         "text": "Nace en Seúl, en invierno",
         "note": ""
+      },
+      "fr": {
+        "text": "Naît à Séoul, en hiver",
+        "note": ""
       }
     },
     {
@@ -39,6 +43,10 @@
       },
       "es": {
         "text": "Empieza a llevar un diario de cine",
+        "note": ""
+      },
+      "fr": {
+        "text": "Commence à tenir un journal de cinéma",
         "note": ""
       }
     },
@@ -61,6 +69,10 @@
       "es": {
         "text": "Empieza a llevar un diario de exposiciones",
         "note": ""
+      },
+      "fr": {
+        "text": "Commence à tenir un journal d’expositions",
+        "note": ""
       }
     },
     {
@@ -81,6 +93,10 @@
       },
       "es": {
         "text": "Empieza a estudiar arte",
+        "note": ""
+      },
+      "fr": {
+        "text": "Commence à étudier l’art",
         "note": ""
       }
     },
@@ -103,6 +119,10 @@
       "es": {
         "text": "Poemario *Abre la puerta, sal, y todo está lleno de seres vivos*",
         "note": ""
+      },
+      "fr": {
+        "text": "Recueil *Ouvre la porte, sors, et tout est plein d’êtres vivants*",
+        "note": ""
       }
     },
     {
@@ -124,6 +144,10 @@
       "es": {
         "text": "Canal de YouTube «Bello Nam»",
         "note": ""
+      },
+      "fr": {
+        "text": "Chaîne YouTube « Beau Nam »",
+        "note": ""
       }
     },
     {
@@ -144,6 +168,10 @@
       },
       "es": {
         "text": "Sitio web namdongwon.com",
+        "note": ""
+      },
+      "fr": {
+        "text": "Site web namdongwon.com",
         "note": ""
       }
     }
