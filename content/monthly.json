@@ -24,6 +24,12 @@
           "Этот краткий миг",
           "и был тем, как светлеет комната"
         ]
+      },
+      "es": {
+        "lines": [
+          "Ese breve instante",
+          "era la manera en que se iluminaba la habitación"
+        ]
       }
     },
     {
@@ -49,6 +55,12 @@
         "lines": [
           "В ночь, когда валит белый снег,",
           "я тихо возвращаюсь домой и зажигаю свет"
+        ]
+      },
+      "es": {
+        "lines": [
+          "En una noche de nieve blanca y copiosa",
+          "entro en casa en silencio y enciendo la luz"
         ]
       }
     }

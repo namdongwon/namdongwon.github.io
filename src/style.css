@@ -18,9 +18,9 @@
 html:lang(ko) .door .t,html:lang(ko) #home .hs{font-family:"BMJF",var(--serif)}
 #home{--sans:"PTDF","PTD",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}  /* :root --sans 앞에 PTDF만 더함(PTDF는 ASCII도 담아 영어 첫 화면도) — --sans를 바꾸면 여기도 */
 @font-face{font-family:"NRDF";src:url("fonts/newsreader-first.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
-html:lang(en) .door .t,html:lang(en) #home .ht,html:lang(en) #home .hs{font-family:"NRDF",var(--serif)}  /* 영어판 첫 화면 작은 판(10/27 점검) */
+html:lang(en) .door .t,html:lang(es) .door .t,html:lang(en) #home .ht,html:lang(es) #home .ht,html:lang(en) #home .hs,html:lang(es) #home .hs{font-family:"NRDF",var(--serif)}  /* 영어판 첫 화면 작은 판(10/27 점검) */
 .nf [lang="en"]{font-family:"NRD","ARW","BMJ",serif}  /* 404의 영어 두 줄 — 한국어 쪽 안이라 영어 글꼴 규칙을 못 받아 본명조 라틴으로 그려졌음(10/28 일본 디테일 ⑤) */
-html:lang(en) #home dd i,html:lang(en) .pgno i,html:lang(en) .cap small i,html:lang(en) .sheet .sbk i{font-family:"NRD",serif;font-weight:400;font-size:1.15em;letter-spacing:0}  /* 작은 고딕 속 작품 제목은 Newsreader 기울인꼴 — 고딕엔 기울인꼴이 없어 브라우저가 비스듬히 밀어 그렸음(10/28 동원 'A 명조 기울인꼴로' — 모양 점검 ⑫) */
+html:lang(en) #home dd i,html:lang(es) #home dd i,html:lang(en) .pgno i,html:lang(es) .pgno i,html:lang(en) .cap small i,html:lang(es) .cap small i,html:lang(en) .sheet .sbk i,html:lang(es) .sheet .sbk i{font-family:"NRD",serif;font-weight:400;font-size:1.15em;letter-spacing:0}  /* 작은 고딕 속 작품 제목은 Newsreader 기울인꼴 — 고딕엔 기울인꼴이 없어 브라우저가 비스듬히 밀어 그렸음(10/28 동원 'A 명조 기울인꼴로' — 모양 점검 ⑫) */
 /* 영어판(10/24 ⑤ B): Newsreader(Production Type · OFL) — 영어판만 씀(한국어판은 내려받지 않음). 가변 축 굵기 · 글자 크기 */
 @font-face{font-family:"ARW";src:url("fonts/bon-myeongjo-arrow.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+2190-2199}  /* 화살표만(11/3 Lighthouse) — 영어 · 일본어판 명조 줄에서 Newsreader 다음, 본명조 앞에 */
 @font-face{font-family:"NRD";src:url("fonts/newsreader.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
@@ -71,14 +71,14 @@ html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino San
    대비: 먹 종이 #141414 위 글자 15.9:1 · --muted 7.9:1 · --faint 5.4:1 */
 :root[data-theme="dark"]{--barline:rgba(255,255,255,.07);--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:var(--bg);--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}
 @media (prefers-color-scheme:dark){:root[data-theme="system"]{--barline:rgba(255,255,255,.07);--dot-off:#262626;--dot-lead:#5c5c5c;--cell-off:#2a2a2a;--bg:#141414;--ink:#ecebe6;--muted:#a9a8a3;--faint:#8c8b87;--rule:#2a2a2a;--line:#3a3a3a;--ph:#1d1d1d;--shadow:0 0 0 1px rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.5);--bar:rgba(20,20,20,.86);--chip:rgba(20,20,20,.86);--wall:var(--bg);--mark:#333;--winf:invert(1);--winb:screen;color-scheme:dark}}
-:root:lang(en){--serif:"NRD","ARW","BMJ","AppleMyungjo",serif;--body:"PTD",-apple-system,"Apple SD Gothic Neo",sans-serif}  /* 라틴 글꼴 먼저, 한글 다음 — 섞인 한글(시 · 원제)은 본명조 */
+:root:lang(en),:root:lang(es){--serif:"NRD","ARW","BMJ","AppleMyungjo",serif;--body:"PTD",-apple-system,"Apple SD Gothic Neo",sans-serif}  /* 라틴 글꼴 먼저, 한글 다음 — 섞인 한글(시 · 원제)은 본명조 */
 :root:lang(ja){--serif:"NRD","JMJ","ARW","BMJ","Hiragino Mincho ProN","Yu Mincho",serif;--body:"JGO","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;--sans:"JGO","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  /* 일본어판(11/1): 라틴 Newsreader → 일본어 → 섞인 한글은 본명조 · Pretendard */
 :root:lang(ru){--serif:"RMJ","ARW","BMJ","AppleMyungjo",serif;--body:"RGO","PTD",-apple-system,"Apple SD Gothic Neo",sans-serif;--sans:"RGO","PTD",-apple-system,"Apple SD Gothic Neo",sans-serif}  /* 러시아어판(11/6) — 키릴 판 먼저, 섞인 한글(시 원문 · 원제)은 본명조 · Pretendard 한국어 판 */
 :is(html:lang(ru)) :is(.bio,.lead,.btext,.fq p,.pvf p){hyphens:auto}  /* 러시아어 긴 낱말은 줄 끝에서 하이픈으로 나눔(휴대폰 넘침 막기) */
 /* 일본어 줄바꿈(11/1 번역 메모 — keep-all이면 빈칸 없는 일본어 문장이 거의 끊기지 않음): 일본어는 글자 사이에서 갈리고 줄 머리 금칙(、。」 등)은 strict로. 일본어판 속 한국어는 keep-all 그대로.
    (.tt — 작품 제목 『 』 「 」 — 은 한 덩어리 그대로 · 시집 제목은 표지 줄 나눔 자리에서만 갈림 — build.py tt) */
 html:lang(ja) :lang(ja){word-break:normal;line-break:strict}html:lang(ja) :lang(ko){word-break:keep-all}
-:is(html:lang(en),html:lang(ru)) .bio,:is(html:lang(en),html:lang(ru)) .lead,:is(html:lang(en),html:lang(ru)) .btext{line-height:1.7}  /* 영어 본문 행간은 1.7(10/28 동원 'A 1.7' — 일본 디테일 보고서 ⑦: 로마자는 같은 1.9에서도 한글보다 성겨 보임 · NDC 일 1.8 · 영 1.5. 한국어 본문은 1.9 그대로 · 행간 단 안의 값 · 「탁본」 영어 번역 행과 같음) */
+:is(html:lang(en),html:lang(ru),html:lang(es)) .bio,:is(html:lang(en),html:lang(ru),html:lang(es)) .lead,:is(html:lang(en),html:lang(ru),html:lang(es)) .btext{line-height:1.7}  /* 영어 본문 행간은 1.7(10/28 동원 'A 1.7' — 일본 디테일 보고서 ⑦: 로마자는 같은 1.9에서도 한글보다 성겨 보임 · NDC 일 1.8 · 영 1.5. 한국어 본문은 1.9 그대로 · 행간 단 안의 값 · 「탁본」 영어 번역 행과 같음) */
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}  /* 칸 맞춤(scroll-snap)은 10/25 끔 — 스크롤은 멈춘 자리에 그대로(셔터를 뺀 뒤 남은 '찰칵' · 동원 "① 칸 맞춤 끄기부터 하자"). 사진 띠의 한 장씩 넘기기만 남김 */
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
@@ -150,7 +150,7 @@ html:lang(ko) #poem .h2,html:lang(ja) #poem .h2{text-indent:-.65em}  /* 「탁�
 #home .kick{margin-top:22px;font:600 12.5px/1.5 var(--sans);letter-spacing:.04em}  /* 누구의 시집인지 말하는 첫 줄 11 → 12.5px(10/29 고침 2 — 쪽에서 가장 작은 글자 단이었음) */
 #home .ht{margin:12px 0 0 -.03em;font:700 76px/1 var(--serif);font-size:min(76px,20.5vw);letter-spacing:-.05em}
 html:lang(ko) #home .ht,html:lang(ja) #home .ht{font-weight:300}html:lang(ja) #home .ht{font-size:min(64px,17vw);letter-spacing:-.04em}  /* 큰 제목은 얇게(10/26 — 가늘고 크게, 견본 '본명조 · 큰 제목 가늘게') */
-:is(html:lang(en),html:lang(ru)) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spacing:-.02em;font-weight:360}  /* 영어 큰 제목은 Newsreader 360 — 한국어 큰 제목(본명조 300)과 같은 먹색 0.16(10/26 ② A, 실측) */
+:is(html:lang(en),html:lang(ru),html:lang(es)) #home .ht{font-size:min(48px,12.4vw);line-height:1.05;letter-spacing:-.02em;font-weight:360}  /* 영어 큰 제목은 Newsreader 360 — 한국어 큰 제목(본명조 300)과 같은 먹색 0.16(10/26 ② A, 실측) */
 #home .book{margin-top:22px;display:grid;grid-template-columns:1fr auto;column-gap:12px}
 #home .side{display:flex;flex-direction:column}  /* 작은 제목은 책 윗선, 두 길은 책 아랫선(.ps margin-top:auto) — 10/29 고침 2(전: 사는 길 아래 약 60px이 비고 '밀어 보세요'와 가는 선이 아래) */
 #home .hs{font:700 19px/1.5 var(--serif);letter-spacing:-.01em}
@@ -229,8 +229,8 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}  /* 『 첫 �
 .pbook .plab>div{display:contents}.pbook .plab dt{font:600 11px/1.6 var(--sans);color:var(--muted)}.pbook .plab dd{font:300 11px/1.6 var(--sans)}
 @media (max-width:767px){.pbook .t small{display:none}}
 @media (min-width:768px){.pbook .t small:not(.bcr){display:none}.pbook .t small.bcr{margin-top:8px}}  /* 컴퓨터 · 태블릿도 사양 줄은 첫 화면 라벨(n6)에만 — 같은 쪽에 같은 줄 두 번 금지(11/6 전체 점검) · 만든 사람 줄은 남김 */  /* 휴대폰은 사양 · 만든 사람이 아래 라벨에 — 사양 줄이 두 번 나오지 않게(컴퓨터 · 태블릿은 첫 화면 라벨이 그대로라 제목 아래 두 줄 그대로) */
-:is(html:lang(en),html:lang(ru)) .pbook .bk,html:lang(ja) .pbook .bk{grid-row:span 4}:is(html:lang(en),html:lang(ru)) .pbook .note,html:lang(ja) .pbook .note{grid-column:2}  /* 영어 배송 안내가 책 칸(96px)에 다섯 줄로 끼지 않게(10/25 마지막 점검 B) */
-@media (max-width:369px){:is(html:lang(en),html:lang(ru)) .pbook .bk,html:lang(ja) .pbook .bk{grid-row:span 2}:is(html:lang(en),html:lang(ru)) .pbook .buy2,:is(html:lang(en),html:lang(ru)) .pbook .note,html:lang(ja) .pbook .buy2,html:lang(ja) .pbook .note{grid-column:1/-1}}  /* 영어 단추 'Buy at Kyobo Book Centre ↗'(207px)가 360px 이하 폰에서 오른쪽 칸을 넘지 않게 — 책 카드 아래 칸 폭으로(10/25) */
+:is(html:lang(en),html:lang(ru),html:lang(es)) .pbook .bk,html:lang(ja) .pbook .bk{grid-row:span 4}:is(html:lang(en),html:lang(ru),html:lang(es)) .pbook .note,html:lang(ja) .pbook .note{grid-column:2}  /* 영어 배송 안내가 책 칸(96px)에 다섯 줄로 끼지 않게(10/25 마지막 점검 B) */
+@media (max-width:369px){:is(html:lang(en),html:lang(ru),html:lang(es)) .pbook .bk,html:lang(ja) .pbook .bk{grid-row:span 2}:is(html:lang(en),html:lang(ru),html:lang(es)) .pbook .buy2,:is(html:lang(en),html:lang(ru),html:lang(es)) .pbook .note,html:lang(ja) .pbook .buy2,html:lang(ja) .pbook .note{grid-column:1/-1}}  /* 영어 단추 'Buy at Kyobo Book Centre ↗'(207px)가 360px 이하 폰에서 오른쪽 칸을 넘지 않게 — 책 카드 아래 칸 폭으로(10/25) */
 /* 시집 상태 낱말 · 시집 소식(10/25 A 쌓이는 소식 세 줄) — 상태는 영상 칸 '준비 중'과 같은 알약(먹만 · 흰 바탕이라 테두리),
    소식은 날짜(Pretendard 고정폭) + 한 문장(은바탕), 휴대폰은 책 카드 아래 · 소개 앞 */
 .bstate{display:flex;width:max-content;align-items:center;gap:8px;margin-bottom:12px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;font:300 11px/1 var(--sans);color:var(--ink)}
@@ -241,7 +241,7 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}  /* 『 첫 �
 .bnews li{display:grid;grid-template-columns:78px 1fr;column-gap:12px;align-items:baseline;padding:8px 0;border-top:1px solid var(--rule)}
 .bnews li:last-child{border-bottom:1px solid var(--rule)}
 .bnews time{font:300 11px/1 var(--sans);font-variant-numeric:tabular-nums;letter-spacing:0;color:var(--faint)}
-:is(html:lang(en),html:lang(ru)) .bnews li{grid-template-columns:106px 1fr}html:lang(ja) .bnews li{grid-template-columns:90px 1fr}  /* 영어 날짜 'November 1, 2026' 꼴(10/27 점검) — 가장 긴 'September 30, 2026'이 105px라 한 줄에 */
+:is(html:lang(en),html:lang(ru),html:lang(es)) .bnews li{grid-template-columns:106px 1fr}html:lang(ja) .bnews li{grid-template-columns:90px 1fr}  /* 영어 날짜 'November 1, 2026' 꼴(10/27 점검) — 가장 긴 'September 30, 2026'이 105px라 한 줄에 */
 .bnews li span{font:14px/1.7 var(--body);color:var(--ink);word-break:keep-all;text-wrap:pretty}
 .bnews summary{display:inline-block;margin-top:12px;padding-bottom:2px;border-bottom:1px solid currentColor;font:300 12.5px/1 var(--sans);color:var(--muted);cursor:pointer;list-style:none}
 .bnews summary::-webkit-details-marker{display:none}
@@ -252,11 +252,11 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}  /* 『 첫 �
 .btext{margin-top:16px;font:16px/1.9 var(--body);word-break:keep-all;text-wrap:pretty}
 .btoc{margin-top:36px}
 .btoc h3{font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  /* '차례' 굵게 — '지난 편'(.sub)과 같은 칸 머리(11/2 동원 '차례는 굵은 표시로') */
-:is(html:lang(en),html:lang(ru)) .btoc h3{letter-spacing:0}  /* 영어 소문자 문장에는 넓은 자간을 두지 않음(10/25 다듬기 가8) */
+:is(html:lang(en),html:lang(ru),html:lang(es)) .btoc h3{letter-spacing:0}  /* 영어 소문자 문장에는 넓은 자간을 두지 않음(10/25 다듬기 가8) */
 .btoc .parts{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .btoc h4{margin-bottom:8px;font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
 .btoc ol{list-style:none;margin:0;padding:0}
-:is(html:lang(en),html:lang(ru)) .btoc .parts,html:lang(ja) .btoc .parts{row-gap:0;border-top:1px solid var(--rule)}.btoc details{border-bottom:1px solid var(--rule)}  /* 영어판 차례는 부마다 접음(10/29 동원 'B 접고 첫 세 편' — 새 눈 비평 그 밖 9) */
+:is(html:lang(en),html:lang(ru),html:lang(es)) .btoc .parts,html:lang(ja) .btoc .parts{row-gap:0;border-top:1px solid var(--rule)}.btoc details{border-bottom:1px solid var(--rule)}  /* 영어판 차례는 부마다 접음(10/29 동원 'B 접고 첫 세 편' — 새 눈 비평 그 밖 9) */
 .btoc summary{list-style:none;display:grid;grid-template-columns:1fr auto;align-items:baseline;padding:12px 0;cursor:pointer;font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
 .btoc summary::-webkit-details-marker{display:none}.btoc summary .lb{font-weight:300;letter-spacing:0}.btoc summary .lb b{font-weight:600;letter-spacing:.04em}
 .btoc summary::after{content:"+";grid-column:2;grid-row:1;font:300 14px/1 var(--sans);color:var(--ink)}.btoc details[open] summary::after{content:"−"}
@@ -264,12 +264,12 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}  /* 『 첫 �
 .btoc li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:.2em 0;font:14px/1.5 var(--body);color:var(--faint);word-break:keep-all}  /* 줄 높이 1.9 → 1.5 + 위아래 .2em — 한 줄 간격은 그대로, 넘어간 제목은 붙어 보이게(10/25 다듬기 가7) */
 .btoc li>span:last-child{flex:none;font:300 11px/1 var(--sans);font-variant-numeric:tabular-nums}
 .btoc li.on{color:var(--ink)}
-@media (hover:hover) and (prefers-reduced-motion:no-preference){:root:not([data-motion="reduce"]):not(:lang(en)):not(:lang(ru)) .btoc li:not(.on):not(.mo)>span:first-child{transition:letter-spacing 30s var(--e2)}:root:not([data-motion="reduce"]):not(:lang(en)):not(:lang(ru)) .btoc li:not(.on):not(.mo):hover>span:first-child{letter-spacing:.3em;transition:letter-spacing .2s var(--e2)}}  /* 차례 회색 제목의 숨(11/4 동원 'A 0.3em' — 차례숨_v1 · Filippou): 아직 못 읽는 줄에 마우스가 지나면 0.2초에 벌어졌다 30초에 모임 · 영어판은 소문자 자간 규칙(10/25)대로 뺌 */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){:root:not([data-motion="reduce"]):not(:lang(en)):not(:lang(es)):not(:lang(ru)) .btoc li:not(.on):not(.mo)>span:first-child{transition:letter-spacing 30s var(--e2)}:root:not([data-motion="reduce"]):not(:lang(en)):not(:lang(es)):not(:lang(ru)) .btoc li:not(.on):not(.mo):hover>span:first-child{letter-spacing:.3em;transition:letter-spacing .2s var(--e2)}}  /* 차례 회색 제목의 숨(11/4 동원 'A 0.3em' — 차례숨_v1 · Filippou): 아직 못 읽는 줄에 마우스가 지나면 0.2초에 벌어졌다 30초에 모임 · 영어판은 소문자 자간 규칙(10/25)대로 뺌 */
 .btoc li>span:first-child{text-wrap:balance;padding-left:1em;text-indent:-1em}  /* 좁은 단에서 꺾이는 제목은 두 줄을 고르게(「들렸으면 했던 / 작은 소리」) */
 .btoc li small{margin-left:6px;font:300 11px/1 var(--sans);color:var(--faint)}  /* 영어판: 옮긴 제목 곁의 한국어 원제 */
 .btoc li.on small{color:var(--muted)}  /* 먹 줄의 원제는 한 단계 진하게 — 책 카드 제목 · 원제와 같은 짝 */
 .btoc .tail{margin-top:16px;padding-top:12px;border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
-:is(html:lang(en),html:lang(ru)) .btoc .parts,:is(html:lang(en),html:lang(ru)) .btoc .tail,html:lang(ja) .btoc .parts,html:lang(ja) .btoc .tail{grid-template-columns:1fr}  /* 영어 제목은 길어 휴대폰에서 한 단 */
+:is(html:lang(en),html:lang(ru),html:lang(es)) .btoc .parts,:is(html:lang(en),html:lang(ru),html:lang(es)) .btoc .tail,html:lang(ja) .btoc .parts,html:lang(ja) .btoc .tail{grid-template-columns:1fr}  /* 영어 제목은 길어 휴대폰에서 한 단 */
 /* 차례에서 열기(10/25 ④ C) — 그달의 시 줄은 먹 + 아래에 한 행(명조, 왼쪽 먹 선), 지난달 줄은 먹으로 남음 · 달 꼬리표 · 차례 위 범례 한 줄 */
 .btoc li.mo{flex-wrap:wrap;color:var(--ink)}
 .btoc li .mt{margin-left:6px;font:300 11px/1 var(--sans);letter-spacing:.04em;color:var(--faint)}
@@ -278,15 +278,15 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}  /* 『 첫 �
 .mline .t{margin:20px 0 0;font:400 26px/1.5 var(--serif);letter-spacing:-.01em;color:var(--ink);word-break:keep-all;text-wrap:balance}
 .mline .o{margin:12px 0 0;font:300 12.5px/1.6 var(--serif);color:var(--muted)}  /* 영어 · 일본어판 — 한국어 원문 */
 .mline .nx{margin:16px 0 0;font:300 11px/1.5 var(--sans);color:var(--faint)}
-:is(html:lang(en),html:lang(ru)) .mline .k{letter-spacing:0}
+:is(html:lang(en),html:lang(ru),html:lang(es)) .mline .k{letter-spacing:0}
 .mline+.btoc{margin-top:44px}
 .top nav .lang{padding-left:12px;border-left:1px solid var(--line);white-space:nowrap}  /* 언어 바꾸기 EN · KO(10/24) */
 .top nav .lang .fl{margin-right:6px;font:14px/1 "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;letter-spacing:0;vertical-align:-1px;line-height:0}  /* 언어 단추 국기(10/25 동원 "직관적으로") — 자간을 0으로(두 글자로 된 국기가 벌어져 갈라지지 않게). 윈도는 국기 대신 GB · KR 글자로 보임 */
-:is(html:lang(en),html:lang(ru)) .top nav{letter-spacing:.04em;gap:12px}  /* 영어 낱말은 한글 메뉴의 넓은 자간(.12em)이면 띠를 넘침 — 좁은 폭 규칙보다 앞에(10/25 마지막 점검 ①: 뒤에 있으면 374 · 359px 규칙을 덮어 'KO'가 두 줄) */
+:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav{letter-spacing:.04em;gap:12px}  /* 영어 낱말은 한글 메뉴의 넓은 자간(.12em)이면 띠를 넘침 — 좁은 폭 규칙보다 앞에(10/25 마지막 점검 ①: 뒤에 있으면 374 · 359px 규칙을 덮어 'KO'가 두 줄) */
 @media (max-width:374px){.top nav{gap:7px;font-size:12.5px;letter-spacing:0}.top nav .lang{padding-left:8px}.top nav .lang .fl{margin-right:4px}}
-@media (max-width:409px){:is(html:lang(en),html:lang(ru)) .top nav{gap:7px;font-size:12.5px;letter-spacing:0}:is(html:lang(en),html:lang(ru)) .top nav .lang{padding-left:8px}:is(html:lang(en),html:lang(ru)) .top nav .lang .fl{margin-right:4px}}  /* 영어 메뉴는 409px까지 좁은 간격 — 375px에서 메뉴가 왼쪽 여백 7px까지 밀렸음(10/25 마지막 점검 ①) · 돋보기를 구분선 뒤로 옮긴 뒤 390px에서 왼쪽으로 5px 넘쳐 389 → 409(10/26) */
-@media (max-width:359px){:is(html:lang(en),html:lang(ru)) .top nav{gap:6px;font-size:11px}:is(html:lang(en),html:lang(ru)) .top nav .lang{padding-left:7px}:is(html:lang(en),html:lang(ru)) .top nav .lang .lt{display:none}:is(html:lang(en),html:lang(ru)) .top nav .lang .fl{margin-right:0}}  /* 영어 메뉴가 가장 긴 아주 좁은 폰(320 · 340px)에서는 언어 단추를 국기 하나로(읽기 프로그램에는 '한국어') */  /* 메뉴가 인스타그램 · 유튜브(영어 Instagram · YouTube)로 길어져(10/25) 좁은 폰(320 · 360px)에서 간격 · 자간만 줄임 */
-@media (max-width:339px){:is(html:lang(en),html:lang(ru)) .top nav{gap:6px;font-size:11px}}  /* 320px 영어 메뉴가 화면 끝에 붙지 않게 */
+@media (max-width:409px){:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav{gap:7px;font-size:12.5px;letter-spacing:0}:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav .lang{padding-left:8px}:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav .lang .fl{margin-right:4px}}  /* 영어 메뉴는 409px까지 좁은 간격 — 375px에서 메뉴가 왼쪽 여백 7px까지 밀렸음(10/25 마지막 점검 ①) · 돋보기를 구분선 뒤로 옮긴 뒤 390px에서 왼쪽으로 5px 넘쳐 389 → 409(10/26) */
+@media (max-width:359px){:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav{gap:6px;font-size:11px}:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav .lang{padding-left:7px}:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav .lang .lt{display:none}:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav .lang .fl{margin-right:0}}  /* 영어 메뉴가 가장 긴 아주 좁은 폰(320 · 340px)에서는 언어 단추를 국기 하나로(읽기 프로그램에는 '한국어') */  /* 메뉴가 인스타그램 · 유튜브(영어 Instagram · YouTube)로 길어져(10/25) 좁은 폰(320 · 360px)에서 간격 · 자간만 줄임 */
+@media (max-width:339px){:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav{gap:6px;font-size:11px}}  /* 320px 영어 메뉴가 화면 끝에 붙지 않게 */
 /* 돋보기는 구분선 뒤 언어 단추 옆(10/26 동원 "맨 위 막대는 돋보기 B 구분선 뒤 · 언어 A 지금 언어로 하자") — 메뉴 다섯 | 찾기 · 언어.
    구분선을 돋보기 앞으로 옮김 — 자바스크립트가 꺼져 돋보기가 없으면 구분선은 언어 단추 앞 그대로. 위 좁은 폭 규칙보다 뒤에 두어야 이김(같은 무게) */
 /* → 10/28 맨 위 띠(동원 "연락하기를 맨 오른쪽에 놓고 상자 형태로 … 검색은 그 왼쪽 그리고 한국어 영어 버전은 그 왼쪽" · 'A 먹 채운 상자' · "연락하기로"): 메뉴 넷 | 언어 · 찾기 · [연락하기].
@@ -296,17 +296,17 @@ html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}  /* 『 첫 �
 @media (hover:hover){.top .act a.cta:hover{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}}  /* 11/2 동원 '연락하기 상시값 검은색으로 … 마우스를 올리면 지금 상황이 되고' — 평소엔 맨 위에서도 먹 상자, 마우스를 올리면 테두리만(전엔 거꾸로 — 맨 위 테두리 · 내리거나 올리면 먹) · 연락 쪽도 같음 */
 /* 휴대폰 한 줄 맞춤(실측 — 상자만큼 메뉴가 넓어져 375 · 390 한국어 · 360 · 412 영어에서 두 줄로 넘어갔음): 375–419 한국어 메뉴 간격 16 → 10 · 영어 좁은 간격을 419까지 · 영어 국기만을 374까지 · 374 아래 상자 여백 6 · 8 · 359 아래 한국어 간격 6(10/28 단 검사로 상자 여백을 단에 맞춤 — 컴퓨터 · 휴대폰 8 · 12 한 규칙) */
 @media (min-width:375px) and (max-width:419px){html:lang(ko) .top nav{gap:10px}}
-@media (min-width:410px) and (max-width:419px){:is(html:lang(en),html:lang(ru)) .top nav{gap:7px;letter-spacing:0}:is(html:lang(en),html:lang(ru)) .top nav .lang{padding-left:8px}:is(html:lang(en),html:lang(ru)) .top nav .lang .fl{margin-right:4px}}
-@media (max-width:374px){.top .act a.cta{padding:6px 8px;letter-spacing:0}:is(html:lang(en),html:lang(ru)) .top nav .lang .lt{display:none}:is(html:lang(en),html:lang(ru)) .top nav .lang .fl{margin-right:0}}
-@media (max-width:359px){html:lang(ko) .top nav{gap:6px}:is(html:lang(en),html:lang(ru)) .top .act a.cta{font-size:11px}}
-@media (min-width:375px) and (max-width:389px){html:lang(ko) .top nav{gap:9px}:is(html:lang(en),html:lang(ru)) .top nav{gap:6px}}@media (min-width:420px) and (max-width:449px){:is(html:lang(en),html:lang(ru)) .top nav{gap:12px}}  /* 375 · 430(영어)에서 첫 메뉴가 화면 왼쪽 끝에 9–10px로 붙지 않게 — 지금처럼 15px 안팎 */
+@media (min-width:410px) and (max-width:419px){:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav{gap:7px;letter-spacing:0}:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav .lang{padding-left:8px}:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav .lang .fl{margin-right:4px}}
+@media (max-width:374px){.top .act a.cta{padding:6px 8px;letter-spacing:0}:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav .lang .lt{display:none}:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav .lang .fl{margin-right:0}}
+@media (max-width:359px){html:lang(ko) .top nav{gap:6px}:is(html:lang(en),html:lang(ru),html:lang(es)) .top .act a.cta{font-size:11px}}
+@media (min-width:375px) and (max-width:389px){html:lang(ko) .top nav{gap:9px}:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav{gap:6px}}@media (min-width:420px) and (max-width:449px){:is(html:lang(en),html:lang(ru),html:lang(es)) .top nav{gap:12px}}  /* 375 · 430(영어)에서 첫 메뉴가 화면 왼쪽 끝에 9–10px로 붙지 않게 — 지금처럼 15px 안팎 */
 /* 일본어판 맨 위 띠(11/1 — 「お問い合わせ」 단추가 '연락하기'보다 28px 넓어 390px에서 메뉴가 두 줄이었음): 449px 아래는 메뉴 간격 8 · 자간 0, 389px 아래는 간격 6 · 단추 안쪽 6 · 8, 359px 아래는 글자 11px(영어판 좁은 폭 규칙과 같은 길) — 320–430 일곱 넓이 한 줄 실측 */
 @media (max-width:449px){html:lang(ja) .top nav{gap:8px;letter-spacing:0}html:lang(ja) .top .act a.cta{letter-spacing:0}}
 @media (max-width:389px){html:lang(ja) .top nav{gap:6px}html:lang(ja) .top .act{gap:8px;margin-left:8px}html:lang(ja) .top .act a.cta{padding:6px 8px}}
 @media (max-width:359px){html:lang(ja) .top nav{gap:6px;font-size:11px}html:lang(ja) .top .act a.cta{font-size:11px}}
 html:lang(ja) #home .hs,html:lang(ja) .hb{text-wrap:balance}.nw{white-space:nowrap}html:lang(ja) :is(.hb,#home .hs,.bhead,.tagl,.h2,#poem .pbr,.plab dd,#home p.tt,.years li span,.mline .t):lang(ja){word-break:auto-phrase}  /* 일본어 부제 · 소개 첫 문장은 줄을 고르게(글자 사이에서 갈려 '生きているものた / ちで'처럼 남던 것) · 사람 이름은 한 덩어리(build.py names — 'ナム・ド / ンウォン') · 크게 쓰는 줄은 말마디에서 갈림(word-break:auto-phrase — 크롬 119부터, 모르는 브라우저는 normal 그대로) */
-:is(html:lang(en),html:lang(ru)) .label,:is(html:lang(en),html:lang(ru)) .sub{text-transform:uppercase;letter-spacing:.12em}  /* 영어 꼬리표는 대문자 + 자간 조금(Oui Non · Fitzcarraldo) */
-html:lang(en) .vt cite{font-style:italic;white-space:nowrap}html:lang(ru) .vt cite{white-space:nowrap}  /* 러시아어 «제목»도 한 줄에(11/6 — 원제가 붙은 뒤 390에서 «…Чоу- / Чоу»로 갈렸음) */  /* 영어 관행: 작품 제목은 기울임, 짧은 제목은 한 줄에 */
+:is(html:lang(en),html:lang(ru),html:lang(es)) .label,:is(html:lang(en),html:lang(ru),html:lang(es)) .sub{text-transform:uppercase;letter-spacing:.12em}  /* 영어 꼬리표는 대문자 + 자간 조금(Oui Non · Fitzcarraldo) */
+html:lang(en) .vt cite{font-style:italic;white-space:nowrap}html:lang(es) .vt cite{font-style:italic}  /* 스페인어 제목은 길어(Todo sobre Lily Chou-Chou) 한 줄 고정이면 768에서 2px 넘침 — 낱말 사이에서 갈리게(11/10) */html:lang(ru) .vt cite{white-space:nowrap}  /* 러시아어 «제목»도 한 줄에(11/6 — 원제가 붙은 뒤 390에서 «…Чоу- / Чоу»로 갈렸음) */  /* 영어 관행: 작품 제목은 기울임, 짧은 제목은 한 줄에 */
 html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:400}.poem .le.ph{word-break:keep-all}  /* 하7(11/7 동원 'B 말마디') — 일본어 번역 행은 build.py JA_PHRASE의 <wbr>(말마디 사이)에서만 꺾임 */  /* 일본어판(11/1): 『제목』은 한 덩어리(기울임 없음) · 「拓本」 번역 행은 명조 보통 굵기(영어 360은 Newsreader 가변 굵기 — 源ノ明朝는 300이 큰 제목 글자뿐) */
 .buy2{justify-self:start;margin-top:16px;display:inline-flex;align-items:center;padding:12px 16px;border-radius:var(--btn-r);background:var(--ink);color:var(--bg);font:600 12.5px/1 var(--sans);white-space:nowrap}
 @media (hover:hover){.buy2:hover{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}}  /* 11/2 동원 '교보문고에서 사기 마우스 오버시 달라지는 부분이 있어야지 뭐 흰색으로 된다거나' — 헤더 CTA와 같게 평소 먹, 올리면 흰 바탕 · 테두리 */
@@ -831,7 +831,7 @@ html.sr-on{overflow:hidden}
   #home{min-height:calc(100vh - var(--top));min-height:calc(100svh - var(--top))}  /* 첫 화면은 맨 위 띠를 뺀 높이 — 라벨이 화면 아래에 붙지 않게(휴대폰은 내용 높이, 10/29 고침 2) */
   #home .kick{margin-top:0}
   #home .ht{margin-top:16px;font-size:clamp(60px,8.4vw,128px)}
-  :is(html:lang(en),html:lang(ru)) #home .ht{font-size:clamp(38px,5.2vw,84px)}
+  :is(html:lang(en),html:lang(ru),html:lang(es)) #home .ht{font-size:clamp(38px,5.2vw,84px)}
   html:lang(ja) #home .ht{font-size:clamp(52px,6.8vw,108px)}  /* 일본어 큰 제목(11/1) — 다섯 글자 줄 '扉をあけて'가 왼쪽 단(768px 284px)에 들어가게 */
   #home .book{margin-top:0;grid-template-columns:1fr}
   #home .hs{font-size:24px}
@@ -908,7 +908,7 @@ html.sr-on{overflow:hidden}
    영어는 대역과 같은 두 단 · 소개 글은 차례 두 단 폭에 맞춤. 태블릿 세로처럼 칸이 좁으면 한 단 */
 @media (min-width:1300px){#poem>.bnews{max-width:min(50% - 14px,34em)}}  /* 넓은 화면에서 소식 폭 = 아래 소개 글 폭(차례 두 단) */
 @container (max-width:399px){.btoc .parts,.btoc .tail{grid-template-columns:1fr}}
-@container (min-width:640px){:is(html:lang(en),html:lang(ru)) .btoc .parts,:is(html:lang(en),html:lang(ru)) .btoc .tail,html:lang(ja) .btoc .parts,html:lang(ja) .btoc .tail{grid-template-columns:1fr 1fr}}
+@container (min-width:640px){:is(html:lang(en),html:lang(ru),html:lang(es)) .btoc .parts,:is(html:lang(en),html:lang(ru),html:lang(es)) .btoc .tail,html:lang(ja) .btoc .parts,html:lang(ja) .btoc .tail{grid-template-columns:1fr 1fr}}
 @container (min-width:800px){html:lang(ko) .btoc .parts,html:lang(ko) .btoc .tail{grid-template-columns:repeat(4,1fr)}.bhead,.btext{max-width:min(50% - 14px,34em)}}
 @keyframes caret{50%{opacity:0}}
 @keyframes name-show{to{color:var(--ink)}}

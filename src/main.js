@@ -914,7 +914,7 @@
       const [nq] = norm(q);
       if (!nq) return [];
       const ch = /^[ㄱ-ㅎ]+$/.test(nq), out = [];
-      const one = H.lang === "en" && nq.length > 4 && nq.endsWith("s") ? nq.slice(0, -1) : "";  // 영어 복수형(films · poems)은 끝 s를 떼고 한 번 더(10/28 점검 5)
+      const one = (H.lang === "en" || H.lang === "es") && nq.length > 4 && nq.endsWith("s") ? nq.slice(0, -1) : "";  // 영어 복수형(films · poems)은 끝 s를 떼고 한 번 더(10/28 점검 5)
       items.forEach(it => {
         const [nt, map] = norm(it[1]), hay = ch ? cho(nt) : nt;
         let w = nq, at = hay.indexOf(nq);
@@ -1177,6 +1177,7 @@
         const d = H.lang === "en" ? now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
           : H.lang === "ja" ? now.toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })  // 2026年11月1日(일본어판 날짜 꼴)
           : H.lang === "ru" ? now.toLocaleDateString("ru-RU", { year: "numeric", month: "long", day: "numeric" })  // 1 ноября 2026 г.(11/6)
+          : H.lang === "es" ? now.toLocaleDateString("es-ES", { year: "numeric", month: "long", day: "numeric" })  // 1 de noviembre de 2026(11/10)
           : `${now.getFullYear()}. ${now.getMonth() + 1}. ${now.getDate()}.`;
         g.font = `300 27px ${sans}, -apple-system, sans-serif`;
         g.fillStyle = "#626262";
@@ -1379,7 +1380,8 @@
   // 글은 '안내받는 사람의 말'이라 쪽의 ui 글이 아닌 여기 넷 — 우리 판에 없는 말(독일어 등)이면 한국어판에서만 영어판을 안내
   (() => {
     const LS = { ko: ["한국어판이 있습니다", "열기", "닫기"], en: ["This site is also in English", "Open", "Close"],
-      ja: ["日本語版があります", "開く", "閉じる"], ru: ["Есть русская версия сайта", "Открыть", "Закрыть"] };
+      ja: ["日本語版があります", "開く", "閉じる"], ru: ["Есть русская версия сайта", "Открыть", "Закрыть"],
+      es: ["Este sitio también está en español", "Abrir", "Cerrar"] };  // 스페인어판(11/10)
     const here = H.lang, hd = document.querySelector("header.top");
     try { if (!hd || localStorage.getItem("lsug")) return; } catch (x) { return; }
     const want = (navigator.languages || [navigator.language || ""]).map(l => String(l).toLowerCase().split("-")[0]);

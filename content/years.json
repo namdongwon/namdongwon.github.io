@@ -15,6 +15,10 @@
       "ru": {
         "text": "Родился зимой в Сеуле",
         "note": ""
+      },
+      "es": {
+        "text": "Nace en Seúl, en invierno",
+        "note": ""
       }
     },
     {
@@ -31,6 +35,10 @@
       },
       "ru": {
         "text": "Начал вести дневник фильмов",
+        "note": ""
+      },
+      "es": {
+        "text": "Empieza a llevar un diario de cine",
         "note": ""
       }
     },
@@ -49,6 +57,10 @@
       "ru": {
         "text": "Начал вести дневник выставок",
         "note": ""
+      },
+      "es": {
+        "text": "Empieza a llevar un diario de exposiciones",
+        "note": ""
       }
     },
     {
@@ -65,6 +77,10 @@
       },
       "ru": {
         "text": "Начал изучать искусство",
+        "note": ""
+      },
+      "es": {
+        "text": "Empieza a estudiar arte",
         "note": ""
       }
     },
@@ -83,6 +99,10 @@
       "ru": {
         "text": "Сборник стихов «Открой дверь и выйди — всё полно живого»",
         "note": ""
+      },
+      "es": {
+        "text": "Poemario *Abre la puerta, sal, y todo está lleno de seres vivos*",
+        "note": ""
       }
     },
     {
@@ -100,6 +120,10 @@
       "ru": {
         "text": "YouTube-канал «Прекрасный Нам»",
         "note": ""
+      },
+      "es": {
+        "text": "Canal de YouTube «Bello Nam»",
+        "note": ""
       }
     },
     {
@@ -116,6 +140,10 @@
       },
       "ru": {
         "text": "Сайт «namdongwon.com»",
+        "note": ""
+      },
+      "es": {
+        "text": "Sitio web namdongwon.com",
         "note": ""
       }
     }

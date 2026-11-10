@@ -73,6 +73,9 @@
               },
               "ru": {
                 "title": "Белый сон"
+              },
+              "es": {
+                "title": "Sueño blanco"
               }
             },
             {
@@ -86,6 +89,9 @@
               },
               "ru": {
                 "title": "Поле зрения"
+              },
+              "es": {
+                "title": "Campo de visión"
               }
             },
             {
@@ -99,6 +105,9 @@
               },
               "ru": {
                 "title": "Тяжесть, которая не тонет"
+              },
+              "es": {
+                "title": "Un peso que no se hunde"
               }
             },
             {
@@ -112,6 +121,9 @@
               },
               "ru": {
                 "title": "Есть ли боль?"
+              },
+              "es": {
+                "title": "¿Siente dolor?"
               }
             },
             {
@@ -125,6 +137,9 @@
               },
               "ru": {
                 "title": "Стекло"
+              },
+              "es": {
+                "title": "Vidrio"
               }
             },
             {
@@ -138,6 +153,9 @@
               },
               "ru": {
                 "title": "Точка схода"
+              },
+              "es": {
+                "title": "Punto de fuga"
               }
             },
             {
@@ -151,6 +169,9 @@
               },
               "ru": {
                 "title": "Сонар"
+              },
+              "es": {
+                "title": "Sonar"
               }
             },
             {
@@ -164,6 +185,9 @@
               },
               "ru": {
                 "title": "Объявление"
+              },
+              "es": {
+                "title": "Aviso"
               }
             },
             {
@@ -177,6 +201,9 @@
               },
               "ru": {
                 "title": "Лунный свет, звёздный свет"
+              },
+              "es": {
+                "title": "Luz de luna, luz de estrellas"
               }
             },
             {
@@ -190,6 +217,9 @@
               },
               "ru": {
                 "title": "Тихий звук, который хотелось донести"
+              },
+              "es": {
+                "title": "Un pequeño sonido que quise que oyeras"
               }
             },
             {
@@ -203,6 +233,9 @@
               },
               "ru": {
                 "title": "Чертополох"
+              },
+              "es": {
+                "title": "Cardo"
               }
             },
             {
@@ -216,6 +249,9 @@
               },
               "ru": {
                 "title": "Пульс жизни"
+              },
+              "es": {
+                "title": "El pulso de la vida"
               }
             },
             {
@@ -229,6 +265,9 @@
               },
               "ru": {
                 "title": "Синий свет"
+              },
+              "es": {
+                "title": "Luz azul"
               }
             },
             {
@@ -242,6 +281,9 @@
               },
               "ru": {
                 "title": "Просмотр"
+              },
+              "es": {
+                "title": "Contemplación"
               }
             },
             {
@@ -255,6 +297,9 @@
               },
               "ru": {
                 "title": "Порог"
+              },
+              "es": {
+                "title": "Umbral"
               }
             }
           ],
@@ -266,6 +311,9 @@
           },
           "ru": {
             "name": "Часть I"
+          },
+          "es": {
+            "name": "Parte I"
           }
         },
         {
@@ -282,6 +330,9 @@
               },
               "ru": {
                 "title": "День, оставшийся в пустых руках"
+              },
+              "es": {
+                "title": "Un día que queda en los brazos vacíos"
               }
             },
             {
@@ -295,6 +346,9 @@
               },
               "ru": {
                 "title": "Склон"
+              },
+              "es": {
+                "title": "Pendiente"
               }
             },
             {
@@ -308,6 +362,9 @@
               },
               "ru": {
                 "title": "Щели"
+              },
+              "es": {
+                "title": "Rendijas"
               }
             },
             {
@@ -321,6 +378,9 @@
               },
               "ru": {
                 "title": "Часы"
+              },
+              "es": {
+                "title": "Reloj"
               }
             },
             {
@@ -334,6 +394,9 @@
               },
               "ru": {
                 "title": "Игра"
+              },
+              "es": {
+                "title": "Juego"
               }
             },
             {
@@ -347,6 +410,9 @@
               },
               "ru": {
                 "title": "Угол"
+              },
+              "es": {
+                "title": "Ángulo"
               }
             },
             {
@@ -360,6 +426,9 @@
               },
               "ru": {
                 "title": "Снятие показаний"
+              },
+              "es": {
+                "title": "Lectura del medidor"
               }
             },
             {
@@ -373,6 +442,9 @@
               },
               "ru": {
                 "title": "Включается свет"
+              },
+              "es": {
+                "title": "Encendido"
               }
             },
             {
@@ -386,6 +458,9 @@
               },
               "ru": {
                 "title": "Обрывки"
+              },
+              "es": {
+                "title": "Retazos"
               }
             },
             {
@@ -399,6 +474,9 @@
               },
               "ru": {
                 "title": "Аквариум"
+              },
+              "es": {
+                "title": "Pecera"
               }
             },
             {
@@ -412,6 +490,9 @@
               },
               "ru": {
                 "title": "Между зубами"
+              },
+              "es": {
+                "title": "Entre los dientes"
               }
             },
             {
@@ -425,6 +506,9 @@
               },
               "ru": {
                 "title": "Просто так"
+              },
+              "es": {
+                "title": "Porque sí"
               }
             },
             {
@@ -438,6 +522,9 @@
               },
               "ru": {
                 "title": "Почерк"
+              },
+              "es": {
+                "title": "Caligrafía"
               }
             },
             {
@@ -451,6 +538,9 @@
               },
               "ru": {
                 "title": "Обычный вечер"
+              },
+              "es": {
+                "title": "Una tarde cualquiera"
               }
             },
             {
@@ -464,6 +554,9 @@
               },
               "ru": {
                 "title": "Давно"
+              },
+              "es": {
+                "title": "Hace mucho"
               }
             }
           ],
@@ -475,6 +568,9 @@
           },
           "ru": {
             "name": "Часть II"
+          },
+          "es": {
+            "name": "Parte II"
           }
         },
         {
@@ -491,6 +587,9 @@
               },
               "ru": {
                 "title": "Оттиск"
+              },
+              "es": {
+                "title": "Calco"
               }
             },
             {
@@ -504,6 +603,9 @@
               },
               "ru": {
                 "title": "Отсрочка"
+              },
+              "es": {
+                "title": "Prórroga"
               }
             },
             {
@@ -517,6 +619,9 @@
               },
               "ru": {
                 "title": "В полном цвету"
+              },
+              "es": {
+                "title": "Plena floración"
               }
             },
             {
@@ -530,6 +635,9 @@
               },
               "ru": {
                 "title": "Опоздание"
+              },
+              "es": {
+                "title": "Llegar tarde"
               }
             },
             {
@@ -543,6 +651,9 @@
               },
               "ru": {
                 "title": "По номерам"
+              },
+              "es": {
+                "title": "Por orden numérico"
               }
             },
             {
@@ -556,6 +667,9 @@
               },
               "ru": {
                 "title": "Снаружи, внутри"
+              },
+              "es": {
+                "title": "Fuera, dentro"
               }
             },
             {
@@ -569,6 +683,9 @@
               },
               "ru": {
                 "title": "Ван Гог"
+              },
+              "es": {
+                "title": "Van Gogh"
               }
             },
             {
@@ -582,6 +699,9 @@
               },
               "ru": {
                 "title": "Лицом к лицу"
+              },
+              "es": {
+                "title": "Cara a cara"
               }
             },
             {
@@ -595,6 +715,9 @@
               },
               "ru": {
                 "title": "Против течения"
+              },
+              "es": {
+                "title": "Contracorriente"
               }
             },
             {
@@ -608,6 +731,9 @@
               },
               "ru": {
                 "title": "Солоноватая вода"
+              },
+              "es": {
+                "title": "Agua salobre"
               }
             },
             {
@@ -621,6 +747,9 @@
               },
               "ru": {
                 "title": "Португальский кораблик"
+              },
+              "es": {
+                "title": "Carabela portuguesa"
               }
             },
             {
@@ -634,6 +763,9 @@
               },
               "ru": {
                 "title": "Персик"
+              },
+              "es": {
+                "title": "Melocotón"
               }
             },
             {
@@ -647,6 +779,9 @@
               },
               "ru": {
                 "title": "Подчёркивание"
+              },
+              "es": {
+                "title": "Subrayado"
               }
             },
             {
@@ -660,6 +795,9 @@
               },
               "ru": {
                 "title": "Четыре часа дня"
+              },
+              "es": {
+                "title": "Las cuatro de la tarde"
               }
             },
             {
@@ -673,6 +811,9 @@
               },
               "ru": {
                 "title": "В одну сторону"
+              },
+              "es": {
+                "title": "Solo ida"
               }
             }
           ],
@@ -684,6 +825,9 @@
           },
           "ru": {
             "name": "Часть III"
+          },
+          "es": {
+            "name": "Parte III"
           }
         },
         {
@@ -700,6 +844,9 @@
               },
               "ru": {
                 "title": "Литеры"
+              },
+              "es": {
+                "title": "Tipos de imprenta"
               }
             },
             {
@@ -713,6 +860,9 @@
               },
               "ru": {
                 "title": "Школа"
+              },
+              "es": {
+                "title": "Escuela"
               }
             },
             {
@@ -726,6 +876,9 @@
               },
               "ru": {
                 "title": "В последнее утро"
+              },
+              "es": {
+                "title": "En la última mañana"
               }
             },
             {
@@ -739,6 +892,9 @@
               },
               "ru": {
                 "title": "Чистый лист"
+              },
+              "es": {
+                "title": "Página en blanco"
               }
             },
             {
@@ -752,6 +908,9 @@
               },
               "ru": {
                 "title": "Память"
+              },
+              "es": {
+                "title": "Memoria"
               }
             },
             {
@@ -765,6 +924,9 @@
               },
               "ru": {
                 "title": "Смешение красок"
+              },
+              "es": {
+                "title": "Mezcla de colores"
               }
             },
             {
@@ -778,6 +940,9 @@
               },
               "ru": {
                 "title": "Грамматика"
+              },
+              "es": {
+                "title": "Gramática"
               }
             },
             {
@@ -791,6 +956,9 @@
               },
               "ru": {
                 "title": "Ладонь"
+              },
+              "es": {
+                "title": "Palma"
               }
             },
             {
@@ -804,6 +972,9 @@
               },
               "ru": {
                 "title": "В дороге"
+              },
+              "es": {
+                "title": "En el camino"
               }
             },
             {
@@ -817,6 +988,9 @@
               },
               "ru": {
                 "title": "Снег валит"
+              },
+              "es": {
+                "title": "Nieve espesa"
               }
             },
             {
@@ -830,6 +1004,9 @@
               },
               "ru": {
                 "title": "Чашечка"
+              },
+              "es": {
+                "title": "Cáliz"
               }
             },
             {
@@ -843,6 +1020,9 @@
               },
               "ru": {
                 "title": "Гвоздь"
+              },
+              "es": {
+                "title": "Clavo"
               }
             },
             {
@@ -856,6 +1036,9 @@
               },
               "ru": {
                 "title": "Со спины"
+              },
+              "es": {
+                "title": "De espaldas"
               }
             },
             {
@@ -869,6 +1052,9 @@
               },
               "ru": {
                 "title": "Лёгкие вещи…"
+              },
+              "es": {
+                "title": "Lo que es ligero"
               }
             },
             {
@@ -882,6 +1068,9 @@
               },
               "ru": {
                 "title": "Случайно"
+              },
+              "es": {
+                "title": "Por casualidad"
               }
             }
           ],
@@ -893,6 +1082,9 @@
           },
           "ru": {
             "name": "Часть IV"
+          },
+          "es": {
+            "name": "Parte IV"
           }
         }
       ],
@@ -908,6 +1100,9 @@
           },
           "ru": {
             "title": "От автора"
+          },
+          "es": {
+            "title": "Nota del autor"
           }
         },
         {
@@ -921,6 +1116,9 @@
           },
           "ru": {
             "title": "Тем, кто прочитал"
+          },
+          "es": {
+            "title": "A quienes leen"
           }
         }
       ]
@@ -950,6 +1148,10 @@
       "ru": {
         "unit": "фильмов",
         "note": "в записях с 2013 года"
+      },
+      "es": {
+        "unit": "películas",
+        "note": "registradas desde 2013"
       }
     },
     {
@@ -969,6 +1171,10 @@
       "ru": {
         "unit": "выставок",
         "note": "в записях с 2023 года"
+      },
+      "es": {
+        "unit": "exposiciones",
+        "note": "registradas desde 2023"
       }
     }
   ],
@@ -1038,6 +1244,9 @@
       },
       "ru": {
         "name": "Instagram"
+      },
+      "es": {
+        "name": "Instagram"
       }
     },
     {
@@ -1052,6 +1261,9 @@
       },
       "ru": {
         "name": "YouTube"
+      },
+      "es": {
+        "name": "YouTube"
       }
     },
     {
@@ -1065,6 +1277,9 @@
         "name": "Brunch"
       },
       "ru": {
+        "name": "Brunch"
+      },
+      "es": {
         "name": "Brunch"
       }
     }
@@ -1084,6 +1299,10 @@
     "ru": {
       "name": "Прекрасный Нам",
       "desc": "Рецензии на фильмы, сериалы, книги и выставки · на корейском"
+    },
+    "es": {
+      "name": "Bello Nam",
+      "desc": "Reseñas de cine, series, libros y exposiciones · en coreano"
     }
   },
   "copyright": "Copyright © 2026 남동원. All rights reserved",
@@ -1413,6 +1632,113 @@
       "Нам Донвон {photo} —",
       "офисный служащий, который пишет {book} стихи",
       "и рецензии {still} на то, что видит"
+    ]
+  },
+  "es": {
+    "name": "Dongwon Nam",
+    "logo": "NAM DONGWON",
+    "tagline": "Un oficinista que escribe poemas y reseña lo que ve",
+    "tab_title": "Dongwon Nam — oficinista que escribe poemas",
+    "description": "Dongwon Nam, oficinista que escribe poemas. Primer poemario: «Abre la puerta, sal, y todo está lleno de seres vivos».",
+    "book": {
+      "title": "Abre la puerta, sal, y todo está lleno de seres vivos",
+      "title_lines": [
+        "Abre la puerta, sal,",
+        "y todo está lleno de seres vivos"
+      ],
+      "display": {
+        "big": [
+          "Abre la puerta,",
+          "sal,"
+        ],
+        "small": [
+          "y todo está lleno",
+          "de seres vivos"
+        ]
+      },
+      "door": "Abre la puerta",
+      "buy_label": "Añadir a tu estantería",
+      "spec": "110 páginas · 128 × 188 mm · 1 de noviembre de 2026 · Kyobo PubPle",
+      "colophon": [
+        {
+          "k": "Edición",
+          "v": "Primera edición, 1 de noviembre de 2026 · impresión bajo demanda"
+        },
+        {
+          "k": "Formato",
+          "v": "110 páginas · 128 × 188 mm · cubierta a color · interior en blanco y negro · solapas"
+        },
+        {
+          "k": "Editorial",
+          "v": "Kyobo PubPle"
+        },
+        {
+          "k": "ISBN",
+          "v": "9788924266283"
+        }
+      ],
+      "credit": "Texto, cubierta y maquetación: Dongwon Nam",
+      "store_label": "Comprar en Kyobo Book Centre",
+      "store": "Kyobo PubPle",
+      "intro": {
+        "lead": [
+          "Entre fingirse vivo y fingirse muerto,",
+          "poemas que se sacuden la tinta de la mano y siguen andando"
+        ],
+        "text": "Los poemas de Dongwon Nam separan lo que respira de lo que solo se mueve. Entre muros de edificios de los que algo seco se desprende al tocarlos, basura empujada por el viento y ruedas que giran a velocidad constante, el poeta se pregunta si fingirse vivo o fingirse muerto y, en lugar de responder, se sacude de la mano la tinta del sello. La base de este poemario son frases firmes que anotan lo que ha visto, sin anteponer el sentimiento."
+      },
+      "toc": {
+        "label": "Índice"
+      }
+    },
+    "poem": {
+      "title": "Calco",
+      "file": "poem_es.txt",
+      "pages": "pp. 61–62"
+    },
+    "bio": "Nació en Seúl en el invierno de 1995. En 2026 comenzó a publicar con su primer poemario, *Abre la puerta, sal, y todo está lleno de seres vivos*.",
+    "contact": {
+      "lead_lines": [
+        "Para colaboraciones o preguntas,",
+        "escríbeme un mensaje o un correo."
+      ],
+      "privacy": "Tu nombre y tu correo solo se usarán para responderte.",
+      "faq": [
+        {
+          "q": "¿Puedo compartir los poemas en redes sociales o en un blog?",
+          "a": "Sí: una o dos estrofas, siempre que cites la fuente, por ejemplo: «Dongwon Nam, *Abre la puerta, sal, y todo está lleno de seres vivos*». Para un poema completo o cualquier uso comercial, escríbeme antes por correo."
+        },
+        {
+          "q": "¿Puedo leer un poema en voz alta y publicar el vídeo?",
+          "a": "Las lecturas sin publicidad ni ventas son bienvenidas, siempre que cites la fuente. También puedes leerlo en una boda o en un encuentro de poesía. Si el vídeo se va a usar en publicidad o ventas, escríbeme antes."
+        },
+        {
+          "q": "¿Dónde puedo comprar el libro?",
+          "a": "Está disponible en Kyobo PubPle."
+        },
+        {
+          "q": "¿Adónde envío solicitudes de charlas, colaboraciones, traducciones o entrevistas?",
+          "a": "Escríbeme al correo de arriba. Indica el tipo de solicitud en el asunto, como [Charla] o [Colaboración], y te responderé en un plazo de tres días."
+        },
+        {
+          "q": "¿Podrías leer mis poemas y darme algún consejo?",
+          "a": "Gracias por pensar en mí. Lo siento, pero no puedo leer ni comentar manuscritos de forma individual."
+        },
+        {
+          "q": "Con un trabajo de oficina, ¿cuándo escribes?",
+          "a": "Apunto en las notas del teléfono los versos que se me ocurren de camino al trabajo o a la hora del almuerzo. Los poemas crecen despacio entre esas notas."
+        }
+      ]
+    },
+    "copyright": "Copyright © 2026 Dongwon Nam. Todos los derechos reservados",
+    "colophon": {
+      "note": "Pregunta antes de reutilizar los textos o las fotos.",
+      "made": "Escrito, fotografiado y compuesto en Seúl"
+    },
+    "hero": [
+      "Dongwon Nam {photo},",
+      "un oficinista que escribe {book} poemas",
+      "y reseña {still} lo que ve"
     ]
   },
   "hero": [

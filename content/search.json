@@ -19,6 +19,11 @@
         "label": "Читать «Оттиск»",
         "note": "Стихотворение",
         "q": ""
+      },
+      "es": {
+        "label": "Leer «Calco»",
+        "note": "El poema",
+        "q": ""
       }
     },
     {
@@ -39,6 +44,11 @@
       "ru": {
         "label": "Содержание",
         "note": "Шестьдесят стихотворений, четыре части",
+        "q": ""
+      },
+      "es": {
+        "label": "Índice",
+        "note": "Sesenta poemas, cuatro partes",
         "q": ""
       }
     },
@@ -61,6 +71,11 @@
         "label": "Рецензии на фильмы",
         "note": "YouTube",
         "q": "фильм"
+      },
+      "es": {
+        "label": "Reseñas de cine",
+        "note": "YouTube",
+        "q": "cine"
       }
     },
     {
@@ -82,6 +97,11 @@
         "label": "Выставки",
         "note": "Instagram",
         "q": "выстав"
+      },
+      "es": {
+        "label": "Exposiciones",
+        "note": "Instagram",
+        "q": "exposici"
       }
     },
     {
@@ -102,6 +122,11 @@
       "ru": {
         "label": "Связаться",
         "note": "Почта · сообщение в Instagram",
+        "q": ""
+      },
+      "es": {
+        "label": "Contacto",
+        "note": "Correo · mensaje de Instagram",
         "q": ""
       }
     }

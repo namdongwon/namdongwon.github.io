@@ -15,6 +15,10 @@
       "ru": {
         "label": "Читаю",
         "text": ""
+      },
+      "es": {
+        "label": "Leyendo",
+        "text": ""
       }
     },
     {
@@ -31,6 +35,10 @@
       "ru": {
         "label": "Монтирую",
         "text": "Фильм «Всё о Лили Чоу-Чоу» — первый выпуск канала «Прекрасный Нам»"
+      },
+      "es": {
+        "label": "Editando",
+        "text": "Película *Todo sobre Lily Chou-Chou* — el primer episodio de «Bello Nam»"
       }
     },
     {
@@ -46,6 +54,10 @@
       },
       "ru": {
         "label": "Пишу",
+        "text": ""
+      },
+      "es": {
+        "label": "Escribiendo",
         "text": ""
       }
     }

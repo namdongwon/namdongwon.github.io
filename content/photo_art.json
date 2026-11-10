@@ -40,6 +40,16 @@
           "show": "Patricia Piccinini: Kinship",
           "venue": "Художественный музей Сувона"
         }
+      },
+      "es": {
+        "where": "",
+        "alt": "Escultura con forma humana tendida boca abajo sobre un suelo amarillo, vista desde arriba: la espalda desnuda y una larga melena negra y rizada extendida por el suelo",
+        "art": {
+          "artist": "Patricia Piccinini",
+          "title": "",
+          "show": "Patricia Piccinini: Kinship",
+          "venue": "Museo de Arte de Suwon"
+        }
       }
     },
     {
@@ -76,6 +86,16 @@
       "ru": {
         "where": "",
         "alt": "Взгляд вверх, в круглый потолок из шестиугольных зеркальных панелей; в центре видна зелёная листва",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "es": {
+        "where": "",
+        "alt": "Vista hacia arriba de un techo circular de paneles de espejo hexagonales; en el centro asoman hojas verdes",
         "art": {
           "artist": "",
           "title": "",
@@ -124,6 +144,16 @@
           "show": "",
           "venue": ""
         }
+      },
+      "es": {
+        "where": "",
+        "alt": "La orilla de un río de noche: un largo puente iluminado, sus luces reflejadas en el agua y gente que pasea junto al río",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
       }
     },
     {
@@ -160,6 +190,16 @@
       "ru": {
         "where": "",
         "alt": "Большой валун, поросший мхом, на белом полу выставочного зала; справа наверху на уступе сидит человек",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "es": {
+        "where": "",
+        "alt": "Una gran roca cubierta de musgo sobre el suelo blanco de una sala de exposición; arriba a la derecha, una persona sentada en un saliente",
         "art": {
           "artist": "",
           "title": "",
@@ -208,6 +248,16 @@
           "show": "",
           "venue": ""
         }
+      },
+      "es": {
+        "where": "",
+        "alt": "Piedras grandes y pequeñas que asoman entre el agua oscura que corre junto a la orilla",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
       }
     },
     {
@@ -249,6 +299,16 @@
           "title": "The Secret Sharer",
           "show": "APMA, CHAPTER FIVE",
           "venue": "Музей искусства Amorepacific"
+        }
+      },
+      "es": {
+        "where": "",
+        "alt": "De cerca, un montón de fragmentos de acrílico transparente y trozos de espejo",
+        "art": {
+          "artist": "Lee Bul",
+          "title": "The Secret Sharer",
+          "show": "APMA, CHAPTER FIVE",
+          "venue": "Museo de Arte Amorepacific"
         }
       }
     },
@@ -292,6 +352,16 @@
           "show": "Yoo Youngkuk: A Mountain Within Me",
           "venue": "Сеульский музей искусств"
         }
+      },
+      "es": {
+        "where": "",
+        "alt": "Una persona vestida de negro, de pie y con la mano en el mentón, ante una pintura abstracta en amarillo, azul y verde",
+        "art": {
+          "artist": "Yoo Youngkuk",
+          "title": "",
+          "show": "Yoo Youngkuk: A Mountain Within Me",
+          "venue": "Museo de Arte de Seúl"
+        }
       }
     },
     {
@@ -328,6 +398,16 @@
       "ru": {
         "where": "",
         "alt": "Человек стоит у зелёной воды под высокой скалой, поросшей травой",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "es": {
+        "where": "",
+        "alt": "Una persona de pie junto a un agua verde, al pie de un alto acantilado de roca cubierto de hierba",
         "art": {
           "artist": "",
           "title": "",
@@ -376,6 +456,16 @@
           "show": "",
           "venue": ""
         }
+      },
+      "es": {
+        "where": "",
+        "alt": "Una persona vestida de negro con una taza de té, sentada en un sofá de madera ante una cortina roja",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
       }
     },
     {
@@ -418,6 +508,16 @@
           "show": "",
           "venue": ""
         }
+      },
+      "es": {
+        "where": "",
+        "alt": "Una persona sentada a una mesa negra junto a un gran ventanal que da a un bosque en invierno",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
       }
     },
     {
@@ -454,6 +554,16 @@
       "ru": {
         "where": "",
         "alt": "Вид со спины: человек сидит у открытой двери ханока и смотрит во двор",
+        "art": {
+          "artist": "",
+          "title": "",
+          "show": "",
+          "venue": ""
+        }
+      },
+      "es": {
+        "where": "",
+        "alt": "De espaldas, una persona sentada ante la puerta abierta de un hanok, mirando hacia el patio",
         "art": {
           "artist": "",
           "title": "",
