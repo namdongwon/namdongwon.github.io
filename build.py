@@ -61,6 +61,14 @@ THEME_ICONS = {k: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" st
     "light": '<circle cx="10" cy="10" r="3.4"/><path d="M10 1.8v2M10 16.2v2M1.8 10h2M16.2 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M4.2 15.8l1.4-1.4M14.4 5.6l1.4-1.4"/>',
     "dark": '<path d="M16.6 12.4A7 7 0 0 1 7.6 3.4a7 7 0 1 0 9 9z"/>',
 }.items()}  # 판권면 화면 고르기 그림(10/28 동원 "이모지로 하자 글자 말고" → "B 선 그림 먹") — 돋보기와 같은 20칸 · 선 1.4 · 모니터 · 해 · 달
+# 언어 펼침 목록의 국기(11/10 동원 "밖에서는 지구본 같은 거여도 이거 누를 때는 국기가 있어야 할 거 같아 각 나라의 국기로 하고 영어는 영국 국기로 해줘" — 11/9 '국기는 쓰지 않음'을 바꿈)
+# 이모지 대신 SVG — 윈도우는 국기 이모지를 그리지 못해 'KR' 글자로 보임 · 색은 각 나라 공식 색(10/28 동원 '국기 무채색' 거절 — 색 그대로) · 3 : 2 칸에 맞춤(영국은 2 : 1의 가운데)
+FLAG_ICON = {
+    "ko": '<svg class="flg" viewBox="0 0 36 24" aria-hidden="true" focusable="false"><rect width="36" height="24" fill="#fff"/><g transform="translate(18 12) rotate(33.69)"><circle r="6" fill="#0047A0"/><path d="M-6 0A6 6 0 0 1 6 0A3 3 0 0 0 0 0A3 3 0 0 1-6 0Z" fill="#CD2E3A"/></g><g fill="#000"><g transform="translate(7.85 5.23) rotate(-56.31)"><rect x="-2.4" y="-1.9" width="4.8" height="1"/><rect x="-2.4" y="-0.3" width="4.8" height="1"/><rect x="-2.4" y="1.3" width="4.8" height="1"/></g><g transform="translate(28.15 18.77) rotate(-56.31)"><rect x="-2.4" y="-1.9" width="2.1" height="1"/><rect x=".3" y="-1.9" width="2.1" height="1"/><rect x="-2.4" y="-0.3" width="2.1" height="1"/><rect x=".3" y="-0.3" width="2.1" height="1"/><rect x="-2.4" y="1.3" width="2.1" height="1"/><rect x=".3" y="1.3" width="2.1" height="1"/></g><g transform="translate(28.15 5.23) rotate(-123.69)"><rect x="-2.4" y="-1.9" width="2.1" height="1"/><rect x=".3" y="-1.9" width="2.1" height="1"/><rect x="-2.4" y="-0.3" width="4.8" height="1"/><rect x="-2.4" y="1.3" width="2.1" height="1"/><rect x=".3" y="1.3" width="2.1" height="1"/></g><g transform="translate(7.85 18.77) rotate(-123.69)"><rect x="-2.4" y="-1.9" width="4.8" height="1"/><rect x="-2.4" y="-0.3" width="2.1" height="1"/><rect x=".3" y="-0.3" width="2.1" height="1"/><rect x="-2.4" y="1.3" width="4.8" height="1"/></g></g></svg>',
+    "en": '<svg class="flg" viewBox="7.5 0 45 30" aria-hidden="true" focusable="false"><clipPath id="fgt"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#fgt)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></svg>',
+    "ja": '<svg class="flg" viewBox="0 0 36 24" aria-hidden="true" focusable="false"><rect width="36" height="24" fill="#fff"/><circle cx="18" cy="12" r="7.2" fill="#BC002D"/></svg>',
+    "ru": '<svg class="flg" viewBox="0 0 36 24" aria-hidden="true" focusable="false"><rect width="36" height="24" fill="#fff"/><rect y="8" width="36" height="8" fill="#0039A6"/><rect y="16" width="36" height="8" fill="#D52B1E"/></svg>',
+}
 GLOBE_ICON = '<svg class="gl" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.5"/><path d="M2.5 10h15M10 2.5c2.2 2.3 3.2 4.8 3.2 7.5s-1 5.2-3.2 7.5M10 2.5C7.8 4.8 6.8 7.3 6.8 10s1 5.2 3.2 7.5"/></svg>'  # 바닥글 언어 고르기(11/9 A 지구본) — 국기 대신(나라 ≠ 언어)
 CARET_ICON = '<svg class="cr" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true" focusable="false"><path d="M1.5 3.5h7L5 7.5z"/></svg>'  # 펼침 표시 — 열리면 CSS가 뒤집음
 PAL_FONT = "bon-myeongjo.woff2"  # 글자 팔레트(10/28)의 글자 612가지는 본명조 보통 판에만 담음 — 굵게 · 고딕 판은 늘지 않게(main)
@@ -1571,10 +1579,11 @@ def render(site, poem, videos, photos, lang="ko"):
     # 글자 대신 그림(10/28 B 선 그림 — 이름은 읽기 프로그램 · 마우스를 올리면 보이는 말로)
     thm = "".join(f'<button type="button" data-th="{k}" aria-pressed="{"true" if k == "light" else "false"}" aria-label="{e(x)}" title="{e(x)}">{THEME_ICONS[k]}</button>'
                     for k, x in zip(("system", "light", "dark"), L["theme_opts"].split("|")))
-    def lang_item(x):  # 판권면 '언어' 줄 한 칸 — 지금 판은 글자(aria-current) · 다른 판은 같은 쪽 그 판으로(~L:말~)
+    def lang_item(x):  # 판권면 '언어' 줄 한 칸 — 지금 판은 글자(aria-current) · 다른 판은 같은 쪽 그 판으로(~L:말~) · 앞에 국기(11/10)
+        nm = f'<span class="ln">{FLAG_ICON[x]}{LANG_NAME[x]}</span>'
         if x == lang:
-            return f'<span aria-current="true">{LANG_NAME[x]}</span>'
-        return f'<a class="lang" href="~L:{x}~" hreflang="{x}" lang="{x}">{LANG_NAME[x]}</a>'
+            return f'<span aria-current="true">{nm}</span>'
+        return f'<a class="lang" href="~L:{x}~" hreflang="{x}" lang="{x}">{nm}</a>'
     # 바닥글 — 고야드 꼴(11/2 동원 "우리 하단 푸터 고야드처럼 바꾸자 벤치마킹해보자 … 이모지 로 링크 타는 방식도 좋고" → 목업 기준/브랜드 시안/푸터시안_v1_A·B.png → "A 고야드 꼴 (권장)"):
     # 네 단(둘러보기 · 시집 · 안내 · 설정) 가운데 정렬 → 이름 표장 → 원 아이콘(인스타그램 · 유튜브 · 연락 · 교보문고) → 맺음 인사 → 아래 띠(왼쪽 언어 · 오른쪽 © · 고친 날 · 판 · 쇄).
     # 판권면(10/24 A)의 기록은 아래 띠 한 줄로 이어 감 · 스크립트가 읽는 이름(.colo · .thm · .mot · .lang · .cz-open)은 그대로 · 쪽 주소는 ~R~(page()가 그 판 맨 위로 채움)
@@ -1598,7 +1607,7 @@ def render(site, poem, videos, photos, lang="ko"):
         ("ig", e(iu), e(L["nav"][2]), ext), ("yt", e(ch.get("url", "")), e(L["nav"][3]), ext),
         ("mail", "~R~contact/", L["nav_cta"], ""), ("book", e(book["buy_url"]), e(book["store_label"]), ext + gcc("판권면 아이콘"))))
     # 언어(10/31 동원 "언어 설정 하단 푸터로 빼" · 11/1 세 판 '한국어 · English · 日本語') — 아래 띠 왼쪽: 지금 판은 먹 글자 · 다른 판은 그 쪽의 같은 자리로(~L:말~)
-    # 11/9 네 개 나열 → '🌐 KO ▾' 하나 + 위로 펼침(동원 레퍼런스 그림 · 목업 기준/브랜드 시안/푸터언어고르기시안_v1 → "A 지구본 (권장)" — 국기는 나라라 언어에 쓰지 않음)
+    # 11/9 네 개 나열 → '🌐 KO ▾' 하나 + 위로 펼침(동원 레퍼런스 그림 · 목업 기준/브랜드 시안/푸터언어고르기시안_v1 → "A 지구본 (권장)") · 펼친 목록엔 국기(11/10 동원 — 위 FLAG_ICON)
     # <details>라 스크립트 없이도 열림(처리방침 · 404처럼 main.js 없는 쪽도 같음) · 바깥 누름 · Esc로 닫기는 main.js · 고른 판의 ✓는 CSS(글자에 섞지 않음)
     langs = (f'<details class="lsw"><summary><span class="sr">{t("lng_pick")}: </span>{GLOBE_ICON}<span lang="{lang}">{lang.upper()}</span>{CARET_ICON}</summary>'
              f'<ul>{"".join(f"<li>{lang_item(x)}</li>" for x in LANGS)}</ul></details>')
