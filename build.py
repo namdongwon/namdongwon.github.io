@@ -497,13 +497,26 @@ def frday(d, year=True):
     return NB.join([("1er" if d.day == 1 else str(d.day)), MONTHS_FR[d.month - 1]] + ([str(d.year)] if year else []))
 
 
+def fr_type(t):
+    # 프랑스어 조판(11/10): « » 안쪽 · ; : ! ? 앞의 빈칸과 천 단위 빈칸(1 000)을 좁은 붙임 공백으로 — 원고는 보통 빈칸으로 씀
+    t = re.sub(r"«[ \u00a0\u202f]*", "«" + NNB, t)
+    t = re.sub(r"[ \u00a0\u202f]*»", NNB + "»", t)
+    t = re.sub(r"(\d)[ \u00a0](\d{3})(?!\d)", r"\1" + NNB + r"\2", t)
+    return re.sub(r"[ \u00a0]+([;:!?])", NNB + r"\1", t)
+
+
+def fr_tree(o, on=False):
+    # 원고 JSON의 'fr' 칸 안 글 모두에 fr_type(11/10 frtest — 찾기 색인 · 스크립트 글 · 페이지 설명은 쪽 글 바깥이라 fr_bind가 못 닿았음)
+    if isinstance(o, dict):
+        return {k: fr_tree(v, on or k == "fr") for k, v in o.items()}
+    if isinstance(o, list):
+        return [fr_tree(x, on) for x in o]
+    return fr_type(o) if on and isinstance(o, str) else o
+
+
 def fr_bind(html):
-    # 프랑스어판 조판(11/10): « » 안쪽과 ; : ! ? 앞의 빈칸을 좁은 붙임 공백으로 — 태그 · 스크립트 · 스타일 밖 글에만(원고는 보통 빈칸으로 씀)
-    def fix(t):
-        t = re.sub(r"«[ \u00a0]*", "«" + NNB, t)
-        t = re.sub(r"[ \u00a0]*»", NNB + "»", t)
-        return re.sub(r"[ \u00a0]+([;:!?])", NNB + r"\1", t)
-    return "".join(x if i % 2 else fix(x) for i, x in enumerate(RU_SKIP.split(html)))
+    # 프랑스어판 쪽 글(11/10): 빌드가 만든 글(날짜 · 부호 · 시 줄)에도 같은 조판 — 태그 · 스크립트 · 스타일 밖 글에만(원고 칸은 load()에서 이미)
+    return "".join(x if i % 2 else fr_type(x) for i, x in enumerate(RU_SKIP.split(html)))
 
 
 def esday(d, year=True):
@@ -761,7 +774,7 @@ def find(root, name, must_in=""):
 
 
 def load(name):
-    return json.loads((CONTENT / name).read_text(encoding="utf-8"))
+    return fr_tree(json.loads((CONTENT / name).read_text(encoding="utf-8")))  # 'fr' 칸은 프랑스 조판으로(11/10)
 
 
 def fp(b):  # 파일 지문 — 내용 sha256 앞 10자(11/2 캐시 버스팅: 내용이 바뀌면 주소 끝 ?v=가 바뀜)
@@ -1370,7 +1383,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 일본어판(11/1)도 대역(content/poem_ja.txt — site.json ja.poem.file) · 번역 파일이 아직 없으면 한국어판처럼 원문만(출처 줄의 '번역' 줄도 뺌 — 빈 칸 알림은 ja_gaps)
     pfile = S["poem"]["file"] if not tr_ or S["poem"]["file"] != site["poem"]["file"] else f"poem_{lang}.txt"
     pair = en or (tr_ and (CONTENT / pfile).exists())
-    tr = stanzas_of((CONTENT / pfile).read_text(encoding="utf-8")) if pair else ko_st
+    tr = stanzas_of((fr_type if fr else str)((CONTENT / pfile).read_text(encoding="utf-8"))) if pair else ko_st  # 프랑스어 시도 조판(11/10)
     if [len(x) for x in tr] != [len(x) for x in ko_st]:
         raise SystemExit(f"번역의 연 · 행 수가 원문과 다름: 원문 {[len(x) for x in ko_st]} · 번역 {[len(x) for x in tr]}")
     stz, ln_no = [], 0
