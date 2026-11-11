@@ -2073,4 +2073,49 @@
     addEventListener("touchend", end, { passive: true });
     addEventListener("touchcancel", () => { y0 = null; set(0); }, { passive: true });
   }
+  // 소개 페이지 한 화면씩 넘김(11/11 동원 hasy.co.kr "스크롤 내릴때 참고해서" → 시안 스크롤시안_v1 → "A 좋긴 한데 근데 먹반전은 하지마"):
+  // 휠 한 번(또는 ↓ · PageDown · Space)이면 다음 칸 머리로 0.8초(ease-in-out — hasy fullPage scrollingSpeed 800 실측) · 칸이 한 화면보다 길면 한 화면씩 ·
+  // 트랙패드 관성으로 두 칸 넘지 않게(넘긴 뒤 휠이 0.2초 멈출 때까지 버림) · 손가락 스크롤 · 움직임 줄이기 · 창 · 글 칸 입력 중엔 그대로 · 바탕 반전은 하지 않음
+  (() => {
+    const me = document.getElementById("me");
+    if (!me || !document.querySelector(".tk")) return;
+    const still = () => H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ease = t => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const topH = () => (document.querySelector("header.top") || { offsetHeight: 0 }).offsetHeight;
+    const stops = () => {
+      const s = [0, me.offsetTop - topH()];
+      let n = me.nextElementSibling;
+      for (; n; n = n.nextElementSibling) if (n.offsetHeight > 120) s.push(n.offsetTop - topH());
+      const f = document.querySelector("footer.foot, .colo"); if (f) s.push(f.getBoundingClientRect().top + scrollY - topH());
+      s.push(document.documentElement.scrollHeight - innerHeight);
+      return [...new Set(s.map(v => Math.max(0, Math.round(v))))].sort((a, b) => a - b);
+    };
+    let busy = false, armed = true, lastWheel = 0;
+    const go = to => {
+      busy = true; const from = scrollY, t0 = performance.now();
+      const step = n => { const k = Math.min(1, (n - t0) / 800); scrollTo(0, from + (to - from) * ease(k)); if (k < 1) requestAnimationFrame(step); else busy = false; };
+      requestAnimationFrame(step);
+    };
+    const move = dir => {
+      const y = scrollY, s = stops();
+      if (dir > 0) { const nx = s.find(v => v > y + 4); const to = Math.min(nx === undefined ? y : nx, y + innerHeight); if (to > y + 1) go(to); }
+      else { const pv = [...s].reverse().find(v => v < y - 4); const to = Math.max(pv === undefined ? 0 : pv, y - innerHeight); if (to < y - 1) go(to); }
+    };
+    const blocked = t => still() || H.style.overflow === "hidden" || [...document.querySelectorAll('[aria-modal="true"]')].some(d => !d.hidden && d.offsetParent !== null)
+      || (t instanceof Element && t.closest("input, textarea, select, [contenteditable=true], .lsw[open] ul, .srch"));
+    addEventListener("wheel", e => {
+      if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || blocked(e.target)) return;
+      e.preventDefault();
+      const now = performance.now(), gap = now - lastWheel; lastWheel = now;
+      if (gap >= 200) armed = true;  // 휠이 0.2초 넘게 멈췄다 다시 — 새 몸짓
+      if (busy || !armed) return;  // 넘기는 중 · 한 몸짓(트랙패드 관성 포함)엔 한 칸만 — 손을 뗐다 다시 굴려야 다음 칸
+      armed = false; move(e.deltaY);
+    }, { passive: false });
+    addEventListener("keydown", e => {
+      if (e.altKey || e.ctrlKey || e.metaKey || blocked(e.target) || busy) return;
+      const dir = e.key === "ArrowDown" || e.key === "PageDown" || (e.key === " " && !e.shiftKey) ? 1 : e.key === "ArrowUp" || e.key === "PageUp" || (e.key === " " && e.shiftKey) ? -1 : 0;
+      if (!dir || (e.target instanceof Element && e.target.closest("button, a, summary") && e.key === " ")) return;
+      e.preventDefault(); move(dir);
+    });
+  })();
 })();
