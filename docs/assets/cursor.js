@@ -61,6 +61,32 @@
   addEventListener("pointerup", () => { drag = false; if (dot) dot.classList.remove("dn", "sl"); }, { passive: true });
   H.addEventListener("pointerleave", () => { unink(); if (dot) dot.classList.add("off"); });  // 창 밖 · 유튜브 틀(iframe) 안으로 가면 숨김
   addEventListener("blur", () => { drag = false; unink(); if (dot) dot.classList.add("off"); });
+  // 기호 단추 말풍선(11/11 동원 "우리 문양으로 되어있는 것 마우스 오버시 이렇게 설명 나오는 것도 좋겠네" — 보낸 그림의 검은 말풍선 꼴):
+  // 이름(aria-label)이 있고 보이는 글이 한 글자 이하인 단추 · 링크(돋보기 · 원 아이콘 · 화면 · 글자 '가' · 맨 위로 · 닫기)에 올리면 0.4초 뒤 아래에(자리가 없으면 위에) — 키보드 초점에도 · 브라우저 기본 말풍선(title)은 겹치지 않게 뺌
+  const TIPS = "a[aria-label],button[aria-label],summary[aria-label]";
+  const icon = (el) => el && el.matches(TIPS) && [...el.childNodes].map((n) => (n.nodeType === 3 || !(n.classList && n.classList.contains("sr")) ? n.textContent : "")).join("").trim().length <= 1;
+  let tipEl = null, tipFor = null, tipT = 0;
+  const hideTip = () => { clearTimeout(tipT); tipFor = null; if (tipEl) tipEl.classList.remove("on"); };
+  const showTip = (el, now) => {
+    if (el === tipFor) return;
+    hideTip(); tipFor = el;
+    if (el.hasAttribute("title")) { el.dataset.tip = el.getAttribute("title"); el.removeAttribute("title"); }
+    tipT = setTimeout(() => {
+      if (tipFor !== el || !el.isConnected) return;
+      if (!tipEl) { tipEl = document.createElement("div"); tipEl.className = "ttp"; tipEl.setAttribute("aria-hidden", "true"); document.body.appendChild(tipEl); }
+      tipEl.textContent = el.getAttribute("aria-label");
+      const r = el.getBoundingClientRect(), w = tipEl.offsetWidth, h = tipEl.offsetHeight;
+      const below = r.bottom + 8 + h <= innerHeight - 8;
+      tipEl.style.left = Math.round(Math.min(Math.max(8, r.left + r.width / 2 - w / 2), innerWidth - w - 8)) + "px";
+      tipEl.style.top = Math.round(below ? r.bottom + 8 : r.top - 8 - h) + "px";
+      tipEl.classList.toggle("up", !below);
+      tipEl.classList.add("on");
+    }, now ? 0 : 400);
+  };
+  addEventListener("pointerover", (e) => { if (e.pointerType !== "mouse") return; const el = e.target instanceof Element ? e.target.closest(TIPS) : null; if (icon(el)) showTip(el); else if (tipFor && !(el && el === tipFor)) hideTip(); }, { passive: true });
+  addEventListener("focusin", (e) => { const el = e.target; if (icon(el) && el.matches(":focus-visible")) showTip(el, true); });
+  ["pointerdown", "scroll", "keydown", "blur", "focusout"].forEach((t) => addEventListener(t, hideTip, { passive: true, capture: true }));
+  H.addEventListener("pointerleave", hideTip);
   [sysReduce, fine].forEach((m) => m.addEventListener && m.addEventListener("change", sync));
   new MutationObserver(sync).observe(H, { attributes: true, attributeFilter: ["data-motion"] });
   sync();
