@@ -152,7 +152,14 @@ def fetch(cfg, allow=None):
             print(f"알림: 인스타그램에서 받지 못함({x}) — 지난번 받아 둔 것을 씀")
     saved = CACHE / "feed.json"
     if saved.exists():
-        feed = [{**f, "kids": [k for k in f.get("kids", []) if Path(k).exists()]} for f in json.loads(saved.read_text(encoding="utf-8"))
+        # 받아 둔 사진 자리가 옮긴 · 지운 폴더를 가리키면(11/12 폴더 나누기) 지금 CACHE에서 이름으로 찾아 고쳐 적음
+        here = lambda x: x if Path(x).exists() or not (CACHE / Path(x).name).exists() else str(CACHE / Path(x).name)  # noqa: E731
+        raw = json.loads(saved.read_text(encoding="utf-8"))
+        fixed = [{**f, "src": here(f["src"]), "kids": [here(k) for k in f.get("kids", [])]} for f in raw]
+        if fixed != raw:
+            saved.write_text(json.dumps(fixed, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+            print("알림: 받아 둔 인스타 사진 자리를 지금 폴더로 고쳐 적음")
+        feed = [{**f, "kids": [k for k in f["kids"] if Path(k).exists()]} for f in fixed
                 if Path(f["src"]).exists() and (allow is None or code_of(f) in allow)]  # 받아 둔 것에도 고른 것만
         if feed:
             if not token:
