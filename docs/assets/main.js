@@ -1545,6 +1545,19 @@
       count();
       gbCnt.hidden = false;
     }
+    // 키보드가 '남기기'를 가리지 않게(11/14 — 402 실측: 글 칸을 누르면 남기기가 키보드 밑 130~150px): 키보드가 올라와 보이는 칸(visualViewport)이 줄면
+    // 남기기 아래끝이 키보드 위 12px에 오도록 쪽을 내림 — 글 칸 위끝이 보이는 칸 위 16px 아래에 남는 만큼만(그래서 커서는 늘 보임) · 쓰는 동안 칸이 길어져도 같은 셈 · 위로는 올리지 않음
+    if (gbTa && window.visualViewport) {
+      const vv = visualViewport;
+      let full = vv.height, tm = 0;
+      const fit = smooth => {
+        if (document.activeElement !== gbTa || vv.height > full - 100) return;  // 키보드가 없으면(컴퓨터 · 하드웨어 자판) 그대로
+        const top = vv.offsetTop, d = Math.min(gbSend.getBoundingClientRect().bottom + 12 - (top + vv.height), gbTa.getBoundingClientRect().top - (top + 16));
+        if (d > 4) scrollBy({ top: d, behavior: smooth && H.getAttribute("data-motion") !== "reduce" && !matchMedia("(prefers-reduced-motion: reduce)").matches ? "smooth" : "auto" });
+      };
+      vv.addEventListener("resize", () => { if (document.activeElement !== gbTa) full = vv.height; clearTimeout(tm); tm = setTimeout(() => fit(true), 80); });
+      gbTa.addEventListener("input", () => fit(false));
+    }
     gbSend.addEventListener("touchstart", () => {}, { passive: true });  // 아이폰 누름 모양(문의 단추와 같음)
     // ⑦ 누르면 쓰던 칸이 0.32초에 위로 접혀 올라감 → 받으면 완료 화면(11/4 동원 'A 엽서가 접혀 올라감' — 방명록보냄_v1) · 못 보내면 다시 펼쳐 글을 돌려줌 · 움직임 줄이기면 지금처럼 바로
     const gbCard = gbf.closest(".card");
