@@ -13,6 +13,23 @@
   const uiText = (k, d, v = {}) => (UI[k] || d).replace(/\{(\w+)\}/g, (m, n) => (n in v ? v[n] : m));
   // 불러오는 중 고리(11/6 동원 "로딩중인 게 있다면 이런 표시" → 목업 불러오는중표시시안_v1 → "B로 가자" — '맨 위로' · 당겨서 새로 고침과 같은 먹 고리) — 화면 읽기에는 숨김(곁의 글 · 상태 줄이 알림)
   const spinEl = (extra = "") => { const x = document.createElement("span"); x.className = "spin" + (extra ? " " + extra : ""); x.setAttribute("aria-hidden", "true"); return x; };
+  // 공유 · 링크 복사(11/14 휴대폰 점검 — 동원 "UIUX적으로 고칠 부분" → '공유 단추 무반응'): 앱 안 브라우저는 공유 시트가 있어도 막거나(NotAllowedError)
+  // 클립보드를 막는 곳이 있어, 누르고도 아무 일이 없었음 → 공유 시트를 닫은 것(AbortError)이 아니면 복사로 · 클립보드가 막히면 잠깐 고른 글로 복사
+  // (연락하기 '복사'와 같은 대비) · 그래도 안 되면 '복사하지 못했습니다' — 어떤 경우에도 누른 사람에게 답을 줌
+  const copyText = async t => {
+    try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(t); return true; } } catch (x) { /* 아래 대비로 */ }
+    const ta = Object.assign(document.createElement("textarea"), { value: t });
+    ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0;font-size:16px";  // 16px — 아이폰이 확대하지 않게
+    document.body.append(ta); ta.select(); ta.setSelectionRange(0, t.length);
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (x) { /* 못 함 */ }
+    ta.remove();
+    return ok;
+  };
+  const shareOrCopy = async (data, sheet = true) => {  // "sheet"(공유 시트가 맡음) · "shared"(복사함) · "copy_fail"
+    if (sheet && navigator.share) { try { await navigator.share(data); return "sheet"; } catch (x) { if (x && x.name === "AbortError") return "sheet"; } }
+    return (await copyText(data.url)) ? "shared" : "copy_fail";
+  };
   const ASSET = document.currentScript ? new URL("./", document.currentScript.src).href : "assets/";
   // 화면에 한 번 들어오면 fn을 부르고 그만 봄
   const once = (els, fn, opt) => {
@@ -723,9 +740,9 @@
           ev.stopPropagation();
           const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
           const url = ((document.querySelector('link[rel="canonical"]') || {}).href || location.origin + location.pathname).split("#")[0] + `#v-${pid(cur)}-${k + 1}`;
-          if (navigator.share && matchMedia("(hover: none)").matches) { try { await navigator.share({ url }); } catch (x) { /* 닫음 */ } return; }
-          try { await navigator.clipboard.writeText(url); } catch (x) { return; }
-          lk.textContent = uiText("shared", "링크를 복사했습니다");
+          const r = await shareOrCopy({ url }, matchMedia("(hover: none)").matches);
+          if (r === "sheet") return;
+          lk.textContent = r === "shared" ? uiText("shared", "링크를 복사했습니다") : uiText("copy_fail", "복사하지 못했습니다");
           setTimeout(() => { lk.textContent = uiText("pv_link", "링크 복사"); }, 2000);
         });
       }
@@ -2004,10 +2021,10 @@
     b.addEventListener("click", async () => {
       const title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;
       const url = (document.querySelector('link[rel="canonical"]') || {}).href || location.href;
-      if (navigator.share) { try { await navigator.share({ title, url }); } catch (x) { /* 닫음 */ } return; }
-      try { await navigator.clipboard.writeText(url); } catch (x) { return; }
+      const r = await shareOrCopy({ title, url });
+      if (r === "sheet") return;
       const lab = b.firstChild, was = lab.textContent;
-      lab.textContent = uiText("shared", "링크를 복사했습니다");
+      lab.textContent = r === "shared" ? uiText("shared", "링크를 복사했습니다") : uiText("copy_fail", "복사하지 못했습니다");
       setTimeout(() => { lab.textContent = was; }, 2000);
     });
   });
