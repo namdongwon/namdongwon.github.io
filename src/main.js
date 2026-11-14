@@ -2048,30 +2048,58 @@
   // 홈 화면 앱(standalone)에서만. 맨 위에서 아래로 당기면 띠 아래 동그라미 테두리가 '맨 위로'와 같은 꼴로 채워지고, 다 찬 채 놓으면 새로 고침 · 덜 당기면 제자리.
   // 터치는 막지 않음(passive) — 앱의 고무줄 스크롤은 그대로 · 메뉴 · 사진 보기 · 찾기 · 쿠키 · 시 종이가 열려 있으면 하지 않음
   const ptrOn = /Instagram|FBAN|FBAV|KAKAOTALK|NAVER\(inapp|Line\/|; wv\)/i.test(navigator.userAgent) || matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  // 11/14 동원 "저 위 빈 공간에" + 레퍼런스(iOS 새로 고침 살) → 시안 당겨서새로고침시안_v1 "A 살 여덟 개": 아이폰 앱 안 브라우저는 당기면 띠까지 쪽 전체가 내려와
+  // 위에 빈 칸이 생기는데, 고정 동그라미가 띠 쪽에 겹쳐 로고처럼 보였음 → 살 여덟 개를 그 빈 칸 가운데에 · 당긴 만큼 살이 하나씩 · 놓으면 돎 · 빈 칸이 닫히면 띠 아래에서 계속 돎
+  // 빈 칸이 없는 곳(안드로이드 앱 안 · 홈 화면 앱)은 전처럼 띠 아래로 내려옴
   if (ptrOn && matchMedia("(hover: none)").matches) {
     const ring = document.createElement("div");
     ring.className = "ptr";
     ring.setAttribute("aria-hidden", "true");
+    let svg = '<svg viewBox="0 0 26 26" width="26" height="26">';
+    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, c = Math.sin(a), d = -Math.cos(a); svg += `<line x1="${(13 + c * 5.5).toFixed(2)}" y1="${(13 + d * 5.5).toFixed(2)}" x2="${(13 + c * 11).toFixed(2)}" y2="${(13 + d * 11).toFixed(2)}"/>`; }
+    ring.innerHTML = svg + "</svg>";
     document.body.appendChild(ring);
-    const PULL = 72;  // 손가락 72px(×0.5 → 동그라미 36px 내려옴)이면 다 참 — 네이티브 당겨서 새로 고침의 문턱과 비슷한 길이(추정)
-    let y0 = null, p = 0;
-    const set = v => { p = v; ring.style.setProperty("--p", Math.min(1, v).toFixed(3)); ring.style.setProperty("--y", Math.min(1, v) * 36 + "px"); ring.classList.toggle("on", v > 0.05); };
+    const spokes = [...ring.querySelectorAll("line")];
+    const PULL = 72;  // 손가락 72px이면 다 참 — 네이티브 당겨서 새로 고침의 문턱과 비슷한 길이(추정)
+    const iOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+    const topH = () => (document.querySelector("header.top") || { offsetHeight: 56 }).offsetHeight;
+    // 고무줄로 벌어진 빈 칸 높이 — 아이폰은 당기는 동안 scrollY가 음수(실측 값이 없으면 고무줄 식 1 - 1/(x·0.55/h + 1)로 어림) · 다른 곳은 null(빈 칸 없음)
+    const gapOf = dy => scrollY < 0 ? -scrollY : iOS ? (1 - 1 / (dy * 0.55 / innerHeight + 1)) * innerHeight : null;
+    let y0 = null, p = 0, last = 0;
+    const place = g => {
+      if (g !== null && g >= 30) { ring.style.top = (g / 2 - 13).toFixed(1) + "px"; ring.classList.toggle("on", true); }  // 빈 칸 가운데
+      else if (g !== null) { ring.style.top = "0px"; ring.classList.toggle("on", false); }  // 빈 칸이 아직 좁음
+      else { ring.style.top = (topH() + Math.min(1, p) * 36 - 26).toFixed(1) + "px"; ring.classList.toggle("on", p > 0.05); }  // 빈 칸 없음 — 띠 아래로 내려옴
+    };
+    const set = (v, g) => { p = v; spokes.forEach((l, i) => l.classList.toggle("in", v >= (i + 1) / 8)); place(g); };
     addEventListener("touchstart", e => {
       y0 = scrollY <= 0 && e.touches.length === 1 && !/(^| )(mnu|pv|sr|cz)-on( |$)/.test(H.className) && !e.target.closest(".sheet, .door") ? e.touches[0].clientY : null;
     }, { passive: true });
     addEventListener("touchmove", e => {
       if (y0 === null) return;
       const dy = e.touches[0].clientY - y0;
-      if (dy <= 0 || scrollY > 0) { y0 = null; set(0); return; }
-      set(dy / PULL / 2);
+      if (dy <= 0 || scrollY > 0) { y0 = null; set(0, null); return; }
+      last = gapOf(dy);
+      set(dy / PULL / 2, last);
     }, { passive: true });
     const end = () => {
       if (y0 === null) return;
       y0 = null;
-      if (p >= 1) { ring.classList.add("go"); location.reload(); } else set(0);
+      if (p < 1) { set(0, null); return; }
+      ring.classList.add("go");
+      if (last === null) { location.reload(); return; }
+      // 놓으면 빈 칸이 닫힘(0.4초 안팎) — 그동안 빈 칸 가운데를 따라가다, 닫히면 띠 아래에서 계속 돎
+      const g0 = last, t0 = performance.now();
+      const follow = n => {
+        const g = scrollY < 0 ? -scrollY : g0 * Math.max(0, 1 - (n - t0) / 400);
+        if (g > 0.5) { place(g); requestAnimationFrame(follow); }
+        else { ring.style.top = (topH() + 10) + "px"; ring.classList.add("on"); }
+      };
+      requestAnimationFrame(follow);
+      location.reload();
     };
     addEventListener("touchend", end, { passive: true });
-    addEventListener("touchcancel", () => { y0 = null; set(0); }, { passive: true });
+    addEventListener("touchcancel", () => { y0 = null; set(0, null); }, { passive: true });
   }
   // 소개 페이지 한 화면씩 넘김(11/11 동원 hasy.co.kr "스크롤 내릴때 참고해서" → 시안 스크롤시안_v1 → "A 좋긴 한데 근데 먹반전은 하지마"):
   // 휠 한 번(또는 ↓ · PageDown · Space)이면 다음 칸 머리로 0.8초(ease-in-out — hasy fullPage scrollingSpeed 800 실측) · 칸이 한 화면보다 길면 한 화면씩 ·

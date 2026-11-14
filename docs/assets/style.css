@@ -3,11 +3,11 @@
 
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=1c99fbbf48") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=46fb1ccf4b") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=c5da5c4a1f") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=f4a4193cdc") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=591659ac57") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=20e778cb64") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=10e845813a") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=47fdf86129") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=af769c23b8") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=e2ff4845d3") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -1182,10 +1182,14 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 @media (min-width:900px){.totop{right:72px;bottom:72px}}
 @media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}:where(:root[data-motion="reduce"]) .totop,:where(:root[data-motion="reduce"]).totop,:where(:root[data-motion="reduce"]) .totop.on,:where(:root[data-motion="reduce"]).totop.on{transition:none}
 
-.ptr{position:fixed;left:50%;top:var(--top);z-index:44;width:22px;height:22px;box-sizing:border-box;border:1.5px solid transparent;border-radius:50%;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box;opacity:0;transform:translate(-50%,var(--y,0));pointer-events:none}
+.ptr{position:fixed;left:50%;top:0;z-index:44;width:26px;height:26px;margin-left:-13px;opacity:0;pointer-events:none;transition:opacity .15s}
 .ptr.on{opacity:1}
-.ptr.go{--p:.75!important;animation:ptr-go .8s linear infinite}
-@keyframes ptr-go{to{transform:translate(-50%,var(--y,0)) rotate(1turn)}}
+.ptr svg{display:block}
+.ptr line{stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;opacity:0}
+.ptr line.in{opacity:1}
+.ptr.go line{opacity:1;animation:ptr-go .8s steps(8,end) infinite}
+.ptr.go line:nth-child(1){animation-delay:-0.8s}.ptr.go line:nth-child(2){animation-delay:-0.7s}.ptr.go line:nth-child(3){animation-delay:-0.6s}.ptr.go line:nth-child(4){animation-delay:-0.5s}.ptr.go line:nth-child(5){animation-delay:-0.4s}.ptr.go line:nth-child(6){animation-delay:-0.3s}.ptr.go line:nth-child(7){animation-delay:-0.2s}.ptr.go line:nth-child(8){animation-delay:-0.1s}
+@keyframes ptr-go{from{opacity:1}to{opacity:.15}}
 
 .colo .mot label{display:inline-flex;align-items:center;gap:12px;color:var(--ink);cursor:pointer;vertical-align:-5px}  
 .colo .mot input{-webkit-appearance:none;appearance:none;position:relative;flex:none;width:24px;height:24px;margin:-5px 0;border:0;border-radius:var(--btn-r);background:none;cursor:pointer}  

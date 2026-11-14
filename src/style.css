@@ -1276,11 +1276,15 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 .totop:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media (min-width:900px){.totop{right:72px;bottom:72px}}
 @media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}
-/* 당겨서 새로 고침(11/5 — 앱 안 브라우저 · 홈 화면 앱만, main.js가 만듦) — '맨 위로'와 같은 22px 동그라미 · 테두리가 당긴 만큼 채워짐 · 놓으면 4분의 3 고리가 돎 */
-.ptr{position:fixed;left:50%;top:var(--top);z-index:44;width:22px;height:22px;box-sizing:border-box;border:1.5px solid transparent;border-radius:50%;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box;opacity:0;transform:translate(-50%,var(--y,0));pointer-events:none}
+/* 당겨서 새로 고침(11/5 — 앱 안 브라우저 · 홈 화면 앱만, main.js가 만듦) · 11/14 살 여덟 개(시안 당겨서새로고침시안_v1 A) — 아이폰은 당겨 생긴 위 빈 칸 가운데, 아니면 띠 아래 · 당긴 만큼 살이 하나씩 · 놓으면 돎(0.8초에 한 바퀴 · 살마다 옅어짐) */
+.ptr{position:fixed;left:50%;top:0;z-index:44;width:26px;height:26px;margin-left:-13px;opacity:0;pointer-events:none;transition:opacity .15s}
 .ptr.on{opacity:1}
-.ptr.go{--p:.75!important;animation:ptr-go .8s linear infinite}
-@keyframes ptr-go{to{transform:translate(-50%,var(--y,0)) rotate(1turn)}}
+.ptr svg{display:block}
+.ptr line{stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;opacity:0}
+.ptr line.in{opacity:1}
+.ptr.go line{opacity:1;animation:ptr-go .8s steps(8,end) infinite}
+.ptr.go line:nth-child(1){animation-delay:-0.8s}.ptr.go line:nth-child(2){animation-delay:-0.7s}.ptr.go line:nth-child(3){animation-delay:-0.6s}.ptr.go line:nth-child(4){animation-delay:-0.5s}.ptr.go line:nth-child(5){animation-delay:-0.4s}.ptr.go line:nth-child(6){animation-delay:-0.3s}.ptr.go line:nth-child(7){animation-delay:-0.2s}.ptr.go line:nth-child(8){animation-delay:-0.1s}
+@keyframes ptr-go{from{opacity:1}to{opacity:.15}}
 /* 판권면 '움직임 줄이기' 스위치(11/1 밤 명품 제안 ⑥ — 버튼 'A 스위치 (권장)'): 고야드 바닥글 스위치 실측(24×14 · 테두리 1px · 글자와 11px) — 모서리는 누르는 단추 한 벌(2px),
    끔은 옅은 회색 · 켬은 먹 채움에 흰 네모. 켜면 html data-motion="reduce"(빌드 motion_css가 움직임 규칙을 묶음) */
 .colo .mot label{display:inline-flex;align-items:center;gap:12px;color:var(--ink);cursor:pointer;vertical-align:-5px}  /* −5px: 스위치 누르는 자리를 24px로 키운 뒤에도 줄 높이 · 옆 글 자리 그대로(11/3 실측 — 줄 20.8px · 옆 글 위치 같음) */
