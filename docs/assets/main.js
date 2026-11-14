@@ -1967,6 +1967,28 @@
     addEventListener("pointerup", free); addEventListener("pointercancel", free);
     wcols.addEventListener("click", e => { if (performance.now() - t0 > 500 && t0) { e.preventDefault(); e.stopImmediatePropagation(); } t0 = 0; }, true);
   }
+  // 사진 벽 키보드 초점(11/14 PC 점검 — 동원 'PC 사진 벽 초점 (권장)'): 흐르는 벽에서 Tab으로 사진에 닿으면 줄은 멈추지만(CSS :has(:focus-visible))
+  // 그 사진이 상자 밖(위로 수천 px)에 있어 초점이 보이지 않았음 — 실측 Tab 70번 중 29번 · WCAG 2.4.11 초점 가림 금지 →
+  // 초점이 닿은 줄의 흐름 시각(CSS 움직임의 currentTime)을 그 사진이 상자 가운데에 오는 때로 옮김 · 초점이 떠나면 그 자리에서 다시 흐름(뜀 없음)
+  // 마우스 · 움직임 줄이기(벽이 펼쳐짐) · 휴대폰 흐름(스크립트가 맡음)은 그대로
+  if (wcols && motion) {
+    wcols.addEventListener("focusin", e => {
+      const b = e.target.closest(".wt"), col = b && b.closest(".col");
+      if (!col || wcols.classList.contains("flow") || !b.matches(":focus-visible")) return;
+      const an = col.getAnimations().find(a => a.animationName === "wup" || a.animationName === "wdown");
+      if (!an) return;
+      const half = col.offsetHeight / 2, box = wcols.clientHeight, D = an.effect.getComputedTiming().duration;
+      if (!half || !D) return;
+      // 그 사진이 상자 가운데 오는 이동 값 — 흐름 범위(0 ~ -half) 안으로 · 맨 앞 사진은 0(상자 위쪽)
+      // (뒤에 이어 붙인 복사본 자리로 옮기면 사진은 보여도 초점 고리는 진짜 쪽(위로 1만 px)에 있어 안 보임 — 실측)
+      let y = box / 2 - b.offsetHeight / 2 - (b.getBoundingClientRect().top - col.getBoundingClientRect().top);  // 줄 안 자리(이동 · 상자 굴림과 무관)
+      y = Math.max(-half, Math.min(0, y));
+      const k = an.animationName === "wup" ? -y / half : 1 + y / half;  // wup: 0 → -50% · wdown: -50% → 0
+      an.currentTime = Math.min(k * D, D - 1);  // 끝 시각(D)은 다음 바퀴 처음(-50%)으로 넘어가 버림 — 1ms 앞
+      // 브라우저는 초점을 보이려고 넘침 숨김 상자(.cols) 자체를 굴려 버림(scrollTop) — 이동은 우리가 맡으므로 0으로 되돌림(지금 · 다음 그림 때)
+      wcols.scrollTop = 0; requestAnimationFrame(() => { wcols.scrollTop = 0; });
+    });
+  }
   // 글자 팔레트에 손을 대면 그 글자 — 누른(마우스는 올린) 글자를 먹 바탕으로 뒤집고, 아래 줄을 '「빛」 14번 — 612가지 가운데 117번째로 많이 쓴 글자'로(11/4 동원 'A 아래 줄이 그 글자로' — 팔레트누름_v1 · Taper 「16 anna」)
   // 글자 612개를 요소로 쪼개지 않고 글자 자리(Range)를 한 번 재어 둠(팔레트 크기가 바뀌면 다시) · 표시는 CSS Highlight API(없는 브라우저는 줄만 바뀜) · 빈 곳을 누르거나 마우스가 나가면 원래 줄
   const pal = document.querySelector("#palette .pal"), pk = document.querySelector("#palette .pk");
