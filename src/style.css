@@ -977,6 +977,7 @@ html.sr-on{overflow:hidden}
 .lsw{position:relative}
 .lsw summary{display:inline-flex;align-items:center;gap:6px;padding:8px 2px;margin:-8px -2px;list-style:none;cursor:pointer;font:400 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--ink);-webkit-tap-highlight-color:transparent}
 .lsw summary::-webkit-details-marker{display:none}
+@media (pointer:coarse){.fcols li{position:relative}.fcols li>:is(a,button){position:static}.fcols li>:is(a,button)::before{inset:-6px -10px}.lsw summary{position:relative}.lsw summary::before{content:"";position:absolute;inset:-7px -8px}}  /* 손가락 기기 바닥글 누르는 자리(11/14 실측 — 글 링크 31×28 · 언어 57×32): 글 링크는 단 너비 통째로(높이는 줄 사이 29px라 모양을 바꾸지 않고는 44 못 됨 — 이웃 줄과 겹치지 않게 그대로) · 언어 고르기는 44 넘게 · 보이는 모양은 그대로 */
 .lsw .gl{width:15px;height:15px}.lsw .cr{width:8px;height:8px;color:var(--muted);transition:transform .2s}.lsw[open] .cr{transform:rotate(180deg)}
 .lsw ul{position:absolute;left:-8px;bottom:calc(100% + 10px);z-index:5;min-width:168px;margin:0;padding:6px;list-style:none;background:var(--bg);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08)}
 .lsw li>*{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border-radius:8px;font:300 14px/1.2 var(--sans);color:var(--ink);text-decoration:none}
