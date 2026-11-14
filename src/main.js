@@ -1890,6 +1890,9 @@
   const tk = document.querySelector(".tk");
   if (tk) {
     const w = tk.querySelector(".tk-w"), go = () => tk.classList.add("go");
+    // 사람 사진은 글꼴을 기다리지 않고 사진이 오는 대로(11/14 'A 사람 먼저' — 느린 휴대폰 망에서 사진을 1.4초에 받고도 글꼴 0.8초 + 0.35초를 더 기다려 LCP 2.9초)
+    const ph = tk.querySelector(".tk-p"), pgo = () => tk.classList.add("pgo");
+    if (ph && !(ph.complete && ph.naturalWidth)) { ph.addEventListener("load", pgo, { once: true }); ph.addEventListener("error", pgo, { once: true }); } else pgo();
     if (w && document.fonts && document.fonts.load) Promise.race([document.fonts.load(`${getComputedStyle(w).fontWeight} 1em ${getComputedStyle(w).fontFamily}`, w.textContent), new Promise(r => setTimeout(r, 800))]).then(go, go);
     else go();
     const tm = tk.querySelector(".tk-c .tm");

@@ -1522,7 +1522,7 @@ def render(site, poem, videos, photos, lang="ko"):
         v = items[0]
         # 큰 한 편: 자바스크립트가 있으면 누를 때 이 자리에서 재생 + 작은 재생기(main.js) — 없으면 유튜브로 가는 링크 그대로
         latest = (f'<div class="vbox" data-yt="{e(v["youtube_id"])}"><a href="https://www.youtube.com/watch?v={e(v["youtube_id"])}" target="_blank" rel="noopener">'
-                  f'<img class="big" src="https://i.ytimg.com/vi/{e(v["youtube_id"])}/hqdefault.jpg" alt="{t("video_alt", title=e(v["title"]))}" loading="lazy"></a></div>')
+                  f'<img class="big" src="https://i.ytimg.com/vi/{e(v["youtube_id"])}/hqdefault.jpg" alt="{t("video_alt", title=e(v["title"]))}" fetchpriority="high"></a></div>')
         info = sentence(v, lang, kinds)
         rest = "".join(f'<li><a href="https://www.youtube.com/watch?v={e(x["youtube_id"])}" target="_blank" rel="noopener">'
                        f'<i>{e(kinds.get(x["kind"], x["kind"]))}</i><b>{marked(x["kind"], x["title"], lang)}</b><em>{e(x["date"].replace("-", "."))}</em></a></li>' for x in items[1:])
@@ -1541,7 +1541,7 @@ def render(site, poem, videos, photos, lang="ko"):
             first = e(u["title"]) if lat else marked(u["kind"], u["title"], lang)
             # 썸네일에 올리면 보도 자료 스틸이 넘어감(11/1 ⑦ '올리면 재생되는 썸네일' — 영상 · 예고편 대신 스틸만, 마우스 기기만 · main.js) — 스틸은 올릴 때 처음 받음
             ds = f' data-stills="{"|".join(f"{P}assets/img/stills/{i}.jpg" for i in range(1, len(u["stills"]) + 1))}"' if u.get("stills") else ""
-            latest = (f'<div class="nt"{ds}><img src="{P}assets/img/next.jpg" alt="{t("first_alt", title=first)}" width="1280" height="720" loading="lazy">'
+            latest = (f'<div class="nt"{ds}><img src="{P}assets/img/next.jpg" alt="{t("first_alt", title=first)}" width="1280" height="720" fetchpriority="high">'  # 영상 페이지 첫 화면의 가장 큰 그림(LCP) — lazy면 CSS를 다 받은 뒤에야 받기 시작해 느린 휴대폰 망에서 3.5초(11/14 실측) → 바로 · 먼저
                       f'<b><i aria-hidden="true"></i>{t("coming")}</b></div>')
             info = sentence(u, lang, kinds) + (f'<p class="cr">{keep(u["credit"])}</p>' if u.get("credit") else "")
         else:
@@ -1842,7 +1842,7 @@ def render(site, poem, videos, photos, lang="ko"):
     if ME_IMG.exists():
         with Image.open(ME_IMG) as im:
             # 대체 글(11/2 동원 버튼 '짧은 설명 넣기 (권장)' — 전엔 빈칸이라 hiddentext 알림 · 화면 읽기에 아무 말 없음): ui.json me_alt 세 판
-            tk_pic = f'<img class="tk-p" src="{P}assets/img/me.webp" alt="{t("me_alt")}" width="{im.width}" height="{im.height}" decoding="async" fetchpriority="high">'
+            tk_pic = f'<img class="tk-p" src="{P}assets/img/me.webp" alt="{t("me_alt")}" width="{im.width}" height="{im.height}" decoding="async" fetchpriority="high" onload="this.closest(\'.tk\').classList.add(\'pgo\')" onerror="this.closest(\'.tk\').classList.add(\'pgo\')">'  # 받는 대로 보이기 — main.js(느린 휴대폰에서 2초+)를 기다리지 않음(11/14 'A 사람 먼저')
     tk = (f'<div class="tk"><p class="tk-w" aria-hidden="true" lang="en">{" ".join(f"<span>{w}</span>" for w in t("tk_word").split())}</p>{tk_pic}'
           f'<div class="tk-s"><p class="s" lang="en">{tk_big}</p><p class="ab">{tk_about}</p></div>'
           f'<div class="tk-l"><p class="k">{t("tk_kick")}</p><p class="tt">{tk_title}</p>'

@@ -1255,15 +1255,15 @@ html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition
 @media (min-width:1200px) and (max-width:1499px){.tk-p{transform:translateX(-46%)}}  /* 1280 · 1440은 왼쪽 틈(12 · 25px)이 좁고 오른쪽(107 · 131px)이 넉넉해 사람을 조금 오른쪽으로 — 폭마다 잰 틈 */  /* 좁은 컴퓨터 · 태블릿 가로는 사람을 조금 작게 — 왼쪽 제목 끝 · 오른쪽 큰 글이 머리 · 얼굴에 얹히지 않게(1024px 실측) */
 /* 들어오는 차례(TOKA 미리보기 실측 — 글자 0–0.35초 → 사람 0.35–0.65초 → 글줄 0.9–1.8초 → 단추 2초쯤): main.js가 글꼴을 받은 뒤 .go. 자바스크립트가 없으면 처음부터 다 섬 */
 @media (prefers-reduced-motion:no-preference){
-  .js .tk:not(.go) :is(.tk-w span,.tk-p,.tk-s,.tk-l,.tk-c){opacity:0}
+  .js .tk:not(.go) :is(.tk-w span,.tk-s,.tk-l,.tk-c){opacity:0}.js .tk:not(.pgo) .tk-p{opacity:0}
   .tk.go .tk-w span{animation:tkUp .5s var(--ease) both}.tk.go .tk-w span:nth-child(2){animation-delay:.08s}.tk.go .tk-w span:nth-child(3){animation-delay:.16s}
-  .tk.go .tk-p{animation:tkIn .35s ease .35s both}
+  .tk.pgo .tk-p{animation:tkInP .35s ease both}  /* 사람은 이름 글꼴을 기다리지 않음(11/14 동원 'A 사람 먼저' — 시안 첫화면사진먼저시안_v1 · 느린 휴대폰 망 LCP 2.9초) — main.js가 사진이 오면 .pgo */
   .tk.go .tk-c{animation:tkIn .3s ease .6s both}
   .tk.go .tk-s{animation:tkSweep .9s var(--ease) .9s both}
   .tk.go .tk-l{animation:tkIn .4s ease 1.6s both}.tk.go .tk-btn{animation:tkIn .3s ease 1.85s both}
 }
 @keyframes tkUp{from{transform:translateY(55%);opacity:0}}
-@keyframes tkIn{from{opacity:0}}
+@keyframes tkIn{from{opacity:0}}@keyframes tkInP{from{opacity:.02}}  /* 사진은 0이 아닌 .02에서 — 크롬은 투명도 0으로 그린 것을 '보임'으로 치지 않아, 0에서 서서히면 LCP를 다음 그리기(약 1초 뒤)로 잡음(11/14 실측 3.26 → 끈 채 2.29초) */
 @keyframes tkSweep{from{clip-path:inset(0 0 100% 0);transform:translateY(12px)}to{clip-path:inset(0)}}
 /* 맨 위로(11/1 밤 동원 "고야드 홈페이지 처럼 … 스크롤 내리면, 오른쪽에 저거 올라가는 버튼 나와서 누르면 바로 맨 위로"): 고야드 실측(goyard.com/kr_ko · 1440 · 390) —
    22px 동그라미 · 1px 테두리 · 8×6 꺾쇠 · 컴퓨터 오른쪽 · 아래 75px / 휴대폰 40px · 300px까지 숨고 400px에서 보임 · 누르면 부드럽게 위로.
