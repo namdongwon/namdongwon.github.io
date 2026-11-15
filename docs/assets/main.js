@@ -2246,11 +2246,14 @@
     const still = () => H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches;
     const ease = t => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
     const topH = () => (document.querySelector("header.top") || { offsetHeight: 0 }).offsetHeight;
-    const stops = () => {
-      const s = [0, me.offsetTop - topH()];
+    // 멈출 자리 = 칸 머리 — 내릴 땐 맨 위 띠가 숨으므로(⑥ 120px 아래 내리면 숨는 띠) 화면 맨 위에, 올릴 땐 띠가 나오므로 띠 바로 아래에(11/15 동원 "멈추는 자리가 어색" —
+    // 실측: 내려 멈춘 소개 칸 위에 앞 화면 사람 사진 · SEOUL, KOREA가 띠 높이 64px만큼 남았음)
+    const stops = (d = 1) => {
+      const th = d > 0 ? 0 : topH();
+      const s = [0, me.offsetTop - th];
       let n = me.nextElementSibling;
-      for (; n; n = n.nextElementSibling) if (n.offsetHeight > 120) s.push(n.offsetTop - topH());
-      const f = document.querySelector("footer.foot, .colo"); if (f) s.push(f.getBoundingClientRect().top + scrollY - topH());
+      for (; n; n = n.nextElementSibling) if (n.offsetHeight > 120) s.push(n.offsetTop - th);
+      const f = document.querySelector("footer.foot, .colo"); if (f) s.push(f.getBoundingClientRect().top + scrollY - th);
       const max = document.documentElement.scrollHeight - innerHeight;
       s.push(max);
       // 페이지 끝보다 아래 자리(바닥글 머리 2009 > 끝 1694 — 11/15 실측)는 끝으로 — 맨 아래에서 한 번 더 내리면 보이지 않는 0.8초 넘김이 돌며 다음 몸짓과 엉키던 것
@@ -2271,9 +2274,9 @@
       raf = requestAnimationFrame(step);
     };
     const next = (y, d) => {
-      const s = stops();
-      if (d > 0) { const nx = s.find(v => v > y + 4); return Math.min(nx === undefined ? y : nx, y + innerHeight); }
-      const pv = [...s].reverse().find(v => v < y - 4); return Math.max(pv === undefined ? 0 : pv, y - innerHeight);
+      const s = stops(d), tol = topH() + 4;  // 띠 높이만큼 차이 나는 두 자리(900 · 836)는 같은 칸 — 띠 높이만큼만 꿈틀 움직이지 않게
+      if (d > 0) { const nx = s.find(v => v > y + tol); return Math.min(nx === undefined ? y : nx, y + innerHeight); }
+      const pv = [...s].reverse().find(v => v < y - tol); return Math.max(pv === undefined ? 0 : pv, y - innerHeight);
     };
     const move = dir => {
       const d = Math.sign(dir);
