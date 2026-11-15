@@ -2251,8 +2251,10 @@
       let n = me.nextElementSibling;
       for (; n; n = n.nextElementSibling) if (n.offsetHeight > 120) s.push(n.offsetTop - topH());
       const f = document.querySelector("footer.foot, .colo"); if (f) s.push(f.getBoundingClientRect().top + scrollY - topH());
-      s.push(document.documentElement.scrollHeight - innerHeight);
-      return [...new Set(s.map(v => Math.max(0, Math.round(v))))].sort((a, b) => a - b);
+      const max = document.documentElement.scrollHeight - innerHeight;
+      s.push(max);
+      // 페이지 끝보다 아래 자리(바닥글 머리 2009 > 끝 1694 — 11/15 실측)는 끝으로 — 맨 아래에서 한 번 더 내리면 보이지 않는 0.8초 넘김이 돌며 다음 몸짓과 엉키던 것
+      return [...new Set(s.map(v => Math.min(Math.max(0, max), Math.max(0, Math.round(v)))))].sort((a, b) => a - b);
     };
     // 11/15 동원 "한 번 내리면 그 다음에 내릴 때는 작동을 안한다" — 실측: 트랙패드 관성(손 뗀 뒤 1~2초 휠이 이어짐) 중에 다시 밀면 0.2초 쉼이 없어 버려졌고(1초 간격 세 번 → 한 칸),
     // 넘기는 0.8초 동안 들어온 휠도 버려졌음(마우스 딸깍 0.35초 간격 세 번 → 한 칸). → 새 몸짓 알아보기에 '휠 값이 갑자기 커짐(관성은 줄기만 함) · 방향 바뀜'을 더하고,
