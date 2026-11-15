@@ -1866,7 +1866,8 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<button type="button" class="x">{t("close")}</button></div>'
             + (f'<p class="sr-lab" id="sr-lab">{t("search_suggest")}{rk_when}</p><ul class="sug rks" id="sr-sug" role="listbox" aria-labelledby="sr-lab">{"".join(rk_li(x, k) for k, x in enumerate(rk_items))}</ul>' if rk_items
                else f'<p class="sr-lab" id="sr-lab">{t("search_quick")}</p><ul class="sug" id="sr-sug" role="listbox" aria-labelledby="sr-lab">{"".join(sug_li(x, k) for k, x in enumerate(sj["suggest"]))}</ul>')
-            + f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden><span>{t("search_none")}</span><small>{t("search_none_hint")}</small></p></div></div>\n')
+            + f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden><span>{t("search_none")}</span><small>{t("search_none_hint")}</small></p>'
+            f'<div class="sr-foot"><button type="button" class="sr-close">{t("search_close")}</button></div></div></div>\n')  # 넓은 창 닫기는 목록 아래 오른쪽(11/15 동원 '찾기칸시안_v1 A' — 무인양품 꼴) · 휴대폰은 위 닫기 그대로
     # 찾을 거리(#sidx)는 쪽마다 page()가 — 갈 곳(#t3 등)을 그 쪽에서 본 주소로 바꿔 넣음
 
     def paths(k):

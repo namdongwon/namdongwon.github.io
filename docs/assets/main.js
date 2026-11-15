@@ -1140,6 +1140,8 @@
     if (/^#p\d+$/.test(location.hash)) goTo(location.hash);  // 다른 쪽 찾기 결과로 사진 쪽에 온 사람(10/31 쪽 나누기 — photo/#p3) — 그 장으로 넘김
     sq.addEventListener("click", open);
     srch.querySelector(".x").addEventListener("click", () => shut(true));
+    const sclose = srch.querySelector(".sr-close");  // 넓은 창 아래 '검색 닫기'(11/15 시안 A) — 위 닫기와 같게
+    if (sclose) sclose.addEventListener("click", () => srch.querySelector(".x").click());
     if (clr) clr.addEventListener("click", () => { inp.value = ""; run(); inp.focus(); });
     // 빈 곳을 누르면 닫힘(11/4 동원 '검색에서 빈화면 클릭하면 나가지는 거로') — 누른 곳 · 뗀 곳이 모두 빈 곳일 때만(입력 칸에서 끌어 고르다 밖에서 떼면 그대로)
     const blank = el => el === srch || (el instanceof Element && el.matches(".srch .in, .sr-none, .sr-lab, .sr-n, .sug, .sr-res, .srch [role=status], .srh, .rc, .sr-rec, .rc-h, .rc-n, .rc-l"));

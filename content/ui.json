@@ -2419,5 +2419,13 @@
     "ru": "Без изменений",
     "es": "Sin cambios",
     "fr": "Inchangé"
+  },
+  "search_close": {
+    "ko": "검색 닫기",
+    "en": "Close search",
+    "ja": "検索を閉じる",
+    "ru": "Закрыть поиск",
+    "es": "Cerrar búsqueda",
+    "fr": "Fermer la recherche"
   }
 }
