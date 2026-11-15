@@ -2027,6 +2027,12 @@
   // ⑥ 휴대폰에서 쪽을 내리는 손을 인스타 벽 흐름이 따라감 — 내린 빠르기만큼 왼쪽 줄은 손과 같은 쪽, 오른쪽 줄은 반대로 더 흐르고 0.12초에 걸쳐 원래 흐름(반 바퀴 60초)으로(11/4 동원 'A 손을 흐름이 따라감' — 벽끌기_v1)
   // 쪽 스크롤은 막지 않음 · 화면에 보일 때만 돎 · 움직임 줄이기를 켜면 바로 멈추고 스타일 흐름으로 돌려줌
   const wcols = document.querySelector(".wall .cols");
+  // 흐르는 벽 사진 미리 받기(11/15 동원 "안 보이는 사진들 좀 많은데 미리 사진을 다운 받아놓으면 되지 않나?" — 실측: 빠른 서버에서도 15초 뒤 화면 속 9칸 중 5칸이 빔):
+  // 벽은 쪽이 아니라 줄이 움직여 흘러서, loading="lazy"인 사진은 브라우저가 '화면에 들어왔다'를 못 알아채 끝내 받지 않았음 → 쪽이 다 뜬 뒤(load · 첫 화면 속도엔 그대로) 벽 사진을 모두 바로 받기로 · 데이터 절약을 켠 기기는 그대로
+  if (wcols && !(navigator.connection && navigator.connection.saveData)) {
+    const wpre = () => wcols.querySelectorAll('img[loading="lazy"]').forEach(i => { i.loading = "eager"; });
+    if (document.readyState === "complete") setTimeout(wpre, 300); else addEventListener("load", () => setTimeout(wpre, 300), { once: true });
+  }
   if (wcols && motion && matchMedia("(pointer: coarse)").matches) {
     let S = [], run = false, lt = 0, ly = 0;
     const ty = c => { const m = getComputedStyle(c).transform; return m && m !== "none" ? new DOMMatrixReadOnly(m).m42 : 0; };  // 스타일 흐름이 지금 있는 자리에서 이어받음
