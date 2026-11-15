@@ -537,6 +537,7 @@ html.sr-on{overflow:hidden}
 .sr-res a{display:grid;grid-template-columns:15px 1fr;gap:12px;align-items:baseline;padding:8px 0}  /* 줄 사이 선 뺌 · 위아래 8px — 인기 검색어 목록과 같은 간격(11/16 동원 '밑줄 빼는 게 낫나' → 시안 찾기결과선시안_v1 'B 선 빼고 촘촘히 (권장)') */
 .sr-res .tx{font:400 16px/1.5 var(--serif);color:var(--muted);word-break:keep-all}
 .sr-res .tx b{font-weight:400;color:var(--ink);box-shadow:inset 0 -.38em 0 var(--mark)}  /* 찾은 낱말 — 먹 + 옅은 밑바탕(색 없이) */
+.sr-res .sub{display:block;margin-top:3px;font:300 12px/1.3 var(--sans);color:var(--faint)}  /* 같은 글이 두 곳일 때만 제목 아래 자리(11/16 시안 ③) */
 .sr-res .ic{width:15px;height:15px;align-self:start;margin-top:5px;color:var(--faint)}  /* 결과 앞 돋보기(11/16 동원 '구글에 나와있는 것처럼') — 첫 줄 가운데(16px × 1.5 = 24px 줄) */
 
 .srch [role="option"].on{background:var(--ph);box-shadow:inset 2px 0 0 var(--ink)}  /* 11/15 동원 '이런 부분 되어있는 거 전부 찾아내서 맞춰' — 호버 · 고른 줄 바탕은 선 폭 안에서(옆으로 넓히던 그림자 · 음수 여백을 모두 뺌 · 글자는 줄 안쪽 12px 그대로) · 고른 줄 먹 선은 선 밖 -16px → 줄 안 왼쪽 2px */  /* 방향키로 고른 줄(10/27) — 찾기로 간 줄(.hit)과 같은 옅은 바탕을 양옆으로 조금 넓혀 · 왼쪽 2px 먹 줄(10/28 동원 'B 왼쪽 먹 줄 더하기' — 옅은 바탕만으로는 어둡게 1.09:1이라 거의 안 보였음) */
@@ -569,7 +570,7 @@ html.sr-on{overflow:hidden}
 .srch .sug .rk b{font:600 14px/1 var(--sans);font-variant-numeric:tabular-nums;color:var(--faint)}
 .srch .sug .rk i{font:300 11px/1 var(--sans);font-style:normal;color:var(--faint);white-space:nowrap}
 .srch .sug.rks li:nth-child(-n+3) .rk,.srch .sug.rks li:nth-child(-n+3) .rk b{color:var(--ink)}
-.srch .on i,.srch .on .tg,.srch .on .ic{color:var(--muted)}  /* 옅은 바탕 위 작은 글자는 한 단 진하게(대비 4.5 넘게) */
+.srch .on i,.srch .on .tg,.srch .on .ic,.srch .on .sub{color:var(--muted)}  /* 옅은 바탕 위 작은 글자는 한 단 진하게(대비 4.5 넘게) */
 .sr-none{margin-top:72px;text-align:center;font:14px/1.7 var(--body);color:var(--muted)}.sr-none span{display:block;color:var(--ink);overflow-wrap:anywhere}.sr-none small{display:block;margin-top:6px;font-size:12.5px}  /* 친 말 되돌림은 먹 · 길 한 줄은 옅게(11/6 2차 ①) */  /* 결과 없음 — 추천 대신 가운데 한 줄(11/4 동원 · 노션 꼴) */
 .hit{background:var(--ph);transition:background 1.4s ease}  /* 찾기 결과로 간 줄을 잠깐 */
 .hit[tabindex="-1"]:focus,.btoc[tabindex="-1"]:focus,section[tabindex="-1"]:focus{outline:none}  /* 찾기로 옮긴 포커스는 옅은 바탕이 대신 보여 줌 — 검은 테두리 없이 */

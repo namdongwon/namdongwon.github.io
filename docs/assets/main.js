@@ -1079,7 +1079,11 @@
       // 최근에 눌러 간 결과는 맨 위에 시계로(11/16 동원 "ㅁㅇ 를 검색하고 마지막 아침에를 눌러도 최근 검색어는 ㅁㅇ로 나오고 시계 표시도 안나온다" — 구글 예상 검색어 꼴) · 같은 제목이 둘이면 첫 줄만 · 그다음 최대 10개
       const rcs = empty ? [] : recent(), seen = new Set();
       const hits = (empty ? [] : find(q)).map((h, k) => { const r = rcs.indexOf(h.it[1]); const on = r >= 0 && !seen.has(h.it[1]); if (on) seen.add(h.it[1]); return { ...h, rc: on ? r : 99, k }; })
-        .sort((x, y) => x.rc - y.rc || x.k - y.k).slice(0, 10);  // 추천은 빈 칸일 때만 — 찾는 글이 없으면 '결과 없음' 한 줄(11/4 동원 '추천으로 나오거든? 차라리 … 결과 없음' — 노션 꼴 · 전엔 10/28 점검 4로 추천을 함께)
+        .sort((x, y) => x.rc - y.rc || x.k - y.k).slice(0, 10);
+      // 같은 글이 두 곳(시집 카드 제목 = 「탁본」 첫 행 등)이면 둘 다 두고 제목 아래 작은 둘째 줄로 자리를 가름(11/16 동원 "문을 열고 나오면 두개 나오는 거 이상하잖아" → 시안 찾기결과겹침시안_v1 '③ 아래 둘째 줄') — 견줌은 부호 · 대소문자를 뺀 글(영어판 제목 꼴 · 행 꼴도 같게)
+      const dupN = new Map(), dk = h => norm(h.it[1])[0];
+      hits.forEach(h => dupN.set(dk(h), (dupN.get(dk(h)) || 0) + 1));
+      const where = it => it[2] && it[2].length <= 14 ? `${it[0]} · ${it[2]}` : it[0];  // 갈래 + 짧은 자리(61–62쪽) — 책 설명처럼 긴 자리는 갈래만  // 추천은 빈 칸일 때만 — 찾는 글이 없으면 '결과 없음' 한 줄(11/4 동원 '추천으로 나오거든? 차라리 … 결과 없음' — 노션 꼴 · 전엔 10/28 점검 4로 추천을 함께)
       if (clr) clr.hidden = !q;
       lab.hidden = sug.hidden = srh.hidden = !showSug;
       if (showSug) drawR();
@@ -1088,7 +1092,7 @@
       res.innerHTML = hits.map((h, i) => {
         const ext = /^https?:/.test(h.it[3]);
         return `<li role="none"><a role="option" id="sr${i}" aria-selected="false" href="${esc(h.it[3])}" data-t="${esc(h.it[1])}"${ext ? ' target="_blank" rel="noopener"' : ""}>${h.rc < 99 ? RC_IC : SR_IC}` +
-          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌 · 왼쪽 갈래(「탁본」 · 차례 · 이달)도 뺌(시안 찾기결과갈래시안_v1 'A 갈래 뺌 (권장)')  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
+          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}${dupN.get(dk(h)) > 1 ? `<small class="sub">${ko(esc(where(h.it)))}</small>` : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌 · 왼쪽 갈래(「탁본」 · 차례 · 이달)도 뺌(시안 찾기결과갈래시안_v1 'A 갈래 뺌 (권장)')  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
       }).join("");
       none.hidden = empty || hits.length > 0;
       // 결과 없음(11/6 섬세한 배려 2차 ① — 동원 'A 친 말 + 길 한 줄' · 알라딘 · Toteme · 예스24): 친 말을 그 판의 따옴표로 되돌려 보이고 아래에 해 볼 길 한 줄 — 친 말은 글자로만(textContent)
