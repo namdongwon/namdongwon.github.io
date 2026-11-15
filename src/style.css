@@ -243,7 +243,9 @@ button.buy{background:none;border-width:0 0 1.5px;border-style:solid;border-colo
 .pbook .bk{--w:96px;--h:141px;--t:6.75px;grid-row:span 3;margin:4px 0 12px;perspective:520px}
 .pbook .bk .sh{bottom:-10px;height:14px}
 .pbook .t{font:400 15px/1.5 var(--serif)}
-html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}  /* 『 첫 줄 내어 걸기(본명조 『 앞 빈 0.605em — 10/26 다시 잼) — 둘째 줄과 첫머리가 맞게(10/24) */
+html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}
+:is(html:lang(ko),html:lang(ja)) .tk-l p.tt{text-indent:-.6em}  /* 첫 화면 시집 제목 『 내어 걸기(11/15 — 둘째 줄 첫머리와 맞게 · 본명조 『 앞 빈 0.605em 실측) */
+.hgs{text-indent:-.1em}html:lang(ja) .hgs{text-indent:-.68em}  /* 고딕 줄의 여는 부호 내어 걸기(11/15 — 바닥글 · 메뉴 펼침 카드 이름 '「탁본」 읽기'): 글꼴 실측 앞 빈 — 한국어 Pretendard 「 0.107em · 일본어 고딕 「 0.679em */  /* 『 첫 줄 내어 걸기(본명조 『 앞 빈 0.605em — 10/26 다시 잼) — 둘째 줄과 첫머리가 맞게(10/24) */
 .pbook .t small{text-indent:0}
 .pbook .t small{display:block;margin-top:8px;font:300 11px/1.6 var(--sans);color:var(--muted)}
 .pbook .t small.bcr{margin-top:4px}  /* 만든 사람 줄(10/28 ⑨) — 사양과 한 묶음이라 사이는 4px만(제목 → 사양 8px) · 이름 .bcr(.cr은 영상 칸 스틸 출처) */

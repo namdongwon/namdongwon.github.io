@@ -228,7 +228,9 @@ button.buy{background:none;border-width:0 0 1.5px;border-style:solid;border-colo
 .pbook .bk{--w:96px;--h:141px;--t:6.75px;grid-row:span 3;margin:4px 0 12px;perspective:520px}
 .pbook .bk .sh{bottom:-10px;height:14px}
 .pbook .t{font:400 calc(15px * var(--fs))/1.5 var(--serif)}
-html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}  
+html:lang(ko) .pbook .t,html:lang(ja) .pbook .t{text-indent:-.6em}
+:is(html:lang(ko),html:lang(ja)) .tk-l p.tt{text-indent:-.6em}  
+.hgs{text-indent:-.1em}html:lang(ja) .hgs{text-indent:-.68em}    
 .pbook .t small{text-indent:0}
 .pbook .t small{display:block;margin-top:8px;font:300 calc(11px * var(--fs))/1.6 var(--sans);color:var(--muted)}
 .pbook .t small.bcr{margin-top:4px}  

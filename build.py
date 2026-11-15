@@ -1637,8 +1637,9 @@ def render(site, poem, videos, photos, lang="ko"):
     # 바닥글 — 고야드 꼴(11/2 동원 "우리 하단 푸터 고야드처럼 바꾸자 벤치마킹해보자 … 이모지 로 링크 타는 방식도 좋고" → 목업 기준/브랜드 시안/푸터시안_v1_A·B.png → "A 고야드 꼴 (권장)"):
     # 네 단(둘러보기 · 시집 · 안내 · 설정) 가운데 정렬 → 이름 표장 → 원 아이콘(인스타그램 · 유튜브 · 연락 · 교보문고) → 맺음 인사 → 아래 띠(왼쪽 언어 · 오른쪽 © · 고친 날 · 판 · 쇄).
     # 판권면(10/24 A)의 기록은 아래 띠 한 줄로 이어 감 · 스크립트가 읽는 이름(.colo · .thm · .mot · .lang · .cz-open)은 그대로 · 쪽 주소는 ~R~(page()가 그 판 맨 위로 채움)
-    def fli(href, label, extra=""):  # 단 안 한 줄 링크
-        return f'<li><a href="{href}"{extra}>{label}</a></li>'
+    def fli(href, label, extra=""):  # 단 안 한 줄 링크 — 여는 부호로 시작하면 내어 걺(.hgs — 11/15)
+        hg = ' class="hgs"' if label[:1] in "『「" else ""
+        return f'<li{hg}><a href="{href}"{extra}>{label}</a></li>'
     nav_li = "".join(fli(f"~R~{p}", e(x)) for p, x in (("", L["nav"][0]), ("book/", L["nav"][1]), ("photo/", L["nav"][2]), ("video/", L["nav"][3]), ("guestbook/", L["nav"][5]), ("contact/", L["nav_cta"])))
     book_li = (fli("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", "")) + fli("~R~book/#toc", e(book["toc"]["label"]))
                + fli(e(book["buy_url"]), f'{e(book["store_label"])} ↗', f' target="_blank" rel="noopener"{gcc("판권면")}'))
@@ -1661,7 +1662,8 @@ def render(site, poem, videos, photos, lang="ko"):
         ph = (f'<span class="mm-ph{" mm-ct" if fit else ""}"><img data-src="{img}" alt="" width="206" height="206" decoding="async"></span>' if img
               else f'<span class="mm-ph mm-{kind}">' + ("".join(f"<i>{e(x)}</i>" for x in extra) if kind == "tc" else "") + '</span>')
         tgt = ' target="_blank" rel="noopener"' if href.startswith("http") else ""
-        return f'<a class="mm-c" href="{href}"{tgt}>{ph}<span class="mm-n">{label}</span></a>'
+        hg = " hgs" if label[:1] in "『「" else ""
+        return f'<a class="mm-c" href="{href}"{tgt}>{ph}<span class="mm-n{hg}">{label}</span></a>'
     wall_first = [wsrc(psrc(p_)) for p_ in PH["items"][:1]]
     toc6 = [x["title"] for x in book["toc"]["parts"][0]["items"][:6]]
     mm_panes = {
