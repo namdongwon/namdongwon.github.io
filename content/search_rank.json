@@ -1,0 +1,210 @@
+{
+  "_설명": "찾기 창 '인기 검색어' 순위(11/15 동원 \"그냥 임의로 하면되잖아 … 날마다 업데이트하며 그럴 필요없어\") — 동원이 정한 고정 순위(curated: 실제로 센 것이 아니라 날짜 · 변화 표시 없이 번호만) · 판마다 다섯 줄 넘게 · 누르면 그 말로 찾음 · 바꿀 땐 이 파일만(관리 화면 '인기 검색어' 원고와 같은 자리로 옮길 수 있음) · curated를 빼고 updated · prev를 채우면 집계 순위 꼴(날짜 · ▲▼)",
+  "curated": true,
+  "langs": {
+    "ko": {
+      "items": [
+        {
+          "term": "탁본"
+        },
+        {
+          "term": "릴리 슈슈의 모든 것"
+        },
+        {
+          "term": "시집"
+        },
+        {
+          "term": "전시"
+        },
+        {
+          "term": "인스타그램"
+        },
+        {
+          "term": "로코코"
+        },
+        {
+          "term": "연락"
+        },
+        {
+          "term": "교보문고"
+        },
+        {
+          "term": "방명록"
+        },
+        {
+          "term": "영화"
+        }
+      ]
+    },
+    "en": {
+      "items": [
+        {
+          "term": "Rubbing"
+        },
+        {
+          "term": "Lily Chou-Chou"
+        },
+        {
+          "term": "Poetry"
+        },
+        {
+          "term": "Exhibition"
+        },
+        {
+          "term": "Instagram"
+        },
+        {
+          "term": "Rococo"
+        },
+        {
+          "term": "Contact"
+        },
+        {
+          "term": "Kyobo"
+        },
+        {
+          "term": "Guestbook"
+        },
+        {
+          "term": "Film"
+        }
+      ]
+    },
+    "ja": {
+      "items": [
+        {
+          "term": "拓本"
+        },
+        {
+          "term": "リリイ・シュシュ"
+        },
+        {
+          "term": "詩集"
+        },
+        {
+          "term": "展示"
+        },
+        {
+          "term": "Instagram"
+        },
+        {
+          "term": "ロココ"
+        },
+        {
+          "term": "お問い合わせ"
+        },
+        {
+          "term": "教保文庫"
+        },
+        {
+          "term": "芳名録"
+        },
+        {
+          "term": "映画"
+        }
+      ]
+    },
+    "ru": {
+      "items": [
+        {
+          "term": "Оттиск"
+        },
+        {
+          "term": "Лили Чоу-Чоу"
+        },
+        {
+          "term": "Стихи"
+        },
+        {
+          "term": "Выставка"
+        },
+        {
+          "term": "Instagram"
+        },
+        {
+          "term": "Rococo"
+        },
+        {
+          "term": "Контакты"
+        },
+        {
+          "term": "Kyobo"
+        },
+        {
+          "term": "Гостевая книга"
+        },
+        {
+          "term": "Фильм"
+        }
+      ]
+    },
+    "es": {
+      "items": [
+        {
+          "term": "Calco"
+        },
+        {
+          "term": "Lily Chou-Chou"
+        },
+        {
+          "term": "Poemario"
+        },
+        {
+          "term": "Exposición"
+        },
+        {
+          "term": "Instagram"
+        },
+        {
+          "term": "Rococo"
+        },
+        {
+          "term": "Contacto"
+        },
+        {
+          "term": "Kyobo"
+        },
+        {
+          "term": "Libro de visitas"
+        },
+        {
+          "term": "Película"
+        }
+      ]
+    },
+    "fr": {
+      "items": [
+        {
+          "term": "Estampage"
+        },
+        {
+          "term": "Lily Chou-Chou"
+        },
+        {
+          "term": "Poésie"
+        },
+        {
+          "term": "Exposition"
+        },
+        {
+          "term": "Instagram"
+        },
+        {
+          "term": "Rococo"
+        },
+        {
+          "term": "Contact"
+        },
+        {
+          "term": "Kyobo"
+        },
+        {
+          "term": "Livre d’or"
+        },
+        {
+          "term": "Film"
+        }
+      ]
+    }
+  }
+}
