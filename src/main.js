@@ -408,6 +408,60 @@
     let pt = 0;
     addEventListener("resize", () => { clearTimeout(pt); pt = setTimeout(place, 150); });
   }
+  // 메뉴 펼침(11/15 동원 무인양품 캡처 → 메뉴펼침시안_v1 'B 사진 카드' — 빌드의 #mm): 넓은 창(1024~) · 마우스 기기에서 맨 위 메뉴에 0.15초 머물면 띠 아래로 그 쪽 칸이 열림
+  // (지나가기만 하면 안 열림) · 열린 채 다른 메뉴로 옮기면 칸은 두고 안만 바뀜 · 띠와 칸 밖으로 나가면 0.2초 뒤 닫힘 · 이름 · 찾기 · 연락하기 위로 가도 닫힘 · Esc · 스크롤 · 키보드 초점이면 닫힘
+  // 닫혀 있을 땐 inert + aria-hidden(키보드 · 읽기 도구는 메뉴 링크 그대로 — 같은 링크는 바닥글에도 있음) · 사진은 처음 열 때 받음(data-src)
+  const mm = document.getElementById("mm"), mmTop = document.querySelector("header.top");
+  if (mm && mmTop && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    const navA = [...mmTop.querySelectorAll("nav a[data-pg]")], panes = [...mm.querySelectorAll(".mm-in")];
+    const still = () => H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let cur = null, tOpen = 0, tClose = 0, tHide = 0;
+    // 칸 높이 = 그 쪽 칸 안 높이 — 높이가 커튼처럼 0.24초에 펼쳐지고(옮기면 새 칸 높이로 늘고 줆) · 안은 .go가 붙으면 4px 위에서 차례로 내려옴(CSS — 애플 실측)
+    const show = k => {
+      const p = panes.find(x => x.dataset.pg === k);
+      if (!p) return null;
+      p.querySelectorAll("img[data-src]").forEach(i => { i.src = i.dataset.src; i.removeAttribute("data-src"); });
+      panes.forEach(x => { x.hidden = x !== p; x.classList.remove("go"); });
+      return p;
+    };
+    const go = p => { mm.style.height = p.offsetHeight + "px"; requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add("go"))); };
+    const open = k => {
+      if (!matchMedia("(min-width: 1024px)").matches || k === cur) return;
+      const p = show(k);
+      if (!p) return;
+      navA.forEach(a => a.classList.toggle("hov", a.dataset.pg === k));
+      clearTimeout(tHide);
+      if (!mm.classList.contains("vis")) {
+        mm.style.top = Math.max(0, mmTop.getBoundingClientRect().bottom) + "px";
+        mm.style.height = "0px"; mm.classList.add("vis"); mm.removeAttribute("inert"); mm.removeAttribute("aria-hidden");
+        void mm.offsetHeight;  // 0에서 시작하게 한 번 잼
+      }
+      go(p);
+      cur = k;
+    };
+    const close = () => {
+      clearTimeout(tOpen);
+      if (!mm.classList.contains("vis") || !cur) return;
+      panes.forEach(x => x.classList.remove("go"));
+      mm.style.height = "0px"; mm.setAttribute("inert", ""); mm.setAttribute("aria-hidden", "true");
+      navA.forEach(a => a.classList.remove("hov")); cur = null;
+      tHide = setTimeout(() => { if (!cur) mm.classList.remove("vis"); }, still() ? 0 : 260);
+    };
+    const inside = el => el && (mmTop.contains(el) || mm.contains(el));
+    navA.forEach(a => {
+      a.addEventListener("mouseenter", () => { clearTimeout(tClose); clearTimeout(tOpen); tOpen = setTimeout(() => open(a.dataset.pg), cur ? 60 : 150); });
+      a.addEventListener("mouseleave", () => clearTimeout(tOpen));
+    });
+    [mmTop, mm].forEach(el => {
+      el.addEventListener("mouseleave", ev => { if (!inside(ev.relatedTarget)) { clearTimeout(tOpen); tClose = setTimeout(close, 200); } });
+      el.addEventListener("mouseenter", () => clearTimeout(tClose));
+    });
+    mmTop.querySelectorAll(".logo, .act").forEach(el => el.addEventListener("mouseenter", () => { clearTimeout(tOpen); clearTimeout(tClose); tClose = setTimeout(close, 200); }));
+    addEventListener("keydown", ev => { if (ev.key === "Escape") close(); });
+    addEventListener("scroll", () => { if (cur) close(); }, { passive: true });
+    addEventListener("resize", close);
+    mmTop.addEventListener("focusin", close);
+  }
   // 휴대폰 메뉴 단추(11/1 밤 동원 버튼 "B 메뉴 단추" — 방명록을 더하면 메뉴 다섯이 휴대폰 한 줄에 안 들어가, 명품 사이트 휴대폰 꼴로): 띠 왼쪽 '메뉴'를 누르면 띠 아래로 쪽 목록(#mnu).
   // 여는 동안 띠와 목록 밖은 inert(Tab이 목록 뒤로 새지 않게 — 찾기 창과 같은 꼴) · 쪽 스크롤 멈춤 · 다시 누르거나 Esc면 닫고 단추로 · 찾기를 열거나(돋보기 · ⌘K) 768px 위로 넓어지면 닫음
   const mb = document.querySelector(".top .mb"), mnu = document.getElementById("mnu");

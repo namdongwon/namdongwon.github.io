@@ -1653,6 +1653,30 @@ def render(site, poem, videos, photos, lang="ko"):
            + "".join(f'<button type="button" data-fs="{v}" aria-pressed="{str(v == "m").lower()}" aria-label="{t("fs_" + v)}" title="{t("fs_" + v)}"><span>{t("fs_g")}</span></button>' for v in ("m", "l", "xl"))
            + '</div></dd></dl>')  # 묶음 이름(role=group)은 dd 안쪽 div에 — dd에 role을 주면 dl에 둘 수 없는 칸이 됨(11/3 Lighthouse 접근성 · axe definition-list)
     ext = ' target="_blank" rel="noopener"'
+    # 메뉴 펼침(11/15 동원 무인양품 캡처 "gnb 마우스 오버하면 저렇게 아래로 간단한 설명 나오는 거 너무 좋은 거 같은데" → 목업 기준/브랜드 시안/메뉴펼침시안_v1 → "b로 가자"):
+    # 넓은 창 · 마우스 기기에서 맨 위 메뉴에 0.15초 머물면 띠 아래로 칸 — 설명 한 줄 + 진짜 사진 카드(이름 아래) · 사진 없는 곳은 줄 친 엽서 · 차례는 1부 첫 여섯 편 제목.
+    # 띠 밖(</header> 뒤)에 둠(띠의 backdrop-filter가 안쪽 fixed를 가둠 — 휴대폰 메뉴와 같은 까닭) · 닫혀 있을 땐 inert + aria-hidden(키보드 · 읽기 도구는 메뉴 링크 그대로) ·
+    # 사진은 data-src — 처음 열 때만 받음(쪽마다 쓸데없이 받지 않게) · 움직임은 main.js · 꾸밈은 style.css .mm
+    def mm_card(href, label, img=None, kind="", extra="", fit=""):  # fit="ct" — 책처럼 통째로 보여야 하는 그림(표지 · 탁본)은 자르지 않고 옅은 바탕 위에
+        ph = (f'<span class="mm-ph{" mm-ct" if fit else ""}"><img data-src="{img}" alt="" width="206" height="206" decoding="async"></span>' if img
+              else f'<span class="mm-ph mm-{kind}">' + ("".join(f"<i>{e(x)}</i>" for x in extra) if kind == "tc" else "") + '</span>')
+        tgt = ' target="_blank" rel="noopener"' if href.startswith("http") else ""
+        return f'<a class="mm-c" href="{href}"{tgt}>{ph}<span class="mm-n">{label}</span></a>'
+    wall_first = [wsrc(psrc(p_)) for p_ in PH["items"][:1]]
+    toc6 = [x["title"] for x in book["toc"]["parts"][0]["items"][:6]]
+    mm_panes = {
+        "": (t("mm_d_me", name=e(S["name"])), [mm_card("~R~#me", t("me_h"), f"{P}assets/img/me.webp"), mm_card("~R~contact/", L["nav_cta"], kind="pc")]),
+        "book": (t("mm_d_book"), [mm_card("~R~book/", e(L["nav"][1]), f"{P}assets/img/cover.jpg", fit="ct"), mm_card("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", ""), f"{P}assets/img/takbon.jpg", fit="ct"),
+                                  mm_card("~R~book/#toc", e(book["toc"]["label"]), kind="tc", extra=toc6)],
+                 f'<a class="mm-l" href="{e(book["buy_url"])}" target="_blank" rel="noopener">{e(book["store_label"])} ↗</a>'),
+        "photo": (t("mm_d_photo"), [mm_card("~R~photo/", t("mm_wall"), wall_first[0] if wall_first else None, kind="pc"), mm_card(e(iu), f'{t("more_ig")} ↗', kind="pc")]),
+        "video": (t("mm_d_video"), [mm_card("~R~video/", t("mm_latest"), f"{P}assets/img/next.jpg"),
+                                    mm_card(e(ch.get("url", "")), f'{t("go_watch")} ↗', f"{P}assets/img/stills/1.jpg" if (ASSETS / "img/stills/1.jpg").exists() else None, kind="pc")]),
+        "guestbook": (t("mm_d_gb"), [mm_card("~R~guestbook/", t("mm_write"), kind="pc")]),
+    }
+    mega = ('<div class="mm" id="mm" role="region" aria-label="' + t("mm_label") + '" aria-hidden="true" inert>'
+            + "".join(f'<div class="mm-in" data-pg="{k_}" hidden><p class="mm-d">{v_[0]}{v_[2] if len(v_) > 2 else ""}</p><div class="mm-row">{"".join(v_[1])}</div></div>' for k_, v_ in mm_panes.items())
+            + '</div>')
     icons = "".join(f'<li><a href="{h}" aria-label="{a}"{x}>{FOOT_ICONS[k]}</a></li>' for k, h, a, x in (
         ("ig", e(iu), e(L["nav"][2]), ext), ("yt", e(ch.get("url", "")), e(L["nav"][3]), ext),
         ("mail", "~R~contact/", L["nav_cta"], ""), ("book", e(book["buy_url"]), e(book["store_label"]), ext + gcc("판권면 아이콘"))))
@@ -2030,7 +2054,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <a class="skip" href="#main">{t("skip")}</a>
 <header class="top"><a class="logo" href="{link("")}">{e(S.get("logo") or S["name"])}</a><button type="button" class="mb" aria-expanded="false" aria-controls="mnu" data-open="{t("menu")}" data-close="{t("close")}">{t("menu")}</button>
   <nav aria-label="{t("nav_label")}">{nav}</nav><div class="act">{act}</div></header>
-<nav class="mnu" id="mnu" aria-label="{t("nav_label")}" hidden><ol>{mnu}</ol></nav>
+<nav class="mnu" id="mnu" aria-label="{t("nav_label")}" hidden><ol>{mnu}</ol></nav>{mega}
 <main id="main">
 {h1}{body}{nxp}</main>
 <footer class="foot">{colo}</footer>
@@ -2184,7 +2208,7 @@ SCALE_FS = {11, 12.5, 13, 14, 15}
 SCALE_LS = {"0", "normal", "inherit", "-.05em", "-.04em", "-.035em", "-.02em", "-.01em", ".04em", ".12em", ".3em"}  # 자간 다섯 단(11/3 UX 점검 ⑦ → 목업 자간정리시안_v1 'A 다섯 단 (권장)') — 큰 제목 보정(음수) · 0 · 작은 머리 · 메뉴 · 라벨 0.04 · 대문자 · 영어 머리 0.12 · 표장 0.3  # 16px 아래 작은 글자 — 고딕 11 · 12.5 · 14 · 명조 13 · 14 · 15
 SCALE_ALLOW = {
     (".colo .mot input", "margin"): "스위치 누르는 자리 24px의 줄 높이 되돌림(11/3)", (".colo .mot input::before", "top"): "스위치 틀 자리", (".colo .mot input::after", "left"): "스위치 손잡이 자리", (".colo .mot input:checked::after", "left"): "스위치 손잡이 자리(켬)",
-    (".skip", "left"): "화면 밖에 숨김", (".hp", "left"): "방명록 빈칸 함정 — 화면 밖",
+    (".ptr", "margin-left"): "26px 당겨서 새로 고침 표시 가운데(11/14)", (".skip", "left"): "화면 밖에 숨김", (".hp", "left"): "방명록 빈칸 함정 — 화면 밖",
     (".top nav a::before", "inset"): "누르는 자리 44px", (".tk-w", "font"): "첫 화면 큰 영어 이름 — 두 줄 간격 .86(시안 그대로)", (".pbook .bk .sh", "bottom"): "책 그림자 자리",
     (".top nav .lang .fl", "line-height"): "국기 줄 높이 0", (".years sup.fr", "font"): "각주 위첨자 줄 높이 0",
     (".vplay .play", "margin"): "58px 동그라미 가운데", (".touch", "margin"): "58px 동그라미 가운데",

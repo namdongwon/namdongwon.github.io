@@ -2277,5 +2277,77 @@
     "ru": "Попробуйте одно слово из названия стихотворения или работы.",
     "es": "Prueba con una sola palabra del título de un poema o de una obra.",
     "fr": "Essayez un seul mot tiré du titre d’un poème ou d’une œuvre."
+  },
+  "mm_label": {
+    "ko": "쪽 미리 보기",
+    "en": "Page preview",
+    "ja": "ページのプレビュー",
+    "ru": "Предпросмотр страницы",
+    "es": "Vista previa de la página",
+    "fr": "Aperçu de la page"
+  },
+  "mm_d_me": {
+    "ko": "시를 쓰는 회사원 {name}",
+    "en": "{name}, an office worker who writes poems",
+    "ja": "詩を書く会社員、{name}",
+    "ru": "{name} — офисный работник, который пишет стихи",
+    "es": "{name}, un oficinista que escribe poemas",
+    "fr": "{name}, employé de bureau qui écrit des poèmes"
+  },
+  "mm_d_book": {
+    "ko": "첫 시집 · 시 예순 편",
+    "en": "A first collection · sixty poems",
+    "ja": "第一詩集 · 詩六十篇",
+    "ru": "Первый сборник · шестьдесят стихотворений",
+    "es": "Primer poemario · sesenta poemas",
+    "fr": "Premier recueil · soixante poèmes"
+  },
+  "mm_d_photo": {
+    "ko": "전시에서 만난 작품은 작가 · 제목 · 연도와 함께",
+    "en": "Works seen at exhibitions, with artist, title and year",
+    "ja": "展示で出会った作品は、作家・題名・制作年とともに",
+    "ru": "Работы с выставок — с автором, названием и годом",
+    "es": "Obras vistas en exposiciones, con artista, título y año",
+    "fr": "Œuvres vues en exposition, avec artiste, titre et année"
+  },
+  "mm_d_video": {
+    "ko": "영화 · 전시 · 책을 본 뒤, 본 사람과 나누는 리뷰",
+    "en": "Films, exhibitions and books — reviews to share with those who’ve seen them",
+    "ja": "映画・展示・本を見たあと、見た人と分かち合うレビュー",
+    "ru": "Фильмы, выставки, книги — обзоры для тех, кто уже видел",
+    "es": "Cine, exposiciones y libros: reseñas para quienes ya los vieron",
+    "fr": "Films, expositions, livres : des critiques à partager avec ceux qui les ont vus"
+  },
+  "mm_d_gb": {
+    "ko": "계정 없이 짧은 인사를",
+    "en": "A short note, no account needed",
+    "ja": "アカウントなしで、短いひとことを",
+    "ru": "Короткая запись — без регистрации",
+    "es": "Una nota breve, sin cuenta",
+    "fr": "Un petit mot, sans compte"
+  },
+  "mm_wall": {
+    "ko": "사진 벽",
+    "en": "The wall",
+    "ja": "写真の壁",
+    "ru": "Стена фотографий",
+    "es": "El muro de fotos",
+    "fr": "Le mur de photos"
+  },
+  "mm_latest": {
+    "ko": "최신 편",
+    "en": "Latest episode",
+    "ja": "最新回",
+    "ru": "Новый выпуск",
+    "es": "Último episodio",
+    "fr": "Dernier épisode"
+  },
+  "mm_write": {
+    "ko": "글 남기기",
+    "en": "Leave a note",
+    "ja": "書き込む",
+    "ru": "Оставить запись",
+    "es": "Dejar una nota",
+    "fr": "Laisser un mot"
   }
 }

@@ -134,6 +134,29 @@ button{font:inherit;color:inherit}
 .mnu a{display:block;padding:20px 0;font:400 24px/1.2 var(--serif);color:var(--ink)}
 html.mnu-on{overflow:hidden}  /* 여는 동안 쪽은 멈춤 */
 @media (min-width:768px){.mnu{display:none}}
+/* 메뉴 펼침(11/15 동원 무인양품 캡처 → 메뉴펼침시안_v1 'B 사진 카드'): 넓은 창 · 마우스 기기만 · 띠 바로 아래 · 설명 한 줄 + 사진 카드 줄 · 열고 닫기는 main.js(.vis → .on) */
+.mm{display:none;position:fixed;left:0;right:0;top:var(--top);z-index:30;height:0;overflow:hidden;background:var(--bg);box-shadow:0 1px 0 var(--rule),0 12px 24px -18px rgba(0,0,0,.18);transition:height .24s cubic-bezier(.4,0,.6,1)}  /* 칸 높이가 커튼처럼 펼쳐짐(11/15 동원 '내려오는 게 부드럽게' — 애플 실측 0.24초 · cubic-bezier(.4,0,.6,1)) · 높이는 main.js가 그 칸 안 높이로 */
+.mm.vis{display:block}
+.mm-in{max-width:1312px;margin:0 auto;padding:30px 64px 44px}
+.mm-in :is(.mm-d,.mm-c){opacity:0;transform:translateY(-4px);transition:opacity .16s ease,transform .16s ease}  /* 칸 안은 4px 위에서 내려오며 나타남(애플 실측) · 닫힐 땐 늦춤 없이 0.16초 */
+.mm-in.go :is(.mm-d,.mm-c){opacity:1;transform:none;transition-duration:.24s}.mm-in.go .mm-d{transition-duration:.32s;transition-delay:.08s}
+.mm-in.go .mm-c:nth-child(1){transition-delay:.12s}.mm-in.go .mm-c:nth-child(2){transition-delay:.14s}.mm-in.go .mm-c:nth-child(3){transition-delay:.16s}.mm-in.go .mm-c:nth-child(4){transition-delay:.18s}  /* 차례로 0.02초씩(애플 실측) */
+.mm-d{margin:0;font:400 15px/1.6 var(--serif);color:var(--muted);word-break:keep-all}
+.mm-l{margin-left:16px;font:400 13px/1 var(--sans);color:var(--muted);text-decoration:none}
+.mm-row{display:flex;gap:22px;margin-top:22px}
+.mm-c{width:206px;color:var(--ink);text-decoration:none}
+.mm-ph{display:block;width:206px;height:206px;overflow:hidden;background:var(--ph);box-shadow:inset 0 0 0 1px var(--rule)}
+.mm-ph img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s var(--e2,ease)}
+.mm-ct img{box-sizing:border-box;padding:16px;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,0,0,.12)) drop-shadow(0 6px 12px rgba(0,0,0,.08))}  /* 표지 · 탁본은 통째로 — 옅은 바탕 위 책 한 권(두 겹 그림자) */
+.mm-pc{background:var(--bg) repeating-linear-gradient(to bottom,transparent 0,transparent 31px,var(--rule) 31px,var(--rule) 32px) 0 14px;box-shadow:inset 0 0 0 1px var(--rule)}
+.mm-tc{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;padding:0 16px;font:400 14px/1.3 var(--serif);color:var(--muted)}.mm-tc i{font-style:normal}
+.mm-n{display:block;margin-top:12px;font:400 15px/1.3 var(--sans)}
+.mm-c:hover .mm-n,.mm-l:hover{text-decoration:underline;text-underline-offset:4px}.mm-c:hover .mm-ph img{transform:scale(1.03)}
+.mm-c:active .mm-ph{opacity:.85}
+.top nav a.hov{color:var(--ink)}
+@media not ((hover:hover) and (pointer:fine) and (min-width:1024px)){.mm{display:none!important}}
+@media (prefers-reduced-motion:reduce){.mm,.mm-in :is(.mm-d,.mm-c),.mm-ph img{transition:none!important}}
+:root[data-motion="reduce"] :is(.mm,.mm-in .mm-d,.mm-in .mm-c,.mm-ph img){transition:none!important}
 
 /* 칸 */
 html{scroll-padding-top:calc(var(--top) + 12px)}  /* Tab · 건너뛰기로 간 자리가 맨 위 띠에 덮이지 않게 — 뒤로 Tab하면 '책장에 꽂기 ↗'가 띠 밑에 통째로 숨었음(10/27 점검, WCAG 2.4.11) */
@@ -977,7 +1000,7 @@ html.sr-on{overflow:hidden}
 .lsw{position:relative}
 .lsw summary{display:inline-flex;align-items:center;gap:6px;padding:8px 2px;margin:-8px -2px;list-style:none;cursor:pointer;font:400 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--ink);-webkit-tap-highlight-color:transparent}
 .lsw summary::-webkit-details-marker{display:none}
-@media (pointer:coarse){.fcols li{position:relative}.fcols li>:is(a,button){position:static}.fcols li>:is(a,button)::before{inset:-6px -10px}.lsw summary{position:relative}.lsw summary::before{content:"";position:absolute;inset:-7px -8px}}  /* 손가락 기기 바닥글 누르는 자리(11/14 실측 — 글 링크 31×28 · 언어 57×32): 글 링크는 단 너비 통째로(높이는 줄 사이 29px라 모양을 바꾸지 않고는 44 못 됨 — 이웃 줄과 겹치지 않게 그대로) · 언어 고르기는 44 넘게 · 보이는 모양은 그대로 */
+@media (pointer:coarse){.fcols li{position:relative}.fcols li>:is(a,button){position:static}.fcols li>:is(a,button)::before{inset:-6px -8px}.lsw summary{position:relative}.lsw summary::before{content:"";position:absolute;inset:-8px}}  /* 손가락 기기 바닥글 누르는 자리(11/14 실측 — 글 링크 31×28 · 언어 57×32): 글 링크는 단 너비 통째로(높이는 줄 사이 29px라 모양을 바꾸지 않고는 44 못 됨 — 이웃 줄과 겹치지 않게 그대로) · 언어 고르기는 44 넘게 · 보이는 모양은 그대로 */
 .lsw .gl{width:15px;height:15px}.lsw .cr{width:8px;height:8px;color:var(--muted);transition:transform .2s}.lsw[open] .cr{transform:rotate(180deg)}
 .lsw ul{position:absolute;left:-8px;bottom:calc(100% + 10px);z-index:5;min-width:168px;margin:0;padding:6px;list-style:none;background:var(--bg);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08)}
 .lsw li>*{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border-radius:8px;font:300 14px/1.2 var(--sans);color:var(--ink);text-decoration:none}
