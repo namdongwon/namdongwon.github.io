@@ -528,7 +528,7 @@ html.sr-on{overflow:hidden}
   .srh .rc-h,.srh .sr-rec>.sr-lab{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--line)}
   .srh .sr-lab{font:600 calc(12.5px * var(--fs))/1 var(--sans);letter-spacing:.04em;color:var(--ink)}.srh .rc-h .sr-lab{padding:0;border:0}
   .srh .sug,.srh .rc-l{margin-top:0}
-  .srh:has(.rks) .rc-l li{border-bottom:0}.srh:has(.rks) .rc-q{padding:8px 0;font:400 calc(15px * var(--fs))/1.3 var(--sans)}  
+  .srh:has(.rks) .rc-l{margin-top:8px}.srh:has(.rks) .rc-l li{border-bottom:0}.srh:has(.rks) .rc-q{padding:8px 0;font:400 calc(15px * var(--fs))/1.3 var(--sans)}  
 }
 .srch .sug.rks{margin-top:8px}
 .srch .sug button.rk,.srch .srh .sug button.rk{display:grid;grid-template-columns:28px 1fr auto;align-items:baseline;gap:8px;padding:8px 12px;border-bottom:0;font:400 calc(15px * var(--fs))/1.3 var(--sans);color:var(--muted)}
