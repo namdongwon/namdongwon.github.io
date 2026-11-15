@@ -1825,6 +1825,20 @@ def render(site, poem, videos, photos, lang="ko"):
     ix["contact"] += [(tg["contact"], plain(x["q"]), L["faq_title"], f"#fq{i}") for i, x in enumerate(S["contact"].get("faq") or [], 1)]  # 자주 묻는 질문 — 질문 글로 찾고 그 질문으로(펼쳐짐)
     sj = load("search.json") if (CONTENT / "search.json").exists() else {"suggest": []}
 
+    # 인기 검색어 순위(11/15 동원 무인양품 캡처 → 찾기창순위시안_v1 'B 진짜 순위 (권장)'): content/search_rank.json — 관리 화면이 주마다 GA4 search 이벤트(동의한 방문의 찾은 말 · 11/7부터)를
+    # 세어 판마다 상위 10을 씀 · 다섯 줄 넘게 있을 때만 순위(번호 · 1~3위 먹 · 지난주와 견준 변화), 없으면 지금 고른 목록을 '바로 가기'로(순위가 아니므로)
+    rk = load("search_rank.json") if (CONTENT / "search_rank.json").exists() else {}
+    rk_items = [x for x in ((rk.get("langs") or {}).get(lang) or {}).get("items", []) if (x.get("term") or "").strip()][:10]
+    rk_items = rk_items if len(rk_items) >= 5 and rk.get("updated") else []
+    rk_day = rk.get("updated", "")
+
+    def rk_li(x, k):  # 순위 한 줄 — 누르면 그 말로 찾음(추천 줄과 같은 option · data-q)
+        prev, now = x.get("prev"), k + 1
+        chg = (t("rank_new") if prev is None else t("rank_same") if prev == now else t("rank_up", n=prev - now) if prev > now else t("rank_down", n=now - prev))
+        mark = (t("rank_new") if prev is None else "—" if prev == now else f"▲{NB}{prev - now}" if prev > now else f"▼{NB}{now - prev}")
+        return (f'<li role="none"><button type="button" role="option" id="sg{k}" aria-selected="false" class="rk" data-q="{e(x["term"])}">'
+                f'<b>{now}</b><span>{e(x["term"])}</span><i aria-hidden="true">{mark}</i><span class="sr">{chg}</span></button></li>')
+
     def sug_li(x, k):  # 추천 주제 한 줄 — go: 쪽 안 자리 · 'buy'(교보) / q: 그 말로 찾기 · 줄마다 모든 칸, 안 쓰는 쪽은 ""(설계서 7절) · 방향키로 고르는 줄(option, id sg{k})
         if tr_:  # 영어판은 en 칸으로 — en.label이 비었거나 찾을 말 줄인데 en.q가 비면 그 줄을 뺌(관리 화면 '영어 빔 — 영어판에서 숨겨짐'과 같은 규칙, 10/26) · 일본어판은 ja 칸으로 같은 규칙(11/1)
             o = x.get(lang) or {}
@@ -1847,8 +1861,9 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<div class="bar">{SEARCH_ICON}<input type="search" name="q" role="combobox" aria-autocomplete="list" aria-expanded="true" aria-controls="sr-sug" placeholder="{t("search_ph")}" aria-label="{t("search_label")}" autocomplete="off" enterkeyhint="search">'
             f'<button type="button" class="clr" aria-label="{t("search_clear")}" hidden><svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="9"/><path d="M6 6l6 6M12 6l-6 6"/></svg></button>'
             f'<button type="button" class="x">{t("close")}</button></div>'
-            f'<p class="sr-lab" id="sr-lab">{t("search_suggest")}</p><ul class="sug" id="sr-sug" role="listbox" aria-labelledby="sr-lab">{"".join(sug_li(x, k) for k, x in enumerate(sj["suggest"]))}</ul>'
-            f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden><span>{t("search_none")}</span><small>{t("search_none_hint")}</small></p></div></div>\n')
+            + (f'<p class="sr-lab" id="sr-lab">{t("search_suggest")}<small>{t("rank_when", date=dtxt(rk_day))}</small></p><ul class="sug rks" id="sr-sug" role="listbox" aria-labelledby="sr-lab">{"".join(rk_li(x, k) for k, x in enumerate(rk_items))}</ul>' if rk_items
+               else f'<p class="sr-lab" id="sr-lab">{t("search_quick")}</p><ul class="sug" id="sr-sug" role="listbox" aria-labelledby="sr-lab">{"".join(sug_li(x, k) for k, x in enumerate(sj["suggest"]))}</ul>')
+            + f'<p class="sr" role="status"></p><p class="sr-n" id="sr-n" hidden></p><ul class="sr-res" id="sr-res" role="listbox" aria-labelledby="sr-n"></ul><p class="sr-none" hidden><span>{t("search_none")}</span><small>{t("search_none_hint")}</small></p></div></div>\n')
     # 찾을 거리(#sidx)는 쪽마다 page()가 — 갈 곳(#t3 등)을 그 쪽에서 본 주소로 바꿔 넣음
 
     def paths(k):

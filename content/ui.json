@@ -2371,5 +2371,53 @@
     "ru": "Приложение, которое я делаю для увиденных выставок",
     "es": "Una app que estoy haciendo para las exposiciones que ves",
     "fr": "Une appli que je fais pour les expositions que vous voyez"
+  },
+  "search_quick": {
+    "ko": "바로 가기",
+    "en": "Quick links",
+    "ja": "クイックリンク",
+    "ru": "Быстрые ссылки",
+    "es": "Accesos rápidos",
+    "fr": "Accès rapides"
+  },
+  "rank_when": {
+    "ko": "{date} 기준 · 한 주",
+    "en": "Week to {date}",
+    "ja": "{date}時点 · 1週間",
+    "ru": "Неделя до {date}",
+    "es": "Semana al {date}",
+    "fr": "Semaine au {date}"
+  },
+  "rank_new": {
+    "ko": "새로",
+    "en": "New",
+    "ja": "新",
+    "ru": "Новое",
+    "es": "Nuevo",
+    "fr": "Nouveau"
+  },
+  "rank_up": {
+    "ko": "{n}계단 오름",
+    "en": "Up {n}",
+    "ja": "{n}位上昇",
+    "ru": "Выше на {n}",
+    "es": "Sube {n}",
+    "fr": "Monte de {n}"
+  },
+  "rank_down": {
+    "ko": "{n}계단 내림",
+    "en": "Down {n}",
+    "ja": "{n}位下降",
+    "ru": "Ниже на {n}",
+    "es": "Baja {n}",
+    "fr": "Descend de {n}"
+  },
+  "rank_same": {
+    "ko": "그대로",
+    "en": "No change",
+    "ja": "変動なし",
+    "ru": "Без изменений",
+    "es": "Sin cambios",
+    "fr": "Inchangé"
   }
 }
