@@ -572,7 +572,7 @@ html.sr-on{overflow:hidden}
 .hit{background:var(--ph);transition:background 1.4s ease}  /* 찾기 결과로 간 줄을 잠깐 */
 .hit[tabindex="-1"]:focus,.btoc[tabindex="-1"]:focus,section[tabindex="-1"]:focus{outline:none}  /* 찾기로 옮긴 포커스는 옅은 바탕이 대신 보여 줌 — 검은 테두리 없이 */
 .btoc{scroll-margin-top:4px}  /* 찾기 · 추천 '시집 차례'로 오면 차례 머리가 맨 위 띠 아래에 */
-@media (min-width:768px){.srch .in{padding-top:72px}.srch input{font-size:30px}.srch .sug a,.srch .sug button{font-size:21px}}
+@media (min-width:768px){.srch .in{padding-top:72px}.srch input{font-size:24px}.srch .sug a,.srch .sug button{font-size:21px}}  /* 11/15 찾기 칸 글자 30 → 24px(동원 '글자 크기 너무 큰 거 아니냐' → 시안 찾기칸글자시안_v1 '24px (권장)' — 애플 찾기 창 실측 24px · 결과 줄보다 한 단계만 큼) */
 @media (min-width:768px){.pvh,.pvf{padding-left:64px;padding-right:64px}.pvs figure{padding:22px 64px}.pvf p{max-width:720px}}
 @media (prefers-reduced-motion:reduce){.pv{transition:none}}
 

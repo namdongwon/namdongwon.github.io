@@ -548,7 +548,7 @@ html.sr-on{overflow:hidden}
 .hit{background:var(--ph);transition:background 1.4s ease}  
 .hit[tabindex="-1"]:focus,.btoc[tabindex="-1"]:focus,section[tabindex="-1"]:focus{outline:none}  
 .btoc{scroll-margin-top:4px}  
-@media (min-width:768px){.srch .in{padding-top:72px}.srch input{font-size:30px}.srch .sug a,.srch .sug button{font-size:21px}}
+@media (min-width:768px){.srch .in{padding-top:72px}.srch input{font-size:24px}.srch .sug a,.srch .sug button{font-size:21px}}  
 @media (min-width:768px){.pvh,.pvf{padding-left:64px;padding-right:64px}.pvs figure{padding:22px 64px}.pvf p{max-width:720px}}
 @media (prefers-reduced-motion:reduce){.pv{transition:none}}:where(:root[data-motion="reduce"]) .pv,:where(:root[data-motion="reduce"]).pv{transition:none}
 
