@@ -2275,7 +2275,9 @@
     };
     const next = (y, d) => {
       const s = stops(d), tol = topH() + 4;  // 띠 높이만큼 차이 나는 두 자리(900 · 836)는 같은 칸 — 띠 높이만큼만 꿈틀 움직이지 않게
-      if (d > 0) { const nx = s.find(v => v > y + tol); return Math.min(nx === undefined ? y : nx, y + innerHeight); }
+      // 페이지 끝은 거리와 상관없이 갈 수 있게(11/15 동원 "맨 아래 까지 안 내려가는 느낌" — 실측: 끝에 닿은 뒤 글꼴 · 그림이 늦게 와 18px 길어지면 띠 높이 안이라 '같은 칸'으로 버려졌음)
+      const end = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+      if (d > 0) { const nx = s.find(v => v > y + tol) ?? (end > y + 1 ? end : undefined); return Math.min(nx === undefined ? y : nx, y + innerHeight); }
       const pv = [...s].reverse().find(v => v < y - tol); return Math.max(pv === undefined ? 0 : pv, y - innerHeight);
     };
     const move = dir => {
