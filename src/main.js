@@ -1025,7 +1025,7 @@
         const cs = [...it[1].normalize("NFC")], a = map[at], b = map[at + w.length - 1] + 1;
         out.push({ it, at, html: esc(cs.slice(0, a).join("")) + "<b>" + esc(cs.slice(a, b).join("")) + "</b>" + esc(cs.slice(b).join("")) });
       });
-      return out.sort((x, y) => (x.at > 0) - (y.at > 0)).slice(0, 12);  // 앞부분이 맞는 것부터, 같으면 갈래 차례(칸 · 시집 · 차례 · 시 · 소개 …)
+      return out.sort((x, y) => (x.at > 0) - (y.at > 0)).slice(0, 10);  // 최대 10개(11/16 동원 "찾은 검색어 들은 최대 10개만") · 앞부분이 맞는 것부터, 같으면 갈래 차례(칸 · 시집 · 차례 · 시 · 소개 …)
     };
     // 방향키로 고른 줄(10/27 동원 요청 · 10/28 A 옅은 바탕) — 포커스는 입력 칸에 두고 고른 줄만 표시(aria-activedescendant) · 더 치면 그대로 이어서 찾음
     let act = -1, lastQ = null;
@@ -1069,6 +1069,7 @@
       gaSent.add(t);
       document.dispatchEvent(new CustomEvent("ndw-ga", { detail: { n: "search", q: t, r: n } }));
     };
+    const SR_IC = '<svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="6"/><path d="M13 13l5 5" stroke-linecap="round"/></svg>';  // 찾기 칸 돋보기와 같은 선
     const run = () => {
       const q = inp.value;
       if (q === lastQ) return;  // 글자가 그대로면(한글 한 글자 마침 등) 다시 그리지 않음 — 고른 줄을 지킴
@@ -1077,12 +1078,12 @@
       if (clr) clr.hidden = !q;
       lab.hidden = sug.hidden = srh.hidden = !showSug;
       if (showSug) drawR();
-      cnt.hidden = empty || !hits.length;
+      cnt.hidden = true;  // '찾은 것 n'은 화면에 보이지 않게(11/16 동원 "찾은 것 12 이런 건 넣지 않아도 돼") — 화면 읽기 프로그램에는 아래 say로 그대로 읽어 줌
       cnt.textContent = uiText("search_count", "찾은 것 {n}", { n: hits.length });
       res.innerHTML = hits.map((h, i) => {
         const ext = /^https?:/.test(h.it[3]);
-        return `<li role="none"><a role="option" id="sr${i}" aria-selected="false" href="${esc(h.it[3])}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="tg">${esc(h.it[0])}</span>` +
-          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}</span><span class="wh">${ko(esc(h.it[2]))}</span></a></li>`;  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
+        return `<li role="none"><a role="option" id="sr${i}" aria-selected="false" href="${esc(h.it[3])}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="tg">${esc(h.it[0])}</span>${SR_IC}` +
+          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
       }).join("");
       none.hidden = empty || hits.length > 0;
       // 결과 없음(11/6 섬세한 배려 2차 ① — 동원 'A 친 말 + 길 한 줄' · 알라딘 · Toteme · 예스24): 친 말을 그 판의 따옴표로 되돌려 보이고 아래에 해 볼 길 한 줄 — 친 말은 글자로만(textContent)
