@@ -3,11 +3,11 @@
 
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=20e778cb64") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=0a58fe4dba") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=502a150a01") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=f9e4d6d7e9") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=bfa8a004bb") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=f22133944a") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=29946b3d31") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=6aa699b24b") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=946c02b20d") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=4e370adc9d") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -25,22 +25,22 @@ html:lang(en) #home dd i,html:lang(es) #home dd i,html:lang(fr) #home dd i,html:
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2?v=e9782d673f") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
 
 @font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-light.woff2?v=237255a497") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=7e643b6563") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=3584572152") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=539f68a7a7") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=4e27847518") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=39344501c7") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=fdf2272939") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=95e5d8b9a9") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=f95224a479") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=bd77dbb7ac") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=46932804c3") format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2?v=1beaf3c9bd") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2?v=72b7718a65") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=2d92e4ca5f") format("woff2");font-weight:300;font-display:swap}
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-semibold-first.woff2?v=6e3fcf2123") format("woff2");font-weight:600;font-display:swap}
 
-@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-light.woff2?v=865eddce58") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru.woff2?v=33628d0833") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-bold.woff2?v=4ccbbe399b") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-light.woff2?v=3017bbe4a3") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-regular.woff2?v=710668a6ed") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-semibold.woff2?v=af610b871c") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-light.woff2?v=ebd8545187") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru.woff2?v=d49e83dfcf") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-bold.woff2?v=eef697cd69") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-light.woff2?v=fe5c64a304") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-regular.woff2?v=dc654fed3e") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-semibold.woff2?v=d73998a6f0") format("woff2");font-weight:600;font-display:swap}
 html:lang(ru) #home{--sans:"RGO","PTDF","PTD",-apple-system,sans-serif}
 html:lang(ja) .door .t,html:lang(ja) #home .hs{font-family:"JMJF",var(--serif)}
 html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  
@@ -143,6 +143,9 @@ html.mnu-on{overflow:hidden}
 .mm-c:hover .mm-n,.mm-l:hover{text-decoration:underline;text-underline-offset:4px}.mm-c:hover .mm-ph img{transform:scale(1.03)}
 .mm-c:active .mm-ph{opacity:.85}
 .top nav a.hov{color:var(--ink)}
+.mmk{position:absolute;top:0;left:0;display:grid;place-items:center;width:12px;height:12px;margin:0;padding:0;border:0;border-radius:4px;background:none;color:var(--muted);opacity:0;pointer-events:none;cursor:pointer}  
+.mmk svg{width:8px;height:8px;transition:transform .2s}.mmk:focus-visible,.mmk.kb{opacity:1;pointer-events:auto}.mmk.kb{color:var(--ink)}.mmk[aria-expanded="true"] svg{transform:rotate(180deg)}
+@media not ((hover:hover) and (pointer:fine) and (min-width:1024px)){.mmk{display:none}}
 @media not ((hover:hover) and (pointer:fine) and (min-width:1024px)){.mm{display:none!important}}
 @media (prefers-reduced-motion:reduce){.mm,.mm-in :is(.mm-d,.mm-c),.mm-ph img{transition:none!important}}:where(:root[data-motion="reduce"]) .mm,:where(:root[data-motion="reduce"]).mm,:where(:root[data-motion="reduce"]) .mm-in :is(.mm-d,.mm-c),:where(:root[data-motion="reduce"]).mm-in :is(.mm-d,.mm-c),:where(:root[data-motion="reduce"]) .mm-ph img,:where(:root[data-motion="reduce"]).mm-ph img{transition:none!important}
 :root[data-motion="reduce"] :is(.mm,.mm-in .mm-d,.mm-in .mm-c,.mm-ph img){transition:none!important}

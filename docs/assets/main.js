@@ -415,7 +415,8 @@
   if (mm && mmTop && matchMedia("(hover: hover) and (pointer: fine)").matches) {
     const navA = [...mmTop.querySelectorAll("nav a[data-pg]")], panes = [...mm.querySelectorAll(".mm-in")];
     const still = () => H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let cur = null, tOpen = 0, tClose = 0, tHide = 0;
+    let cur = null, tOpen = 0, tClose = 0, tHide = 0, byKey = null;  // byKey — 키보드 단추로 연 때 그 단추
+    const kBtn = [...mmTop.querySelectorAll(".mmk")];
     // 칸 높이 = 그 쪽 칸 안 높이 — 높이가 커튼처럼 0.24초에 펼쳐지고(옮기면 새 칸 높이로 늘고 줆) · 안은 .go가 붙으면 4px 위에서 차례로 내려옴(CSS — 애플 실측)
     const show = k => {
       const p = panes.find(x => x.dataset.pg === k);
@@ -430,6 +431,7 @@
       const p = show(k);
       if (!p) return;
       navA.forEach(a => a.classList.toggle("hov", a.dataset.pg === k));
+      kBtn.forEach(b => { b.setAttribute("aria-expanded", String(b.dataset.mk === k)); b.classList.toggle("kb", !!byKey && b.dataset.mk === k); });
       clearTimeout(tHide);
       if (!mm.classList.contains("vis")) {
         mm.style.top = Math.max(0, mmTop.getBoundingClientRect().bottom) + "px";
@@ -445,6 +447,9 @@
       panes.forEach(x => x.classList.remove("go"));
       mm.style.height = "0px"; mm.setAttribute("inert", ""); mm.setAttribute("aria-hidden", "true");
       navA.forEach(a => a.classList.remove("hov")); cur = null;
+      kBtn.forEach(b => { b.setAttribute("aria-expanded", "false"); b.classList.remove("kb"); });
+      const back = byKey; byKey = null;
+      if (back && mm.contains(document.activeElement)) back.focus();  // 칸 안에서 Esc로 닫으면 단추로 돌아감
       tHide = setTimeout(() => { if (!cur) mm.classList.remove("vis"); }, still() ? 0 : 260);
     };
     const inside = el => el && (mmTop.contains(el) || mm.contains(el));
@@ -460,7 +465,29 @@
     addEventListener("keydown", ev => { if (ev.key === "Escape") close(); });
     addEventListener("scroll", () => { if (cur) close(); }, { passive: true });
     addEventListener("resize", close);
-    mmTop.addEventListener("focusin", close);
+    // 키보드(11/15 동원 "① 메뉴 펼침 키보드" — 애플 실측 꼴): 메뉴 링크 다음 Tab이면 ⌄ 단추(초점일 때만 보임) → Enter · Space로 그 쪽 칸 열고 닫음 ·
+    // 연 채 Tab이면 칸 안 첫 카드로 · 칸 마지막에서 Tab이면 닫고 다음 메뉴로 · 칸 첫머리에서 Shift+Tab이면 단추로 · Esc면 닫고 단추로 · 띠의 다른 곳에 초점이 가면 닫힘
+    const links = () => { const p = panes.find(x => !x.hidden); return p ? [...p.querySelectorAll("a")] : []; };
+    kBtn.forEach(b => {
+      b.addEventListener("focus", () => { const a = navA.find(x => x.dataset.pg === b.dataset.mk); if (a) { b.style.left = a.offsetLeft + a.offsetWidth / 2 - 6 + "px"; b.style.top = a.offsetTop + a.offsetHeight + 2 + "px"; } });
+      b.addEventListener("click", () => { if (cur === b.dataset.mk) { byKey = null; close(); return; } clearTimeout(tClose); byKey = b; open(b.dataset.mk); });
+      b.addEventListener("keydown", ev => {
+        if (ev.key !== "Tab" || ev.shiftKey || cur !== b.dataset.mk) return;
+        const f = links()[0];
+        if (f) { ev.preventDefault(); f.focus(); }
+      });
+    });
+    mm.addEventListener("keydown", ev => {
+      if (ev.key !== "Tab") return;
+      const L = links(), i = L.indexOf(document.activeElement);
+      if (ev.shiftKey && i === 0) { ev.preventDefault(); const b = kBtn.find(x => x.dataset.mk === cur); if (b) b.focus(); }
+      else if (!ev.shiftKey && i === L.length - 1) {
+        ev.preventDefault();
+        const k = navA.findIndex(x => x.dataset.pg === cur), nx = navA[k + 1] || mmTop.querySelector(".act button, .act a");
+        byKey = null; close(); if (nx) nx.focus();
+      }
+    });
+    mmTop.addEventListener("focusin", ev => { if (!ev.target.classList.contains("mmk") || ev.target.dataset.mk !== cur) { byKey = null; close(); } });
   }
   // 휴대폰 메뉴 단추(11/1 밤 동원 버튼 "B 메뉴 단추" — 방명록을 더하면 메뉴 다섯이 휴대폰 한 줄에 안 들어가, 명품 사이트 휴대폰 꼴로): 띠 왼쪽 '메뉴'를 누르면 띠 아래로 쪽 목록(#mnu).
   // 여는 동안 띠와 목록 밖은 inert(Tab이 목록 뒤로 새지 않게 — 찾기 창과 같은 꼴) · 쪽 스크롤 멈춤 · 다시 누르거나 Esc면 닫고 단추로 · 찾기를 열거나(돋보기 · ⌘K) 768px 위로 넓어지면 닫음

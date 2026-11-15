@@ -1984,7 +1984,10 @@ def render(site, poem, videos, photos, lang="ko"):
                 return href
             return link(pg) if PAGES[pg][0] == href[1:] else link(pg) + href
         # 맨 위 띠: 메뉴 넷(소개 · 시집 · 인스타그램 · 유튜브 — 쪽 차례와 같게, 지금 쪽은 먹 · 밑줄 · aria-current) | 언어 · 찾기 · [연락하기](10/28 차례 그대로)
-        nav = "".join(f'<a href="{link(pg)}" data-pg="{pg}"' + (' class="on" aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a>' for pg in ("", "book", "photo", "video", "guestbook"))  # data-pg — 새것 점(11/3)이 쪽을 앎
+        nav = "".join(f'<a href="{link(pg)}" data-pg="{pg}"' + (' class="on" aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a>'
+                      # 메뉴 펼침 키보드 단추(11/15 동원 버튼 "① 메뉴 펼침 키보드 (권장)" — 애플 실측 꼴: 메뉴 링크 다음 ⌄ 단추, 초점일 때만 보임 · Enter로 #mm 그 쪽 칸 · main.js)
+                      + f'<button type="button" class="mmk" data-mk="{pg}" aria-expanded="false" aria-controls="mm" aria-label="{t("mm_open", page=e(navname[top_of[pg]]))}">{CARET_ICON}</button>'
+                      for pg in ("", "book", "photo", "video", "guestbook"))  # data-pg — 새것 점(11/3)이 쪽을 앎
         # 맨 위 띠(10/31 동원 "gnb 이거 있잖아 가운데로 넣어" · "언어 설정 하단 푸터로 빼"): 이름 | 메뉴 넷(가운데) | 찾기 · [연락하기] — 언어는 바닥글 판권면 '언어' 줄로
         act = f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
         act += f'<a class="cta{" on" if k == "contact" else ""}" href="{link("contact")}"' + (' aria-current="page"' if k == "contact" else "") + f'>{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(연락 쪽에선 맨 위에서도 먹 — 지금 쪽 표시)

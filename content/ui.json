@@ -2349,5 +2349,13 @@
     "ru": "Оставить запись",
     "es": "Dejar una nota",
     "fr": "Laisser un mot"
+  },
+  "mm_open": {
+    "ko": "{page} 미리 보기",
+    "en": "Preview {page}",
+    "ja": "{page}のプレビュー",
+    "ru": "Предпросмотр: {page}",
+    "es": "Vista previa: {page}",
+    "fr": "Aperçu : {page}"
   }
 }

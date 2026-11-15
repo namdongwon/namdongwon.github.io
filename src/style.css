@@ -154,6 +154,9 @@ html.mnu-on{overflow:hidden}  /* 여는 동안 쪽은 멈춤 */
 .mm-c:hover .mm-n,.mm-l:hover{text-decoration:underline;text-underline-offset:4px}.mm-c:hover .mm-ph img{transform:scale(1.03)}
 .mm-c:active .mm-ph{opacity:.85}
 .top nav a.hov{color:var(--ink)}
+.mmk{position:absolute;top:0;left:0;display:grid;place-items:center;width:12px;height:12px;margin:0;padding:0;border:0;border-radius:4px;background:none;color:var(--muted);opacity:0;pointer-events:none;cursor:pointer}  /* 메뉴 펼침 키보드 단추(11/15 — 애플 꼴): Tab으로 닿을 때만 메뉴 이름 바로 아래 가운데(메뉴 사이 틈 16px엔 안 들어가 옆 글자를 덮어서) · 자리는 main.js */
+.mmk svg{width:8px;height:8px;transition:transform .2s}.mmk:focus-visible,.mmk.kb{opacity:1;pointer-events:auto}.mmk.kb{color:var(--ink)}.mmk[aria-expanded="true"] svg{transform:rotate(180deg)}
+@media not ((hover:hover) and (pointer:fine) and (min-width:1024px)){.mmk{display:none}}
 @media not ((hover:hover) and (pointer:fine) and (min-width:1024px)){.mm{display:none!important}}
 @media (prefers-reduced-motion:reduce){.mm,.mm-in :is(.mm-d,.mm-c),.mm-ph img{transition:none!important}}
 :root[data-motion="reduce"] :is(.mm,.mm-in .mm-d,.mm-in .mm-c,.mm-ph img){transition:none!important}
