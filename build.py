@@ -73,6 +73,7 @@ FLAG_ICON = {
 }
 GLOBE_ICON = '<svg class="gl" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.5"/><path d="M2.5 10h15M10 2.5c2.2 2.3 3.2 4.8 3.2 7.5s-1 5.2-3.2 7.5M10 2.5C7.8 4.8 6.8 7.3 6.8 10s1 5.2 3.2 7.5"/></svg>'  # 바닥글 언어 고르기(11/9 A 지구본) — 국기 대신(나라 ≠ 언어)
 CARET_ICON = '<svg class="cr" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true" focusable="false"><path d="M1.5 3.5h7L5 7.5z"/></svg>'  # 펼침 표시 — 열리면 CSS가 뒤집음
+MK_CARET = CARET_ICON.replace('class="cr"', 'class="mkc"')  # 메뉴 펼침 키보드 단추용 — 이름 cr은 언어 고르기 · 영상 출처 줄(.cr)과 겹쳐서(11/15 entest가 출처 줄 대신 집음)
 PAL_FONT = "bon-myeongjo.woff2"  # 글자 팔레트(10/28)의 글자 612가지는 본명조 보통 판에만 담음 — 굵게 · 고딕 판은 늘지 않게(main)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
 ARROW = ("bon-myeongjo-arrow.woff2", "←↑→↓↗")  # 화살표만 담은 작은 판(11/7 밤부터 源ノ明朝 Regular에서 — 본명조와 같은 꼴 · ↗ 있음 · 파일 이름은 그대로)(CSS ARW · unicode-range) — 영어 · 일본어판 명조(Newsreader)에 화살표가 없어 → · ↗ 하나 때문에 본명조 통째 판 131KB를 받던 것(11/3 Lighthouse 점검)
@@ -2018,7 +2019,7 @@ def render(site, poem, videos, photos, lang="ko"):
         # 맨 위 띠: 메뉴 넷(소개 · 시집 · 인스타그램 · 유튜브 — 쪽 차례와 같게, 지금 쪽은 먹 · 밑줄 · aria-current) | 언어 · 찾기 · [연락하기](10/28 차례 그대로)
         nav = "".join(f'<a href="{link(pg)}" data-pg="{pg}"' + (' class="on" aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a>'
                       # 메뉴 펼침 키보드 단추(11/15 동원 버튼 "① 메뉴 펼침 키보드 (권장)" — 애플 실측 꼴: 메뉴 링크 다음 ⌄ 단추, 초점일 때만 보임 · Enter로 #mm 그 쪽 칸 · main.js)
-                      + f'<button type="button" class="mmk" data-mk="{pg}" aria-expanded="false" aria-controls="mm" aria-label="{t("mm_open", page=e(navname[top_of[pg]]))}">{CARET_ICON}</button>'
+                      + f'<button type="button" class="mmk" data-mk="{pg}" aria-expanded="false" aria-controls="mm" aria-label="{t("mm_open", page=e(navname[top_of[pg]]))}">{MK_CARET}</button>'
                       for pg in ("", "book", "photo", "video", "rococo", "guestbook"))  # data-pg — 새것 점(11/3)이 쪽을 앎
         # 맨 위 띠(10/31 동원 "gnb 이거 있잖아 가운데로 넣어" · "언어 설정 하단 푸터로 빼"): 이름 | 메뉴 넷(가운데) | 찾기 · [연락하기] — 언어는 바닥글 판권면 '언어' 줄로
         act = f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)

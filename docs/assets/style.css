@@ -123,6 +123,7 @@ button{font:inherit;color:inherit}
 .mnu a{display:block;padding:20px 0;font:400 24px/1.2 var(--serif);color:var(--ink)}
 html.mnu-on{overflow:hidden}  
 @media (min-width:768px){.mnu{display:none}}
+@media (min-width:768px) and (max-width:819px){:is(html:lang(ru),html:lang(es)) header.top nav{gap:6px!important;letter-spacing:0}}  
 
 #rococo{display:block;padding-bottom:72px}
 .rco-hd{text-align:center;padding:72px 0 64px}

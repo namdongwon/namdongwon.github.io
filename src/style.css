@@ -134,6 +134,7 @@ button{font:inherit;color:inherit}
 .mnu a{display:block;padding:20px 0;font:400 24px/1.2 var(--serif);color:var(--ink)}
 html.mnu-on{overflow:hidden}  /* 여는 동안 쪽은 멈춤 */
 @media (min-width:768px){.mnu{display:none}}
+@media (min-width:768px) and (max-width:819px){:is(html:lang(ru),html:lang(es)) header.top nav{gap:6px!important;letter-spacing:0}}  /* 메뉴 여섯(11/15 로코코)이 768 태블릿에서 두 줄로 갈리던 것 — 실측 쓸 폭 383px에 스페인어 432 · 러시아어 413(820부터는 모두 한 줄) → 이 구간 · 넘친 두 판(러 · 서)만 틈 6 · 자간 0(실측 375 · 359 — 한 줄) */
 /* 로코코 쪽(11/15 동원 'D 큰 한 줄 · 좌우 번갈아' — 목업 기준/브랜드 시안/로코코소개시안_v1_D.png · Day One 꼴): 가운데 큰 한 줄 → 세 이야기 좌우 번갈아(한 칸 = 한 이야기 = 한 화면)
    화면 자리는 지금 '화면 준비 중'(무채색) — 실제 캡처가 생기면 그림 */
 #rococo{display:block;padding-bottom:72px}
