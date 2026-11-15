@@ -533,14 +533,14 @@ html.sr-on{overflow:hidden}
 .srch .sug i{flex:none;font:300 11px/1 var(--sans);font-style:normal;color:var(--faint);text-indent:0}
 .srch .sug .hang{text-indent:-.6em}  /* 「탁본」 읽기 — 여는 부호 앞 빈만큼 내어 걸어 다른 줄과 첫머리를 맞춤 */
 .sr-n{margin-top:22px;font:300 11px/1 var(--sans);color:var(--faint)}
-.sr-res{list-style:none;margin-top:18px}
+.sr-res{list-style:none;margin-top:16px}
 .sr-res a{display:grid;grid-template-columns:15px 1fr;gap:12px;align-items:baseline;padding:8px 0}  /* 줄 사이 선 뺌 · 위아래 8px — 인기 검색어 목록과 같은 간격(11/16 동원 '밑줄 빼는 게 낫나' → 시안 찾기결과선시안_v1 'B 선 빼고 촘촘히 (권장)') */
 .sr-res .tx{font:400 16px/1.5 var(--serif);color:var(--muted);word-break:keep-all}
 .sr-res .tx b{font-weight:400;color:var(--ink);box-shadow:inset 0 -.38em 0 var(--mark)}  /* 찾은 낱말 — 먹 + 옅은 밑바탕(색 없이) */
 .sr-res a.pg{grid-template-columns:32px 1fr;align-items:center}
-.sr-res .th{width:32px;height:32px;border-radius:4px;object-fit:cover;background:var(--ph);display:grid;place-items:center;color:var(--muted)}.sr-res .th-ct{object-fit:contain;padding:3px;box-sizing:border-box}.sr-res .th svg{width:16px;height:16px}  /* 페이지 줄 32px 사각 그림(11/16 시안 A) */
-.sr-res .sr-sub{display:block;margin-top:3px;font:300 12px/1.3 var(--sans);color:var(--faint)}  /* 이름 sr-sub — .sub는 영어판 꼬리표(대문자)와 겹쳤음  /* 같은 글이 두 곳일 때만 제목 아래 자리(11/16 시안 ③) */
-.sr-res .ic{width:15px;height:15px;align-self:start;margin-top:5px;color:var(--faint)}  /* 결과 앞 돋보기(11/16 동원 '구글에 나와있는 것처럼') — 첫 줄 가운데(16px × 1.5 = 24px 줄) */
+.sr-res .th{width:32px;height:32px;border-radius:4px;object-fit:cover;background:var(--ph);display:grid;place-items:center;color:var(--muted)}.sr-res .th-ct{object-fit:contain;padding:4px;box-sizing:border-box}.sr-res .th svg{width:16px;height:16px}  /* 페이지 줄 32px 사각 그림(11/16 시안 A) */
+.sr-res .sr-sub{display:block;margin-top:2px;font:300 12.5px/1.3 var(--sans);color:var(--faint)}  /* 이름 sr-sub — .sub는 영어판 꼬리표(대문자)와 겹쳤음  /* 같은 글이 두 곳일 때만 제목 아래 자리(11/16 시안 ③) */
+.sr-res .ic{width:15px;height:15px;align-self:start;margin-top:4px;color:var(--faint)}  /* 결과 앞 돋보기(11/16 동원 '구글에 나와있는 것처럼') — 첫 줄 가운데(16px × 1.5 = 24px 줄) */
 
 .srch [role="option"].on{background:var(--ph);box-shadow:inset 2px 0 0 var(--ink)}  /* 11/15 동원 '이런 부분 되어있는 거 전부 찾아내서 맞춰' — 호버 · 고른 줄 바탕은 선 폭 안에서(옆으로 넓히던 그림자 · 음수 여백을 모두 뺌 · 글자는 줄 안쪽 12px 그대로) · 고른 줄 먹 선은 선 밖 -16px → 줄 안 왼쪽 2px */  /* 방향키로 고른 줄(10/27) — 찾기로 간 줄(.hit)과 같은 옅은 바탕을 양옆으로 조금 넓혀 · 왼쪽 2px 먹 줄(10/28 동원 'B 왼쪽 먹 줄 더하기' — 옅은 바탕만으로는 어둡게 1.09:1이라 거의 안 보였음) */
 /* 찾기 창 줄 호버(11/9 밤 동원 "마우스 오버시 아무런 일도 없잖아 그 칸이 색이 변해야지 회색으로") — 방향키로 고른 줄(.on)과 같은 옅은 회색을 양옆 14px까지(먹 막대는 방향키에만) · 인기 검색어 · 검색 결과 · 넓은 창 최근 검색어 */
