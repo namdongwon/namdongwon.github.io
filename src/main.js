@@ -1071,6 +1071,12 @@
       document.dispatchEvent(new CustomEvent("ndw-ga", { detail: { n: "search", q: t, r: n } }));
     };
     const SR_IC = '<svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="6"/><path d="M13 13l5 5" stroke-linecap="round"/></svg>';  // 찾기 칸 돋보기와 같은 선
+    // 페이지 줄(맨 위 메뉴의 칸)은 돋보기 대신 32px 사각 그림 + 설명 한 줄(11/16 시안 찾기결과그림시안_v1 A) — 그림 · 설명은 build.py가 여섯째 값으로
+    const PG_IC = {
+      mail: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true" focusable="false"><rect x="3" y="5" width="14" height="10" rx="1"/><path d="M3.5 5.5L10 11l6.5-5.5"/></svg>',
+      pen: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 16l1-4 8-8 3 3-8 8z"/><path d="M11 6l3 3"/></svg>'
+    };
+    const pgTh = th => th[1] === "i" ? `<span class="th i">${PG_IC[th[0]] || ""}</span>` : `<img class="th${th[1] === "ct" ? " th-ct" : ""}" src="${esc(th[0])}" alt="" width="32" height="32" decoding="async">`;
     const run = () => {
       const q = inp.value;
       if (q === lastQ) return;  // 글자가 그대로면(한글 한 글자 마침 등) 다시 그리지 않음 — 고른 줄을 지킴
@@ -1090,9 +1096,9 @@
       cnt.hidden = true;  // '찾은 것 n'은 화면에 보이지 않게(11/16 동원 "찾은 것 12 이런 건 넣지 않아도 돼") — 화면 읽기 프로그램에는 아래 say로 그대로 읽어 줌
       cnt.textContent = uiText("search_count", "찾은 것 {n}", { n: hits.length });
       res.innerHTML = hits.map((h, i) => {
-        const ext = /^https?:/.test(h.it[3]);
-        return `<li role="none"><a role="option" id="sr${i}" aria-selected="false" href="${esc(h.it[3])}" data-t="${esc(h.it[1])}"${ext ? ' target="_blank" rel="noopener"' : ""}>${h.rc < 99 ? RC_IC : SR_IC}` +
-          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}${dupN.get(dk(h)) > 1 ? `<small class="sub">${ko(esc(where(h.it)))}</small>` : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌 · 왼쪽 갈래(「탁본」 · 차례 · 이달)도 뺌(시안 찾기결과갈래시안_v1 'A 갈래 뺌 (권장)')  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
+        const ext = /^https?:/.test(h.it[3]), th = Array.isArray(h.it[5]) ? h.it[5] : null, pd = th && (th[2] || h.it[2]);
+        return `<li role="none"><a role="option" id="sr${i}" aria-selected="false"${th ? ' class="pg"' : ""} href="${esc(h.it[3])}" data-t="${esc(h.it[1])}"${ext ? ' target="_blank" rel="noopener"' : ""}>${h.rc < 99 ? RC_IC : th ? pgTh(th) : SR_IC}` +
+          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}${pd ? `<small class="sr-sub">${ko(esc(pd))}</small>` : dupN.get(dk(h)) > 1 ? `<small class="sr-sub">${ko(esc(where(h.it)))}</small>` : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌 · 왼쪽 갈래(「탁본」 · 차례 · 이달)도 뺌(시안 찾기결과갈래시안_v1 'A 갈래 뺌 (권장)')  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
       }).join("");
       none.hidden = empty || hits.length > 0;
       // 결과 없음(11/6 섬세한 배려 2차 ① — 동원 'A 친 말 + 길 한 줄' · 알라딘 · Toteme · 예스24): 친 말을 그 판의 따옴표로 되돌려 보이고 아래에 해 볼 길 한 줄 — 친 말은 글자로만(textContent)

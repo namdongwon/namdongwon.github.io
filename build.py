@@ -1814,7 +1814,12 @@ def render(site, poem, videos, photos, lang="ko"):
 
     # 사이트 안 찾기(10/26 검색 A 전체 화면 창) — 맨 위 막대 돋보기 → 흰 한 장 · 추천 주제(content/search.json) · 찾을 거리(#sidx). 찾기는 main.js
     # 칸 이름(10/26 동원 "소개나 시집 이런 대분류들도 검색될 수 있게") — 맨 위 막대의 다섯 칸. 다섯째 값은 그 칸에 든 것의 낱말(약력 · 차례 …) — 칸 이름에 없는 말로도 찾게
-    ix["sec"] = [(tg["sec"], x, w, f"#{sid}", k) for sid, x, w, k in zip(secs, L["nav"], L["search_sec_where"].split("|"), L["search_sec_keys"].split("|"))]
+    # 페이지 줄 그림 + 설명(11/16 동원 구글 캡처 "gnb에 좀 닿는 그런 검색들은 이미지로 넣을까?" → 시안 기준/브랜드 시안/찾기결과그림시안_v1 'A 그림 사각 (권장)'):
+    # 여섯째 값 [그림 · 맞춤 · 설명] — 그림 · 설명은 메뉴 펼침(mm_panes)과 같은 것(같은 카피 · 같은 사진) · 그림 없는 연락 · 방명록은 선 그림 이름(mail · pen) · 맞춤 ct = 표지 통째로 옅은 바탕 위(메뉴 펼침과 같게 — 윗부분만 자르면 검은 띠만 보였음)
+    sr_th = {"me": (f"{P}assets/img/me.webp", "", t("mm_d_me", name=S["name"])), "poem": (f"{P}assets/img/cover.jpg", "ct", t("mm_d_book")),
+             "photo": (wall_first[0] if wall_first else "pen", "" if wall_first else "i", t("mm_d_photo")), "video": (f"{P}assets/img/next.jpg", "", t("mm_d_video")),
+             "contact": ("mail", "i", ""), "guestbook": ("pen", "i", t("mm_d_gb")), "rococo": (f"{P}assets/img/rococo-icon.png", "", rc_t("oneliner"))}
+    ix["sec"] = [(tg["sec"], x, w, f"#{sid}", k, list(sr_th[sid])) for sid, x, w, k in zip(secs, L["nav"], L["search_sec_where"].split("|"), L["search_sec_keys"].split("|"))]
     ix["sec"].append((tg["sec"], L["label_palette"], L["pal_where"].format(n=len(pg)), "#palette", L["pal_keys"]))  # 글자 팔레트 칸(10/28) — 맨 위 막대에는 없지만 칸 이름 · 낱말로 찾게
     ix["book"] += [(tg["book"], plain(book["title"]), book["spec"], "#bookcard"), (tg["book"], book["buy_label"], book["store_label"], book["buy_url"], L["search_buy_keys"])]  # 책 제목 결과는 책 카드로(10/27 가4 — 휴대폰에서 #poem이면 책 카드가 한 화면 아래)
     ix["me"][:0] = [(tg["me"], S["name"], "", "#me"), (tg["me"], S["tagline"], "", "#me")] + [
