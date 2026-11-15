@@ -545,10 +545,10 @@ html.sr-on{overflow:hidden}
 @media (hover:hover) and (min-width:768px){.srh .rc-l li{padding:0 12px}.srh .rc-l li:hover{background:var(--hv)}.srh .rc-q:hover{text-decoration:none}}  /* 넓은 창 최근 검색어는 밑줄 대신 칸 회색(동원 "밑줄이 아니라 칸에서 회색이 나와야해") · 휴대폰 칩은 그대로 */
 /* 찾기 창 두 칸 · 인기 검색어 순위(11/15 동원 무인양품 캡처 → 찾기창순위시안_v1 'B 진짜 순위 (권장)'): 칸 이름은 먹 굵게 + 아래 선 · 두 칸 사이 세로 가는 선 ·
    순위 줄은 번호 · 말 · 변화(지난주와 견줌) — 1~3위는 먹, 4위부터 옅게(무인양품 빨강 대신 진하기로 — 공개 사이트 무채색) · 순위가 없으면 같은 칸에 '바로 가기' */
-/* 찾기 칸(11/15 동원 '찾기칸시안_v1 A 닫기 아래 오른쪽 (권장)' — 무인양품 꼴): 넓은 창은 돋보기를 오른쪽 끝으로 · 위 닫기 대신 목록 아래 가는 선 위 오른쪽 '검색 닫기' · 휴대폰은 위 닫기 그대로(엄지 · Esc 없음) */
+/* 찾기 칸(11/15 동원 '찾기칸시안_v1 A 닫기 아래 오른쪽 (권장)' — 무인양품 꼴 → 같은 날 '찾기칸시안_v2 L1 돋보기 왼쪽 (권장)'로 돋보기는 다시 왼쪽 · 문구 'namdongwon.com 검색하기'): 넓은 창은 위 닫기 대신 목록 아래 가는 선 위 오른쪽 '검색 닫기' · 휴대폰은 위 닫기 그대로(엄지 · Esc 없음) */
 .sr-foot{display:none}
 @media (min-width:768px){
-  .srch .bar>:is(svg,.sgo){order:4}.srch .bar .x{display:none}
+  .srch .bar .x{display:none}
   .sr-foot{display:flex;justify-content:flex-end;margin-top:36px;padding-top:16px;border-top:1px solid var(--rule)}
   .sr-close{padding:8px 0;border:0;background:none;cursor:pointer;font:400 12.5px/1 var(--sans);color:var(--muted)}
 }

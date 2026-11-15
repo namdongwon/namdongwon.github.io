@@ -1509,12 +1509,21 @@
     "fr": "Rechercher sur ce site"
   },
   "search_ph": {
-    "ko": "시 제목 · 작품 · 전시",
-    "en": "Poems, works, exhibitions",
-    "ja": "詩の題名 · 作品 · 展示",
-    "ru": "Стихи, произведения, выставки",
-    "es": "Poemas, obras, exposiciones",
-    "fr": "Poèmes, œuvres, expositions"
+    "ko": "namdongwon.com 검색하기",
+    "en": "Search namdongwon.com",
+    "ja": "namdongwon.comを検索",
+    "ru": "Поиск по namdongwon.com",
+    "es": "Buscar en namdongwon.com",
+    "fr": "Rechercher sur namdongwon.com"
+  },
+  "search_ph_s": {
+    "_설명": "좁은 휴대폰(320 · 러시아어 · 프랑스어 402)에서 긴 문구가 칸을 넘으면 이 짧은 말로(11/15)",
+    "ko": "검색하기",
+    "en": "Search",
+    "ja": "検索",
+    "ru": "Поиск",
+    "es": "Buscar",
+    "fr": "Rechercher"
   },
   "search_suggest": {
     "ko": "인기 검색어",

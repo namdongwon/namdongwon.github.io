@@ -1098,6 +1098,14 @@
       sayT = setTimeout(() => { if (say) say.textContent = msg; }, 400);  // 치는 동안 글자마다 읽지 않게 잠깐 멈춘 뒤
     };
     let from = null;
+    // 문구가 칸보다 길면(좁은 휴대폰 · 긴 말) 짧은 말로 — 잘린 'namdongwon.com 검…' 대신 '검색하기'(11/15)
+    const phL = inp.placeholder, phS = inp.dataset.phS || phL, phC = document.createElement("canvas").getContext("2d");
+    const phFit = () => {
+      const c = getComputedStyle(inp);
+      phC.font = `${c.fontWeight} ${c.fontSize} ${c.fontFamily}`;
+      inp.placeholder = phC.measureText(phL).width <= inp.clientWidth ? phL : phS;
+    };
+    addEventListener("resize", () => { if (!srch.hidden) phFit(); });
     const others = on => [...document.body.children].forEach(el => { if (el !== srch && el.tagName !== "SCRIPT") el.inert = on; });
     const open = () => {
       if (!srch.hidden) return;
@@ -1110,6 +1118,7 @@
       inp.value = "";
       lastQ = null;
       run();
+      phFit();
       inp.focus();
     };
     const shut = back => {

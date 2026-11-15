@@ -524,7 +524,7 @@ html.sr-on{overflow:hidden}
 
 .sr-foot{display:none}
 @media (min-width:768px){
-  .srch .bar>:is(svg,.sgo){order:4}.srch .bar .x{display:none}
+  .srch .bar .x{display:none}
   .sr-foot{display:flex;justify-content:flex-end;margin-top:36px;padding-top:16px;border-top:1px solid var(--rule)}
   .sr-close{padding:8px 0;border:0;background:none;cursor:pointer;font:400 calc(12.5px * var(--fs))/1 var(--sans);color:var(--muted)}
 }
