@@ -443,18 +443,18 @@
     };
     const close = () => {
       clearTimeout(tOpen);
-      if (!mm.classList.contains("vis") || !cur) return;
+      if (!mm.classList.contains("vis") || cur === null) return;  // cur는 쪽 이름 — 소개는 빈 글자("")라 !cur로 보면 안 됨(11/15 소개 칸이 안 닫히던 결함)
       panes.forEach(x => x.classList.remove("go"));
       mm.style.height = "0px"; mm.setAttribute("inert", ""); mm.setAttribute("aria-hidden", "true");
       navA.forEach(a => a.classList.remove("hov")); cur = null;
       kBtn.forEach(b => { b.setAttribute("aria-expanded", "false"); b.classList.remove("kb"); });
       const back = byKey; byKey = null;
       if (back && mm.contains(document.activeElement)) back.focus();  // 칸 안에서 Esc로 닫으면 단추로 돌아감
-      tHide = setTimeout(() => { if (!cur) mm.classList.remove("vis"); }, still() ? 0 : 260);
+      tHide = setTimeout(() => { if (cur === null) mm.classList.remove("vis"); }, still() ? 0 : 260);
     };
     const inside = el => el && (mmTop.contains(el) || mm.contains(el));
     navA.forEach(a => {
-      a.addEventListener("mouseenter", () => { clearTimeout(tClose); clearTimeout(tOpen); tOpen = setTimeout(() => open(a.dataset.pg), cur ? 60 : 150); });
+      a.addEventListener("mouseenter", () => { clearTimeout(tClose); clearTimeout(tOpen); tOpen = setTimeout(() => open(a.dataset.pg), cur !== null ? 60 : 150); });
       a.addEventListener("mouseleave", () => clearTimeout(tOpen));
     });
     [mmTop, mm].forEach(el => {
@@ -463,7 +463,7 @@
     });
     mmTop.querySelectorAll(".logo, .act").forEach(el => el.addEventListener("mouseenter", () => { clearTimeout(tOpen); clearTimeout(tClose); tClose = setTimeout(close, 200); }));
     addEventListener("keydown", ev => { if (ev.key === "Escape") close(); });
-    addEventListener("scroll", () => { if (cur) close(); }, { passive: true });
+    addEventListener("scroll", () => { if (cur !== null) close(); }, { passive: true });
     addEventListener("resize", close);
     // 키보드(11/15 동원 "① 메뉴 펼침 키보드" — 애플 실측 꼴): 메뉴 링크 다음 Tab이면 ⌄ 단추(초점일 때만 보임) → Enter · Space로 그 쪽 칸 열고 닫음 ·
     // 연 채 Tab이면 칸 안 첫 카드로 · 칸 마지막에서 Tab이면 닫고 다음 메뉴로 · 칸 첫머리에서 Shift+Tab이면 단추로 · Esc면 닫고 단추로 · 띠의 다른 곳에 초점이 가면 닫힘
@@ -2256,22 +2256,33 @@
     };
     // 11/15 동원 "한 번 내리면 그 다음에 내릴 때는 작동을 안한다" — 실측: 트랙패드 관성(손 뗀 뒤 1~2초 휠이 이어짐) 중에 다시 밀면 0.2초 쉼이 없어 버려졌고(1초 간격 세 번 → 한 칸),
     // 넘기는 0.8초 동안 들어온 휠도 버려졌음(마우스 딸깍 0.35초 간격 세 번 → 한 칸). → 새 몸짓 알아보기에 '휠 값이 갑자기 커짐(관성은 줄기만 함) · 방향 바뀜'을 더하고,
-    // 넘기는 중에 온 새 몸짓은 하나까지 기억했다가 넘김이 끝나면 이어서(fullPage.js 가속 알아보기와 같은 생각)
-    let busy = false, armed = true, lastWheel = 0, lastAbs = 0, lastDir = 0, movedAt = -1e9, queued = 0;
-    const go = to => {
-      busy = true; const from = scrollY, t0 = performance.now();
-      const step = n => {
-        const k = Math.min(1, (n - t0) / 800); scrollTo(0, from + (to - from) * ease(k));
-        if (k < 1) { requestAnimationFrame(step); return; }
-        busy = false;
-        if (queued) { const d = queued; queued = 0; movedAt = performance.now(); move(d); }
-      };
-      requestAnimationFrame(step);
+    // 넘기는 중에 온 새 몸짓도 받음 — 아래 move가 지금 자리에서 이어 감(fullPage.js 가속 알아보기와 같은 생각)
+    let busy = false, armed = true, lastWheel = 0, lastAbs = 0, lastDir = 0, movedAt = -1e9, raf = 0, target = 0, motionDir = 0;
+    // 넘기는 중에 새로 밀면(11/15 동원 "다시 올릴 때 버벅이는 느낌" — 실측: 내린 직후 위로 밀면 내려가던 0.8초를 다 마친 뒤 돌아섬 · 연달아 밀면 칸 끝에서 0까지 느려졌다 다시 빨라짐):
+    // 지금 자리에서 바로 새 목표로 이어 감 — 같은 방향이면 다음 칸까지 멈추지 않고 · 반대면 그 자리에서 돌아섬 · 이어 갈 땐 처음부터 빠른 꼴(ease-out 0.7초)
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+    const go = (to, fn = ease, D = 800) => {
+      cancelAnimationFrame(raf);
+      busy = true; target = to; motionDir = Math.sign(to - scrollY);
+      const from = scrollY, t0 = performance.now();
+      const step = n => { const k = Math.min(1, (n - t0) / D); scrollTo(0, from + (to - from) * fn(k)); if (k < 1) raf = requestAnimationFrame(step); else busy = false; };
+      raf = requestAnimationFrame(step);
+    };
+    const next = (y, d) => {
+      const s = stops();
+      if (d > 0) { const nx = s.find(v => v > y + 4); return Math.min(nx === undefined ? y : nx, y + innerHeight); }
+      const pv = [...s].reverse().find(v => v < y - 4); return Math.max(pv === undefined ? 0 : pv, y - innerHeight);
     };
     const move = dir => {
-      const y = scrollY, s = stops();
-      if (dir > 0) { const nx = s.find(v => v > y + 4); const to = Math.min(nx === undefined ? y : nx, y + innerHeight); if (to > y + 1) go(to); }
-      else { const pv = [...s].reverse().find(v => v < y - 4); const to = Math.max(pv === undefined ? 0 : pv, y - innerHeight); if (to < y - 1) go(to); }
+      const d = Math.sign(dir);
+      if (!d) return;
+      if (busy) {
+        const to = next(d === motionDir ? target : scrollY, d);
+        if (to !== target && Math.abs(to - scrollY) > 1) go(to, easeOut, 700);
+        return;
+      }
+      const to = next(scrollY, d);
+      if (Math.abs(to - scrollY) > 1) go(to);
     };
     const blocked = t => still() || H.style.overflow === "hidden" || [...document.querySelectorAll('[aria-modal="true"]')].some(d => !d.hidden && d.offsetParent !== null)
       || (t instanceof Element && t.closest("input, textarea, select, [contenteditable=true], .lsw[open] ul, .srch"));
@@ -2285,11 +2296,10 @@
       if (fresh) armed = true;
       if (!armed) return;  // 한 몸짓(트랙패드 관성 포함)엔 한 칸만
       armed = false;
-      if (busy) { queued = dir; return; }  // 넘기는 중에 새로 밀면 버리지 않고 끝난 뒤 이어서(하나까지)
-      movedAt = now; move(e.deltaY);
+      movedAt = now; move(e.deltaY);  // 넘기는 중이면 move가 지금 자리에서 새 목표로 이어 감
     }, { passive: false });
     addEventListener("keydown", e => {
-      if (e.altKey || e.ctrlKey || e.metaKey || blocked(e.target) || busy) return;
+      if (e.altKey || e.ctrlKey || e.metaKey || blocked(e.target)) return;
       const dir = e.key === "ArrowDown" || e.key === "PageDown" || (e.key === " " && !e.shiftKey) ? 1 : e.key === "ArrowUp" || e.key === "PageUp" || (e.key === " " && e.shiftKey) ? -1 : 0;
       if (!dir || (e.target instanceof Element && e.target.closest("button, a, summary") && e.key === " ")) return;
       e.preventDefault(); move(dir);
