@@ -1896,43 +1896,24 @@ def render(site, poem, videos, photos, lang="ko"):
         rdl = (f'<figure class="rdl"><figcaption class="k">{t("rdl_k")}</figcaption><blockquote{lk}>“{e(" ".join(pin["text"].split()))}”</blockquote>'
                f'<p class="w">{t("rdl_from", day=pday)}</p><a href="~R~guestbook/">{t("rdl_go")}</a></figure>')
     def rococo_sec():  # 로코코 쪽 본문(11/15 'D 큰 한 줄 · 좌우 번갈아' — 목업 기준/브랜드 시안/로코코소개시안_v1_D.png · Day One 꼴)
+        # 화면은 11/15 동원 "화면 준비중 뭐 이런거로 대체 … 구조가 더 중요" → 이야기마다 shot(content/img/rococo/ 파일 이름)이 있으면 그 그림, 없으면 '화면 준비 중' 자리
         if not RC:
             return ""
-        sl = (RC.get("screen_lang") or {}).get(lang, "en")
-        U = (RC.get("ui") or {}).get(sl) or RC["ui"]["en"]
         wm = (CONTENT / "img/rococo-wordmark.svg").read_text(encoding="utf-8").replace("<svg ", '<svg aria-hidden="true" focusable="false" ', 1)
-        # 화면 속 전시 = 동원이 다녀온 전시(photo_art.json — 사진 설명 칸의 작품 정보) 앞 셋 · 화면 말(로코코가 쓰는 한 · 영 · 일)로
-        shows = []
-        for r in load("photo_art.json").get("items", []):
-            a = (r.get(sl) or {}).get("art") if sl != "ko" else None
-            a = {**(r.get("art") or {}), **{k: v for k, v in (a or {}).items() if v}}
-            if a.get("show") and all(a["show"] != x["show"] for x in shows):
-                shows.append(a)
-        shows = shows[:3]
-        recx = next((x for x in site.get("records", []) if "전시" in x.get("note", "")), {})
-        yn = recx.get("year_n") if recx.get("year") == build_day().year else None
-        def card(a, st):
-            return (f'<div class="rx-card"><span class="rx-dots"><i></i><i></i><i></i></span><span class="rx-ck">{e(U["exh"])}</span><span class="rx-ct">{e(a["show"])}</span>'
-                    f'<span class="rx-ca">{e(a.get("artist", ""))}</span><span class="rx-cv">{e(a.get("venue", ""))}</span><span class="rx-cs"><span>{e(st)}</span><b>✓</b></span></div>')
-        tabs = lambda on: "".join(f'<b>{e(x)}</b>' if i == on else f'<span>{e(x)}</span>' for i, x in enumerate(U["tabs"]))  # noqa: E731
-        sb = '<span class="rx-sb"><span>9:41</span><span>●●●</span></span>'
-        scr = {
-            "wide": f'<div class="rx rx-wide"><div class="rx-hd"><span class="rx-wm">{wm}</span><span>{e(U["hd"].format(n=len(shows)))}</span></div><div class="rx-row">{"".join(card(a, U["went"]) for a in shows)}</div></div>',
-            "me": (f'<div class="rx-stage"><div class="rx rx-ph">{sb}<div class="rx-in"><span class="rx-h">{e(U["me"])}</span><span class="rx-st"><span><b>{len(shows)}</b>{e(U["went"])}</span><span><b>2</b>{e(U["fav"])}</span><span><b>1</b>{e(U["one"])}</span></span>'
-                   + "".join(card(a, U["went"]) for a in shows[1:3]) + f'</div><span class="rx-tab">{tabs(4)}</span></div></div>'),
-            "year": (f'<div class="rx-stage"><div class="rx rx-ph rx-dark">{sb}<div class="rx-in"><span><span class="rx-wm">{wm}</span><span class="rx-y">{build_day().year}</span><span class="rx-tl">{e(U["year"])}</span>'
-                     + (f'<span class="rx-n">{yn}</span><span class="rx-l">{e(U["year_n"])}</span>' if yn else "")
-                     + '</span><span class="rx-ul">' + "".join(f"<span>{e(a['show'])}</span>" for a in shows) + f'</span><span class="rx-dots"><i></i><i></i><i></i></span></div><span class="rx-tab">{tabs(-1)}</span></div></div>'),
-        }
+        tr = lambda d: e((d or {}).get(lang) or (d or {}).get("en") or (d or {}).get("ko", ""))  # noqa: E731
+        def fig(f):
+            if f.get("shot") and (CONTENT / "img/rococo" / f["shot"]).exists():
+                return f'<figure class="rco-fig"><img src="{P}assets/img/rococo/{e(f["shot"])}" alt="{tr(f["title"])}" loading="lazy" decoding="async"></figure>'
+            return f'<figure class="rco-fig"><div class="rco-ph"><span class="rco-wm">{wm}</span><span class="rco-phs">{rc_t("screen_soon")}</span></div></figure>'
         st = RC.get("status", "preparing")
         href = e(RC.get("url", "") + (RC.get("url_lang") or {}).get(lang, ""))
         btn = (f'<span class="rco-btn rco-soon-web">{rc_t("soon_web")}</span>' if st == "preparing"
                else f'<a class="rco-btn" href="{href}" target="_blank" rel="noopener">{rc_t("cta")} <span aria-hidden="true">↗</span></a>')
         # 스토어 배지는 stores 값이 생긴 쪽만(출시 전 Download 배지 금지 — Apple 라이선스 · 기획 3절) — 그 전엔 '앱은 준비 중' 한 줄
         rows = "".join(
-            f'<div class="rco-row{" rev" if i % 2 else ""}"><figure class="rco-fig" role="img" aria-label="{e(U["alt"].format(what=(f["k"].get(sl) or f["k"]["en"])))}">{scr[f["screen"]]}</figure>'
-            f'<div class="rco-tx"><p class="rco-k">{e(f["k"].get(lang) or f["k"]["en"])}</p><h3 class="rco-h">{e(f["title"].get(lang) or f["title"]["en"])}</h3>'
-            f'<p class="rco-p">{e(f["text"].get(lang) or f["text"]["en"])}</p></div></div>' for i, f in enumerate(RC.get("features", [])))
+            f'<div class="rco-row{" rev" if i % 2 else ""}">{fig(f)}'
+            f'<div class="rco-tx"><p class="rco-k">{tr(f["k"])}</p><h3 class="rco-h">{tr(f["title"])}</h3><p class="rco-p">{tr(f["text"])}</p></div></div>'
+            for i, f in enumerate(RC.get("features", [])))
         return f"""  <section id="rococo" aria-labelledby="rococo-t">
     <div class="rco-hd"><p class="rco-k">{rc_t("kicker")}</p><h2 class="rco-t" id="rococo-t">{rc_t("slogan")}</h2><p class="rco-one">{rc_t("oneliner")}</p>
       <p class="rco-go">{btn}</p>{"" if st == "launched" else f'<p class="rco-soon">{rc_t("soon_app")}</p>'}</div>
@@ -2522,6 +2503,8 @@ def main():
 
     if (CONTENT / "img/rococo-icon.png").exists():  # 로코코 앱 아이콘(11/15 — 메뉴 펼침 칸 · 원본 ~/작업/로코코/artrococo/brand · content/img/rococo-출처.txt)
         (ASSETS / "img").mkdir(parents=True, exist_ok=True); shutil.copy2(CONTENT / "img/rococo-icon.png", ASSETS / "img/rococo-icon.png")
+    if (CONTENT / "img/rococo").is_dir():  # 로코코 화면 캡처(rococo.json features[].shot — 생기면)
+        shutil.copytree(CONTENT / "img/rococo", ASSETS / "img/rococo", dirs_exist_ok=True)
     # 글꼴 라이선스 전문은 글꼴 옆에 함께 둔다(OFL·GPL 조건)
     for lic in sorted((CONTENT / "licenses").glob("*.txt")):
         shutil.copy2(lic, ASSETS / "fonts" / lic.name)
