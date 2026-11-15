@@ -495,8 +495,8 @@ html.pv-on{overflow:hidden}
 .top .sq svg{width:16px;height:16px}
 .js .top .sq{position:relative}
 html.sr-on{overflow:hidden}
-.srch{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}
-.srch .in{max-width:760px;margin:0 auto;padding:16px 20px calc(48px + env(safe-area-inset-bottom))}
+.srch{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}  /* 창 안 스크롤이 끝나도 쪽으로 넘기지 않음 · 쪽은 main.js가 묶음(11/16 아이폰) */
+.srch .in{box-sizing:border-box;min-height:calc(100% + 1px);max-width:760px;margin:0 auto;padding:16px 20px calc(48px + env(safe-area-inset-bottom) + var(--kb,0px))}  /* 늘 1px 더 길게 — 글이 짧아도 창 안에서 굴러 쪽으로 새지 않게 · 자판 높이(--kb)만큼 아래 여백 */
 .srch .bar{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--ink)}
 .srch .bar svg{width:20px;height:20px;flex:none}
 .srch .sgo{flex:none;display:grid;place-items:center;width:32px;height:32px;margin:0 -6px;padding:0;border:0;border-radius:50%;background:none;color:var(--ink);cursor:pointer}  /* 돋보기 단추(11/6) — Enter와 같음 */

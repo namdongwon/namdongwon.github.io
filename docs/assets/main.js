@@ -1123,10 +1123,25 @@
     };
     addEventListener("resize", () => { if (!srch.hidden) phFit(); });
     const others = on => [...document.body.children].forEach(el => { if (el !== srch && el.tagName !== "SCRIPT") el.inert = on; });
+    // 찾기 창이 열린 동안 아래 쪽을 묶어 둠(11/16 동원 아이폰 캡처 "스크롤 내리는 게 검색창이랑 따로 놀잖아 … 검색창은 독립적이어야 해"):
+    // 아이폰은 자판이 올라오면 position:fixed 창이 쪽과 함께 밀리고, html overflow:hidden만으로는 쪽이 굴러 창 아래로 쪽이 비쳤음 → 몸을 그 자리에 고정(top:-y) · 닫을 때 같은 자리로 되돌림
+    // 자판 높이만큼 창 안 아래 여백(--kb)을 더해 마지막 줄까지 자판 위로 올려 볼 수 있게
+    let lockY = 0;
+    const bs = document.body.style;
+    const kbFit = () => { const v = window.visualViewport; srch.style.setProperty("--kb", v ? Math.max(0, Math.round(innerHeight - v.height - v.offsetTop)) + "px" : "0px"); };
+    if (window.visualViewport) visualViewport.addEventListener("resize", () => { if (!srch.hidden) kbFit(); });
+    const unlock = () => {
+      Object.assign(bs, { position: "", top: "", left: "", right: "", width: "" });
+      H.dataset.srBack = "1";  // 되돌리는 스크롤 한 번은 '아래로 내림'이 아님 — 맨 위 띠를 숨기지 않게(sc가 읽고 지움)
+      scrollTo({ top: lockY, behavior: "instant" });
+    };
+    addEventListener("pageshow", ev => { if (ev.persisted && bs.position === "fixed" && srch.hidden) unlock(); });
     const open = () => {
       if (!srch.hidden) return;
       gaSent.clear();
       from = document.activeElement;
+      lockY = scrollY;
+      Object.assign(bs, { position: "fixed", top: -lockY + "px", left: "0", right: "0", width: "100%" });
       srch.inert = false;
       srch.hidden = false;
       H.classList.add("sr-on");
@@ -1135,12 +1150,14 @@
       lastQ = null;
       run();
       phFit();
+      kbFit();
       inp.focus();
     };
     const shut = back => {
       if (srch.hidden) return;
       srch.hidden = true;
       H.classList.remove("sr-on");
+      if (!leaving) unlock();  // 다른 쪽으로 떠나는 길이면 풀지 않음 — 떠나는 순간 쪽이 튀면 쪽 넘김 장면(View Transition)이 끊겼음 · 뒤로 가기로 돌아오면 pageshow에서 풂
       others(false);
       if (back) (from && from !== document.body ? from : sq).focus({ preventScroll: true });  // 포커스 없이(⌘K) 열었으면 돋보기로 · 화면은 그대로(10/28 점검 1 — 맨 위 띠의 돋보기로 포커스가 가며 쪽이 400px쯤 위로 튀었음)
     };
@@ -1537,7 +1554,9 @@
   if (top) {
     let ly = scrollY;
     const sc = () => {
+      if (H.classList.contains("sr-on")) return;  // 찾기 창이 쪽을 묶은 동안(scrollY 0)은 띠를 건드리지 않음(11/16)
       const y = scrollY;
+      if (H.dataset.srBack) { delete H.dataset.srBack; ly = y; top.classList.toggle("sc", y > 8); return; }  // 찾기 창을 닫고 제자리로 돌아온 한 번 — 숨기지 않음
       top.classList.toggle("sc", y > 8);
       // ⑥ 아래로 내리면 띠가 숨고 조금이라도 올리면 나타남(11/4 동원 '넣기' — 손반응열_v1 06) · 맨 위 120px 안 · 띠 안에 초점이 있으면 늘 보임
       if (y > ly + 4 && y > 120 && !top.contains(document.activeElement)) top.classList.add("hide");

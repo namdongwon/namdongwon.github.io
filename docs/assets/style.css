@@ -4,10 +4,10 @@
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=13fff1ee8a") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=eb786c8c47") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=a8027b2679") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=211ce7ba97") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=366559f50a") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=f17f3185f4") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=c9502d5f87") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=5578872a3d") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=85b6377a11") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -472,8 +472,8 @@ html.pv-on{overflow:hidden}
 .top .sq svg{width:16px;height:16px}
 .js .top .sq{position:relative}
 html.sr-on{overflow:hidden}
-.srch{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}
-.srch .in{max-width:760px;margin:0 auto;padding:16px 20px calc(48px + env(safe-area-inset-bottom))}
+.srch{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}  
+.srch .in{box-sizing:border-box;min-height:calc(100% + 1px);max-width:760px;margin:0 auto;padding:16px 20px calc(48px + env(safe-area-inset-bottom) + var(--kb,0px))}  
 .srch .bar{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--ink)}
 .srch .bar svg{width:20px;height:20px;flex:none}
 .srch .sgo{flex:none;display:grid;place-items:center;width:32px;height:32px;margin:0 -6px;padding:0;border:0;border-radius:50%;background:none;color:var(--ink);cursor:pointer}  
