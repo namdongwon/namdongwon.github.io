@@ -134,6 +134,53 @@ button{font:inherit;color:inherit}
 .mnu a{display:block;padding:20px 0;font:400 24px/1.2 var(--serif);color:var(--ink)}
 html.mnu-on{overflow:hidden}  /* 여는 동안 쪽은 멈춤 */
 @media (min-width:768px){.mnu{display:none}}
+/* 로코코 쪽(11/15 동원 'D 큰 한 줄 · 좌우 번갈아' — 목업 기준/브랜드 시안/로코코소개시안_v1_D.png · Day One 꼴): 가운데 큰 한 줄 → 세 이야기 좌우 번갈아(한 칸 = 한 이야기 = 한 화면)
+   화면(rx-)은 로코코 토큰 그대로(흰 · 표면 #f6f5f3 · 세 점 · 모서리 12/20 — 로코코 globals.css) — 로코코의 제품 모습이라 세 점 색만 예외로 둠(공개 사이트는 무채색) */
+#rococo{display:block;padding-bottom:72px}
+.rco-hd{text-align:center;padding:72px 0 64px}
+.rco-k{margin:0;font:400 11px/1 var(--sans);letter-spacing:.12em;color:var(--faint)}
+.rco-t{margin:22px 0 0;font:400 44px/1.2 var(--serif);letter-spacing:-.01em;color:var(--ink);word-break:keep-all;text-wrap:balance}
+.rco-one{margin:12px 0 0;font:300 14px/1.6 var(--sans);color:var(--muted)}
+.rco-go{margin:36px 0 0}
+.rco-btn{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 22px;background:var(--ink);color:var(--bg);font:600 14px/1 var(--sans);text-decoration:none}
+.rco-soon-web{background:none;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
+.rco-soon{margin:12px 0 0;font:300 12.5px/1.5 var(--sans);color:var(--faint)}
+.rco-row{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;max-width:1120px;margin:0 auto}.rco-row+.rco-row{margin-top:72px}
+.rco-row.rev .rco-fig{order:2}
+.rco-fig{margin:0}
+.rco-tx .rco-k{text-align:left}
+.rco-h{margin:12px 0 0;font:400 30px/1.3 var(--serif);color:var(--ink);word-break:keep-all}
+.rco-p{margin:12px 0 0;max-width:380px;font:300 14px/1.7 var(--sans);color:var(--muted);word-break:keep-all}
+@media (hover:hover){.rco-btn:not(.rco-soon-web){transition:opacity .2s}.rco-btn:not(.rco-soon-web):hover{opacity:.82}}
+.rco-btn:not(.rco-soon-web):active{opacity:.7}
+.rx{--x-bg:#fff;--x-sf:#f6f5f3;--x-fg:#1f1e1c;--x-2:#55514b;--x-mu:#6e6a64;--x-hair:#e7e4df;display:block;font-family:var(--sans);color:var(--x-fg);text-align:left}
+.rx span{display:block}
+.rx-wm{height:15px;color:var(--x-fg)}.rx-wm svg{display:block;height:100%;width:auto}
+.rx-card{background:var(--x-bg);border-radius:20px;padding:16px 16px 12px;box-shadow:0 0 0 1px var(--x-hair)}
+.rx-dots{display:flex!important;gap:4px;margin-bottom:12px}.rx-dots i{width:6px;height:6px;border-radius:50%;background:#7ec4cf}.rx-dots i:nth-child(2){background:#e8899a}.rx-dots i:nth-child(3){background:#f3d27a}
+.rx-ck{font:400 11px/1 var(--sans);letter-spacing:.04em;color:var(--x-mu)}
+.rx-ct{margin-top:8px;font:600 14px/1.3 var(--sans);word-break:keep-all}
+.rx-ca{margin-top:6px;font:400 12.5px/1.5 var(--sans);color:var(--x-2)}
+.rx-cv{margin-top:2px;font:400 11px/1.5 var(--sans);color:var(--x-mu)}
+.rx-cs{margin-top:12px;padding-top:8px;border-top:1px solid var(--x-hair);display:flex!important;justify-content:space-between;font:400 11px/1 var(--sans);color:var(--x-2)}.rx-cs b{font-weight:600;color:var(--x-fg)}
+.rx-wide{background:var(--x-sf);border-radius:20px;padding:22px}
+.rx-hd{display:flex!important;justify-content:space-between;align-items:center;margin-bottom:16px}.rx-hd>span:last-child{font:400 11px/1 var(--sans);color:var(--x-mu)}
+.rx-row{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.rx-stage{display:flex!important;justify-content:center;background:var(--ph);padding:44px 0}
+.rx-ph{position:relative;width:238px;height:500px;border-radius:36px;background:var(--x-bg);box-shadow:0 0 0 1px var(--x-hair),0 2px 4px rgba(0,0,0,.06),0 24px 48px -16px rgba(0,0,0,.22);padding:16px 12px 0;overflow:hidden}
+.rx-sb{display:flex!important;justify-content:space-between;height:14px;padding:0 8px;font:600 11px/14px var(--sans)}
+.rx-in{height:420px;margin-top:8px;padding:12px 8px;border-radius:20px;background:var(--x-sf);overflow:hidden}
+.rx-h{margin:4px 2px 12px;font:600 15px/1.2 var(--sans)}
+.rx-st{display:grid!important;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}.rx-st>span{padding:8px;border-radius:12px;background:var(--x-bg);box-shadow:0 0 0 1px var(--x-hair);font:400 11px/1.3 var(--sans);color:var(--x-mu)}.rx-st b{display:block;font:600 15px/1.2 var(--sans);color:var(--x-fg)}
+.rx-ph .rx-card{padding:12px 12px 8px;margin-bottom:8px}.rx-ph .rx-ct{font-size:12.5px;margin-top:6px}.rx-ph .rx-ca,.rx-ph .rx-cv{font-size:11px}.rx-ph .rx-cs{font-size:11px;margin-top:8px;padding-top:6px}.rx-ph .rx-dots{margin-bottom:8px}
+.rx-tab{position:absolute;left:0;right:0;bottom:0;height:48px;display:flex!important;justify-content:space-around;align-items:center;background:var(--x-bg);border-top:1px solid var(--x-hair);font:400 11px/1 var(--sans);color:var(--x-mu)}.rx-tab b{font-weight:600;color:var(--x-fg)}
+.rx-dark{background:#161514}.rx-dark .rx-sb{color:#f2efea}.rx-dark .rx-in{display:flex!important;flex-direction:column;justify-content:space-between;padding:22px 16px;background:linear-gradient(#2a2725,#121110);color:#f2efea}
+.rx-dark .rx-wm{color:#f2efea;height:12px}.rx-dark .rx-tab{background:#161514;border-color:#2a2725;color:#9a958e}.rx-dark .rx-tab b{color:#f2efea}
+.rx-y{margin-top:22px;font:400 11px/1 var(--sans);letter-spacing:.12em;color:#b5afa6}.rx-tl{margin-top:4px;font:400 20px/1.3 var(--serif)}
+.rx-n{margin-top:16px;font:300 64px/1 var(--sans);letter-spacing:-.035em}.rx-l{margin-top:8px;font:400 11px/1.5 var(--sans);color:#b5afa6}
+.rx-ul{font:400 11px/1.9 var(--sans);color:#d9d3ca}
+@media (max-width:767px){.rco-hd{padding:44px 0 44px}.rco-t{font-size:30px}.rco-row,.rco-row.rev{grid-template-columns:1fr;gap:22px}.rco-row.rev .rco-fig{order:0}.rco-row+.rco-row{margin-top:64px}.rco-h{font-size:22px}
+  .rx-row{grid-template-columns:1fr}.rx-row .rx-card:nth-child(3){display:none}}
 /* 메뉴 펼침(11/15 동원 무인양품 캡처 → 메뉴펼침시안_v1 'B 사진 카드'): 넓은 창 · 마우스 기기만 · 띠 바로 아래 · 설명 한 줄 + 사진 카드 줄 · 열고 닫기는 main.js(.vis → .on) */
 .mm{display:none;position:fixed;left:0;right:0;top:var(--top);z-index:30;height:0;overflow:hidden;background:var(--bg);box-shadow:0 1px 0 var(--rule),0 12px 24px -18px rgba(0,0,0,.18);transition:height .24s cubic-bezier(.4,0,.6,1)}  /* 칸 높이가 커튼처럼 펼쳐짐(11/15 동원 '내려오는 게 부드럽게' — 애플 실측 0.24초 · cubic-bezier(.4,0,.6,1)) · 높이는 main.js가 그 칸 안 높이로 */
 .mm.vis{display:block}

@@ -1,0 +1,34 @@
+{
+  "_설명": "로코코 소개 페이지(/rococo/ — 11/15 동원 'D 큰 한 줄 · 좌우 번갈아' · 기획 기준/로코코 소개 페이지 기획_v1.md). status 하나로 단추가 바뀜: preparing(웹 공개 전 — 단추 대신 '곧 열려요' 글자) · web(artrococo.com 링크) · beta(+ beta 링크) · launched(+ stores 배지 — 값이 생긴 쪽만). 문구는 로코코 저장소 정한 것.md의 확정 문구 그대로(한 · 영 · 일) · 러 · 서 · 프는 Claude 옮김. 화면 속 글은 로코코가 쓰는 세 언어로만(러 · 서 · 프 판은 영어 화면 — screen_lang). 화면 속 전시는 photo_art.json의 동원이 다녀온 전시, '올해 기록한 전시' 숫자는 site.json records(전시)의 year_n",
+  "status": "preparing",
+  "url": "https://artrococo.com",
+  "url_lang": {"en": "/en", "ja": "/ja", "ru": "/en", "es": "/en", "fr": "/en"},
+  "beta": {"ios": null, "android": null},
+  "stores": {"ios": null, "android": null},
+  "kicker": {"ko": "로코코 · ROCOCO", "en": "ROCOCO", "ja": "ロココ · ROCOCO", "ru": "ROCOCO", "es": "ROCOCO", "fr": "ROCOCO"},
+  "slogan": {"ko": "본 전시를 오래 오래", "en": "Long after the show", "ja": "観た展示を、いつまでも", "ru": "Надолго после выставки", "es": "Mucho después de la exposición", "fr": "Bien après l’exposition"},
+  "oneliner": {"ko": "한 점 한 점 남기는 전시 기록", "en": "Your exhibition log, one piece at a time.", "ja": "一点ずつ残す、展示の記録", "ru": "Дневник выставок — работа за работой", "es": "Tu registro de exposiciones, obra a obra", "fr": "Votre carnet d’expositions, œuvre après œuvre"},
+  "cta": {"ko": "artrococo.com에서 보기", "en": "Visit artrococo.com", "ja": "artrococo.comで見る", "ru": "Открыть artrococo.com", "es": "Visitar artrococo.com", "fr": "Visiter artrococo.com"},
+  "soon_web": {"ko": "artrococo.com · 곧 열려요", "en": "artrococo.com · opening soon", "ja": "artrococo.com · まもなく公開", "ru": "artrococo.com · скоро откроется", "es": "artrococo.com · muy pronto", "fr": "artrococo.com · bientôt en ligne"},
+  "soon_app": {"ko": "앱(iOS · Android)은 준비 중이에요", "en": "The iOS and Android apps are in the works.", "ja": "アプリ(iOS · Android)は準備中です", "ru": "Приложения для iOS и Android готовятся.", "es": "Las apps para iOS y Android están en camino.", "fr": "Les applications iOS et Android sont en préparation."},
+  "features": [
+    {"screen": "wide",
+     "k": {"ko": "남기기", "en": "Log", "ja": "残す", "ru": "Запись", "es": "Registrar", "fr": "Noter"},
+     "title": {"ko": "본 전시를 남겨요", "en": "Keep what you saw", "ja": "観た展示を残す", "ru": "Сохраните увиденное", "es": "Guarda lo que viste", "fr": "Gardez ce que vous avez vu"},
+     "text": {"ko": "즐겨찾기 · 다녀왔어요 · 한 점. 전시장을 나서는 길에 세 번 누르면 기록이 돼요.", "en": "Favorite, Been there, One piece. Three taps on your way out, and the visit is logged.", "ja": "お気に入り · 行った · 一点。会場を出る道すがら三回タップすれば、記録になります。", "ru": "Избранное, «Был», «Одна работа». Три касания на выходе из зала — и визит записан.", "es": "Favorito, Fui, Una obra. Tres toques al salir de la sala y la visita queda registrada.", "fr": "Favori, J’y suis allé, Une œuvre. Trois touches en sortant de la salle, et la visite est notée."}},
+    {"screen": "me",
+     "k": {"ko": "내 도록", "en": "My catalog", "ja": "わたしの図録", "ru": "Мой каталог", "es": "Mi catálogo", "fr": "Mon catalogue"},
+     "title": {"ko": "기록이 도록이 돼요", "en": "Your log becomes a catalog", "ja": "記録が図録になる", "ru": "Записи становятся каталогом", "es": "Tu registro se vuelve catálogo", "fr": "Vos notes deviennent un catalogue"},
+     "text": {"ko": "다녀온 전시가 한 권의 도록처럼 쌓이고, 쌓인 만큼 내 취향이 보여요.", "en": "The shows you visit pile up like one catalog, and the more they pile up, the clearer your taste.", "ja": "行った展示が一冊の図録のように積み重なり、重なるほど自分の好みが見えてきます。", "ru": "Выставки складываются в один каталог, и чем он толще, тем яснее ваш вкус.", "es": "Las exposiciones se acumulan como un solo catálogo, y cuanto más crece, más claro se ve tu gusto.", "fr": "Les expositions s’empilent comme un seul catalogue, et plus il grossit, plus votre goût se dessine."}},
+    {"screen": "year",
+     "k": {"ko": "나의 도록", "en": "Year in review", "ja": "わたしの一年", "ru": "Итоги года", "es": "Tu año", "fr": "Votre année"},
+     "title": {"ko": "한 해를 한 장으로", "en": "A year on one page", "ja": "一年を一枚に", "ru": "Год на одной странице", "es": "Un año en una página", "fr": "Une année sur une page"},
+     "text": {"ko": "연말이면 그해 본 전시가 「나의 도록」 한 장으로 묶여요.", "en": "At year’s end, every show you saw is bound into a single page.", "ja": "年末には、その年に観た展示が一枚の図録にまとまります。", "ru": "В конце года все увиденные выставки собираются на одной странице.", "es": "A fin de año, todas las exposiciones que viste se reúnen en una sola página.", "fr": "En fin d’année, toutes les expositions vues sont réunies sur une seule page."}}
+  ],
+  "screen_lang": {"ko": "ko", "en": "en", "ja": "ja", "ru": "en", "es": "en", "fr": "en"},
+  "ui": {
+    "ko": {"exh": "전시", "went": "다녀왔어요", "fav": "즐겨찾기", "one": "한 점", "me": "내 도록", "year": "나의 도록", "year_n": "올해 기록한 전시", "tabs": ["홈", "찾기", "＋남기기", "캘린더", "내 도록"], "hd": "내 도록 · 다녀왔어요 {n}", "alt": "로코코 화면 — {what}"},
+    "en": {"exh": "Exhibition", "went": "Been there", "fav": "Favorite", "one": "One piece", "me": "My catalog", "year": "Year in review", "year_n": "exhibitions logged this year", "tabs": ["Home", "Find", "＋Log", "Calendar", "Me"], "hd": "My catalog · Been there {n}", "alt": "Rococo screen — {what}"},
+    "ja": {"exh": "展示", "went": "行った", "fav": "お気に入り", "one": "一点", "me": "わたしの図録", "year": "わたしの一年", "year_n": "今年記録した展示", "tabs": ["ホーム", "さがす", "＋残す", "カレンダー", "図録"], "hd": "わたしの図録 · 行った {n}", "alt": "ロココの画面 — {what}"}
+  }
+}

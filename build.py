@@ -722,8 +722,8 @@ SPEC_RULES = ('<script type="speculationrules">' + json.dumps({"prefetch": [{"wh
 
 # 쪽 나누기(10/31 동원 "랜딩페이지는 내 소개를 넣고, 다른 시집, 인스타그램, 유튜브 이런 것들은 따로 페이지를 분리 … 연락페이지도 따로 빼는 게 좋다고 생각해"
 # · 버튼 '같은 도메인 아래 주소 (권장)' · "지금 구조 만들어"): 쪽 열쇠(주소 폴더) → 그 쪽에 담는 칸 id, 첫째가 그 쪽 맨 위 칸. "" = 첫 화면(소개)
-PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "guestbook": ("guestbook",), "contact": ("contact",)}  # 11/2 방명록 쪽(동원 "방명록 사이트를 먼저 추가") — 연락 칸 안에서 떼어 /guestbook/
-NEXT_PAGE = {"": "book", "book": "photo", "photo": "video", "video": "guestbook", "guestbook": "", "contact": "guestbook"}  # 쪽 끝 다음 쪽 카드 — 메뉴 차례대로 한 칸씩 · 방명록 다음은 처음(소개) · 연락 다음은 방명록(11/3)
+PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "rococo": ("rococo",), "guestbook": ("guestbook",), "contact": ("contact",)}  # 11/2 방명록 쪽(동원 "방명록 사이트를 먼저 추가") — 연락 칸 안에서 떼어 /guestbook/
+NEXT_PAGE = {"": "book", "book": "photo", "photo": "video", "video": "rococo", "rococo": "guestbook", "guestbook": "", "contact": "guestbook"}  # 11/15 로코코(유튜브 다음)  # 쪽 끝 다음 쪽 카드 — 메뉴 차례대로 한 칸씩 · 방명록 다음은 처음(소개) · 연락 다음은 방명록(11/3)
 PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "mline": "book", "y": "", "p": "photo", "fq": "contact"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p · 이달의 한 줄 무대 mline 11/4)
 
 
@@ -1315,6 +1315,9 @@ def render(site, poem, videos, photos, lang="ko"):
          "datePublished": kb["published"], "numberOfPages": int(re.search(r"(\d+)쪽", kb["spec"]).group(1)),
          "publisher": {"@type": "Organization", "name": kb["spec"].split(" · ")[-1]}, "url": kb["buy_url"], "image": f"{base}/assets/img/cover.jpg"}]}
     poem_t = e(S["poem"]["title"])
+    # 로코코(11/15 동원 'D 큰 한 줄 · 좌우 번갈아' — 원고 content/rococo.json · 기획 기준/로코코 소개 페이지 기획_v1.md): 판 말이 비면 영어 → 한국어
+    RC = load("rococo.json") if (CONTENT / "rococo.json").exists() else {}
+    rc_t = lambda k: e((RC.get(k) or {}).get(lang) or (RC.get(k) or {}).get("en") or (RC.get(k) or {}).get("ko", ""))  # noqa: E731
     # 시를 복사하면 따라붙는 출처 한 줄(11/6 동원 'A 출처 따라붙음' — 시안 시복사출처시안_v1 · 연락 FAQ의 '출처를 함께'를 복사 순간에): 그 판의 부호 꼴로 · main.js가 세 줄 이상일 때만 붙임
     _pt, _bt = S["poem"]["title"], book["title"]
     cite = ("— " + (f'{S["name"]}, “{_pt},” {_bt}' if en else f'{S["name"]}, «{_pt}», {_bt}' if es else f'{S["name"]}, «{NNB}{_pt}{NNB}», {_bt}' if fr else f'{S["name"]}, «{_pt}», «{_bt}»' if ru
@@ -1640,7 +1643,7 @@ def render(site, poem, videos, photos, lang="ko"):
     def fli(href, label, extra=""):  # 단 안 한 줄 링크 — 여는 부호로 시작하면 내어 걺(.hgs — 11/15)
         hg = ' class="hgs"' if label[:1] in "『「" else ""
         return f'<li{hg}><a href="{href}"{extra}>{label}</a></li>'
-    nav_li = "".join(fli(f"~R~{p}", e(x)) for p, x in (("", L["nav"][0]), ("book/", L["nav"][1]), ("photo/", L["nav"][2]), ("video/", L["nav"][3]), ("guestbook/", L["nav"][5]), ("contact/", L["nav_cta"])))
+    nav_li = "".join(fli(f"~R~{p}", e(x)) for p, x in (("", L["nav"][0]), ("book/", L["nav"][1]), ("photo/", L["nav"][2]), ("video/", L["nav"][3]), ("rococo/", L["nav"][6]), ("guestbook/", L["nav"][5]), ("contact/", L["nav_cta"])))
     book_li = (fli("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", "")) + fli("~R~book/#toc", e(book["toc"]["label"]))
                + fli(e(book["buy_url"]), f'{e(book["store_label"])} ↗', f' target="_blank" rel="noopener"{gcc("판권면")}'))
     info_li = ((fli("~R~privacy/", t("gb_privacy")) if (CONTENT / "privacy.json").exists() else "")
@@ -1674,6 +1677,7 @@ def render(site, poem, videos, photos, lang="ko"):
         "photo": (t("mm_d_photo"), [mm_card("~R~photo/", t("mm_wall"), wall_first[0] if wall_first else None, kind="pc"), mm_card(e(iu), f'{t("more_ig")} ↗', kind="pc")]),
         "video": (t("mm_d_video"), [mm_card("~R~video/", t("mm_latest"), f"{P}assets/img/next.jpg"),
                                     mm_card(e(ch.get("url", "")), f'{t("go_watch")} ↗', f"{P}assets/img/stills/1.jpg" if (ASSETS / "img/stills/1.jpg").exists() else None, kind="pc")]),
+        "rococo": (rc_t("oneliner"), [mm_card("~R~rococo/", e(L["nav"][6]), f"{P}assets/img/rococo-icon.png", fit="ct")]),  # 로코코(11/15) — 아이콘 한 장
         "guestbook": (t("mm_d_gb"), [mm_card("~R~guestbook/", t("mm_write"), kind="pc")]),
     }
     mega = ('<div class="mm" id="mm" role="region" aria-label="' + t("mm_label") + '" aria-hidden="true" inert>'
@@ -1695,7 +1699,7 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<ul class="ficons">{icons}</ul>'  # 맺음 인사(10/27 '좋은 아침')는 바닥글에서 뺌(11/2) — 탁본 한 장에는 그대로
             f'<div class="fbar"><div class="lng">{langs}</div><p class="cp">{e(S["copyright"])}</p></div></div>')
 
-    secs = ("me", "poem", "photo", "video", "contact", "guestbook")  # 방명록(11/2)은 ui.json nav 여섯째 낱말 — 앞 다섯 차례는 그대로
+    secs = ("me", "poem", "photo", "video", "contact", "guestbook", "rococo")  # 로코코(11/15)는 ui.json nav 일곱째 — 앞 여섯 차례는 그대로  # 방명록(11/2)은 ui.json nav 여섯째 낱말 — 앞 다섯 차례는 그대로
     navname = dict(zip(secs, L["nav"]))  # 낱말은 ui.json nav 그대로(찾기 칸 이름도 이 차례로 씀)
     others = [x for x in LANGS if x != lang]  # 다른 판 — og:locale:alternate · hreflang · 언어 줄
     # 맨 위 띠는 쪽마다 page()가 만듦(10/31 쪽 나누기 — 메뉴가 칸 자리 #… 대신 쪽 주소)
@@ -1891,6 +1895,51 @@ def render(site, poem, videos, photos, lang="ko"):
         lk = ' lang="ko"' if tr_ and re.search(r"[가-힣]", pin["text"]) else ""
         rdl = (f'<figure class="rdl"><figcaption class="k">{t("rdl_k")}</figcaption><blockquote{lk}>“{e(" ".join(pin["text"].split()))}”</blockquote>'
                f'<p class="w">{t("rdl_from", day=pday)}</p><a href="~R~guestbook/">{t("rdl_go")}</a></figure>')
+    def rococo_sec():  # 로코코 쪽 본문(11/15 'D 큰 한 줄 · 좌우 번갈아' — 목업 기준/브랜드 시안/로코코소개시안_v1_D.png · Day One 꼴)
+        if not RC:
+            return ""
+        sl = (RC.get("screen_lang") or {}).get(lang, "en")
+        U = (RC.get("ui") or {}).get(sl) or RC["ui"]["en"]
+        wm = (CONTENT / "img/rococo-wordmark.svg").read_text(encoding="utf-8").replace("<svg ", '<svg aria-hidden="true" focusable="false" ', 1)
+        # 화면 속 전시 = 동원이 다녀온 전시(photo_art.json — 사진 설명 칸의 작품 정보) 앞 셋 · 화면 말(로코코가 쓰는 한 · 영 · 일)로
+        shows = []
+        for r in load("photo_art.json").get("items", []):
+            a = (r.get(sl) or {}).get("art") if sl != "ko" else None
+            a = {**(r.get("art") or {}), **{k: v for k, v in (a or {}).items() if v}}
+            if a.get("show") and all(a["show"] != x["show"] for x in shows):
+                shows.append(a)
+        shows = shows[:3]
+        recx = next((x for x in site.get("records", []) if "전시" in x.get("note", "")), {})
+        yn = recx.get("year_n") if recx.get("year") == build_day().year else None
+        def card(a, st):
+            return (f'<div class="rx-card"><span class="rx-dots"><i></i><i></i><i></i></span><span class="rx-ck">{e(U["exh"])}</span><span class="rx-ct">{e(a["show"])}</span>'
+                    f'<span class="rx-ca">{e(a.get("artist", ""))}</span><span class="rx-cv">{e(a.get("venue", ""))}</span><span class="rx-cs"><span>{e(st)}</span><b>✓</b></span></div>')
+        tabs = lambda on: "".join(f'<b>{e(x)}</b>' if i == on else f'<span>{e(x)}</span>' for i, x in enumerate(U["tabs"]))  # noqa: E731
+        sb = '<span class="rx-sb"><span>9:41</span><span>●●●</span></span>'
+        scr = {
+            "wide": f'<div class="rx rx-wide"><div class="rx-hd"><span class="rx-wm">{wm}</span><span>{e(U["hd"].format(n=len(shows)))}</span></div><div class="rx-row">{"".join(card(a, U["went"]) for a in shows)}</div></div>',
+            "me": (f'<div class="rx-stage"><div class="rx rx-ph">{sb}<div class="rx-in"><span class="rx-h">{e(U["me"])}</span><span class="rx-st"><span><b>{len(shows)}</b>{e(U["went"])}</span><span><b>2</b>{e(U["fav"])}</span><span><b>1</b>{e(U["one"])}</span></span>'
+                   + "".join(card(a, U["went"]) for a in shows[1:3]) + f'</div><span class="rx-tab">{tabs(4)}</span></div></div>'),
+            "year": (f'<div class="rx-stage"><div class="rx rx-ph rx-dark">{sb}<div class="rx-in"><span><span class="rx-wm">{wm}</span><span class="rx-y">{build_day().year}</span><span class="rx-tl">{e(U["year"])}</span>'
+                     + (f'<span class="rx-n">{yn}</span><span class="rx-l">{e(U["year_n"])}</span>' if yn else "")
+                     + '</span><span class="rx-ul">' + "".join(f"<span>{e(a['show'])}</span>" for a in shows) + f'</span><span class="rx-dots"><i></i><i></i><i></i></span></div><span class="rx-tab">{tabs(-1)}</span></div></div>'),
+        }
+        st = RC.get("status", "preparing")
+        href = e(RC.get("url", "") + (RC.get("url_lang") or {}).get(lang, ""))
+        btn = (f'<span class="rco-btn rco-soon-web">{rc_t("soon_web")}</span>' if st == "preparing"
+               else f'<a class="rco-btn" href="{href}" target="_blank" rel="noopener">{rc_t("cta")} <span aria-hidden="true">↗</span></a>')
+        # 스토어 배지는 stores 값이 생긴 쪽만(출시 전 Download 배지 금지 — Apple 라이선스 · 기획 3절) — 그 전엔 '앱은 준비 중' 한 줄
+        rows = "".join(
+            f'<div class="rco-row{" rev" if i % 2 else ""}"><figure class="rco-fig" role="img" aria-label="{e(U["alt"].format(what=(f["k"].get(sl) or f["k"]["en"])))}">{scr[f["screen"]]}</figure>'
+            f'<div class="rco-tx"><p class="rco-k">{e(f["k"].get(lang) or f["k"]["en"])}</p><h3 class="rco-h">{e(f["title"].get(lang) or f["title"]["en"])}</h3>'
+            f'<p class="rco-p">{e(f["text"].get(lang) or f["text"]["en"])}</p></div></div>' for i, f in enumerate(RC.get("features", [])))
+        return f"""  <section id="rococo" aria-labelledby="rococo-t">
+    <div class="rco-hd"><p class="rco-k">{rc_t("kicker")}</p><h2 class="rco-t" id="rococo-t">{rc_t("slogan")}</h2><p class="rco-one">{rc_t("oneliner")}</p>
+      <p class="rco-go">{btn}</p>{"" if st == "launched" else f'<p class="rco-soon">{rc_t("soon_app")}</p>'}</div>
+    {rows}
+  </section>
+"""
+
     sec = {
         # 시집 쪽 h1(11/1 동원 버튼 "함께 넣어 (권장)" — 명품 사이트 조사 제안 ①: 상품 쪽 h1은 상품 이름): 이름 · 첫 시집 줄 + 큰 제목 + 작은 제목을 한 h1로 — 보이는 모양은 그대로(전엔 h1이 위 작은 줄뿐).
         # 휴대폰의 작은 제목은 책 옆(.side .hs — 읽기 도구에는 숨김)이 보이고, h1 안의 작은 제목(.hsl)은 휴대폰에선 화면 밖 글(읽기 도구만) · 768px부터 보임
@@ -1940,6 +1989,7 @@ def render(site, poem, videos, photos, lang="ko"):
       <p class="sns">{sns}</p>{faq}</div>
   </section>
 """,
+        "rococo": rococo_sec(),
         "guestbook": f"""  <section id="guestbook" aria-labelledby="guestbook-t">
     <p class="label">{t("gb_title")}</p>
     <div class="l"><h2 class="h2" id="guestbook-t">{t("gb_h")}</h2><p class="lead">{t("gb_sep")}</p></div>
@@ -1957,10 +2007,11 @@ def render(site, poem, videos, photos, lang="ko"):
                         *([pin["date"] + pin["text"][:20]] if pin else [])),  # 읽은 사람의 한 줄(11/3)이 바뀌면 시집 쪽에 점
            "photo": mark(*[x.get("file", "") for x in photos.get("items", [])]),
            "video": mark((videos.get("upcoming") or {}).get("title", ""), *[x.get("youtube_id", "") for x in videos.get("items", [])]),
+           "rococo": mark(RC.get("status", ""), *(RC.get("stores") or {}).values(), *(RC.get("beta") or {}).values()),  # 로코코(11/15) — 상태 · 스토어 · 베타 링크가 바뀌면 점
            "guestbook": mark(*[x["date"] + x["text"][:20] for x in gbook])}
     nw_js = json.dumps(nwm, separators=(",", ":"))
     items = [list(x) for k in ix for x in ix[k]]
-    top_of = {"": "me", "book": "poem", "photo": "photo", "video": "video", "guestbook": "guestbook", "contact": "contact"}  # 메뉴 이름 · 쪽 제목에 쓰는 칸
+    top_of = {"": "me", "book": "poem", "photo": "photo", "video": "video", "rococo": "rococo", "guestbook": "guestbook", "contact": "contact"}  # 메뉴 이름 · 쪽 제목에 쓰는 칸
 
     def page(k):
         R = "../" if k else ""  # 이 판 맨 위(소개)까지
@@ -1970,7 +2021,7 @@ def render(site, poem, videos, photos, lang="ko"):
         # 검색 결과 이동 경로(11/4 동원 '④ 넣기 (권장)' — Schema.org BreadcrumbList · 구글 결과에 'namdongwon.com › 시집'): 첫 화면(이름) › 이 쪽 — 첫 화면은 없음
         crumb = ("" if not k else '\n<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": S["name"], "item": f"{base}{'/' + lang if tr_ else ''}/"},
-            {"@type": "ListItem", "position": 2, "name": L["nav"][("me", "poem", "photo", "video", "contact", "guestbook").index(top_of[k])], "item": url}]}, ensure_ascii=False) + "</script>")
+            {"@type": "ListItem", "position": 2, "name": L["nav"][("me", "poem", "photo", "video", "contact", "guestbook", "rococo").index(top_of[k])], "item": url}]}, ensure_ascii=False) + "</script>")
         bpg = k == "book"
 
         def link(pg):  # 같은 판의 쪽 주소 — 이 쪽에서 본 상대 주소
@@ -1987,15 +2038,15 @@ def render(site, poem, videos, photos, lang="ko"):
         nav = "".join(f'<a href="{link(pg)}" data-pg="{pg}"' + (' class="on" aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a>'
                       # 메뉴 펼침 키보드 단추(11/15 동원 버튼 "① 메뉴 펼침 키보드 (권장)" — 애플 실측 꼴: 메뉴 링크 다음 ⌄ 단추, 초점일 때만 보임 · Enter로 #mm 그 쪽 칸 · main.js)
                       + f'<button type="button" class="mmk" data-mk="{pg}" aria-expanded="false" aria-controls="mm" aria-label="{t("mm_open", page=e(navname[top_of[pg]]))}">{CARET_ICON}</button>'
-                      for pg in ("", "book", "photo", "video", "guestbook"))  # data-pg — 새것 점(11/3)이 쪽을 앎
+                      for pg in ("", "book", "photo", "video", "rococo", "guestbook"))  # data-pg — 새것 점(11/3)이 쪽을 앎
         # 맨 위 띠(10/31 동원 "gnb 이거 있잖아 가운데로 넣어" · "언어 설정 하단 푸터로 빼"): 이름 | 메뉴 넷(가운데) | 찾기 · [연락하기] — 언어는 바닥글 판권면 '언어' 줄로
         act = f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
         act += f'<a class="cta{" on" if k == "contact" else ""}" href="{link("contact")}"' + (' aria-current="page"' if k == "contact" else "") + f'>{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(연락 쪽에선 맨 위에서도 먹 — 지금 쪽 표시)
         # 휴대폰 메뉴 단추의 목록(11/1 밤 동원 버튼 "B 메뉴 단추"): 메뉴와 같은 쪽 · 같은 차례, 쪽 이름만 큰 명조로(동원 "url 은 빼") — 띠 밖(</header> 뒤)에 둠: 띠의 흐림(backdrop-filter)이 안쪽 fixed를 띠 높이에 가둠
-        mnu = "".join(f'<li><a href="{link(pg)}" data-pg="{pg}"' + (' aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a></li>' for pg in ("", "book", "photo", "video", "guestbook"))
+        mnu = "".join(f'<li><a href="{link(pg)}" data-pg="{pg}"' + (' aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a></li>' for pg in ("", "book", "photo", "video", "rococo", "guestbook"))
         lang_href = {x: f'{PP}{"" if x == "ko" else x + "/"}{kp}' for x in others}  # 같은 쪽의 다른 판 — 바닥글 '언어' 줄(~L:말~)
-        ptitle = title if not k else f'{L["nav"][("me", "poem", "photo", "video", "contact", "guestbook").index(top_of[k])]} — {S["name"]}'
-        tab = S["logo"] if not k else f'{S["logo"]} — {L["nav"][("me", "poem", "photo", "video", "contact", "guestbook").index(top_of[k])]}'  # 탭 제목은 표장 먼저(11/3 동원 "내 지금 웹사이트 이렇게 나오는 것도 바꾸자" → 목업 탭제목시안_v1 'B 표장만') — 링크 미리보기(og) · 읽기 도구용 h1은 이름 · 소개 그대로
+        ptitle = title if not k else f'{L["nav"][("me", "poem", "photo", "video", "contact", "guestbook", "rococo").index(top_of[k])]} — {S["name"]}'
+        tab = S["logo"] if not k else f'{S["logo"]} — {L["nav"][("me", "poem", "photo", "video", "contact", "guestbook", "rococo").index(top_of[k])]}'  # 탭 제목은 표장 먼저(11/3 동원 "내 지금 웹사이트 이렇게 나오는 것도 바꾸자" → 목업 탭제목시안_v1 'B 표장만') — 링크 미리보기(og) · 읽기 도구용 h1은 이름 · 소개 그대로
         h1 = "" if bpg else f'<h1 class="sr">{e(S["name"] if not k else ptitle)}</h1>\n'  # 시집 쪽은 첫 화면 h1(이름 · 첫 시집) 그대로, 다른 쪽은 읽기 도구용 쪽 제목
         oimg, otitle, odesc = (og_img, og_title, og_desc) if k in ("", "book") else (f"og-{lang}.jpg" if tr_ else "og.jpg", ptitle, S["description"])
         if k in OG_PAGES:  # 쪽마다 공유 카드(11/4) — 그 쪽 그림 · 그 쪽 한 줄
@@ -2135,7 +2186,7 @@ def page_404(site, ja=True):
     def five(lang, base):
         names = ui["nav"][lang]
         return (f'<nav class="nfp" lang="{lang}" aria-label="{e(ui["nav_label"][lang])}">'
-                + "".join(f'<a href="{base}{pg}">{e(names[i])}</a>' for i, pg in ((0, ""), (1, "book/"), (2, "photo/"), (3, "video/"), (5, "guestbook/"))) + "</nav>")
+                + "".join(f'<a href="{base}{pg}">{e(names[i])}</a>' for i, pg in ((0, ""), (1, "book/"), (2, "photo/"), (3, "video/"), (6, "rococo/"), (5, "guestbook/"))) + "</nav>")
     jp = (f'\n<p class="lead" lang="ja">{jl("nf_title")}。{jl("nf_lead")}</p>\n<p lang="ja"><a class="buy" href="/ja/">{jl("nf_back")}</a></p>\n{five("ja", "/ja/")}') if jl else ""
     rl = (lambda key: e(ui[key]["ru"])) if ja and all(ui[x].get("ru") for x in ("nf_title", "nf_lead", "nf_back")) else None  # 러시아어 두 줄(11/6) — 일본어와 같은 자리 · 같은 규칙
     jp += (f'\n<p class="lead" lang="ru">{rl("nf_title")}. {rl("nf_lead")}</p>\n<p lang="ru"><a class="buy" href="/ru/">{rl("nf_back")}</a></p>\n{five("ru", "/ru/")}') if rl else ""
@@ -2469,6 +2520,8 @@ def main():
     print(f"러시아어판 글꼴에 남긴 글자 {len(set(text_ru))}자")
 
 
+    if (CONTENT / "img/rococo-icon.png").exists():  # 로코코 앱 아이콘(11/15 — 메뉴 펼침 칸 · 원본 ~/작업/로코코/artrococo/brand · content/img/rococo-출처.txt)
+        (ASSETS / "img").mkdir(parents=True, exist_ok=True); shutil.copy2(CONTENT / "img/rococo-icon.png", ASSETS / "img/rococo-icon.png")
     # 글꼴 라이선스 전문은 글꼴 옆에 함께 둔다(OFL·GPL 조건)
     for lic in sorted((CONTENT / "licenses").glob("*.txt")):
         shutil.copy2(lic, ASSETS / "fonts" / lic.name)
