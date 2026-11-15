@@ -1082,8 +1082,8 @@
       cnt.textContent = uiText("search_count", "찾은 것 {n}", { n: hits.length });
       res.innerHTML = hits.map((h, i) => {
         const ext = /^https?:/.test(h.it[3]);
-        return `<li role="none"><a role="option" id="sr${i}" aria-selected="false" href="${esc(h.it[3])}"${ext ? ' target="_blank" rel="noopener"' : ""}><span class="tg">${esc(h.it[0])}</span>${SR_IC}` +
-          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
+        return `<li role="none"><a role="option" id="sr${i}" aria-selected="false" href="${esc(h.it[3])}"${ext ? ' target="_blank" rel="noopener"' : ""}>${SR_IC}` +
+          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌 · 왼쪽 갈래(「탁본」 · 차례 · 이달)도 뺌(시안 찾기결과갈래시안_v1 'A 갈래 뺌 (권장)')  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
       }).join("");
       none.hidden = empty || hits.length > 0;
       // 결과 없음(11/6 섬세한 배려 2차 ① — 동원 'A 친 말 + 길 한 줄' · 알라딘 · Toteme · 예스24): 친 말을 그 판의 따옴표로 되돌려 보이고 아래에 해 볼 길 한 줄 — 친 말은 글자로만(textContent)
