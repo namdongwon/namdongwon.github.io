@@ -2254,10 +2254,18 @@
       s.push(document.documentElement.scrollHeight - innerHeight);
       return [...new Set(s.map(v => Math.max(0, Math.round(v))))].sort((a, b) => a - b);
     };
-    let busy = false, armed = true, lastWheel = 0;
+    // 11/15 동원 "한 번 내리면 그 다음에 내릴 때는 작동을 안한다" — 실측: 트랙패드 관성(손 뗀 뒤 1~2초 휠이 이어짐) 중에 다시 밀면 0.2초 쉼이 없어 버려졌고(1초 간격 세 번 → 한 칸),
+    // 넘기는 0.8초 동안 들어온 휠도 버려졌음(마우스 딸깍 0.35초 간격 세 번 → 한 칸). → 새 몸짓 알아보기에 '휠 값이 갑자기 커짐(관성은 줄기만 함) · 방향 바뀜'을 더하고,
+    // 넘기는 중에 온 새 몸짓은 하나까지 기억했다가 넘김이 끝나면 이어서(fullPage.js 가속 알아보기와 같은 생각)
+    let busy = false, armed = true, lastWheel = 0, lastAbs = 0, lastDir = 0, movedAt = -1e9, queued = 0;
     const go = to => {
       busy = true; const from = scrollY, t0 = performance.now();
-      const step = n => { const k = Math.min(1, (n - t0) / 800); scrollTo(0, from + (to - from) * ease(k)); if (k < 1) requestAnimationFrame(step); else busy = false; };
+      const step = n => {
+        const k = Math.min(1, (n - t0) / 800); scrollTo(0, from + (to - from) * ease(k));
+        if (k < 1) { requestAnimationFrame(step); return; }
+        busy = false;
+        if (queued) { const d = queued; queued = 0; movedAt = performance.now(); move(d); }
+      };
       requestAnimationFrame(step);
     };
     const move = dir => {
@@ -2270,10 +2278,15 @@
     addEventListener("wheel", e => {
       if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || blocked(e.target)) return;
       e.preventDefault();
-      const now = performance.now(), gap = now - lastWheel; lastWheel = now;
-      if (gap >= 200) armed = true;  // 휠이 0.2초 넘게 멈췄다 다시 — 새 몸짓
-      if (busy || !armed) return;  // 넘기는 중 · 한 몸짓(트랙패드 관성 포함)엔 한 칸만 — 손을 뗐다 다시 굴려야 다음 칸
-      armed = false; move(e.deltaY);
+      const now = performance.now(), gap = now - lastWheel, a = Math.abs(e.deltaY), dir = Math.sign(e.deltaY);
+      // 새 몸짓: 휠이 0.2초 넘게 쉼 · 방향 바뀜 · 줄어들던 휠 값이 1.5배 넘게 커짐(넘긴 지 0.3초 안은 같은 몸짓의 키움으로 봄)
+      const fresh = gap >= 200 || (dir && dir !== lastDir) || (a >= 4 && a > lastAbs * 1.5 && now - movedAt > 300);
+      lastWheel = now; lastAbs = a; if (dir) lastDir = dir;
+      if (fresh) armed = true;
+      if (!armed) return;  // 한 몸짓(트랙패드 관성 포함)엔 한 칸만
+      armed = false;
+      if (busy) { queued = dir; return; }  // 넘기는 중에 새로 밀면 버리지 않고 끝난 뒤 이어서(하나까지)
+      movedAt = now; move(e.deltaY);
     }, { passive: false });
     addEventListener("keydown", e => {
       if (e.altKey || e.ctrlKey || e.metaKey || blocked(e.target) || busy) return;
