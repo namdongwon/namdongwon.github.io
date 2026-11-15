@@ -1046,10 +1046,11 @@
     const recent = () => { try { const a = JSON.parse(localStorage.getItem(RK) || "[]"); return Array.isArray(a) ? a.filter(x => typeof x === "string").slice(0, 5) : []; } catch (x) { return []; } };
     const keepR = a => { try { if (a.length) localStorage.setItem(RK, JSON.stringify(a.slice(0, 5))); else localStorage.removeItem(RK); } catch (x) { /* 저장소가 막힌 창 */ } };
     const remember = q => { q = q.trim().slice(0, 40); if (q) keepR([q, ...recent().filter(x => x !== q)]); };
+    const RC_IC = '<svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l2.6 1.6"/></svg>';  // 최근 검색어 앞 시계(11/16 동원 구글 캡처 "최근 검색어는 돋보기 말고 이렇게 시계 표시") — 결과 돋보기와 같은 선 굵기
     const drawR = () => {
       const a = recent();
       rc.innerHTML = `<div class="rc-h"><p class="sr-lab">${esc(uiText("recent_title", "최근 검색어"))}</p>` + (a.length ? `<button type="button" class="rc-x">${esc(uiText("recent_clear", "모두 지우기"))}</button>` : "") + "</div>" +
-        (a.length ? '<ul class="rc-l">' + a.map(q => `<li><button type="button" class="rc-q" data-q="${esc(q)}">${esc(q)}</button><button type="button" class="rc-d" data-rm="${esc(q)}" aria-label="${esc(uiText("recent_del", "{q} 지우기", { q }))}"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M5 5l8 8M13 5l-8 8"/></svg></button></li>`).join("") + "</ul>"
+        (a.length ? '<ul class="rc-l">' + a.map(q => `<li><button type="button" class="rc-q" data-q="${esc(q)}">${RC_IC}<span>${esc(q)}</span></button><button type="button" class="rc-d" data-rm="${esc(q)}" aria-label="${esc(uiText("recent_del", "{q} 지우기", { q }))}"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M5 5l8 8M13 5l-8 8"/></svg></button></li>`).join("") + "</ul>"
           : `<p class="rc-n">${esc(uiText("recent_none", "최근 검색어가 없습니다"))}</p>`);
     };
     rc.addEventListener("click", ev => {

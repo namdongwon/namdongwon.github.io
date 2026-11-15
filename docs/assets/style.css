@@ -4,10 +4,10 @@
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=13fff1ee8a") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=0f6db74b36") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=02d1e3a83f") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=e395b28fd2") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=a1f2a4b121") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=eb786c8c47") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=a8027b2679") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=211ce7ba97") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=366559f50a") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -491,6 +491,7 @@ html.sr-on{overflow:hidden}
 .rc-l{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .rc-l li{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px}
 .rc-q{padding:8px 0 8px 12px;border:0;background:none;font:400 calc(14px * var(--fs))/1 var(--sans);color:var(--ink);cursor:pointer}
+.rc-q{display:inline-flex;align-items:center;gap:8px}.rc-q .ic{flex:none;width:14px;height:14px;color:var(--faint)}  
 .rc-d{display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;background:none;color:var(--faint);cursor:pointer}
 .rc-d svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round}
 @media (hover:hover){.rc-x:hover,.rc-d:hover{color:var(--ink)}.rc-q:hover{text-decoration:underline;text-underline-offset:4px}}
@@ -500,6 +501,7 @@ html.sr-on{overflow:hidden}
   .srch .srh .sug a,.srch .srh .sug button{padding:16px 0;font-size:calc(18px * var(--fs))}    
   .rc-l{display:block}.rc-l li{display:flex;justify-content:space-between;border:0;border-bottom:1px solid var(--rule);border-radius:0}
   .rc-q{flex:1;padding:16px 0;text-align:left;font:400 calc(18px * var(--fs))/1.3 var(--serif)}
+  .rc-q{gap:12px}.rc-q .ic{width:15px;height:15px}
   .rc-n{padding:16px 0;border-bottom:1px solid var(--rule)}
 }
 .srh[hidden]{display:none}
