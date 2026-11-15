@@ -532,7 +532,7 @@ html.sr-on{overflow:hidden}
 .srch .sug .hang{text-indent:-.6em}  /* 「탁본」 읽기 — 여는 부호 앞 빈만큼 내어 걸어 다른 줄과 첫머리를 맞춤 */
 .sr-n{margin-top:22px;font:300 11px/1 var(--sans);color:var(--faint)}
 .sr-res{list-style:none;margin-top:18px}
-.sr-res a{display:grid;grid-template-columns:15px 1fr;gap:12px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--rule)}
+.sr-res a{display:grid;grid-template-columns:15px 1fr;gap:12px;align-items:baseline;padding:8px 0}  /* 줄 사이 선 뺌 · 위아래 8px — 인기 검색어 목록과 같은 간격(11/16 동원 '밑줄 빼는 게 낫나' → 시안 찾기결과선시안_v1 'B 선 빼고 촘촘히 (권장)') */
 .sr-res .tx{font:400 16px/1.5 var(--serif);color:var(--muted);word-break:keep-all}
 .sr-res .tx b{font-weight:400;color:var(--ink);box-shadow:inset 0 -.38em 0 var(--mark)}  /* 찾은 낱말 — 먹 + 옅은 밑바탕(색 없이) */
 .sr-res .ic{width:15px;height:15px;align-self:start;margin-top:5px;color:var(--faint)}  /* 결과 앞 돋보기(11/16 동원 '구글에 나와있는 것처럼') — 첫 줄 가운데(16px × 1.5 = 24px 줄) */
