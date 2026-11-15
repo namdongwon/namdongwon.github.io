@@ -1515,7 +1515,7 @@ def render(site, poem, videos, photos, lang="ko"):
     wtiles = [x for _, _, x in sorted(wtiles, key=lambda z: (z[0], z[1]))]  # 게시물을 섞어 늘어놓음(각 게시물의 첫 장들 → 둘째 장들 …) — 세 줄이 서로 다른 게시물로 시작
 
     def wcol(c):
-        own = [x for j, x in enumerate(wtiles[c::3]) for x in ((x, '<i class="wb"></i>') if (j + c) % 4 == 3 else (x,))]  # 빈칸은 넷째마다 · 줄마다 자리를 엇갈림
+        own = list(wtiles[c::3])  # 11/15 넷째마다 두던 옅은 빈칸(.wb — 11/3 레퍼런스 색 블록 자리)은 뺌: 무채색 벽에선 '못 불러온 사진'으로 읽힘(동원 "아직도 회색 화면 보이는데" → 버튼 "빈 칸 빼기 (권장)")
         dup = "".join(own).replace('<button type="button" class="pop', '<button type="button" tabindex="-1" class="pop')
         return f'<div class="col"><div class="wv">{"".join(own)}</div><div class="wv dup" aria-hidden="true">{dup}</div></div>'
     wall = "".join(wcol(c) for c in range(3))
