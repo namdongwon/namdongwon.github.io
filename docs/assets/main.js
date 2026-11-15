@@ -1025,7 +1025,7 @@
         const cs = [...it[1].normalize("NFC")], a = map[at], b = map[at + w.length - 1] + 1;
         out.push({ it, at, html: esc(cs.slice(0, a).join("")) + "<b>" + esc(cs.slice(a, b).join("")) + "</b>" + esc(cs.slice(b).join("")) });
       });
-      return out.sort((x, y) => (x.at > 0) - (y.at > 0)).slice(0, 10);  // 최대 10개(11/16 동원 "찾은 검색어 들은 최대 10개만") · 앞부분이 맞는 것부터, 같으면 갈래 차례(칸 · 시집 · 차례 · 시 · 소개 …)
+      return out.sort((x, y) => (x.at > 0) - (y.at > 0));  // 최대 10개는 run()에서 최근 찾은 것을 앞으로 올린 뒤 자름(11/16) · 앞부분이 맞는 것부터, 같으면 갈래 차례(칸 · 시집 · 차례 · 시 · 소개 …)
     };
     // 방향키로 고른 줄(10/27 동원 요청 · 10/28 A 옅은 바탕) — 포커스는 입력 칸에 두고 고른 줄만 표시(aria-activedescendant) · 더 치면 그대로 이어서 찾음
     let act = -1, lastQ = null;
@@ -1045,7 +1045,7 @@
     lab.before(srh); rec.append(lab, sug); srh.append(rc, rec);
     const recent = () => { try { const a = JSON.parse(localStorage.getItem(RK) || "[]"); return Array.isArray(a) ? a.filter(x => typeof x === "string").slice(0, 5) : []; } catch (x) { return []; } };
     const keepR = a => { try { if (a.length) localStorage.setItem(RK, JSON.stringify(a.slice(0, 5))); else localStorage.removeItem(RK); } catch (x) { /* 저장소가 막힌 창 */ } };
-    const remember = q => { q = q.trim().slice(0, 40); if (q) keepR([q, ...recent().filter(x => x !== q)]); };
+    const remember = q => { q = q.trim().slice(0, 80); if (q) keepR([q, ...recent().filter(x => x !== q)]); };
     const RC_IC = '<svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l2.6 1.6"/></svg>';  // 최근 검색어 앞 시계(11/16 동원 구글 캡처 "최근 검색어는 돋보기 말고 이렇게 시계 표시") — 결과 돋보기와 같은 선 굵기
     const drawR = () => {
       const a = recent();
@@ -1075,7 +1075,11 @@
       const q = inp.value;
       if (q === lastQ) return;  // 글자가 그대로면(한글 한 글자 마침 등) 다시 그리지 않음 — 고른 줄을 지킴
       lastQ = q;
-      const empty = !q.trim(), hits = empty ? [] : find(q), showSug = empty;  // 추천은 빈 칸일 때만 — 찾는 글이 없으면 '결과 없음' 한 줄(11/4 동원 '추천으로 나오거든? 차라리 … 결과 없음' — 노션 꼴 · 전엔 10/28 점검 4로 추천을 함께)
+      const empty = !q.trim(), showSug = empty;
+      // 최근에 눌러 간 결과는 맨 위에 시계로(11/16 동원 "ㅁㅇ 를 검색하고 마지막 아침에를 눌러도 최근 검색어는 ㅁㅇ로 나오고 시계 표시도 안나온다" — 구글 예상 검색어 꼴) · 같은 제목이 둘이면 첫 줄만 · 그다음 최대 10개
+      const rcs = empty ? [] : recent(), seen = new Set();
+      const hits = (empty ? [] : find(q)).map((h, k) => { const r = rcs.indexOf(h.it[1]); const on = r >= 0 && !seen.has(h.it[1]); if (on) seen.add(h.it[1]); return { ...h, rc: on ? r : 99, k }; })
+        .sort((x, y) => x.rc - y.rc || x.k - y.k).slice(0, 10);  // 추천은 빈 칸일 때만 — 찾는 글이 없으면 '결과 없음' 한 줄(11/4 동원 '추천으로 나오거든? 차라리 … 결과 없음' — 노션 꼴 · 전엔 10/28 점검 4로 추천을 함께)
       if (clr) clr.hidden = !q;
       lab.hidden = sug.hidden = srh.hidden = !showSug;
       if (showSug) drawR();
@@ -1083,7 +1087,7 @@
       cnt.textContent = uiText("search_count", "찾은 것 {n}", { n: hits.length });
       res.innerHTML = hits.map((h, i) => {
         const ext = /^https?:/.test(h.it[3]);
-        return `<li role="none"><a role="option" id="sr${i}" aria-selected="false" href="${esc(h.it[3])}"${ext ? ' target="_blank" rel="noopener"' : ""}>${SR_IC}` +
+        return `<li role="none"><a role="option" id="sr${i}" aria-selected="false" href="${esc(h.it[3])}" data-t="${esc(h.it[1])}"${ext ? ' target="_blank" rel="noopener"' : ""}>${h.rc < 99 ? RC_IC : SR_IC}` +
           `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌 · 왼쪽 갈래(「탁본」 · 차례 · 이달)도 뺌(시안 찾기결과갈래시안_v1 'A 갈래 뺌 (권장)')  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
       }).join("");
       none.hidden = empty || hits.length > 0;
@@ -1195,7 +1199,7 @@
       const a = ev.target.closest("a, button[data-q]");
       if (!a) return;
       if (a.dataset.q) { inp.value = a.dataset.q; run(); inp.focus(); return; }
-      if (res.contains(a)) remember(inp.value);  // 결과로 가는 말만 최근 찾은 말로
+      if (res.contains(a)) remember(a.dataset.t || inp.value);  // 눌러 간 결과의 제목을 최근 검색어로(11/16 — 전엔 친 말 'ㅁㅇ'이 남았음)
       const href = a.getAttribute("href") || "";
       if (!href.startsWith("#") && a.target !== "_blank") {  // 사이트 안 다른 쪽(10/31 쪽 나누기 — book/#toc 등): 창을 닫고 쌓아 둔 기록 칸을 그 쪽 주소로 바꿔 옮김(뒤로 가기는 찾기 전 자리로)
         ev.preventDefault();

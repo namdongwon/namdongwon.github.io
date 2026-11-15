@@ -491,7 +491,7 @@ html.sr-on{overflow:hidden}
 .rc-l{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .rc-l li{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px}
 .rc-q{padding:8px 0 8px 12px;border:0;background:none;font:400 calc(14px * var(--fs))/1 var(--sans);color:var(--ink);cursor:pointer}
-.rc-q{display:inline-flex;align-items:center;gap:8px}.rc-q .ic{flex:none;width:14px;height:14px;color:var(--faint)}  
+.rc-l li{max-width:100%}.rc-q{display:inline-flex;align-items:center;gap:8px;min-width:0}.rc-q span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}  .rc-q .ic{flex:none;width:14px;height:14px;color:var(--faint)}  
 .rc-d{display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;background:none;color:var(--faint);cursor:pointer}
 .rc-d svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round}
 @media (hover:hover){.rc-x:hover,.rc-d:hover{color:var(--ink)}.rc-q:hover{text-decoration:underline;text-underline-offset:4px}}
