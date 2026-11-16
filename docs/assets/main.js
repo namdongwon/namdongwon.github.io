@@ -2402,6 +2402,7 @@
       items.forEach(([, el], i) => { if (topOf(el) <= y) k = i; });
       if (end) k = items.length - 1;  // 맨 아래에 닿으면 마지막 칸(짧은 끝 칸이 화면 40% 줄에 못 닿아도)
       as.forEach((a, i) => { a.classList.toggle("on", i === k); if (i === k) a.setAttribute("aria-current", "location"); else a.removeAttribute("aria-current"); });
+      if (nav.classList.contains("hov")) dim();  // 누르고 이동하는 동안 — 이름 줄 아래로 지나가는 글도 옅게
     };
     addEventListener("scroll", () => { if (!pend) { pend = true; requestAnimationFrame(spy); } }, { passive: true });
     addEventListener("resize", spy, { passive: true });
@@ -2437,10 +2438,12 @@
     });
     // 마우스가 떠나면 늘 가라앉음 — 키보드로 옮긴 초점(:focus-visible)일 때만 남김(11/16 동원 "버튼을 누르고 이동한다음에 마우스를 다른 곳에 해도 저게 계속 튀어나와있네" — 누른 막대에 초점이 남아 있었음)
     const kbFocus = () => as.some(a => a.matches(":focus-visible"));
-    nav.addEventListener("pointerleave", () => { if (!kbFocus()) calm(); });
+    let inside = false;  // 마우스가 칸 표시 위에 있는 동안은 눌러도 물결 · 이름 그대로 — 빠질 때만 가라앉음(11/16 동원 "클릭해도 계속 남아 있어야지 마우스를 뺄 때 원래대로")
+    nav.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") inside = true; });
+    nav.addEventListener("pointerleave", () => { inside = false; if (!kbFocus()) calm(); });
     as.forEach((a, i) => {
       a.addEventListener("focus", () => { if (a.matches(":focus-visible")) wave(i + 0.5, i); });
-      a.addEventListener("blur", () => setTimeout(() => { if (!nav.contains(document.activeElement)) calm(); }, 0));
+      a.addEventListener("blur", () => setTimeout(() => { if (!inside && !nav.contains(document.activeElement)) calm(); }, 0));
       a.addEventListener("click", e => {
         e.preventDefault();
         if (e.detail) a.blur();  // 마우스로 누르면 초점을 풀어 둠(키보드 Enter는 detail 0 — 초점 그대로)
