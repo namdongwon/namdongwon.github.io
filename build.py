@@ -2018,6 +2018,7 @@ def render(site, poem, videos, photos, lang="ko"):
             txt = x.get(f"lyrics_{lang}") or x.get("lyrics") or ""
             return "".join(f"<p>{'<br>'.join(e(l_) for l_ in st_.split(chr(10)))}</p>" for st_ in re.split(r"\n\s*\n", txt.strip()) if st_.strip())
         img = lambda f: f"{P}assets/img/music/{e(f)}" if f else ""  # noqa: E731
+        SOON = f'<b><i aria-hidden="true"></i>{t("coming")}</b>'
         # 앨범 묶기 — 앨범 칸이 없는 곡은 그 곡 하나로 싱글
         albs = {a_["id"]: {**a_, "tracks": []} for a_ in MU.get("albums", [])}
         for x in mu_items:
@@ -2043,11 +2044,12 @@ def render(site, poem, videos, photos, lang="ko"):
             kind = t("mu_kind_" + ab.get("kind", "album")) + (f' · {ab["date"][:4]}' if ab.get("date") else "")
             hid = ' id="music-t"' if ai == 0 else ""
             c0 = img(tr_s[0].get("cover") or ab.get("cover"))
-            blocks.append(f'''    <div class="ma"><div class="ma-l"><div class="ma-cv">{f'<img src="{c0}" alt="" loading="lazy" decoding="async">' if c0 else ""}</div></div>
+            pre = ab.get("status") == "preparing" or ab.get("date", "") > day.isoformat()  # 발매 전(발매일이 빌드한 날보다 뒤 · status preparing) — 표지에 '준비 중'(유튜브 첫 편 썸네일과 같은 배지 · 11/17 동원 "준비중 띄워야지")
+            blocks.append(f'''    <div class="ma"><div class="ma-l"><div class="ma-cv{" soon" if pre else ""}">{f'<img src="{c0}" alt="" loading="lazy" decoding="async">' if c0 else ""}{SOON if pre else ""}</div></div>
       <div class="ma-r"><p class="mu-k">{kind}</p><h2 class="mu-t"{hid}>{loc(ab["title"])}</h2><p class="mu-one">{e(S["name"])}</p>
       <ol class="ma-ol" aria-label="{t("mu_list")}">{"".join(rows)}</ol><p class="ma-meta">{meta}</p>{"".join(lys)}</div></div>''')
         if not blocks:
-            blocks = [f'''    <div class="ma"><div class="ma-l"><div class="ma-cv"></div></div>
+            blocks = [f'''    <div class="ma"><div class="ma-l"><div class="ma-cv soon">{SOON}</div></div>
       <div class="ma-r"><p class="mu-k">{mu_t("kicker")}</p><h2 class="mu-t" id="music-t">{mu_t("title")}</h2><p class="ma-empty">{mu_t("empty")}</p></div></div>''']
         dock = ("" if not mu_items else
                 f'<div class="ma-dock" role="region" aria-label="{t("mu_player")}" hidden><div>'
