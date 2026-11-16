@@ -40,7 +40,8 @@
       "유튜브",
       "연락",
       "방명록",
-      "로코코"
+      "로코코",
+      "음악"
     ],
     "en": [
       "About",
@@ -49,7 +50,8 @@
       "YouTube",
       "Contact",
       "Guestbook",
-      "Rococo"
+      "Rococo",
+      "Music"
     ],
     "ja": [
       "紹介",
@@ -58,7 +60,8 @@
       "YouTube",
       "お問い合わせ",
       "芳名録",
-      "ロココ"
+      "ロココ",
+      "音楽"
     ],
     "ru": [
       "Обо мне",
@@ -67,7 +70,8 @@
       "YouTube",
       "Контакты",
       "Гостевая книга",
-      "Rococo"
+      "Rococo",
+      "Музыка"
     ],
     "es": [
       "Sobre mí",
@@ -76,7 +80,8 @@
       "YouTube",
       "Contacto",
       "Libro de visitas",
-      "Rococo"
+      "Rococo",
+      "Música"
     ],
     "fr": [
       "À propos",
@@ -85,7 +90,8 @@
       "YouTube",
       "Contact",
       "Livre d’or",
-      "Rococo"
+      "Rococo",
+      "Musique"
     ]
   },
   "nav_cta": {
@@ -1550,20 +1556,20 @@
     "fr": "Effacer"
   },
   "search_tags": {
-    "ko": "차례|「탁본」|시집|소개|소식|사진|영상|연락|칸",
-    "en": "Contents|“Rubbing”|Book|About|News|Photo|Video|Contact|Section",
-    "ja": "目次|「拓本」|詩集|紹介|お知らせ|写真|動画|連絡|ページ",
-    "ru": "Содержание|«Оттиск»|Книга|Обо мне|Новости|Фото|Видео|Контакты|Раздел",
-    "es": "Índice|«Calco»|Libro|Sobre mí|Noticias|Foto|Vídeo|Contacto|Sección",
-    "fr": "Sommaire|« Estampage »|Livre|À propos|Actualités|Photo|Vidéo|Contact|Section"
+    "ko": "차례|「탁본」|시집|소개|소식|사진|영상|연락|칸|음악",
+    "en": "Contents|“Rubbing”|Book|About|News|Photo|Video|Contact|Section|Music",
+    "ja": "目次|「拓本」|詩集|紹介|お知らせ|写真|動画|連絡|ページ|音楽",
+    "ru": "Содержание|«Оттиск»|Книга|Обо мне|Новости|Фото|Видео|Контакты|Раздел|Музыка",
+    "es": "Índice|«Calco»|Libro|Sobre mí|Noticias|Foto|Vídeo|Contacto|Sección|Música",
+    "fr": "Sommaire|« Estampage »|Livre|À propos|Actualités|Photo|Vidéo|Contact|Section|Musique"
   },
   "search_sec_where": {
-    "ko": "약력 · 연표 · 지금|「탁본」 · 책 · 차례|사진 · 게시물|영상 · 리뷰|메일 · 인스타그램 메시지|남긴 글 · 남기기|앱 · 전시 기록",
-    "en": "Bio · timeline · now|“Rubbing” · book · contents|Photos · posts|Videos · reviews|Email · Instagram message|Notes · leave a note|App · exhibition log",
-    "ja": "略歴 · 年表 · いま|「拓本」 · 本 · 目次|写真 · 投稿|動画 · レビュー|メール · Instagramのメッセージ|メッセージ · 書き込み|アプリ · 展示の記録",
-    "ru": "Биография · хронология · сейчас|«Оттиск» · книга · содержание|Фото · посты|Видео · обзоры|Почта · сообщение в Instagram|Записи · оставить запись|Приложение · дневник выставок",
-    "es": "Biografía · cronología · ahora|«Calco» · libro · índice|Fotos · publicaciones|Vídeos · reseñas|Correo · mensaje de Instagram|Notas · dejar una nota|App · registro de exposiciones",
-    "fr": "Biographie · chronologie · maintenant|« Estampage » · livre · sommaire|Photos · publications|Vidéos · critiques|E-mail · message Instagram|Mots · laisser un mot|Appli · carnet d’expositions"
+    "ko": "약력 · 연표 · 지금|「탁본」 · 책 · 차례|사진 · 게시물|영상 · 리뷰|메일 · 인스타그램 메시지|남긴 글 · 남기기|앱 · 전시 기록|노래 · 가사",
+    "en": "Bio · timeline · now|“Rubbing” · book · contents|Photos · posts|Videos · reviews|Email · Instagram message|Notes · leave a note|App · exhibition log|Songs · lyrics",
+    "ja": "略歴 · 年表 · いま|「拓本」 · 本 · 目次|写真 · 投稿|動画 · レビュー|メール · Instagramのメッセージ|メッセージ · 書き込み|アプリ · 展示の記録|歌 · 歌詞",
+    "ru": "Биография · хронология · сейчас|«Оттиск» · книга · содержание|Фото · посты|Видео · обзоры|Почта · сообщение в Instagram|Записи · оставить запись|Приложение · дневник выставок|Песни · тексты",
+    "es": "Biografía · cronología · ahora|«Calco» · libro · índice|Fotos · publicaciones|Vídeos · reseñas|Correo · mensaje de Instagram|Notas · dejar una nota|App · registro de exposiciones|Canciones · letras",
+    "fr": "Biographie · chronologie · maintenant|« Estampage » · livre · sommaire|Photos · publications|Vidéos · critiques|E-mail · message Instagram|Mots · laisser un mot|Appli · carnet d’expositions|Chansons · paroles"
   },
   "search_month_tag": {
     "ko": "이달",
@@ -1606,12 +1612,12 @@
     "fr": "kyobo pubple acheter achat commande commander prix livraison boutique librairie"
   },
   "search_sec_keys": {
-    "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 교보문고 퍼플 서점 구매 구입 사기 신간 출간 판매 쪽수 사는 곳 소식 주문 가격 배송 판매처 출간일 발행 영어|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지 화면 어둡게 다크 이메일 연락처 협업 디엠 dm|방명록 남긴 글 글 남기기 방문 다녀감|로코코 rococo 앱 어플 아트 전시 기록 도록 전시회 미술관 artrococo",
-    "en": "bio timeline now name|poem poems book contents rubbing kyobo pubple buy purchase shop release published pages news translated translation korean ships shipping price order|photos instagram posts exhibitions|videos reviews film films channel beautiful nam|email gmail mail message display dark collaboration collaborations questions|guestbook notes note visitors sign|rococo app art exhibition log catalog museum gallery artrococo",
-    "ja": "略歴 年表 いま 今 名前 プロフィール ナム・ドンウォン ナムドンウォン 남동원 りゃくれき|詩 本 目次 拓本 教保 教保文庫 kyobo pubple 書店 本屋 購入 買う 新刊 刊行 出版 発売 販売 ページ数 頁 買える場所 お知らせ 注文 価格 値段 配送 発送 海外発送 販売店 発売日 発行 韓国語 翻訳 日本語 ししゅう たくほん|写真 インスタ instagram 投稿 展示 展覧会 しゃしん|動画 映像 レビュー 映画 チャンネル 아름다울 남 美しいナム youtube どうが|メール メールアドレス gmail 問い合わせ お問い合わせ 連絡 連絡先 メッセージ 表示 ダーク ダークモード コラボ 依頼 DM dm めーる|芳名録 ゲストブック 書き込み 訪問 ほうめいろく|ロココ rococo アプリ 展示 記録 図録 美術館 artrococo",
-    "ru": "биография хронология сейчас имя донвон нам nam dongwon|стихи стихотворение стихотворения книга сборник содержание оттиск kyobo pubple купить покупка магазин выход издание страницы новости перевод корейский доставка цена заказ|фото фотографии instagram инстаграм посты выставки|видео обзоры рецензии фильм фильмы кино канал youtube ютуб 아름다울 남 nam|почта email gmail письмо сообщение экран тёмная тема сотрудничество вопросы контакты|гостевая книга записи запись посетители|rococo приложение выставка дневник каталог музей artrococo",
-    "es": "biografía biografia cronología cronologia ahora nombre dongwon nam|poema poemas poemario libro índice indice calco kyobo pubple comprar compra tienda librería publicación páginas noticias traducción traducido coreano envío envíos precio pedido|fotos fotografías instagram publicaciones exposiciones|vídeos videos reseñas película películas cine canal youtube bello nam 아름다울 남 nam|correo email gmail mensaje pantalla modo oscuro colaboración colaboraciones preguntas contacto|libro de visitas notas nota visitantes firmar|rococo app exposición registro catálogo museo artrococo",
-    "fr": "biographie bio chronologie maintenant nom dongwon nam|poème poèmes poeme poemes recueil livre sommaire estampage kyobo pubple acheter achat boutique librairie parution pages actualités traduction traduit coréen livraison prix commande|photos photographies instagram publications expositions|vidéos videos critiques film films cinéma chaîne youtube beau nam 아름다울 남|e-mail email mail gmail message affichage mode sombre collaboration collaborations questions contact|livre d’or livre dor notes mots mot visiteurs signer|rococo appli exposition carnet catalogue musée artrococo"
+    "ko": "약력 연표 지금 이름 남동원|시 책 차례 탁본 교보 교보문고 퍼플 서점 구매 구입 사기 신간 출간 판매 쪽수 사는 곳 소식 주문 가격 배송 판매처 출간일 발행 영어|사진 인스타 게시물 전시|영상 리뷰 영화 채널 아름다울 남|메일 지메일 문의 메시지 화면 어둡게 다크 이메일 연락처 협업 디엠 dm|방명록 남긴 글 글 남기기 방문 다녀감|로코코 rococo 앱 어플 아트 전시 기록 도록 전시회 미술관 artrococo|음악 노래 곡 가사 수노 suno 듣기 음원 ai",
+    "en": "bio timeline now name|poem poems book contents rubbing kyobo pubple buy purchase shop release published pages news translated translation korean ships shipping price order|photos instagram posts exhibitions|videos reviews film films channel beautiful nam|email gmail mail message display dark collaboration collaborations questions|guestbook notes note visitors sign|rococo app art exhibition log catalog museum gallery artrococo|music song songs lyrics suno listen track ai",
+    "ja": "略歴 年表 いま 今 名前 プロフィール ナム・ドンウォン ナムドンウォン 남동원 りゃくれき|詩 本 目次 拓本 教保 教保文庫 kyobo pubple 書店 本屋 購入 買う 新刊 刊行 出版 発売 販売 ページ数 頁 買える場所 お知らせ 注文 価格 値段 配送 発送 海外発送 販売店 発売日 発行 韓国語 翻訳 日本語 ししゅう たくほん|写真 インスタ instagram 投稿 展示 展覧会 しゃしん|動画 映像 レビュー 映画 チャンネル 아름다울 남 美しいナム youtube どうが|メール メールアドレス gmail 問い合わせ お問い合わせ 連絡 連絡先 メッセージ 表示 ダーク ダークモード コラボ 依頼 DM dm めーる|芳名録 ゲストブック 書き込み 訪問 ほうめいろく|ロココ rococo アプリ 展示 記録 図録 美術館 artrococo|音楽 歌 曲 歌詞 suno 聴く おんがく うた",
+    "ru": "биография хронология сейчас имя донвон нам nam dongwon|стихи стихотворение стихотворения книга сборник содержание оттиск kyobo pubple купить покупка магазин выход издание страницы новости перевод корейский доставка цена заказ|фото фотографии instagram инстаграм посты выставки|видео обзоры рецензии фильм фильмы кино канал youtube ютуб 아름다울 남 nam|почта email gmail письмо сообщение экран тёмная тема сотрудничество вопросы контакты|гостевая книга записи запись посетители|rococo приложение выставка дневник каталог музей artrococo|музыка песня песни текст suno слушать трек",
+    "es": "biografía biografia cronología cronologia ahora nombre dongwon nam|poema poemas poemario libro índice indice calco kyobo pubple comprar compra tienda librería publicación páginas noticias traducción traducido coreano envío envíos precio pedido|fotos fotografías instagram publicaciones exposiciones|vídeos videos reseñas película películas cine canal youtube bello nam 아름다울 남 nam|correo email gmail mensaje pantalla modo oscuro colaboración colaboraciones preguntas contacto|libro de visitas notas nota visitantes firmar|rococo app exposición registro catálogo museo artrococo|música canción canciones letra letras suno escuchar",
+    "fr": "biographie bio chronologie maintenant nom dongwon nam|poème poèmes poeme poemes recueil livre sommaire estampage kyobo pubple acheter achat boutique librairie parution pages actualités traduction traduit coréen livraison prix commande|photos photographies instagram publications expositions|vidéos videos critiques film films cinéma chaîne youtube beau nam 아름다울 남|e-mail email mail gmail message affichage mode sombre collaboration collaborations questions contact|livre d’or livre dor notes mots mot visiteurs signer|rococo appli exposition carnet catalogue musée artrococo|musique chanson chansons paroles suno écouter morceau"
   },
   "search_toc_where": {
     "ko": "{part} · {page}쪽",
@@ -2448,5 +2454,77 @@
     "ru": "Закрыть поиск",
     "es": "Cerrar búsqueda",
     "fr": "Fermer la recherche"
+  },
+  "next_d_music": {
+    "ko": "시를 가사로 지은 노래",
+    "en": "Poems turned into songs",
+    "ja": "詩を歌詞にした歌",
+    "ru": "Стихи, ставшие песнями",
+    "es": "Poemas convertidos en canciones",
+    "fr": "Des poèmes devenus chansons"
+  },
+  "mm_d_music": {
+    "ko": "시를 가사로, 수노로 지은 노래",
+    "en": "Poems as lyrics, songs made with Suno",
+    "ja": "詩を歌詞に、Suno でつくった歌",
+    "ru": "Стихи как тексты песен, музыка — в Suno",
+    "es": "Poemas como letras, canciones hechas con Suno",
+    "fr": "Des poèmes pour paroles, des chansons faites avec Suno"
+  },
+  "mu_play": {
+    "ko": "재생",
+    "en": "Play",
+    "ja": "再生",
+    "ru": "Слушать",
+    "es": "Reproducir",
+    "fr": "Écouter"
+  },
+  "mu_pause": {
+    "ko": "일시 정지",
+    "en": "Pause",
+    "ja": "一時停止",
+    "ru": "Пауза",
+    "es": "Pausa",
+    "fr": "Pause"
+  },
+  "mu_seek": {
+    "ko": "재생 위치",
+    "en": "Position",
+    "ja": "再生位置",
+    "ru": "Позиция",
+    "es": "Posición",
+    "fr": "Position"
+  },
+  "mu_list": {
+    "ko": "곡 목록",
+    "en": "Tracks",
+    "ja": "曲目",
+    "ru": "Треки",
+    "es": "Canciones",
+    "fr": "Titres"
+  },
+  "mu_lyrics": {
+    "ko": "가사",
+    "en": "Lyrics",
+    "ja": "歌詞",
+    "ru": "Текст",
+    "es": "Letra",
+    "fr": "Paroles"
+  },
+  "mu_from": {
+    "ko": "시 「{poem}」에서",
+    "en": "From the poem “{poem}”",
+    "ja": "詩「{poem}」から",
+    "ru": "По стихотворению «{poem}»",
+    "es": "Del poema «{poem}»",
+    "fr": "D’après le poème « {poem} »"
+  },
+  "mu_player": {
+    "ko": "재생 줄",
+    "en": "Player",
+    "ja": "プレーヤー",
+    "ru": "Плеер",
+    "es": "Reproductor",
+    "fr": "Lecteur"
   }
 }

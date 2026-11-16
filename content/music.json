@@ -1,0 +1,44 @@
+{
+  "_설명": "음악 페이지(/music/ — 11/17 동원 \"GNB에 음악 페이지도 하나 넣자 나 수노를 통해서 음악도 만들어볼 거야\" → 목업 기준/브랜드 시안/음악페이지시안_v1 'A 목록 + 재생 줄'). 칸 정의는 같은 폴더 '음악 칸 정의_v1.md'. 곡은 items에 하나씩(새 곡이 위 — date 차례로 빌드가 정렬) · 소리 파일은 content/music/<file>(m4a · AAC 128~160kbps 권장) · 표지는 content/img/music/<cover>(없으면 회색 칸) · status draft는 빌드에서 뺌 · 가사 번역은 lyrics_<말> 칸(없으면 한국어 가사 그대로 — 노래는 한국어로 부르니까)",
+  "kicker": {
+    "ko": "음악 · MUSIC",
+    "en": "MUSIC",
+    "ja": "音楽 · MUSIC",
+    "ru": "MUSIC",
+    "es": "MÚSICA",
+    "fr": "MUSIQUE"
+  },
+  "title": {
+    "ko": "시가 노래가 되면",
+    "en": "When a poem becomes a song",
+    "ja": "詩が歌になると",
+    "ru": "Когда стихи становятся песней",
+    "es": "Cuando un poema se vuelve canción",
+    "fr": "Quand un poème devient chanson"
+  },
+  "oneliner": {
+    "ko": "시를 가사로, 수노(Suno)로 지은 노래",
+    "en": "Poems as lyrics, songs made with Suno",
+    "ja": "詩を歌詞に、Suno でつくった歌",
+    "ru": "Стихи как тексты песен, музыка — в Suno",
+    "es": "Poemas como letras, canciones hechas con Suno",
+    "fr": "Des poèmes pour paroles, des chansons faites avec Suno"
+  },
+  "empty": {
+    "ko": "첫 곡을 만들고 있어요",
+    "en": "The first song is on its way",
+    "ja": "最初の一曲をつくっています",
+    "ru": "Первая песня уже в работе",
+    "es": "La primera canción está en camino",
+    "fr": "La première chanson est en route"
+  },
+  "credit": {
+    "ko": "노래는 AI 음악 도구 수노(Suno)로 지었고, 가사는 남동원이 썼어요",
+    "en": "Music made with the AI tool Suno; lyrics by Nam Dongwon",
+    "ja": "曲は AI 音楽ツール Suno で、歌詞はナム・ドンウォン",
+    "ru": "Музыка создана в ИИ-сервисе Suno, слова — Нам Донвон",
+    "es": "Música hecha con la herramienta de IA Suno; letras de Nam Dongwon",
+    "fr": "Musique créée avec l’outil d’IA Suno ; paroles de Nam Dongwon"
+  },
+  "items": []
+}

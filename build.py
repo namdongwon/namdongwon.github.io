@@ -14,6 +14,7 @@ import math
 import os
 import re
 import shutil
+import subprocess
 import sys
 import unicodedata
 from datetime import date, datetime, timedelta
@@ -724,9 +725,10 @@ SPEC_RULES = ('<script type="speculationrules">' + json.dumps({"prefetch": [{"wh
 
 # 쪽 나누기(10/31 동원 "랜딩페이지는 내 소개를 넣고, 다른 시집, 인스타그램, 유튜브 이런 것들은 따로 페이지를 분리 … 연락페이지도 따로 빼는 게 좋다고 생각해"
 # · 버튼 '같은 도메인 아래 주소 (권장)' · "지금 구조 만들어"): 쪽 열쇠(주소 폴더) → 그 쪽에 담는 칸 id, 첫째가 그 쪽 맨 위 칸. "" = 첫 화면(소개)
-PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "rococo": ("rococo",), "guestbook": ("guestbook",), "contact": ("contact",)}  # 11/2 방명록 쪽(동원 "방명록 사이트를 먼저 추가") — 연락 칸 안에서 떼어 /guestbook/
-NEXT_PAGE = {"": "book", "book": "photo", "photo": "video", "video": "rococo", "rococo": "guestbook", "guestbook": "", "contact": "guestbook"}  # 11/15 로코코(유튜브 다음)  # 쪽 끝 다음 쪽 카드 — 메뉴 차례대로 한 칸씩 · 방명록 다음은 처음(소개) · 연락 다음은 방명록(11/3)
-PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "mline": "book", "y": "", "p": "photo", "fq": "contact"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p · 이달의 한 줄 무대 mline 11/4)
+PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "music": ("music",), "rococo": ("rococo",), "guestbook": ("guestbook",), "contact": ("contact",)}  # 11/2 방명록 쪽(동원 "방명록 사이트를 먼저 추가") — 연락 칸 안에서 떼어 /guestbook/
+NAV_PG = ("", "book", "photo", "video", "music", "rococo", "guestbook")  # 맨 위 메뉴 · 휴대폰 메뉴 차례(11/17 음악 — 유튜브 다음)
+NEXT_PAGE = {"": "book", "book": "photo", "photo": "video", "video": "music", "music": "rococo", "rococo": "guestbook", "guestbook": "", "contact": "guestbook"}  # 11/15 로코코(유튜브 다음)  # 쪽 끝 다음 쪽 카드 — 메뉴 차례대로 한 칸씩 · 방명록 다음은 처음(소개) · 연락 다음은 방명록(11/3)
+PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "mline": "book", "y": "", "p": "photo", "fq": "contact", "mu": "music"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p · 이달의 한 줄 무대 mline 11/4)
 
 
 # 보안 덧막이(11/16 관리 화면 세션 보안 점검 '기준/보안 점검_2026-11-16.md' · 동원 "응, 고쳐"): GitHub Pages는 머리줄을 못 보내 <meta> CSP로.
@@ -802,6 +804,24 @@ def find(root, name, must_in=""):
             if unicodedata.normalize("NFC", f) == name and must_in in unicodedata.normalize("NFC", dp):
                 return Path(dp) / f
     return None
+
+
+MU_PLAY = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M4.5 2.8v10.4L13 8z" fill="currentColor"/></svg>'
+MU_PAUSE = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M4 3h2.6v10H4zM9.4 3H12v10H9.4z" fill="currentColor"/></svg>'
+
+
+def music_items(mu):  # 음악 곡(11/17) — public만 · 새 곡이 위 · 소리 파일이 있는 곡만 · 길이(dur)가 비면 맥 afinfo로 잼(없으면 빈칸 — 재생하면 main.js가 채움)
+    out = []
+    for x in sorted((x for x in mu.get("items", []) if x.get("status", "public") == "public"), key=lambda x: x.get("date", ""), reverse=True):
+        f = CONTENT / "music" / x.get("file", "")
+        if not x.get("file") or not f.is_file():
+            print(f"  [음악] 소리 파일 없음 — 뺌: {x.get('id')} ({x.get('file')})")
+            continue
+        if not x.get("dur") and shutil.which("afinfo"):
+            m = re.search(r"estimated duration: ([\d.]+)", subprocess.run(["afinfo", str(f)], capture_output=True, text=True).stdout)
+            x = {**x, "dur": round(float(m.group(1))) if m else 0}
+        out.append(x)
+    return out
 
 
 def load(name):
@@ -1283,8 +1303,8 @@ def render(site, poem, videos, photos, lang="ko"):
     S, PH = localize(site, lang), localize(photos, lang)
     tb = tables(site)
     # 사이트 안 찾기(10/26 검색 A)의 찾을 거리 — 칸을 그리면서 갈래마다 [갈래 이름, 글, 자리, 갈 곳]을 모아 쪽 안 JSON(#sidx)으로. 갈래 차례가 결과의 차례
-    ix = {k: [] for k in ("sec", "book", "toc", "poem", "me", "news", "photo", "video", "contact")}  # 찾은 것이 같은 자리에서 맞으면 이 차례(칸 이름이 먼저)
-    tg = dict(zip(("toc", "poem", "book", "me", "news", "photo", "video", "contact", "sec"), L["search_tags"].split("|")))  # ui.json search_tags 차례대로
+    ix = {k: [] for k in ("sec", "book", "toc", "poem", "me", "news", "photo", "video", "music", "contact")}  # 찾은 것이 같은 자리에서 맞으면 이 차례(칸 이름이 먼저)
+    tg = dict(zip(("toc", "poem", "book", "me", "news", "photo", "video", "contact", "sec", "music"), L["search_tags"].split("|")))  # ui.json search_tags 차례대로
     plain = lambda s: re.sub(r"\*", "", s)  # noqa: E731 — 영어 원고의 *기울임* 표시는 찾기 글에서 뺌
     # 영상(videos.json — 다음 편 · 올린 편): 5절 규칙, 올린 편은 날짜로 최근 것부터(설계서 ④)
     V = {"upcoming": row_lang(videos.get("upcoming") or {}, lang),
@@ -1348,6 +1368,14 @@ def render(site, poem, videos, photos, lang="ko"):
     poem_t = e(S["poem"]["title"])
     # 로코코(11/15 동원 'D 큰 한 줄 · 좌우 번갈아' — 원고 content/rococo.json · 기획 기준/로코코 소개 페이지 기획_v1.md): 판 말이 비면 영어 → 한국어
     RC = load("rococo.json") if (CONTENT / "rococo.json").exists() else {}
+    # 음악(11/17 동원 "GNB에 음악 페이지도 하나 넣자 나 수노를 통해서 음악도 만들어볼 거야" → 목업 기준/브랜드 시안/음악페이지시안_v1 'A 목록 + 재생 줄' · 칸 정의 같은 폴더)
+    MU = load("music.json") if (CONTENT / "music.json").exists() else {}
+    mu_t = lambda k: e((MU.get(k) or {}).get(lang) or (MU.get(k) or {}).get("en") or (MU.get(k) or {}).get("ko", ""))  # noqa: E731
+    mu_items = music_items(MU)
+    # 곡 제목으로도 찾기 — 자리 id는 오래된 곡부터 mu1 · mu2 …(새 곡이 위에 쌓여도 주소가 그대로)
+    ix["music"] += [(tg["music"], (x.get(lang) or {}).get("title") or x["title"], html.unescape(t("mu_from", poem=x["from_poem"])) if x.get("from_poem") else html.unescape(mu_t("kicker")),
+                     f"#mu{len(mu_items) - i}") for i, x in enumerate(mu_items)]
+    mu_cover = next((f"{P}assets/img/music/{x['cover']}" for x in mu_items if x.get("cover")), None)
     rc_t = lambda k: e((RC.get(k) or {}).get(lang) or (RC.get(k) or {}).get("en") or (RC.get(k) or {}).get("ko", ""))  # noqa: E731
     # 시를 복사하면 따라붙는 출처 한 줄(11/6 동원 'A 출처 따라붙음' — 시안 시복사출처시안_v1 · 연락 FAQ의 '출처를 함께'를 복사 순간에): 그 판의 부호 꼴로 · main.js가 세 줄 이상일 때만 붙임
     _pt, _bt = S["poem"]["title"], book["title"]
@@ -1674,7 +1702,7 @@ def render(site, poem, videos, photos, lang="ko"):
     def fli(href, label, extra=""):  # 단 안 한 줄 링크 — 여는 부호로 시작하면 내어 걺(.hgs — 11/15)
         hg = ' class="hgs"' if label[:1] in "『「" else ""
         return f'<li{hg}><a href="{href}"{extra}>{label}</a></li>'
-    nav_li = "".join(fli(f"~R~{p}", e(x)) for p, x in (("", L["nav"][0]), ("book/", L["nav"][1]), ("photo/", L["nav"][2]), ("video/", L["nav"][3]), ("rococo/", L["nav"][6]), ("guestbook/", L["nav"][5]), ("contact/", L["nav_cta"])))
+    nav_li = "".join(fli(f"~R~{p}", e(x)) for p, x in (("", L["nav"][0]), ("book/", L["nav"][1]), ("photo/", L["nav"][2]), ("video/", L["nav"][3]), ("music/", L["nav"][7]), ("rococo/", L["nav"][6]), ("guestbook/", L["nav"][5]), ("contact/", L["nav_cta"])))
     book_li = (fli("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", "")) + fli("~R~book/#toc", e(book["toc"]["label"]))
                + fli(e(book["buy_url"]), f'{e(book["store_label"])} ↗', f' target="_blank" rel="noopener"{gcc("판권면")}'))
     info_li = ((fli("~R~privacy/", t("gb_privacy")) if (CONTENT / "privacy.json").exists() else "")
@@ -1709,6 +1737,7 @@ def render(site, poem, videos, photos, lang="ko"):
         "video": (t("mm_d_video"), [mm_card("~R~video/", t("mm_latest"), f"{P}assets/img/next.jpg"),
                                     mm_card(e(ch.get("url", "")), f'{t("go_watch")} ↗', f"{P}assets/img/stills/1.jpg" if (ASSETS / "img/stills/1.jpg").exists() else None, kind="pc")]),
         "rococo": (rc_t("oneliner"), [mm_card("~R~rococo/", e(L["nav"][6]), f"{P}assets/img/rococo-icon.png", fit="ct")]),  # 로코코(11/15) — 아이콘 한 장
+        "music": (t("mm_d_music"), [mm_card("~R~music/", e(L["nav"][7]), mu_cover, kind="pc")]),  # 음악(11/17) — 첫 곡 표지(없으면 줄 친 엽서)
         "guestbook": (t("mm_d_gb"), [mm_card("~R~guestbook/", t("mm_write"), kind="pc")]),
     }
     mega = ('<div class="mm" id="mm" role="region" aria-label="' + t("mm_label") + '" aria-hidden="true" inert>'
@@ -1730,7 +1759,7 @@ def render(site, poem, videos, photos, lang="ko"):
             f'<ul class="ficons">{icons}</ul>'  # 맺음 인사(10/27 '좋은 아침')는 바닥글에서 뺌(11/2) — 탁본 한 장에는 그대로
             f'<div class="fbar"><div class="lng">{langs}</div><p class="cp">{e(S["copyright"])}</p></div></div>')
 
-    secs = ("me", "poem", "photo", "video", "contact", "guestbook", "rococo")  # 로코코(11/15)는 ui.json nav 일곱째 — 앞 여섯 차례는 그대로  # 방명록(11/2)은 ui.json nav 여섯째 낱말 — 앞 다섯 차례는 그대로
+    secs = ("me", "poem", "photo", "video", "contact", "guestbook", "rococo", "music")  # 음악(11/17)은 ui.json nav 여덟째  # 로코코(11/15)는 ui.json nav 일곱째 — 앞 여섯 차례는 그대로  # 방명록(11/2)은 ui.json nav 여섯째 낱말 — 앞 다섯 차례는 그대로
     navname = dict(zip(secs, L["nav"]))  # 낱말은 ui.json nav 그대로(찾기 칸 이름도 이 차례로 씀)
     others = [x for x in LANGS if x != lang]  # 다른 판 — og:locale:alternate · hreflang · 언어 줄
     # 맨 위 띠는 쪽마다 page()가 만듦(10/31 쪽 나누기 — 메뉴가 칸 자리 #… 대신 쪽 주소)
@@ -1848,7 +1877,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 여섯째 값 [그림 · 맞춤 · 설명] — 그림 · 설명은 메뉴 펼침(mm_panes)과 같은 것(같은 카피 · 같은 사진) · 그림 없는 연락 · 방명록은 선 그림 이름(mail · pen) · 맞춤 ct = 표지 통째로 옅은 바탕 위(메뉴 펼침과 같게 — 윗부분만 자르면 검은 띠만 보였음)
     sr_th = {"me": (f"{P}assets/img/me.webp", "", t("mm_d_me", name=S["name"])), "poem": (f"{P}assets/img/cover.jpg", "ct", t("mm_d_book")),
              "photo": (wall_first[0] if wall_first else "pen", "" if wall_first else "i", t("mm_d_photo")), "video": (f"{P}assets/img/next.jpg", "", t("mm_d_video")),
-             "contact": ("mail", "i", ""), "guestbook": ("pen", "i", t("mm_d_gb")), "rococo": (f"{P}assets/img/rococo-icon.png", "", rc_t("oneliner"))}
+             "contact": ("mail", "i", ""), "guestbook": ("pen", "i", t("mm_d_gb")), "rococo": (f"{P}assets/img/rococo-icon.png", "", rc_t("oneliner")), "music": (mu_cover or "note", "" if mu_cover else "i", t("mm_d_music"))}
     ix["sec"] = [(tg["sec"], x, w, f"#{sid}", k, list(sr_th[sid])) for sid, x, w, k in zip(secs, L["nav"], L["search_sec_where"].split("|"), L["search_sec_keys"].split("|"))]
     ix["sec"].append((tg["sec"], L["label_palette"], L["pal_where"].format(n=len(pg)), "#palette", L["pal_keys"]))  # 글자 팔레트 칸(10/28) — 맨 위 막대에는 없지만 칸 이름 · 낱말로 찾게
     ix["book"] += [(tg["book"], plain(book["title"]), book["spec"], "#bookcard"), (tg["book"], book["buy_label"], book["store_label"], book["buy_url"], L["search_buy_keys"])]  # 책 제목 결과는 책 카드로(10/27 가4 — 휴대폰에서 #poem이면 책 카드가 한 화면 아래)
@@ -1976,6 +2005,41 @@ def render(site, poem, videos, photos, lang="ko"):
   </section>
 """
 
+    def music_sec():  # 음악 쪽 본문(11/17 'A 목록 + 재생 줄' — 왼쪽 표지 · 오른쪽 곡 목록 · 고른 곡 가사 · 누르면 화면 아래 재생 줄) · 재생은 main.js
+        play, pause = t("mu_play"), t("mu_pause")
+        def fmt(sec_):
+            return f"{int(sec_) // 60}:{int(sec_) % 60:02d}" if sec_ else ""
+        def ttl(x):
+            return e((x.get(lang) or {}).get("title") or x["title"])
+        def lyr(x):
+            txt = x.get(f"lyrics_{lang}") or x.get("lyrics") or ""
+            return "".join(f"<p>{'<br>'.join(e(l_) for l_ in st_.split(chr(10)))}</p>" for st_ in re.split(r"\n\s*\n", txt.strip()) if st_.strip())
+        sel = ' class="sel"'
+        cv = lambda x: f"{P}assets/img/music/{e(x['cover'])}" if x.get("cover") else ""  # noqa: E731
+        rows = "".join(
+            f'<li id="mu{len(mu_items) - i}" data-i="{i}" data-src="{P}assets/music/{e(x["file"])}" data-cover="{cv(x)}"{sel if i == 0 else ""}>'
+            f'<span class="ma-n">{i + 1:02d}</span><span class="ma-ti">{ttl(x)}'
+            + (f'<small>{t("mu_from", poem=e(x["from_poem"]))}</small>' if x.get("from_poem") else "")
+            + f'</span><span class="mu-tm">{fmt(x.get("dur"))}</span>'
+            f'<button type="button" class="mu-pl" aria-label="{play}: {ttl(x)}">{MU_PLAY}</button></li>'
+            for i, x in enumerate(mu_items))
+        lys = "".join(f'<div class="ma-ly" data-i="{i}"{"" if i == 0 else " hidden"}><h3 class="mu-k">{t("mu_lyrics")} · {ttl(x)}</h3>{lyr(x)}</div>'
+                      for i, x in enumerate(mu_items) if x.get("lyrics") or x.get(f"lyrics_{lang}"))
+        c0 = cv(mu_items[0]) if mu_items else ""
+        body = (f'<ol class="ma-ol" aria-label="{t("mu_list")}">{rows}</ol>{lys}' if mu_items else f'<p class="ma-empty">{mu_t("empty")}</p>')
+        dock = ("" if not mu_items else
+                f'<div class="ma-dock" role="region" aria-label="{t("mu_player")}" hidden><div>'
+                f'<button type="button" class="mu-pl" aria-label="{play}">{MU_PLAY}</button><b class="ma-now"></b>'
+                f'<span class="mu-tm ma-cur">0:00</span><input class="ma-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="{t("mu_seek")}">'
+                f'<span class="mu-tm ma-dur"></span></div><audio preload="none"></audio></div>')
+        return f"""  <section id="music" aria-labelledby="music-t" data-play="{play}" data-pause="{pause}" data-ic-play='{MU_PLAY}' data-ic-pause='{MU_PAUSE}'>
+    <div class="ma"><div class="ma-l"><div class="ma-cv">{f'<img src="{c0}" alt="" loading="lazy" decoding="async">' if c0 else ""}</div><p class="mu-cr">{mu_t("credit")}</p></div>
+      <div class="ma-r"><p class="mu-k">{mu_t("kicker")}</p><h2 class="mu-t" id="music-t">{mu_t("title")}</h2><p class="mu-one">{mu_t("oneliner")}</p>
+      {body}</div></div>
+    {dock}
+  </section>
+"""
+
     sec = {
         # 시집 쪽 h1(11/1 동원 버튼 "함께 넣어 (권장)" — 명품 사이트 조사 제안 ①: 상품 쪽 h1은 상품 이름): 이름 · 첫 시집 줄 + 큰 제목 + 작은 제목을 한 h1로 — 보이는 모양은 그대로(전엔 h1이 위 작은 줄뿐).
         # 휴대폰의 작은 제목은 책 옆(.side .hs — 읽기 도구에는 숨김)이 보이고, h1 안의 작은 제목(.hsl)은 휴대폰에선 화면 밖 글(읽기 도구만) · 768px부터 보임
@@ -2026,6 +2090,7 @@ def render(site, poem, videos, photos, lang="ko"):
   </section>
 """,
         "rococo": rococo_sec(),
+        "music": music_sec(),
         "guestbook": f"""  <section id="guestbook" aria-labelledby="guestbook-t">
     <p class="label">{t("gb_title")}</p>
     <div class="l"><h2 class="h2" id="guestbook-t">{t("gb_h")}</h2><p class="lead">{t("gb_sep")}</p></div>
@@ -2044,10 +2109,11 @@ def render(site, poem, videos, photos, lang="ko"):
            "photo": mark(*[x.get("file", "") for x in photos.get("items", [])]),
            "video": mark((videos.get("upcoming") or {}).get("title", ""), *[x.get("youtube_id", "") for x in videos.get("items", [])]),
            "rococo": mark(RC.get("status", ""), *(RC.get("stores") or {}).values(), *(RC.get("beta") or {}).values()),  # 로코코(11/15) — 상태 · 스토어 · 베타 링크가 바뀌면 점
+           "music": mark(*[x["id"] for x in mu_items]),  # 음악(11/17) — 새 곡이 생기면 점
            "guestbook": mark(*[x["date"] + x["text"][:20] for x in gbook])}
     nw_js = json.dumps(nwm, separators=(",", ":"))
     items = [list(x) for k in ix for x in ix[k]]
-    top_of = {"": "me", "book": "poem", "photo": "photo", "video": "video", "rococo": "rococo", "guestbook": "guestbook", "contact": "contact"}  # 메뉴 이름 · 쪽 제목에 쓰는 칸
+    top_of = {"": "me", "book": "poem", "photo": "photo", "video": "video", "music": "music", "rococo": "rococo", "guestbook": "guestbook", "contact": "contact"}  # 메뉴 이름 · 쪽 제목에 쓰는 칸
 
     def page(k):
         R = "../" if k else ""  # 이 판 맨 위(소개)까지
@@ -2057,7 +2123,7 @@ def render(site, poem, videos, photos, lang="ko"):
         # 검색 결과 이동 경로(11/4 동원 '④ 넣기 (권장)' — Schema.org BreadcrumbList · 구글 결과에 'namdongwon.com › 시집'): 첫 화면(이름) › 이 쪽 — 첫 화면은 없음
         crumb = ("" if not k else '\n<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": S["name"], "item": f"{base}{'/' + lang if tr_ else ''}/"},
-            {"@type": "ListItem", "position": 2, "name": L["nav"][("me", "poem", "photo", "video", "contact", "guestbook", "rococo").index(top_of[k])], "item": url}]}, ensure_ascii=False).replace("</", "<\\/") + "</script>")  # '</'는 '<\/'로(11/16 보안 점검 — 원고 값에 '</script>'가 있어도 칸이 끊기지 않게)
+            {"@type": "ListItem", "position": 2, "name": L["nav"][secs.index(top_of[k])], "item": url}]}, ensure_ascii=False).replace("</", "<\\/") + "</script>")  # '</'는 '<\/'로(11/16 보안 점검 — 원고 값에 '</script>'가 있어도 칸이 끊기지 않게)
         bpg = k == "book"
 
         def link(pg):  # 같은 판의 쪽 주소 — 이 쪽에서 본 상대 주소
@@ -2074,15 +2140,15 @@ def render(site, poem, videos, photos, lang="ko"):
         nav = "".join(f'<a href="{link(pg)}" data-pg="{pg}"' + (' class="on" aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a>'
                       # 메뉴 펼침 키보드 단추(11/15 동원 버튼 "① 메뉴 펼침 키보드 (권장)" — 애플 실측 꼴: 메뉴 링크 다음 ⌄ 단추, 초점일 때만 보임 · Enter로 #mm 그 쪽 칸 · main.js)
                       + f'<button type="button" class="mmk" data-mk="{pg}" aria-expanded="false" aria-controls="mm" aria-label="{t("mm_open", page=e(navname[top_of[pg]]))}">{MK_CARET}</button>'
-                      for pg in ("", "book", "photo", "video", "rococo", "guestbook"))  # data-pg — 새것 점(11/3)이 쪽을 앎
+                      for pg in NAV_PG)  # data-pg — 새것 점(11/3)이 쪽을 앎
         # 맨 위 띠(10/31 동원 "gnb 이거 있잖아 가운데로 넣어" · "언어 설정 하단 푸터로 빼"): 이름 | 메뉴 넷(가운데) | 찾기 · [연락하기] — 언어는 바닥글 판권면 '언어' 줄로
         act = f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
         act += f'<a class="cta{" on" if k == "contact" else ""}" href="{link("contact")}"' + (' aria-current="page"' if k == "contact" else "") + f'>{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(연락 쪽에선 맨 위에서도 먹 — 지금 쪽 표시)
         # 휴대폰 메뉴 단추의 목록(11/1 밤 동원 버튼 "B 메뉴 단추"): 메뉴와 같은 쪽 · 같은 차례, 쪽 이름만 큰 명조로(동원 "url 은 빼") — 띠 밖(</header> 뒤)에 둠: 띠의 흐림(backdrop-filter)이 안쪽 fixed를 띠 높이에 가둠
-        mnu = "".join(f'<li><a href="{link(pg)}" data-pg="{pg}"' + (' aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a></li>' for pg in ("", "book", "photo", "video", "rococo", "guestbook"))
+        mnu = "".join(f'<li><a href="{link(pg)}" data-pg="{pg}"' + (' aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a></li>' for pg in NAV_PG)
         lang_href = {x: f'{PP}{"" if x == "ko" else x + "/"}{kp}' for x in others}  # 같은 쪽의 다른 판 — 바닥글 '언어' 줄(~L:말~)
-        ptitle = title if not k else f'{L["nav"][("me", "poem", "photo", "video", "contact", "guestbook", "rococo").index(top_of[k])]} — {S["name"]}'
-        tab = S["logo"] if not k else f'{S["logo"]} — {L["nav"][("me", "poem", "photo", "video", "contact", "guestbook", "rococo").index(top_of[k])]}'  # 탭 제목은 표장 먼저(11/3 동원 "내 지금 웹사이트 이렇게 나오는 것도 바꾸자" → 목업 탭제목시안_v1 'B 표장만') — 링크 미리보기(og) · 읽기 도구용 h1은 이름 · 소개 그대로
+        ptitle = title if not k else f'{L["nav"][secs.index(top_of[k])]} — {S["name"]}'
+        tab = S["logo"] if not k else f'{S["logo"]} — {L["nav"][secs.index(top_of[k])]}'  # 탭 제목은 표장 먼저(11/3 동원 "내 지금 웹사이트 이렇게 나오는 것도 바꾸자" → 목업 탭제목시안_v1 'B 표장만') — 링크 미리보기(og) · 읽기 도구용 h1은 이름 · 소개 그대로
         h1 = "" if bpg else f'<h1 class="sr">{e(S["name"] if not k else ptitle)}</h1>\n'  # 시집 쪽은 첫 화면 h1(이름 · 첫 시집) 그대로, 다른 쪽은 읽기 도구용 쪽 제목
         oimg, otitle, odesc = (og_img, og_title, og_desc) if k in ("", "book") else (f"og-{lang}.jpg" if tr_ else "og.jpg", ptitle, S["description"])
         if k in OG_PAGES:  # 쪽마다 공유 카드(11/4) — 그 쪽 그림 · 그 쪽 한 줄
@@ -2223,7 +2289,7 @@ def page_404(site, ja=True):
     def five(lang, base):
         names = ui["nav"][lang]
         return (f'<nav class="nfp" lang="{lang}" aria-label="{e(ui["nav_label"][lang])}">'
-                + "".join(f'<a href="{base}{pg}">{e(names[i])}</a>' for i, pg in ((0, ""), (1, "book/"), (2, "photo/"), (3, "video/"), (6, "rococo/"), (5, "guestbook/"))) + "</nav>")
+                + "".join(f'<a href="{base}{pg}">{e(names[i])}</a>' for i, pg in ((0, ""), (1, "book/"), (2, "photo/"), (3, "video/"), (7, "music/"), (6, "rococo/"), (5, "guestbook/"))) + "</nav>")
     jp = (f'\n<p class="lead" lang="ja">{jl("nf_title")}。{jl("nf_lead")}</p>\n<p lang="ja"><a class="buy" href="/ja/">{jl("nf_back")}</a></p>\n{five("ja", "/ja/")}') if jl else ""
     rl = (lambda key: e(ui[key]["ru"])) if ja and all(ui[x].get("ru") for x in ("nf_title", "nf_lead", "nf_back")) else None  # 러시아어 두 줄(11/6) — 일본어와 같은 자리 · 같은 규칙
     jp += (f'\n<p class="lead" lang="ru">{rl("nf_title")}. {rl("nf_lead")}</p>\n<p lang="ru"><a class="buy" href="/ru/">{rl("nf_back")}</a></p>\n{five("ru", "/ru/")}') if rl else ""
@@ -2559,6 +2625,9 @@ def main():
 
     if (CONTENT / "img/rococo-icon.png").exists():  # 로코코 앱 아이콘(11/15 — 메뉴 펼침 칸 · 원본 ~/작업/로코코/artrococo/brand · content/img/rococo-출처.txt)
         (ASSETS / "img").mkdir(parents=True, exist_ok=True); shutil.copy2(CONTENT / "img/rococo-icon.png", ASSETS / "img/rococo-icon.png")
+    for src_, dst_ in ((CONTENT / "music", ASSETS / "music"), (CONTENT / "img/music", ASSETS / "img/music")):  # 음악(11/17) — 소리 파일 · 표지
+        if src_.is_dir():
+            shutil.copytree(src_, dst_, dirs_exist_ok=True)
     if (CONTENT / "img/rococo").is_dir():  # 로코코 화면 캡처(rococo.json features[].shot — 생기면)
         shutil.copytree(CONTENT / "img/rococo", ASSETS / "img/rococo", dirs_exist_ok=True)
     # 글꼴 라이선스 전문은 글꼴 옆에 함께 둔다(OFL·GPL 조건)

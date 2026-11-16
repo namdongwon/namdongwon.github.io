@@ -160,6 +160,41 @@ html.mnu-on{overflow:hidden}  /* 여는 동안 쪽은 멈춤 */
 .rco-fig img{display:block;width:100%;height:auto}
 @media (max-width:767px){.rco-hd{padding:44px 0 44px}.rco-t{font-size:30px}.rco-row,.rco-row.rev{grid-template-columns:1fr;gap:22px}.rco-row.rev .rco-fig{order:0}.rco-row+.rco-row{margin-top:64px}.rco-h{font-size:22px}
 }
+/* 음악 쪽(11/17 동원 "GNB에 음악 페이지도 하나 넣자 나 수노를 통해서 음악도 만들어볼 거야" → 목업 기준/브랜드 시안/음악페이지시안_v1 'A 목록 + 재생 줄'):
+   왼쪽 표지(곡을 고르면 그 곡 표지) · 오른쪽 머리 · 곡 목록 · 고른 곡 가사 · 처음 누르면 화면 아래 재생 줄 — 재생은 main.js */
+#music{display:block;padding-bottom:72px}
+.ma{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:64px;align-items:start;max-width:1120px;margin:0 auto;padding-top:44px}
+.ma-l{position:sticky;top:72px}
+.ma-cv{aspect-ratio:1;background:var(--ph);box-shadow:inset 0 0 0 1px var(--rule);overflow:hidden}.ma-cv img{display:block;width:100%;height:100%;object-fit:cover}
+.mu-cr{margin:16px 0 0;font:400 12.5px/1.6 var(--sans);color:var(--faint)}
+.mu-k{margin:0;font:400 11px/1 var(--sans);letter-spacing:.12em;color:var(--faint)}
+.mu-t{margin:22px 0 0;font:400 44px/1.2 var(--serif);letter-spacing:-.01em;color:var(--ink);word-break:keep-all;text-wrap:balance}
+.mu-one{margin:16px 0 0;font:400 15px/1.6 var(--sans);color:var(--muted);word-break:keep-all}
+.ma-empty{margin:36px 0 0;padding-top:22px;border-top:1px solid var(--rule);font:400 15px/1.6 var(--sans);color:var(--muted)}
+.ma-ol{list-style:none;margin:36px 0 0;padding:0;border-top:1px solid var(--rule)}
+.ma-ol li{display:grid;grid-template-columns:30px minmax(0,1fr) auto 44px;gap:16px;align-items:center;padding:12px 16px;margin:0 -16px;border-bottom:1px solid var(--rule);cursor:pointer;transition:background-color .2s}
+.ma-ol li:hover{background:var(--hv)}.ma-ol li.sel{background:var(--hv)}
+.ma-n,.mu-tm{font:400 12.5px/1 var(--sans);color:var(--faint);font-variant-numeric:tabular-nums}
+.ma-ti{font:400 15px/1.5 var(--serif);color:var(--ink);word-break:keep-all}.ma-ti small{display:block;margin-top:4px;font:400 12.5px/1.5 var(--sans);color:var(--faint)}
+.mu-pl{display:inline-grid;place-items:center;width:44px;height:44px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;transition:background-color .2s,color .2s,border-color .2s,transform .12s}
+.mu-pl svg{display:block}.mu-pl:hover{border-color:var(--ink)}.mu-pl:active{transform:scale(.94)}
+.mu-pl.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.ma-ly{margin-top:44px}.ma-ly .mu-k{margin-bottom:16px}.ma-ly p{margin:0;font:400 15px/2 var(--serif);color:var(--ink)}.ma-ly p+p{margin-top:30px}
+.ma-dock{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--bg) 94%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--rule);padding-bottom:env(safe-area-inset-bottom)}
+.ma-dock[hidden]{display:none}
+.ma-dock>div{max-width:1120px;margin:0 auto;padding:12px 64px;display:flex;align-items:center;gap:22px}
+.ma-now{min-width:0;max-width:240px;flex:none;font:400 15px/1.3 var(--serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ma-seek{flex:1;min-width:0;height:22px;margin:0;background:none;-webkit-appearance:none;appearance:none;cursor:pointer;--p:0%}
+.ma-seek::-webkit-slider-runnable-track{height:2px;background:linear-gradient(var(--ink),var(--ink)) 0/var(--p) 100% no-repeat,var(--rule)}
+.ma-seek::-moz-range-track{height:2px;background:linear-gradient(var(--ink),var(--ink)) 0/var(--p) 100% no-repeat,var(--rule)}
+.ma-seek::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;margin-top:calc(1px - 6px);border-radius:50%;background:var(--ink);border:0}
+.ma-seek::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--ink);border:0}
+html.mu-on .totop{bottom:calc(72px + 22px)}html.mu-on .foot{padding-bottom:72px}
+html.sr-on .ma-dock,html.mnu-on .ma-dock,html.pv-on .ma-dock{visibility:hidden}
+@media (max-width:1023px){.ma{grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:44px}}
+@media (max-width:767px){.ma{grid-template-columns:1fr;gap:30px;padding-top:12px}.ma-l{position:static}.ma-cv{max-width:300px}.mu-t{font-size:30px}
+  .ma-ol li{grid-template-columns:22px minmax(0,1fr) auto 44px;gap:12px;padding:12px 8px;margin:0 -8px}
+  .ma-dock>div{padding:8px 20px;gap:12px}.ma-now{max-width:30%;font-size:14px}.ma-dock .mu-tm.ma-cur{display:none}}
 /* 메뉴 펼침(11/15 동원 무인양품 캡처 → 메뉴펼침시안_v1 'B 사진 카드'): 넓은 창 · 마우스 기기만 · 띠 바로 아래 · 설명 한 줄 + 사진 카드 줄 · 열고 닫기는 main.js(.vis → .on) */
 .mm{display:none;position:fixed;left:0;right:0;top:var(--top);z-index:30;height:0;overflow:hidden;background:var(--bg);box-shadow:0 1px 0 var(--rule),0 12px 24px -18px rgba(0,0,0,.18);transition:height .24s cubic-bezier(.4,0,.6,1)}  /* 칸 높이가 커튼처럼 펼쳐짐(11/15 동원 '내려오는 게 부드럽게' — 애플 실측 0.24초 · cubic-bezier(.4,0,.6,1)) · 높이는 main.js가 그 칸 안 높이로 */
 .mm.vis{display:block}

@@ -2453,4 +2453,53 @@
       });
     });
   })();
+
+  // 음악 재생 줄(11/17 동원 "GNB에 음악 페이지도 하나 넣자" → 목업 음악페이지시안_v1 'A 목록 + 재생 줄'): 소리 한 칸(<audio>)을 곡마다 바꿔 끼움 —
+  // 한 번에 한 곡 · 스스로 재생 없음 · 줄(곡 행)을 누르면 그 곡 가사 · 표지로 바뀌고 재생, 다시 누르면 멈춤 · 처음 누르면 화면 아래 재생 줄이 올라옴 · 다 들으면 다음 곡
+  (() => {
+    const sec = document.getElementById("music"), dock = sec && sec.querySelector(".ma-dock");
+    if (!dock) return;
+    const au = dock.querySelector("audio"), rows = [...sec.querySelectorAll(".ma-ol li")], lys = [...sec.querySelectorAll(".ma-ly")];
+    const btn = dock.querySelector(".mu-pl"), now = dock.querySelector(".ma-now"), cur = dock.querySelector(".ma-cur"), dur = dock.querySelector(".ma-dur"), seek = dock.querySelector(".ma-seek");
+    const cv = sec.querySelector(".ma-cv"), IC = { p: sec.dataset.icPlay, s: sec.dataset.icPause }, LB = { p: sec.dataset.play, s: sec.dataset.pause };
+    const fmt = t => (t = Math.max(0, Math.floor(t || 0)), Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0"));
+    const name = r => r.querySelector(".ma-ti").firstChild.textContent.trim();
+    let k = -1, dragging = false;
+    const paint = () => {
+      const on = !au.paused;
+      rows.forEach((r, i) => { const b = r.querySelector(".mu-pl"), p = on && i === k; b.innerHTML = p ? IC.s : IC.p; b.classList.toggle("on", p); b.setAttribute("aria-label", (p ? LB.s : LB.p) + ": " + name(r)); });
+      btn.innerHTML = on ? IC.s : IC.p; btn.classList.toggle("on", on); btn.setAttribute("aria-label", on ? LB.s : LB.p);
+    };
+    const pick = i => {  // 가사 · 표지 · 고른 줄 표시만(소리는 그대로)
+      rows.forEach((r, j) => r.classList.toggle("sel", j === i));
+      lys.forEach(l => { l.hidden = +l.dataset.i !== i; });
+      const c = rows[i].dataset.cover;
+      if (cv) cv.innerHTML = c ? '<img src="' + c + '" alt="" decoding="async">' : "";
+    };
+    const load = i => {
+      k = i; pick(i);
+      au.src = rows[i].dataset.src; now.textContent = name(rows[i]); cur.textContent = "0:00"; dur.textContent = rows[i].querySelector(".mu-tm").textContent; seek.value = 0;
+      if ("mediaSession" in navigator) try { navigator.mediaSession.metadata = new MediaMetadata({ title: name(rows[i]), artist: document.querySelector(".top .logo") ? document.querySelector(".top .logo").textContent : "" }); } catch (e) { /* 없는 브라우저 */ }
+    };
+    const play = i => {
+      if (i !== k) load(i);
+      else if (!au.paused) { au.pause(); return; }
+      if (dock.hidden) { dock.hidden = false; document.documentElement.classList.add("mu-on"); }
+      const p = au.play(); if (p && p.catch) p.catch(() => paint());
+    };
+    rows.forEach((r, i) => r.addEventListener("click", e => { if (e.target.closest("a")) return; play(i); }));
+    btn.addEventListener("click", () => (k < 0 ? play(0) : au.paused ? play(k) : au.pause()));
+    ["play", "pause", "ended"].forEach(v => au.addEventListener(v, paint));
+    au.addEventListener("loadedmetadata", () => { const d = fmt(Math.round(au.duration)); if (!rows[k].querySelector(".mu-tm").textContent) rows[k].querySelector(".mu-tm").textContent = d; dur.textContent = rows[k].querySelector(".mu-tm").textContent; /* 길이는 목록과 같은 값(빌드는 반올림) */ });
+    au.addEventListener("timeupdate", () => { if (dragging || !au.duration) return; cur.textContent = fmt(au.currentTime); seek.value = Math.round(au.currentTime / au.duration * 1000); seek.style.setProperty("--p", seek.value / 10 + "%"); });
+    au.addEventListener("ended", () => { if (k + 1 < rows.length) play(k + 1); });
+    seek.addEventListener("input", () => { dragging = true; seek.style.setProperty("--p", seek.value / 10 + "%"); if (au.duration) cur.textContent = fmt(seek.value / 1000 * au.duration); });
+    seek.addEventListener("change", () => { dragging = false; if (au.duration) au.currentTime = seek.value / 1000 * au.duration; });
+    if ("mediaSession" in navigator) try {
+      navigator.mediaSession.setActionHandler("nexttrack", () => k + 1 < rows.length && play(k + 1));
+      navigator.mediaSession.setActionHandler("previoustrack", () => k > 0 && play(k - 1));
+    } catch (e) { /* 없는 브라우저 */ }
+    const h = location.hash.match(/^#mu(\d+)$/);  // 찾기 결과 · 공유 주소(#mu3)로 오면 그 곡을 골라 둠(재생은 누를 때)
+    if (h) { const i = rows.findIndex(r => r.id === "mu" + h[1]); if (i >= 0) pick(i); }
+  })();
 })();
