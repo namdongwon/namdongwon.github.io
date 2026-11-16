@@ -1868,7 +1868,9 @@
       dd.querySelectorAll("a").forEach(a => a.remove());
       c.className = "bco " + side[i];
       c.setAttribute("aria-hidden", "true");
-      c.innerHTML = `<b>${d.querySelector("dt").textContent}</b>`;
+      const b = document.createElement("b");  // 글자로만 넣음(11/16 보안 점검 — 쪽 글자를 꺼내 HTML로 다시 넣던 곳 · innerHTML 대신 textContent)
+      b.textContent = d.querySelector("dt").textContent;
+      c.append(b);
       c.append(dd.textContent.replace(/\s*—\s*$/, "").trim());
       sR.appendChild(c);
       return c;

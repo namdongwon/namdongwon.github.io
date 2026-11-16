@@ -4,6 +4,7 @@
 필요한 것: 파이썬 3 + Pillow(사진 줄이기·미리보기 그림) + fontTools·brotli(글꼴을 쓰는 글자만 남겨 woff2로 줄임).
 글꼴 원본은 맥의 정해진 자리에서 찾고, 없으면 docs/assets/fonts에 이미 있는 줄인 판을 그대로 쓴다(새 글자가 생겼으면 빠질 수 있어 알림).
 """
+import base64
 import hashlib
 import html
 import io
@@ -726,6 +727,35 @@ SPEC_RULES = ('<script type="speculationrules">' + json.dumps({"prefetch": [{"wh
 PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "rococo": ("rococo",), "guestbook": ("guestbook",), "contact": ("contact",)}  # 11/2 방명록 쪽(동원 "방명록 사이트를 먼저 추가") — 연락 칸 안에서 떼어 /guestbook/
 NEXT_PAGE = {"": "book", "book": "photo", "photo": "video", "video": "rococo", "rococo": "guestbook", "guestbook": "", "contact": "guestbook"}  # 11/15 로코코(유튜브 다음)  # 쪽 끝 다음 쪽 카드 — 메뉴 차례대로 한 칸씩 · 방명록 다음은 처음(소개) · 연락 다음은 방명록(11/3)
 PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "mline": "book", "y": "", "p": "photo", "fq": "contact"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p · 이달의 한 줄 무대 mline 11/4)
+
+
+# 보안 덧막이(11/16 관리 화면 세션 보안 점검 '기준/보안 점검_2026-11-16.md' · 동원 "응, 고쳐"): GitHub Pages는 머리줄을 못 보내 <meta> CSP로.
+# 허용은 지금 쓰는 곳만 — 스스로(self) · GA4(googletagmanager · google-analytics · www.google.com/g/collect — 실측 11/16 gtag가 이리로도 보냄) · Clarity · Cloudflare 웹 분석 · YouTube(nocookie 포함) · 구글 폼.
+# 쪽 안 스크립트(머리 시작 줄 · speculationrules)와 onerror · onload 같은 속성은 그 쪽의 글로 sha256을 재어 허락('unsafe-inline' 없이) · 데이터 JSON(application/json · ld+json)은 실행되지 않아 뺌
+# frame-ancestors · report-uri는 meta로 안 됨 — 뺌. 스타일은 JS가 style을 바꾸고 style 속성 셋이 있어 'unsafe-inline' 그대로
+CSP_HOSTS = {
+    "script": "https://www.googletagmanager.com https://*.clarity.ms https://static.cloudflareinsights.com https://www.youtube.com",
+    "connect": "https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://*.clarity.ms https://cloudflareinsights.com https://docs.google.com",
+    "img": "https://*.google-analytics.com https://*.googletagmanager.com https://www.google.com https://*.clarity.ms https://c.bing.com",
+    "frame": "https://www.youtube-nocookie.com https://www.youtube.com",
+}
+
+
+def csp_meta(h):
+    def sha(s):
+        return "'sha256-" + base64.b64encode(hashlib.sha256(s.encode("utf-8")).digest()).decode() + "'"
+    scripts = {sha(body) for attrs, body in re.findall(r"<script\b([^>]*)>(.*?)</script>", h, re.S)
+               if "src=" not in attrs and not re.search(r'type="application/(?:ld\+)?json"', attrs)}
+    hands = {sha(html.unescape(v)) for v in re.findall(r'\son[a-z]+="([^"]*)"', h)}
+    s = " ".join(sorted(scripts)) + ((" 'unsafe-hashes' " + " ".join(sorted(hands))) if hands else "")
+    pol = (f"default-src 'self'; script-src 'self' {s} {CSP_HOSTS['script']}; style-src 'self' 'unsafe-inline'; "
+           f"img-src 'self' data: blob: {CSP_HOSTS['img']}; font-src 'self' data:; connect-src 'self' {CSP_HOSTS['connect']}; "
+           f"frame-src {CSP_HOSTS['frame']}; media-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'self' https://docs.google.com")
+    return f'<meta http-equiv="Content-Security-Policy" content="{pol}">'
+
+
+def with_csp(h):  # <meta charset> 바로 뒤에(쪽 안 첫 스크립트보다 앞)
+    return h.replace('<meta charset="utf-8">', '<meta charset="utf-8">' + csp_meta(h), 1)
 
 
 def page_of(aid):
@@ -2027,7 +2057,7 @@ def render(site, poem, videos, photos, lang="ko"):
         # 검색 결과 이동 경로(11/4 동원 '④ 넣기 (권장)' — Schema.org BreadcrumbList · 구글 결과에 'namdongwon.com › 시집'): 첫 화면(이름) › 이 쪽 — 첫 화면은 없음
         crumb = ("" if not k else '\n<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": S["name"], "item": f"{base}{'/' + lang if tr_ else ''}/"},
-            {"@type": "ListItem", "position": 2, "name": L["nav"][("me", "poem", "photo", "video", "contact", "guestbook", "rococo").index(top_of[k])], "item": url}]}, ensure_ascii=False) + "</script>")
+            {"@type": "ListItem", "position": 2, "name": L["nav"][("me", "poem", "photo", "video", "contact", "guestbook", "rococo").index(top_of[k])], "item": url}]}, ensure_ascii=False).replace("</", "<\\/") + "</script>")  # '</'는 '<\/'로(11/16 보안 점검 — 원고 값에 '</script>'가 있어도 칸이 끊기지 않게)
         bpg = k == "book"
 
         def link(pg):  # 같은 판의 쪽 주소 — 이 쪽에서 본 상대 주소
@@ -2071,6 +2101,7 @@ def render(site, poem, videos, photos, lang="ko"):
         nx = NEXT_PAGE[k]
         nxp = (f'<nav class="nxp" aria-label="{t("next_k")}"><a href="{link(nx)}"><span class="k">{t("next_k")}</span>'
                f'<span class="n">{e(navname[top_of[nx]])}<i aria-hidden="true">→</i></span><span class="d">{t("next_d_" + (nx or "me"))}</span></a></nav>\n')
+        ld_js = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")  # '</'는 '<\/'로(11/16 보안 점검) — 파이썬 3.9는 f-string 안에 \\를 못 씀
         html_ = f"""<!doctype html>
 <html lang="{lang}">
 <head>
@@ -2109,7 +2140,7 @@ def render(site, poem, videos, photos, lang="ko"):
 {HEAD_JS if bpg else HEAD_JS_PLAIN}
 {SPEC_RULES}
 {preload if bpg else ""}<link rel="stylesheet" href="{P}assets/style.css">
-<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>{crumb}
+<script type="application/ld+json">{ld_js}</script>{crumb}
 </head>
 <body>
 {door if bpg else ""}
@@ -2557,7 +2588,8 @@ def main():
 
     def stamp(h):  # 쪽 안의 assets/style.css · main.js · consent.js · fonts/….woff2 주소 끝에 그 파일의 지문 · 공유 카드 og-….jpg도
         h = re.sub(r'(assets/(style\.css|main\.js|consent\.js|cursor\.js|fonts/[\w.-]+\.woff2))(?=")', lambda m: m.group(1) + (f"?v={ver[m.group(2)]}" if m.group(2) in ver else ""), h)
-        return re.sub(r'(assets/(og[\w.-]*\.(?:jpg|png)))(?=")', lambda m: m.group(1) + (f"?v={og_fp(m.group(2))}" if og_fp(m.group(2)) else ""), h)
+        h = re.sub(r'(assets/(og[\w.-]*\.(?:jpg|png)))(?=")', lambda m: m.group(1) + (f"?v={og_fp(m.group(2))}" if og_fp(m.group(2)) else ""), h)
+        return with_csp(h)  # 보안 덧막이 CSP(11/16) — 주소 지문을 붙인 뒤의 마지막 글로 잼
 
     cover = CONTENT / site["book"]["cover"]
     save_jpg(cover, ASSETS / "img/cover.jpg", 600, quality=84)
