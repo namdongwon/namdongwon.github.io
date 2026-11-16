@@ -2459,9 +2459,9 @@
   (() => {
     const sec = document.getElementById("music"), dock = sec && sec.querySelector(".ma-dock");
     if (!dock) return;
-    const au = dock.querySelector("audio"), rows = [...sec.querySelectorAll(".ma-ol li")], lys = [...sec.querySelectorAll(".ma-ly")];
+    const au = dock.querySelector("audio"), rows = [...sec.querySelectorAll(".ma-ol li")];
     const btn = dock.querySelector(".mu-pl"), now = dock.querySelector(".ma-now"), cur = dock.querySelector(".ma-cur"), dur = dock.querySelector(".ma-dur"), seek = dock.querySelector(".ma-seek");
-    const cv = sec.querySelector(".ma-cv"), IC = { p: sec.dataset.icPlay, s: sec.dataset.icPause }, LB = { p: sec.dataset.play, s: sec.dataset.pause };
+    const IC = { p: sec.dataset.icPlay, s: sec.dataset.icPause }, LB = { p: sec.dataset.play, s: sec.dataset.pause };
     const fmt = t => (t = Math.max(0, Math.floor(t || 0)), Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0"));
     const name = r => r.querySelector(".ma-ti").firstChild.textContent.trim();
     let k = -1, dragging = false;
@@ -2470,10 +2470,10 @@
       rows.forEach((r, i) => { const b = r.querySelector(".mu-pl"), p = on && i === k; b.innerHTML = p ? IC.s : IC.p; b.classList.toggle("on", p); b.setAttribute("aria-label", (p ? LB.s : LB.p) + ": " + name(r)); });
       btn.innerHTML = on ? IC.s : IC.p; btn.classList.toggle("on", on); btn.setAttribute("aria-label", on ? LB.s : LB.p);
     };
-    const pick = i => {  // 가사 · 표지 · 고른 줄 표시만(소리는 그대로)
-      rows.forEach((r, j) => r.classList.toggle("sel", j === i));
-      lys.forEach(l => { l.hidden = +l.dataset.i !== i; });
-      const c = rows[i].dataset.cover;
+    const pick = i => {  // 가사 · 표지 · 고른 줄 표시만(소리는 그대로) — 앨범마다 한 판이라 그 곡이 든 판 안에서만 바꿈(11/17 앨범 꼴)
+      const box = rows[i].closest(".ma"), c = rows[i].dataset.cover, cv = box.querySelector(".ma-cv");
+      box.querySelectorAll(".ma-ol li").forEach(r => r.classList.toggle("sel", r === rows[i]));
+      box.querySelectorAll(".ma-ly").forEach(l => { l.hidden = +l.dataset.i !== i; });
       if (cv) cv.innerHTML = c ? '<img src="' + c + '" alt="" decoding="async">' : "";
     };
     const load = i => {

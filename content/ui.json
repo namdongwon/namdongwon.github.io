@@ -2464,12 +2464,12 @@
     "fr": "Des poèmes devenus chansons"
   },
   "mm_d_music": {
-    "ko": "시를 가사로, 수노로 지은 노래",
-    "en": "Poems as lyrics, songs made with Suno",
-    "ja": "詩を歌詞に、Suno でつくった歌",
-    "ru": "Стихи как тексты песен, музыка — в Suno",
-    "es": "Poemas como letras, canciones hechas con Suno",
-    "fr": "Des poèmes pour paroles, des chansons faites avec Suno"
+    "ko": "시를 가사로 지은 노래",
+    "en": "Poems turned into songs",
+    "ja": "詩を歌詞にした歌",
+    "ru": "Стихи, ставшие песнями",
+    "es": "Poemas convertidos en canciones",
+    "fr": "Des poèmes devenus chansons"
   },
   "mu_play": {
     "ko": "재생",
@@ -2526,5 +2526,45 @@
     "ru": "Плеер",
     "es": "Reproductor",
     "fr": "Lecteur"
+  },
+  "mu_kind_album": {
+    "ko": "앨범",
+    "en": "Album",
+    "ja": "アルバム",
+    "ru": "Альбом",
+    "es": "Álbum",
+    "fr": "Album"
+  },
+  "mu_kind_ep": {
+    "ko": "EP",
+    "en": "EP",
+    "ja": "EP",
+    "ru": "EP",
+    "es": "EP",
+    "fr": "EP"
+  },
+  "mu_kind_single": {
+    "ko": "싱글",
+    "en": "Single",
+    "ja": "シングル",
+    "ru": "Сингл",
+    "es": "Sencillo",
+    "fr": "Single"
+  },
+  "mu_meta": {
+    "ko": "{n}곡, {m}분",
+    "en": "{n} songs, {m} min",
+    "ja": "{n}曲、{m}分",
+    "ru": "Треков: {n}, {m} мин",
+    "es": "{n} canciones, {m} min",
+    "fr": "{n} titres, {m} min"
+  },
+  "mu_meta_1": {
+    "ko": "1곡, {m}분",
+    "en": "1 song, {m} min",
+    "ja": "1曲、{m}分",
+    "ru": "Треков: 1, {m} мин",
+    "es": "1 canción, {m} min",
+    "fr": "1 titre, {m} min"
   }
 }

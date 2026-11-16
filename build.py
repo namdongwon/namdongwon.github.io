@@ -1375,7 +1375,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 곡 제목으로도 찾기 — 자리 id는 오래된 곡부터 mu1 · mu2 …(새 곡이 위에 쌓여도 주소가 그대로)
     ix["music"] += [(tg["music"], (x.get(lang) or {}).get("title") or x["title"], html.unescape(t("mu_from", poem=x["from_poem"])) if x.get("from_poem") else html.unescape(mu_t("kicker")),
                      f"#mu{len(mu_items) - i}") for i, x in enumerate(mu_items)]
-    mu_cover = next((f"{P}assets/img/music/{x['cover']}" for x in mu_items if x.get("cover")), None)
+    mu_cover = next((f"{P}assets/img/music/{c_}" for c_ in [a_.get("cover") for a_ in sorted(MU.get("albums", []), key=lambda a_: a_.get("date", ""), reverse=True)] + [x.get("cover") for x in mu_items] if c_), None)
     rc_t = lambda k: e((RC.get(k) or {}).get(lang) or (RC.get(k) or {}).get("en") or (RC.get(k) or {}).get("ko", ""))  # noqa: E731
     # 시를 복사하면 따라붙는 출처 한 줄(11/6 동원 'A 출처 따라붙음' — 시안 시복사출처시안_v1 · 연락 FAQ의 '출처를 함께'를 복사 순간에): 그 판의 부호 꼴로 · main.js가 세 줄 이상일 때만 붙임
     _pt, _bt = S["poem"]["title"], book["title"]
@@ -2006,39 +2006,56 @@ def render(site, poem, videos, photos, lang="ko"):
 """
 
     def music_sec():  # 음악 쪽 본문(11/17 'A 목록 + 재생 줄' — 왼쪽 표지 · 오른쪽 곡 목록 · 고른 곡 가사 · 누르면 화면 아래 재생 줄) · 재생은 main.js
+        # 11/17 동원 "이런 거 쓰지말고 뭐 몇년도 앨범이다 이런 거 말해야지" → 앨범마다 한 판(애플 뮤직 앨범 페이지 짜임): 갈래 · 해 → 앨범 이름 → 이름 → 곡 목록 → 발매일 · 곡 수, 길이 — 만든 도구 문구는 쓰지 않음
         play, pause = t("mu_play"), t("mu_pause")
         def fmt(sec_):
             return f"{int(sec_) // 60}:{int(sec_) % 60:02d}" if sec_ else ""
+        def loc(v):  # 문자 또는 말마다 사전
+            return e(v.get(lang) or v.get("en") or v.get("ko", "")) if isinstance(v, dict) else e(v or "")
         def ttl(x):
             return e((x.get(lang) or {}).get("title") or x["title"])
         def lyr(x):
             txt = x.get(f"lyrics_{lang}") or x.get("lyrics") or ""
             return "".join(f"<p>{'<br>'.join(e(l_) for l_ in st_.split(chr(10)))}</p>" for st_ in re.split(r"\n\s*\n", txt.strip()) if st_.strip())
-        sel = ' class="sel"'
-        cv = lambda x: f"{P}assets/img/music/{e(x['cover'])}" if x.get("cover") else ""  # noqa: E731
-        rows = "".join(
-            f'<li id="mu{len(mu_items) - i}" data-i="{i}" data-src="{P}assets/music/{e(x["file"])}" data-cover="{cv(x)}"{sel if i == 0 else ""}>'
-            f'<span class="ma-n">{i + 1:02d}</span><span class="ma-ti">{ttl(x)}'
-            + (f'<small>{t("mu_from", poem=e(x["from_poem"]))}</small>' if x.get("from_poem") else "")
-            + f'</span><span class="mu-tm">{fmt(x.get("dur"))}</span>'
-            f'<button type="button" class="mu-pl" aria-label="{play}: {ttl(x)}">{MU_PLAY}</button></li>'
-            for i, x in enumerate(mu_items))
-        lys = "".join(f'<div class="ma-ly" data-i="{i}"{"" if i == 0 else " hidden"}><h3 class="mu-k">{t("mu_lyrics")} · {ttl(x)}</h3>{lyr(x)}</div>'
-                      for i, x in enumerate(mu_items) if x.get("lyrics") or x.get(f"lyrics_{lang}"))
-        c0 = cv(mu_items[0]) if mu_items else ""
-        body = (f'<ol class="ma-ol" aria-label="{t("mu_list")}">{rows}</ol>{lys}' if mu_items else f'<p class="ma-empty">{mu_t("empty")}</p>')
+        img = lambda f: f"{P}assets/img/music/{e(f)}" if f else ""  # noqa: E731
+        # 앨범 묶기 — 앨범 칸이 없는 곡은 그 곡 하나로 싱글
+        albs = {a_["id"]: {**a_, "tracks": []} for a_ in MU.get("albums", [])}
+        for x in mu_items:
+            ab = albs.get(x.get("album")) or albs.setdefault("single-" + x["id"], {"id": "single-" + x["id"], "title": (x.get(lang) or {}).get("title") or x["title"], "kind": "single", "date": x.get("date", ""), "cover": x.get("cover"), "tracks": []})
+            ab["tracks"].append(x)
+        albs = sorted((a_ for a_ in albs.values() if a_["tracks"]), key=lambda a_: a_.get("date", ""), reverse=True)
+        anchor = {x["id"]: f"mu{len(mu_items) - i}" for i, x in enumerate(mu_items)}  # 오래된 곡부터 mu1 · mu2 …(찾기 · 공유 주소)
+        sel, gi, blocks = ' class="sel"', 0, []
+        for ai, ab in enumerate(albs):
+            tr_s = sorted(ab["tracks"], key=lambda x: (x.get("no") or 999, x.get("date", "")))
+            rows, lys = [], []
+            for n, x in enumerate(tr_s):
+                rows.append(f'<li id="{anchor[x["id"]]}" data-i="{gi}" data-src="{P}assets/music/{e(x["file"])}" data-cover="{img(x.get("cover") or ab.get("cover"))}"{sel if n == 0 else ""}>'
+                            f'<span class="ma-n">{n + 1:02d}</span><span class="ma-ti">{ttl(x)}'
+                            + (f'<small>{t("mu_from", poem=e(x["from_poem"]))}</small>' if x.get("from_poem") else "")
+                            + f'</span><span class="mu-tm">{fmt(x.get("dur"))}</span>'
+                            f'<button type="button" class="mu-pl" aria-label="{play}: {ttl(x)}">{MU_PLAY}</button></li>')
+                if x.get("lyrics") or x.get(f"lyrics_{lang}"):
+                    lys.append(f'<div class="ma-ly" data-i="{gi}"{"" if n == 0 else " hidden"}><h3 class="mu-k">{t("mu_lyrics")} · {ttl(x)}</h3>{lyr(x)}</div>')
+                gi += 1
+            mins = max(1, round(sum(x.get("dur") or 0 for x in tr_s) / 60))
+            meta = " · ".join(y for y in (dtxt(ab["date"]) if ab.get("date") else "", t("mu_meta_1" if len(tr_s) == 1 else "mu_meta", n=len(tr_s), m=mins)) if y)
+            kind = t("mu_kind_" + ab.get("kind", "album")) + (f' · {ab["date"][:4]}' if ab.get("date") else "")
+            hid = ' id="music-t"' if ai == 0 else ""
+            c0 = img(tr_s[0].get("cover") or ab.get("cover"))
+            blocks.append(f'''    <div class="ma"><div class="ma-l"><div class="ma-cv">{f'<img src="{c0}" alt="" loading="lazy" decoding="async">' if c0 else ""}</div></div>
+      <div class="ma-r"><p class="mu-k">{kind}</p><h2 class="mu-t"{hid}>{loc(ab["title"])}</h2><p class="mu-one">{e(S["name"])}</p>
+      <ol class="ma-ol" aria-label="{t("mu_list")}">{"".join(rows)}</ol><p class="ma-meta">{meta}</p>{"".join(lys)}</div></div>''')
+        if not blocks:
+            blocks = [f'''    <div class="ma"><div class="ma-l"><div class="ma-cv"></div></div>
+      <div class="ma-r"><p class="mu-k">{mu_t("kicker")}</p><h2 class="mu-t" id="music-t">{mu_t("title")}</h2><p class="ma-empty">{mu_t("empty")}</p></div></div>''']
         dock = ("" if not mu_items else
                 f'<div class="ma-dock" role="region" aria-label="{t("mu_player")}" hidden><div>'
                 f'<button type="button" class="mu-pl" aria-label="{play}">{MU_PLAY}</button><b class="ma-now"></b>'
                 f'<span class="mu-tm ma-cur">0:00</span><input class="ma-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="{t("mu_seek")}">'
                 f'<span class="mu-tm ma-dur"></span></div><audio preload="none"></audio></div>')
-        return f"""  <section id="music" aria-labelledby="music-t" data-play="{play}" data-pause="{pause}" data-ic-play='{MU_PLAY}' data-ic-pause='{MU_PAUSE}'>
-    <div class="ma"><div class="ma-l"><div class="ma-cv">{f'<img src="{c0}" alt="" loading="lazy" decoding="async">' if c0 else ""}</div><p class="mu-cr">{mu_t("credit")}</p></div>
-      <div class="ma-r"><p class="mu-k">{mu_t("kicker")}</p><h2 class="mu-t" id="music-t">{mu_t("title")}</h2><p class="mu-one">{mu_t("oneliner")}</p>
-      {body}</div></div>
-    {dock}
-  </section>
-"""
+        return (f"""  <section id="music" aria-labelledby="music-t" data-play="{play}" data-pause="{pause}" data-ic-play='{MU_PLAY}' data-ic-pause='{MU_PAUSE}'>\n"""
+                + "\n".join(blocks) + f"\n    {dock}\n  </section>\n")
 
     sec = {
         # 시집 쪽 h1(11/1 동원 버튼 "함께 넣어 (권장)" — 명품 사이트 조사 제안 ①: 상품 쪽 h1은 상품 이름): 이름 · 첫 시집 줄 + 큰 제목 + 작은 제목을 한 h1로 — 보이는 모양은 그대로(전엔 h1이 위 작은 줄뿐).
