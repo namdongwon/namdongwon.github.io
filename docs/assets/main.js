@@ -2435,12 +2435,15 @@
       const r = nav.getBoundingClientRect(), row = r.height / as.length, yc = (e.clientY - r.top) / row;
       wave(yc, Math.max(0, Math.min(as.length - 1, Math.floor(yc))));
     });
-    nav.addEventListener("pointerleave", () => { if (!nav.contains(document.activeElement)) calm(); });
+    // 마우스가 떠나면 늘 가라앉음 — 키보드로 옮긴 초점(:focus-visible)일 때만 남김(11/16 동원 "버튼을 누르고 이동한다음에 마우스를 다른 곳에 해도 저게 계속 튀어나와있네" — 누른 막대에 초점이 남아 있었음)
+    const kbFocus = () => as.some(a => a.matches(":focus-visible"));
+    nav.addEventListener("pointerleave", () => { if (!kbFocus()) calm(); });
     as.forEach((a, i) => {
-      a.addEventListener("focus", () => wave(i + 0.5, i));
+      a.addEventListener("focus", () => { if (a.matches(":focus-visible")) wave(i + 0.5, i); });
       a.addEventListener("blur", () => setTimeout(() => { if (!nav.contains(document.activeElement)) calm(); }, 0));
       a.addEventListener("click", e => {
         e.preventDefault();
+        if (e.detail) a.blur();  // 마우스로 누르면 초점을 풀어 둠(키보드 Enter는 detail 0 — 초점 그대로)
         const el = items[i][1], up = topOf(el) < scrollY;
         const to = el ? Math.max(0, topOf(el) - (up ? ((document.querySelector("header.top") || {}).offsetHeight || 0) : 0)) : 0;
         scrollTo({ top: to, behavior: reduce ? "auto" : "smooth" });
