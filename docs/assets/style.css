@@ -773,6 +773,7 @@ html.sr-on{overflow:hidden}
 
 :where(a,button,summary,label,[role=button]){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
 .js :where(a,button,summary,label,[role=button]):active{transform:scale(.97);transition:none}
+.js .top .logo:active{transform:none}@media (max-width:767px){.js .top .logo:active{transform:translate(-50%,-50%)}}  
 :is(.nf,.pp) :where(a,button):active{transform:scale(.97);transition:none}  
 .nf .nfp a{display:inline-block}  
 @media (prefers-reduced-motion:reduce){:is(.nf,.pp) :where(a,button):active{transform:none;opacity:.6}}:where(:root[data-motion="reduce"]) :is(.nf,.pp) :where(a,button):active,:where(:root[data-motion="reduce"]):is(.nf,.pp) :where(a,button):active{transform:none;opacity:.6}

@@ -805,6 +805,7 @@ html.sr-on{overflow:hidden}
 /* 11/6 넓힘(동원 'A 사이트 결' — 점검에서 눌러도 반응 없던 FAQ 질문 줄 · 움직임 스위치 · 남기기까지): 펼침 줄(summary) · 스위치 글(label) · [role=button]도 · 남기기는 먹 반전에 더해 눌림 */
 :where(a,button,summary,label,[role=button]){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
 .js :where(a,button,summary,label,[role=button]):active{transform:scale(.97);transition:none}
+.js .top .logo:active{transform:none}@media (max-width:767px){.js .top .logo:active{transform:translate(-50%,-50%)}}  /* 표장(로고)은 누름 반응 없음(11/16 동원 "gnb 가장 왼쪽에 있는 거 클릭하면 뭔가 크기 작아졌다가 … 다른 사이트 보니까 없더라고" — 11/6 올림 반응 뺀 데 이어) · 휴대폰은 가운데 맞춤 그대로 */
 :is(.nf,.pp) :where(a,button):active{transform:scale(.97);transition:none}  /* 하11 — 404 · 처리방침 쪽은 main.js가 없어(.js 없음) 누름 모양이 빠졌던 것 · 아이폰은 body ontouchstart(build.py)가 있어야 :active를 그림 · a는 인라인이라 줄어듦이 안 보이는 글 링크도 있어 아래 inline-block */
 .nf .nfp a{display:inline-block}  /* .buy는 이미 inline-flex */
 @media (prefers-reduced-motion:reduce){:is(.nf,.pp) :where(a,button):active{transform:none;opacity:.6}}
