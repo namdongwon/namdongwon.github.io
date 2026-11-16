@@ -2366,4 +2366,70 @@
       e.preventDefault(); move(dir);
     });
   })();
+  // 랜딩(소개) 페이지 칸 표시(11/16 동원 toss.im "이거 왼쪽에 있는 거 우리 랜딩페이지에 좀 넣어보자" → 시안 기준/브랜드 시안/랜딩목차시안_v1 'A 왼쪽 토스 꼴 (권장)'):
+  // 토스 실측 — 2px 막대(짧게 · 지금 칸만 먹) · 줄 12px · 올리면 가리킨 막대가 길어지고 이웃도 물결처럼 · 옆에 칸 이름 · 칸 다섯(처음 · 소개 · 지금 · 기록 · 다음 페이지)
+  // 넓은 창(1024~)에서만 · 첫 화면 사람 사진 위에서도 보이게 색 뒤집기(mix-blend difference) · 누르면 그 칸으로 · 키보드 초점도 올린 것과 같게
+  (() => {
+    const me = document.getElementById("me");
+    if (!me || !document.querySelector(".tk")) return;
+    const names = uiText("si_items", "처음|소개|지금|기록|다음 페이지").split("|");
+    const targets = [null, me, me.querySelector(".now"), me.querySelector(".rec"), document.querySelector(".nxp")];
+    const items = names.map((n, i) => [n, targets[i]]).filter(([, el], i) => i === 0 || el);
+    if (items.length < 3) return;
+    const nav = document.createElement("nav");
+    nav.className = "si";
+    nav.setAttribute("aria-label", uiText("si_label", "이 페이지 칸"));
+    const lab = document.createElement("span");
+    lab.className = "si-l";
+    lab.setAttribute("aria-hidden", "true");
+    const as = items.map(([n]) => {
+      const a = document.createElement("a");
+      a.href = "#";
+      a.setAttribute("aria-label", n);
+      const b = document.createElement("span");
+      b.className = "b";
+      a.append(b);
+      nav.append(a);
+      return a;
+    });
+    nav.append(lab);
+    document.body.append(nav);
+    const topOf = el => (el ? el.getBoundingClientRect().top + scrollY : 0);
+    let pend = false;
+    const spy = () => {
+      pend = false;
+      const y = scrollY + innerHeight * 0.4, end = scrollY + innerHeight >= document.documentElement.scrollHeight - 2;
+      let k = 0;
+      items.forEach(([, el], i) => { if (topOf(el) <= y) k = i; });
+      if (end) k = items.length - 1;  // 맨 아래에 닿으면 마지막 칸(짧은 끝 칸이 화면 40% 줄에 못 닿아도)
+      as.forEach((a, i) => { a.classList.toggle("on", i === k); if (i === k) a.setAttribute("aria-current", "location"); else a.removeAttribute("aria-current"); });
+    };
+    addEventListener("scroll", () => { if (!pend) { pend = true; requestAnimationFrame(spy); } }, { passive: true });
+    addEventListener("resize", spy, { passive: true });
+    spy();
+    // 올림 · 초점: 가리킨 막대 1 · 이웃 .68 · 그 옆 .48 · 나머지 .35(토스 평소 값)
+    const wave = i => {
+      as.forEach((a, j) => { const d = Math.abs(i - j); a.style.setProperty("--s", d === 0 ? 1 : d === 1 ? 0.68 : d === 2 ? 0.48 : 0.35); });
+      lab.textContent = items[i][0];
+      lab.style.top = as[i].offsetTop + "px";
+      nav.classList.add("hov");
+    };
+    const calm = () => { as.forEach(a => a.style.removeProperty("--s")); nav.classList.remove("hov"); };
+    nav.addEventListener("pointermove", e => {
+      if (e.pointerType !== "mouse") return;
+      const r = nav.getBoundingClientRect(), i = Math.max(0, Math.min(as.length - 1, Math.floor((e.clientY - r.top) / (r.height / as.length))));
+      wave(i);
+    });
+    nav.addEventListener("pointerleave", () => { if (!nav.contains(document.activeElement)) calm(); });
+    as.forEach((a, i) => {
+      a.addEventListener("focus", () => wave(i));
+      a.addEventListener("blur", () => setTimeout(() => { if (!nav.contains(document.activeElement)) calm(); }, 0));
+      a.addEventListener("click", e => {
+        e.preventDefault();
+        const el = items[i][1], up = topOf(el) < scrollY;
+        const to = el ? Math.max(0, topOf(el) - (up ? ((document.querySelector("header.top") || {}).offsetHeight || 0) : 0)) : 0;
+        scrollTo({ top: to, behavior: reduce ? "auto" : "smooth" });
+      });
+    });
+  })();
 })();

@@ -40,7 +40,7 @@
     const sl = drag && (e.buttons & 1) && !getSelection().isCollapsed;  // 글을 드래그해 고르는 동안 — 글 칸처럼 막대 · 높이는 밑 글자 크기(11/10 동원 "드래그 할 때도 계속 점이거든? 글칸커서처럼")
     if (sl && t && !f) dot.style.setProperty("--tx-h", Math.round(parseFloat(getComputedStyle(t).fontSize) * 1.15) + "px");
     dot.classList.toggle("sl", !!sl && !f);
-    const L = !f && !sl && t ? t.closest(LINK) : null;
+    const L = !f && !sl && t && !t.closest(".si") ? t.closest(LINK) : null;  // 랜딩 칸 표시(.si) 위에선 점 그대로 — 큰 원이 5px 막대를 덮었음(11/16)
     dot.classList.toggle("lk", !!L);
     dot.classList.toggle("pl", !!(L && L.closest(".lsw li")));  // 언어 목록 줄 위에선 반전 없는 테두리 원 — 국기가 본래 색 그대로(11/10 동원 "국가의 국기들 내가 마우스 오버해도 그 국가의 본연의 색깔 그대로")
     if (L !== ink) { if (ink) ink.classList.remove("cur-ink"); ink = L && !L.closest(".lsw li") && L.getBoundingClientRect().height <= 44 && (faded(L) || faded(t)) ? L : null; if (ink) ink.classList.add("cur-ink"); }  // 원이 덮은 회색 글자는 먹색으로 — 반전되면 순흰(어둡게는 순검정)(11/10 동원 "푸터 글자들 마우스 오버시 회색이지? 흰색으로 해야지 … 전부 흰색으로") · 한 줄짜리 링크만(높이 44px 이하) — 카드 · 큰 링크는 글 색 그대로(11/10 동원 "마우스 오버시 글이 왜 더 진해져?" → 버튼 "카드 · 큰 링크는 빼기 (권장)")  // 링크 · 단추 위 — 점이 32px로 커져 글자를 반전(11/10 동원 "닿았을때 원이 좀 더 커졌으면" → 버튼 "32px (권장)")
@@ -63,7 +63,7 @@
   addEventListener("blur", () => { drag = false; unink(); if (dot) dot.classList.add("off"); });
   // 기호 단추 말풍선(11/11 동원 "우리 문양으로 되어있는 것 마우스 오버시 이렇게 설명 나오는 것도 좋겠네" — 보낸 그림의 검은 말풍선 꼴):
   // 이름(aria-label)이 있고 보이는 글이 한 글자 이하인 단추 · 링크(돋보기 · 원 아이콘 · 화면 · 글자 '가' · 맨 위로 · 닫기)에 올리면 0.4초 뒤 아래에(자리가 없으면 위에) — 키보드 초점에도 · 브라우저 기본 말풍선(title)은 겹치지 않게 뺌
-  const TIPS = "a[aria-label],button[aria-label],summary[aria-label]";
+  const TIPS = "a[aria-label]:not(.si a),button[aria-label],summary[aria-label]";  // 랜딩 칸 표시(.si)는 제 이름 글이 있어 말풍선을 띄우지 않음(11/16)
   const icon = (el) => el && el.matches(TIPS) && [...el.childNodes].map((n) => (n.nodeType === 3 || !(n.classList && n.classList.contains("sr")) ? n.textContent : "")).join("").trim().length <= 1;
   let tipEl = null, tipFor = null, tipT = 0;
   const hideTip = () => { clearTimeout(tipT); tipFor = null; if (tipEl) tipEl.classList.remove("on"); };
