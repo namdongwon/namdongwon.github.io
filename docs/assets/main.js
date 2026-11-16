@@ -2392,8 +2392,7 @@
       nav.append(a);
       return a;
     });
-    nav.append(lab);
-    document.body.append(nav);
+    document.body.append(nav, lab);  // 이름은 칸 표시 밖에 — 색 뒤집기(difference) 없이 먹 글자 + 바탕(첫 화면 글 위에 겹쳐도 깨끗하게)
     const topOf = el => (el ? el.getBoundingClientRect().top + scrollY : 0);
     let pend = false;
     const spy = () => {
@@ -2407,22 +2406,38 @@
     addEventListener("scroll", () => { if (!pend) { pend = true; requestAnimationFrame(spy); } }, { passive: true });
     addEventListener("resize", spy, { passive: true });
     spy();
-    // 올림 · 초점: 가리킨 막대 1 · 이웃 .68 · 그 옆 .48 · 나머지 .35(토스 평소 값)
-    const wave = i => {
-      as.forEach((a, j) => { const d = Math.abs(i - j); a.style.setProperty("--s", d === 0 ? 1 : d === 1 ? 0.68 : d === 2 ? 0.48 : 0.35); });
+    // 올림 · 초점(11/16 토스 다시 실측 — 동원 "마우스 오버하는 게 검정색으로 바뀌어야지 · 사이트 다시 보고 차이점"): 가리킨 자리를 가운데로 종 모양 물결 —
+    // 거리 d(줄 단위)마다 .35 + .65 × e^(−d²/16.2)(토스 값 1 · .96 · .86 · .72 · .59 · .49) · 가장 가까운 막대는 먹 · 이름은 그 막대 높이 · 막대 끝에서 16px
+    const wave = (yc, i) => {
+      as.forEach((a, j) => { const d = (yc - (j + 0.5)); a.style.setProperty("--s", (0.35 + 0.65 * Math.exp(-(d * d) / 16.2)).toFixed(3)); a.classList.toggle("hv", j === i); });
       lab.textContent = items[i][0];
-      lab.style.top = as[i].offsetTop + "px";
+      const r = as[i].getBoundingClientRect();
+      lab.style.top = Math.round(r.top + r.height / 2) + "px";
+      lab.classList.add("on");
       nav.classList.add("hov");
+      dim();
     };
-    const calm = () => { as.forEach(a => a.style.removeProperty("--s")); nav.classList.remove("hov"); };
+    // 이름 줄과 겹치는 쪽 글은 올린 동안만 옅게(토스와 달리 우리 첫 화면은 왼쪽 64px부터 글이 있어 이름이 '시집 · 2026' 위에 얹혔음 — 바탕 판은 덮다 남은 글자 조각이 삐져나와 지저분)
+    let dimmed = new Set();
+    const dim = () => {
+      const r = lab.getBoundingClientRect(), now = new Set();
+      for (let x = r.left; x <= r.right + 48; x += 12) for (const y of [r.top + 2, r.top + r.height / 2, r.bottom - 2]) {
+        const el = document.elementsFromPoint(x, y).find(e => e.closest("main") && e.children.length === 0 && e.textContent.trim());
+        if (el) now.add(el);
+      }
+      dimmed.forEach(e => { if (!now.has(e)) e.classList.remove("si-dim"); });
+      now.forEach(e => e.classList.add("si-dim"));
+      dimmed = now;
+    };
+    const calm = () => { as.forEach(a => { a.style.removeProperty("--s"); a.classList.remove("hv"); }); nav.classList.remove("hov"); lab.classList.remove("on"); dimmed.forEach(e => e.classList.remove("si-dim")); dimmed = new Set(); };
     nav.addEventListener("pointermove", e => {
       if (e.pointerType !== "mouse") return;
-      const r = nav.getBoundingClientRect(), i = Math.max(0, Math.min(as.length - 1, Math.floor((e.clientY - r.top) / (r.height / as.length))));
-      wave(i);
+      const r = nav.getBoundingClientRect(), row = r.height / as.length, yc = (e.clientY - r.top) / row;
+      wave(yc, Math.max(0, Math.min(as.length - 1, Math.floor(yc))));
     });
     nav.addEventListener("pointerleave", () => { if (!nav.contains(document.activeElement)) calm(); });
     as.forEach((a, i) => {
-      a.addEventListener("focus", () => wave(i));
+      a.addEventListener("focus", () => wave(i + 0.5, i));
       a.addEventListener("blur", () => setTimeout(() => { if (!nav.contains(document.activeElement)) calm(); }, 0));
       a.addEventListener("click", e => {
         e.preventDefault();
