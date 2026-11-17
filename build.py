@@ -1738,6 +1738,9 @@ def render(site, poem, videos, photos, lang="ko"):
             return e(book["toc"]["label"])
         if v == "@rc_oneliner":
             return rc_t("oneliner")
+        if isinstance(v, str) and v.startswith("@rc_feat:"):  # 로코코 페이지 세 기능 제목(rococo.json features — 말마다 있음)
+            f_ = (RC.get("features") or [])[int(v[9:])].get("title", {})
+            return e(f_.get(lang) or f_.get("en") or f_.get("ko", ""))
         if isinstance(v, str) and v.startswith("@nav:"):
             return e(L["nav"][int(v[5:])])
         if isinstance(v, dict):
@@ -1780,7 +1783,9 @@ def render(site, poem, videos, photos, lang="ko"):
             href = mhref(c_["href"])
             label = mtext(c_["n"], f"{k_ or '소개'} 칸 이름") + (" ↗" if c_.get("arrow") else "")
             img, fit = mimg(c_.get("img")), c_.get("fit", "img")
-            if fit == "tc":
+            if fit == "soon":  # 아직 내용이 없는 칸(11/18 동원 "미리 만들어 놓으라고 했잖아 5 4 5 4") — 먹 칸 + 음악 표지와 같은 '● 준비 중' 배지
+                ph = f'<span class="mm-ph mm-soon"><b><i aria-hidden="true"></i>{t("coming")}</b></span>'
+            elif fit == "tc":
                 ph = '<span class="mm-ph mm-tc">' + "".join(f"<i>{e(x)}</i>" for x in mlines(c_.get("lines"))) + "</span>"
             elif img and fit in ("img", "ct"):
                 ph = f'<span class="mm-ph{" mm-ct" if fit == "ct" else ""}"><img data-src="{img}" alt="" width="206" height="206" decoding="async"></span>'

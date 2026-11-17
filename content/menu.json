@@ -3,11 +3,11 @@
     "맨 위 메뉴를 펼쳤을 때 칸 목록(11/18 동원 \"소개는 한 5개 … 시집은 4개 인스타그램은 5개 … 번갈아가면서 … 미리 틀 … 까먹지 않게\" → 버튼 \"틀은 원고에, 빈 칸은 숨김 (권장)\")",
     "칸 수: 소개 5 · 시집 4 · 인스타그램 5 · 유튜브 4 · 음악 5 · 로코코 4 · 방명록 5 — 5 · 4 번갈아. 시안 기준/브랜드 시안/메뉴칸수시안_v1",
     "칸마다: k 멘트(카드 위 회색 명조 — 보이는 칸의 멘트를 이어 읽으면 한 문장 · 끝은 이름) · n 칸 이름 · href 갈 곳 · img 그림 · fit 꼴 · show 보임",
-    "show: false = 내용이 아직 없어 숨김(앨범 · 앱 화면 · 방명록 글 · 다음 편) — 내용이 생기면 true로 바꾸고 다른 말 칸(en · ja · ru · es · fr)을 채움",
-    "숨긴 칸이 있어도 남은 멘트가 한 문장으로 읽히게 씀 · 보이는 칸이 하나뿐이면 그 메뉴의 solo 한 줄을 씀",
+    "11/18 동원 \"아니 미리 만들어 놓으라고 했잖아 5 4 5 4\" → 숨김 없이 일곱 메뉴 모두 5 · 4 칸을 보임 · 아직 내용이 없는 칸은 fit \"soon\"(먹 칸 + '● 준비 중' 배지 — 음악 페이지 표지와 같은 배지) · 내용이 생기면 fit · img를 바꿈 · show: false는 칸을 아예 뺄 때만",
+    "보이는 칸이 하나뿐이면 그 메뉴의 solo 한 줄을 씀(지금은 없음)",
     "k · n · solo: 말마다 글({ko, en, …}) 또는 \"ui:키\"(ui.json 글) · {name} 이름 · {ch} 채널 이름 · {poem} 시 제목",
-    "href: ~R~ 사이트 안 주소 · @ig 인스타그램 · @yt 유튜브 채널 · @buy 시집 사는 곳 / img: img/… (assets/img 아래) · @wall0~ 사진 벽 앞에서부터 · @mu_cover 음악 첫 표지",
-    "fit: img 자름 · ct 통째로(옅은 바탕 · 표지 · 탁본) · tc 글 줄(lines: 목록 또는 @years 연표 해 · @faq 자주 묻는 질문 · @toc6 차례 앞 여섯) · pc 줄 친 엽서",
+    "href: ~R~ 사이트 안 주소 · @ig 인스타그램 · @yt 유튜브 채널 · @buy 시집 사는 곳 / img: img/… (assets/img 아래) · @wall0~ 사진 벽 앞에서부터 · @mu_cover 음악 첫 표지 / n: @nav:7 메뉴 이름 · @rc_feat:0~ 로코코 페이지 세 기능 제목 · @toc_label 차례",
+    "fit: img 자름 · ct 통째로(옅은 바탕 · 표지 · 탁본) · tc 글 줄(lines: 목록 또는 @years 연표 해 · @faq 자주 묻는 질문 · @toc6 차례 앞 여섯) · pc 줄 친 엽서 · soon 준비 중",
     "pane의 link: 카드 아래 바깥 링크 한 줄(@buy → 교보문고에서 사기)",
     "멘트 · 칸 이름이 1280 폭에서 다음 카드와 겹치지 않게 — 한 칸 너비 206px + 틈 22px 안(시험 사본에서 잼)"
   ],
@@ -15,91 +15,586 @@
     "": {
       "solo": "ui:mm_d_me",
       "cards": [
-        {"k": {"ko": "서울에서 보고", "en": "Seeing in Seoul,", "ja": "ソウルで見て", "ru": "Смотрит в Сеуле,", "es": "Mira en Seúl,", "fr": "Il regarde à Séoul,"},
-         "n": {"ko": "크리에이티브 스튜디오", "en": "Creative studio", "ja": "クリエイティブスタジオ", "ru": "Творческая студия", "es": "Estudio creativo", "fr": "Studio créatif"},
-         "href": "~R~", "fit": "tc", "lines": ["CREATIVE", "STUDIO"]},
-        {"k": {"ko": "시로 쓰고", "en": "writing it as poems,", "ja": "詩に書き", "ru": "пишет стихи,", "es": "escribe poemas,", "fr": "écrit des poèmes,"},
-         "n": "ui:me_h", "href": "~R~#me", "img": "img/me.webp", "fit": "img"},
-        {"k": {"ko": "2013년부터 기록하는", "en": "keeping notes since 2013,", "ja": "2013年から記録する", "ru": "ведёт записи с 2013 года,", "es": "anota desde 2013,", "fr": "note tout depuis 2013,"},
-         "n": {"ko": "걸어온 길", "en": "The way so far", "ja": "歩んできた道", "ru": "Путь", "es": "Trayectoria", "fr": "Parcours"},
-         "href": "~R~#y1", "fit": "tc", "lines": "@years"},
-        {"k": {"ko": "물음엔 먼저 답해 둔", "en": "answering questions ahead —", "ja": "問いには先に答えておく", "ru": "заранее ответил —", "es": "responde de antemano:", "fr": "répond d’avance —"},
-         "n": "ui:faq_title", "href": "~R~contact/#fq1", "fit": "tc", "lines": "@faq"},
-        {"k": {"ko": "회사원 {name}", "en": "{name}, office worker", "ja": "会社員 {name}", "ru": "{name}, офисный работник", "es": "{name}, oficinista", "fr": "{name}, employé de bureau"},
-         "n": "ui:nav_cta", "href": "~R~contact/", "fit": "pc"}
+        {
+          "k": {
+            "ko": "서울에서 보고",
+            "en": "Seeing in Seoul,",
+            "ja": "ソウルで見て",
+            "ru": "Смотрит в Сеуле,",
+            "es": "Mira en Seúl,",
+            "fr": "Il regarde à Séoul,"
+          },
+          "n": {
+            "ko": "크리에이티브 스튜디오",
+            "en": "Creative studio",
+            "ja": "クリエイティブスタジオ",
+            "ru": "Творческая студия",
+            "es": "Estudio creativo",
+            "fr": "Studio créatif"
+          },
+          "href": "~R~",
+          "fit": "tc",
+          "lines": [
+            "CREATIVE",
+            "STUDIO"
+          ]
+        },
+        {
+          "k": {
+            "ko": "시로 쓰고",
+            "en": "writing it as poems,",
+            "ja": "詩に書き",
+            "ru": "пишет стихи,",
+            "es": "escribe poemas,",
+            "fr": "écrit des poèmes,"
+          },
+          "n": "ui:me_h",
+          "href": "~R~#me",
+          "img": "img/me.webp",
+          "fit": "img"
+        },
+        {
+          "k": {
+            "ko": "2013년부터 기록하는",
+            "en": "keeping notes since 2013,",
+            "ja": "2013年から記録する",
+            "ru": "ведёт записи с 2013 года,",
+            "es": "anota desde 2013,",
+            "fr": "note tout depuis 2013,"
+          },
+          "n": {
+            "ko": "걸어온 길",
+            "en": "The way so far",
+            "ja": "歩んできた道",
+            "ru": "Путь",
+            "es": "Trayectoria",
+            "fr": "Parcours"
+          },
+          "href": "~R~#y1",
+          "fit": "tc",
+          "lines": "@years"
+        },
+        {
+          "k": {
+            "ko": "물음엔 먼저 답해 둔",
+            "en": "answering questions ahead —",
+            "ja": "問いには先に答えておく",
+            "ru": "заранее ответил —",
+            "es": "responde de antemano:",
+            "fr": "répond d’avance —"
+          },
+          "n": "ui:faq_title",
+          "href": "~R~contact/#fq1",
+          "fit": "tc",
+          "lines": "@faq"
+        },
+        {
+          "k": {
+            "ko": "회사원 {name}",
+            "en": "{name}, office worker",
+            "ja": "会社員 {name}",
+            "ru": "{name}, офисный работник",
+            "es": "{name}, oficinista",
+            "fr": "{name}, employé de bureau"
+          },
+          "n": "ui:nav_cta",
+          "href": "~R~contact/",
+          "fit": "pc"
+        }
       ]
     },
     "book": {
       "link": "@buy",
       "cards": [
-        {"k": {"ko": "시 예순 편을 쓰고", "en": "Sixty poems written,", "ja": "詩を六十篇書き、", "ru": "Шестьдесят стихотворений,", "es": "Sesenta poemas escritos,", "fr": "Soixante poèmes écrits,"},
-         "n": "ui:mm_front", "href": "~R~book/", "img": "img/cover.jpg", "fit": "ct"},
-        {"k": {"ko": "한 권으로 묶어", "en": "bound into one book,", "ja": "一冊に束ね、", "ru": "собранных в одну книгу,", "es": "reunidos en un libro,", "fr": "réunis en un livre,"},
-         "n": "ui:mm_back", "href": "~R~book/#back", "img": "img/back.jpg", "fit": "ct"},
-        {"k": {"ko": "한 편은 먼저 펼쳐 둔", "en": "one opened here first —", "ja": "一篇は先にここで開いた", "ru": "одно уже открыто здесь —", "es": "uno abierto aquí primero:", "fr": "l’un ouvert ici d’abord —"},
-         "n": "ui:read", "href": "~R~book/#poem", "img": "img/takbon.jpg", "fit": "ct"},
-        {"k": {"ko": "{name}의 첫 시집", "en": "{name}’s first collection", "ja": "{name}の第一詩集", "ru": "первый сборник стихов", "es": "el primer poemario de {name}", "fr": "le premier recueil de {name}"},
-         "n": "@toc_label", "href": "~R~book/#toc", "fit": "tc", "lines": "@toc6"}
+        {
+          "k": {
+            "ko": "시 예순 편을 쓰고",
+            "en": "Sixty poems written,",
+            "ja": "詩を六十篇書き、",
+            "ru": "Шестьдесят стихотворений,",
+            "es": "Sesenta poemas escritos,",
+            "fr": "Soixante poèmes écrits,"
+          },
+          "n": "ui:mm_front",
+          "href": "~R~book/",
+          "img": "img/cover.jpg",
+          "fit": "ct"
+        },
+        {
+          "k": {
+            "ko": "한 권으로 묶어",
+            "en": "bound into one book,",
+            "ja": "一冊に束ね、",
+            "ru": "собранных в одну книгу,",
+            "es": "reunidos en un libro,",
+            "fr": "réunis en un livre,"
+          },
+          "n": "ui:mm_back",
+          "href": "~R~book/#back",
+          "img": "img/back.jpg",
+          "fit": "ct"
+        },
+        {
+          "k": {
+            "ko": "한 편은 먼저 펼쳐 둔",
+            "en": "one opened here first —",
+            "ja": "一篇は先にここで開いた",
+            "ru": "одно уже открыто здесь —",
+            "es": "uno abierto aquí primero:",
+            "fr": "l’un ouvert ici d’abord —"
+          },
+          "n": "ui:read",
+          "href": "~R~book/#poem",
+          "img": "img/takbon.jpg",
+          "fit": "ct"
+        },
+        {
+          "k": {
+            "ko": "{name}의 첫 시집",
+            "en": "{name}’s first collection",
+            "ja": "{name}の第一詩集",
+            "ru": "первый сборник стихов",
+            "es": "el primer poemario de {name}",
+            "fr": "le premier recueil de {name}"
+          },
+          "n": "@toc_label",
+          "href": "~R~book/#toc",
+          "fit": "tc",
+          "lines": "@toc6"
+        }
       ]
     },
     "photo": {
       "solo": "ui:mm_d_photo",
       "cards": [
-        {"k": {"ko": "전시에서 만난", "en": "Works met", "ja": "展示で出会った", "ru": "Работы с выставок", "es": "Obras vistas", "fr": "Œuvres vues"},
-         "n": "ui:mm_wall", "href": "~R~photo/", "img": "@wall0", "fit": "img"},
-        {"k": {"ko": "작품을 한 장씩", "en": "at exhibitions, one by one,", "ja": "作品を一枚ずつ", "ru": "одна за другой,", "es": "en exposiciones, una a una,", "fr": "en exposition, une à une,"},
-         "n": {"ko": "최근 사진", "en": "Recent", "ja": "最近の写真", "ru": "Недавнее", "es": "Reciente", "fr": "Récent"},
-         "href": "~R~photo/", "img": "@wall1", "fit": "img"},
-        {"k": {"ko": "작가와 제목,", "en": "with artist, title", "ja": "作家と題名、", "ru": "с автором, названием", "es": "con artista, título", "fr": "avec artiste, titre"},
-         "n": {"ko": "최근 사진", "en": "Recent", "ja": "最近の写真", "ru": "Недавнее", "es": "Reciente", "fr": "Récent"},
-         "href": "~R~photo/", "img": "@wall2", "fit": "img"},
-        {"k": {"ko": "연도까지 적어", "en": "and year,", "ja": "制作年まで記して", "ru": "и годом —", "es": "y año,", "fr": "et année,"},
-         "n": {"ko": "최근 사진", "en": "Recent", "ja": "最近の写真", "ru": "Недавнее", "es": "Reciente", "fr": "Récent"},
-         "href": "~R~photo/", "img": "@wall3", "fit": "img"},
-        {"k": {"ko": "쌓아 두는 사진첩", "en": "kept in an album", "ja": "積み重ねるアルバム", "ru": "в одном альбоме", "es": "guardadas en un álbum", "fr": "rangées dans un album"},
-         "n": "ui:more_ig", "arrow": true, "href": "@ig", "fit": "pc"}
+        {
+          "k": {
+            "ko": "전시에서 만난",
+            "en": "Works met",
+            "ja": "展示で出会った",
+            "ru": "Работы с выставок",
+            "es": "Obras vistas",
+            "fr": "Œuvres vues"
+          },
+          "n": "ui:mm_wall",
+          "href": "~R~photo/",
+          "img": "@wall0",
+          "fit": "img"
+        },
+        {
+          "k": {
+            "ko": "작품을 한 장씩",
+            "en": "at exhibitions, one by one,",
+            "ja": "作品を一枚ずつ",
+            "ru": "одна за другой,",
+            "es": "en exposiciones, una a una,",
+            "fr": "en exposition, une à une,"
+          },
+          "n": {
+            "ko": "최근 사진",
+            "en": "Recent",
+            "ja": "最近の写真",
+            "ru": "Недавнее",
+            "es": "Reciente",
+            "fr": "Récent"
+          },
+          "href": "~R~photo/",
+          "img": "@wall1",
+          "fit": "img"
+        },
+        {
+          "k": {
+            "ko": "작가와 제목,",
+            "en": "with artist, title",
+            "ja": "作家と題名、",
+            "ru": "с автором, названием",
+            "es": "con artista, título",
+            "fr": "avec artiste, titre"
+          },
+          "n": {
+            "ko": "최근 사진",
+            "en": "Recent",
+            "ja": "最近の写真",
+            "ru": "Недавнее",
+            "es": "Reciente",
+            "fr": "Récent"
+          },
+          "href": "~R~photo/",
+          "img": "@wall2",
+          "fit": "img"
+        },
+        {
+          "k": {
+            "ko": "연도까지 적어",
+            "en": "and year,",
+            "ja": "制作年まで記して",
+            "ru": "и годом —",
+            "es": "y año,",
+            "fr": "et année,"
+          },
+          "n": {
+            "ko": "최근 사진",
+            "en": "Recent",
+            "ja": "最近の写真",
+            "ru": "Недавнее",
+            "es": "Reciente",
+            "fr": "Récent"
+          },
+          "href": "~R~photo/",
+          "img": "@wall3",
+          "fit": "img"
+        },
+        {
+          "k": {
+            "ko": "쌓아 두는 사진첩",
+            "en": "kept in an album",
+            "ja": "積み重ねるアルバム",
+            "ru": "в одном альбоме",
+            "es": "guardadas en un álbum",
+            "fr": "rangées dans un album"
+          },
+          "n": "ui:more_ig",
+          "arrow": true,
+          "href": "@ig",
+          "fit": "pc"
+        }
       ]
     },
     "video": {
       "solo": "ui:mm_d_video",
       "cards": [
-        {"k": {"ko": "영화 · 전시 · 책을 보고", "en": "Films, exhibitions, books —", "ja": "映画・展示・本を見て", "ru": "Фильмы, выставки, книги —", "es": "Cine, exposiciones, libros:", "fr": "Films, expositions, livres —"},
-         "n": "ui:mm_latest", "href": "~R~video/", "img": "img/next.jpg", "fit": "img"},
-        {"k": {"ko": "장면 하나하나를 짚어", "en": "scene by scene,", "ja": "一場面ずつたどり", "ru": "кадр за кадром,", "es": "escena a escena,", "fr": "scène par scène,"},
-         "n": {"ko": "장면 모음", "en": "Scenes", "ja": "場面集", "ru": "Кадры", "es": "Escenas", "fr": "Scènes"},
-         "href": "~R~video/", "img": "img/stills/2.jpg", "fit": "img"},
-        {"show": false, "k": {"ko": "다음 편을 준비하는"}, "n": {"ko": "다음 편"}, "href": "~R~video/", "fit": "pc"},
-        {"k": {"ko": "본 사람과 나누는 {ch}", "en": "shared with those who’ve seen them: {ch}", "ja": "見た人と分かち合う{ch}", "ru": "для тех, кто уже видел: {ch}", "es": "para quienes ya los vieron, {ch}", "fr": "à partager avec ceux qui les ont vus : {ch}"},
-         "n": "ui:go_watch", "arrow": true, "href": "@yt", "img": "img/stills/1.jpg", "fit": "img"}
+        {
+          "k": {
+            "ko": "영화 · 전시 · 책을 보고",
+            "en": "Films, exhibitions, books —",
+            "ja": "映画・展示・本を見て",
+            "ru": "Фильмы, выставки, книги —",
+            "es": "Cine, exposiciones, libros:",
+            "fr": "Films, expositions, livres —"
+          },
+          "n": "ui:mm_latest",
+          "href": "~R~video/",
+          "img": "img/next.jpg",
+          "fit": "img"
+        },
+        {
+          "k": {
+            "ko": "장면 하나하나를 짚어",
+            "en": "scene by scene,",
+            "ja": "一場面ずつたどり",
+            "ru": "кадр за кадром,",
+            "es": "escena a escena,",
+            "fr": "scène par scène,"
+          },
+          "n": {
+            "ko": "장면 모음",
+            "en": "Scenes",
+            "ja": "場面集",
+            "ru": "Кадры",
+            "es": "Escenas",
+            "fr": "Scènes"
+          },
+          "href": "~R~video/",
+          "img": "img/stills/2.jpg",
+          "fit": "img"
+        },
+        {
+          "k": {
+            "ko": "다음 편을 준비하는",
+            "en": "preparing the next one,",
+            "ja": "次の回を準備する",
+            "ru": "готовим следующий выпуск,",
+            "es": "preparando el próximo,",
+            "fr": "en préparant la suite,"
+          },
+          "n": {
+            "ko": "다음 편",
+            "en": "Next episode",
+            "ja": "次の回",
+            "ru": "Следующий выпуск",
+            "es": "Próximo episodio",
+            "fr": "Prochain épisode"
+          },
+          "href": "~R~video/",
+          "fit": "soon"
+        },
+        {
+          "k": {
+            "ko": "본 사람과 나누는 {ch}",
+            "en": "shared with those who’ve seen them: {ch}",
+            "ja": "見た人と分かち合う{ch}",
+            "ru": "для тех, кто уже видел: {ch}",
+            "es": "para quienes ya los vieron, {ch}",
+            "fr": "à partager avec ceux qui les ont vus : {ch}"
+          },
+          "n": "ui:go_watch",
+          "arrow": true,
+          "href": "@yt",
+          "img": "img/stills/1.jpg",
+          "fit": "img"
+        }
       ]
     },
     "music": {
       "solo": "ui:mm_d_music",
       "cards": [
-        {"show": false, "k": {"ko": "시를"}, "n": {"ko": "첫 앨범"}, "href": "~R~music/", "img": "@mu_cover", "fit": "img"},
-        {"show": false, "k": {"ko": "가사로 고쳐 쓰고"}, "n": {"ko": "첫 곡"}, "href": "~R~music/#mu1", "fit": "pc"},
-        {"show": false, "k": {"ko": "노래로 불러"}, "n": {"ko": "둘째 곡"}, "href": "~R~music/#mu2", "fit": "pc"},
-        {"show": false, "k": {"ko": "한 장에 담는"}, "n": {"ko": "가사"}, "href": "~R~music/", "fit": "tc", "lines": []},
-        {"k": {"ko": "{name}의 첫 앨범"}, "n": "@nav:7", "href": "~R~music/", "img": "@mu_cover", "fit": "pc"}
+        {
+          "k": {
+            "ko": "시를",
+            "en": "Poems",
+            "ja": "詩を",
+            "ru": "Стихи,",
+            "es": "Poemas",
+            "fr": "Des poèmes"
+          },
+          "n": {
+            "ko": "첫 앨범",
+            "en": "First album",
+            "ja": "ファーストアルバム",
+            "ru": "Первый альбом",
+            "es": "Primer álbum",
+            "fr": "Premier album"
+          },
+          "href": "~R~music/",
+          "fit": "soon"
+        },
+        {
+          "k": {
+            "ko": "가사로 고쳐 쓰고",
+            "en": "rewritten as lyrics,",
+            "ja": "歌詞に書き直し",
+            "ru": "ставшие текстами,",
+            "es": "reescritos como letras,",
+            "fr": "réécrits en paroles,"
+          },
+          "n": {
+            "ko": "첫 곡",
+            "en": "First song",
+            "ja": "一曲目",
+            "ru": "Первая песня",
+            "es": "Primera canción",
+            "fr": "Première chanson"
+          },
+          "href": "~R~music/",
+          "fit": "soon"
+        },
+        {
+          "k": {
+            "ko": "노래로 불러",
+            "en": "sung aloud,",
+            "ja": "歌にして",
+            "ru": "спетые вслух",
+            "es": "cantados,",
+            "fr": "chantés,"
+          },
+          "n": {
+            "ko": "둘째 곡",
+            "en": "Second song",
+            "ja": "二曲目",
+            "ru": "Вторая песня",
+            "es": "Segunda canción",
+            "fr": "Deuxième chanson"
+          },
+          "href": "~R~music/",
+          "fit": "soon"
+        },
+        {
+          "k": {
+            "ko": "한 장에 담는",
+            "en": "gathered on one record —",
+            "ja": "一枚に収める",
+            "ru": "на одном альбоме —",
+            "es": "en un solo disco:",
+            "fr": "réunis sur un disque —"
+          },
+          "n": {
+            "ko": "가사",
+            "en": "Lyrics",
+            "ja": "歌詞",
+            "ru": "Тексты",
+            "es": "Letras",
+            "fr": "Paroles"
+          },
+          "href": "~R~music/",
+          "fit": "soon"
+        },
+        {
+          "k": {
+            "ko": "{name}의 첫 앨범",
+            "en": "{name}’s first album",
+            "ja": "{name}の初アルバム",
+            "ru": "первый альбом",
+            "es": "el primer álbum de {name}",
+            "fr": "le premier album de {name}"
+          },
+          "n": "@nav:7",
+          "href": "~R~music/",
+          "fit": "pc",
+          "img": "@mu_cover"
+        }
       ]
     },
     "rococo": {
       "solo": "@rc_oneliner",
       "cards": [
-        {"k": {"ko": "본 전시를 남기면"}, "n": "@nav:6", "href": "~R~rococo/", "img": "img/rococo-icon.png", "fit": "ct"},
-        {"show": false, "k": {"ko": "기록이 도록이 되고"}, "n": {"ko": "본 전시를 남겨요"}, "href": "~R~rococo/", "fit": "pc"},
-        {"show": false, "k": {"ko": "한 해가 한 장이 되는"}, "n": {"ko": "기록이 도록이 돼요"}, "href": "~R~rococo/", "fit": "pc"},
-        {"show": false, "k": {"ko": "전시 기록 앱, 로코코"}, "n": {"ko": "한 해를 한 장으로"}, "href": "~R~rococo/", "fit": "pc"}
+        {
+          "k": {
+            "ko": "본 전시를 남기면",
+            "en": "Log the shows you see,",
+            "ja": "見た展示を残せば",
+            "ru": "Сохраните выставки —",
+            "es": "Guarda lo que ves:",
+            "fr": "Gardez vos expositions —"
+          },
+          "n": "@nav:6",
+          "href": "~R~rococo/",
+          "img": "img/rococo-icon.png",
+          "fit": "ct"
+        },
+        {
+          "k": {
+            "ko": "기록이 도록이 되고",
+            "en": "records become catalogues,",
+            "ja": "記録が図録になり",
+            "ru": "записи станут каталогом,",
+            "es": "notas que hacen catálogo,",
+            "fr": "les notes font un catalogue,"
+          },
+          "n": "@rc_feat:0",
+          "href": "~R~rococo/",
+          "fit": "soon"
+        },
+        {
+          "k": {
+            "ko": "한 해가 한 장이 되는",
+            "en": "a year becomes one page —",
+            "ja": "一年が一枚になる",
+            "ru": "год — одной страницей:",
+            "es": "un año, una página —",
+            "fr": "une année, une page —"
+          },
+          "n": "@rc_feat:1",
+          "href": "~R~rococo/",
+          "fit": "soon"
+        },
+        {
+          "k": {
+            "ko": "전시 기록 앱, 로코코",
+            "en": "Rococo, an exhibition log app",
+            "ja": "展示記録アプリ、ロココ",
+            "ru": "Rococo, дневник выставок",
+            "es": "Rococo, app de exposiciones",
+            "fr": "Rococo, carnet d’expositions"
+          },
+          "n": "@rc_feat:2",
+          "href": "~R~rococo/",
+          "fit": "soon"
+        }
       ]
     },
     "guestbook": {
-      "solo": {"ko": "계정 없이 남기는 짧은 인사", "en": "A short note, no account needed", "ja": "アカウントなしで残す、短いひとこと", "ru": "Короткая запись — без регистрации", "es": "Una nota breve, sin cuenta", "fr": "Un petit mot, sans compte"},
+      "solo": {
+        "ko": "계정 없이 남기는 짧은 인사",
+        "en": "A short note, no account needed",
+        "ja": "アカウントなしで残す、短いひとこと",
+        "ru": "Короткая запись — без регистрации",
+        "es": "Una nota breve, sin cuenta",
+        "fr": "Un petit mot, sans compte"
+      },
       "cards": [
-        {"k": {"ko": "계정 없이"}, "n": "ui:mm_write", "href": "~R~guestbook/", "fit": "pc"},
-        {"show": false, "k": {"ko": "이름 하나로"}, "n": {"ko": "최근 인사"}, "href": "~R~guestbook/", "fit": "pc"},
-        {"show": false, "k": {"ko": "짧게 남기면"}, "n": {"ko": "최근 인사"}, "href": "~R~guestbook/", "fit": "pc"},
-        {"show": false, "k": {"ko": "차례로 쌓이는"}, "n": {"ko": "최근 인사"}, "href": "~R~guestbook/", "fit": "pc"},
-        {"show": false, "k": {"ko": "다녀간 사람들의 인사"}, "n": {"ko": "모든 인사"}, "href": "~R~guestbook/", "fit": "pc"}
+        {
+          "k": {
+            "ko": "계정 없이",
+            "en": "No account,",
+            "ja": "アカウントなしで",
+            "ru": "Без регистрации,",
+            "es": "Sin cuenta,",
+            "fr": "Sans compte,"
+          },
+          "n": "ui:mm_write",
+          "href": "~R~guestbook/",
+          "fit": "pc"
+        },
+        {
+          "k": {
+            "ko": "이름 하나로",
+            "en": "just a name,",
+            "ja": "名前ひとつで",
+            "ru": "только имя,",
+            "es": "solo un nombre,",
+            "fr": "juste un nom,"
+          },
+          "n": {
+            "ko": "최근 인사",
+            "en": "Recent note",
+            "ja": "最近のひとこと",
+            "ru": "Недавняя запись",
+            "es": "Nota reciente",
+            "fr": "Mot récent"
+          },
+          "href": "~R~guestbook/",
+          "fit": "soon"
+        },
+        {
+          "k": {
+            "ko": "짧게 남기면",
+            "en": "a short note",
+            "ja": "短く残せば",
+            "ru": "короткая запись",
+            "es": "una nota breve",
+            "fr": "un petit mot"
+          },
+          "n": {
+            "ko": "최근 인사",
+            "en": "Recent note",
+            "ja": "最近のひとこと",
+            "ru": "Недавняя запись",
+            "es": "Nota reciente",
+            "fr": "Mot récent"
+          },
+          "href": "~R~guestbook/",
+          "fit": "soon"
+        },
+        {
+          "k": {
+            "ko": "차례로 쌓이는",
+            "en": "piling up in order —",
+            "ja": "順に積もっていく",
+            "ru": "ложится по порядку —",
+            "es": "que se suma en orden:",
+            "fr": "qui s’ajoute en ordre —"
+          },
+          "n": {
+            "ko": "최근 인사",
+            "en": "Recent note",
+            "ja": "最近のひとこと",
+            "ru": "Недавняя запись",
+            "es": "Nota reciente",
+            "fr": "Mot récent"
+          },
+          "href": "~R~guestbook/",
+          "fit": "soon"
+        },
+        {
+          "k": {
+            "ko": "다녀간 사람들의 인사",
+            "en": "greetings from visitors",
+            "ja": "訪れた人たちのあいさつ",
+            "ru": "приветы гостей",
+            "es": "saludos de quienes pasaron",
+            "fr": "les mots des visiteurs"
+          },
+          "n": {
+            "ko": "모든 인사",
+            "en": "All notes",
+            "ja": "すべてのひとこと",
+            "ru": "Все записи",
+            "es": "Todas las notas",
+            "fr": "Tous les mots"
+          },
+          "href": "~R~guestbook/",
+          "fit": "pc"
+        }
       ]
     }
   }
