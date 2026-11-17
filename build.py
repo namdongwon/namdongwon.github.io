@@ -74,7 +74,7 @@ FLAG_ICON = {
     "fr": '<svg class="flg" viewBox="0 0 36 24" aria-hidden="true" focusable="false"><rect width="36" height="24" fill="#fff"/><rect width="12" height="24" fill="#000091"/><rect x="24" width="12" height="24" fill="#E1000F"/></svg>',  # 프랑스(11/10 — 2020 공식 색)
 }
 GLOBE_ICON = '<svg class="gl" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.5"/><path d="M2.5 10h15M10 2.5c2.2 2.3 3.2 4.8 3.2 7.5s-1 5.2-3.2 7.5M10 2.5C7.8 4.8 6.8 7.3 6.8 10s1 5.2 3.2 7.5"/></svg>'  # 바닥글 언어 고르기(11/9 A 지구본) — 국기 대신(나라 ≠ 언어)
-CARET_ICON = '<svg class="cr" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true" focusable="false"><path d="M1.5 3.5h7L5 7.5z"/></svg>'  # 펼침 표시 — 열리면 CSS가 뒤집음
+CARET_ICON = '<svg class="cr" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true" focusable="false"><path d="M1.5 3h7L5 7z"/></svg>'  # 펼침 표시 — 열리면 CSS가 뒤집음 · 세모를 상자 한가운데(위아래 3~7)에 두어 뒤집어도 같은 높이(11/17)
 MK_CARET = CARET_ICON.replace('class="cr"', 'class="mkc"')  # 메뉴 펼침 키보드 단추용 — 이름 cr은 언어 고르기 · 영상 출처 줄(.cr)과 겹쳐서(11/15 entest가 출처 줄 대신 집음)
 PAL_FONT = "bon-myeongjo.woff2"  # 글자 팔레트(10/28)의 글자 612가지는 본명조 보통 판에만 담음 — 굵게 · 고딕 판은 늘지 않게(main)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
@@ -96,6 +96,7 @@ EN_FIRST = "newsreader-first.woff2"  # 영어판 첫 화면 작은 판(10/27 점
 # 옮긴 판(TR)은 원고마다 한국어 옆 'en' · 'ja' 칸(같은 꼴) · ui.json은 {"ko", "en", "ja"}. 일본어판 짜임은 영어판을 따르고(원문 곁 한국어 · 대역 · 차례 접기), 표기는 일본어 관행(기울임 없음 · 『』「」 · 2026年11月1日)
 LANGS = ("ko", "en", "ja", "ru", "es", "fr")
 TR = ("en", "ja", "ru", "es", "fr")
+LANG3 = {"ko": "KOR", "en": "ENG", "ja": "JPN", "ru": "RUS", "es": "SPA", "fr": "FRA"}  # 바닥글 언어 고르개 글자(11/17 동원 토스 'KOR ▾' → 시안 기준/브랜드 시안/언어고르개화살표시안_v1 "B KOR 세 글자 (권장)") — ISO 639-2 세 글자 · hreflang 등 기계용은 두 글자 그대로
 LANG_NAME = {"ko": "한국어", "en": "English", "ja": "日本語", "ru": "Русский", "es": "Español", "fr": "Français"}  # 스페인어판(11/10 동원 "스페인어로 가자" — 짜임 · 글꼴은 영어판, 표기는 RAE: 책 · 영화 기울임 · 시 «» · 1 de noviembre de 2026) · 프랑스어판(11/10 동원 "스페인어 하고 바로 프랑스어" — 같은 짜임, 표기는 프랑스 조판: « » 안 · ; : ! ? 앞 좁은 붙임 공백 · 1er novembre 2026 · 1 000)  # 러시아어판(11/6 동원 "지인들이 러시아인들이 있어서" → "만들기 (권장)")  # 판권면 '언어' 줄 · 처리방침 다른 판 링크 — 낱말은 그 말 그대로
 # 일본어판 글꼴(11/1 동원 버튼 "A 源ノ明朝 (권장)" — 시안 기준/브랜드 시안/일본어판_글꼴시안_v1_휴대폰.png): 본명조 자리는 Source Han Serif JP(Light · Regular · Bold),
 # Pretendard 자리는 Pretendard JP(Light · Regular · SemiBold — Regular는 11/2 본문 고딕) — 기준/폰트/일본어/. 둘 다 OFL 예약 이름('Source' · 'Pretendard')이 있어 줄인 판 이름을 NDW Serif JP · NDW Sans JP로 바꿈(rename_font).
@@ -1749,7 +1750,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 언어(10/31 동원 "언어 설정 하단 푸터로 빼" · 11/1 세 판 '한국어 · English · 日本語') — 아래 띠 왼쪽: 지금 판은 먹 글자 · 다른 판은 그 쪽의 같은 자리로(~L:말~)
     # 11/9 네 개 나열 → '🌐 KO ▾' 하나 + 위로 펼침(동원 레퍼런스 그림 · 목업 기준/브랜드 시안/푸터언어고르기시안_v1 → "A 지구본 (권장)") · 펼친 목록엔 국기(11/10 동원 — 위 FLAG_ICON)
     # <details>라 스크립트 없이도 열림(처리방침 · 404처럼 main.js 없는 쪽도 같음) · 바깥 누름 · Esc로 닫기는 main.js · 고른 판의 ✓는 CSS(글자에 섞지 않음)
-    langs = (f'<details class="lsw"><summary><span class="sr">{t("lng_pick")}: </span>{GLOBE_ICON}<span lang="{lang}">{lang.upper()}</span>{CARET_ICON}</summary>'
+    langs = (f'<details class="lsw"><summary><span class="sr">{t("lng_pick")}: </span>{GLOBE_ICON}<span lang="{lang}">{LANG3[lang]}</span>{CARET_ICON}</summary>'
              f'<ul>{"".join(f"<li>{lang_item(x)}</li>" for x in LANGS)}</ul></details>')
     colo = (f'<div class="colo"><div class="fcols"><div><h2 class="fh">{t("foot_pages")}</h2><ul>{nav_li}</ul></div>'
             f'<div><h2 class="fh">{e(L["nav"][1])}</h2><ul>{book_li}</ul></div>'
