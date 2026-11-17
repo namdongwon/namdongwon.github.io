@@ -3,11 +3,11 @@
 
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=00b7fceded") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=da58d8df68") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=c9879536d1") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=7fb1dd6400") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=14c4ef455f") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=e8775915df") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=1567c78762") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=e12aff3897") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=60015888e7") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=642027f507") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -25,11 +25,11 @@ html:lang(en) #home dd i,html:lang(es) #home dd i,html:lang(fr) #home dd i,html:
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2?v=e9782d673f") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
 
 @font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-light.woff2?v=237255a497") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=8182a83421") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=e7a22ed4bf") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=3eea428de8") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=5a0bfdff4d") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=3d3fe9fcf8") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=37946854a2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=35ed104ad4") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=06cdd594d5") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=ab99d0577a") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=b9572f01fd") format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2?v=1beaf3c9bd") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2?v=72b7718a65") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=2d92e4ca5f") format("woff2");font-weight:300;font-display:swap}
@@ -191,9 +191,10 @@ html.sr-on .ma-dock,html.mnu-on .ma-dock,html.pv-on .ma-dock{visibility:hidden}
 .mm-in :is(.mm-d,.mm-c){opacity:0;transform:translateY(-4px);transition:opacity .16s ease,transform .16s ease}  
 .mm-in.go :is(.mm-d,.mm-c){opacity:1;transform:none;transition-duration:.24s}.mm-in.go .mm-d{transition-duration:.32s;transition-delay:.08s}
 .mm-in.go .mm-c:nth-child(1){transition-delay:.12s}.mm-in.go .mm-c:nth-child(2){transition-delay:.14s}.mm-in.go .mm-c:nth-child(3){transition-delay:.16s}.mm-in.go .mm-c:nth-child(4){transition-delay:.18s}  
-.mm-d{margin:0;font:400 calc(15px * var(--fs))/1.6 var(--serif);color:var(--muted);word-break:keep-all}
-.mm-l{margin-left:16px;font:400 calc(13px * var(--fs))/1 var(--sans);color:var(--muted);text-decoration:none}
-.mm-row{display:flex;gap:22px;margin-top:22px}
+.mm-d{margin:20px 0 0;font:400 calc(15px * var(--fs))/1.6 var(--serif);color:var(--muted);word-break:keep-all}  
+.mm-k{display:block;margin:0 0 14px;font:400 calc(14px * var(--fs))/1.3 var(--serif);color:var(--muted);white-space:nowrap}  
+.mm-l{font:400 calc(13px * var(--fs))/1 var(--sans);color:var(--muted);text-decoration:none}
+.mm-row{display:flex;gap:22px}
 .mm-c{width:206px;color:var(--ink);text-decoration:none}
 .mm-ph{display:block;width:206px;height:206px;overflow:hidden;background:var(--ph);box-shadow:inset 0 0 0 1px var(--rule)}
 .mm-ph img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s var(--e2,ease)}

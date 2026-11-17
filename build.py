@@ -1741,8 +1741,20 @@ def render(site, poem, videos, photos, lang="ko"):
         "music": (t("mm_d_music"), [mm_card("~R~music/", e(L["nav"][7]), mu_cover, kind="pc")]),  # 음악(11/17) — 첫 곡 표지(없으면 줄 친 엽서)
         "guestbook": (t("mm_d_gb"), [mm_card("~R~guestbook/", t("mm_write"), kind="pc")]),
     }
+    # 칸마다 멘트(11/17 동원 토스 비즈니스 메뉴 '고객은 늘려주고 / 비용은 줄여주고 / 필요할 때 도와주는 / 나의 사업 파트너 토스' → 시안 기준/브랜드 시안/메뉴멘트시안_v1 "A 토스 짜임 (권장)")
+    # 카드 위 회색 명조 한 줄씩 — 이어 읽으면 한 문장, 끝은 이름 · 위 설명 줄은 멘트와 같은 말이라 화면에서 빼고(같은 카피 두 번 금지) 화면 읽기 프로그램에만 한 번 · 교보문고 링크는 카드 아래로
+    # 설명 줄(mm_d_*)은 찾기 결과 그림 옆 한 줄(sr_th)에서 그대로 씀
+    ch_nm = (ch.get(lang, {}).get("name") if lang != "ko" else None) or ch.get("name", "")
+    mm_kick = {"": t("mm_k_me", name=e(S["name"])), "book": t("mm_k_book", name=e(S["name"])), "photo": t("mm_k_photo"),
+               "video": t("mm_k_video", ch=e(ch_nm)), "rococo": rc_t("oneliner"), "music": t("mm_d_music"), "guestbook": t("mm_k_gb")}
+
+    def mm_pane(k_, v_):
+        ks = mm_kick.get(k_, "").split("|")
+        cards = [c.replace('">', f'"><span class="mm-k" aria-hidden="true">{ks[i]}</span>', 1) if i < len(ks) and ks[i] else c for i, c in enumerate(v_[1])]
+        return (f'<div class="mm-in" data-pg="{k_}" hidden><p class="sr">{" ".join(ks)}</p><div class="mm-row">{"".join(cards)}</div>'
+                + (f'<p class="mm-d">{v_[2]}</p>' if len(v_) > 2 else "") + '</div>')
     mega = ('<div class="mm" id="mm" role="region" aria-label="' + t("mm_label") + '" aria-hidden="true" inert>'
-            + "".join(f'<div class="mm-in" data-pg="{k_}" hidden><p class="mm-d">{v_[0]}{v_[2] if len(v_) > 2 else ""}</p><div class="mm-row">{"".join(v_[1])}</div></div>' for k_, v_ in mm_panes.items())
+            + "".join(mm_pane(k_, v_) for k_, v_ in mm_panes.items())
             + '</div>')
     icons = "".join(f'<li><a href="{h}" aria-label="{a}"{x}>{FOOT_ICONS[k]}</a></li>' for k, h, a, x in (
         ("ig", e(iu), e(L["nav"][2]), ext), ("yt", e(ch.get("url", "")), e(L["nav"][3]), ext),
