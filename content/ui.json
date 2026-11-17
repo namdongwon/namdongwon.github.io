@@ -2472,12 +2472,28 @@
     "fr": "Poèmes et critiques de|{name}, employé de bureau"
   },
   "mm_k_book": {
-    "ko": "예순 편을 묶고|한 편은 먼저 펼쳐 둔|{name}의 첫 시집",
-    "en": "Sixty poems bound together,|one opened here first —|{name}’s first collection",
-    "ja": "六十篇を束ね、|一篇は先にここで開いた|{name}の第一詩集",
-    "ru": "Шестьдесят стихотворений,|одно уже открыто здесь —|первый сборник стихов",
-    "es": "Sesenta poemas reunidos,|uno abierto aquí primero:|el primer poemario de {name}",
-    "fr": "Soixante poèmes réunis,|l’un ouvert ici d’abord —|le premier recueil de {name}"
+    "ko": "시 예순 편을 쓰고|한 권으로 묶어|한 편은 먼저 펼쳐 둔|{name}의 첫 시집",
+    "en": "Sixty poems written,|bound into one book,|one opened here first —|{name}’s first collection",
+    "ja": "詩を六十篇書き、|一冊に束ね、|一篇は先にここで開いた|{name}の第一詩集",
+    "ru": "Шестьдесят стихотворений,|собранных в одну книгу,|одно уже открыто здесь —|первый сборник стихов",
+    "es": "Sesenta poemas escritos,|reunidos en un libro,|uno abierto aquí primero:|el primer poemario de {name}",
+    "fr": "Soixante poèmes écrits,|réunis en un livre,|l’un ouvert ici d’abord —|le premier recueil de {name}"
+  },
+  "mm_front": {
+    "ko": "시집 앞면",
+    "en": "Front cover",
+    "ja": "表紙",
+    "ru": "Обложка",
+    "es": "Portada",
+    "fr": "Couverture"
+  },
+  "mm_back": {
+    "ko": "시집 뒷면",
+    "en": "Back cover",
+    "ja": "裏表紙",
+    "ru": "Задняя обложка",
+    "es": "Contraportada",
+    "fr": "Quatrième de couverture"
   },
   "mm_k_photo": {
     "ko": "전시에서 만난 작품을|작가 · 연도까지 적어 두는 사진첩",

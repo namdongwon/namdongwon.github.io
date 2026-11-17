@@ -1731,7 +1731,7 @@ def render(site, poem, videos, photos, lang="ko"):
     toc6 = [x["title"] for x in book["toc"]["parts"][0]["items"][:6]]
     mm_panes = {
         "": (t("mm_d_me", name=e(S["name"])), [mm_card("~R~#me", t("me_h"), f"{P}assets/img/me.webp"), mm_card("~R~contact/", L["nav_cta"], kind="pc")]),
-        "book": (t("mm_d_book"), [mm_card("~R~book/", e(L["nav"][1]), f"{P}assets/img/cover.jpg", fit="ct"), mm_card("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", ""), f"{P}assets/img/takbon.jpg", fit="ct"),
+        "book": (t("mm_d_book"), [mm_card("~R~book/", t("mm_front"), f"{P}assets/img/cover.jpg", fit="ct"), mm_card("~R~book/", t("mm_back"), f"{P}assets/img/back.jpg", fit="ct"), mm_card("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", ""), f"{P}assets/img/takbon.jpg", fit="ct"),
                                   mm_card("~R~book/#toc", e(book["toc"]["label"]), kind="tc", extra=toc6)],
                  f'<a class="mm-l" href="{e(book["buy_url"])}" target="_blank" rel="noopener">{e(book["store_label"])} ↗</a>'),
         "photo": (t("mm_d_photo"), [mm_card("~R~photo/", t("mm_wall"), wall_first[0] if wall_first else None, kind="pc"), mm_card(e(iu), f'{t("more_ig")} ↗', kind="pc")]),
@@ -1741,6 +1741,7 @@ def render(site, poem, videos, photos, lang="ko"):
         "music": (t("mm_d_music"), [mm_card("~R~music/", e(L["nav"][7]), mu_cover, kind="pc")]),  # 음악(11/17) — 첫 곡 표지(없으면 줄 친 엽서)
         "guestbook": (t("mm_d_gb"), [mm_card("~R~guestbook/", t("mm_write"), kind="pc")]),
     }
+    # 시집 칸은 네 장 — 앞면 · 뒷면 · 시 「탁본」 읽기 · 차례(11/17 동원 "시집 앞면 시집 뒷면 시 탁본 읽기 차례" · 멘트 "시 예순 편을 쓰고 / 한 권으로 묶어 / 한 편은 먼저 펼쳐 둔 / 남동원의 첫 시집" — 시안 메뉴멘트시안_v1/시집칸네장시안_v2 "다듬은 안 (권장)")
     # 칸마다 멘트(11/17 동원 토스 비즈니스 메뉴 '고객은 늘려주고 / 비용은 줄여주고 / 필요할 때 도와주는 / 나의 사업 파트너 토스' → 시안 기준/브랜드 시안/메뉴멘트시안_v1 "A 토스 짜임 (권장)")
     # 카드 위 회색 명조 한 줄씩 — 이어 읽으면 한 문장, 끝은 이름 · 위 설명 줄은 멘트와 같은 말이라 화면에서 빼고(같은 카피 두 번 금지) 화면 읽기 프로그램에만 한 번 · 교보문고 링크는 카드 아래로
     # 설명 줄(mm_d_*)은 찾기 결과 그림 옆 한 줄(sr_th)에서 그대로 씀
