@@ -2463,22 +2463,6 @@
     "es": "Poemas convertidos en canciones",
     "fr": "Des poèmes devenus chansons"
   },
-  "mm_k_me": {
-    "ko": "시를 쓰고 리뷰를 남기는|회사원 {name}",
-    "en": "Poems and reviews by|{name}, an office worker",
-    "ja": "詩を書き、レビューを残す|会社員 {name}",
-    "ru": "Пишет стихи и обзоры —|{name}, офисный работник",
-    "es": "Poemas y reseñas de|{name}, oficinista",
-    "fr": "Poèmes et critiques de|{name}, employé de bureau"
-  },
-  "mm_k_book": {
-    "ko": "시 예순 편을 쓰고|한 권으로 묶어|한 편은 먼저 펼쳐 둔|{name}의 첫 시집",
-    "en": "Sixty poems written,|bound into one book,|one opened here first —|{name}’s first collection",
-    "ja": "詩を六十篇書き、|一冊に束ね、|一篇は先にここで開いた|{name}の第一詩集",
-    "ru": "Шестьдесят стихотворений,|собранных в одну книгу,|одно уже открыто здесь —|первый сборник стихов",
-    "es": "Sesenta poemas escritos,|reunidos en un libro,|uno abierto aquí primero:|el primer poemario de {name}",
-    "fr": "Soixante poèmes écrits,|réunis en un livre,|l’un ouvert ici d’abord —|le premier recueil de {name}"
-  },
   "mm_front": {
     "ko": "시집 앞면",
     "en": "Front cover",
@@ -2494,30 +2478,6 @@
     "ru": "Задняя обложка",
     "es": "Contraportada",
     "fr": "Quatrième de couverture"
-  },
-  "mm_k_photo": {
-    "ko": "전시에서 만난 작품을|작가 · 연도까지 적어 두는 사진첩",
-    "en": "Works met at exhibitions,|an album noting artist and year",
-    "ja": "展示で出会った作品を|作家・制作年まで書き留めるアルバム",
-    "ru": "Работы с выставок —|альбом с автором и годом",
-    "es": "Obras vistas en exposiciones,|un álbum con artista y año",
-    "fr": "Œuvres vues en exposition,|un album avec artiste et année"
-  },
-  "mm_k_video": {
-    "ko": "영화 · 전시 · 책을 보고|본 사람과 나누는 {ch}",
-    "en": "Films, exhibitions, books —|shared with those who’ve seen them: {ch}",
-    "ja": "映画・展示・本を見て|見た人と分かち合う{ch}",
-    "ru": "Фильмы, выставки, книги —|для тех, кто уже видел: {ch}",
-    "es": "Cine, exposiciones, libros:|para quienes ya los vieron, {ch}",
-    "fr": "Films, expositions, livres —|à partager avec ceux qui les ont vus : {ch}"
-  },
-  "mm_k_gb": {
-    "ko": "계정 없이 남기는 짧은 인사",
-    "en": "A short note, no account needed",
-    "ja": "アカウントなしで残す、短いひとこと",
-    "ru": "Короткая запись — без регистрации",
-    "es": "Una nota breve, sin cuenta",
-    "fr": "Un petit mot, sans compte"
   },
   "mm_d_music": {
     "ko": "시를 가사로 지은 노래",

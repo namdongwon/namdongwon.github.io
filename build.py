@@ -1721,41 +1721,81 @@ def render(site, poem, videos, photos, lang="ko"):
     # 넓은 창 · 마우스 기기에서 맨 위 메뉴에 0.15초 머물면 띠 아래로 칸 — 설명 한 줄 + 진짜 사진 카드(이름 아래) · 사진 없는 곳은 줄 친 엽서 · 차례는 1부 첫 여섯 편 제목.
     # 띠 밖(</header> 뒤)에 둠(띠의 backdrop-filter가 안쪽 fixed를 가둠 — 휴대폰 메뉴와 같은 까닭) · 닫혀 있을 땐 inert + aria-hidden(키보드 · 읽기 도구는 메뉴 링크 그대로) ·
     # 사진은 data-src — 처음 열 때만 받음(쪽마다 쓸데없이 받지 않게) · 움직임은 main.js · 꾸밈은 style.css .mm
-    def mm_card(href, label, img=None, kind="", extra="", fit=""):  # fit="ct" — 책처럼 통째로 보여야 하는 그림(표지 · 탁본)은 자르지 않고 옅은 바탕 위에
-        ph = (f'<span class="mm-ph{" mm-ct" if fit else ""}"><img data-src="{img}" alt="" width="206" height="206" decoding="async"></span>' if img
-              else f'<span class="mm-ph mm-{kind}">' + ("".join(f"<i>{e(x)}</i>" for x in extra) if kind == "tc" else "") + '</span>')
-        tgt = ' target="_blank" rel="noopener"' if href.startswith("http") else ""
-        hg = " hgs" if label[:1] in "『「" else ""
-        return f'<a class="mm-c" href="{href}"{tgt}>{ph}<span class="mm-n{hg}">{label}</span></a>'
-    wall_first = [wsrc(psrc(p_)) for p_ in PH["items"][:1]]
-    toc6 = [x["title"] for x in book["toc"]["parts"][0]["items"][:6]]
-    mm_panes = {
-        "": (t("mm_d_me", name=e(S["name"])), [mm_card("~R~#me", t("me_h"), f"{P}assets/img/me.webp"), mm_card("~R~contact/", L["nav_cta"], kind="pc")]),
-        "book": (t("mm_d_book"), [mm_card("~R~book/", t("mm_front"), f"{P}assets/img/cover.jpg", fit="ct"), mm_card("~R~book/#back", t("mm_back"), f"{P}assets/img/back.jpg", fit="ct"), mm_card("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", ""), f"{P}assets/img/takbon.jpg", fit="ct"),
-                                  mm_card("~R~book/#toc", e(book["toc"]["label"]), kind="tc", extra=toc6)],
-                 f'<a class="mm-l" href="{e(book["buy_url"])}" target="_blank" rel="noopener">{e(book["store_label"])} ↗</a>'),
-        "photo": (t("mm_d_photo"), [mm_card("~R~photo/", t("mm_wall"), wall_first[0] if wall_first else None, kind="pc"), mm_card(e(iu), f'{t("more_ig")} ↗', kind="pc")]),
-        "video": (t("mm_d_video"), [mm_card("~R~video/", t("mm_latest"), f"{P}assets/img/next.jpg"),
-                                    mm_card(e(ch.get("url", "")), f'{t("go_watch")} ↗', f"{P}assets/img/stills/1.jpg" if (ASSETS / "img/stills/1.jpg").exists() else None, kind="pc")]),
-        "rococo": (rc_t("oneliner"), [mm_card("~R~rococo/", e(L["nav"][6]), f"{P}assets/img/rococo-icon.png", fit="ct")]),  # 로코코(11/15) — 아이콘 한 장
-        "music": (t("mm_d_music"), [mm_card("~R~music/", e(L["nav"][7]), mu_cover, kind="pc")]),  # 음악(11/17) — 첫 곡 표지(없으면 줄 친 엽서)
-        "guestbook": (t("mm_d_gb"), [mm_card("~R~guestbook/", t("mm_write"), kind="pc")]),
-    }
-    # 시집 칸은 네 장 — 앞면 · 뒷면 · 시 「탁본」 읽기 · 차례(11/17 동원 "시집 앞면 시집 뒷면 시 탁본 읽기 차례" · 멘트 "시 예순 편을 쓰고 / 한 권으로 묶어 / 한 편은 먼저 펼쳐 둔 / 남동원의 첫 시집" — 시안 메뉴멘트시안_v1/시집칸네장시안_v2 "다듬은 안 (권장)")
-    # 칸마다 멘트(11/17 동원 토스 비즈니스 메뉴 '고객은 늘려주고 / 비용은 줄여주고 / 필요할 때 도와주는 / 나의 사업 파트너 토스' → 시안 기준/브랜드 시안/메뉴멘트시안_v1 "A 토스 짜임 (권장)")
-    # 카드 위 회색 명조 한 줄씩 — 이어 읽으면 한 문장, 끝은 이름 · 위 설명 줄은 멘트와 같은 말이라 화면에서 빼고(같은 카피 두 번 금지) 화면 읽기 프로그램에만 한 번 · 교보문고 링크는 카드 아래로
+    # 메뉴 펼침 칸 — content/menu.json이 틀(11/18 동원 "번갈아가면서 … 미리 틀 … 까먹지 않게" → "틀은 원고에, 빈 칸은 숨김 (권장)")
+    # 소개 5 · 시집 4 · 인스타그램 5 · 유튜브 4 · 음악 5 · 로코코 4 · 방명록 5 — show: false 칸은 그리지 않음 · 보이는 칸이 하나면 그 메뉴의 solo 한 줄
+    # 카드 위 멘트(11/17 토스 짜임 — 이어 읽으면 한 문장, 끝은 이름) · 위 설명 줄은 화면 읽기용(.sr)으로만 한 번 · 바깥 링크(교보문고)는 카드 아래
     # 설명 줄(mm_d_*)은 찾기 결과 그림 옆 한 줄(sr_th)에서 그대로 씀
+    MENU = load("menu.json")
     ch_nm = (ch.get(lang, {}).get("name") if lang != "ko" else None) or ch.get("name", "")
-    mm_kick = {"": t("mm_k_me", name=e(S["name"])), "book": t("mm_k_book", name=e(S["name"])), "photo": t("mm_k_photo"),
-               "video": t("mm_k_video", ch=e(ch_nm)), "rococo": rc_t("oneliner"), "music": t("mm_d_music"), "guestbook": t("mm_k_gb")}
+    walls = [wsrc(psrc(p_)) for p_ in PH["items"][:8]]
+    wall_first = walls[:1]
+    fmt = dict(name=e(S["name"]), ch=e(ch_nm), poem=poem_t)
 
-    def mm_pane(k_, v_):
-        ks = mm_kick.get(k_, "").split("|")
-        cards = [c.replace('">', f'"><span class="mm-k" aria-hidden="true">{ks[i]}</span>', 1) if i < len(ks) and ks[i] else c for i, c in enumerate(v_[1])]
-        return (f'<div class="mm-in" data-pg="{k_}" hidden><p class="sr">{" ".join(ks)}</p><div class="mm-row">{"".join(cards)}</div>'
-                + (f'<p class="mm-d">{v_[2]}</p>' if len(v_) > 2 else "") + '</div>')
+    def mtext(v, where):
+        if isinstance(v, str) and v.startswith("ui:"):
+            return e(L[v[3:]]).format(**fmt).replace(" ↓", "")
+        if v == "@toc_label":
+            return e(book["toc"]["label"])
+        if v == "@rc_oneliner":
+            return rc_t("oneliner")
+        if isinstance(v, str) and v.startswith("@nav:"):
+            return e(L["nav"][int(v[5:])])
+        if isinstance(v, dict):
+            if lang not in v:
+                print(f"알림: content/menu.json {where} — {lang} 글이 없어 한국어로 그림(보이는 칸이면 다른 말 칸을 채울 것)")
+            return e(v.get(lang) or v.get("ko", "")).format(**fmt)
+        return e(v).format(**fmt)
+
+    def mlines(v):
+        if v == "@years":
+            return list(dict.fromkeys(r["year"] for r in row_lang(tb["years"]["items"], lang) if r["text"]))[:6]  # 같은 해는 한 번
+        if v == "@faq":
+            return [plain(x["q"]) for x in (S["contact"].get("faq") or [])][:4]
+        if v == "@toc6":
+            return [x["title"] for x in book["toc"]["parts"][0]["items"][:6]]
+        return list(v or [])
+
+    def mimg(v):
+        if not v:
+            return None
+        if v.startswith("@wall"):
+            i_ = int(v[5:])
+            return walls[i_] if i_ < len(walls) else None
+        if v == "@mu_cover":
+            return mu_cover
+        if v.startswith("img/stills/"):  # 영상 스틸은 빌드가 쪽을 그린 뒤 만듦(videos.json upcoming.stills 차례 = 1.jpg …) — 원본 목록에 그 번호가 있을 때만
+            n_ = int(Path(v).stem) if Path(v).stem.isdigit() else 0
+            return f"{P}assets/{v}" if 0 < n_ <= len((videos.get("upcoming") or {}).get("stills", [])) else None
+        return f"{P}assets/{v}"  # 표지 · 사진 등도 빌드가 뒤에서 만들어 둠(그릴 때는 아직 없을 수 있음)
+
+    def mhref(v):
+        return {"@ig": e(iu), "@yt": e(ch.get("url", "")), "@buy": e(book["buy_url"])}.get(v, v)
+
+    def mm_pane(k_, pane):
+        cards = [c_ for c_ in pane["cards"] if c_.get("show", True)]
+        kicks = ([mtext(pane["solo"], f"{k_ or '소개'} solo")] if len(cards) == 1 and pane.get("solo")
+                 else [mtext(c_.get("k", ""), f"{k_ or '소개'} 멘트") for c_ in cards])
+        out = []
+        for c_, kk in zip(cards, kicks):
+            href = mhref(c_["href"])
+            label = mtext(c_["n"], f"{k_ or '소개'} 칸 이름") + (" ↗" if c_.get("arrow") else "")
+            img, fit = mimg(c_.get("img")), c_.get("fit", "img")
+            if fit == "tc":
+                ph = '<span class="mm-ph mm-tc">' + "".join(f"<i>{e(x)}</i>" for x in mlines(c_.get("lines"))) + "</span>"
+            elif img and fit in ("img", "ct"):
+                ph = f'<span class="mm-ph{" mm-ct" if fit == "ct" else ""}"><img data-src="{img}" alt="" width="206" height="206" decoding="async"></span>'
+            elif img:  # 엽서 꼴이지만 그림이 있으면(음악 첫 표지) 그림으로
+                ph = f'<span class="mm-ph"><img data-src="{img}" alt="" width="206" height="206" decoding="async"></span>'
+            else:
+                ph = '<span class="mm-ph mm-pc"></span>'
+            tgt = ' target="_blank" rel="noopener"' if href.startswith("http") else ""
+            hg = " hgs" if label[:1] in "『「" else ""
+            out.append(f'<a class="mm-c" href="{href}"{tgt}><span class="mm-k" aria-hidden="true">{kk}</span>{ph}<span class="mm-n{hg}">{label}</span></a>')
+        link = (f'<p class="mm-d"><a class="mm-l" href="{mhref(pane["link"])}" target="_blank" rel="noopener">{e(book["store_label"])} ↗</a></p>'
+                if pane.get("link") == "@buy" else "")
+        return f'<div class="mm-in" data-pg="{k_}" hidden><p class="sr">{" ".join(kicks)}</p><div class="mm-row">{"".join(out)}</div>{link}</div>'
     mega = ('<div class="mm" id="mm" role="region" aria-label="' + t("mm_label") + '" aria-hidden="true" inert>'
-            + "".join(mm_pane(k_, v_) for k_, v_ in mm_panes.items())
+            + "".join(mm_pane(k_, MENU["panes"][k_]) for k_ in ("", "book", "photo", "video", "music", "rococo", "guestbook") if k_ in MENU["panes"])
             + '</div>')
     icons = "".join(f'<li><a href="{h}" aria-label="{a}"{x}>{FOOT_ICONS[k]}</a></li>' for k, h, a, x in (
         ("ig", e(iu), e(L["nav"][2]), ext), ("yt", e(ch.get("url", "")), e(L["nav"][3]), ext),
