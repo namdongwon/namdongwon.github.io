@@ -1731,7 +1731,7 @@ def render(site, poem, videos, photos, lang="ko"):
     toc6 = [x["title"] for x in book["toc"]["parts"][0]["items"][:6]]
     mm_panes = {
         "": (t("mm_d_me", name=e(S["name"])), [mm_card("~R~#me", t("me_h"), f"{P}assets/img/me.webp"), mm_card("~R~contact/", L["nav_cta"], kind="pc")]),
-        "book": (t("mm_d_book"), [mm_card("~R~book/", t("mm_front"), f"{P}assets/img/cover.jpg", fit="ct"), mm_card("~R~book/", t("mm_back"), f"{P}assets/img/back.jpg", fit="ct"), mm_card("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", ""), f"{P}assets/img/takbon.jpg", fit="ct"),
+        "book": (t("mm_d_book"), [mm_card("~R~book/", t("mm_front"), f"{P}assets/img/cover.jpg", fit="ct"), mm_card("~R~book/#back", t("mm_back"), f"{P}assets/img/back.jpg", fit="ct"), mm_card("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", ""), f"{P}assets/img/takbon.jpg", fit="ct"),
                                   mm_card("~R~book/#toc", e(book["toc"]["label"]), kind="tc", extra=toc6)],
                  f'<a class="mm-l" href="{e(book["buy_url"])}" target="_blank" rel="noopener">{e(book["store_label"])} ↗</a>'),
         "photo": (t("mm_d_photo"), [mm_card("~R~photo/", t("mm_wall"), wall_first[0] if wall_first else None, kind="pc"), mm_card(e(iu), f'{t("more_ig")} ↗', kind="pc")]),

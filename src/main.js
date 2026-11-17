@@ -132,7 +132,7 @@
       });
       bk.addEventListener("blur", () => { if (!face) return; seq++; face = 0; if (reduce) set(REST); else tween(REST, 900); });  // 다른 데로 가면 제자리
     }
-    return { turnIn: () => { if (!drag) { take(); tween(REST, 1000); } } };
+    return { turnIn: () => { if (!drag) { take(); tween(REST, 1000); } }, back: () => { if (!drag) { seq++; go(2, 1400); } } };
   };
   // 첫 화면 책만 처음에 책등이 보이게 비스듬히(78°) 서 있다가 26°로 돌아섬. 돌아서는 때는 문 장면이 정함
   // (첫 방문: 문이 열리고 0.9초 뒤 — 표지가 0.6초부터 0.8초 동안 떠오르니 거의 다 보인 뒤 / 다시 온 사람: 책이 화면에 들어오면)
@@ -141,6 +141,23 @@
   if (bk) {
     const t = turnable(bk, true);
     if (motion) bookIn = t.turnIn;
+    // 메뉴 '시집 뒷면' 카드(book/#back — 11/17 동원 시안 'A 바로 뒷면'): 앞표지로 서는 대신 곧장 뒤표지로 돌아 섬
+    // 처음 온 사람(문 장면 · 화면에 들어올 때)은 bookIn 자리에서, 다시 온 사람(책이 처음부터 서 있음)은 0.25초 뒤 · 움직임 줄이기면 바로 그 면으로
+    // 주소의 #back은 그대로 둠 — 열리는 도중에 지우면 쪽 겹쳐 바뀜(뷰 트랜지션)이 끊김(11/17 실측 InvalidStateError) · 새로 고쳐도 뒷면으로(그 주소가 곧 뒷면)
+    if (location.hash === "#back") {
+      if (motion) bookIn = t.back;
+      if (!motion || revisit) setTimeout(t.back, motion ? 250 : 0);
+    }
+    document.addEventListener("click", ev => {  // 시집 페이지에서 그 카드를 누르면(쪽이 새로 열리지 않음) — 첫 화면으로 올라가며 뒤표지로
+      const a = ev.target.closest('a[href$="#back"]');
+      if (!a || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+      const to = new URL(a.href, location.href);
+      if (to.pathname !== location.pathname) return;
+      ev.preventDefault();
+      if (location.hash !== "#back") history.pushState(null, "", to.pathname + "#back");
+      home.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+      setTimeout(t.back, reduce ? 0 : 350);
+    });
   }
   const cardBook = document.querySelector(".pbook .bk");  // 시집 칸 책 카드 — 들어올 때 돌아서지 않고 만질 때만(10/25 A) · 누르기 · 키보드도 첫 화면 책과 같게(10/27 동원 "시집 칸에 있는 책도 똑같이")
   if (cardBook) turnable(cardBook, true);
