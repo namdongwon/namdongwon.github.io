@@ -143,12 +143,12 @@
     "fr": "Couverture du recueil « {book} »"
   },
   "read": {
-    "ko": "「{poem}」 읽기 ↓",
-    "en": "Read “{poem}” ↓",
-    "ja": "「{poem}」を読む ↓",
-    "ru": "Читать «{poem}» ↓",
-    "es": "Leer «{poem}» ↓",
-    "fr": "Lire « {poem} » ↓"
+    "ko": "시 「{poem}」 읽기 ↓",
+    "en": "Read the poem “{poem}” ↓",
+    "ja": "詩「{poem}」を読む ↓",
+    "ru": "Читать стихотворение «{poem}» ↓",
+    "es": "Leer el poema «{poem}» ↓",
+    "fr": "Lire le poème « {poem} » ↓"
   },
   "ex_kick": {
     "ko": "시집",
