@@ -1959,7 +1959,7 @@
   document.querySelectorAll("a.ml[data-u]").forEach(a => {
     const m = [...a.dataset.u].reverse().join("") + "@" + [...a.dataset.d].reverse().join("");
     a.textContent = m;
-    a.href = "mailto:" + m;
+    a.href = "mailto:" + m + "?subject=" + encodeURIComponent("[namdongwon.com] ");  // 11/18 제목 미리 채움(동원 고름) — 받는 쪽에서 사이트로 온 메일을 골라내기 쉽게 · 판과 상관없이 같은 머리
     // ③ 연락 쪽 메일 곁 '복사' 단추 — 누르면 주소를 복사하고 1.2초 동안 '복사됨 ✓'(11/4 동원 'B 곁에 복사 단추' — 갤러리UX열_v1 03 · dmcg.co) · 주소를 누르면 지금처럼 메일 앱
     if (!a.closest(".mail")) return;
     const b = document.createElement("button");

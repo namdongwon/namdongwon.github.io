@@ -721,6 +721,13 @@ CIN_JS = ('try{var c=JSON.parse(sessionStorage.getItem("cto")||"null");sessionSt
           'if(c&&Date.now()-c[2]<5e3&&H.getAttribute("data-motion")!=="reduce"&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!H.classList.contains("intro"))'
           '{H.classList.add("cin");H.style.setProperty("--cx",c[0]+"px");H.style.setProperty("--cy",c[1]+"px")}}catch(x){}')
 HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", CIN_JS), HEAD_JS_PLAIN.replace("__CIN__", CIN_JS)
+# 11/18 옛 주소 이어 주기(동원 버튼 "옛 주소 이어 주기 (권장)"): 10/31 쪽 나누기 전 한 쪽 주소(/#poem · /#toc · /#l7 · /#photo · /#contact …)가 첫 화면 맨 위로 떨어졌음(실측 9곳)
+# → 판 첫 화면에서 옮겨 간 칸 이름이면 그 쪽으로 바로 바꿔 감(location.replace — 뒤로 가기에 옛 주소가 남지 않게 · 그리기 전 머리에서). 첫 화면에 있는 칸(#me · #y3 …)은 그대로
+OLD_HASH_JS = ('(function(){var h=location.hash.slice(1),m=location.pathname.match(/^(\\/(?:en|ja|ru|es|fr)\\/|\\/)(?:index\\.html)?$/);if(!h||!m)return;'
+               'var R=[[/^(poem|toc|palette|mline|bookcard|[ltn]\\d+)$/,"book/"],[/^(photo|posts|p\\d+|v-[\\w-]+-\\d+)$/,"photo/"],[/^video$/,"video/"],[/^(music|mu\\d+)$/,"music/"],'
+               '[/^(contact|fq\\d+)$/,"contact/"],[/^guestbook$/,"guestbook/"],[/^rococo$/,"rococo/"]];'
+               'for(var i=0;i<R.length;i++)if(R[i][0].test(h)){location.replace(m[1]+R[i][1]+location.search+"#"+h);return}})();')
+HEAD_JS, HEAD_JS_PLAIN = (x.replace("<script>(function(){var H=", "<script>" + OLD_HASH_JS + "(function(){var H=", 1) for x in (HEAD_JS, HEAD_JS_PLAIN))
 # 쪽 넘김 미리 받기(11/4 동원 '넣기 (권장)' — Speculation Rules · 구글 검색 · Shopify가 씀): 같은 사이트 쪽 링크에 마우스를 올리거나 누르기 시작하면 그 쪽 HTML을 미리 받아 둠(moderate).
 # 미리 '그리기'(prerender)가 아니라 '받기'(prefetch) — 그리기는 원형 전환(cto) · 문 장면 · 들어오는 장면이 손님이 보기 전에 끝나 버림. 받기는 스크립트를 돌리지 않아 통계 · 동의에도 닿지 않음.
 # 지원: 크롬 · 엣지 · 안드로이드 크롬 · 사파리는 받기를 만드는 중(2026-05 WebKit 트렁크) — 모르는 브라우저는 이 줄을 그냥 넘김. 파일(점 있는 주소) · 새 탭 · 내려받기는 뺌
@@ -1607,7 +1614,7 @@ def render(site, poem, videos, photos, lang="ko"):
         rest = "".join(f'<li><a href="https://www.youtube.com/watch?v={e(x["youtube_id"])}" target="_blank" rel="noopener">'
                        f'<i>{e(kinds.get(x["kind"], x["kind"]))}</i><b>{marked(x["kind"], x["title"], lang)}</b><em>{e(x["date"].replace("-", "."))}</em></a></li>' for x in items[1:])
         past = f'<ul class="toc">{rest}</ul>' if rest else ""
-        go = t("go_watch")
+        go, sub_ = t("go_watch"), ""
         for x in items:  # 찾기: 갈래 낱말 · 작품 · 만든 이 → 유튜브
             ix["video"].append((tg["video"], " ".join(y for y in (kinds.get(x["kind"], x["kind"]), x["title"], x.get("creator", "")) if y),
                                 x["date"].replace("-", "."), f'https://www.youtube.com/watch?v={x["youtube_id"]}'))
@@ -1628,7 +1635,7 @@ def render(site, poem, videos, photos, lang="ko"):
             latest = f'<div class="big soon" role="img" aria-label="{t("first_soon")}"><span>{t("first_soon")}</span></div>'
             info = sentence(u, lang, kinds)
         past = ""
-        go = t("go_channel")
+        go, sub_ = t("go_channel"), "?sub_confirmation=1"  # 11/18 첫 편 전에는 구독 확인 창으로(동원 버튼 "B '유튜브에서 구독하기' (권장)" — 유튜브 고객센터 안내 기능 · 문구가 누른 뒤 일을 그대로 말함)
     # 지난 편이 없을 때(첫 편 전 · 첫 편만 있을 때, 10/29 동원 'B 접고 첫 편을 크게' — 새 눈 비평 그 밖 8): '지난 편' 칸 대신 한 줄 + 컴퓨터는 첫 편을 두 단에 걸쳐 크게(#video.solo)
     #   — 지난 편이 하나라도 생기면 지금 모양(오른쪽 차례)으로. 한 줄의 '지난 편'은 칸 꼬리표와 같은 .sub(영어는 대문자)
     solo = not past
@@ -2226,7 +2233,7 @@ def render(site, poem, videos, photos, lang="ko"):
         "video": f"""  <section id="video"{' class="solo"' if solo else ""} aria-labelledby="video-t">
     <p class="label">{t("label_video")}</p>
     <div class="l"><div class="ch2"><h2 id="video-t"{ko_attr if re.search("[가-힣]", ch["name"]) else ""}>{e(ch["name"])}</h2><span>{e(ch["desc"])}</span></div>{latest}
-      <div class="vside">{info}{pastnone}<a class="buy" href="{e(ch["url"])}" target="_blank" rel="noopener">{go} ↗</a></div></div>
+      <div class="vside">{info}{pastnone}<a class="buy" href="{e(ch["url"] + sub_)}" target="_blank" rel="noopener">{go} ↗</a></div></div>
     {"" if solo else f'<div class="r"><p class="sub">{t("past")}</p>{past}</div>'}
   </section>
 """,

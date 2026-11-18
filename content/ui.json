@@ -971,12 +971,12 @@
     "fr": "Les épisodes apparaîtront ici au fil de leur sortie."
   },
   "go_channel": {
-    "ko": "유튜브 채널 보기",
-    "en": "Visit the channel on YouTube",
-    "ja": "YouTubeチャンネルを見る",
-    "ru": "Перейти на канал YouTube",
-    "es": "Ver el canal en YouTube",
-    "fr": "Voir la chaîne sur YouTube"
+    "ko": "유튜브에서 구독하기",
+    "en": "Subscribe on YouTube",
+    "ja": "YouTubeでチャンネル登録",
+    "ru": "Подписаться на YouTube",
+    "es": "Suscribirse en YouTube",
+    "fr": "S’abonner sur YouTube"
   },
   "go_watch": {
     "ko": "유튜브에서 보기",

@@ -6,7 +6,7 @@ const TEXT = {"ko": {"title": "연결 없음 — 남동원", "kicker": "연결 �
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", e => e.waitUntil(self.clients.claim()));
 const page = path => {
-  const lang = /^\/(en|ja|ru)\//.test(path) ? path.slice(1, 3) : "ko", t = TEXT[lang];
+  const lang = /^\/(en|ja|ru|es|fr)\//.test(path) ? path.slice(1, 3) : "ko", t = TEXT[lang] || TEXT.ko;  // 11/18 스페인어 · 프랑스어판도 그 말로(전엔 en · ja · ru만 알아 한국어로 떴음)
   return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>${t.title}</title>
 <meta name="color-scheme" content="light dark"><style>
 :root{--bg:#fff;--ink:#111;--muted:#555;--faint:#717171;--line:#ececec}
