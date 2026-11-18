@@ -175,7 +175,7 @@ html.mnu-on{overflow:hidden}  /* 여는 동안 쪽은 멈춤 */
 .rco-btn:not(.rco-soon-web):active{opacity:.7}
 .rco-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;aspect-ratio:4/3;background:var(--ph);color:var(--faint)}  /* '화면 준비 중' 자리(11/15 동원 "화면 준비중 … 구조가 더 중요") — 실제 캡처가 생기면 rococo.json shot */
 .rco-wm{display:block;height:16px;opacity:.5}.rco-wm svg{display:block;height:100%;width:auto}
-.rco-phs{font:300 12.5px/1 var(--sans);letter-spacing:.04em}
+.rco-phs{font:300 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  /* 11/18 접근성 점검(axe) — --faint #717171 / --ph #f2f2f2 대비 4.35 < 4.5 → --muted(6.9) */
 .rco-fig img{display:block;width:100%;height:auto}
 @media (max-width:767px){.rco-hd{padding:44px 0 44px}.rco-t{font-size:30px}.rco-row,.rco-row.rev{grid-template-columns:1fr;gap:22px}.rco-row.rev .rco-fig{order:0}.rco-row+.rco-row{margin-top:64px}.rco-h{font-size:22px}
 }
@@ -1128,6 +1128,7 @@ html.sr-on{overflow:hidden}
 .lsw summary{display:inline-flex;align-items:center;gap:6px;padding:8px 2px;margin:-8px -2px;list-style:none;cursor:pointer;font:400 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--ink);-webkit-tap-highlight-color:transparent}
 .lsw summary::-webkit-details-marker{display:none}
 @media (pointer:coarse){.fcols li{position:relative}.fcols li>:is(a,button){position:static}.fcols li>:is(a,button)::before{inset:-6px -8px}.lsw summary{position:relative}.lsw summary::before{content:"";position:absolute;inset:-8px}}  /* 손가락 기기 바닥글 누르는 자리(11/14 실측 — 글 링크 31×28 · 언어 57×32): 글 링크는 단 너비 통째로(높이는 줄 사이 29px라 모양을 바꾸지 않고는 44 못 됨 — 이웃 줄과 겹치지 않게 그대로) · 언어 고르기는 44 넘게 · 보이는 모양은 그대로 */
+@media (pointer:coarse){.pvx,.pvf small .pvl,.sr-kb button{position:relative}.pvx::before{content:"";position:absolute;inset:-8px -12px}.pvf small .pvl::before{content:"";position:absolute;inset:-12px -4px}.sr-kb button::before{content:"";position:absolute;inset:-12px -4px}}  /* 11/18 누름 영역 점검(402 격자 실측): 사진 창 닫기 22×28 · 링크 복사 42×18 · 찾기 '그대로 찾기' 98×20 → 손가락 기기만 누르는 자리 44 안팎 · 모양 그대로 */
 .lsw .gl{width:15px;height:15px}.lsw .cr{position:relative;top:-3.5px;margin-left:-3px;width:10px;height:10px;color:var(--ink);transition:transform .2s}  /* 펼침 화살표 8px 회색 → 10px 먹(11/17 동원 "화살표 너무 작은 거 같아" — 토스 실측 화살표 폭 = 글자 높이 0.67배 · 글자와 같은 색) · 위로 3.5px — 상자 가운데에 두면 대문자 가운데보다 3.6~4.9px 처져 보여서(동원 "글자 중간에 있잖아 … 아래로 쳐진 느낌", 1440 · 402 실측으로 맞춤) · 왼쪽으로 3px — 글자와 틈이 대문자 높이 1.09배라 떠 보여서 토스 0.67배 가까이(0.74배 · 동원 "토스가 좀 더 붙어있는 거 같지 않아?") */.lsw[open] .cr{transform:rotate(180deg)}
 .lsw ul{position:absolute;left:-8px;bottom:calc(100% + 10px);z-index:5;min-width:168px;margin:0;padding:6px;list-style:none;background:var(--bg);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08)}
 .lsw li>*{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border-radius:8px;font:300 14px/1.2 var(--sans);color:var(--ink);text-decoration:none}
