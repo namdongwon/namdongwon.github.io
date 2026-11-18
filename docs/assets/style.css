@@ -1055,7 +1055,7 @@ html.sr-on{overflow:hidden}
 .top .lsw-top{display:none}
 @media (min-width:1024px) and (hover:hover),(min-width:1024px) and (pointer:fine){.top .lsw-top{display:flex;align-items:center}}
 
-.top .lsw-top summary{gap:6px;margin:0;padding:6px 0;font-weight:600}.top .lsw-top{margin-right:-4px}  
+.top .lsw-top summary{gap:6px;margin:0;padding:6px 0}  .top .lsw-top{margin-right:-4px}  
 .top .lsw-top .cr{top:-3px}  
 .top .lsw-top ul{top:calc(100% + 12px);bottom:auto;left:auto;right:-8px}  
 .mnu .mlang{display:flex;flex-wrap:wrap;gap:8px 12px;margin:30px 0;padding-top:20px;border-top:1px solid var(--line);font:400 13px/1.5 var(--sans)}
