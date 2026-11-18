@@ -1432,5 +1432,6 @@ html.sr-on .bt,html.mnu-on .bt,html.pv-on .bt{visibility:hidden}
   .si-l.on{opacity:1}
   .si-dim{opacity:.1!important;transition:opacity .18s!important}  
   html.sr-on .si,html.mnu-on .si,html.pv-on .si,html.sr-on .si-l{visibility:hidden}  
+  .si{transition:opacity .15s}html:has(.mm.vis) :is(.si,.si-l){opacity:0!important;pointer-events:none}  
 }
 @media (prefers-reduced-motion:reduce){.si .b,.si-l{transition:none}}:where(:root[data-motion="reduce"]) .si .b,:where(:root[data-motion="reduce"]).si .b,:where(:root[data-motion="reduce"]) .si-l,:where(:root[data-motion="reduce"]).si-l{transition:none}
