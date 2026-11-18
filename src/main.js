@@ -2418,6 +2418,16 @@
       e.preventDefault(); move(dir);
     });
   })();
+  // 넓은 창 시집 첫 화면의 숨긴 박물관 라벨(#home.scene .lab — 화면 읽기용으로만 남김) 안 링크 둘은 Tab에서 뺌: 보이지 않는 곳에 초점이 두 번 멈췄음(11/18 키보드 점검) · 라벨이 보이는 폭에선 되돌림
+  (() => {
+    const lab = document.querySelector("#home .lab");
+    if (!lab) return;
+    const fix = () => {
+      const cs = getComputedStyle(lab), hid = cs.display === "none" || cs.clipPath === "inset(50%)";
+      lab.querySelectorAll("a").forEach(a => { if (hid) a.setAttribute("tabindex", "-1"); else a.removeAttribute("tabindex"); });
+    };
+    fix(); addEventListener("resize", fix, { passive: true });
+  })();
   // '?' 키로 단축키 안내(11/18 동원 UX 셋째 시안 ④ "A 가운데 판" — 기준/브랜드 시안/UX셋째넷시안_v1 · GitHub · Gmail · YouTube 꼴): 사이트에 실제로 있는 단축키만
   // ⌘K(맥 밖은 Ctrl K) 검색 · Esc 닫기 · ← → 사진 넘기기 · ? 이 안내 — 글 칸에 쓰는 중이거나 다른 창(찾기 · 메뉴 · 사진)이 열려 있으면 열지 않음 · <dialog> 모달(Esc · 바깥 누르면 닫힘 · 닫으면 초점 되돌림)
   (() => {

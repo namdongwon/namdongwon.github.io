@@ -774,7 +774,7 @@ html.sr-on{overflow:hidden}
 .gbf label{display:grid;gap:6px;font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
 .gbf label i{font-style:normal;font-weight:300;letter-spacing:0;color:var(--faint)}
 .gbf input[type=text],.gbf textarea{font:300 16px/1.5 var(--sys);color:var(--ink);border:0;border-bottom:1px solid var(--line);padding:6px 0;background:transparent;border-radius:0;outline:none;width:100%;resize:vertical}
-.gbf input[type=text]:focus,.gbf textarea:focus{border-color:var(--ink)}
+.gbf input[type=text]:focus,.gbf textarea:focus{border-color:var(--ink);box-shadow:0 1px 0 var(--ink)}  /* 초점 선 2px — 1px 색만 바뀌면 거의 안 보였음(11/18 키보드 점검) */
 /* 안내 한 줄(11/2 밤 B — 동의 체크 둘 대신): 옛 동의 글과 같은 작은 고딕 · 흐린 먹 · 처리방침 링크만 먹 밑줄 */
 .gbf .gbn{margin:0;font:300 11px/1.6 var(--sans);letter-spacing:0;color:var(--muted)}
 .gbf .gbn a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
@@ -1511,7 +1511,7 @@ html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja
    넓은 창(768~)에서 첫 화면(책)을 지나면 나타남 · GNB가 보이면 그 바로 아래, 내려서 GNB가 숨으면 맨 위로 같은 움직임(.25s) · 지금 칸만 먹 + 밑줄 · main.js가 만듦 */
 .bt{position:fixed;left:0;right:0;top:var(--bt-y,var(--top));z-index:9;display:flex;align-items:center;gap:20px;height:44px;padding:0 20px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--barline);font:500 13px/1 var(--sans);color:var(--muted);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s,transform .25s var(--e2,ease)}  /* 휴대폰(11/18 'A 위 탭 줄') — 옆으로 밀리는 한 줄 · '시집' 이름 뺌 */
 .bt::-webkit-scrollbar{display:none}.bt.on{opacity:1;visibility:visible}.bt.up{transform:translateY(calc(-1 * var(--bt-y,var(--top))))}.bt b{display:none}
-.bt a{position:relative;flex:none;padding:15px 0;color:inherit;text-decoration:none;white-space:nowrap}.bt a.on{color:var(--ink)}.bt a.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--ink)}.bt a:active{opacity:.6}
+.bt a{position:relative;flex:none;display:flex;align-items:center;align-self:stretch;padding:0;color:inherit;text-decoration:none;white-space:nowrap}  /* 띠 높이에 맞춰 섬 — 글자 크게(xl)에서 밑줄이 띠 밖으로 2px 나가던 것(11/18 글자 크게 점검) */.bt a.on{color:var(--ink)}.bt a.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--ink)}.bt a:active{opacity:.6}
 html.sr-on .bt,html.mnu-on .bt,html.pv-on .bt{visibility:hidden}
 @media (min-width:768px){
   .bt{gap:28px;height:48px;overflow:visible}.bt b{display:block}
@@ -1519,7 +1519,7 @@ html.sr-on .bt,html.mnu-on .bt,html.pv-on .bt{visibility:hidden}
   .bt.on{opacity:1;visibility:visible}
   .bt.up{transform:translateY(calc(-1 * var(--bt-y,var(--top))))}
   .bt b{margin-right:auto;font:600 15px/1 var(--serif);color:var(--ink);cursor:pointer}
-  .bt a{position:relative;padding:17px 0;color:inherit;text-decoration:none;white-space:nowrap}
+  .bt a{position:relative;padding:0;color:inherit;text-decoration:none;white-space:nowrap}
   .bt a:hover,.bt a.on{color:var(--ink)}
   .bt a.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--ink)}
   .bt a:active{opacity:.6}
@@ -1548,9 +1548,17 @@ html.sr-on .bt,html.mnu-on .bt,html.pv-on .bt{visibility:hidden}
    G4 사진 창은 위 띠를 사진 위로 겹쳐 올리고(닫기만 오른쪽 위) 아래 글 줄을 한 줄로 — 사진 높이 약 60% → 85% */
 @media (max-height:500px){
   :root{--top:48px}
-  .bt{height:40px}.bt a{padding:13px 0}
+  .bt{height:40px}
   .pvh{position:absolute;top:0;left:0;right:0;z-index:2;height:44px;border-bottom:0;background:none}
   .pvs figure{padding:8px 20px}
   .pvf{padding:8px 20px calc(10px + env(safe-area-inset-bottom))}
   .pvf p{font-size:13px}.pvf .aw,.pvf small{display:inline;margin:0 0 0 8px}
 }
+
+/* 11/18 어두운 화면 · 글자 크게 점검(기준/브랜드 시안/UX다섯째점검_v1) */
+/* 어두운 화면: '준비 중' 칸(#111)이 어두운 바탕(#141414)에 묻혔음(대비 1.02) — 한 단계 밝은 칸 + 옅은 테두리 · '?' 판도 바깥 선 */
+:root[data-theme="dark"] :is(.ma-cv.soon:not(:has(img)),.nt:not(:has(img)),.mm-ph.mm-soon){background:#262626;box-shadow:inset 0 0 0 1px var(--line)}
+:root[data-theme="dark"] .ksh{box-shadow:0 0 0 1px var(--line),0 20px 50px rgba(0,0,0,.5)}
+@media (prefers-color-scheme:dark){:root[data-theme="system"] :is(.ma-cv.soon:not(:has(img)),.nt:not(:has(img)),.mm-ph.mm-soon){background:#262626;box-shadow:inset 0 0 0 1px var(--line)}:root[data-theme="system"] .ksh{box-shadow:0 0 0 1px var(--line),0 20px 50px rgba(0,0,0,.5)}}
+/* 글자 크게(크게 · 더 크게): 메뉴 칸 멘트가 한 줄로 옆 칸까지 넘었음(러시아어 최대 42px) — 줄을 바꾸고, 그림 윗선은 가장 긴 멘트에 맞춰 한 줄로(멘트는 아래 붙임) */
+html[data-fs] .mm-c{display:flex;flex-direction:column}html[data-fs] .mm-k{display:flex;flex:1 0 auto;align-items:flex-end;white-space:normal}
