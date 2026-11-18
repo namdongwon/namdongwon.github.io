@@ -99,7 +99,7 @@ button{font:inherit;color:inherit}
 .top{box-shadow:0 1px 0 var(--barline)}  
 
 @media (max-width:767px){.top nav{margin:0 auto}}    
-.top .logo{display:none;position:relative;font:400 14px/1 "NDD",Didot,"Bodoni 72",serif;letter-spacing:.3em;white-space:nowrap}    
+.top .logo{display:none;position:relative;font:400 13px/1 "NDD",Didot,"Bodoni 72",serif;letter-spacing:.3em;white-space:nowrap}    
 
 @media (max-width:767px){.js .top{display:grid;grid-template-columns:1fr auto 1fr;column-gap:16px}.js .top .mb{grid-column:1;grid-row:1;justify-self:start;margin:0}.js .top .logo{display:block;grid-column:2;grid-row:1;font-size:11px;letter-spacing:.16em}.js .top .act{grid-column:3;grid-row:1;justify-self:end;margin-left:0}}  
 @media (max-width:389px){.js .top .logo{font-size:10px;letter-spacing:.12em}}  
