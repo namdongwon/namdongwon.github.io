@@ -531,7 +531,8 @@
       else if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === "k") menu(false);  // 찾기 창보다 먼저 닫음(찾기가 쪽 나머지를 inert로 돌리고 닫을 때 풀기 때문)
     }, true);
     head.addEventListener("click", ev => { if (ev.target.closest(".sq")) menu(false); }, true);
-    matchMedia("(min-width:768px)").addEventListener("change", m => { if (m.matches) menu(false); });
+    // 휴대폰 메뉴를 쓰는 조건(태블릿 포함 — 11/18 · style.css와 같은 조건): 넓은 창 메뉴 펼침 자리로 바뀌면 닫음
+    matchMedia("(max-width:1023px), (hover:none) and (pointer:coarse)").addEventListener("change", m => { if (!m.matches) menu(false); });
     addEventListener("pageshow", ev => { if (ev.persisted) menu(false); });  // 뒤로 가기로 돌아온 쪽(bfcache)이 열린 채 남지 않게
     // 휴대폰 메뉴 칸 펼침(11/18 동원 UX 넷 시안 ① 'A 누르면 칸 펼침 (권장)' — 기준/브랜드 시안/UX넷시안_v1): 이름 옆 화살표를 누르면 넓은 창 메뉴 펼침(#mm)과 같은 멘트 · 칸이 그 아래 옆으로 밀리게.
     // 칸은 #mm에서 복제(쪽 무게 그대로) · 그림은 처음 펼칠 때만 부름 · 하나를 열면 다른 것은 닫힘 · 같은 쪽 #자리로 가는 칸을 누르면 메뉴를 닫음
@@ -2415,6 +2416,41 @@
       const dir = e.key === "ArrowDown" || e.key === "PageDown" || (e.key === " " && !e.shiftKey) ? 1 : e.key === "ArrowUp" || e.key === "PageUp" || (e.key === " " && e.shiftKey) ? -1 : 0;
       if (!dir || (e.target instanceof Element && e.target.closest("button, a, summary") && e.key === " ")) return;
       e.preventDefault(); move(dir);
+    });
+  })();
+  // '?' 키로 단축키 안내(11/18 동원 UX 셋째 시안 ④ "A 가운데 판" — 기준/브랜드 시안/UX셋째넷시안_v1 · GitHub · Gmail · YouTube 꼴): 사이트에 실제로 있는 단축키만
+  // ⌘K(맥 밖은 Ctrl K) 검색 · Esc 닫기 · ← → 사진 넘기기 · ? 이 안내 — 글 칸에 쓰는 중이거나 다른 창(찾기 · 메뉴 · 사진)이 열려 있으면 열지 않음 · <dialog> 모달(Esc · 바깥 누르면 닫힘 · 닫으면 초점 되돌림)
+  (() => {
+    let dlg = null;
+    const mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+    const keys = [[mac ? "⌘" : "Ctrl", "K"], ["Esc"], ["←", "→"], ["?"]];
+    const open = () => {
+      if (!dlg) {
+        dlg = document.createElement("dialog");
+        dlg.className = "ksh";
+        dlg.setAttribute("aria-labelledby", "ksh-t");
+        const names = uiText("kb_items", "검색 열기|열린 창 닫기|사진 넘기기(사진 창에서)|이 안내").split("|");
+        const box = document.createElement("div");
+        const h = document.createElement("h2"); h.id = "ksh-t"; h.textContent = uiText("kb_title", "단축키");
+        const ul = document.createElement("ul");
+        keys.forEach((k, i) => {
+          const li = document.createElement("li"), sp = document.createElement("span");
+          li.append(names[i] || "");
+          k.forEach(x => { const kb = document.createElement("kbd"); kb.textContent = x; sp.append(kb); });
+          li.append(sp); ul.append(li);
+        });
+        const p = document.createElement("p"); p.textContent = uiText("kb_close", "Esc로 닫기");
+        box.append(h, ul, p); dlg.append(box); document.body.append(dlg);
+        dlg.addEventListener("click", ev => { if (ev.target === dlg) dlg.close(); });  // 판 바깥(배경)을 누르면 닫힘
+      }
+      if (!dlg.open) dlg.showModal();
+    };
+    addEventListener("keydown", ev => {
+      if (ev.key !== "?" || ev.metaKey || ev.ctrlKey || ev.altKey || ev.isComposing) return;
+      const el = document.activeElement;
+      if (el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))) return;
+      if (/(^| )(sr|mnu|pv|cz)-on( |$)/.test(H.className) || (dlg && dlg.open)) return;
+      ev.preventDefault(); open();
     });
   })();
   // 시집 페이지 위 탭 줄(11/18 동원 UX 넷 시안 ② → 버튼 "B 탭 줄 넣기 (권장)" — 기준/브랜드 시안/UX넷시안_v1/②B_GNB자리.png · 애플 제품 페이지 짜임 ·

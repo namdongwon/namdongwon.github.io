@@ -128,12 +128,15 @@ button{font:inherit;color:inherit}
    스크립트가 없으면 전처럼 메뉴 넷 · 컴퓨터 · 태블릿(768 위)은 그대로 */
 .top .mb{display:none;position:relative;margin-right:auto;padding:6px 0;border:0;background:none;font:600 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--ink);cursor:pointer}
 @media (max-width:767px){.js .top .mb{display:block}.js .top nav{display:none}}
+/* 태블릿(768~1023 · 손가락으로 쓰는 아이패드)도 휴대폰 메뉴 꼴(11/18 동원 UX 셋째 시안 ② "A '메뉴' 단추 (권장)" — 기준/브랜드 시안/UX셋째넷시안_v1): 넓은 창 메뉴 펼침(마우스 · 1024~)이 없는 자리에서
+   멘트 · 칸이 이름 옆 화살표로 펼쳐짐 · 띠는 메뉴 | 이름(가운데) | 찾기 · 연락하기 — 휴대폰과 같은 짜임 · main.js의 MENU_MQ와 같은 조건 */
+@media (min-width:768px) and (max-width:1023px),(min-width:768px) and (hover:none) and (pointer:coarse){.js .top .mb{display:block;order:-1;justify-self:start;margin:0}.js .top .logo{justify-self:center}.js .top nav{display:none}}
 .mnu{position:fixed;left:0;right:0;top:var(--top);bottom:0;z-index:45;overflow-y:auto;overscroll-behavior:contain;padding:12px 20px 44px;background:var(--bg)}  /* 띠 바로 아래(main.js가 띠 높이로 맞춤) · 재생 띠(40) · 맨 위로 단추(9) 위, 찾기 창(50) 아래 */
 .mnu ol{margin:0;padding:0;list-style:none}
 .mnu li{border-bottom:1px solid var(--rule)}
 .mnu a{display:block;padding:20px 0;font:400 24px/1.2 var(--serif);color:var(--ink)}
 html.mnu-on{overflow:hidden}  /* 여는 동안 쪽은 멈춤 */
-@media (min-width:768px){.mnu{display:none}}
+@media (min-width:1024px) and (hover:hover),(min-width:1024px) and (pointer:fine){.mnu{display:none}}  /* 태블릿(11/18)은 휴대폰 메뉴를 그대로 씀 */
 /* 휴대폰 메뉴 칸 펼침(11/18 동원 UX 넷 시안 ① 'A 누르면 칸 펼침 (권장)' — 기준/브랜드 시안/UX넷시안_v1): 이름 옆 화살표(44px 누름 자리)를 누르면 넓은 창 메뉴 펼침(#mm)과 같은 멘트 · 칸이 옆으로 밀리게 · main.js가 #mm 칸을 복제 */
 .mnu li{position:relative}.mnu li.mxl>a{padding-right:48px}
 .mnu .mxb{position:absolute;right:-12px;top:10px;display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;background:none;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -148,6 +151,7 @@ html.mnu-on{overflow:hidden}  /* 여는 동안 쪽은 멈춤 */
 .mnu .mx .mm-pc{background-size:auto;background-position:0 10px}
 .mnu .mx .mm-soon b{left:8px;top:8px}
 .mnu .mx .mm-n{margin-top:8px;font:500 12.5px/1.35 var(--sans)}
+@media (min-width:768px){.mnu{padding-left:64px;padding-right:64px}.mnu .mx .mm-row{margin:0 -64px;padding:0 64px;scroll-padding:0 64px}.mnu .mx .mm-c{flex-basis:160px;width:160px}.mnu .mx .mm-ph{width:160px;height:160px}.mnu .mx .mm-k{font-size:13px}}  /* 태블릿 — 띠와 같은 64px 선 · 칸 160px */
 :root[data-motion="reduce"] .mnu .mxb svg{transition:none}@media (prefers-reduced-motion:reduce){.mnu .mxb svg{transition:none}}
 @media (min-width:768px) and (max-width:819px){:is(html:lang(ru),html:lang(es)) header.top nav{gap:6px!important;letter-spacing:0}}  /* 메뉴 여섯(11/15 로코코)이 768 태블릿에서 두 줄로 갈리던 것 — 실측 쓸 폭 383px에 스페인어 432 · 러시아어 413(820부터는 모두 한 줄) → 이 구간 · 넘친 두 판(러 · 서)만 틈 6 · 자간 0(실측 375 · 359 — 한 줄) */
 /* 로코코 쪽(11/15 동원 'D 큰 한 줄 · 좌우 번갈아' — 목업 기준/브랜드 시안/로코코소개시안_v1_D.png · Day One 꼴): 가운데 큰 한 줄 → 세 이야기 좌우 번갈아(한 칸 = 한 이야기 = 한 화면)
@@ -1491,6 +1495,18 @@ html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja
 .rip{position:fixed;left:0;top:0;width:14px;height:14px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ink) 55%,transparent);pointer-events:none;z-index:2147483646;transform:translate(-50%,-50%);animation:rip .6s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes rip{to{transform:translate(-50%,-50%) scale(5.5);opacity:0}}
 @media (prefers-reduced-motion:reduce){.cur,.rip{display:none}}:root[data-motion="reduce"] :is(.cur,.rip){display:none}
+/* '?' 단축키 안내 판(11/18 UX 셋째 시안 ④ A — main.js가 <dialog class="ksh">를 만듦) */
+.ksh{width:min(420px,calc(100vw - 32px));margin:auto;padding:0;border:0;background:var(--bg);color:var(--ink);box-shadow:0 20px 50px rgba(0,0,0,.2)}
+.ksh::backdrop{background:rgba(0,0,0,.28)}
+.ksh:focus,.ksh:focus-visible{outline:0}  /* 열 때 판 자체에 가는 초점 — 누를 것이 아니라 테두리 없음(안의 글은 그대로 읽힘) */
+.ksh>div{padding:28px 30px 22px}
+.ksh h2{margin:0 0 18px;font:600 18px/1.2 var(--serif)}
+.ksh ul{margin:0;padding:0;list-style:none}
+.ksh li{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:11px 0;border-top:1px solid var(--rule);font:400 14px/1.35 var(--sans)}
+.ksh li span{display:flex;flex:none;gap:6px}
+.ksh kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 7px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:6px;background:var(--bg);font:500 12.5px/1 var(--sans);color:var(--ink)}
+.ksh p{margin:16px 0 0;font:400 12px/1 var(--sans);color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){:root:not([data-motion="reduce"]) .ksh[open]{animation:mfd .2s var(--e2,ease) both}}
 /* 시집 페이지 위 탭 줄(11/18 동원 UX 넷 시안 ② "b를 넣는 건 좋은데 gnb 자리는 어디로 간거야" → GNB 자리 시안 ②B_GNB자리 → 버튼 "B 탭 줄 넣기 (권장)" — 애플 제품 페이지 짜임):
    넓은 창(768~)에서 첫 화면(책)을 지나면 나타남 · GNB가 보이면 그 바로 아래, 내려서 GNB가 숨으면 맨 위로 같은 움직임(.25s) · 지금 칸만 먹 + 밑줄 · main.js가 만듦 */
 .bt{position:fixed;left:0;right:0;top:var(--bt-y,var(--top));z-index:9;display:flex;align-items:center;gap:20px;height:44px;padding:0 20px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--barline);font:500 13px/1 var(--sans);color:var(--muted);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s,transform .25s var(--e2,ease)}  /* 휴대폰(11/18 'A 위 탭 줄') — 옆으로 밀리는 한 줄 · '시집' 이름 뺌 */

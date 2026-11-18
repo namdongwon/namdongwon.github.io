@@ -3,11 +3,11 @@
 
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=ca7e75e01c") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=2011ee9cba") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=82ced7c2eb") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=89b643ddc6") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=883dadc30c") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=713fc8a07b") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=5de66aa2c8") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=aa7567a5aa") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=36817656a4") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=00255204f2") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -25,22 +25,22 @@ html:lang(en) #home dd i,html:lang(es) #home dd i,html:lang(fr) #home dd i,html:
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2?v=e9782d673f") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
 
 @font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-light.woff2?v=237255a497") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=37946854a2") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=35ed104ad4") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=06cdd594d5") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=ab99d0577a") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=b9572f01fd") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp.woff2?v=f92b864c95") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JMJ";src:url("fonts/ndw-serif-jp-bold.woff2?v=74c7d89a3a") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-light.woff2?v=b35bb075b8") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-regular.woff2?v=b669cbbfaf") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"JGO";src:url("fonts/ndw-sans-jp-semibold.woff2?v=a5d1e3ecf4") format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-first.woff2?v=1beaf3c9bd") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"JMJF";src:url("fonts/ndw-serif-jp-bold-first.woff2?v=72b7718a65") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-light-first.woff2?v=2d92e4ca5f") format("woff2");font-weight:300;font-display:swap}
 @font-face{font-family:"JGOF";src:url("fonts/ndw-sans-jp-semibold-first.woff2?v=6e3fcf2123") format("woff2");font-weight:600;font-display:swap}
 
-@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-light.woff2?v=ebd8545187") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru.woff2?v=d49e83dfcf") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-bold.woff2?v=eef697cd69") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-light.woff2?v=fe5c64a304") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-regular.woff2?v=dc654fed3e") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-semibold.woff2?v=d73998a6f0") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-light.woff2?v=a7f5dc6206") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru.woff2?v=f70ed1df0a") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-bold.woff2?v=82e93d194d") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-light.woff2?v=bb6d41d8a4") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-regular.woff2?v=4b4e975f4f") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-semibold.woff2?v=1e84037fa6") format("woff2");font-weight:600;font-display:swap}
 html:lang(ru) #home{--sans:"RGO","PTDF","PTD",-apple-system,sans-serif}
 html:lang(ja) .door .t,html:lang(ja) #home .hs{font-family:"JMJF",var(--serif)}
 html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  
@@ -117,12 +117,14 @@ button{font:inherit;color:inherit}
 
 .top .mb{display:none;position:relative;margin-right:auto;padding:6px 0;border:0;background:none;font:600 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--ink);cursor:pointer}
 @media (max-width:767px){.js .top .mb{display:block}.js .top nav{display:none}}
+
+@media (min-width:768px) and (max-width:1023px),(min-width:768px) and (hover:none) and (pointer:coarse){.js .top .mb{display:block;order:-1;justify-self:start;margin:0}.js .top .logo{justify-self:center}.js .top nav{display:none}}
 .mnu{position:fixed;left:0;right:0;top:var(--top);bottom:0;z-index:45;overflow-y:auto;overscroll-behavior:contain;padding:12px 20px 44px;background:var(--bg)}  
 .mnu ol{margin:0;padding:0;list-style:none}
 .mnu li{border-bottom:1px solid var(--rule)}
 .mnu a{display:block;padding:20px 0;font:400 24px/1.2 var(--serif);color:var(--ink)}
 html.mnu-on{overflow:hidden}  
-@media (min-width:768px){.mnu{display:none}}
+@media (min-width:1024px) and (hover:hover),(min-width:1024px) and (pointer:fine){.mnu{display:none}}  
 
 .mnu li{position:relative}.mnu li.mxl>a{padding-right:48px}
 .mnu .mxb{position:absolute;right:-12px;top:10px;display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;background:none;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -137,6 +139,7 @@ html.mnu-on{overflow:hidden}
 .mnu .mx .mm-pc{background-size:auto;background-position:0 10px}
 .mnu .mx .mm-soon b{left:8px;top:8px}
 .mnu .mx .mm-n{margin-top:8px;font:500 12.5px/1.35 var(--sans)}
+@media (min-width:768px){.mnu{padding-left:64px;padding-right:64px}.mnu .mx .mm-row{margin:0 -64px;padding:0 64px;scroll-padding:0 64px}.mnu .mx .mm-c{flex-basis:160px;width:160px}.mnu .mx .mm-ph{width:160px;height:160px}.mnu .mx .mm-k{font-size:13px}}  
 :root[data-motion="reduce"] .mnu .mxb svg{transition:none}@media (prefers-reduced-motion:reduce){.mnu .mxb svg{transition:none}}:where(:root[data-motion="reduce"]) .mnu .mxb svg,:where(:root[data-motion="reduce"]).mnu .mxb svg{transition:none}
 @media (min-width:768px) and (max-width:819px){:is(html:lang(ru),html:lang(es)) header.top nav{gap:6px!important;letter-spacing:0}}  
 
@@ -1387,6 +1390,18 @@ html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja
 .rip{position:fixed;left:0;top:0;width:14px;height:14px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ink) 55%,transparent);pointer-events:none;z-index:2147483646;transform:translate(-50%,-50%);animation:rip .6s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes rip{to{transform:translate(-50%,-50%) scale(5.5);opacity:0}}
 @media (prefers-reduced-motion:reduce){.cur,.rip{display:none}}:where(:root[data-motion="reduce"]) .cur,:where(:root[data-motion="reduce"]).cur,:where(:root[data-motion="reduce"]) .rip,:where(:root[data-motion="reduce"]).rip{display:none}:root[data-motion="reduce"] :is(.cur,.rip){display:none}
+
+.ksh{width:min(420px,calc(100vw - 32px));margin:auto;padding:0;border:0;background:var(--bg);color:var(--ink);box-shadow:0 20px 50px rgba(0,0,0,.2)}
+.ksh::backdrop{background:rgba(0,0,0,.28)}
+.ksh:focus,.ksh:focus-visible{outline:0}  
+.ksh>div{padding:28px 30px 22px}
+.ksh h2{margin:0 0 18px;font:600 calc(18px * var(--fs))/1.2 var(--serif)}
+.ksh ul{margin:0;padding:0;list-style:none}
+.ksh li{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:11px 0;border-top:1px solid var(--rule);font:400 calc(14px * var(--fs))/1.35 var(--sans)}
+.ksh li span{display:flex;flex:none;gap:6px}
+.ksh kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 7px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:6px;background:var(--bg);font:500 calc(12.5px * var(--fs))/1 var(--sans);color:var(--ink)}
+.ksh p{margin:16px 0 0;font:400 calc(12px * var(--fs))/1 var(--sans);color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){:root:where(:root:not([data-motion="reduce"])):not([data-motion="reduce"]) .ksh[open]{animation:mfd .2s var(--e2,ease) both}}
 
 .bt{position:fixed;left:0;right:0;top:var(--bt-y,var(--top));z-index:9;display:flex;align-items:center;gap:20px;height:44px;padding:0 20px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--barline);font:500 calc(13px * var(--fs))/1 var(--sans);color:var(--muted);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s,transform .25s var(--e2,ease)}  
 .bt::-webkit-scrollbar{display:none}.bt.on{opacity:1;visibility:visible}.bt.up{transform:translateY(calc(-1 * var(--bt-y,var(--top))))}.bt b{display:none}
