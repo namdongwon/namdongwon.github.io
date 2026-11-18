@@ -719,8 +719,8 @@ html.sr-on{overflow:hidden}
 .ask input[type=text],.ask input[type=email],.ask textarea{font:300 16px/1.5 var(--sys);color:var(--ink);border:0;border-bottom:1px solid var(--line);padding:8px 0;background:transparent;border-radius:0;outline:none;width:100%}
 .ask textarea{min-height:120px;border:1px solid var(--line);padding:12px;resize:vertical}
 .ask input:focus,.ask textarea:focus{border-color:var(--ink)}
-.ask .agree{display:flex;gap:8px;align-items:flex-start;font:300 12.5px/1.5 var(--sans);letter-spacing:0;color:var(--muted)}
-.ask .agree input{margin-top:2px;width:14px;height:14px;accent-color:var(--ink);flex:none}
+:is(.ask,.gbf) .agree{display:flex;gap:8px;align-items:flex-start;font:300 12.5px/1.5 var(--sans);letter-spacing:0;color:var(--muted)}
+:is(.ask,.gbf) .agree input{margin-top:2px;width:14px;height:14px;accent-color:var(--ink);flex:none}
 .send{justify-self:start;font:600 14px/1 var(--sans);padding:12px 22px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:var(--btn-r);cursor:pointer;-webkit-tap-highlight-color:transparent}
 @media (hover:hover){.send:not(:disabled):hover{background:var(--ink);color:var(--bg)}}
 @media (hover:hover){.top nav a:hover,.top .sq:hover,.sns a:hover,.colo .thm button:hover{color:var(--ink)}.js .hint:hover{color:var(--muted)}}  /* 마우스 기기에서만 — 손가락 기기에서 누른 메뉴 이름이 먹색으로 남아 '지금 칸' 표시와 둘이 되던 것(10/28 일본 디테일 ②) */  /* 마우스에서만 — 아이폰에서 누른 뒤 검게 남지 않게 */
@@ -786,7 +786,7 @@ html.sr-on{overflow:hidden}
 .gbf label i{font-style:normal;font-weight:300;letter-spacing:0;color:var(--faint)}
 .gbf input[type=text],.gbf textarea{font:300 16px/1.5 var(--sys);color:var(--ink);border:0;border-bottom:1px solid var(--line);padding:6px 0;background:transparent;border-radius:0;outline:none;width:100%;resize:vertical}
 .gbf input[type=text]:focus,.gbf textarea:focus{border-color:var(--ink);box-shadow:0 1px 0 var(--ink)}  /* 초점 선 2px — 1px 색만 바뀌면 거의 안 보였음(11/18 키보드 점검) */
-.gbf textarea[aria-invalid="true"]{border-color:var(--ink);box-shadow:0 1px 0 var(--ink)}.gbf .gb-err{display:flex;align-items:center;gap:6px;margin:8px 0 0;font:400 12.5px/1.5 var(--sans);color:var(--ink)}.gbf .gb-err::before{content:"";flex:none;width:4px;height:4px;border-radius:50%;background:currentColor}  /* 11/18 빈 글 안내 한 줄 */
+.gbf textarea[aria-invalid="true"]{border-color:var(--ink);box-shadow:0 1px 0 var(--ink)}.gbf .gb-err{display:flex;align-items:flex-start;gap:6px;margin:8px 0 0;font:400 12.5px/1.5 var(--sans);color:var(--ink)}.gbf .gb-err::before{content:"";flex:none;width:4px;height:4px;margin-top:calc(.75em - 2px);border-radius:50%;background:currentColor}  /* 11/18 빈 글 안내 한 줄 · 밤: 국외 이전 동의 안내(.gba-err)도 — 두 줄로 갈려도 점은 첫 줄 가운데 */
 /* 안내 한 줄(11/2 밤 B — 동의 체크 둘 대신): 옛 동의 글과 같은 작은 고딕 · 흐린 먹 · 처리방침 링크만 먹 밑줄 */
 .gbf .gbn{margin:0;font:300 11px/1.6 var(--sans);letter-spacing:0;color:var(--muted)}
 .gbf .gbn a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}

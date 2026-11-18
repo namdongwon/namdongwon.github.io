@@ -1816,7 +1816,8 @@
       "copy_fail": "복사하지 못했습니다",
       "gb_cut": "붙여 넣은 글 중 {max}자까지만 담겼습니다. 뒤의 {n}자는 메일로 보내 주세요.",
       "search_none_q": "“{q}”에 맞는 것이 없습니다.",
-      "nw_sr": "새 글 있음"
+      "nw_sr": "새 글 있음",
+      "gb_xfer_msg": "보내려면 국외 이전에 동의해 주세요."
     },
     "en": {
       "play": "Play {title}",
@@ -1873,7 +1874,8 @@
       "copy_fail": "Couldn’t copy",
       "gb_cut": "Only the first {max} characters fit. Please send the remaining {n} by email.",
       "search_none_q": "Nothing matches “{q}”.",
-      "nw_sr": "new"
+      "nw_sr": "new",
+      "gb_xfer_msg": "Please agree to the transfer to send your note."
     },
     "ja": {
       "play": "{title}を再生",
@@ -1930,7 +1932,8 @@
       "copy_fail": "コピーできませんでした",
       "gb_cut": "貼り付けた文のうち{max}字までが入りました。残りの{n}字はメールでお送りください。",
       "search_none_q": "「{q}」に合うものはありません。",
-      "nw_sr": "新着あり"
+      "nw_sr": "新着あり",
+      "gb_xfer_msg": "送信するには、国外移転への同意が必要です。"
     },
     "ru": {
       "play": "Воспроизвести: {title}",
@@ -1987,7 +1990,8 @@
       "copy_fail": "Не удалось скопировать",
       "gb_cut": "Поместились только первые {max} символов. Оставшиеся {n} пришлите, пожалуйста, по почте.",
       "search_none_q": "По запросу «{q}» ничего не найдено.",
-      "nw_sr": "новое"
+      "nw_sr": "новое",
+      "gb_xfer_msg": "Чтобы отправить запись, отметьте согласие на передачу."
     },
     "es": {
       "play": "Reproducir {title}",
@@ -2044,7 +2048,8 @@
       "copy_fail": "No se pudo copiar",
       "gb_cut": "Solo caben los primeros {max} caracteres. Envía los {n} restantes por correo, por favor.",
       "search_none_q": "No hay resultados para «{q}».",
-      "nw_sr": "nuevo"
+      "nw_sr": "nuevo",
+      "gb_xfer_msg": "Para enviar la nota, acepta la transferencia."
     },
     "fr": {
       "play": "Lire {title}",
@@ -2101,7 +2106,8 @@
       "copy_fail": "Copie impossible",
       "gb_cut": "Seuls les {max} premiers caractères ont pu être conservés. Envoyez les {n} restants par e-mail, s’il vous plaît.",
       "search_none_q": "Aucun résultat pour « {q} ».",
-      "nw_sr": "nouveau"
+      "nw_sr": "nouveau",
+      "gb_xfer_msg": "Pour envoyer votre mot, acceptez le transfert."
     }
   },
   "pop_post": {
@@ -2281,12 +2287,12 @@
     "fr": "SEOUL, KOREA"
   },
   "gb_note_g": {
-    "ko": "남기신 글은 구글 폼(Google, 미국)에 담깁니다. 실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있습니다. {privacy}",
-    "en": "Notes are stored in a Google Form (Google, United States). Notes not published are deleted within 30 days, and you keep the copyright. {privacy}",
-    "ja": "メッセージはGoogleフォーム（Google、米国）に保存されます。掲載されなかったメッセージは30日以内に削除し、著作権は書いた方にあります。{privacy}",
-    "ru": "Записи хранятся в Google Форме (Google, США). Неопубликованные записи удаляются в течение 30 дней; авторские права остаются за вами. {privacy}",
-    "es": "Las notas se guardan en un formulario de Google (Google, Estados Unidos). Las que no se publican se borran en un plazo de 30 días, y los derechos de autor son tuyos. {privacy}",
-    "fr": "Les mots sont enregistrés dans un formulaire Google (Google, États-Unis). Ceux qui ne sont pas publiés sont supprimés sous 30 jours, et vous en gardez les droits d’auteur. {privacy}"
+    "ko": "실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있습니다.",
+    "en": "Notes not published are deleted within 30 days, and you keep the copyright.",
+    "ja": "掲載されなかったメッセージは30日以内に削除し、著作権は書いた方にあります。",
+    "ru": "Неопубликованные записи удаляются в течение 30 дней; авторские права остаются за вами.",
+    "es": "Las notas que no se publican se borran en un plazo de 30 días, y los derechos de autor son tuyos.",
+    "fr": "Les mots qui ne sont pas publiés sont supprimés sous 30 jours, et vous en gardez les droits d’auteur."
   },
   "next_k": {
     "ko": "다음 쪽",
@@ -2695,5 +2701,13 @@
     "ru": "Треков: 1, {m} мин",
     "es": "1 canción, {m} min",
     "fr": "1 titre, {m} min"
+  },
+  "gb_xfer_agree": {
+    "ko": "남긴 글을 Google(미국)로 옮겨 보관하는 데 동의합니다 — 받는 곳 · 기간 · 거부하는 법은 {privacy} 3절",
+    "en": "I agree that my note is transferred to and stored by Google (United States) — recipient, period and how to refuse: {privacy}, section 3",
+    "ja": "残したメッセージがGoogle（米国）へ移転・保存されることに同意します — 移転先・期間・拒否の方法は{privacy}第3項",
+    "ru": "Я соглашаюсь на передачу и хранение записи в Google (США) — получатель, срок и как отказаться: {privacy}, раздел 3",
+    "es": "Acepto que mi nota se transfiera a Google (Estados Unidos) y se guarde allí — destinatario, plazo y cómo negarse: {privacy}, sección 3",
+    "fr": "J’accepte que mon mot soit transféré à Google (États-Unis) et conservé — destinataire, durée et refus : {privacy}, section 3"
   }
 }

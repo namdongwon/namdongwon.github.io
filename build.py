@@ -1715,6 +1715,9 @@ def render(site, poem, videos, photos, lang="ko"):
                 + f'<p class="cnt" hidden><span>0</span> / {gb_max_txt(lang)}</p>'  # 글자 수 — main.js가 켜고 셈(자바스크립트가 없으면 숨김)
                 + '<input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">'
                 + f'<p class="gbn">{t("gb_note_g" if gf else "gb_note", privacy=priv)}</p>'
+                # 국외 이전 별도 동의(11/18 밤 — 어드민 세션 law.go.kr 원문: 제28조의8 ①3은 '계약의 체결 및 이행을 위하여'라 방명록엔 안 맞을 여지 → 동원 버튼 '별도 동의 체크칸 (권장)' · ①1)
+                # 11/2 'B 안내 한 줄'(체크 없음)을 이 한 칸만 되돌림 — 싣기 · 저작권은 안내 한 줄 그대로 · 보내지는 칸이 아님(구글 폼엔 글 칸만) · 안 고르면 main.js가 안내
+                + f'<label class="agree gba"><input type="checkbox" name="xfer" required><span>{t("gb_xfer_agree", privacy=priv)}</span></label>'
                 + f'<button class="send" type="submit">{t("gb_send")}</button><p class="msg" role="status">{t("gb_when")}</p></form>')  # 약속 한 줄 — 보내면 main.js가 상태로 바꿈
     else:  # 받는 곳이 없으면 쓰는 칸 대신 '곧 열립니다'
         card = to + f'<p class="when">{t("gb_soon")}</p><p class="msg">{t("gb_when")}</p>'

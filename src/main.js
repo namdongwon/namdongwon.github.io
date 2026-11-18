@@ -1883,6 +1883,14 @@
         gbTa.setAttribute("aria-invalid", "true"); gbTa.value = ""; gbTa.dispatchEvent(new Event("input")); gbTa.focus();
         return;
       }
+      // 국외 이전 별도 동의(11/18 밤 · build.py .gba) — 안 고르면 그 칸 아래 한 줄 + 칸으로 초점(글은 그대로)
+      const gbX = gbf.querySelector(".gba input");
+      if (gbX && !gbX.checked) {
+        let xe = gbf.querySelector(".gba-err");
+        if (!xe) { xe = document.createElement("p"); xe.className = "gb-err gba-err"; xe.id = "gba-err"; xe.setAttribute("role", "alert"); gbX.closest("label").after(xe); gbX.setAttribute("aria-describedby", "gba-err"); gbX.addEventListener("change", () => { if (gbX.checked) { xe.hidden = true; gbX.removeAttribute("aria-invalid"); } }); }
+        xe.textContent = uiText("gb_xfer_msg", "보내려면 국외 이전에 동의해 주세요."); xe.hidden = false; gbX.setAttribute("aria-invalid", "true"); gbX.focus();
+        return;
+      }
       const sentTxt = gbTa ? gbTa.value : "";  // 11/18 '보낸 글' 칸에 쓸 글(reset 전에 잡아 둠)
       // 스테이징(staging.namdongwon.com · *.pages.dev)에서는 보내지 않음(11/6 — 시험 글이 진짜 받은 글에 섞이지 않게) · 이 맥 시험 주소(127.0.0.1)는 시험이 보내기를 흉내 내므로 그대로
       if (/^staging\.|\.pages\.dev$/.test(location.hostname)) { gbMsg.textContent = uiText("gb_staging", "스테이징 서버라 보내지 않았습니다 — 운영 사이트에서만 보내집니다."); return; }
