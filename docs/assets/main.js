@@ -538,6 +538,7 @@
     const mmEl = document.getElementById("mm");
     if (mmEl) {
       const xs = [];
+      let cur = null;
       mnu.querySelectorAll("li").forEach(li => {
         const a = li.querySelector("a[data-pg]"), k = a && a.dataset.pg;
         const row = a && mmEl.querySelector(`.mm-in[data-pg="${k}"] .mm-row`), mk = a && head.querySelector(`.mmk[data-mk="${k}"]`);
@@ -556,8 +557,11 @@
           box.hidden = !on; b.setAttribute("aria-expanded", on ? "true" : "false");
         };
         xs.push(set);
+        if (a.getAttribute("aria-current") === "page") cur = set;
         b.addEventListener("click", () => { const on = box.hidden; xs.forEach(f => f(false)); set(on); });
       });
+      // 메뉴를 열면 지금 페이지 칸이 펼쳐진 채(11/18 동원 UX 다음 시안 ① 'A 펼쳐진 채 열림 (권장)' — 기준/브랜드 시안/UX다음넷시안_v1: '시집 뒷면'까지 두 번 → 한 번)
+      if (cur) mb.addEventListener("click", () => { if (!mnu.hidden) { xs.forEach(f => f(false)); cur(true); } });
       mnu.addEventListener("click", ev => {
         const a = ev.target.closest(".mx a[href]");
         if (a && a.pathname === location.pathname && a.hash) menu(false);
@@ -2413,8 +2417,9 @@
       e.preventDefault(); move(dir);
     });
   })();
-  // 시집 페이지 위 탭 줄(11/18 동원 UX 넷 시안 ② → 버튼 "B 탭 줄 넣기 (권장)" — 기준/브랜드 시안/UX넷시안_v1/②B_GNB자리.png · 애플 제품 페이지 짜임):
-  // 넓은 창(768~ · CSS)에서 첫 화면 책 칸을 지나면 나타남 · 맨 위 띠(GNB)가 보이면 그 바로 아래, 내려서 띠가 숨으면(.top.hide) 같이 위로 · 지금 칸은 화면 40% 줄로 · 누르면 그 칸으로(탭 줄 아래 16px)
+  // 시집 페이지 위 탭 줄(11/18 동원 UX 넷 시안 ② → 버튼 "B 탭 줄 넣기 (권장)" — 기준/브랜드 시안/UX넷시안_v1/②B_GNB자리.png · 애플 제품 페이지 짜임 ·
+  // 같은 날 휴대폰판 'A 위 탭 줄 (권장)' — UX다음넷시안_v1: 휴대폰은 옆으로 밀리는 한 줄 · '시집' 이름은 뺌):
+  // 넓은 창 · 휴대폰 모두 첫 화면 책 칸을 지나면 나타남 · 맨 위 띠(GNB)가 보이면 그 바로 아래, 내려서 띠가 숨으면(.top.hide) 같이 위로 · 지금 칸은 화면 40% 줄로 · 누르면 그 칸으로(탭 줄 아래 16px)
   (() => {
     const hm = document.getElementById("home"), pm = document.getElementById("poem"), ml = document.getElementById("mline"), pl = document.getElementById("palette");
     const hd = document.querySelector("header.top");
@@ -2431,12 +2436,13 @@
     bar.append(b);
     const as = names.map((n, i) => { const a = document.createElement("a"); a.href = "#" + els[i].id; a.textContent = n; bar.append(a); return a; });
     hd.after(bar);
-    const wide = matchMedia("(min-width:768px)");
     const topOf = el => el.getBoundingClientRect().top + scrollY;
     const go = el => {
-      const y = el === hm ? 0 : Math.max(0, topOf(el) - 48 - 16);
+      const t0 = topOf(el), up = t0 < scrollY;  // 위로 가면 GNB가 다시 나오므로 그 높이도 비움
+      const y = el === hm ? 0 : Math.max(0, t0 - bar.offsetHeight - 16 - (up ? hd.offsetHeight : 0));
       scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" });
     };
+    let lastK = -1;
     b.addEventListener("click", () => go(hm));
     as.forEach((a, i) => a.addEventListener("click", ev => {
       if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
@@ -2451,12 +2457,16 @@
       bar.classList.toggle("on", vis);
       if (vis) bar.removeAttribute("inert"); else bar.setAttribute("inert", "");
       // 「탁본」 읽기 진행 줄(.rbar — 맨 위 띠 바로 아래)을 탭 줄이 보이는 동안은 탭 줄 아래 선으로(가려지거나 탭 줄과 띠 사이에 끼지 않게)
-      H.style.setProperty("--rbar-y", vis && wide.matches ? ((hd.classList.contains("hide") ? 0 : hd.offsetHeight) + 48) + "px" : "");
+      H.style.setProperty("--rbar-y", vis ? ((hd.classList.contains("hide") ? 0 : hd.offsetHeight) + bar.offsetHeight) + "px" : "");
       const y = scrollY + innerHeight * 0.4, end = scrollY + innerHeight >= document.documentElement.scrollHeight - 2;
       let k = 0;
       els.forEach((el, i) => { if (topOf(el) <= y) k = i; });
       if (end) k = els.length - 1;
       as.forEach((a, i) => { a.classList.toggle("on", i === k); if (i === k) a.setAttribute("aria-current", "location"); else a.removeAttribute("aria-current"); });
+      if (k !== lastK) {  // 휴대폰(탭이 옆으로 밀리는 줄)에서 지금 탭이 가려지면 보이게
+        lastK = k;
+        if (bar.scrollWidth > bar.clientWidth + 1) bar.scrollTo({ left: Math.max(0, as[k].offsetLeft - 20), behavior: reduce ? "auto" : "smooth" });
+      }
     };
     const ask = () => { if (!pend) { pend = true; requestAnimationFrame(paint); } };
     addEventListener("scroll", ask, { passive: true });
