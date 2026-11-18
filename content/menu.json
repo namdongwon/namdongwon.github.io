@@ -11,7 +11,8 @@
     "pane의 link: 카드 아래 바깥 링크 한 줄(@buy → 교보문고에서 사기)",
     "멘트 · 칸 이름이 1280 폭에서 다음 카드와 겹치지 않게 — 한 칸 너비 206px + 틈 22px 안(시험 사본에서 잼)",
     "date: soon 칸의 공개 날짜(선택 · \"YYYY\" · \"YYYY-MM\" · \"YYYY-MM-DD\") — 적으면 배지가 '● 12월 공개'(빌드한 해와 다르면 '2027년 3월 공개' · 해만이면 '2027년 공개'), 날짜가 지나면 저절로 '● 준비 중'(11/18 동원 UX 넷 시안 ③ '틀만 넣기 · A 꼴 (권장)')",
-    "휴대폰(767 아래)은 메뉴 이름 옆 화살표를 누르면 이 칸들이 옆으로 밀리게 펼쳐짐(11/18 UX 넷 시안 ① A) — 칸 너비 128px · 멘트 12px"
+    "휴대폰(767 아래)은 메뉴 이름 옆 화살표를 누르면 이 칸들이 옆으로 밀리게 펼쳐짐(11/18 UX 넷 시안 ① A) — 칸 너비 128px · 멘트 12px",
+    "11/18 동원 \"5개 좀 많은 거 같아 최대 4개로 하자 최소는 3개 … 소개랑 시집은 4개\" → 소개 4(연락하기 칸 숨김 — 맨 위 줄 '연락하기' 단추와 겹침 · 끝 멘트 '회사원 {name}'은 물음 칸으로) · 시집 4 · 인스타그램 4(넷째 사진 숨김 · 작가 · 제목 · 연도 멘트 하나로) · 유튜브 4 · 로코코 4(기능 셋이 저마다 다름) · 음악 3 · 방명록 3(대부분 '준비 중' · 같은 이름 칸 되풀이라 줄임 — 멘트 이어 붙임) — 숨긴 칸은 show: false로 틀에 남음(위 '칸 수' 줄은 옛 수)"
   ],
   "panes": {
     "": {
@@ -78,12 +79,12 @@
         },
         {
           "k": {
-            "ko": "물음엔 먼저 답해 둔",
-            "en": "answering questions ahead —",
-            "ja": "問いには先に答えておく",
-            "ru": "заранее ответил —",
-            "es": "responde de antemano:",
-            "fr": "répond d’avance —"
+            "ko": "회사원 {name}",
+            "en": "{name}, office worker",
+            "ja": "会社員 {name}",
+            "ru": "{name}, офисный работник",
+            "es": "{name}, oficinista",
+            "fr": "{name}, employé de bureau"
           },
           "n": "ui:faq_title",
           "href": "~R~contact/#fq1",
@@ -101,7 +102,8 @@
           },
           "n": "ui:nav_cta",
           "href": "~R~contact/",
-          "fit": "pc"
+          "fit": "pc",
+          "show": false
         }
       ]
     },
@@ -206,12 +208,12 @@
         },
         {
           "k": {
-            "ko": "작가와 제목,",
-            "en": "with artist, title",
-            "ja": "作家と題名、",
-            "ru": "с автором, названием",
-            "es": "con artista, título",
-            "fr": "avec artiste, titre"
+            "ko": "작가 · 제목 · 연도까지 적어",
+            "en": "with artist, title and year,",
+            "ja": "作家・題名・制作年まで記して",
+            "ru": "автор, название, год —",
+            "es": "con artista, título y año,",
+            "fr": "avec artiste, titre et année,"
           },
           "n": {
             "ko": "최근 사진",
@@ -244,7 +246,8 @@
           },
           "href": "~R~photo/",
           "img": "@wall3",
-          "fit": "img"
+          "fit": "img",
+          "show": false
         },
         {
           "k": {
@@ -358,24 +361,25 @@
             "fr": "Premier album"
           },
           "href": "~R~music/",
-          "fit": "soon"
+          "fit": "soon",
+          "show": false
         },
         {
           "k": {
-            "ko": "가사로 고쳐 쓰고",
-            "en": "rewritten as lyrics,",
-            "ja": "歌詞に書き直し",
-            "ru": "ставшие текстами,",
-            "es": "reescritos como letras,",
-            "fr": "réécrits en paroles,"
+            "ko": "시를 가사로 고쳐 쓰고",
+            "en": "Poems rewritten as lyrics,",
+            "ja": "詩を歌詞に書き直し",
+            "ru": "Стихи, ставшие текстами,",
+            "es": "Poemas reescritos como letras,",
+            "fr": "Des poèmes réécrits en paroles,"
           },
           "n": {
-            "ko": "첫 곡",
-            "en": "First song",
-            "ja": "一曲目",
-            "ru": "Первая песня",
-            "es": "Primera canción",
-            "fr": "Première chanson"
+            "ko": "가사",
+            "en": "Lyrics",
+            "ja": "歌詞",
+            "ru": "Тексты",
+            "es": "Letras",
+            "fr": "Paroles"
           },
           "href": "~R~music/",
           "fit": "soon"
@@ -398,24 +402,25 @@
             "fr": "Deuxième chanson"
           },
           "href": "~R~music/",
-          "fit": "soon"
+          "fit": "soon",
+          "show": false
         },
         {
           "k": {
-            "ko": "한 장에 담는",
-            "en": "gathered on one record —",
-            "ja": "一枚に収める",
-            "ru": "на одном альбоме —",
-            "es": "en un solo disco:",
-            "fr": "réunis sur un disque —"
+            "ko": "노래로 불러 한 장에 담는",
+            "en": "sung, gathered on one record —",
+            "ja": "歌にして一枚に収める",
+            "ru": "спетые на одном альбоме —",
+            "es": "cantados en un solo disco:",
+            "fr": "chantés sur un disque —"
           },
           "n": {
-            "ko": "가사",
-            "en": "Lyrics",
-            "ja": "歌詞",
-            "ru": "Тексты",
-            "es": "Letras",
-            "fr": "Paroles"
+            "ko": "첫 곡",
+            "en": "First song",
+            "ja": "一曲目",
+            "ru": "Первая песня",
+            "es": "Primera canción",
+            "fr": "Première chanson"
           },
           "href": "~R~music/",
           "fit": "soon"
@@ -506,12 +511,12 @@
       "cards": [
         {
           "k": {
-            "ko": "계정 없이",
-            "en": "No account,",
-            "ja": "アカウントなしで",
-            "ru": "Без регистрации,",
-            "es": "Sin cuenta,",
-            "fr": "Sans compte,"
+            "ko": "계정 없이 이름 하나로",
+            "en": "No account, just a name —",
+            "ja": "アカウントなし、名前ひとつで",
+            "ru": "Без входа, только имя —",
+            "es": "Sin cuenta, solo un nombre:",
+            "fr": "Sans compte, juste un nom —"
           },
           "n": "ui:mm_write",
           "href": "~R~guestbook/",
@@ -519,12 +524,12 @@
         },
         {
           "k": {
-            "ko": "이름 하나로",
-            "en": "just a name,",
-            "ja": "名前ひとつで",
-            "ru": "только имя,",
-            "es": "solo un nombre,",
-            "fr": "juste un nom,"
+            "ko": "짧게 남기면 차례로 쌓이는",
+            "en": "short notes piling up in order:",
+            "ja": "短く残せば順に積もっていく",
+            "ru": "короткие записи по порядку:",
+            "es": "notas breves, una tras otra:",
+            "fr": "de petits mots qui s’ajoutent —"
           },
           "n": {
             "ko": "최근 인사",
@@ -555,7 +560,8 @@
             "fr": "Mot récent"
           },
           "href": "~R~guestbook/",
-          "fit": "soon"
+          "fit": "soon",
+          "show": false
         },
         {
           "k": {
@@ -575,7 +581,8 @@
             "fr": "Mot récent"
           },
           "href": "~R~guestbook/",
-          "fit": "soon"
+          "fit": "soon",
+          "show": false
         },
         {
           "k": {
