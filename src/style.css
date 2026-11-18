@@ -317,7 +317,7 @@ button.buy{background:none;border-width:0 0 1.5px;border-style:solid;border-colo
 /* ② 시집 — 「탁본」 */
 .poem{margin-top:30px;font:16px/2 var(--serif)}  /* 시 본문은 명조 그대로(11/2 본문 고딕에서 뺌) */
 /* 행이 화면보다 길면 넘어간 부분만 한 글자 들여씀(행 첫머리는 그대로) · 연 사이는 빈 줄 하나만큼 */
-.poem .ln{display:block;padding-left:1em;text-indent:-1em}
+.poem .ln{display:block;padding-left:1em;text-indent:-1em}.poem>p>br,.poem .pair>br{display:none}  /* 11/18 행 사이 <br>은 읽기 모드용(화면에선 행이 블록이라 숨김) */
 /* 영어판 「탁본」 대역(10/24 ③): 행마다 원문 + 번역 한 쌍 — 휴대폰은 원문 밑에 번역, 컴퓨터는 두 단(아래 768px) */
 .poem .pair{display:block}
 .poem .le{display:block;padding-left:1em;text-indent:-1em;margin-bottom:.45em;line-height:1.7;color:var(--muted);font-weight:360}  /* 영어판 번역 줄은 Newsreader 360 — 명조 원문 곁의 회색도 맞춤(10/25 ⑨, NDC식) */
@@ -767,6 +767,12 @@ html.sr-on{overflow:hidden}
 .gb .rp{margin-top:12px;padding-left:12px;border-left:1.5px solid var(--line);font:14px/1.7 var(--body);color:var(--muted)}
 .gb .rp span{display:block;margin-top:2px;font:300 11px/1 var(--sans);color:var(--faint)}
 .gb .empty{margin-top:16px;padding:16px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font:14px/1.7 var(--body);color:var(--faint)}
+/* 11/18 방명록 '내가 남긴 글' · 보낸 글 칸(이 기기에만 — main.js gbMine) */
+.gb li .mine{display:flex;align-items:center;gap:6px;margin:0 0 8px;font:400 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}.gb li .mine::before{content:"";width:4px;height:4px;border-radius:50%;background:currentColor}
+.gb .gbw{margin-top:16px;padding:16px 0 20px;border-top:1px solid var(--rule)}.gb .gbw+.gbw,.gb .gbw+ol,.gb .gbw+.empty{margin-top:0}
+.gb .gbw .k{display:block;margin:0 0 8px;font:400 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}
+.gb .gbw .t{margin:0;font:15px/1.7 var(--body);color:var(--muted);word-break:keep-all;overflow-wrap:anywhere;white-space:pre-line;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.gb .gbw .s{display:block;margin-top:8px;font:400 12.5px/1.5 var(--sans);color:var(--faint)}
 .gb summary{display:inline-block;margin-top:12px;padding-bottom:2px;border-bottom:1px solid currentColor;font:300 12.5px/1 var(--sans);color:var(--muted);cursor:pointer;list-style:none}
 .gb summary::-webkit-details-marker{display:none}
 .gb .h3b{margin-top:30px}

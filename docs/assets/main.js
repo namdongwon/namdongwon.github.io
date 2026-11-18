@@ -1748,6 +1748,7 @@
     const unfold = () => { if (gbCard) gbCard.classList.remove("fold"); };
     gbf.addEventListener("submit", async ev => {
       ev.preventDefault();
+      const sentTxt = gbTa ? gbTa.value : "";  // 11/18 '보낸 글' 칸에 쓸 글(reset 전에 잡아 둠)
       // 스테이징(staging.namdongwon.com · *.pages.dev)에서는 보내지 않음(11/6 — 시험 글이 진짜 받은 글에 섞이지 않게) · 이 맥 시험 주소(127.0.0.1)는 시험이 보내기를 흉내 내므로 그대로
       if (/^staging\.|\.pages\.dev$/.test(location.hostname)) { gbMsg.textContent = uiText("gb_staging", "스테이징 서버라 보내지 않았습니다 — 운영 사이트에서만 보내집니다."); return; }
       gbMsg.textContent = uiText("sending", "보내는 중…");
@@ -1763,6 +1764,7 @@
             const body = new URLSearchParams();
             [...gbf.querySelectorAll("input[name^='entry.'], textarea[name^='entry.']")].forEach(x => body.append(x.name, fd.get(x.name) || ""));
             await fetch(gbf.dataset.endpoint, { method: "POST", mode: "no-cors", body });
+            gbMine.add(sentTxt);
           }
           await folded;
           gbf.reset();
@@ -1777,7 +1779,7 @@
         gbMsg.textContent = r.ok ? gbPromise
           : r.status === 429 ? uiText("gb_full", "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다.")
           : uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
-        if (r.ok) { gbf.reset(); done(gbf.closest(".card") || gbf, !!gbf.closest(".card"), uiText("gb_ok", "글을 보냈습니다."), uiText("gb_ok_sub", gbPromise)); }
+        if (r.ok) { gbMine.add(sentTxt); gbf.reset(); done(gbf.closest(".card") || gbf, !!gbf.closest(".card"), uiText("gb_ok", "글을 보냈습니다."), uiText("gb_ok_sub", gbPromise)); }
       } catch {
         await folded;
         unfold();
@@ -1786,6 +1788,47 @@
       gbSend.disabled = false;
     });
   }
+
+  // 11/18 방명록 '내가 남긴 글'(동원 버튼 "B 기다림 줄 + 내 글 (권장)" — 시안 기준/브랜드 시안/UX여섯째시안_v1/④): 보낸 글은 이 기기에만(localStorage gb-mine · 서버로 안 보냄)
+  // 실리기 전엔 목록 위에 '○월 ○일에 보낸 글' 칸(셋까지) · 실리면(보낸 글 앞 40자가 실린 글 안에 있으면 — 어드민이 끝을 다듬어도 찾게) 그 글 위에 '내가 남긴 글'.
+  // 글은 실리거나 30일이 지나면 지우고, 실린 글의 짧은 지문(FNV-1a)만 남김(20개까지) — 개인정보 처리방침 '이 기기에 적어 두는 것'과 같게
+  const gbMine = (() => {
+    const MK = "gb-mine", MONTH = 30 * 864e5;
+    const norm = x => String(x || "").replace(/\s+/g, "");
+    const fp = x => { let h = 2166136261; for (const ch of norm(x)) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; } return h.toString(36); };
+    const get = () => { try { const v = JSON.parse(localStorage.getItem(MK) || "{}"); return { sent: Array.isArray(v.sent) ? v.sent : [], fps: Array.isArray(v.fps) ? v.fps : [] }; } catch (x) { return { sent: [], fps: [] }; } };
+    const put = v => { try { if (v.sent.length || v.fps.length) localStorage.setItem(MK, JSON.stringify(v)); else localStorage.removeItem(MK); } catch (x) { /* 못 적으면 표시만 없음 */ } };
+    const box = document.querySelector("#guestbook .gb");
+    const paint = () => {
+      if (!box) return;
+      const v = get(), now = Date.now(), lis = [...box.querySelectorAll("ol > li")];
+      const txtOf = li => { const p = li.querySelector(".tx"); return p ? p.innerText : ""; };
+      v.sent = v.sent.filter(x => x && typeof x.t === "string" && now - x.d < MONTH).filter(x => {
+        const key = norm(x.t).slice(0, 40), hit = key && lis.find(li => norm(txtOf(li)).includes(key));
+        if (!hit) return true;
+        const f = fp(txtOf(hit)); if (!v.fps.includes(f)) v.fps.push(f);
+        return false;
+      });
+      v.fps = v.fps.slice(-20); put(v);
+      lis.forEach(li => {
+        if (li.querySelector(".mine") || !v.fps.includes(fp(txtOf(li)))) return;
+        const m = document.createElement("span"); m.className = "mine"; m.textContent = uiText("gb_mine", "내가 남긴 글"); li.prepend(m);
+      });
+      box.querySelectorAll(".gbw").forEach(x => x.remove());
+      const list = box.querySelector(":scope > ol, .empty");
+      if (!v.sent.length || !list) return;
+      const fmt = new Intl.DateTimeFormat(H.lang || "ko", { month: "long", day: "numeric" });
+      v.sent.slice(-3).forEach(x => {
+        const w = document.createElement("div"), k = document.createElement("span"), p = document.createElement("p"), sm = document.createElement("span");
+        w.className = "gbw"; k.className = "k"; p.className = "t"; sm.className = "s";
+        k.textContent = uiText("gb_wait_k", "{d}에 보낸 글 · 이 기기에서만 보여요", { d: fmt.format(new Date(x.d)) });
+        p.textContent = x.t; sm.textContent = uiText("gb_wait_s", "실리면 아래 목록에서 ‘내가 남긴 글’로 보여요.");
+        w.append(k, p, sm); list.before(w);
+      });
+    };
+    paint();
+    return { add: t => { t = String(t || "").trim(); if (!t) return; const v = get(); v.sent.push({ d: Date.now(), t: t.slice(0, 1000) }); put(v); paint(); } };
+  })();
 
   // 메일(10/26) — 쪽 원본에는 뒤집은 두 조각만 있음(주소를 긁어 가는 프로그램 대비) → 여기서 주소와 mailto를 이어 붙임
   document.querySelectorAll("a.ml[data-u]").forEach(a => {

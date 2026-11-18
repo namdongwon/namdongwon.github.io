@@ -1404,7 +1404,7 @@ def render(site, poem, videos, photos, lang="ko"):
     pal = "".join(f'<span class="g{k}">{"".join(g for g, _ in grp)}</span>'
                   for k, grp in itertools.groupby(zip(pg, (round(9 * math.log(n) / math.log(pn[0])) for n in pn)), key=lambda x: x[1]))
     ptop = (", ".join(f"{g} ({n})" for g, n in zip(pg[:3], pn[:3])) if lat or ru else " · ".join(f"{g} {n}{'回' if tr_ else '번'}" for g, n in zip(pg[:3], pn[:3])))  # 일본어판은 '回'(11/1)
-    palette = (f'<section id="palette" aria-labelledby="palette-t">\n    <p class="label">{t("label_palette")}</p>\n'
+    palette = (f'<section id="palette" class="rd-extra" aria-labelledby="palette-t">\n    <p class="label">{t("label_palette")}</p>\n'
                f'    <div class="l"><h2 class="h2" id="palette-t">{t("pal_title", n=len(pg))}</h2><p class="lead">{t("pal_lead", total=ptotal, n=len(pg))}</p></div>\n'
                f'    <div class="r"><p class="pal" aria-hidden="true" data-n="{",".join(map(str, pn))}">{pal}</p><p class="pk">{t("pal_key", top=ptop, ones=pn.count(1))}</p></div>\n  </section>\n  ')  # 사진은 뺌(10/28 동원 "일단 팔레트 아래에 내 사진은 빼자")
     # 칸 끝 길 '「탁본」 읽기 ↓'(10/28 A)는 10/29 '시집 칸 통째로 앞으로'(시가 팔레트 위로 감)와 함께 뺌 — 팔레트는 차례 뒤 '이 시집의 재료'
@@ -1460,12 +1460,12 @@ def render(site, poem, videos, photos, lang="ko"):
         for a, b in zip(st, tl):
             ln_no += 1
             if pair:
-                spans.append(f'<span class="pair" id="l{ln_no}"><span class="ln" lang="ko">{e(a)}</span>{le(b)}</span>')
+                spans.append(f'<span class="pair" id="l{ln_no}"><span class="ln" lang="ko">{e(a)}</span><br>{le(b)}</span>')  # 11/18 원문 · 번역 사이 <br>도 읽기 모드용
                 ix["poem"] += [(tg["poem"], b, S["poem"]["pages"], f"#l{ln_no}"), (tg["poem"], a, S["poem"]["pages"], f"#l{ln_no}")]  # 어디 칸에 쪽수(10/27 출처 한 줄 — 레퍼런스 제안 ⑥)
             else:
                 spans.append(f'<span class="ln" id="l{ln_no}"{ko_attr}>{e(a)}</span>')
                 ix["poem"].append((tg["poem"], a, S["poem"]["pages"], f"#l{ln_no}"))
-        stz.append("<p>" + "".join(spans) + "</p>")
+        stz.append("<p>" + "<br>".join(spans) + "</p>")  # 11/18 행 사이 <br>(화면에선 .poem>p>br 숨김) — 읽기 모드(사파리 읽기 도우미 · 파이어폭스 리더)는 우리 CSS를 빼서 행이 '있다숨 쉬는'처럼 붙었음(Readability 실측)
     poem_html = "".join(stz)
 
     # 첫 방문의 문 — 시집 제목 첫 줄이 두 문짝에 걸쳐 적힘(움직임은 main.js)
@@ -1906,7 +1906,7 @@ def render(site, poem, videos, photos, lang="ko"):
                 nxt = t("month_next_stage", m=f"{MONTHS[int(nx[5:]) - 1]}{NB}1" if en else NB.join(["1", "de", MONTHS_ES[int(nx[5:]) - 1]]) if es else f"1er{NB}{MONTHS_FR[int(nx[5:]) - 1]}" if fr else f"1{NB}{MONTHS_RU[int(nx[5:]) - 1]}" if ru else f"{int(nx[5:])}月1日" if tr_ else f"{int(nx[5:])}월{NB}1일") if nx else ""
                 # 찾기 — 다시 온 사람이 '이달 · 11월 · 한 줄'로 그달 줄을 찾게(10/28 사용 편의 점검 ④ — 제목 줄만 있어 0건이었음)
                 mname = MONTHS[mm - 1] if en else MONTHS_ES[mm - 1].capitalize() if es else MONTHS_FR[mm - 1].capitalize() if fr else MONTHS_RU_NOM[mm - 1].capitalize() if ru else mm
-                stage[0] = (f'<section class="mline" id="mline" aria-labelledby="mline-k"><p class="k" id="mline-k">{keep(L["search_month_where"].format(m=mname, title=row["title"], page=row["page"]))}</p>'
+                stage[0] = (f'<section class="mline rd-extra" id="mline" aria-labelledby="mline-k"><p class="k" id="mline-k">{keep(L["search_month_where"].format(m=mname, title=row["title"], page=row["page"]))}</p>'
                             f'<p class="t">{lines}</p>' + (f'<p class="o"{ko_tag}>{" / ".join(e(x) for x in month_ko[ko_row["title"]]["lines"])}</p>' if orig else "")
                             + (f'<p class="nx">{nxt}</p>' if nxt else "") + '</section>')
                 month_row[0] = (f'<div><dt>{t("ex_month")}</dt><dd>{keep(L["ex_month_v"].format(m=mname, title=row["title"], page=row["page"]))} — '
@@ -2137,7 +2137,8 @@ def render(site, poem, videos, photos, lang="ko"):
     sec = {
         # 시집 쪽 h1(11/1 동원 버튼 "함께 넣어 (권장)" — 명품 사이트 조사 제안 ①: 상품 쪽 h1은 상품 이름): 이름 · 첫 시집 줄 + 큰 제목 + 작은 제목을 한 h1로 — 보이는 모양은 그대로(전엔 h1이 위 작은 줄뿐).
         # 휴대폰의 작은 제목은 책 옆(.side .hs — 읽기 도구에는 숨김)이 보이고, h1 안의 작은 제목(.hsl)은 휴대폰에선 화면 밖 글(읽기 도구만) · 768px부터 보임
-        "home": f"""  <section id="home" aria-label="{t("home_label")}">
+        # 11/18 읽기 모드에서 시만(동원 버튼 "A 시만 깨끗이 (권장)"): 첫 화면 · 이달의 한 줄 · 팔레트에 rd-extra — Readability가 'extra'가 든 칸을 본문 후보에서 뺌(접근성 영향 없는 클래스만 · role은 바꾸지 않음)
+        "home": f"""  <section id="home" class="rd-extra" aria-label="{t("home_label")}">
     <div class="l"><h1 class="hh"><span class="kick"><span class="sr">{e(S["name"])} </span><span class="name" data-type="{e("|".join(typing_steps(L["ex_kick"])))}">{t("ex_kick")}</span></span>
       <span class="ht">{ht}</span><span class="hs hsl">{hs}</span></h1>{paths("pl")}</div>
     <div class="r book"><div class="side"><p class="hs" aria-hidden="true">{hs}</p>{paths("ps")}</div>
@@ -2269,7 +2270,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
 <title>{e(tab)}</title>
-<meta name="description" content="{e(desc)}">{"" if tr_ else verify_tags(site)}
+<meta name="description" content="{e(desc)}"><meta name="author" content="{e(S["name"])}">{"" if tr_ else verify_tags(site)}
 <link rel="canonical" href="{e(url)}">
 <link rel="alternate" hreflang="ko" href="{e(base)}/{kp}">
 <link rel="alternate" hreflang="en" href="{e(base)}/en/{kp}">
