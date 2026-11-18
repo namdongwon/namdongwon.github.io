@@ -970,6 +970,15 @@
     "es": "Los episodios irán apareciendo aquí.",
     "fr": "Les épisodes apparaîtront ici au fil de leur sortie."
   },
+  "ficon_names": {
+    "_설명": "11/18 바닥글 원 아이콘 아래 작은 이름(동원 버튼 \"A 아이콘 아래 작은 이름 (권장)\" — NN/g 아이콘엔 글 이름표) · 인스타그램|유튜브|연락|교보문고 차례",
+    "ko": "인스타그램|유튜브|연락|교보문고",
+    "en": "Instagram|YouTube|Contact|Kyobo",
+    "ja": "Instagram|YouTube|連絡|教保文庫",
+    "ru": "Instagram|YouTube|Связь|Kyobo",
+    "es": "Instagram|YouTube|Contacto|Kyobo",
+    "fr": "Instagram|YouTube|Contact|Kyobo"
+  },
   "go_channel": {
     "ko": "유튜브에서 구독하기",
     "en": "Subscribe on YouTube",

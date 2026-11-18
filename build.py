@@ -1852,7 +1852,8 @@ def render(site, poem, videos, photos, lang="ko"):
     mega = ('<div class="mm" id="mm" role="region" aria-label="' + t("mm_label") + '" aria-hidden="true" inert>'
             + "".join(mm_pane(k_, MENU["panes"][k_]) for k_ in ("", "book", "photo", "video", "music", "rococo", "guestbook") if k_ in MENU["panes"])
             + '</div>')
-    icons = "".join(f'<li><a href="{h}" aria-label="{a}"{x}>{FOOT_ICONS[k]}</a></li>' for k, h, a, x in (
+    fnm = dict(zip(("ig", "yt", "mail", "book"), t("ficon_names").split("|")))  # 11/18 아이콘 아래 작은 이름(읽기 도구는 aria-label을 읽으니 aria-hidden)
+    icons = "".join(f'<li><a href="{h}" aria-label="{a}"{x}>{FOOT_ICONS[k]}<span class="fnm" aria-hidden="true">{e(fnm[k])}</span></a></li>' for k, h, a, x in (
         ("ig", e(iu), e(L["nav"][2]), ext), ("yt", e(ch.get("url", "")), e(L["nav"][3]), ext),
         ("mail", "~R~contact/", L["nav_cta"], ""), ("book", e(book["buy_url"]), e(book["store_label"]), ext + gcc("판권면 아이콘"))))
     # 언어(10/31 동원 "언어 설정 하단 푸터로 빼" · 11/1 세 판 '한국어 · English · 日本語') — 아래 띠 왼쪽: 지금 판은 먹 글자 · 다른 판은 그 쪽의 같은 자리로(~L:말~)
@@ -2310,7 +2311,7 @@ def render(site, poem, videos, photos, lang="ko"):
         # 11/18 맨 위 줄 언어(동원 "gnb 검색 옆에다 두는 게 나을까?" → 시안 기준/브랜드 시안/UX여섯째시안_v1/⑭ → "A는 좋긴한데 … 검색 오른쪽 왼쪽" → 버튼 "A-2 검색 왼쪽 (권장)"):
         # 바닥글과 같은 '🌐 KOR ▾'를 찾기 왼쪽에 · 목록은 아래로 펼침(.lsw-top) · 넓은 창(메뉴가 보이는 폭)에서만 — 휴대폰 · 태블릿은 메뉴 맨 아래 언어 줄 · 바닥글은 그대로
         act = langs.replace('<details class="lsw">', '<details class="lsw lsw-top">', 1).replace(GLOBE_ICON, "", 1)  # 11/18 동원 "지구본 모양 뺄까? 토스처럼 글자만" — 맨 위 줄은 'KOR ▾' 글자만
-        act += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
+        act += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}<span class="sqt" aria-hidden="true">{t("search_label")}</span></button>'  # 사이트 안 찾기(10/26) · 11/18 1280부터 빈 칸 꼴(.sqt — NN/g 넓은 창은 보이는 글 칸)
         act += f'<a class="cta{" on" if k == "contact" else ""}" href="{link("contact")}"' + (' aria-current="page"' if k == "contact" else "") + f'>{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(연락 쪽에선 맨 위에서도 먹 — 지금 쪽 표시)
         # 휴대폰 메뉴 단추의 목록(11/1 밤 동원 버튼 "B 메뉴 단추"): 메뉴와 같은 쪽 · 같은 차례, 쪽 이름만 큰 명조로(동원 "url 은 빼") — 띠 밖(</header> 뒤)에 둠: 띠의 흐림(backdrop-filter)이 안쪽 fixed를 띠 높이에 가둠
         # 11/18 휴대폰 · 태블릿 메뉴 맨 아래 언어 줄(전엔 메뉴에 언어가 없어 바닥글까지 내려가야 했음) — 지금 판은 굵은 글자 · 다른 판은 같은 쪽 그 판으로(~L:말~ · .lang이라 보던 칸으로도)

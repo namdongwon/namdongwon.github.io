@@ -551,6 +551,10 @@ html.pv-on{overflow:hidden}
 .sq{display:none}
 .js .top .sq{display:inline-flex;align-items:center;justify-content:center;width:22px;height:24px;margin:0 -4px 0 -2px;padding:0;border:0;background:none;color:var(--muted);cursor:pointer}
 .top .sq svg{width:16px;height:16px}
+/* 11/18 넓은 창 검색 빈 칸(동원 버튼 "A 빈 칸(1280부터) (권장)" — NN/g: 넓은 창은 돋보기만 말고 보이는 글 칸 · 시안 기준/브랜드 시안/UX여섯째시안_v1/⑯) — 누르면 지금처럼 찾기 창 · 1024~1279는 자리가 빠듯해 돋보기만 */
+.top .sq .sqt{display:none;font:400 12.5px/1 var(--sans);letter-spacing:.04em}
+@media (min-width:1280px) and (hover:hover),(min-width:1280px) and (pointer:fine){.js .top .sq{justify-content:flex-start;gap:8px;width:160px;height:32px;margin:0;padding:0 12px;border:1px solid var(--line);border-radius:var(--btn-r);background:var(--bg)}.js .top .sq .sqt{display:inline}header.top .lsw-top{margin-right:-2px}}  /* 칸일 때는 ▾ → 칸 테두리를 칸 → 연락하기(16)와 같게 */
+@media (min-width:1280px) and (hover:hover){.js .top .sq:hover{border-color:var(--ink);color:var(--ink)}}
 .js .top .sq{position:relative}
 html.sr-on{overflow:hidden}
 .srch{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}  /* 창 안 스크롤이 끝나도 쪽으로 넘기지 않음 · 쪽은 main.js가 묶음(11/16 아이폰) */
@@ -1112,6 +1116,9 @@ html.sr-on{overflow:hidden}
 .ficons{display:flex;justify-content:center;gap:16px;margin:36px 0 0;padding:0;list-style:none}
 .ficons a{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;color:var(--ink)}
 .ficons svg{width:20px;height:20px}
+/* 11/18 아이콘 아래 작은 이름(NN/g 아이콘엔 글 이름표 · 시안 ⑰ A) — 동그라미 모양은 그대로 · 이름도 같은 링크 안이라 누르는 자리가 넓어짐 */
+.ficons a{position:relative}.ficons .fnm{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);white-space:nowrap;font:400 11px/1 var(--sans);color:var(--muted)}
+.ficons{margin-bottom:20px}
 @media (hover:hover){.fcols :is(a,button):hover{text-decoration:underline;text-underline-offset:4px}.ficons a:hover{background:var(--hv)}}  /* 호버 — 글은 밑줄, 아이콘은 옅은 회색(11/2 맨 위 띠와 같은 결) */
 .fbar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;margin-top:44px;padding:16px 0 72px;border-top:1px solid var(--rule);font:300 11px/1.6 var(--sans);color:var(--faint);text-align:left}  /* 휴대폰 — 맨 위로 단추(오른쪽 아래 고정) 자리를 비움 */
 @font-face{font-family:"JPN";src:url("fonts/ndw-sans-jp-name.woff2") format("woff2");font-weight:300;font-display:swap;unicode-range:U+65E5,U+672C,U+8A9E}
