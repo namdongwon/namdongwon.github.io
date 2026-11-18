@@ -2307,9 +2307,14 @@ def render(site, poem, videos, photos, lang="ko"):
                       + f'<button type="button" class="mmk" data-mk="{pg}" aria-expanded="false" aria-controls="mm" aria-label="{t("mm_open", page=e(navname[top_of[pg]]))}">{MK_CARET}</button>'
                       for pg in NAV_PG)  # data-pg — 새것 점(11/3)이 쪽을 앎
         # 맨 위 띠(10/31 동원 "gnb 이거 있잖아 가운데로 넣어" · "언어 설정 하단 푸터로 빼"): 이름 | 메뉴 넷(가운데) | 찾기 · [연락하기] — 언어는 바닥글 판권면 '언어' 줄로
-        act = f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
+        # 11/18 맨 위 줄 언어(동원 "gnb 검색 옆에다 두는 게 나을까?" → 시안 기준/브랜드 시안/UX여섯째시안_v1/⑭ → "A는 좋긴한데 … 검색 오른쪽 왼쪽" → 버튼 "A-2 검색 왼쪽 (권장)"):
+        # 바닥글과 같은 '🌐 KOR ▾'를 찾기 왼쪽에 · 목록은 아래로 펼침(.lsw-top) · 넓은 창(메뉴가 보이는 폭)에서만 — 휴대폰 · 태블릿은 메뉴 맨 아래 언어 줄 · 바닥글은 그대로
+        act = langs.replace('<details class="lsw">', '<details class="lsw lsw-top">', 1)
+        act += f'<button type="button" class="sq" aria-label="{t("search_label")}" aria-haspopup="dialog">{SEARCH_ICON}</button>'  # 사이트 안 찾기(10/26)
         act += f'<a class="cta{" on" if k == "contact" else ""}" href="{link("contact")}"' + (' aria-current="page"' if k == "contact" else "") + f'>{t("nav_cta")}</a>'  # 연락하기 — 먹 채운 상자(연락 쪽에선 맨 위에서도 먹 — 지금 쪽 표시)
         # 휴대폰 메뉴 단추의 목록(11/1 밤 동원 버튼 "B 메뉴 단추"): 메뉴와 같은 쪽 · 같은 차례, 쪽 이름만 큰 명조로(동원 "url 은 빼") — 띠 밖(</header> 뒤)에 둠: 띠의 흐림(backdrop-filter)이 안쪽 fixed를 띠 높이에 가둠
+        # 11/18 휴대폰 · 태블릿 메뉴 맨 아래 언어 줄(전엔 메뉴에 언어가 없어 바닥글까지 내려가야 했음) — 지금 판은 굵은 글자 · 다른 판은 같은 쪽 그 판으로(~L:말~ · .lang이라 보던 칸으로도)
+        mlang = (f'<p class="mlang" role="group" aria-label="{t("lng_pick")}">' + "".join(f'<span aria-current="true" lang="{x}">{LANG_NAME[x]}</span>' if x == lang else f'<a class="lang" href="~L:{x}~" hreflang="{x}" lang="{x}">{LANG_NAME[x]}</a>' for x in LANGS) + '</p>')
         mnu = "".join(f'<li><a href="{link(pg)}" data-pg="{pg}"' + (' aria-current="page"' if pg == k else "") + f'>{e(navname[top_of[pg]])}</a></li>' for pg in NAV_PG)
         lang_href = {x: f'{PP}{"" if x == "ko" else x + "/"}{kp}' for x in others}  # 같은 쪽의 다른 판 — 바닥글 '언어' 줄(~L:말~)
         ptitle = title if not k else f'{L["nav"][secs.index(top_of[k])]} — {S["name"]}'
@@ -2378,7 +2383,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <a class="skip" href="#main">{t("skip")}</a>
 <header class="top"><a class="logo" href="{link("")}">{e(S.get("logo") or S["name"])}</a><button type="button" class="mb" aria-expanded="false" aria-controls="mnu" data-open="{t("menu")}" data-close="{t("close")}">{t("menu")}</button>
   <nav aria-label="{t("nav_label")}">{nav}</nav><div class="act">{act}</div></header>
-<nav class="mnu" id="mnu" aria-label="{t("nav_label")}" hidden><ol>{mnu}</ol></nav>{mega}
+<nav class="mnu" id="mnu" aria-label="{t("nav_label")}" hidden><ol>{mnu}</ol>{mlang}</nav>{mega}
 <main id="main">
 {h1}{body}{nxp}</main>
 <footer class="foot">{colo}</footer>

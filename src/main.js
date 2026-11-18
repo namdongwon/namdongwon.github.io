@@ -655,7 +655,8 @@
   // 언어 바꾸기(10/24 영어판) — 보던 칸으로 이어서(예: 사진 칸에서 EN → 영어판 사진 칸)
   // 화면 위 1/3에 걸친 id 가운데 가장 작은 것으로(두 판의 id가 같음 — 차례 t · 시 행 l · 연표 y · 팔레트 …), 없으면 지금 칸(10/28 사용 편의 점검 ⑥ — 칸 머리로만 이어져 차례 · 시에서 읽던 줄을 잃었음)
   // 11/1 일본어판 — 다른 판 링크가 둘(한국어 · English · 日本語 가운데 지금 판 빼고)이라 모두에
-  document.querySelectorAll(".colo .lang").forEach(swap => swap.addEventListener("click", ev => {  // 10/31 언어는 바닥글 판권면 '언어' 줄로(동원 "언어 설정 하단 푸터로 빼")
+  document.querySelectorAll(".colo .lang, .top .lang, .mnu .lang").forEach(swap =>  // 11/18 맨 위 줄 · 휴대폰 메뉴 언어도
+    swap.addEventListener("click", ev => {  // 10/31 언어는 바닥글 판권면 '언어' 줄로(동원 "언어 설정 하단 푸터로 빼")
     const y = innerHeight / 3;
     const hit = [...document.querySelectorAll("main [id]")].filter(el => { const r = el.getBoundingClientRect(); return r.height && r.top <= y && r.bottom > y; })
       .sort((a, b) => a.getBoundingClientRect().height - b.getBoundingClientRect().height)[0];
@@ -663,11 +664,10 @@
     if (to) { ev.preventDefault(); location.href = swap.getAttribute("href") + to; }
   }));
   // 11/9 언어 고르기 펼침(<details>) — 바깥을 누르거나 Esc면 닫힘(Esc는 닫고 '🌐 KO'로 초점을 돌림 · 스크립트 없는 쪽은 다시 눌러 닫음)
-  const lsw = document.querySelector(".lsw");
-  if (lsw) {
+  document.querySelectorAll(".lsw").forEach(lsw => {  // 11/18 맨 위 줄 · 바닥글 둘 — 하나를 열면 다른 하나는 닫힘(바깥 누름과 같음)
     document.addEventListener("click", ev => { if (lsw.open && !lsw.contains(ev.target)) lsw.open = false; });
     lsw.addEventListener("keydown", ev => { if (ev.key === "Escape" && lsw.open) { lsw.open = false; lsw.querySelector("summary").focus(); } });
-  }
+  });
 
   // 사진 칸의 한 장씩 · 모아 보기 · 3D 고리(10/24–11/1)는 11/3 흐르는 벽으로 바뀌며 뺌(11/4 정리 — git 기록 9cec51b 앞에 있음)
 

@@ -1051,6 +1051,13 @@ html.sr-on{overflow:hidden}
 
 .top .act a{position:relative}  
 .top .act{display:flex;align-items:center;gap:16px;margin-left:12px;white-space:nowrap}  
+
+.top .lsw-top{display:none}
+@media (min-width:1024px) and (hover:hover),(min-width:1024px) and (pointer:fine){.top .lsw-top{display:block}}
+.top .lsw-top ul{top:calc(100% + 12px);bottom:auto;left:auto;right:-8px}  
+.mnu .mlang{display:flex;flex-wrap:wrap;gap:8px 16px;margin:30px 0;padding-top:20px;border-top:1px solid var(--line);font:400 13px/1.5 var(--sans)}
+.mnu .mlang a,.mnu .mlang span{display:inline;padding:0;font:inherit;color:var(--ink);text-decoration:none}.mnu .mlang [aria-current]{font-weight:600}
+@media (hover:hover){.mnu .mlang a:hover{color:var(--muted)}}.mnu .mlang a:active{opacity:.6}
 @media (max-width:374px){.top .act{gap:8px;margin-left:8px}}
 
 

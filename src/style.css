@@ -1121,6 +1121,13 @@ html.sr-on{overflow:hidden}
 /* 맨 위 띠 오른쪽 찾기 · 연락하기(10/31 메뉴를 가운데로 — 메뉴 밖 묶음) · 휴대폰은 메뉴와 사이 구분선(전엔 언어 단추 앞) → 11/2 구분선 뺌 */
 .top .act a{position:relative}  /* 누르는 자리(::before)가 연락하기 상자 기준으로 — 없으면 띠 전체 기준이라 컴퓨터에서 옆으로 6px 넘쳤음(실측) */
 .top .act{display:flex;align-items:center;gap:16px;margin-left:12px;white-space:nowrap}  /* 돋보기 앞 구분선 뺌(11/2 동원 '돋보기 왼쪽에 선 없애고') */
+/* 11/18 맨 위 줄 언어(검색 왼쪽 · 바닥글과 같은 '🌐 KOR ▾' · 목록은 아래로) — 넓은 창(메뉴가 보이는 폭)에서만 · 휴대폰 · 태블릿은 메뉴 맨 아래 .mlang */
+.top .lsw-top{display:none}
+@media (min-width:1024px) and (hover:hover),(min-width:1024px) and (pointer:fine){.top .lsw-top{display:block}}
+.top .lsw-top ul{top:calc(100% + 12px);bottom:auto;left:auto;right:-8px}  /* .top을 붙여 바닥글 .lsw ul(뒤에 있음)보다 앞서게 — 같은 우선순위면 bottom이 함께 걸려 판이 납작해졌음 */
+.mnu .mlang{display:flex;flex-wrap:wrap;gap:8px 16px;margin:30px 0;padding-top:20px;border-top:1px solid var(--line);font:400 13px/1.5 var(--sans)}
+.mnu .mlang a,.mnu .mlang span{display:inline;padding:0;font:inherit;color:var(--ink);text-decoration:none}.mnu .mlang [aria-current]{font-weight:600}
+@media (hover:hover){.mnu .mlang a:hover{color:var(--muted)}}.mnu .mlang a:active{opacity:.6}
 @media (max-width:374px){.top .act{gap:8px;margin-left:8px}}
 /* 바닥글 언어 줄(10/31 동원 '언어 설정 하단 푸터로') — 화면 줄 바로 아래, 지금 판은 먹 글자 · 다른 판은 밑줄 링크 */
 /* 11/9 네 개 나열 → '🌐 KO ▾' + 위로 펼침(동원 레퍼런스 그림 · 목업 푸터언어고르기시안_v1 "A 지구본 (권장)") — 펼친 상자만 둥근 모서리 · 옅은 그림자, 색은 먹 · 고른 판 굵게 + ✓ */
