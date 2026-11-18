@@ -78,6 +78,7 @@ CARET_ICON = '<svg class="cr" viewBox="0 0 10 10" fill="currentColor" aria-hidde
 MK_CARET = CARET_ICON.replace('class="cr"', 'class="mkc"')  # 메뉴 펼침 키보드 단추용 — 이름 cr은 언어 고르기 · 영상 출처 줄(.cr)과 겹쳐서(11/15 entest가 출처 줄 대신 집음)
 PAL_FONT = "bon-myeongjo.woff2"  # 글자 팔레트(10/28)의 글자 612가지는 본명조 보통 판에만 담음 — 굵게 · 고딕 판은 늘지 않게(main)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
+LOGO_FONT = ("ndw-didot-logo.woff2", "NAM DONGWON", "GFSDidot/GFSDidot-Regular.ttf")  # 맨 위 줄 표장만 담은 Didot(11/18 밤 동원 "유튜브 영상 오른쪽 위 … NAMDONGWON … gnb에" → 시안 표장글꼴시안_v1 → "A로 · NAM DONGWON 띄어 쓰고 자간 넓게" → 버튼 "A5 14px · .3em") — GFS Didot(OFL · 예약 이름 'GFS Didot' → 줄인 판은 'NDW Didot') · 맥 Didot은 웹에 못 실음
 ARROW = ("bon-myeongjo-arrow.woff2", "←↑→↓↗")  # 화살표만 담은 작은 판(11/7 밤부터 源ノ明朝 Regular에서 — 본명조와 같은 꼴 · ↗ 있음 · 파일 이름은 그대로)(CSS ARW · unicode-range) — 영어 · 일본어판 명조(Newsreader)에 화살표가 없어 → · ↗ 하나 때문에 본명조 통째 판 131KB를 받던 것(11/3 Lighthouse 점검)
 # 첫 화면 작은 판(10/27 동원 "첫 화면 작은 글꼴은 B로 하자"): 한국어판 첫 화면에 보이는 글자만 담아 미리 받는 판(CSS BMJF · PTDF) — 통째 판(본명조 보통 · 굵게 182KB)을
 # 미리 받느라 style.css · main.js가 늦던 것을 덜어 냄(시험용 복사본 실측: 느린 4G 문 열림 3.6 → 3.1초 · 보통 LTE 1.5 → 1.3초, 다 선 화면 같음). 통째 판은 아래 칸에서 그대로 씀
@@ -1007,6 +1008,8 @@ def rename_font(font):
         else:
             s = (s.replace("NanumMyeongjoBold", "NDW Myeongjo Bold").replace("NanumMyeongjo", "NDW Myeongjo")
                  .replace("나눔명조", "NDW Myeongjo").replace("Pretendard", "NDW Sans"))
+        if r.nameID not in (0, 13, 14):  # GFS Didot(표장 · 11/18 밤) — 예약 이름 고지가 든 저작권 줄은 그대로 두고 이름표만
+            s = s.replace("GFS Didot", "NDW Didot").replace("GFSDidot", "NDWDidot")
         if jp:
             s = s.replace("SourceHanSerif", "NDWSerif").replace("Source Han Serif", "NDW Serif").replace("源ノ明朝", "NDW Serif")
         r.string = s
@@ -2792,6 +2795,13 @@ def main():
         (ASSETS / "fonts" / ARROW[0]).write_bytes(keep[ARROW[0]])
     else:
         raise SystemExit(f"화살표 작은 판을 만들 원본을 찾지 못함: {name}")
+    lsrc = PTD_DIR / LOGO_FONT[2]  # 표장 Didot(11/18 밤) — 기준/폰트/GFSDidot · 원본이 없으면(시험 사본) 지난 판
+    if lsrc.exists():
+        subset_font(lsrc, ASSETS / "fonts" / LOGO_FONT[0], LOGO_FONT[1], True)
+    elif LOGO_FONT[0] in keep:
+        (ASSETS / "fonts" / LOGO_FONT[0]).write_bytes(keep[LOGO_FONT[0]])
+    else:
+        raise SystemExit(f"표장 Didot 작은 판을 만들 원본을 찾지 못함: {lsrc}")
     ftj = first_text(pages["ja"]["book"])  # 일본어판 첫 화면 작은 판(JA_FIRST)
     for out, (whole, kind) in JA_FIRST.items():
         name = next(n for n, o in JA_FONTS if o == whole)

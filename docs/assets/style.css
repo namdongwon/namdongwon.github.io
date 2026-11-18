@@ -20,6 +20,7 @@ html:lang(en) .door .t,html:lang(es) .door .t,html:lang(fr) .door .t,html:lang(e
 .nf [lang="en"]{font-family:"NRD","ARW","BMJ",serif}  
 html:lang(en) #home dd i,html:lang(es) #home dd i,html:lang(fr) #home dd i,html:lang(en) .pgno i,html:lang(es) .pgno i,html:lang(fr) .pgno i,html:lang(en) .cap small i,html:lang(es) .cap small i,html:lang(fr) .cap small i,html:lang(en) .sheet .sbk i,html:lang(es) .sheet .sbk i,html:lang(fr) .sheet .sbk i{font-family:"NRD",serif;font-weight:400;font-size:1.15em;letter-spacing:0}  
 
+@font-face{font-family:"NDD";src:url("fonts/ndw-didot-logo.woff2?v=df186079b1") format("woff2");font-weight:400;font-display:swap}  
 @font-face{font-family:"ARW";src:url("fonts/bon-myeongjo-arrow.woff2?v=f5104197ae") format("woff2");font-weight:400;font-display:swap;unicode-range:U+2190-2199}  
 @font-face{font-family:"NRD";src:url("fonts/newsreader.woff2?v=ce8b6ea3f9") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2?v=40773355f6") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
@@ -98,10 +99,10 @@ button{font:inherit;color:inherit}
 .top{box-shadow:0 1px 0 var(--barline)}  
 
 @media (max-width:767px){.top nav{margin:0 auto}}    
-.top .logo{display:none;position:relative;font:400 12px/1 var(--sans);letter-spacing:.3em;white-space:nowrap}  
+.top .logo{display:none;position:relative;font:400 14px/1 "NDD",Didot,"Bodoni 72",serif;letter-spacing:.3em;white-space:nowrap}    
 
-@media (max-width:767px){.js .top .logo{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;letter-spacing:.24em}}
-@media (max-width:389px){.js .top .logo{font-size:10px;letter-spacing:.18em}}
+@media (max-width:767px){.js .top .logo{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;letter-spacing:.16em}}
+@media (max-width:389px){.js .top .logo{font-size:10px;letter-spacing:.12em}}  
 
 @media (max-width:429px){.js:lang(ja) .top .logo{font-size:9px;letter-spacing:.1em}}
 @media (max-width:359px){.js:lang(ja) .top .logo{display:none}}

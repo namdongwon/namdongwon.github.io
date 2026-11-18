@@ -22,6 +22,7 @@ html:lang(en) .door .t,html:lang(es) .door .t,html:lang(fr) .door .t,html:lang(e
 .nf [lang="en"]{font-family:"NRD","ARW","BMJ",serif}  /* 404의 영어 두 줄 — 한국어 쪽 안이라 영어 글꼴 규칙을 못 받아 본명조 라틴으로 그려졌음(10/28 일본 디테일 ⑤) */
 html:lang(en) #home dd i,html:lang(es) #home dd i,html:lang(fr) #home dd i,html:lang(en) .pgno i,html:lang(es) .pgno i,html:lang(fr) .pgno i,html:lang(en) .cap small i,html:lang(es) .cap small i,html:lang(fr) .cap small i,html:lang(en) .sheet .sbk i,html:lang(es) .sheet .sbk i,html:lang(fr) .sheet .sbk i{font-family:"NRD",serif;font-weight:400;font-size:1.15em;letter-spacing:0}  /* 작은 고딕 속 작품 제목은 Newsreader 기울인꼴 — 고딕엔 기울인꼴이 없어 브라우저가 비스듬히 밀어 그렸음(10/28 동원 'A 명조 기울인꼴로' — 모양 점검 ⑫) */
 /* 영어판(10/24 ⑤ B): Newsreader(Production Type · OFL) — 영어판만 씀(한국어판은 내려받지 않음). 가변 축 굵기 · 글자 크기 */
+@font-face{font-family:"NDD";src:url("fonts/ndw-didot-logo.woff2") format("woff2");font-weight:400;font-display:swap}  /* 맨 위 줄 표장 Didot(11/18 밤 — GFS Didot 줄인 판 'NDW Didot' · N A M D O G W 일곱 자) */
 @font-face{font-family:"ARW";src:url("fonts/bon-myeongjo-arrow.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+2190-2199}  /* 화살표만(11/3 Lighthouse) — 영어 · 일본어판 명조 줄에서 Newsreader 다음, 본명조 앞에 */
 @font-face{font-family:"NRD";src:url("fonts/newsreader.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
 @font-face{font-family:"NRD";src:url("fonts/newsreader-italic.woff2") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
@@ -107,11 +108,11 @@ button{font:inherit;color:inherit}
 .top{box-shadow:0 1px 0 var(--barline)}  /* 띠 아래 가는 선 — 맨 위에서도 늘(11/3 동원 '이 선 … 맨위로 올려도 보였으면' — 전엔 내려가야(.sc) 보였음) — 어두운 모드에서도 보이게 색 낱말(10/28 모양 점검 ⑧ — 검정 값이라 어둡게에서 사라졌음) */
 /* 메뉴가 띠보다 넓으면(글 간격을 넓힌 읽기 도구 · 폭 280px 영어판) 두 줄로 내려가고 띠가 그만큼 높아짐 — 전엔 'About'이 화면 왼쪽 밖으로 밀려 볼 수 없었음(10/27 점검 a11y 13 · WCAG 1.4.12). 보통 화면에서는 한 줄 그대로 */
 @media (max-width:767px){.top nav{margin:0 auto}}  /* 10/31 동원 'gnb 가운데로' — 휴대폰은 오른쪽 찾기 · 연락하기 앞 남는 자리의 가운데(한가운데면 상자와 겹침). 넓은 읽기 도구면 전처럼 두 줄로 */  /* 두 줄로 내려가기 전에 왼쪽 여백 20px까지는 씀 — 한국어판 280px처럼 여백 안에서 한 줄로 들어가던 화면은 전과 같게 */
-.top .logo{display:none;position:relative;font:400 12px/1 var(--sans);letter-spacing:.3em;white-space:nowrap}  /* 표장 NAM DONGWON(11/3 동원 '이름 표기 여덟' → 버튼 "2 자간 넓게 가늘게" — 목업 사이트헤더이름표기시안_v2_여덟 · 바닥글 표장 NAMDONGWON.COM과 한 결) — 전엔 '남 동원' 본명조 굵게 18 */
+.top .logo{display:none;position:relative;font:400 14px/1 "NDD",Didot,"Bodoni 72",serif;letter-spacing:.3em;white-space:nowrap}  /* 11/18 밤 Didot 14px · .3em(동원 "A로 … NAM DONGWON 띄어 쓰고 자간 넓게" → 시안 표장글꼴시안_v1 v2 → 버튼 "A5 14px · .3em") — 옛 고딕 12px · .3em */  /* 표장 NAM DONGWON(11/3 동원 '이름 표기 여덟' → 버튼 "2 자간 넓게 가늘게" — 목업 사이트헤더이름표기시안_v2_여덟 · 바닥글 표장 NAMDONGWON.COM과 한 결) — 전엔 '남 동원' 본명조 굵게 18 */
 /* 휴대폰 띠 가운데 이름(11/3 목업 사이트헤더자리시안_v1 → 버튼 "지금 + 휴대폰 P (권장)" — 휴대폰 맨 위에 이름이 없었음) · 컴퓨터는 왼쪽 그대로(NN/g 2016 가운데 로고 실패 6배) ·
    390px보다 좁으면 한 단계 작게 — 실측 320에서 찾기 단추와 겹침 · 375에서 8px */
-@media (max-width:767px){.js .top .logo{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;letter-spacing:.24em}}
-@media (max-width:389px){.js .top .logo{font-size:10px;letter-spacing:.18em}}
+@media (max-width:767px){.js .top .logo{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;letter-spacing:.16em}}
+@media (max-width:389px){.js .top .logo{font-size:10px;letter-spacing:.12em}}  /* 11/18 밤 Didot은 고딕보다 넓어 휴대폰은 11px · .16em, 좁은 폰은 .12em(러 · 스 '연락' 단추 옆 돋보기와 12px 넘게) */
 /* 일본어판은 'メニュー' · '連絡する'가 넓어(실측 320에서 단추와 겹침 · 390에서도 8px 걸침) 430보다 좁으면 9px · 0.1em, 360보다 좁으면 이름을 숨김(쪽 제목 · 바닥글 표장은 그대로) */
 @media (max-width:429px){.js:lang(ja) .top .logo{font-size:9px;letter-spacing:.1em}}
 @media (max-width:359px){.js:lang(ja) .top .logo{display:none}}

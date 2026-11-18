@@ -37,3 +37,6 @@ namdongwon.com 글꼴 — 사이트에 쓰는 글자만 남겨 woff2로 줄인 �
 - ndw-sans-ru-light.woff2 · ndw-sans-ru-regular.woff2 · ndw-sans-ru-semibold.woff2 (러시아어판, 2026-11-06부터)
   원본: Pretendard Light · Regular · SemiBold, Copyright © 2023 Kil Hyung-jin. SIL Open Font License 1.1 — OFL-Pretendard.txt
   러시아어판 쪽에 쓰는 글자만 남기고 줄인 판의 이름을 'NDW Sans'로 바꿈.
+- ndw-didot-logo.woff2 (네 판 모두 · 맨 위 줄 표장, 2026-11-18부터)
+  원본: GFS Didot Regular, Copyright © Greek Font Society(Takis Katsoulidis · George D. Matthiopoulos). SIL Open Font License 1.1 — OFL-GFSDidot.txt
+  표장 글자(N A M D O G W · 띄어쓰기)만 남기고, 예약된 이름('GFS Didot')을 쓰지 않게 줄인 판의 이름을 'NDW Didot'로 바꿈. 저작권 · 라이선스 줄은 그대로. 줄인 판이라는 표시를 글꼴 설명(name ID 10)에 남김.
