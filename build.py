@@ -78,7 +78,7 @@ CARET_ICON = '<svg class="cr" viewBox="0 0 10 10" fill="currentColor" aria-hidde
 MK_CARET = CARET_ICON.replace('class="cr"', 'class="mkc"')  # 메뉴 펼침 키보드 단추용 — 이름 cr은 언어 고르기 · 영상 출처 줄(.cr)과 겹쳐서(11/15 entest가 출처 줄 대신 집음)
 PAL_FONT = "bon-myeongjo.woff2"  # 글자 팔레트(10/28)의 글자 612가지는 본명조 보통 판에만 담음 — 굵게 · 고딕 판은 늘지 않게(main)
 LIGHT_ONLY = "bon-myeongjo-light.woff2"  # 굵기 300은 한국어판 첫 화면 큰 제목(#home .ht)에만 — 그 글자만 담아 가볍게. 다른 곳에 300을 쓰면 여기를 넓힐 것
-LOGO_FONT = ("ndw-didot-logo.woff2", "NAM DONGWON", "GFSDidot/GFSDidot-Regular.ttf")  # 맨 위 줄 표장만 담은 Didot(11/18 밤 동원 "유튜브 영상 오른쪽 위 … NAMDONGWON … gnb에" → 시안 표장글꼴시안_v1 → "A로 · NAM DONGWON 띄어 쓰고 자간 넓게" → 버튼 "A5 14px · .3em") — GFS Didot(OFL · 예약 이름 'GFS Didot' → 줄인 판은 'NDW Didot') · 맥 Didot은 웹에 못 실음
+LOGO_FONT = ("ndw-bodoni-logo.woff2", "NAM DONGWON", "BodoniModa/BodoniModa[opsz,wght].ttf", {"wght": 500, "opsz": 6})  # 맨 위 줄 표장만 담은 판(11/18 밤 Didot → 11/19 0시 동원 "표장을 굵은 글씨로 … 너무 얇은 느낌" → 시안 표장굵기 v4 → 버튼 "W5 Bodoni 500 · 보정 최대 (권장)") — Bodoni Moda(OFL · 예약 이름 없음) 가변 글꼴을 굵기 500 · 작은 크기 보정 6으로 고정한 뒤 표장 글자만 · GFS Didot(11/18 밤 하루)은 13px에서 가는 획이 사라져 얇아 보였음
 ARROW = ("bon-myeongjo-arrow.woff2", "←↑→↓↗")  # 화살표만 담은 작은 판(11/7 밤부터 源ノ明朝 Regular에서 — 본명조와 같은 꼴 · ↗ 있음 · 파일 이름은 그대로)(CSS ARW · unicode-range) — 영어 · 일본어판 명조(Newsreader)에 화살표가 없어 → · ↗ 하나 때문에 본명조 통째 판 131KB를 받던 것(11/3 Lighthouse 점검)
 # 첫 화면 작은 판(10/27 동원 "첫 화면 작은 글꼴은 B로 하자"): 한국어판 첫 화면에 보이는 글자만 담아 미리 받는 판(CSS BMJF · PTDF) — 통째 판(본명조 보통 · 굵게 182KB)을
 # 미리 받느라 style.css · main.js가 늦던 것을 덜어 냄(시험용 복사본 실측: 느린 4G 문 열림 3.6 → 3.1초 · 보통 LTE 1.5 → 1.3초, 다 선 화면 같음). 통째 판은 아래 칸에서 그대로 씀
@@ -1894,7 +1894,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 맨 위 띠는 쪽마다 page()가 만듦(10/31 쪽 나누기 — 메뉴가 칸 자리 #… 대신 쪽 주소)
     preload = ("".join(f'<link rel="preload" href="{P}assets/fonts/{f}" as="font" type="font/woff2" crossorigin>\n' for f in
                        ((EN_FIRST, "ndw-sans-light-first.woff2", "ndw-sans-semibold-first.woff2") if lat
-                        else () if ru else (JA_LIGHT_ONLY, *JA_FIRST) if tr_ else ("bon-myeongjo-light.woff2", *FIRST))))  # 러시아어판(11/6)은 첫 화면 작은 판 없이(러시아어 글꼴 한 벌)  # 일본어판(11/1)은 일본어 첫 화면 작은 판
+                        else () if ru else (JA_LIGHT_ONLY, *JA_FIRST) if tr_ else ("bon-myeongjo-light.woff2", *FIRST)) + (LOGO_FONT[0],)))  # 맨 위 줄 표장(2.5KB · 11/19 0시) — 늦게 오면 맥 Didot(가늘게)에서 바뀌어 보여 모든 판에서 미리  # 러시아어판(11/6)은 첫 화면 작은 판 없이(러시아어 글꼴 한 벌)  # 일본어판(11/1)은 일본어 첫 화면 작은 판
     # 첫 화면 작은 판만 미리 받음(한국어 10/27 B · 영어 10/27 점검 — 영어 첫 화면은 본명조를 한 자도 안 그리는데 통째 판을 받아 문이 늦었음). 작은 고딕 판(PTDF)은 ASCII를 늘 담아 영어 첫 화면에도 씀
     # 시 아래 출처 줄은 시집 제목 · 쪽수(10/27 동원 "탁본 - 61쪽 이런식으로 쓰는 게 아니라 문을 열고 나오면 살아 있는 것들로 가득 차 있다 - 61쪽") — 제목은 표지 줄 나눔 자리에서만 갈리고,
     # 쪽수는 제목 끝 토막 안에 붙여 함께 넘어감(토막 밖에 두면 영어 390에서 'Living Things' / ', pages 61–62'로 갈렸음). 영어는 기울임을 제목에만
@@ -2310,6 +2310,7 @@ def render(site, poem, videos, photos, lang="ko"):
             {"@type": "ListItem", "position": 1, "name": S["name"], "item": f"{base}{'/' + lang if tr_ else ''}/"},
             {"@type": "ListItem", "position": 2, "name": L["nav"][secs.index(top_of[k])], "item": url}]}, ensure_ascii=False).replace("</", "<\\/") + "</script>")  # '</'는 '<\/'로(11/16 보안 점검 — 원고 값에 '</script>'가 있어도 칸이 끊기지 않게)
         bpg = k == "book"
+        logo_pre = f'<link rel="preload" href="{P}assets/fonts/{LOGO_FONT[0]}" as="font" type="font/woff2" crossorigin>' + "\n"  # 표장 글꼴(2.5KB · 11/19 0시) — 시집 쪽 밖에서도 미리(f-string 안 백슬래시는 3.9에서 안 됨 — 밖에서 만듦)
 
         def link(pg):  # 같은 판의 쪽 주소 — 이 쪽에서 본 상대 주소
             return "./" if pg == k else R + (f"{pg}/" if pg else "") or "./"
@@ -2395,7 +2396,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <meta name="apple-mobile-web-app-title" content="NAM DONGWON">
 {HEAD_JS if bpg else HEAD_JS_PLAIN}
 {SPEC_RULES}
-{preload if bpg else ""}<link rel="stylesheet" href="{P}assets/style.css">
+{preload if bpg else logo_pre}<link rel="stylesheet" href="{P}assets/style.css">
 <script type="application/ld+json">{ld_js}</script>{crumb}
 </head>
 <body>
@@ -2795,13 +2796,19 @@ def main():
         (ASSETS / "fonts" / ARROW[0]).write_bytes(keep[ARROW[0]])
     else:
         raise SystemExit(f"화살표 작은 판을 만들 원본을 찾지 못함: {name}")
-    lsrc = PTD_DIR / LOGO_FONT[2]  # 표장 Didot(11/18 밤) — 기준/폰트/GFSDidot · 원본이 없으면(시험 사본) 지난 판
+    lsrc = PTD_DIR / LOGO_FONT[2]  # 표장(11/19 0시 Bodoni Moda 500 · opsz 6) — 가변 축을 한 값으로 고정한 판을 .cache에 한 번 만들고 표장 글자만 · 원본이 없으면(시험 사본) 지난 판
     if lsrc.exists():
-        subset_font(lsrc, ASSETS / "fonts" / LOGO_FONT[0], LOGO_FONT[1], True)
+        from fontTools.varLib import instancer
+        from fontTools.ttLib import TTFont
+        st_ = lsrc.stat(); fixed = HERE / ".cache" / f"logo-{st_.st_size}-{st_.st_mtime_ns}-{'-'.join(f'{k}{v}' for k, v in LOGO_FONT[3].items())}.ttf"
+        if not fixed.exists():
+            fixed.parent.mkdir(parents=True, exist_ok=True)
+            instancer.instantiateVariableFont(TTFont(str(lsrc)), LOGO_FONT[3]).save(str(fixed))
+        subset_font(fixed, ASSETS / "fonts" / LOGO_FONT[0], LOGO_FONT[1], False)
     elif LOGO_FONT[0] in keep:
         (ASSETS / "fonts" / LOGO_FONT[0]).write_bytes(keep[LOGO_FONT[0]])
     else:
-        raise SystemExit(f"표장 Didot 작은 판을 만들 원본을 찾지 못함: {lsrc}")
+        raise SystemExit(f"표장 작은 판을 만들 원본을 찾지 못함: {lsrc}")
     ftj = first_text(pages["ja"]["book"])  # 일본어판 첫 화면 작은 판(JA_FIRST)
     for out, (whole, kind) in JA_FIRST.items():
         name = next(n for n, o in JA_FONTS if o == whole)
