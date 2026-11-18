@@ -111,7 +111,7 @@ button{font:inherit;color:inherit}
 .top .logo{display:none;position:relative;font:400 14px/1 "NDD",Didot,"Bodoni 72",serif;letter-spacing:.3em;white-space:nowrap}  /* 11/18 밤 Didot 14px · .3em(동원 "A로 … NAM DONGWON 띄어 쓰고 자간 넓게" → 시안 표장글꼴시안_v1 v2 → 버튼 "A5 14px · .3em") — 옛 고딕 12px · .3em */  /* 표장 NAM DONGWON(11/3 동원 '이름 표기 여덟' → 버튼 "2 자간 넓게 가늘게" — 목업 사이트헤더이름표기시안_v2_여덟 · 바닥글 표장 NAMDONGWON.COM과 한 결) — 전엔 '남 동원' 본명조 굵게 18 */
 /* 휴대폰 띠 가운데 이름(11/3 목업 사이트헤더자리시안_v1 → 버튼 "지금 + 휴대폰 P (권장)" — 휴대폰 맨 위에 이름이 없었음) · 컴퓨터는 왼쪽 그대로(NN/g 2016 가운데 로고 실패 6배) ·
    390px보다 좁으면 한 단계 작게 — 실측 320에서 찾기 단추와 겹침 · 375에서 8px */
-@media (max-width:767px){.js .top .logo{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;letter-spacing:.16em}}
+@media (max-width:767px){.js .top{display:grid;grid-template-columns:1fr auto 1fr;column-gap:16px}.js .top .mb{grid-column:1;grid-row:1;justify-self:start;margin:0}.js .top .logo{display:block;grid-column:2;grid-row:1;font-size:11px;letter-spacing:.16em}.js .top .act{grid-column:3;grid-row:1;justify-self:end;margin-left:0}}  /* 11/18 밤 동원 "응, 고쳐"(휴대폰 표장이 러 · 스 · 일 '연락' 단추 옆 돋보기와 1~11px로 붙던 것 — 옛 고딕 때부터): 가운데 겹쳐 놓기(absolute 50%) 대신 넓은 창과 같은 1fr auto 1fr — 자리가 되면 정가운데, 오른쪽이 길면 표장이 비켜 늘 12px 넘는 틈(칸 사이 16 · 단 — 돋보기 단추가 2px 안으로 들어와 있어 실측 14) */
 @media (max-width:389px){.js .top .logo{font-size:10px;letter-spacing:.12em}}  /* 11/18 밤 Didot은 고딕보다 넓어 휴대폰은 11px · .16em, 좁은 폰은 .12em(러 · 스 '연락' 단추 옆 돋보기와 12px 넘게) */
 /* 일본어판은 'メニュー' · '連絡する'가 넓어(실측 320에서 단추와 겹침 · 390에서도 8px 걸침) 430보다 좁으면 9px · 0.1em, 360보다 좁으면 이름을 숨김(쪽 제목 · 바닥글 표장은 그대로) */
 @media (max-width:429px){.js:lang(ja) .top .logo{font-size:9px;letter-spacing:.1em}}
@@ -876,7 +876,7 @@ html.sr-on{overflow:hidden}
 /* 11/6 넓힘(동원 'A 사이트 결' — 점검에서 눌러도 반응 없던 FAQ 질문 줄 · 움직임 스위치 · 남기기까지): 펼침 줄(summary) · 스위치 글(label) · [role=button]도 · 남기기는 먹 반전에 더해 눌림 */
 :where(a,button,summary,label,[role=button]){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
 .js :where(a,button,summary,label,[role=button]):active{transform:scale(.97);transition:none}
-.js .top .logo:active{transform:none}@media (max-width:767px){.js .top .logo:active{transform:translate(-50%,-50%)}}  /* 표장(로고)은 누름 반응 없음(11/16 동원 "gnb 가장 왼쪽에 있는 거 클릭하면 뭔가 크기 작아졌다가 … 다른 사이트 보니까 없더라고" — 11/6 올림 반응 뺀 데 이어) · 휴대폰은 가운데 맞춤 그대로 */
+.js .top .logo:active{transform:none}  /* 표장(로고)은 누름 반응 없음(11/16 동원 "gnb 가장 왼쪽에 있는 거 클릭하면 뭔가 크기 작아졌다가 … 다른 사이트 보니까 없더라고" — 11/6 올림 반응 뺀 데 이어) · 휴대폰은 가운데 맞춤 그대로 */
 :is(.nf,.pp) :where(a,button):active{transform:scale(.97);transition:none}  /* 하11 — 404 · 처리방침 쪽은 main.js가 없어(.js 없음) 누름 모양이 빠졌던 것 · 아이폰은 body ontouchstart(build.py)가 있어야 :active를 그림 · a는 인라인이라 줄어듦이 안 보이는 글 링크도 있어 아래 inline-block */
 .nf .nfp a{display:inline-block}  /* .buy는 이미 inline-flex */
 @media (prefers-reduced-motion:reduce){:is(.nf,.pp) :where(a,button):active{transform:none;opacity:.6}}

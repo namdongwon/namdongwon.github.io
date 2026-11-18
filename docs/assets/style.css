@@ -101,7 +101,7 @@ button{font:inherit;color:inherit}
 @media (max-width:767px){.top nav{margin:0 auto}}    
 .top .logo{display:none;position:relative;font:400 14px/1 "NDD",Didot,"Bodoni 72",serif;letter-spacing:.3em;white-space:nowrap}    
 
-@media (max-width:767px){.js .top .logo{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;letter-spacing:.16em}}
+@media (max-width:767px){.js .top{display:grid;grid-template-columns:1fr auto 1fr;column-gap:16px}.js .top .mb{grid-column:1;grid-row:1;justify-self:start;margin:0}.js .top .logo{display:block;grid-column:2;grid-row:1;font-size:11px;letter-spacing:.16em}.js .top .act{grid-column:3;grid-row:1;justify-self:end;margin-left:0}}  
 @media (max-width:389px){.js .top .logo{font-size:10px;letter-spacing:.12em}}  
 
 @media (max-width:429px){.js:lang(ja) .top .logo{font-size:9px;letter-spacing:.1em}}
@@ -842,7 +842,7 @@ html.sr-on{overflow:hidden}
 
 :where(a,button,summary,label,[role=button]){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
 .js :where(a,button,summary,label,[role=button]):active{transform:scale(.97);transition:none}
-.js .top .logo:active{transform:none}@media (max-width:767px){.js .top .logo:active{transform:translate(-50%,-50%)}}  
+.js .top .logo:active{transform:none}  
 :is(.nf,.pp) :where(a,button):active{transform:scale(.97);transition:none}  
 .nf .nfp a{display:inline-block}  
 @media (prefers-reduced-motion:reduce){:is(.nf,.pp) :where(a,button):active{transform:none;opacity:.6}}:where(:root[data-motion="reduce"]) :is(.nf,.pp) :where(a,button):active,:where(:root[data-motion="reduce"]):is(.nf,.pp) :where(a,button):active{transform:none;opacity:.6}
