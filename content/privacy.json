@@ -1,5 +1,5 @@
 {
-  "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로 · when \"goatcounter\" 줄과 lead_counted는 방문 셈(site.json analytics.goatcounter)을 켰을 때만 — 10/27 동원 '방문 셈 문구 이대로 처리방침에 넣어'(켜는 날 updated를 그날로) · 10/27 동원 '문의 폼은 B로 하자' — 문의 폼 없이 메일 · 인스타그램, Formspree(미국 등)는 방명록만 · 10/27 동원 '이대로 넣어'(웹사이트 점검 5 · 6번, 초안 기준/처리방침 · 영어 문구 고침 초안_v1.md) — when \"guestbook\" 줄은 방명록 받는 곳(site.json contact.guestbook_gform 구글 폼 — 11/1 동원 버튼 'B 구글 폼 (권장)'로 Formspree에서 바꿈 · 또는 guestbook_formspree_id)이 있을 때만, 칸에 보일 줄이 없으면 empty 한 줄 · 4절 GitHub Pages IP 줄(GitHub Docs 'About GitHub Pages' › Data collection) · 10/27 밤 동원 '이대로 넣어'(초안 기준/출간 전 문구 고침 초안_v1.md 2 — 3인칭 남동원 · 보호책임자 · 인스타그램 메시지 보관 기간 · 화면 낱말 차례 · 3절 받는 정보 줄) · when \"ga4\" 줄 · unless \"ga4\" 줄(켜면 숨김) · lead_ga는 GA4(site.json analytics.ga4)를 켰을 때만 — 11/1 동원 'ga4로 하자'(켜는 날 updated를 그날로 · '14개월'은 GA4 관리 → 데이터 보관 설정과 맞춤 · IP는 기록 · 저장 안 함[출처 support.google.com/analytics/answer/2763052])",
+  "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로 · when \"goatcounter\" 줄과 lead_counted는 방문 셈(site.json analytics.goatcounter)을 켰을 때만 — 10/27 동원 '방문 셈 문구 이대로 처리방침에 넣어'(켜는 날 updated를 그날로) · 10/27 동원 '문의 폼은 B로 하자' — 문의 폼 없이 메일 · 인스타그램, Formspree(미국 등)는 방명록만 · 10/27 동원 '이대로 넣어'(웹사이트 점검 5 · 6번, 초안 기준/처리방침 · 영어 문구 고침 초안_v1.md) — when \"guestbook\" 줄은 방명록 받는 곳(site.json contact.guestbook_gform 구글 폼 — 11/1 동원 버튼 'B 구글 폼 (권장)'로 Formspree에서 바꿈 · 또는 guestbook_formspree_id)이 있을 때만, 칸에 보일 줄이 없으면 empty 한 줄 · 4절 GitHub Pages IP 줄(GitHub Docs 'About GitHub Pages' › Data collection) · 10/27 밤 동원 '이대로 넣어'(초안 기준/출간 전 문구 고침 초안_v1.md 2 — 3인칭 남동원 · 보호책임자 · 인스타그램 메시지 보관 기간 · 화면 낱말 차례 · 3절 받는 정보 줄) · when \"ga4\" 줄 · unless \"ga4\" 줄(켜면 숨김) · lead_ga는 GA4(site.json analytics.ga4)를 켰을 때만 — 11/1 동원 'ga4로 하자'(켜는 날 updated를 그날로 · '14개월'은 GA4 관리 → 데이터 보관 설정과 맞춤 · IP는 기록 · 저장 안 함[출처 support.google.com/analytics/answer/2763052]) · 11/18 어드민 '처리방침 필수 항목 대조'(research_notes/어드민 표준 대조/처리방침_대조.md) → 동원 버튼 '메일 주소 (권장)' · '위탁 표로 적기 (권장)' · '정직하게 알리고 지움 (권장)' — 1절 제3자 제공 없음 · 2절 지우는 방법 · 3절 국가 · 근거 · 받는 자 연락처 · 거부 효과 · 5절 철회 · 법정대리인 · 10일 · 불이익 없음 · 구제기관 · 6절 위탁 · 7절 안전 조치 · 8절 보호책임자(메일은 {mail} — page_privacy가 글자 참조로 바꿔 넣음 · 원문에 주소를 적지 않음) · 근거 호(제28조의8 ①1 · ①3)는 2차 자료 판단 — 법제처 원문 대조 전",
   "updated": "2026-11-18",
   "title": {
     "ko": "개인정보 처리방침",
@@ -61,6 +61,23 @@
           "ru": "В гостевой книге не запрашиваются адрес электронной почты, номер телефона и иные контактные данные.",
           "es": "En el libro de visitas no se piden datos de contacto como la dirección de correo electrónico o el número de teléfono.",
           "fr": "Le livre d’or ne recueille aucune coordonnée, comme une adresse e-mail ou un numéro de téléphone."
+        },
+        {
+          "when": "guestbook",
+          "ko": "방명록에 실린 글은 누구나 볼 수 있습니다. 건강 · 연락처처럼 남에게 알리고 싶지 않은 내용은 적지 말아 주세요.",
+          "en": "Published notes can be read by anyone. Please don’t include anything you would not want others to know, such as health details or contact information.",
+          "ja": "芳名録に掲載されたメッセージは、どなたでもご覧になれます。健康のことや連絡先など、人に知られたくない内容は書かないでください。",
+          "ru": "Опубликованные записи может прочитать любой. Пожалуйста, не указывайте сведений, которые вы не хотели бы раскрывать, например о здоровье или контактные данные.",
+          "es": "Cualquier persona puede leer las notas publicadas. Por favor, no incluyas nada que no quieras que otros sepan, como datos de salud o de contacto.",
+          "fr": "Les mots publiés peuvent être lus par tous. Merci de ne rien écrire que vous ne souhaitez pas faire connaître, comme des informations de santé ou vos coordonnées."
+        },
+        {
+          "ko": "남동원은 받은 개인정보를 다른 사람이나 회사에 팔거나 넘기지 않습니다(제3자 제공 없음). 일을 맡긴 곳은 6절, 나라 밖으로 옮겨지는 정보는 3절에 적었습니다.",
+          "en": "Dongwon Nam does not sell or hand over personal information to any other person or company (no provision to third parties). Service providers are listed in section 6, and transfers outside Korea in section 3.",
+          "ja": "ナム・ドンウォンは、受け取った個人情報を他の個人や企業に販売したり提供したりしません（第三者提供なし）。委託先は第6項、韓国国外への移転は第3項に記載しています。",
+          "ru": "Нам Донвон не продаёт и не передаёт полученные персональные данные другим лицам или компаниям (передача третьим лицам не осуществляется). Обработчики указаны в разделе 6, передача за пределы Кореи — в разделе 3.",
+          "es": "Dongwon Nam no vende ni cede datos personales a ninguna otra persona o empresa (sin cesión a terceros). Los encargados del tratamiento figuran en la sección 6, y las transferencias fuera de Corea en la sección 3.",
+          "fr": "Dongwon Nam ne vend ni ne transmet de données personnelles à d’autres personnes ou entreprises (aucune communication à des tiers). Les sous-traitants figurent à la section 6, et les transferts hors de Corée à la section 3."
         }
       ]
     },
@@ -99,6 +116,32 @@
           "ru": "Обращения, полученные по электронной почте и в сообщениях Instagram, удаляются в течение шести месяцев после ответа.",
           "es": "Los mensajes recibidos por correo electrónico o por Instagram se suprimen en un plazo de seis meses después de la respuesta.",
           "fr": "Les messages reçus par e-mail ou par Instagram sont supprimés dans un délai de six mois après la réponse."
+        },
+        {
+          "when": "guestbook",
+          "ko": "지우는 방법 — 실리지 않은 글은 구글 시트에 걸어 둔 자동 지우기가 30일이 지난 줄을 지우고, 구글 폼의 응답에서도 지웁니다.",
+          "en": "How it is deleted — unpublished notes are removed by an automatic deletion set up on the Google Sheet once they are 30 days old, and are also deleted from the Google Form responses.",
+          "ja": "削除の方法 — 掲載されなかったメッセージは、Googleスプレッドシートに設定した自動削除により30日を過ぎた行が削除され、Googleフォームの回答からも削除します。",
+          "ru": "Способ удаления — неопубликованные записи удаляются автоматическим удалением, настроенным в таблице Google Sheets, по истечении 30 дней, а также удаляются из ответов Google Forms.",
+          "es": "Cómo se suprimen — las notas no publicadas se eliminan mediante un borrado automático configurado en la hoja de Google Sheets cuando cumplen 30 días, y también se borran de las respuestas de Google Forms.",
+          "fr": "Mode de suppression — les mots non publiés sont effacés par une suppression automatique configurée dans la feuille Google Sheets au bout de 30 jours, et sont aussi supprimés des réponses Google Forms."
+        },
+        {
+          "when": "guestbook",
+          "ko": "실린 글을 내려 달라고 하시면 원고에서 지우고 사이트를 다시 올립니다. 이 사이트의 원고는 공개 저장소(GitHub)에 있어 지난 기록에 글이 남을 수 있으니, 원하시면 그 기록에서도 지웁니다. 다만 검색 엔진의 저장본처럼 이미 다른 곳에 옮겨진 사본은 남동원이 지울 수 없습니다.",
+          "en": "If you ask for a published note to be removed, it is deleted from the site’s source and the site is published again. Because the site’s source is kept in a public repository (GitHub), the note may remain in its history; if you wish, it will be removed from that history as well. Copies already made elsewhere, such as search engine caches, cannot be deleted by Dongwon Nam.",
+          "ja": "掲載されたメッセージの取り下げをお申し出いただくと、原稿から削除してサイトを更新します。このサイトの原稿は公開リポジトリ（GitHub）にあるため、過去の履歴にメッセージが残ることがあります。ご希望があれば、その履歴からも削除します。ただし、検索エンジンのキャッシュなど、すでに他の場所に複製されたものはナム・ドンウォンが削除できません。",
+          "ru": "Если вы попросите снять опубликованную запись, она удаляется из исходных файлов сайта, и сайт публикуется заново. Исходные файлы сайта хранятся в открытом репозитории (GitHub), поэтому запись может остаться в истории изменений; по вашему желанию она будет удалена и оттуда. Копии, уже сделанные в других местах (например, кеш поисковых систем), Нам Донвон удалить не может.",
+          "es": "Si pides que se retire una nota publicada, se borra del código del sitio y el sitio se vuelve a publicar. Como el código del sitio está en un repositorio público (GitHub), la nota puede quedar en su historial; si lo deseas, también se eliminará de ese historial. Las copias ya hechas en otros lugares, como la caché de los buscadores, no pueden ser eliminadas por Dongwon Nam.",
+          "fr": "Si vous demandez le retrait d’un mot publié, il est supprimé des sources du site, puis le site est republié. Les sources du site étant conservées dans un dépôt public (GitHub), le mot peut subsister dans son historique ; si vous le souhaitez, il en sera également supprimé. Les copies déjà faites ailleurs, comme le cache des moteurs de recherche, ne peuvent pas être supprimées par Dongwon Nam."
+        },
+        {
+          "ko": "메일 · 인스타그램 메시지는 그 대화를 지웁니다(메일은 휴지통에서도). 법에 따라 따로 보관해야 하는 개인정보는 없습니다.",
+          "en": "Emails and Instagram messages are deleted conversation by conversation (emails also from the trash). No personal information has to be kept under any law.",
+          "ja": "メール・Instagramのメッセージは、その会話を削除します（メールはゴミ箱からも）。法令により別途保存しなければならない個人情報はありません。",
+          "ru": "Письма и сообщения в Instagram удаляются вместе с перепиской (письма — также из корзины). Персональных данных, которые требуется хранить по закону, нет.",
+          "es": "Los correos y mensajes de Instagram se eliminan junto con la conversación (los correos, también de la papelera). No hay datos personales que deban conservarse por ley.",
+          "fr": "Les e-mails et messages Instagram sont supprimés avec la conversation (les e-mails, également de la corbeille). Aucune donnée personnelle ne doit être conservée en vertu de la loi."
         }
       ]
     },
@@ -114,12 +157,30 @@
       "items": [
         {
           "when": "guestbook",
-          "ko": "받는 자: Google LLC(미국 등) — 남기신 글은 남동원의 구글 폼에 담기고, 그 폼에 연결된 구글 시트로도 옵니다.",
-          "en": "Recipient: Google LLC (United States and elsewhere) — your note is stored in Dongwon Nam’s Google Form and also copied to the Google Sheet linked to it.",
-          "ja": "移転先：Google LLC（米国など） — 残していただいたメッセージは、ナム・ドンウォンのGoogleフォームに保存され、そのフォームにリンクされたGoogleスプレッドシートにも届きます。",
-          "ru": "Получатель: Google LLC (США и другие страны) — оставленная вами запись сохраняется в форме Google Forms, принадлежащей Нам Донвону, а также поступает в связанную с этой формой таблицу Google Sheets.",
-          "es": "Destinatario: Google LLC (Estados Unidos y otros países) — la nota que dejas se guarda en el formulario de Google Forms de Dongwon Nam y también se copia en la hoja de Google Sheets vinculada a él.",
-          "fr": "Destinataire : Google LLC (États-Unis et autres pays) — le mot que vous laissez est enregistré dans le formulaire Google Forms de Dongwon Nam et également copié dans la feuille Google Sheets qui y est associée."
+          "ko": "받는 자: Google LLC(미국 · Google 데이터 센터가 있는 여러 나라에 보관될 수 있음) — 남기신 글은 남동원의 구글 폼에 담기고, 그 폼에 연결된 구글 시트로도 옵니다.",
+          "en": "Recipient: Google LLC (United States; data may be stored in the various countries where Google has data centres) — your note is stored in Dongwon Nam’s Google Form and also copied to the Google Sheet linked to it.",
+          "ja": "移転先：Google LLC（米国。Googleのデータセンターがある複数の国で保存されることがあります） — 残していただいたメッセージは、ナム・ドンウォンのGoogleフォームに保存され、そのフォームにリンクされたGoogleスプレッドシートにも届きます。",
+          "ru": "Получатель: Google LLC (США; данные могут храниться в разных странах, где расположены центры обработки данных Google) — оставленная вами запись сохраняется в форме Google Forms, принадлежащей Нам Донвону, а также поступает в связанную с этой формой таблицу Google Sheets.",
+          "es": "Destinatario: Google LLC (Estados Unidos; los datos pueden guardarse en los distintos países donde Google tiene centros de datos) — la nota que dejas se guarda en el formulario de Google Forms de Dongwon Nam y también se copia en la hoja de Google Sheets vinculada a él.",
+          "fr": "Destinataire : Google LLC (États-Unis ; les données peuvent être stockées dans les différents pays où Google dispose de centres de données) — le mot que vous laissez est enregistré dans le formulaire Google Forms de Dongwon Nam et également copié dans la feuille Google Sheets qui y est associée."
+        },
+        {
+          "when": "guestbook",
+          "ko": "받는 자 연락처: Google 개인정보 문의 — policies.google.com/privacy",
+          "en": "Recipient’s contact: Google privacy enquiries — policies.google.com/privacy",
+          "ja": "移転先の連絡先：Googleのプライバシーに関するお問い合わせ — policies.google.com/privacy",
+          "ru": "Контакты получателя: обращения по вопросам конфиденциальности Google — policies.google.com/privacy",
+          "es": "Contacto del destinatario: consultas de privacidad de Google — policies.google.com/privacy",
+          "fr": "Contact du destinataire : demandes relatives à la confidentialité chez Google — policies.google.com/privacy"
+        },
+        {
+          "when": "guestbook",
+          "ko": "옮기는 근거: 방명록 글을 받아 보관하는 일을 Google에 맡긴 것(처리 위탁 · 보관, 6절)으로, 이 처리방침에 알려 드립니다(개인정보 보호법 제28조의8 제1항 제3호).",
+          "en": "Legal basis: the receipt and storage of guestbook notes is entrusted to Google (outsourcing and storage, section 6), and this is disclosed in this policy (Personal Information Protection Act of Korea, Article 28-8(1)(3)).",
+          "ja": "移転の根拠：芳名録のメッセージの受付と保存をGoogleに委託しているもので（処理委託・保管、第6項）、本ポリシーで公開しています（韓国個人情報保護法第28条の8第1項第3号）。",
+          "ru": "Правовое основание: приём и хранение записей гостевой книги поручены Google (поручение обработки и хранение, раздел 6), о чём сообщается в настоящей политике (Закон Республики Корея о защите персональных данных, ст. 28-8, ч. 1, п. 3).",
+          "es": "Base jurídica: la recepción y conservación de las notas del libro de visitas se encarga a Google (encargo del tratamiento y almacenamiento, sección 6), lo que se informa en esta política (Ley de Protección de Datos Personales de Corea, artículo 28-8, apartado 1, punto 3).",
+          "fr": "Base juridique : la réception et la conservation des mots du livre d’or sont confiées à Google (sous-traitance et stockage, section 6), ce qui est indiqué dans la présente politique (loi coréenne sur la protection des données personnelles, article 28-8, paragraphe 1, point 3)."
         },
         {
           "when": "guestbook",
@@ -150,12 +211,12 @@
         },
         {
           "when": "guestbook",
-          "ko": "거부하는 법: 남기기를 누르지 않으시면 보내지지 않습니다. 이때는 인스타그램 메시지나 메일로 연락하실 수 있습니다.",
-          "en": "How to refuse: if you don’t press Send, nothing is sent. You can still reach Dongwon Nam by Instagram message or email.",
-          "ja": "拒否の方法：「送る」を押さなければ、送信されません。その場合は、Instagramのメッセージまたはメールでご連絡いただけます。",
-          "ru": "Как отказаться: если не нажимать кнопку «Отправить», ничего не передаётся. В этом случае вы можете связаться с Нам Донвоном через сообщения в Instagram или по электронной почте.",
-          "es": "Cómo negarse: si no pulsas «Enviar», no se envía nada. En ese caso, puedes ponerte en contacto con Dongwon Nam por mensaje de Instagram o por correo electrónico.",
-          "fr": "Comment refuser : si vous n’appuyez pas sur « Envoyer », rien n’est envoyé. Vous pouvez dans ce cas contacter Dongwon Nam par message Instagram ou par e-mail."
+          "ko": "거부하는 법: 남기기를 누르지 않으시면 보내지지 않습니다. 이때는 인스타그램 메시지나 메일로 연락하실 수 있습니다. 보내지 않으셔도 사이트를 쓰는 데 달라지는 것은 없습니다.",
+          "en": "How to refuse: if you don’t press Send, nothing is sent. You can still reach Dongwon Nam by Instagram message or email. Not sending anything makes no difference to how you can use the site.",
+          "ja": "拒否の方法：「送る」を押さなければ、送信されません。その場合は、Instagramのメッセージまたはメールでご連絡いただけます。 送信されなくても、サイトのご利用に変わりはありません。",
+          "ru": "Как отказаться: если не нажимать кнопку «Отправить», ничего не передаётся. В этом случае вы можете связаться с Нам Донвоном через сообщения в Instagram или по электронной почте. Если ничего не отправлять, пользоваться сайтом можно так же.",
+          "es": "Cómo negarse: si no pulsas «Enviar», no se envía nada. En ese caso, puedes ponerte en contacto con Dongwon Nam por mensaje de Instagram o por correo electrónico. No enviar nada no cambia en absoluto el uso del sitio.",
+          "fr": "Comment refuser : si vous n’appuyez pas sur « Envoyer », rien n’est envoyé. Vous pouvez dans ce cas contacter Dongwon Nam par message Instagram ou par e-mail. Ne rien envoyer ne change rien à votre utilisation du site."
         },
         {
           "when": "goatcounter",
@@ -168,30 +229,30 @@
         },
         {
           "when": "ga4",
-          "ko": "방문 통계를 낼 때(동의하신 경우에만) — 받는 자: Google LLC(미국 · Google 애널리틱스). 옮겨지는 정보: 쿠키 식별자, 본 쪽 · 들어온 곳 · 누른 교보문고 링크, 사이트 찾기에 친 말과 찾은 수 · 시 「탁본」을 끝까지 읽었는지(메일 주소 · 전화번호처럼 보이는 검색어는 보내지 않습니다), 브라우저 · 기기 정보, 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 — 나라 · 도시를 짐작하는 데 쓰이며, Google 애널리틱스는 IP 주소를 기록하거나 저장하지 않습니다). 때와 방법: 동의하신 뒤 쪽을 열 때, 교보문고 링크를 누를 때, 사이트 찾기를 할 때, 「탁본」을 끝까지 내렸을 때, 인터넷으로. 쓰는 곳과 두는 기간: 방문 통계 — 통계 자료는 14개월 뒤 지워집니다. 거부하는 법: 동의 창에서 '동의 없이 계속하기'를 누르시거나, 각 쪽 아래 '쿠키 설정'에서 언제든 거두실 수 있습니다.",
-          "en": "When visitor statistics are produced (only if you agree) — Recipient: Google LLC (United States · Google Analytics). What is transferred: a cookie identifier, the page viewed, the referring site, any click on a link to Kyobo Book Centre, what you type into the site search with the number of results, and whether you reached the end of the poem “Rubbing” (search terms that look like an email address or phone number are not sent), browser and device details, and the connection details your browser sends when a page opens (IP address — used to estimate country and city; Google Analytics does not log or store IP addresses). When and how: after you agree, when a page opens, a link to Kyobo Book Centre is clicked, the site search is used or the end of “Rubbing” is reached, over the internet. Purpose and retention: visitor statistics — the statistics are deleted after 14 months. How to refuse: choose ‘Continue without agreeing’ in the consent window, or withdraw at any time under ‘Cookie settings’ at the bottom of each page.",
-          "ja": "アクセス統計を取るとき（同意された場合のみ） — 移転先：Google LLC（米国・Google Analytics）。移転される情報：クッキー識別子、閲覧したページ・参照元・教保文庫へのリンクのクリック、サイト内検索に入力した言葉と結果の数・詩「拓本」を最後まで読んだかどうか（メールアドレス・電話番号のように見える検索語は送信しません）、ブラウザ・デバイスの情報、ページを開くときにブラウザが送信する接続情報（IPアドレス — 国・都市の推定に使われ、Google AnalyticsはIPアドレスを記録・保存しません）。時期と方法：同意された後、ページを開いたとき、教保文庫へのリンクをクリックしたとき、サイト内検索を使ったとき、「拓本」を最後まで読んだときに、インターネットを通じて。利用目的と保存期間：アクセス統計 — 統計データは14か月後に削除されます。拒否の方法：同意画面で「同意しないで続行する」を押すか、各ページ下部の「クッキー設定」から、いつでも同意を撤回できます。",
-          "ru": "При формировании статистики посещений (только с вашего согласия) — Получатель: Google LLC (США; Google Analytics). Передаваемые сведения: идентификатор cookie; просмотренная страница, сайт-источник перехода и нажатия на ссылки на Kyobo Book Centre; запросы, введённые в поиск по сайту, и число найденного; дочитано ли стихотворение «Оттиск» до конца (запросы, похожие на адрес электронной почты или номер телефона, не передаются); сведения о браузере и устройстве; сведения о подключении, которые браузер отправляет при открытии страницы (IP-адрес — используется для приблизительного определения страны и города; Google Analytics не регистрирует и не хранит IP-адреса). Время и способ передачи: после получения вашего согласия — при открытии страницы, при нажатии на ссылку на Kyobo Book Centre, при поиске по сайту и когда стихотворение «Оттиск» дочитано до конца, через интернет. Цель использования и срок хранения: статистика посещений — статистические данные удаляются через 14 месяцев. Как отказаться: нажмите «Продолжить без согласия» в окне запроса согласия либо в любой момент отзовите согласие в разделе «Настройки cookie» внизу каждой страницы.",
-          "es": "Cuando se elaboran estadísticas de visitas (solo si das tu consentimiento) — Destinatario: Google LLC (Estados Unidos · Google Analytics). Datos transferidos: un identificador de cookie; la página vista, el sitio de procedencia y los clics en enlaces a Kyobo Book Centre; lo que escribes en el buscador del sitio y el número de resultados; si has llegado al final del poema «Calco» (no se envían los términos de búsqueda que parezcan una dirección de correo electrónico o un número de teléfono); datos del navegador y del dispositivo; y los datos de conexión que el navegador envía al abrir una página (dirección IP — se utiliza para estimar el país y la ciudad; Google Analytics no registra ni almacena direcciones IP). Momento y medio: tras dar tu consentimiento, al abrir una página, al hacer clic en un enlace a Kyobo Book Centre, al usar el buscador del sitio o al llegar al final de «Calco», a través de internet. Finalidad y plazo de conservación: estadísticas de visitas — los datos estadísticos se suprimen a los 14 meses. Cómo negarse: elige «Continuar sin aceptar» en la ventana de consentimiento, o retira tu consentimiento en cualquier momento desde «Configuración de cookies», al pie de cada página.",
-          "fr": "Lorsque des statistiques de visite sont établies (uniquement si vous y consentez) — Destinataire : Google LLC (États-Unis · Google Analytics). Données transférées : un identifiant de cookie ; la page consultée, le site de provenance et les clics sur un lien vers Kyobo Book Centre ; ce que vous saisissez dans la recherche du site et le nombre de résultats ; si vous avez atteint la fin du poème « Estampage » (les termes de recherche qui ressemblent à une adresse e-mail ou à un numéro de téléphone ne sont pas envoyés) ; les informations sur le navigateur et l’appareil ; et les données de connexion que votre navigateur envoie à l’ouverture d’une page (adresse IP — utilisée pour estimer le pays et la ville ; Google Analytics n’enregistre ni ne conserve les adresses IP). Moment et modalités : après votre consentement, à l’ouverture d’une page, lors d’un clic sur un lien vers Kyobo Book Centre, lors d’une recherche sur le site ou lorsque vous atteignez la fin d’« Estampage », via Internet. Finalité et durée de conservation : statistiques de visite — les données statistiques sont supprimées au bout de 14 mois. Comment refuser : choisissez « Continuer sans accepter » dans la fenêtre de consentement, ou retirez votre consentement à tout moment depuis « Paramètres des cookies », en bas de chaque page."
+          "ko": "방문 통계를 낼 때(동의하신 경우에만) — 받는 자: Google LLC(미국 · Google 애널리틱스). 옮겨지는 정보: 쿠키 식별자, 본 쪽 · 들어온 곳 · 누른 교보문고 링크, 사이트 찾기에 친 말과 찾은 수 · 시 「탁본」을 끝까지 읽었는지(메일 주소 · 전화번호처럼 보이는 검색어는 보내지 않습니다), 브라우저 · 기기 정보, 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 — 나라 · 도시를 짐작하는 데 쓰이며, Google 애널리틱스는 IP 주소를 기록하거나 저장하지 않습니다). 때와 방법: 동의하신 뒤 쪽을 열 때, 교보문고 링크를 누를 때, 사이트 찾기를 할 때, 「탁본」을 끝까지 내렸을 때, 인터넷으로. 쓰는 곳과 두는 기간: 방문 통계 — 통계 자료는 14개월 뒤 지워집니다. 거부하는 법: 동의 창에서 '동의 없이 계속하기'를 누르시거나, 각 쪽 아래 '쿠키 설정'에서 언제든 거두실 수 있습니다. 옮기는 근거: 동의 창에서 하신 동의(개인정보 보호법 제28조의8 제1항 제1호). 받는 자 연락처: policies.google.com/privacy. 거두셔도 사이트를 쓰는 데 달라지는 것은 없습니다.",
+          "en": "When visitor statistics are produced (only if you agree) — Recipient: Google LLC (United States · Google Analytics). What is transferred: a cookie identifier, the page viewed, the referring site, any click on a link to Kyobo Book Centre, what you type into the site search with the number of results, and whether you reached the end of the poem “Rubbing” (search terms that look like an email address or phone number are not sent), browser and device details, and the connection details your browser sends when a page opens (IP address — used to estimate country and city; Google Analytics does not log or store IP addresses). When and how: after you agree, when a page opens, a link to Kyobo Book Centre is clicked, the site search is used or the end of “Rubbing” is reached, over the internet. Purpose and retention: visitor statistics — the statistics are deleted after 14 months. How to refuse: choose ‘Continue without agreeing’ in the consent window, or withdraw at any time under ‘Cookie settings’ at the bottom of each page. Legal basis: your consent in the consent dialog (Personal Information Protection Act of Korea, Article 28-8(1)(1)). Recipient’s contact: policies.google.com/privacy. Withdrawing consent makes no difference to how you can use the site.",
+          "ja": "アクセス統計を取るとき（同意された場合のみ） — 移転先：Google LLC（米国・Google Analytics）。移転される情報：クッキー識別子、閲覧したページ・参照元・教保文庫へのリンクのクリック、サイト内検索に入力した言葉と結果の数・詩「拓本」を最後まで読んだかどうか（メールアドレス・電話番号のように見える検索語は送信しません）、ブラウザ・デバイスの情報、ページを開くときにブラウザが送信する接続情報（IPアドレス — 国・都市の推定に使われ、Google AnalyticsはIPアドレスを記録・保存しません）。時期と方法：同意された後、ページを開いたとき、教保文庫へのリンクをクリックしたとき、サイト内検索を使ったとき、「拓本」を最後まで読んだときに、インターネットを通じて。利用目的と保存期間：アクセス統計 — 統計データは14か月後に削除されます。拒否の方法：同意画面で「同意しないで続行する」を押すか、各ページ下部の「クッキー設定」から、いつでも同意を撤回できます。 移転の根拠：同意ウィンドウでいただいた同意（韓国個人情報保護法第28条の8第1項第1号）。移転先の連絡先：policies.google.com/privacy。同意を撤回されても、サイトのご利用に変わりはありません。",
+          "ru": "При формировании статистики посещений (только с вашего согласия) — Получатель: Google LLC (США; Google Analytics). Передаваемые сведения: идентификатор cookie; просмотренная страница, сайт-источник перехода и нажатия на ссылки на Kyobo Book Centre; запросы, введённые в поиск по сайту, и число найденного; дочитано ли стихотворение «Оттиск» до конца (запросы, похожие на адрес электронной почты или номер телефона, не передаются); сведения о браузере и устройстве; сведения о подключении, которые браузер отправляет при открытии страницы (IP-адрес — используется для приблизительного определения страны и города; Google Analytics не регистрирует и не хранит IP-адреса). Время и способ передачи: после получения вашего согласия — при открытии страницы, при нажатии на ссылку на Kyobo Book Centre, при поиске по сайту и когда стихотворение «Оттиск» дочитано до конца, через интернет. Цель использования и срок хранения: статистика посещений — статистические данные удаляются через 14 месяцев. Как отказаться: нажмите «Продолжить без согласия» в окне запроса согласия либо в любой момент отзовите согласие в разделе «Настройки cookie» внизу каждой страницы. Правовое основание: ваше согласие в окне согласия (Закон Республики Корея о защите персональных данных, ст. 28-8, ч. 1, п. 1). Контакты получателя: policies.google.com/privacy. Отзыв согласия не влияет на возможность пользоваться сайтом.",
+          "es": "Cuando se elaboran estadísticas de visitas (solo si das tu consentimiento) — Destinatario: Google LLC (Estados Unidos · Google Analytics). Datos transferidos: un identificador de cookie; la página vista, el sitio de procedencia y los clics en enlaces a Kyobo Book Centre; lo que escribes en el buscador del sitio y el número de resultados; si has llegado al final del poema «Calco» (no se envían los términos de búsqueda que parezcan una dirección de correo electrónico o un número de teléfono); datos del navegador y del dispositivo; y los datos de conexión que el navegador envía al abrir una página (dirección IP — se utiliza para estimar el país y la ciudad; Google Analytics no registra ni almacena direcciones IP). Momento y medio: tras dar tu consentimiento, al abrir una página, al hacer clic en un enlace a Kyobo Book Centre, al usar el buscador del sitio o al llegar al final de «Calco», a través de internet. Finalidad y plazo de conservación: estadísticas de visitas — los datos estadísticos se suprimen a los 14 meses. Cómo negarse: elige «Continuar sin aceptar» en la ventana de consentimiento, o retira tu consentimiento en cualquier momento desde «Configuración de cookies», al pie de cada página. Base jurídica: tu consentimiento en la ventana de consentimiento (Ley de Protección de Datos Personales de Corea, artículo 28-8, apartado 1, punto 1). Contacto del destinatario: policies.google.com/privacy. Retirar el consentimiento no cambia en absoluto el uso del sitio.",
+          "fr": "Lorsque des statistiques de visite sont établies (uniquement si vous y consentez) — Destinataire : Google LLC (États-Unis · Google Analytics). Données transférées : un identifiant de cookie ; la page consultée, le site de provenance et les clics sur un lien vers Kyobo Book Centre ; ce que vous saisissez dans la recherche du site et le nombre de résultats ; si vous avez atteint la fin du poème « Estampage » (les termes de recherche qui ressemblent à une adresse e-mail ou à un numéro de téléphone ne sont pas envoyés) ; les informations sur le navigateur et l’appareil ; et les données de connexion que votre navigateur envoie à l’ouverture d’une page (adresse IP — utilisée pour estimer le pays et la ville ; Google Analytics n’enregistre ni ne conserve les adresses IP). Moment et modalités : après votre consentement, à l’ouverture d’une page, lors d’un clic sur un lien vers Kyobo Book Centre, lors d’une recherche sur le site ou lorsque vous atteignez la fin d’« Estampage », via Internet. Finalité et durée de conservation : statistiques de visite — les données statistiques sont supprimées au bout de 14 mois. Comment refuser : choisissez « Continuer sans accepter » dans la fenêtre de consentement, ou retirez votre consentement à tout moment depuis « Paramètres des cookies », en bas de chaque page. Base juridique : votre consentement dans la fenêtre de consentement (loi coréenne sur la protection des données personnelles, article 28-8, paragraphe 1, point 1). Contact du destinataire : policies.google.com/privacy. Retirer votre consentement ne change rien à votre utilisation du site."
         },
         {
           "when": "clarity",
-          "ko": "화면 쓰임 기록을 낼 때(동의하신 경우에만) — 받는 자: Microsoft Corporation(미국 · Microsoft Clarity). 옮겨지는 정보: 쿠키 식별자, 본 쪽에서 누른 곳 · 내린 정도 · 마우스와 손가락의 움직임(방명록 · 연락 칸에 쓰신 글은 가려져 옮겨지지 않습니다), 브라우저 · 기기 정보, 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 — 나라를 짐작하는 데 쓰임). 때와 방법: 동의하신 뒤 쪽을 볼 때, 인터넷으로. 쓰는 곳과 두는 기간: 쪽을 읽기 좋게 고치는 데 — 화면 기록은 30일 뒤 지워집니다. 거부하는 법: 동의 창의 파트너 선택에서 Microsoft Clarity를 '차단'하시거나, 각 쪽 아래 '쿠키 설정'에서 언제든 거두실 수 있습니다.",
-          "en": "When page-use records are produced (only if you agree) — Recipient: Microsoft Corporation (United States · Microsoft Clarity). What is transferred: a cookie identifier, where you click and how far you scroll on the page you view, mouse and touch movements (anything you type in the guestbook or contact form is masked and not transferred), browser and device information, and the connection information your browser sends when opening a page (IP address — used to estimate your country). When and how: when you view pages after agreeing, over the internet. Purpose and retention: to make the pages easier to read — page recordings are deleted after 30 days. How to refuse: choose “Reject” for Microsoft Clarity in the partner list of the consent window, or withdraw at any time under “Cookie settings” at the bottom of each page.",
-          "ja": "画面の使われ方の記録をとるとき(同意された場合のみ) — 受け取る者:Microsoft Corporation(米国 · Microsoft Clarity)。移される情報:Cookie識別子、ご覧のページでクリックした場所 · スクロールした深さ · マウスや指の動き(芳名録 · お問い合わせ欄に書かれた文字は隠され、移されません)、ブラウザ · 端末の情報、ページを開くときにブラウザが送る接続情報(IPアドレス — 国の推定に使われます)。時期と方法:同意された後にページを見るとき、インターネットで。利用目的と保存期間:ページを読みやすく直すため — 画面の記録は30日後に削除されます。拒否する方法:同意ウィンドウのパートナー選択でMicrosoft Clarityを「拒否」にするか、各ページ下の「Cookie設定」からいつでも撤回できます。",
-          "ru": "При ведении записей использования страниц (только с вашего согласия) — Получатель: Microsoft Corporation (США; Microsoft Clarity). Передаваемые сведения: идентификатор cookie; места нажатий и глубина прокрутки на просматриваемой странице, движения мыши и касания (текст, вводимый вами в гостевой книге и в форме связи, скрывается и не передаётся); сведения о браузере и устройстве; сведения о подключении, которые браузер отправляет при открытии страницы (IP-адрес — используется для приблизительного определения страны). Время и способ передачи: при просмотре страниц после получения вашего согласия, через интернет. Цель использования и срок хранения: улучшение страниц для удобства чтения — записи просмотра страниц удаляются через 30 дней. Как отказаться: выберите «Отклонить» для Microsoft Clarity в списке партнёров в окне запроса согласия либо в любой момент отзовите согласие в разделе «Настройки cookie» внизу каждой страницы.",
-          "es": "Cuando se elaboran registros de uso de las páginas (solo si das tu consentimiento) — Destinatario: Microsoft Corporation (Estados Unidos · Microsoft Clarity). Datos transferidos: un identificador de cookie; dónde haces clic y hasta dónde te desplazas en la página que ves, y los movimientos del ratón y táctiles (lo que escribes en el libro de visitas o en el formulario de contacto se oculta y no se transfiere); datos del navegador y del dispositivo; y los datos de conexión que el navegador envía al abrir una página (dirección IP — se utiliza para estimar el país). Momento y medio: al ver páginas después de dar tu consentimiento, a través de internet. Finalidad y plazo de conservación: hacer que las páginas sean más fáciles de leer — las grabaciones de las páginas se suprimen a los 30 días. Cómo negarse: elige «Rechazar» para Microsoft Clarity en la lista de socios de la ventana de consentimiento, o retira tu consentimiento en cualquier momento desde «Configuración de cookies», al pie de cada página.",
-          "fr": "Lorsque des enregistrements d’utilisation des pages sont établis (uniquement si vous y consentez) — Destinataire : Microsoft Corporation (États-Unis · Microsoft Clarity). Données transférées : un identifiant de cookie ; les endroits où vous cliquez et jusqu’où vous faites défiler la page consultée, ainsi que les mouvements de la souris et du doigt (ce que vous écrivez dans le livre d’or ou le formulaire de contact est masqué et n’est pas transféré) ; les informations sur le navigateur et l’appareil ; et les données de connexion que votre navigateur envoie à l’ouverture d’une page (adresse IP — utilisée pour estimer le pays). Moment et modalités : lorsque vous consultez des pages après avoir donné votre consentement, via Internet. Finalité et durée de conservation : rendre les pages plus faciles à lire — les enregistrements des pages sont supprimés au bout de 30 jours. Comment refuser : choisissez « Refuser » pour Microsoft Clarity dans la liste des partenaires de la fenêtre de consentement, ou retirez votre consentement à tout moment depuis « Paramètres des cookies », en bas de chaque page."
+          "ko": "화면 쓰임 기록을 낼 때(동의하신 경우에만) — 받는 자: Microsoft Corporation(미국 · Microsoft Clarity). 옮겨지는 정보: 쿠키 식별자, 본 쪽에서 누른 곳 · 내린 정도 · 마우스와 손가락의 움직임(방명록 · 연락 칸에 쓰신 글은 가려져 옮겨지지 않습니다), 브라우저 · 기기 정보, 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 — 나라를 짐작하는 데 쓰임). 때와 방법: 동의하신 뒤 쪽을 볼 때, 인터넷으로. 쓰는 곳과 두는 기간: 쪽을 읽기 좋게 고치는 데 — 화면 기록은 30일 뒤 지워집니다. 거부하는 법: 동의 창의 파트너 선택에서 Microsoft Clarity를 '차단'하시거나, 각 쪽 아래 '쿠키 설정'에서 언제든 거두실 수 있습니다. 옮기는 근거: 동의 창에서 하신 동의(개인정보 보호법 제28조의8 제1항 제1호). 받는 자 연락처: privacy.microsoft.com. 거두셔도 사이트를 쓰는 데 달라지는 것은 없습니다.",
+          "en": "When page-use records are produced (only if you agree) — Recipient: Microsoft Corporation (United States · Microsoft Clarity). What is transferred: a cookie identifier, where you click and how far you scroll on the page you view, mouse and touch movements (anything you type in the guestbook or contact form is masked and not transferred), browser and device information, and the connection information your browser sends when opening a page (IP address — used to estimate your country). When and how: when you view pages after agreeing, over the internet. Purpose and retention: to make the pages easier to read — page recordings are deleted after 30 days. How to refuse: choose “Reject” for Microsoft Clarity in the partner list of the consent window, or withdraw at any time under “Cookie settings” at the bottom of each page. Legal basis: your consent in the consent dialog (Personal Information Protection Act of Korea, Article 28-8(1)(1)). Recipient’s contact: privacy.microsoft.com. Withdrawing consent makes no difference to how you can use the site.",
+          "ja": "画面の使われ方の記録をとるとき(同意された場合のみ) — 受け取る者:Microsoft Corporation(米国 · Microsoft Clarity)。移される情報:Cookie識別子、ご覧のページでクリックした場所 · スクロールした深さ · マウスや指の動き(芳名録 · お問い合わせ欄に書かれた文字は隠され、移されません)、ブラウザ · 端末の情報、ページを開くときにブラウザが送る接続情報(IPアドレス — 国の推定に使われます)。時期と方法:同意された後にページを見るとき、インターネットで。利用目的と保存期間:ページを読みやすく直すため — 画面の記録は30日後に削除されます。拒否する方法:同意ウィンドウのパートナー選択でMicrosoft Clarityを「拒否」にするか、各ページ下の「Cookie設定」からいつでも撤回できます。 移転の根拠：同意ウィンドウでいただいた同意（韓国個人情報保護法第28条の8第1項第1号）。移転先の連絡先：privacy.microsoft.com。同意を撤回されても、サイトのご利用に変わりはありません。",
+          "ru": "При ведении записей использования страниц (только с вашего согласия) — Получатель: Microsoft Corporation (США; Microsoft Clarity). Передаваемые сведения: идентификатор cookie; места нажатий и глубина прокрутки на просматриваемой странице, движения мыши и касания (текст, вводимый вами в гостевой книге и в форме связи, скрывается и не передаётся); сведения о браузере и устройстве; сведения о подключении, которые браузер отправляет при открытии страницы (IP-адрес — используется для приблизительного определения страны). Время и способ передачи: при просмотре страниц после получения вашего согласия, через интернет. Цель использования и срок хранения: улучшение страниц для удобства чтения — записи просмотра страниц удаляются через 30 дней. Как отказаться: выберите «Отклонить» для Microsoft Clarity в списке партнёров в окне запроса согласия либо в любой момент отзовите согласие в разделе «Настройки cookie» внизу каждой страницы. Правовое основание: ваше согласие в окне согласия (Закон Республики Корея о защите персональных данных, ст. 28-8, ч. 1, п. 1). Контакты получателя: privacy.microsoft.com. Отзыв согласия не влияет на возможность пользоваться сайтом.",
+          "es": "Cuando se elaboran registros de uso de las páginas (solo si das tu consentimiento) — Destinatario: Microsoft Corporation (Estados Unidos · Microsoft Clarity). Datos transferidos: un identificador de cookie; dónde haces clic y hasta dónde te desplazas en la página que ves, y los movimientos del ratón y táctiles (lo que escribes en el libro de visitas o en el formulario de contacto se oculta y no se transfiere); datos del navegador y del dispositivo; y los datos de conexión que el navegador envía al abrir una página (dirección IP — se utiliza para estimar el país). Momento y medio: al ver páginas después de dar tu consentimiento, a través de internet. Finalidad y plazo de conservación: hacer que las páginas sean más fáciles de leer — las grabaciones de las páginas se suprimen a los 30 días. Cómo negarse: elige «Rechazar» para Microsoft Clarity en la lista de socios de la ventana de consentimiento, o retira tu consentimiento en cualquier momento desde «Configuración de cookies», al pie de cada página. Base jurídica: tu consentimiento en la ventana de consentimiento (Ley de Protección de Datos Personales de Corea, artículo 28-8, apartado 1, punto 1). Contacto del destinatario: privacy.microsoft.com. Retirar el consentimiento no cambia en absoluto el uso del sitio.",
+          "fr": "Lorsque des enregistrements d’utilisation des pages sont établis (uniquement si vous y consentez) — Destinataire : Microsoft Corporation (États-Unis · Microsoft Clarity). Données transférées : un identifiant de cookie ; les endroits où vous cliquez et jusqu’où vous faites défiler la page consultée, ainsi que les mouvements de la souris et du doigt (ce que vous écrivez dans le livre d’or ou le formulaire de contact est masqué et n’est pas transféré) ; les informations sur le navigateur et l’appareil ; et les données de connexion que votre navigateur envoie à l’ouverture d’une page (adresse IP — utilisée pour estimer le pays). Moment et modalités : lorsque vous consultez des pages après avoir donné votre consentement, via Internet. Finalité et durée de conservation : rendre les pages plus faciles à lire — les enregistrements des pages sont supprimés au bout de 30 jours. Comment refuser : choisissez « Refuser » pour Microsoft Clarity dans la liste des partenaires de la fenêtre de consentement, ou retirez votre consentement à tout moment depuis « Paramètres des cookies », en bas de chaque page. Base juridique : votre consentement dans la fenêtre de consentement (loi coréenne sur la protection des données personnelles, article 28-8, paragraphe 1, point 1). Contact du destinataire : privacy.microsoft.com. Retirer votre consentement ne change rien à votre utilisation du site."
         },
         {
           "when": "cfwa",
-          "ko": "방문 수를 셀 때 — 받는 자: Cloudflare, Inc.(미국 · Cloudflare Web Analytics). 옮겨지는 정보: 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 · 브라우저 정보)와 본 쪽 주소 · 들어온 곳 · 쪽이 열리는 속도. 때와 방법: 쪽을 열 때, 인터넷으로. 쓰는 곳: 방문 수 세기 — 쿠키나 기기 저장소를 쓰지 않고 '몇 명'으로만 합쳐 셉니다. 거부하는 법: 브라우저의 추적 막기 · 광고 차단 기능을 켜거나 자바스크립트를 끄시면 세지 않습니다.",
-          "en": "When visits are counted — Recipient: Cloudflare, Inc. (United States · Cloudflare Web Analytics). What is transferred: the connection details your browser sends when a page opens (IP address, browser information), plus the page address, where you came from and how fast the page loads. When and how: when a page opens, over the internet. Purpose: counting visits — no cookies or device storage are used, and visits are only added up as totals. How to refuse: turn on your browser’s tracking protection or an ad blocker, or turn off JavaScript, and nothing is counted.",
-          "ja": "アクセス数を計測するとき — 移転先：Cloudflare, Inc.（米国・Cloudflare Web Analytics）。移転される情報：ページを開くときにブラウザが送る接続情報（IPアドレス・ブラウザ情報）と、閲覧したページのアドレス・参照元・ページの表示速度。時期と方法：ページを開くとき、インターネットで。利用目的：アクセス数の計測 — クッキーや端末の保存領域は使わず、「何人」という合計としてのみ数えます。拒否の方法：ブラウザのトラッキング防止・広告ブロック機能を有効にするか、JavaScriptをオフにすると計測されません。",
-          "ru": "При подсчёте посещений — Получатель: Cloudflare, Inc. (США; Cloudflare Web Analytics). Передаваемые сведения: сведения о подключении, которые браузер отправляет при открытии страницы (IP-адрес, сведения о браузере), а также адрес просмотренной страницы, сайт-источник перехода и скорость загрузки страницы. Время и способ передачи: при открытии страницы, через интернет. Цель использования: подсчёт посещений — файлы cookie и хранилище устройства не используются, посещения учитываются только в виде общего количества. Как отказаться: если включить в браузере защиту от отслеживания или блокировку рекламы либо отключить JavaScript, посещения не учитываются.",
-          "es": "Cuando se cuentan las visitas — Destinatario: Cloudflare, Inc. (Estados Unidos · Cloudflare Web Analytics). Datos transferidos: los datos de conexión que el navegador envía al abrir una página (dirección IP, datos del navegador), además de la dirección de la página vista, el sitio de procedencia y la velocidad de carga de la página. Momento y medio: al abrir una página, a través de internet. Finalidad: recuento de visitas — no se utilizan cookies ni el almacenamiento del dispositivo, y las visitas solo se suman como totales. Cómo negarse: si activas en el navegador la protección contra el rastreo o un bloqueador de anuncios, o desactivas JavaScript, no se cuenta nada.",
-          "fr": "Lorsque les visites sont comptées — Destinataire : Cloudflare, Inc. (États-Unis · Cloudflare Web Analytics). Données transférées : les données de connexion que votre navigateur envoie à l’ouverture d’une page (adresse IP, informations sur le navigateur), ainsi que l’adresse de la page consultée, le site de provenance et la vitesse de chargement de la page. Moment et modalités : à l’ouverture d’une page, via Internet. Finalité : comptage des visites — ni cookies ni stockage de l’appareil ne sont utilisés, et les visites sont uniquement additionnées sous forme de totaux. Comment refuser : si vous activez la protection contre le pistage ou un bloqueur de publicités dans votre navigateur, ou si vous désactivez JavaScript, rien n’est compté."
+          "ko": "방문 수를 셀 때 — 받는 자: Cloudflare, Inc.(미국 · Cloudflare Web Analytics). 옮겨지는 정보: 쪽을 열 때 브라우저가 보내는 접속 정보(IP 주소 · 브라우저 정보)와 본 쪽 주소 · 들어온 곳 · 쪽이 열리는 속도. 때와 방법: 쪽을 열 때, 인터넷으로. 쓰는 곳: 방문 수 세기 — 쿠키나 기기 저장소를 쓰지 않고 '몇 명'으로만 합쳐 셉니다. 거부하는 법: 브라우저의 추적 막기 · 광고 차단 기능을 켜거나 자바스크립트를 끄시면 세지 않습니다. 옮기는 근거: 방문 수 세기를 Cloudflare에 맡긴 것(처리 위탁, 6절)으로, 이 처리방침에 알려 드립니다(개인정보 보호법 제28조의8 제1항 제3호). 받는 자 연락처: privacy@cloudflare.com. 막으셔도 사이트를 쓰는 데 달라지는 것은 없습니다.",
+          "en": "When visits are counted — Recipient: Cloudflare, Inc. (United States · Cloudflare Web Analytics). What is transferred: the connection details your browser sends when a page opens (IP address, browser information), plus the page address, where you came from and how fast the page loads. When and how: when a page opens, over the internet. Purpose: counting visits — no cookies or device storage are used, and visits are only added up as totals. How to refuse: turn on your browser’s tracking protection or an ad blocker, or turn off JavaScript, and nothing is counted. Legal basis: visit counting is entrusted to Cloudflare (outsourcing, section 6), and this is disclosed in this policy (Personal Information Protection Act of Korea, Article 28-8(1)(3)). Recipient’s contact: privacy@cloudflare.com. Blocking it makes no difference to how you can use the site.",
+          "ja": "アクセス数を計測するとき — 移転先：Cloudflare, Inc.（米国・Cloudflare Web Analytics）。移転される情報：ページを開くときにブラウザが送る接続情報（IPアドレス・ブラウザ情報）と、閲覧したページのアドレス・参照元・ページの表示速度。時期と方法：ページを開くとき、インターネットで。利用目的：アクセス数の計測 — クッキーや端末の保存領域は使わず、「何人」という合計としてのみ数えます。拒否の方法：ブラウザのトラッキング防止・広告ブロック機能を有効にするか、JavaScriptをオフにすると計測されません。 移転の根拠：アクセス数の計測をCloudflareに委託しているもので（処理委託、第6項）、本ポリシーで公開しています（韓国個人情報保護法第28条の8第1項第3号）。移転先の連絡先：privacy@cloudflare.com。ブロックされても、サイトのご利用に変わりはありません。",
+          "ru": "При подсчёте посещений — Получатель: Cloudflare, Inc. (США; Cloudflare Web Analytics). Передаваемые сведения: сведения о подключении, которые браузер отправляет при открытии страницы (IP-адрес, сведения о браузере), а также адрес просмотренной страницы, сайт-источник перехода и скорость загрузки страницы. Время и способ передачи: при открытии страницы, через интернет. Цель использования: подсчёт посещений — файлы cookie и хранилище устройства не используются, посещения учитываются только в виде общего количества. Как отказаться: если включить в браузере защиту от отслеживания или блокировку рекламы либо отключить JavaScript, посещения не учитываются. Правовое основание: подсчёт посещений поручен Cloudflare (поручение обработки, раздел 6), о чём сообщается в настоящей политике (Закон Республики Корея о защите персональных данных, ст. 28-8, ч. 1, п. 3). Контакты получателя: privacy@cloudflare.com. Блокировка не влияет на возможность пользоваться сайтом.",
+          "es": "Cuando se cuentan las visitas — Destinatario: Cloudflare, Inc. (Estados Unidos · Cloudflare Web Analytics). Datos transferidos: los datos de conexión que el navegador envía al abrir una página (dirección IP, datos del navegador), además de la dirección de la página vista, el sitio de procedencia y la velocidad de carga de la página. Momento y medio: al abrir una página, a través de internet. Finalidad: recuento de visitas — no se utilizan cookies ni el almacenamiento del dispositivo, y las visitas solo se suman como totales. Cómo negarse: si activas en el navegador la protección contra el rastreo o un bloqueador de anuncios, o desactivas JavaScript, no se cuenta nada. Base jurídica: el recuento de visitas se encarga a Cloudflare (encargo del tratamiento, sección 6), lo que se informa en esta política (Ley de Protección de Datos Personales de Corea, artículo 28-8, apartado 1, punto 3). Contacto del destinatario: privacy@cloudflare.com. Bloquearlo no cambia en absoluto el uso del sitio.",
+          "fr": "Lorsque les visites sont comptées — Destinataire : Cloudflare, Inc. (États-Unis · Cloudflare Web Analytics). Données transférées : les données de connexion que votre navigateur envoie à l’ouverture d’une page (adresse IP, informations sur le navigateur), ainsi que l’adresse de la page consultée, le site de provenance et la vitesse de chargement de la page. Moment et modalités : à l’ouverture d’une page, via Internet. Finalité : comptage des visites — ni cookies ni stockage de l’appareil ne sont utilisés, et les visites sont uniquement additionnées sous forme de totaux. Comment refuser : si vous activez la protection contre le pistage ou un bloqueur de publicités dans votre navigateur, ou si vous désactivez JavaScript, rien n’est compté. Base juridique : le comptage des visites est confié à Cloudflare (sous-traitance, section 6), ce qui est indiqué dans la présente politique (loi coréenne sur la protection des données personnelles, article 28-8, paragraphe 1, point 3). Contact du destinataire : privacy@cloudflare.com. Le bloquer ne change rien à votre utilisation du site."
         },
         {
           "when": "youtube",
@@ -315,12 +376,182 @@
       },
       "items": [
         {
-          "ko": "남기신 정보를 보거나, 고치거나, 지우거나, 쓰지 말아 달라고 하실 수 있습니다. 연락 칸의 인스타그램 메시지나 메일로 말씀해 주세요. 개인정보 보호책임자는 남동원입니다.",
-          "en": "You can ask to see, correct, delete or stop the use of anything you have left. Please get in touch by Instagram message or email (see the contact section). The person responsible for personal information is Dongwon Nam.",
-          "ja": "残していただいた情報の開示・訂正・削除・利用停止をご請求いただけます。「お問い合わせ」にあるInstagramのメッセージ、またはメールでお申し出ください。個人情報保護責任者は、ナム・ドンウォンです。",
-          "ru": "Вы можете запросить доступ к оставленным вами сведениям, их исправление, удаление или прекращение их использования. Пожалуйста, обратитесь через сообщения в Instagram или по электронной почте (см. раздел «Контакты»). Ответственным за защиту персональных данных является Нам Донвон.",
-          "es": "Puedes solicitar el acceso a los datos que hayas dejado, así como su rectificación, su supresión o el cese de su uso. Puedes hacerlo por mensaje de Instagram o por correo electrónico (consulta la sección «Contacto»). El responsable de la protección de los datos personales es Dongwon Nam.",
-          "fr": "Vous pouvez demander l’accès aux informations que vous avez laissées, leur rectification, leur effacement ou l’arrêt de leur utilisation. Pour cela, contactez Dongwon Nam par message Instagram ou par e-mail (voir la section « Contact »). Le responsable de la protection des données personnelles est Dongwon Nam."
+          "ko": "남기신 정보를 보거나, 고치거나, 지우거나, 쓰지 말아 달라고(처리 정지) 하실 수 있습니다. 8절의 메일이나 연락 칸의 인스타그램 메시지로 말씀해 주세요.",
+          "en": "You can ask to see, correct, delete or stop the use of (suspend the processing of) anything you have left. Please write to the email address in section 8 or send an Instagram message (see the contact section).",
+          "ja": "残していただいた情報の開示・訂正・削除・利用停止（処理停止）をご請求いただけます。第8項のメール、または「お問い合わせ」にあるInstagramのメッセージでお申し出ください。",
+          "ru": "Вы можете запросить доступ к оставленным вами сведениям, их исправление, удаление или прекращение их использования (приостановку обработки). Напишите на адрес электронной почты из раздела 8 или отправьте сообщение в Instagram (см. раздел «Контакты»).",
+          "es": "Puedes solicitar el acceso a los datos que hayas dejado, así como su rectificación, su supresión o el cese de su uso (suspensión del tratamiento). Escribe al correo de la sección 8 o envía un mensaje de Instagram (consulta la sección «Contacto»).",
+          "fr": "Vous pouvez demander l’accès aux informations que vous avez laissées, leur rectification, leur effacement ou l’arrêt de leur utilisation (suspension du traitement). Écrivez à l’adresse e-mail de la section 8 ou envoyez un message Instagram (voir la section « Contact »)."
+        },
+        {
+          "when": "ga4",
+          "ko": "방문 통계 동의는 각 쪽 아래 '쿠키 설정'에서 언제든 거두실 수 있습니다.",
+          "en": "You can withdraw your consent to visitor statistics at any time under ‘Cookie settings’ at the bottom of each page.",
+          "ja": "アクセス統計への同意は、各ページ下の「クッキー設定」からいつでも撤回できます。",
+          "ru": "Согласие на статистику посещений можно в любой момент отозвать в «Настройках cookie» внизу каждой страницы.",
+          "es": "Puedes retirar tu consentimiento a las estadísticas de visitas en cualquier momento en «Configuración de cookies», al pie de cada página.",
+          "fr": "Vous pouvez retirer votre consentement aux statistiques de visite à tout moment via « Paramètres des cookies », en bas de chaque page."
+        },
+        {
+          "ko": "만 14세 미만 아동의 법정대리인도 같은 방법으로 요청하실 수 있습니다.",
+          "en": "The legal guardian of a child under 14 may make these requests in the same way.",
+          "ja": "14歳未満の児童の法定代理人も、同じ方法でご請求いただけます。",
+          "ru": "Законный представитель ребёнка младше 14 лет может обратиться с такими запросами тем же способом.",
+          "es": "El representante legal de un menor de 14 años puede presentar estas solicitudes de la misma manera.",
+          "fr": "Le représentant légal d’un enfant de moins de 14 ans peut faire ces demandes de la même manière."
+        },
+        {
+          "ko": "요청을 받으면 10일 안에 답하고 처리합니다. 요청하셨다는 이유로 불이익을 받는 일은 없습니다.",
+          "en": "Requests are answered and handled within 10 days. Making a request will never put you at any disadvantage.",
+          "ja": "ご請求を受けてから10日以内にお答えし、対応します。ご請求を理由に不利益を受けることはありません。",
+          "ru": "Ответ и выполнение запроса — в течение 10 дней. Обращение с запросом никак не ухудшит ваше положение.",
+          "es": "Las solicitudes se responden y atienden en un plazo de 10 días. Presentar una solicitud nunca te supondrá ningún perjuicio.",
+          "fr": "Les demandes reçoivent une réponse et sont traitées sous 10 jours. Faire une demande ne vous causera jamais aucun préjudice."
+        },
+        {
+          "ko": "개인정보 침해로 도움이 필요하시면 개인정보침해신고센터(privacy.kisa.or.kr · 118) · 개인정보분쟁조정위원회(kopico.go.kr · 1833-6972) · 대검찰청(spo.go.kr · 1301) · 경찰청(ecrm.police.go.kr · 182)에 문의하실 수 있습니다.",
+          "en": "If you need help with a privacy violation, you can contact the Korean authorities: Personal Information Infringement Report Center (privacy.kisa.or.kr · 118), Personal Information Dispute Mediation Committee (kopico.go.kr · 1833-6972), Supreme Prosecutors’ Office (spo.go.kr · 1301) or Korean National Police Agency (ecrm.police.go.kr · 182).",
+          "ja": "個人情報の侵害についてお困りの場合は、韓国の機関にお問い合わせいただけます：個人情報侵害申告センター（privacy.kisa.or.kr・118）、個人情報紛争調停委員会（kopico.go.kr・1833-6972）、大検察庁（spo.go.kr・1301）、警察庁（ecrm.police.go.kr・182）。",
+          "ru": "Если вам нужна помощь в связи с нарушением прав на персональные данные, вы можете обратиться в корейские органы: Центр приёма сообщений о нарушениях (privacy.kisa.or.kr · 118), Комитет по урегулированию споров о персональных данных (kopico.go.kr · 1833-6972), Верховная прокуратура (spo.go.kr · 1301) или Национальное полицейское агентство (ecrm.police.go.kr · 182).",
+          "es": "Si necesitas ayuda por una vulneración de tus datos personales, puedes dirigirte a las autoridades coreanas: Centro de Denuncias de Vulneraciones de Datos Personales (privacy.kisa.or.kr · 118), Comité de Mediación de Conflictos sobre Datos Personales (kopico.go.kr · 1833-6972), Fiscalía Suprema (spo.go.kr · 1301) o Agencia Nacional de Policía (ecrm.police.go.kr · 182).",
+          "fr": "Si vous avez besoin d’aide en cas d’atteinte à vos données personnelles, vous pouvez contacter les autorités coréennes : Centre de signalement des atteintes aux données personnelles (privacy.kisa.or.kr · 118), Comité de médiation des litiges relatifs aux données personnelles (kopico.go.kr · 1833-6972), Parquet suprême (spo.go.kr · 1301) ou Agence nationale de police (ecrm.police.go.kr · 182)."
+        }
+      ]
+    },
+    {
+      "h": {
+        "ko": "6. 일을 맡긴 곳(처리 위탁)",
+        "en": "6. Service providers (outsourcing)",
+        "ja": "6. 処理の委託先",
+        "ru": "6. Обработчики (поручение обработки)",
+        "es": "6. Encargados del tratamiento",
+        "fr": "6. Sous-traitants"
+      },
+      "items": [
+        {
+          "when": "guestbook",
+          "ko": "Google LLC — 방명록 글 받기와 보관(구글 폼 · 구글 시트)",
+          "en": "Google LLC — receiving and storing guestbook notes (Google Forms · Google Sheets)",
+          "ja": "Google LLC — 芳名録メッセージの受付と保存（Googleフォーム・Googleスプレッドシート）",
+          "ru": "Google LLC — приём и хранение записей гостевой книги (Google Forms · Google Sheets)",
+          "es": "Google LLC — recepción y conservación de las notas del libro de visitas (Google Forms · Google Sheets)",
+          "fr": "Google LLC — réception et conservation des mots du livre d’or (Google Forms · Google Sheets)"
+        },
+        {
+          "ko": "Google LLC — 메일 받기와 보관(Gmail)",
+          "en": "Google LLC — receiving and storing email (Gmail)",
+          "ja": "Google LLC — メールの受信と保存（Gmail）",
+          "ru": "Google LLC — получение и хранение электронной почты (Gmail)",
+          "es": "Google LLC — recepción y conservación del correo (Gmail)",
+          "fr": "Google LLC — réception et conservation des e-mails (Gmail)"
+        },
+        {
+          "when": "ga4",
+          "ko": "Google LLC — 방문 통계(Google 애널리틱스 · 동의하신 경우에만)",
+          "en": "Google LLC — visitor statistics (Google Analytics, only with your consent)",
+          "ja": "Google LLC — アクセス統計（Googleアナリティクス・同意された場合のみ）",
+          "ru": "Google LLC — статистика посещений (Google Analytics, только с вашего согласия)",
+          "es": "Google LLC — estadísticas de visitas (Google Analytics, solo con tu consentimiento)",
+          "fr": "Google LLC — statistiques de visite (Google Analytics, uniquement avec votre consentement)"
+        },
+        {
+          "when": "clarity",
+          "ko": "Microsoft Corporation — 화면 쓰임 기록(Microsoft Clarity · 동의하신 경우에만)",
+          "en": "Microsoft Corporation — usage recordings (Microsoft Clarity, only with your consent)",
+          "ja": "Microsoft Corporation — 画面利用の記録（Microsoft Clarity・同意された場合のみ）",
+          "ru": "Microsoft Corporation — записи использования страниц (Microsoft Clarity, только с вашего согласия)",
+          "es": "Microsoft Corporation — registros de uso (Microsoft Clarity, solo con tu consentimiento)",
+          "fr": "Microsoft Corporation — enregistrements d’utilisation (Microsoft Clarity, uniquement avec votre consentement)"
+        },
+        {
+          "when": "cfwa",
+          "ko": "Cloudflare, Inc. — 방문 수 세기(Cloudflare Web Analytics)",
+          "en": "Cloudflare, Inc. — counting visits (Cloudflare Web Analytics)",
+          "ja": "Cloudflare, Inc. — アクセス数の計測（Cloudflare Web Analytics）",
+          "ru": "Cloudflare, Inc. — подсчёт посещений (Cloudflare Web Analytics)",
+          "es": "Cloudflare, Inc. — recuento de visitas (Cloudflare Web Analytics)",
+          "fr": "Cloudflare, Inc. — comptage des visites (Cloudflare Web Analytics)"
+        },
+        {
+          "ko": "GitHub, Inc. — 사이트 올려 두기(GitHub Pages)",
+          "en": "GitHub, Inc. — hosting the site (GitHub Pages)",
+          "ja": "GitHub, Inc. — サイトのホスティング（GitHub Pages）",
+          "ru": "GitHub, Inc. — размещение сайта (GitHub Pages)",
+          "es": "GitHub, Inc. — alojamiento del sitio (GitHub Pages)",
+          "fr": "GitHub, Inc. — hébergement du site (GitHub Pages)"
+        },
+        {
+          "ko": "맡긴 곳이나 맡긴 일이 바뀌면 이 처리방침에 바로 적습니다.",
+          "en": "Any change of provider or task will be reflected in this policy without delay.",
+          "ja": "委託先や委託業務が変わった場合は、本ポリシーに直ちに反映します。",
+          "ru": "При смене обработчика или поручаемых задач настоящая политика будет сразу обновлена.",
+          "es": "Cualquier cambio de encargado o de tarea se reflejará sin demora en esta política.",
+          "fr": "Tout changement de sous-traitant ou de tâche sera reporté sans délai dans la présente politique."
+        }
+      ]
+    },
+    {
+      "h": {
+        "ko": "7. 안전하게 지키는 방법",
+        "en": "7. How information is kept safe",
+        "ja": "7. 安全管理のための措置",
+        "ru": "7. Меры по обеспечению безопасности",
+        "es": "7. Medidas de seguridad",
+        "fr": "7. Mesures de sécurité"
+      },
+      "items": [
+        {
+          "ko": "개인정보를 다루는 사람은 운영자 남동원 한 사람뿐입니다.",
+          "en": "The only person who handles personal information is the site’s operator, Dongwon Nam.",
+          "ja": "個人情報を取り扱うのは、運営者のナム・ドンウォン一人だけです。",
+          "ru": "Персональные данные обрабатывает только владелец сайта — Нам Донвон.",
+          "es": "La única persona que trata los datos personales es el responsable del sitio, Dongwon Nam.",
+          "fr": "La seule personne qui traite les données personnelles est l’exploitant du site, Dongwon Nam."
+        },
+        {
+          "ko": "사이트와 관리 화면은 모두 암호화된 연결(HTTPS)로만 열립니다.",
+          "en": "The site and its admin screen are served only over encrypted connections (HTTPS).",
+          "ja": "サイトと管理画面は、すべて暗号化された接続（HTTPS）でのみ開きます。",
+          "ru": "Сайт и панель управления открываются только по зашифрованному соединению (HTTPS).",
+          "es": "El sitio y su panel de administración solo se abren mediante conexiones cifradas (HTTPS).",
+          "fr": "Le site et son interface d’administration ne sont accessibles que par connexion chiffrée (HTTPS)."
+        },
+        {
+          "ko": "관리 화면은 비밀번호와 2단계 인증(OTP)으로 잠그고, 틀린 시도가 이어지면 막으며, 로그인 기록을 남겨 살핍니다.",
+          "en": "The admin screen is protected by a password and two-step verification (OTP), repeated failed attempts are blocked, and sign-ins are logged and reviewed.",
+          "ja": "管理画面はパスワードと2段階認証（OTP）で保護し、誤った試行が続くと遮断し、ログイン記録を残して確認しています。",
+          "ru": "Панель управления защищена паролем и двухэтапной проверкой (OTP), повторные неудачные попытки блокируются, а входы записываются и проверяются.",
+          "es": "El panel de administración está protegido con contraseña y verificación en dos pasos (OTP), los intentos fallidos repetidos se bloquean y los inicios de sesión se registran y revisan.",
+          "fr": "L’interface d’administration est protégée par un mot de passe et une validation en deux étapes (OTP), les tentatives échouées répétées sont bloquées, et les connexions sont journalisées et vérifiées."
+        },
+        {
+          "when": "guestbook",
+          "ko": "관리 화면은 방명록이 담긴 구글 시트를 읽기만 하고, 받은 글을 따로 저장해 두지 않습니다.",
+          "en": "The admin screen only reads the Google Sheet holding guestbook notes and does not keep its own copy of them.",
+          "ja": "管理画面は芳名録のGoogleスプレッドシートを読み取るだけで、受け取ったメッセージを別途保存しません。",
+          "ru": "Панель управления только читает таблицу Google Sheets с записями гостевой книги и не хранит их копий.",
+          "es": "El panel de administración solo lee la hoja de Google Sheets con las notas del libro de visitas y no guarda copias propias.",
+          "fr": "L’interface d’administration se contente de lire la feuille Google Sheets contenant les mots du livre d’or et n’en conserve aucune copie."
+        }
+      ]
+    },
+    {
+      "h": {
+        "ko": "8. 개인정보 보호책임자",
+        "en": "8. Person responsible for personal information",
+        "ja": "8. 個人情報保護責任者",
+        "ru": "8. Ответственный за защиту персональных данных",
+        "es": "8. Responsable de la protección de datos",
+        "fr": "8. Responsable de la protection des données"
+      },
+      "items": [
+        {
+          "ko": "남동원(운영자) · 메일 {mail} — 개인정보에 관한 문의 · 요청 · 불만은 이 메일로 보내 주세요.",
+          "en": "Dongwon Nam (operator) · email {mail} — please send any questions, requests or complaints about personal information to this address.",
+          "ja": "ナム・ドンウォン（運営者）・メール {mail} — 個人情報に関するお問い合わせ・ご請求・苦情はこのメールにお送りください。",
+          "ru": "Нам Донвон (владелец сайта) · эл. почта {mail} — вопросы, запросы и жалобы, касающиеся персональных данных, направляйте на этот адрес.",
+          "es": "Dongwon Nam (responsable del sitio) · correo {mail} — envía a esta dirección cualquier consulta, solicitud o queja sobre datos personales.",
+          "fr": "Dongwon Nam (exploitant) · e-mail {mail} — adressez à cette adresse toute question, demande ou réclamation concernant les données personnelles."
         }
       ]
     }

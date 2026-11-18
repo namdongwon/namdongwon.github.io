@@ -2425,7 +2425,12 @@ def page_privacy(site, lang):
     lead = p["lead_ga"] if on["ga4"] and p.get("lead_ga") else p["lead_counted"] if on["goatcounter"] and p.get("lead_counted") else p["lead"]
     # 하9 — 목록 안 가운뎃점(이름 · 메일 · 내용)이 줄 머리로 가지 않게 앞 낱말에 붙임
     dotb = lambda h: re.sub(r"(?<![\w/.])(policies\.google\.com/privacy)", r'<a href="https://\1" target="_blank" rel="noopener">\1</a>', h.replace(" · ", NB + "· "))  # Google 처리방침은 눌러 가게(YouTube API 서비스 정책 III.A.2 '링크')
-    secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{dotb(g(i))}</li>" for i in (shown(x["items"]) or [x["empty"]] * ("empty" in x)))}</ul>' for x in p["sections"])
+    # 8절 보호책임자 메일(11/18 동원 버튼 '메일 주소 (권장)') — 원문엔 {mail}만, 주소는 site.json contact.email에서 글자 참조(&#nn;)로 넣어 긁는 봇을 덜 탐(연락 쪽 .ml과 같은 뜻 · 이 쪽은 main.js가 없어 글자 참조로)
+    em = site["contact"].get("email") or {}
+    mref = "".join(f"&#{ord(ch)};" for ch in f'{em.get("user", "")}@{em.get("domain", "")}') if em.get("user") else ""
+    mail = f'<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;{mref}">{mref}</a>' if mref else ""
+    dotb_m = lambda h: dotb(h).replace("{mail}", mail)  # noqa: E731
+    secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{dotb_m(g(i))}</li>" for i in (shown(x["items"]) or [x["empty"]] * ("empty" in x)))}</ul>' for x in p["sections"])
     # 다른 판 처리방침 — 11/1 일본어판부터 둘(한국어 · English · 日本語 가운데 지금 판 빼고 같은 차례) · 낱말은 그 말 제 이름(판권면 언어 줄과 같음)
     oth = "".join(f'<a class="oth" href="{R}{"" if x == "ko" else x + "/"}privacy/" lang="{x}" hreflang="{x}">{LANG_NAME[x]}</a>' for x in LANGS if x != lang)
     cz = ckp = ""
