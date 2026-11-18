@@ -1998,7 +1998,7 @@ def render(site, poem, videos, photos, lang="ko"):
     ix["contact"] += [(tg["contact"], plain(x["q"]), L["faq_title"], f"#fq{i}") for i, x in enumerate(S["contact"].get("faq") or [], 1)]  # 자주 묻는 질문 — 질문 글로 찾고 그 질문으로(펼쳐짐)
     # 11/18 다른 이름으로도 찾기(동원 — 시안 기준/브랜드 시안/UX여섯째시안_v1/⑨): 한국어판에서 lily · rubbing · iwai, 영어판에서 '릴리'가 0건이었음(실측).
     # 다른 판 제목 · 원제 · 만든 이 · 로마자를 그 판 찾을 낱말(다섯째 값) 끝에 '¦'로 이어 붙임 — 보이는 글은 그 판 말 그대로 · main.js가 '¦' 뒤 이름으로 맞으면 결과 밑에 그 이름
-    RAW = load("site.json")
+    RAW = site  # render가 받은 원고(시험은 자기 폴더에 site.json을 두지 않음 — 11/18 arttest)
     def al_(*vals):
         seen_, out_ = set(), []
         for v_ in vals:

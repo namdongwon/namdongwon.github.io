@@ -1772,7 +1772,9 @@
       try {
         const now = new Date(), wd = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Seoul", weekday: "short" }).format(now);
         const add = (["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(wd) + 7 - 0) % 7, day = new Date(now.getTime() + ((7 - add) % 7) * 864e5);
-        return new Intl.DateTimeFormat(H.lang || "ko", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: H.lang === "ja" ? "short" : "long" }).format(day);
+        let s = new Intl.DateTimeFormat(H.lang || "ko", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: H.lang === "ja" ? "short" : "long" }).format(day);
+        if (H.lang === "fr") s = s.replace(/(^|\s)1(?=\s)/, "$11er");  // 프랑스어 초하루는 1er(빌드의 frday와 같은 규칙)
+        return s.replace(/ /g, "\u00a0");  // 날짜는 한 덩어리 — 줄에서 쪼개지지 않게(빌드 날짜와 같은 붙임 공백 · 11/18 estest · frtest)
       } catch (x) { return ""; }
     })();
     { const m0 = gbf.querySelector(".msg"); if (m0 && gbMonday && UI.gb_promise_d) m0.textContent = uiText("gb_promise_d", "", { d: gbMonday }); }
