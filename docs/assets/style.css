@@ -1056,10 +1056,10 @@ html.sr-on{overflow:hidden}
 @media (min-width:1024px) and (hover:hover),(min-width:1024px) and (pointer:fine){.top .lsw-top{display:flex;align-items:center}}
 
 .top .lsw-top summary{gap:6px;margin:0;padding:6px 0;font-weight:600}.top .lsw-top{margin-right:-4px}  
-.top .lsw-top .gl{width:16px;height:16px;stroke-width:1.4}
 .top .lsw-top .cr{top:-3px}  
 .top .lsw-top ul{top:calc(100% + 12px);bottom:auto;left:auto;right:-8px}  
-.mnu .mlang{display:flex;flex-wrap:wrap;gap:8px 16px;margin:30px 0;padding-top:20px;border-top:1px solid var(--line);font:400 13px/1.5 var(--sans)}
+.mnu .mlang{display:flex;flex-wrap:wrap;gap:8px 12px;margin:30px 0;padding-top:20px;border-top:1px solid var(--line);font:400 13px/1.5 var(--sans)}
+.mnu .mlang .gl{width:16px;height:16px;align-self:center;color:var(--ink)}  
 .mnu .mlang a,.mnu .mlang span{display:inline;padding:0;font:inherit;color:var(--ink);text-decoration:none}.mnu .mlang [aria-current]{font-weight:600}
 @media (hover:hover){.mnu .mlang a:hover{color:var(--muted)}}.mnu .mlang a:active{opacity:.6}
 @media (max-width:374px){.top .act{gap:8px;margin-left:8px}}
