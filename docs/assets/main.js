@@ -442,7 +442,7 @@
       panes.forEach(x => { x.hidden = x !== p; x.classList.remove("go"); });
       return p;
     };
-    const go = p => { mm.style.height = p.offsetHeight + "px"; requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add("go"))); };
+    const go = p => { requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add("go"))); };  // 11/19 밤 토스식 — 높이 커튼 없이 판째 나타남(style.css .mm)
     const open = k => {
       if (!matchMedia("(min-width: 1024px)").matches || k === cur) return;
       const p = show(k);
@@ -452,8 +452,8 @@
       clearTimeout(tHide);
       if (!mm.classList.contains("vis")) {
         mm.style.top = Math.max(0, mmTop.getBoundingClientRect().bottom) + "px";
-        mm.style.height = "0px"; mm.classList.add("vis"); mm.removeAttribute("inert"); mm.removeAttribute("aria-hidden");
-        void mm.offsetHeight;  // 0에서 시작하게 한 번 잼
+        mm.classList.add("vis"); void mm.offsetHeight;  // 보이게 한 뒤 한 번 재야 불투명 0에서 0.28초로 나타남
+        mm.removeAttribute("inert"); mm.removeAttribute("aria-hidden");
       }
       go(p);
       cur = k;
@@ -462,12 +462,12 @@
       clearTimeout(tOpen);
       if (!mm.classList.contains("vis") || cur === null) return;  // cur는 쪽 이름 — 소개는 빈 글자("")라 !cur로 보면 안 됨(11/15 소개 칸이 안 닫히던 결함)
       panes.forEach(x => x.classList.remove("go"));
-      mm.style.height = "0px"; mm.setAttribute("inert", ""); mm.setAttribute("aria-hidden", "true");
+      mm.setAttribute("inert", ""); mm.setAttribute("aria-hidden", "true");
       navA.forEach(a => a.classList.remove("hov")); cur = null;
       kBtn.forEach(b => { b.setAttribute("aria-expanded", "false"); b.classList.remove("kb"); });
       const back = byKey; byKey = null;
       if (back && mm.contains(document.activeElement)) back.focus();  // 칸 안에서 Esc로 닫으면 단추로 돌아감
-      tHide = setTimeout(() => { if (cur === null) mm.classList.remove("vis"); }, still() ? 0 : 260);
+      tHide = setTimeout(() => { if (cur === null) mm.classList.remove("vis"); }, still() ? 0 : 300);  // 불투명 0.28초로 사라진 뒤
     };
     const inside = el => el && (mmTop.contains(el) || mm.contains(el));
     navA.forEach(a => {
