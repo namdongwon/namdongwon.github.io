@@ -2413,6 +2413,57 @@
       e.preventDefault(); move(dir);
     });
   })();
+  // 시집 페이지 위 탭 줄(11/18 동원 UX 넷 시안 ② → 버튼 "B 탭 줄 넣기 (권장)" — 기준/브랜드 시안/UX넷시안_v1/②B_GNB자리.png · 애플 제품 페이지 짜임):
+  // 넓은 창(768~ · CSS)에서 첫 화면 책 칸을 지나면 나타남 · 맨 위 띠(GNB)가 보이면 그 바로 아래, 내려서 띠가 숨으면(.top.hide) 같이 위로 · 지금 칸은 화면 40% 줄로 · 누르면 그 칸으로(탭 줄 아래 16px)
+  (() => {
+    const hm = document.getElementById("home"), pm = document.getElementById("poem"), ml = document.getElementById("mline"), pl = document.getElementById("palette");
+    const hd = document.querySelector("header.top");
+    if (!hm || !pm || !ml || !pl || !hd) return;
+    const ph = pm.querySelector("h2");
+    const names = uiText("bt_items", "처음|시 {poem}|이달의 한 줄 · 차례|팔레트", { poem: ph ? ph.textContent.trim() : "" }).split("|");
+    const els = [hm, pm, ml, pl];
+    const bar = document.createElement("nav");
+    bar.className = "bt";
+    bar.setAttribute("aria-label", uiText("bt_label", "이 페이지 탭"));
+    const pg = hd.querySelector("nav a[aria-current='page']");
+    const b = document.createElement("b");
+    b.textContent = pg ? pg.textContent.trim() : "";
+    bar.append(b);
+    const as = names.map((n, i) => { const a = document.createElement("a"); a.href = "#" + els[i].id; a.textContent = n; bar.append(a); return a; });
+    hd.after(bar);
+    const wide = matchMedia("(min-width:768px)");
+    const topOf = el => el.getBoundingClientRect().top + scrollY;
+    const go = el => {
+      const y = el === hm ? 0 : Math.max(0, topOf(el) - 48 - 16);
+      scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" });
+    };
+    b.addEventListener("click", () => go(hm));
+    as.forEach((a, i) => a.addEventListener("click", ev => {
+      if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
+      ev.preventDefault(); go(els[i]);
+    }));
+    let pend = false;
+    const paint = () => {
+      pend = false;
+      bar.style.setProperty("--bt-y", hd.offsetHeight + "px");
+      bar.classList.toggle("up", hd.classList.contains("hide"));
+      const vis = hm.getBoundingClientRect().bottom < hd.offsetHeight + 48;
+      bar.classList.toggle("on", vis);
+      if (vis) bar.removeAttribute("inert"); else bar.setAttribute("inert", "");
+      // 「탁본」 읽기 진행 줄(.rbar — 맨 위 띠 바로 아래)을 탭 줄이 보이는 동안은 탭 줄 아래 선으로(가려지거나 탭 줄과 띠 사이에 끼지 않게)
+      H.style.setProperty("--rbar-y", vis && wide.matches ? ((hd.classList.contains("hide") ? 0 : hd.offsetHeight) + 48) + "px" : "");
+      const y = scrollY + innerHeight * 0.4, end = scrollY + innerHeight >= document.documentElement.scrollHeight - 2;
+      let k = 0;
+      els.forEach((el, i) => { if (topOf(el) <= y) k = i; });
+      if (end) k = els.length - 1;
+      as.forEach((a, i) => { a.classList.toggle("on", i === k); if (i === k) a.setAttribute("aria-current", "location"); else a.removeAttribute("aria-current"); });
+    };
+    const ask = () => { if (!pend) { pend = true; requestAnimationFrame(paint); } };
+    addEventListener("scroll", ask, { passive: true });
+    addEventListener("resize", ask, { passive: true });
+    new MutationObserver(ask).observe(hd, { attributes: true, attributeFilter: ["class"] });
+    paint();
+  })();
   // 랜딩(소개) 페이지 칸 표시(11/16 동원 toss.im "이거 왼쪽에 있는 거 우리 랜딩페이지에 좀 넣어보자" → 시안 기준/브랜드 시안/랜딩목차시안_v1 'A 왼쪽 토스 꼴 (권장)'):
   // 토스 실측 — 2px 막대(짧게 · 지금 칸만 먹) · 줄 12px · 올리면 가리킨 막대가 길어지고 이웃도 물결처럼 · 옆에 칸 이름 · 칸 다섯(처음 · 소개 · 지금 · 기록 · 다음 페이지)
   // 넓은 창(1024~)에서만 · 첫 화면 사람 사진 위에서도 보이게 색 뒤집기(mix-blend difference) · 누르면 그 칸으로 · 키보드 초점도 올린 것과 같게

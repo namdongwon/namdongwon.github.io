@@ -1159,9 +1159,9 @@ html.cz-on{overflow:hidden}
 .poem .w.ink{background:var(--ink);color:var(--bg);box-shadow:0 0 0 2px var(--ink)}
 @media (hover:hover) and (pointer:fine){.js .poem{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='11' cy='11' r='8' fill='none' stroke='%23fff' stroke-width='2.5'/%3E%3Ccircle cx='11' cy='11' r='8' fill='none' stroke='%23111' stroke-width='1.2'/%3E%3C/svg%3E") 11 11,text}}
 
-.rbar{position:fixed;left:0;right:0;top:var(--top);z-index:11;height:2px;background:var(--ink);transform:scaleX(0);transform-origin:0 50%;opacity:0;pointer-events:none}
+.rbar{position:fixed;left:0;right:0;top:var(--rbar-y,var(--top));z-index:11;height:2px;background:var(--ink);transform:scaleX(0);transform-origin:0 50%;opacity:0;pointer-events:none}
 .rbar.on{opacity:1}
-@media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .rbar,:where(:root:not([data-motion="reduce"])).rbar{transition:opacity .3s}}
+@media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .rbar,:where(:root:not([data-motion="reduce"])).rbar{transition:opacity .3s,top .25s var(--e2,ease)}}  
 
 
 
@@ -1387,6 +1387,21 @@ html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja
 .rip{position:fixed;left:0;top:0;width:14px;height:14px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ink) 55%,transparent);pointer-events:none;z-index:2147483646;transform:translate(-50%,-50%);animation:rip .6s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes rip{to{transform:translate(-50%,-50%) scale(5.5);opacity:0}}
 @media (prefers-reduced-motion:reduce){.cur,.rip{display:none}}:where(:root[data-motion="reduce"]) .cur,:where(:root[data-motion="reduce"]).cur,:where(:root[data-motion="reduce"]) .rip,:where(:root[data-motion="reduce"]).rip{display:none}:root[data-motion="reduce"] :is(.cur,.rip){display:none}
+
+.bt{display:none}
+@media (min-width:768px){
+  .bt{position:fixed;left:0;right:0;top:var(--bt-y,var(--top));z-index:9;display:flex;align-items:center;gap:28px;height:48px;padding:0 20px;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--barline);font:500 calc(13px * var(--fs))/1 var(--sans);color:var(--muted);opacity:0;visibility:hidden;transform:translateY(0);transition:opacity .2s,visibility .2s,transform .25s var(--e2,ease)}
+  .bt.on{opacity:1;visibility:visible}
+  .bt.up{transform:translateY(calc(-1 * var(--bt-y,var(--top))))}
+  .bt b{margin-right:auto;font:600 calc(15px * var(--fs))/1 var(--serif);color:var(--ink);cursor:pointer}
+  .bt a{position:relative;padding:17px 0;color:inherit;text-decoration:none;white-space:nowrap}
+  .bt a:hover,.bt a.on{color:var(--ink)}
+  .bt a.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--ink)}
+  .bt a:active{opacity:.6}
+  html.sr-on .bt,html.mnu-on .bt,html.pv-on .bt{visibility:hidden}
+}
+@media (min-width:1024px){.bt{padding:0 64px}}  
+:root[data-motion="reduce"] .bt{transition:none}@media (prefers-reduced-motion:reduce){.bt{transition:none}}:where(:root[data-motion="reduce"]) .bt,:where(:root[data-motion="reduce"]).bt{transition:none}
 
 .si,.si-l{display:none}
 @media (min-width:1024px){

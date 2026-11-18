@@ -1244,9 +1244,9 @@ html.cz-on{overflow:hidden}
 .poem .w.ink{background:var(--ink);color:var(--bg);box-shadow:0 0 0 2px var(--ink)}
 @media (hover:hover) and (pointer:fine){.js .poem{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='11' cy='11' r='8' fill='none' stroke='%23fff' stroke-width='2.5'/%3E%3Ccircle cx='11' cy='11' r='8' fill='none' stroke='%23111' stroke-width='1.2'/%3E%3C/svg%3E") 11 11,text}}
 /* ④ 「탁본」 읽기 진행(← '읽은 만큼 차오르는 진행 바') — 시 칸에 들어와 있을 때만 맨 위 띠 바로 아래 먹 줄 2px */
-.rbar{position:fixed;left:0;right:0;top:var(--top);z-index:11;height:2px;background:var(--ink);transform:scaleX(0);transform-origin:0 50%;opacity:0;pointer-events:none}
+.rbar{position:fixed;left:0;right:0;top:var(--rbar-y,var(--top));z-index:11;height:2px;background:var(--ink);transform:scaleX(0);transform-origin:0 50%;opacity:0;pointer-events:none}
 .rbar.on{opacity:1}
-@media (prefers-reduced-motion:no-preference){.rbar{transition:opacity .3s}}
+@media (prefers-reduced-motion:no-preference){.rbar{transition:opacity .3s,top .25s var(--e2,ease)}}  /* 시집 탭 줄(11/18)이 있으면 그 아래 선(--rbar-y)으로 · 띠와 같이 움직임 */
 /* ⑤ 인스타그램 3D 고리(← '클릭 & 드래그 3D' · STNT · 궤도) — 마우스 기기 · 움직임 허용 · '모아 보기'에서만(main.js가 .ring을 만들고 html에 ringon). 장마다 360/n도 · 둘레 390px · 머문 장은 색 */
 
 
@@ -1491,6 +1491,22 @@ html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja
 .rip{position:fixed;left:0;top:0;width:14px;height:14px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ink) 55%,transparent);pointer-events:none;z-index:2147483646;transform:translate(-50%,-50%);animation:rip .6s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes rip{to{transform:translate(-50%,-50%) scale(5.5);opacity:0}}
 @media (prefers-reduced-motion:reduce){.cur,.rip{display:none}}:root[data-motion="reduce"] :is(.cur,.rip){display:none}
+/* 시집 페이지 위 탭 줄(11/18 동원 UX 넷 시안 ② "b를 넣는 건 좋은데 gnb 자리는 어디로 간거야" → GNB 자리 시안 ②B_GNB자리 → 버튼 "B 탭 줄 넣기 (권장)" — 애플 제품 페이지 짜임):
+   넓은 창(768~)에서 첫 화면(책)을 지나면 나타남 · GNB가 보이면 그 바로 아래, 내려서 GNB가 숨으면 맨 위로 같은 움직임(.25s) · 지금 칸만 먹 + 밑줄 · main.js가 만듦 */
+.bt{display:none}
+@media (min-width:768px){
+  .bt{position:fixed;left:0;right:0;top:var(--bt-y,var(--top));z-index:9;display:flex;align-items:center;gap:28px;height:48px;padding:0 20px;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--barline);font:500 13px/1 var(--sans);color:var(--muted);opacity:0;visibility:hidden;transform:translateY(0);transition:opacity .2s,visibility .2s,transform .25s var(--e2,ease)}
+  .bt.on{opacity:1;visibility:visible}
+  .bt.up{transform:translateY(calc(-1 * var(--bt-y,var(--top))))}
+  .bt b{margin-right:auto;font:600 15px/1 var(--serif);color:var(--ink);cursor:pointer}
+  .bt a{position:relative;padding:17px 0;color:inherit;text-decoration:none;white-space:nowrap}
+  .bt a:hover,.bt a.on{color:var(--ink)}
+  .bt a.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--ink)}
+  .bt a:active{opacity:.6}
+  html.sr-on .bt,html.mnu-on .bt,html.pv-on .bt{visibility:hidden}
+}
+@media (min-width:1024px){.bt{padding:0 64px}}  /* 맨 위 띠(.top 0 64px)와 같은 왼쪽 선 */
+:root[data-motion="reduce"] .bt{transition:none}@media (prefers-reduced-motion:reduce){.bt{transition:none}}
 /* 랜딩(소개) 페이지 칸 표시(11/16 동원 toss.im → 시안 랜딩목차시안_v1 'A 왼쪽 토스 꼴' · 같은 날 토스 다시 실측으로 맞춤): 막대 2px · 16px을 평소 .35배(약 5.6px — 11/16 동원 "이전 크기가 더 좋은 거 같아" · 토스 40px 꼴은 되돌림) ·
    줄 12px · 지금 칸 · 가리킨 칸은 먹 · 나머지 옅게 · 올리면 종 모양 물결(main.js가 --s) · 이름 12.5px 굵게(이전 크기) · 흰 막대 + difference(첫 화면 사진 위 · 어둡게도) · 넓은 창(1024~)만 */
 .si,.si-l{display:none}
