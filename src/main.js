@@ -1060,6 +1060,24 @@
     const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
     // 영어판 · 일본어판 결과의 한국어(시 행 · 원제 '탁본')는 한국어로 읽히게 감쌈 — 태그 사이 글만(10/27 점검 a11y 9)
     const ko = s => H.lang !== "ko" ? s.replace(/[가-힣ㄱ-ㅎ](?:[가-힣ㄱ-ㅎ\s·「」『』〈〉《》,.!?“”‘’()—–-]*[가-힣ㄱ-ㅎ」』〉》])?/g, w => `<span lang="ko">${w}</span>`) : s;
+    // 11/18 한글 치는 도중(동원 — 시안 UX여섯째시안_v1/⑧): '탁ㅂ · 탁보'(→ 탁본) · '싲'(→ 시집) · '알'(→ 아름)처럼 받침이 다음 글자 첫소리로 넘어가는 동안 0건이 깜빡였음(실측)
+    // → 마지막 글자만 자모로 풀어 다음 글자들의 자모 앞머리와 견줌(앞 글자들은 그대로 같아야 함 · 네이버 · 쿠팡 찾기의 자모 자동 완성 꼴)
+    const JD = { "ㄳ": "ㄱㅅ", "ㄵ": "ㄴㅈ", "ㄶ": "ㄴㅎ", "ㄺ": "ㄹㄱ", "ㄻ": "ㄹㅁ", "ㄼ": "ㄹㅂ", "ㄽ": "ㄹㅅ", "ㄾ": "ㄹㅌ", "ㄿ": "ㄹㅍ", "ㅀ": "ㄹㅎ", "ㅄ": "ㅂㅅ", "ㅘ": "ㅗㅏ", "ㅙ": "ㅗㅐ", "ㅚ": "ㅗㅣ", "ㅝ": "ㅜㅓ", "ㅞ": "ㅜㅔ", "ㅟ": "ㅜㅣ", "ㅢ": "ㅡㅣ" };
+    const JUN = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ", JON = ["", ..."ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ"];
+    const jm = c => { const k = c.charCodeAt(0) - 0xac00; const d = x => JD[x] || x; return k >= 0 && k < 11172 ? K[Math.floor(k / 588)] + d(JUN[Math.floor(k % 588 / 28)]) + d(JON[k % 28]) : d(c); };
+    const loose = (nt, nq) => {  // [자리, 맞은 글자 수] 또는 null — 마지막 글자가 한글일 때만
+      const L = nq.slice(-1), P = nq.slice(0, -1);
+      if (!/[가-힣ㄱ-ㅣ]/.test(L)) return null;
+      const jl = jm(L);
+      for (let i = nt.indexOf(P); i >= 0; i = nt.indexOf(P, i + 1)) {
+        let r = "", n = 0;
+        while (r.length < jl.length && i + P.length + n < nt.length) r += jm(nt[i + P.length + n++]);
+        if (r.startsWith(jl)) return [i, P.length + n];
+        if (!P) break;
+      }
+      if (!P) { for (let i = 1; i < nt.length; i++) { let r = "", n = 0; while (r.length < jl.length && i + n < nt.length) r += jm(nt[i + n++]); if (r.startsWith(jl)) return [i, n]; } }
+      return null;
+    };
     const find = q => {
       const [nq] = norm(q);
       if (!nq) return [];
@@ -1069,15 +1087,52 @@
         const [nt, map] = norm(it[1]), hay = ch ? cho(nt) : nt;
         let w = nq, at = hay.indexOf(nq);
         if (at < 0 && one) { w = one; at = hay.indexOf(one); }
+        if (at < 0 && !ch) { const lz = loose(nt, nq); if (lz) { at = lz[0]; w = { length: lz[1] }; } }
         if (at < 0) {  // 칸 이름은 그 칸의 낱말로도('약력' → 소개) — 굵게 할 글자가 없어 이름 그대로, 앞부분이 맞은 것과 함께 위로
           // 낱말을 붙여 견줌('사는 곳'처럼 띄운 말도) · 초성만 쳤으면 낱말 첫머리만(ㅅㅈ → 사진은 맞고 메시지는 안 맞게)
-          if (it[4] && (ch ? it[4].split(" ").some(x => cho(norm(x)[0]).startsWith(nq)) : [nq, one].some(x => x && norm(it[4])[0].includes(x)))) out.push({ it, at: 0, html: esc(it[1]) });
+          const [kw, ...als] = typeof it[4] === "string" ? it[4].split("¦") : [""];
+          if (kw && (ch ? kw.split(" ").some(x => cho(norm(x)[0]).startsWith(nq)) : [nq, one].some(x => x && norm(kw)[0].includes(x)))) { out.push({ it, at: 0, html: esc(it[1]) }); return; }
+          // 11/18 다른 판 이름 · 원제 · 로마자로 맞으면 결과 밑에 그 이름(그 판 낱말로 맞은 것이 먼저 · 로마자는 세 글자부터 — 'li'가 Living에 붙지 않게)
+          const al = !ch && (nq.length >= 3 || /[^a-z]/.test(nq)) && als.find(x => [nq, one].some(y => y && norm(x)[0].includes(y)));
+          if (al) out.push({ it, at: 0, html: esc(it[1]), al });
           return;
         }
         const cs = [...it[1].normalize("NFC")], a = map[at], b = map[at + w.length - 1] + 1;
         out.push({ it, at, html: esc(cs.slice(0, a).join("")) + "<b>" + esc(cs.slice(a, b).join("")) + "</b>" + esc(cs.slice(b).join("")) });
       });
       return out.sort((x, y) => (x.at > 0) - (y.at > 0));  // 최대 10개는 run()에서 최근 찾은 것을 앞으로 올린 뒤 자름(11/16) · 앞부분이 맞는 것부터, 같으면 갈래 차례(칸 · 시집 · 차례 · 시 · 소개 …)
+    };
+    // 11/18 오타(동원 — 시안 ⑩): 로마자 낱말이 결과가 없으면 찾을 거리의 낱말 가운데 한두 글자 차이(4~7자 1 · 8자 넘게 2 — Algolia · 구글 꼴)로 고쳐 찾음 · 알림은 한/영 자판 줄과 같은 꼴
+    const VOC = (() => { const m = new Map(); items.forEach(it => [it[1], typeof it[4] === "string" ? it[4] : ""].join(" ").toLowerCase().split(/[^a-zà-ÿа-яё]+/).forEach(x => { if (x.length >= 4) m.set(x, (m.get(x) || 0) + 1); })); return m; })();
+    const dist = (a, b, mx) => {  // 맞바꿈도 한 번으로 세는 편집 거리(다메라우) · mx를 넘으면 그만
+      if (Math.abs(a.length - b.length) > mx) return mx + 1;
+      const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+      for (let j = 1; j <= b.length; j++) d[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        let lo = 1e9;
+        for (let j = 1; j <= b.length; j++) {
+          const c = a[i - 1] === b[j - 1] ? 0 : 1;
+          d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + c);
+          if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+          lo = Math.min(lo, d[i][j]);
+        }
+        if (lo > mx) return mx + 1;
+      }
+      return d[a.length][b.length];
+    };
+    const fixTypo = t => {
+      let changed = false;
+      const out = t.split(/(\s+)/).map(w => {
+        const lw = w.toLowerCase();
+        if (lw.length < 4 || !/^[a-zà-ÿа-яё]+$/.test(lw) || VOC.has(lw)) return w;
+        const mx = lw.length >= 8 ? 2 : 1;
+        let best = null, bd = mx + 1, bn = 0;
+        VOC.forEach((n, v) => { const dd = dist(lw, v, mx); if (dd < bd || (dd === bd && n > bn)) { best = v; bd = dd; bn = n; } });
+        if (!best || bd > mx) return w;
+        changed = true;
+        return best;
+      }).join("");
+      return changed ? out : "";
     };
     // 방향키로 고른 줄(10/27 동원 요청 · 10/28 A 옅은 바탕) — 포커스는 입력 칸에 두고 고른 줄만 표시(aria-activedescendant) · 더 치면 그대로 이어서 찾음
     let act = -1, lastQ = null;
@@ -1151,17 +1206,18 @@
       fl();
       return o;
     };
-    const roJ = w => { const x = w.charCodeAt(w.length - 1) - 0xAC00, jo = x >= 0 && x < 11172 ? x % 28 : 0; return jo && jo !== 8 ? "으로" : "로"; };  // 받침 있으면 '으로'(ㄹ 받침은 '로')
+    const roJ = w => { const x = w.charCodeAt(w.length - 1) - 0xAC00; if (!(x >= 0 && x < 11172)) return /[aeiouyl]$/i.test(w) ? "로" : "으로"; const jo = x % 28; return jo && jo !== 8 ? "으로" : "로"; };  // 로마자 낱말은 끝 글자 소리로(lily → 로 · rubbing → 으로)  // 받침 있으면 '으로'(ㄹ 받침은 '로')
     const kbN = document.createElement("p"); kbN.className = "sr-kb"; kbN.hidden = true; cnt.before(kbN);
     let kbT = 0, kbTo = "", kbFrom = "", kbSkip = "";
     const kbTry = q => {
       clearTimeout(kbT);
       const t = q.trim();
-      if (t === kbSkip || !/^[a-zA-Z ]{2,}$/.test(t)) return;
+      if (t === kbSkip || !/^[a-zA-Zà-ÿА-яЁё ]{2,}$/.test(t)) return;
       kbT = setTimeout(() => {
         if (inp.value.trim() !== t) return;
-        const k = kb2ko(t);
-        if (!/[가-힣]/.test(k) || /[a-zA-Z]/.test(k) || !find(k).length) return;
+        let k = kb2ko(t);
+        if (!/[가-힣]/.test(k) || /[a-zA-Z]/.test(k) || !find(k).length) k = fixTypo(t);  // 한/영 자판이 아니면 오타로(11/18)
+        if (!k || !find(k).length) return;
         kbFrom = t; kbTo = k; inp.value = k; run();
       }, 450);
     };
@@ -1194,7 +1250,7 @@
       res.innerHTML = hits.map((h, i) => {
         const ext = /^https?:/.test(h.it[3]), th = Array.isArray(h.it[5]) ? h.it[5] : null, pd = th && (th[2] || h.it[2]);
         return `<li role="none"><a role="option" id="sr${i}" aria-selected="false"${th ? ' class="pg"' : ""} href="${esc(h.it[3])}" data-t="${esc(h.it[1])}"${ext ? ' target="_blank" rel="noopener"' : ""}>${h.rc < 99 ? RC_IC : th ? pgTh(th) : SR_IC}` +
-          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}${pd ? `<small class="sr-sub">${ko(esc(pd))}</small>` : dupN.get(dk(h)) > 1 ? `<small class="sr-sub">${ko(esc(where(h.it)))}</small>` : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌 · 왼쪽 갈래(「탁본」 · 차례 · 이달)도 뺌(시안 찾기결과갈래시안_v1 'A 갈래 뺌 (권장)')  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
+          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}${h.al ? `<small class="sr-sub sr-al">${ko(esc(h.al))}</small>` : pd ? `<small class="sr-sub">${ko(esc(pd))}</small>` : dupN.get(dk(h)) > 1 ? `<small class="sr-sub">${ko(esc(where(h.it)))}</small>` : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌 · 왼쪽 갈래(「탁본」 · 차례 · 이달)도 뺌(시안 찾기결과갈래시안_v1 'A 갈래 뺌 (권장)')  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
       }).join("");
       none.hidden = empty || hits.length > 0;
       if (!empty && !hits.length) kbTry(q); else clearTimeout(kbT);
@@ -1711,6 +1767,15 @@
 
   const gbf = document.querySelector("form.gbf");
   if (gbf) {
+    // 11/18 싣는 날을 날짜로(동원 — 시안 UX여섯째시안_v1/⑪): '월요일에' → '11월 23일 월요일에' — 서울 날짜로 오늘이 월요일이면 오늘, 아니면 다음 월요일 · 판마다 그 말의 날짜 꼴(Intl)
+    const gbMonday = (() => {
+      try {
+        const now = new Date(), wd = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Seoul", weekday: "short" }).format(now);
+        const add = (["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(wd) + 7 - 0) % 7, day = new Date(now.getTime() + ((7 - add) % 7) * 864e5);
+        return new Intl.DateTimeFormat(H.lang || "ko", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: H.lang === "ja" ? "short" : "long" }).format(day);
+      } catch (x) { return ""; }
+    })();
+    { const m0 = gbf.querySelector(".msg"); if (m0 && gbMonday && UI.gb_promise_d) m0.textContent = uiText("gb_promise_d", "", { d: gbMonday }); }
     const gbSend = gbf.querySelector(".send"), gbMsg = gbf.querySelector(".msg"), gbPromise = gbMsg.textContent;  // 단추 아래 약속 한 줄(보내는 동안 상태로 바뀌었다가 되돌림)
     // 글자 수(11/2 엽서 한 장) — 글 칸 아래 '0 / 200'을 켜고 칠 때마다 셈 · 보낸 뒤 비우면 다시 0
     const gbTa = gbf.querySelector("textarea"), gbCnt = gbf.querySelector(".cnt");
@@ -1830,7 +1895,7 @@
           gbf.reset();
           gbSend.disabled = false;
           gbMsg.textContent = gbPromise;
-          done(gbf.closest(".card") || gbf, !!gbf.closest(".card"), uiText("gb_ok", "글을 보냈습니다."), uiText("gb_ok_sub", gbPromise));
+          done(gbf.closest(".card") || gbf, !!gbf.closest(".card"), uiText("gb_ok", "글을 보냈습니다."), (gbMonday && UI.gb_promise_d ? gbPromise : uiText("gb_ok_sub", gbPromise)));
           return;
         }
         const r = await fetch(gbf.dataset.endpoint, { method: "POST", body: new FormData(gbf), headers: { Accept: "application/json" } });
@@ -1839,7 +1904,7 @@
         gbMsg.textContent = r.ok ? gbPromise
           : r.status === 429 ? uiText("gb_full", "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다.")
           : uiText("failed", "보내지 못했습니다. 잠시 뒤 다시 해 주세요.");
-        if (r.ok) { gbMine.add(sentTxt); gbf.reset(); done(gbf.closest(".card") || gbf, !!gbf.closest(".card"), uiText("gb_ok", "글을 보냈습니다."), uiText("gb_ok_sub", gbPromise)); }
+        if (r.ok) { gbMine.add(sentTxt); gbf.reset(); done(gbf.closest(".card") || gbf, !!gbf.closest(".card"), uiText("gb_ok", "글을 보냈습니다."), (gbMonday && UI.gb_promise_d ? gbPromise : uiText("gb_ok_sub", gbPromise))); }
       } catch {
         await folded;
         unfold();

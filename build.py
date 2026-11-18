@@ -828,6 +828,20 @@ def music_items(mu):  # 음악 곡(11/17) — public만 · 새 곡이 위 · 소
     return out
 
 
+# 11/18 다른 이름으로도 찾기 — 한글을 국어의 로마자 표기법(2000) 꼴로 소리 바꿈 없이 글자마다 옮김(탁본 → takbon · 아름다울 남 → areumdaul nam) · 찾을 낱말 전용(보이지 않음)
+RR_CHO = ["g", "kk", "n", "d", "tt", "r", "m", "b", "pp", "s", "ss", "", "j", "jj", "ch", "k", "t", "p", "h"]
+RR_JUNG = ["a", "ae", "ya", "yae", "eo", "e", "yeo", "ye", "o", "wa", "wae", "oe", "yo", "u", "wo", "we", "wi", "yu", "eu", "ui", "i"]
+RR_JONG = ["", "k", "k", "k", "n", "n", "n", "t", "l", "k", "m", "l", "l", "l", "p", "l", "m", "p", "p", "t", "t", "ng", "t", "t", "k", "t", "p", "t"]
+
+
+def romanize(s):
+    out = []
+    for c in s:
+        k = ord(c) - 0xAC00
+        out.append(RR_CHO[k // 588] + RR_JUNG[(k % 588) // 28] + RR_JONG[k % 28] if 0 <= k < 11172 else c)
+    return "".join(out)
+
+
 def load(name):
     return fr_tree(json.loads((CONTENT / name).read_text(encoding="utf-8")))  # 'fr' 칸은 프랑스 조판으로(11/10)
 
@@ -1965,6 +1979,41 @@ def render(site, poem, videos, photos, lang="ko"):
     ix["news"] += [(tg["news"], plain(x["text"]), dtxt(x["date"]), f"#n{k}", L["search_news_keys"]) for k, x in enumerate(news, 1)]  # 소식 줄도 '소식 · 새로'로(10/28 사용 편의 점검 ④)
     ix["contact"] += [(tg["contact"], L["label_contact"] if endpoint else L["ask_off"], "", "#contact")] + [(tg["contact"], l["name"], "", l["url"]) for l in links]
     ix["contact"] += [(tg["contact"], plain(x["q"]), L["faq_title"], f"#fq{i}") for i, x in enumerate(S["contact"].get("faq") or [], 1)]  # 자주 묻는 질문 — 질문 글로 찾고 그 질문으로(펼쳐짐)
+    # 11/18 다른 이름으로도 찾기(동원 — 시안 기준/브랜드 시안/UX여섯째시안_v1/⑨): 한국어판에서 lily · rubbing · iwai, 영어판에서 '릴리'가 0건이었음(실측).
+    # 다른 판 제목 · 원제 · 만든 이 · 로마자를 그 판 찾을 낱말(다섯째 값) 끝에 '¦'로 이어 붙임 — 보이는 글은 그 판 말 그대로 · main.js가 '¦' 뒤 이름으로 맞으면 결과 밑에 그 이름
+    RAW = load("site.json")
+    def al_(*vals):
+        seen_, out_ = set(), []
+        for v_ in vals:
+            v_ = plain(str(v_ or "")).strip()
+            if v_ and v_.lower() not in seen_: seen_.add(v_.lower()); out_.append(v_)
+        return out_
+    def l_(l, *ks):
+        d_ = RAW if l == "ko" else RAW.get(l) or {}
+        for k_ in ks: d_ = (d_ or {}).get(k_)
+        return d_
+    AL = {"#bookcard": al_(*(l_(l, "book", "title") for l in LANGS)),
+          "#poem": al_(*(l_(l, "poem", "title") for l in LANGS), romanize(RAW["poem"]["title"]), *(l_(l, "book", "title") for l in LANGS)),
+          "#me": al_(*(l_(l, "name") for l in LANGS), romanize(RAW["name"]), "Nam Dongwon"),
+          "#video": al_(RAW["channel"]["name"], *((RAW["channel"].get(l) or {}).get("name") for l in LANGS), romanize(RAW["channel"]["name"]))}
+    vids_ = [videos.get("upcoming") or {}] + list(videos.get("items", []))
+    mus_ = list(mu_items)
+    def add_al(it_, names_):
+        here_ = {it_[1].lower()} | set((it_[4] if len(it_) > 4 and isinstance(it_[4], str) else "").lower().split("¦")[:1])
+        names_ = [n_ for n_ in names_ if n_.lower() not in here_ and n_.lower() not in it_[1].lower()]
+        if not names_: return it_
+        kw_ = (it_[4] if len(it_) > 4 and isinstance(it_[4], str) else "") + "¦" + "¦".join(names_)
+        return (*it_[:4], kw_, *it_[5:]) if len(it_) > 4 else (*it_, kw_)
+    for cat_, lst_ in ix.items():
+        for i_, it_ in enumerate(lst_):
+            if it_[3] in AL and (cat_ in ("sec", "book") or it_[1] == S["name"]): lst_[i_] = add_al(it_, AL[it_[3]])
+            elif cat_ == "video":
+                for v_ in vids_:
+                    t_ = (v_.get(lang) or {}).get("title") or v_.get("title")
+                    if t_ and t_ in it_[1]: lst_[i_] = add_al(it_, al_(v_.get("title"), v_.get("orig"), v_.get("creator"), *((v_.get(l) or {}).get("title") for l in LANGS), *((v_.get(l) or {}).get("creator") for l in LANGS)))
+            elif cat_ == "music":
+                for m_ in mus_:
+                    if it_[1] == ((m_.get(lang) or {}).get("title") or m_["title"]): lst_[i_] = add_al(it_, al_(m_["title"], *((m_.get(l) or {}).get("title") for l in LANGS)))
     sj = load("search.json") if (CONTENT / "search.json").exists() else {"suggest": []}
 
     # 인기 검색어 순위(11/15 동원 무인양품 캡처 → 찾기창순위시안_v1 'B 진짜 순위 (권장)'): content/search_rank.json — 관리 화면이 주마다 GA4 search 이벤트(동의한 방문의 찾은 말 · 11/7부터)를
