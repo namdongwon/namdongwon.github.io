@@ -1739,7 +1739,8 @@ def render(site, poem, videos, photos, lang="ko"):
         if v == "@rc_oneliner":
             return rc_t("oneliner")
         if isinstance(v, str) and v.startswith("@rc_feat:"):  # 로코코 페이지 세 기능 제목(rococo.json features — 말마다 있음)
-            f_ = (RC.get("features") or [])[int(v[9:])].get("title", {})
+            fs_ = RC.get("features") or []
+            f_ = fs_[int(v[9:])].get("title", {}) if int(v[9:]) < len(fs_) else {}  # rococo.json이 없거나 기능이 모자라면 빈 이름(시험 견본 빌드 · 11/18 arttest 멈춤)
             return e(f_.get(lang) or f_.get("en") or f_.get("ko", ""))
         if isinstance(v, str) and v.startswith("@nav:"):
             return e(L["nav"][int(v[5:])])
@@ -2463,6 +2464,7 @@ SCALE_ALLOW = {
     (".ptr", "margin-left"): "26px 당겨서 새로 고침 표시 가운데(11/14)", (".skip", "left"): "화면 밖에 숨김", (".hp", "left"): "방명록 빈칸 함정 — 화면 밖",
     (".top nav a::before", "inset"): "누르는 자리 44px", (".tk-w", "font"): "첫 화면 큰 영어 이름 — 두 줄 간격 .86(시안 그대로)", (".pbook .bk .sh", "bottom"): "책 그림자 자리",
     (".top nav .lang .fl", "line-height"): "국기 줄 높이 0", (".years sup.fr", "font"): "각주 위첨자 줄 높이 0",
+    (".lsw .cr", "top"): "바닥글 언어 고르개 화살표를 대문자 가운데에 — 토스 실측 맞춤(11/17 동원 \"바로 글자 중간에\")", (".lsw .cr", "margin-left"): "화살표를 글자에 붙임 — 토스 실측(11/17 동원 \"좀 더 붙어있는 거 같지 않아?\")",
     (".vplay .play", "margin"): "58px 동그라미 가운데", (".touch", "margin"): "58px 동그라미 가운데",
     (".vplay .play::after", "left"): "재생 세모 자리", (".vplay .play::after", "top"): "재생 세모 자리",
     ("#poem>.l", "top"): "띠 아래 제목 자리", ("#me>.l", "top"): "띠 아래 제목 자리",

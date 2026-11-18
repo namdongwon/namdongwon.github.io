@@ -139,18 +139,18 @@ html.mnu-on{overflow:hidden}  /* 여는 동안 쪽은 멈춤 */
 @media (min-width:1024px) and (hover:hover),(min-width:1024px) and (pointer:fine){.mnu{display:none}}  /* 태블릿(11/18)은 휴대폰 메뉴를 그대로 씀 */
 /* 휴대폰 메뉴 칸 펼침(11/18 동원 UX 넷 시안 ① 'A 누르면 칸 펼침 (권장)' — 기준/브랜드 시안/UX넷시안_v1): 이름 옆 화살표(44px 누름 자리)를 누르면 넓은 창 메뉴 펼침(#mm)과 같은 멘트 · 칸이 옆으로 밀리게 · main.js가 #mm 칸을 복제 */
 .mnu li{position:relative}.mnu li.mxl>a{padding-right:48px}
-.mnu .mxb{position:absolute;right:-12px;top:10px;display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;background:none;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mnu .mxb{position:absolute;right:-12px;top:12px;display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;background:none;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
 .mnu .mxb svg{display:block;width:10px;height:10px;transition:transform .2s var(--e2,ease)}.mnu .mxb[aria-expanded="true"] svg{transform:rotate(180deg)}
 .mnu .mxb:active{opacity:.5}
 .mnu .mx{padding:0 0 22px}
-.mnu .mx .mm-row{display:flex;gap:10px;margin:0 -20px;padding:0 20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 20px;scrollbar-width:none;overscroll-behavior-x:contain}.mnu .mx .mm-row::-webkit-scrollbar{display:none}
+.mnu .mx .mm-row{display:flex;gap:12px;margin:0 -20px;padding:0 20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 20px;scrollbar-width:none;overscroll-behavior-x:contain}.mnu .mx .mm-row::-webkit-scrollbar{display:none}
 .mnu .mx .mm-c{display:flex;flex-direction:column;flex:0 0 128px;width:128px;padding:0;scroll-snap-align:start;font:inherit}
-.mnu .mx .mm-k{display:flex;flex:1 0 auto;align-items:flex-end;margin:0 0 8px;font-size:12px;white-space:normal;overflow-wrap:anywhere}  /* 128px 칸에선 다른 말판 멘트가 길어 줄을 바꿈 · 키 큰 멘트에 맞춰 그림 칸 윗선이 한 줄로(멘트는 아래 붙임) */
-.mnu .mx .mm-ph{width:128px;height:128px}.mnu .mx .mm-ct img{padding:10px}
-.mnu .mx .mm-tc{gap:4px;padding:0 10px;font-size:11.5px}
+.mnu .mx .mm-k{display:flex;flex:1 0 auto;align-items:flex-end;margin:0 0 8px;font-size:12.5px;white-space:normal;overflow-wrap:anywhere}  /* 128px 칸에선 다른 말판 멘트가 길어 줄을 바꿈 · 키 큰 멘트에 맞춰 그림 칸 윗선이 한 줄로(멘트는 아래 붙임) */
+.mnu .mx .mm-ph{width:128px;height:128px}.mnu .mx .mm-ct img{padding:12px}
+.mnu .mx .mm-tc{gap:4px;padding:0 12px;font-size:11px}
 .mnu .mx .mm-pc{background-size:auto;background-position:0 10px}
 .mnu .mx .mm-soon b{left:8px;top:8px}
-.mnu .mx .mm-n{margin-top:8px;font:500 12.5px/1.35 var(--sans)}
+.mnu .mx .mm-n{margin-top:8px;font:500 12.5px/1.3 var(--sans)}
 @media (min-width:768px){.mnu{padding-left:64px;padding-right:64px}.mnu .mx .mm-row{margin:0 -64px;padding:0 64px;scroll-padding:0 64px}.mnu .mx .mm-c{flex-basis:160px;width:160px}.mnu .mx .mm-ph{width:160px;height:160px}.mnu .mx .mm-k{font-size:13px}}  /* 태블릿 — 띠와 같은 64px 선 · 칸 160px */
 :root[data-motion="reduce"] .mnu .mxb svg{transition:none}@media (prefers-reduced-motion:reduce){.mnu .mxb svg{transition:none}}
 @media (min-width:768px) and (max-width:819px){:is(html:lang(ru),html:lang(es)) header.top nav{gap:6px!important;letter-spacing:0}}  /* 메뉴 여섯(11/15 로코코)이 768 태블릿에서 두 줄로 갈리던 것 — 실측 쓸 폭 383px에 스페인어 432 · 러시아어 413(820부터는 모두 한 줄) → 이 구간 · 넘친 두 판(러 · 서)만 틈 6 · 자간 0(실측 375 · 359 — 한 줄) */
@@ -224,7 +224,7 @@ html.sr-on .ma-dock,html.mnu-on .ma-dock,html.pv-on .ma-dock{visibility:hidden}
 .mm-in.go :is(.mm-d,.mm-c){opacity:1;transform:none;transition-duration:.24s}.mm-in.go .mm-d{transition-duration:.32s;transition-delay:.08s}
 .mm-in.go .mm-c:nth-child(1){transition-delay:.12s}.mm-in.go .mm-c:nth-child(2){transition-delay:.14s}.mm-in.go .mm-c:nth-child(3){transition-delay:.16s}.mm-in.go .mm-c:nth-child(4){transition-delay:.18s}.mm-in.go .mm-c:nth-child(5){transition-delay:.2s}  /* 차례로 0.02초씩(애플 실측) */
 .mm-d{margin:20px 0 0;font:400 15px/1.6 var(--serif);color:var(--muted);word-break:keep-all}  /* 11/17부터 카드 아래 바깥 링크 줄(교보문고에서 사기) — 설명은 카드 위 멘트(.mm-k)로 옮김 */
-.mm-k{display:block;margin:0 0 14px;font:400 14px/1.3 var(--serif);color:var(--muted);white-space:nowrap}  /* 카드 위 멘트(11/17 토스 짜임) — 이어 읽으면 한 문장 · 한 줄로(카드 높이가 어긋나지 않게) */
+.mm-k{display:block;margin:0 0 12px;font:400 14px/1.3 var(--serif);color:var(--muted);white-space:nowrap}  /* 카드 위 멘트(11/17 토스 짜임) — 이어 읽으면 한 문장 · 한 줄로(카드 높이가 어긋나지 않게) */
 .mm-l{font:400 13px/1 var(--sans);color:var(--muted);text-decoration:none}
 .mm-row{display:flex;gap:22px}
 .mm-c{width:206px;color:var(--ink);text-decoration:none}
@@ -1499,13 +1499,13 @@ html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja
 .ksh{width:min(420px,calc(100vw - 32px));margin:auto;padding:0;border:0;background:var(--bg);color:var(--ink);box-shadow:0 20px 50px rgba(0,0,0,.2)}
 .ksh::backdrop{background:rgba(0,0,0,.28)}
 .ksh:focus,.ksh:focus-visible{outline:0}  /* 열 때 판 자체에 가는 초점 — 누를 것이 아니라 테두리 없음(안의 글은 그대로 읽힘) */
-.ksh>div{padding:28px 30px 22px}
-.ksh h2{margin:0 0 18px;font:600 18px/1.2 var(--serif)}
+.ksh>div{padding:30px 30px 22px}
+.ksh h2{margin:0 0 16px;font:600 18px/1.2 var(--serif)}
 .ksh ul{margin:0;padding:0;list-style:none}
-.ksh li{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:11px 0;border-top:1px solid var(--rule);font:400 14px/1.35 var(--sans)}
+.ksh li{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0;border-top:1px solid var(--rule);font:400 14px/1.3 var(--sans)}
 .ksh li span{display:flex;flex:none;gap:6px}
-.ksh kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 7px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:6px;background:var(--bg);font:500 12.5px/1 var(--sans);color:var(--ink)}
-.ksh p{margin:16px 0 0;font:400 12px/1 var(--sans);color:var(--muted)}
+.ksh kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:6px;background:var(--bg);font:500 12.5px/1 var(--sans);color:var(--ink)}
+.ksh p{margin:16px 0 0;font:400 12.5px/1 var(--sans);color:var(--muted)}
 @media (prefers-reduced-motion:no-preference){:root:not([data-motion="reduce"]) .ksh[open]{animation:mfd .2s var(--e2,ease) both}}
 /* 시집 페이지 위 탭 줄(11/18 동원 UX 넷 시안 ② "b를 넣는 건 좋은데 gnb 자리는 어디로 간거야" → GNB 자리 시안 ②B_GNB자리 → 버튼 "B 탭 줄 넣기 (권장)" — 애플 제품 페이지 짜임):
    넓은 창(768~)에서 첫 화면(책)을 지나면 나타남 · GNB가 보이면 그 바로 아래, 내려서 GNB가 숨으면 맨 위로 같은 움직임(.25s) · 지금 칸만 먹 + 밑줄 · main.js가 만듦 */
@@ -1514,8 +1514,8 @@ html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja
 .bt a{position:relative;flex:none;display:flex;align-items:center;align-self:stretch;padding:0;color:inherit;text-decoration:none;white-space:nowrap}  /* 띠 높이에 맞춰 섬 — 글자 크게(xl)에서 밑줄이 띠 밖으로 2px 나가던 것(11/18 글자 크게 점검) */.bt a.on{color:var(--ink)}.bt a.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--ink)}.bt a:active{opacity:.6}
 html.sr-on .bt,html.mnu-on .bt,html.pv-on .bt{visibility:hidden}
 @media (min-width:768px){
-  .bt{gap:28px;height:48px;overflow:visible}.bt b{display:block}
-  .bt{position:fixed;left:0;right:0;top:var(--bt-y,var(--top));z-index:9;display:flex;align-items:center;gap:28px;height:48px;padding:0 20px;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--barline);font:500 13px/1 var(--sans);color:var(--muted);opacity:0;visibility:hidden;transform:translateY(0);transition:opacity .2s,visibility .2s,transform .25s var(--e2,ease)}
+  .bt{gap:30px;height:48px;overflow:visible}.bt b{display:block}
+  .bt{position:fixed;left:0;right:0;top:var(--bt-y,var(--top));z-index:9;display:flex;align-items:center;gap:30px;height:48px;padding:0 20px;background:var(--bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--barline);font:500 13px/1 var(--sans);color:var(--muted);opacity:0;visibility:hidden;transform:translateY(0);transition:opacity .2s,visibility .2s,transform .25s var(--e2,ease)}
   .bt.on{opacity:1;visibility:visible}
   .bt.up{transform:translateY(calc(-1 * var(--bt-y,var(--top))))}
   .bt b{margin-right:auto;font:600 15px/1 var(--serif);color:var(--ink);cursor:pointer}
