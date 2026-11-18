@@ -134,6 +134,21 @@ button{font:inherit;color:inherit}
 .mnu a{display:block;padding:20px 0;font:400 24px/1.2 var(--serif);color:var(--ink)}
 html.mnu-on{overflow:hidden}  /* 여는 동안 쪽은 멈춤 */
 @media (min-width:768px){.mnu{display:none}}
+/* 휴대폰 메뉴 칸 펼침(11/18 동원 UX 넷 시안 ① 'A 누르면 칸 펼침 (권장)' — 기준/브랜드 시안/UX넷시안_v1): 이름 옆 화살표(44px 누름 자리)를 누르면 넓은 창 메뉴 펼침(#mm)과 같은 멘트 · 칸이 옆으로 밀리게 · main.js가 #mm 칸을 복제 */
+.mnu li{position:relative}.mnu li.mxl>a{padding-right:48px}
+.mnu .mxb{position:absolute;right:-12px;top:10px;display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;background:none;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mnu .mxb svg{display:block;width:10px;height:10px;transition:transform .2s var(--e2,ease)}.mnu .mxb[aria-expanded="true"] svg{transform:rotate(180deg)}
+.mnu .mxb:active{opacity:.5}
+.mnu .mx{padding:0 0 22px}
+.mnu .mx .mm-row{display:flex;gap:10px;margin:0 -20px;padding:0 20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 20px;scrollbar-width:none;overscroll-behavior-x:contain}.mnu .mx .mm-row::-webkit-scrollbar{display:none}
+.mnu .mx .mm-c{display:flex;flex-direction:column;flex:0 0 128px;width:128px;padding:0;scroll-snap-align:start;font:inherit}
+.mnu .mx .mm-k{display:flex;flex:1 0 auto;align-items:flex-end;margin:0 0 8px;font-size:12px;white-space:normal;overflow-wrap:anywhere}  /* 128px 칸에선 다른 말판 멘트가 길어 줄을 바꿈 · 키 큰 멘트에 맞춰 그림 칸 윗선이 한 줄로(멘트는 아래 붙임) */
+.mnu .mx .mm-ph{width:128px;height:128px}.mnu .mx .mm-ct img{padding:10px}
+.mnu .mx .mm-tc{gap:4px;padding:0 10px;font-size:11.5px}
+.mnu .mx .mm-pc{background-size:auto;background-position:0 10px}
+.mnu .mx .mm-soon b{left:8px;top:8px}
+.mnu .mx .mm-n{margin-top:8px;font:500 12.5px/1.35 var(--sans)}
+:root[data-motion="reduce"] .mnu .mxb svg{transition:none}@media (prefers-reduced-motion:reduce){.mnu .mxb svg{transition:none}}
 @media (min-width:768px) and (max-width:819px){:is(html:lang(ru),html:lang(es)) header.top nav{gap:6px!important;letter-spacing:0}}  /* 메뉴 여섯(11/15 로코코)이 768 태블릿에서 두 줄로 갈리던 것 — 실측 쓸 폭 383px에 스페인어 432 · 러시아어 413(820부터는 모두 한 줄) → 이 구간 · 넘친 두 판(러 · 서)만 틈 6 · 자간 0(실측 375 · 359 — 한 줄) */
 /* 로코코 쪽(11/15 동원 'D 큰 한 줄 · 좌우 번갈아' — 목업 기준/브랜드 시안/로코코소개시안_v1_D.png · Day One 꼴): 가운데 큰 한 줄 → 세 이야기 좌우 번갈아(한 칸 = 한 이야기 = 한 화면)
    화면 자리는 지금 '화면 준비 중'(무채색) — 실제 캡처가 생기면 그림 */

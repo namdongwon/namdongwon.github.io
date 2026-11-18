@@ -1774,6 +1774,21 @@ def render(site, poem, videos, photos, lang="ko"):
     def mhref(v):
         return {"@ig": e(iu), "@yt": e(ch.get("url", "")), "@buy": e(book["buy_url"])}.get(v, v)
 
+    def soon_when(d):
+        # '준비 중' 칸의 공개 날짜(11/18 동원 UX 넷 시안 ③ '틀만 넣기 · A 꼴 (권장)' — 기준/브랜드 시안/UX넷시안_v1): menu.json 칸의 date "YYYY" · "YYYY-MM" · "YYYY-MM-DD"
+        # 날짜가 있고 아직 안 지났으면 배지가 '12월 공개'(빌드한 해와 다르면 '2027년 3월 공개') · 없거나 지났으면 '준비 중' 그대로(지난 날짜가 틀린 말로 남지 않게)
+        if not d:
+            return t("coming")
+        ps = [int(x) for x in str(d).split("-")]
+        y, m = ps[0], (ps[1] if len(ps) > 1 else 0)
+        end = date(y, 12, 31) if not m else (date(y, m, ps[2]) if len(ps) > 2 else (date(y + (m == 12), m % 12 + 1, 1) - timedelta(days=1)))
+        if end < build_day():
+            return t("coming")
+        if not m:
+            return t("soon_y", y=y)
+        mn = L["months"].split("|")[m - 1]
+        return t("soon_m", m=m, mn=mn) if y == build_day().year else t("soon_ym", y=y, m=m, mn=mn)
+
     def mm_pane(k_, pane):
         cards = [c_ for c_ in pane["cards"] if c_.get("show", True)]
         kicks = ([mtext(pane["solo"], f"{k_ or '소개'} solo")] if len(cards) == 1 and pane.get("solo")
@@ -1784,7 +1799,7 @@ def render(site, poem, videos, photos, lang="ko"):
             label = mtext(c_["n"], f"{k_ or '소개'} 칸 이름") + (" ↗" if c_.get("arrow") else "")
             img, fit = mimg(c_.get("img")), c_.get("fit", "img")
             if fit == "soon":  # 아직 내용이 없는 칸(11/18 동원 "미리 만들어 놓으라고 했잖아 5 4 5 4") — 먹 칸 + 음악 표지와 같은 '● 준비 중' 배지
-                ph = f'<span class="mm-ph mm-soon"><b><i aria-hidden="true"></i>{t("coming")}</b></span>'
+                ph = f'<span class="mm-ph mm-soon"><b><i aria-hidden="true"></i>{soon_when(c_.get("date"))}</b></span>'
             elif fit == "tc":
                 ph = '<span class="mm-ph mm-tc">' + "".join(f"<i>{e(x)}</i>" for x in mlines(c_.get("lines"))) + "</span>"
             elif img and fit in ("img", "ct"):

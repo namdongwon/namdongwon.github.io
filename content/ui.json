@@ -890,6 +890,38 @@
     "es": "Próximamente",
     "fr": "Bientôt"
   },
+  "soon_m": {
+    "ko": "{m}월 공개",
+    "en": "Out in {mn}",
+    "ja": "{m}月公開",
+    "ru": "Выйдет в {mn}",
+    "es": "Llega en {mn}",
+    "fr": "Sortie en {mn}"
+  },
+  "soon_ym": {
+    "ko": "{y}년 {m}월 공개",
+    "en": "Out in {mn} {y}",
+    "ja": "{y}年{m}月公開",
+    "ru": "Выйдет в {mn} {y}",
+    "es": "Llega en {mn} de {y}",
+    "fr": "Sortie en {mn} {y}"
+  },
+  "soon_y": {
+    "ko": "{y}년 공개",
+    "en": "Out in {y}",
+    "ja": "{y}年公開",
+    "ru": "Выйдет в {y} году",
+    "es": "Llega en {y}",
+    "fr": "Sortie en {y}"
+  },
+  "months": {
+    "ko": "1월|2월|3월|4월|5월|6월|7월|8월|9월|10월|11월|12월",
+    "en": "January|February|March|April|May|June|July|August|September|October|November|December",
+    "ja": "1月|2月|3月|4月|5月|6月|7月|8月|9月|10月|11月|12月",
+    "ru": "январе|феврале|марте|апреле|мае|июне|июле|августе|сентябре|октябре|ноябре|декабре",
+    "es": "enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre",
+    "fr": "janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre"
+  },
   "first_alt": {
     "ko": "첫 편 {title} 썸네일 — 준비 중",
     "en": "First episode, {title} — thumbnail, coming soon",

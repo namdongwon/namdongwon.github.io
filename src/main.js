@@ -533,6 +533,36 @@
     head.addEventListener("click", ev => { if (ev.target.closest(".sq")) menu(false); }, true);
     matchMedia("(min-width:768px)").addEventListener("change", m => { if (m.matches) menu(false); });
     addEventListener("pageshow", ev => { if (ev.persisted) menu(false); });  // 뒤로 가기로 돌아온 쪽(bfcache)이 열린 채 남지 않게
+    // 휴대폰 메뉴 칸 펼침(11/18 동원 UX 넷 시안 ① 'A 누르면 칸 펼침 (권장)' — 기준/브랜드 시안/UX넷시안_v1): 이름 옆 화살표를 누르면 넓은 창 메뉴 펼침(#mm)과 같은 멘트 · 칸이 그 아래 옆으로 밀리게.
+    // 칸은 #mm에서 복제(쪽 무게 그대로) · 그림은 처음 펼칠 때만 부름 · 하나를 열면 다른 것은 닫힘 · 같은 쪽 #자리로 가는 칸을 누르면 메뉴를 닫음
+    const mmEl = document.getElementById("mm");
+    if (mmEl) {
+      const xs = [];
+      mnu.querySelectorAll("li").forEach(li => {
+        const a = li.querySelector("a[data-pg]"), k = a && a.dataset.pg;
+        const row = a && mmEl.querySelector(`.mm-in[data-pg="${k}"] .mm-row`), mk = a && head.querySelector(`.mmk[data-mk="${k}"]`);
+        if (!row || !mk) return;
+        const id = "mx-" + (k || "me"), b = document.createElement("button"), box = document.createElement("div");
+        b.type = "button"; b.className = "mxb"; b.setAttribute("aria-expanded", "false"); b.setAttribute("aria-controls", id); b.setAttribute("aria-label", mk.getAttribute("aria-label"));
+        const svg = mk.querySelector("svg"); if (svg) b.append(svg.cloneNode(true));
+        box.className = "mx"; box.id = id; box.hidden = true;
+        li.classList.add("mxl"); li.append(b, box);
+        const set = on => {
+          if (on && !box.firstChild) {
+            const r = row.cloneNode(true);
+            r.querySelectorAll("img[data-src]").forEach(m => { m.src = m.dataset.src; m.removeAttribute("data-src"); m.loading = "lazy"; });
+            box.append(r);
+          }
+          box.hidden = !on; b.setAttribute("aria-expanded", on ? "true" : "false");
+        };
+        xs.push(set);
+        b.addEventListener("click", () => { const on = box.hidden; xs.forEach(f => f(false)); set(on); });
+      });
+      mnu.addEventListener("click", ev => {
+        const a = ev.target.closest(".mx a[href]");
+        if (a && a.pathname === location.pathname && a.hash) menu(false);
+      });
+    }
   }
   // 화면 밝게 · 어둡게 · 시스템(10/26 동원 "웹사이트 화면에 화이트모드 다크모드 시스템설정 있으면 좋겠다" → A 먹 종이) — 판권면 세 단추.
   // 고른 것은 이 기기에만 기억(localStorage theme — 쿠키 아님), 처음은 밝게. 첫 그림 전에 머리 스크립트가 data-theme을 붙이고 여기서는 단추 · 브라우저 막대 색만
