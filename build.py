@@ -455,7 +455,10 @@ def consent_html(L, gid, site_label, cid=""):  # cid: Clarity 프로젝트 ID(11
           f'{opener(g("cz_user"), " cz-u")}<div class="cz-d cz-ui" hidden data-none="{g("cz_user_none")}" data-at="{g("cz_user_at")}"></div>'
           f'<div class="cz-sr"><button type="button" class="cz-sv" id="cz-sv3" aria-label="{g("cz_save_aria")}">{g("cz_save")}</button></div></div>')
     ca = f' data-clarity="{e(cid)}"' if cid else ""
-    return f'<div class="cz" id="cz" data-ga="{e(gid)}"{ca} hidden>{l1}{l2}{l3}</div>\n'
+    # 11/18 동의 창 문단에 rd-extra — 읽기 모드 단추를 띄울지 셀 때(Readability isProbablyReaderable) 닫힌(hidden) 창 안 문단까지 세어
+    # 글이 거의 없는 음악 · 인스타그램 쪽에도 단추가 뜨고, 열면 바닥글만 나왔음(실측). 클래스만 더함 — 모양 · 동작 · 화면 읽기는 그대로
+    inner = re.sub(r'<p( class="([^"]*)")?>', lambda m: f'<p class="{(m.group(2) + " ") if m.group(2) else ""}rd-extra">', l1 + l2 + l3)
+    return f'<div class="cz" id="cz" data-ga="{e(gid)}"{ca} hidden>{inner}</div>\n'
 
 
 def book_card(site):
@@ -2147,14 +2150,15 @@ def render(site, poem, videos, photos, lang="ko"):
     <div class="lab">{exl}</div>
   </section>
 """,
-        "poem": f"""  <section id="poem" aria-labelledby="poem-t">
+        # 11/18 시 칸은 <article>(따로 읽히는 한 편 — HTML 표준) — 읽기 모드 단추는 '긴 문단 · article' 글자 수로 뜨는데(Readability isProbablyReaderable) 한국어 시 행은 짧아 못 넘음 · 칸 전체로 899자(점수 27.5 > 20)
+        "poem": f"""  <article id="poem" aria-labelledby="poem-t">
     <p class="label">{t("label_poem")}</p>
     <div class="r"><h2 class="h2" id="poem-t">{poem_t if lat else f"«{poem_t}»" if ru else f"「{poem_t}」"}</h2><span class="rt">{t("read_time", n=read_n)}</span><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem" data-cite="{e(cite)}">{poem_html}</div>{rdl}
       <p class="pgno">{pgno}</p><p class="pbr">{t("sheet_bridge")}</p></div>
     <div class="l pbook" id="bookcard"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
       {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}{plab}</div>
     {bnews}{bintro}
-  </section>
+  </article>
 """,
         "palette": "  " + palette.rstrip() + "\n",
         "me": f"""  {tk}  <section id="me" aria-labelledby="me-t">

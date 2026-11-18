@@ -228,7 +228,7 @@
 
   // 결 — 칸 요소들이 화면에 들어오면 차례로 떠오름(시·기록은 장면이 맡음)
   if (motion) {
-    const sels = ["main section > .label", "#poem .h2", ".pbook", "#me .h2", ".tagl", ".bio", ".years li", ".now", "#photo .head", "#photo .caps",
+    const sels = ["main :is(section,article) > .label", "#poem .h2", ".pbook", "#me .h2", ".tagl", ".bio", ".years li", ".now", "#photo .head", "#photo .caps",
       "#photo .nav2", ".bhead", ".btext", ".btoc h3", ".btoc .parts > div", ".btoc .parts > details", ".btoc .tail", ".ch2", ".big", ".vt", ".sub", ".toc li", ".empty", ".pastnone", "#contact .h2", ".lead", ".ask > *", ".sns", ".colo", "#palette .h2", ".pal", ".pk"];
     const seen = new Set();
     sels.forEach(sel => document.querySelectorAll(sel).forEach(el => {
@@ -1220,7 +1220,7 @@
       if (!el) return;
       const fold = el.closest("details");  // '지난 소식'처럼 접힌 묶음 안이면 펼친 뒤에
       if (fold && !fold.open) fold.open = true;
-      const sec = el.matches("section"), big = el.offsetHeight > innerHeight * 0.6;  // 칸 · 큰 덩어리(차례 전체)는 머리를 위에, 한 줄은 화면 가운데에
+      const sec = el.matches("section, article"), big = el.offsetHeight > innerHeight * 0.6;  // 칸 · 큰 덩어리(차례 전체)는 머리를 위에, 한 줄은 화면 가운데에
       el.scrollIntoView({ block: sec || big ? "start" : "center", behavior: reduce ? "auto" : "smooth" });
       if (p) {  // 흐르는 벽(11/3) — 그 게시물을 창으로 엶(첫 사진 단추에 포커스를 두고 누름 — 창을 닫으면 그 자리로)
         const b = document.querySelector(`#photo .wt[data-i="${+p[1]}"][data-k="0"]`);
@@ -1929,7 +1929,7 @@
     const hit = document.getElementById(decodeURIComponent(location.hash.slice(1)));
     const fold = hit && hit.closest("details");
     if (fold && !fold.open) { fold.open = true; hit.scrollIntoView({ block: "center" }); }  // 접힌 부 안의 줄이면 펼친 뒤 그 줄로
-    if (hit && !hit.matches("section")) { hit.classList.add("hit"); setTimeout(() => hit.classList.remove("hit"), 1600); }
+    if (hit && !hit.matches("section, article")) { hit.classList.add("hit"); setTimeout(() => hit.classList.remove("hit"), 1600); }
   }
 
   // 뒤로 가기로 창 닫기(10/28 사용 편의 점검 ① — 찾기 · 「탁본」 한 장 · 게시물 사진 창을 연 채 뒤로 가면 사이트를 떠났음).

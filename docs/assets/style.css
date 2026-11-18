@@ -233,7 +233,7 @@ html.sr-on .ma-dock,html.mnu-on .ma-dock,html.pv-on .ma-dock{visibility:hidden}
 
 
 html{scroll-padding-top:calc(var(--top) + 12px)}  
-main>section{padding:12px 20px 64px;scroll-margin-top:-12px}      
+main>:is(section,article){padding:12px 20px 64px;scroll-margin-top:-12px}      
 .label{display:flex;align-items:center;gap:12px;margin-top:8px;font:600 calc(11px * var(--fs))/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  
 .label::after{content:"";flex:1;height:1px;background:var(--rule)}
 .h2{margin-top:36px;font:400 28px/1.2 var(--serif)}  
@@ -904,10 +904,10 @@ html.sr-on{overflow:hidden}
   .top nav{justify-self:center;margin:0}
   .top .act{justify-self:end;margin-left:0;padding-left:0;border-left:0}
   .mini{padding-left:64px;padding-right:52px}  
-  main>section{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:72px;padding:30px 64px 64px}  
-  main>section>.label{grid-column:1/-1}
-  main>section>.l{grid-column:1;grid-row:2;align-self:center}
-  main>section>.r{grid-column:2;grid-row:2;align-self:center}
+  main>:is(section,article){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:72px;padding:30px 64px 64px}  
+  main>:is(section,article)>.label{grid-column:1/-1}
+  main>:is(section,article)>.l{grid-column:1;grid-row:2;align-self:center}
+  main>:is(section,article)>.r{grid-column:2;grid-row:2;align-self:center}
   #home{min-height:calc(100vh - var(--top));min-height:calc(100svh - var(--top))}  
   #home .kick{margin-top:0}
   #home .ht{margin-top:16px;font-size:clamp(60px,8.4vw,128px)}

@@ -247,7 +247,7 @@ html.sr-on .ma-dock,html.mnu-on .ma-dock,html.pv-on .ma-dock{visibility:hidden}
 
 /* 칸 */
 html{scroll-padding-top:calc(var(--top) + 12px)}  /* Tab · 건너뛰기로 간 자리가 맨 위 띠에 덮이지 않게 — 뒤로 Tab하면 '책장에 꽂기 ↗'가 띠 밑에 통째로 숨었음(10/27 점검, WCAG 2.4.11) */
-main>section{padding:12px 20px 64px;scroll-margin-top:-12px}  /* 메뉴로 칸에 갈 때는 전처럼 띠 바로 아래(위 html 여백 띠+12px에서 12px를 뺌) */  /* 칸 높이는 첫 화면만(#home) — 칸 맞춤을 끈 뒤 남은 화면 높이 때문에 칸 사이가 84–312px로 들쭉날쭉했음(10/25 다듬기 가2) */  /* 휴대폰 좌우 여백 20px(10/24 ⑪ A — Le Cinéma Club · 타이포그래피 서울과 같은 값, 시집 제목 줄이 375px에서 한 줄). 컴퓨터는 64px */
+main>:is(section,article){padding:12px 20px 64px;scroll-margin-top:-12px}  /* 메뉴로 칸에 갈 때는 전처럼 띠 바로 아래(위 html 여백 띠+12px에서 12px를 뺌) */  /* 칸 높이는 첫 화면만(#home) — 칸 맞춤을 끈 뒤 남은 화면 높이 때문에 칸 사이가 84–312px로 들쭉날쭉했음(10/25 다듬기 가2) */  /* 휴대폰 좌우 여백 20px(10/24 ⑪ A — Le Cinéma Club · 타이포그래피 서울과 같은 값, 시집 제목 줄이 375px에서 한 줄). 컴퓨터는 64px */
 .label{display:flex;align-items:center;gap:12px;margin-top:8px;font:600 11px/1 var(--sans);letter-spacing:.04em;color:var(--muted)}  /* 꼬리표 한글 자간 .32 → .04em — '인 스 타 그 램'처럼 낱자로 흩어지던 것(10/29 그 밖 2) · 영어 대문자는 아래 .1em 그대로 */
 .label::after{content:"";flex:1;height:1px;background:var(--rule)}
 .h2{margin-top:36px;font:400 28px/1.2 var(--serif)}  /* 칸 제목(28 · 컴퓨터 40px)은 보통 굵기 — 크게 쓰는 제목은 얇게, 굵은 글씨는 작은 제목(작은 제목 · 맨 위 이름 · 탁본 한 장 제목)에만(10/26 한국어 ① B · 영어 ② A · 75곳 실측 · 10/29 채널 이름도 보통 굵기로 — 그 밖 3) */
@@ -972,10 +972,10 @@ html.sr-on{overflow:hidden}
   .top nav{justify-self:center;margin:0}
   .top .act{justify-self:end;margin-left:0;padding-left:0;border-left:0}
   .mini{padding-left:64px;padding-right:52px}  /* 맨 위 띠와 같은 안쪽 여백(닫기 단추의 글자가 64px 선에 오게) */
-  main>section{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:72px;padding:30px 64px 64px}  /* 두 단은 내용 최소 폭과 상관없이 반반(10/28 모양 점검 ⑦ — 768px 사진 칸 단이 그림이 오면 73px 옆으로 움직였음) */
-  main>section>.label{grid-column:1/-1}
-  main>section>.l{grid-column:1;grid-row:2;align-self:center}
-  main>section>.r{grid-column:2;grid-row:2;align-self:center}
+  main>:is(section,article){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:72px;padding:30px 64px 64px}  /* 두 단은 내용 최소 폭과 상관없이 반반(10/28 모양 점검 ⑦ — 768px 사진 칸 단이 그림이 오면 73px 옆으로 움직였음) */
+  main>:is(section,article)>.label{grid-column:1/-1}
+  main>:is(section,article)>.l{grid-column:1;grid-row:2;align-self:center}
+  main>:is(section,article)>.r{grid-column:2;grid-row:2;align-self:center}
   #home{min-height:calc(100vh - var(--top));min-height:calc(100svh - var(--top))}  /* 첫 화면은 맨 위 띠를 뺀 높이 — 라벨이 화면 아래에 붙지 않게(휴대폰은 내용 높이, 10/29 고침 2) */
   #home .kick{margin-top:0}
   #home .ht{margin-top:16px;font-size:clamp(60px,8.4vw,128px)}
