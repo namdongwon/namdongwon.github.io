@@ -1858,6 +1858,8 @@
     const unfold = () => { if (gbCard) gbCard.classList.remove("fold"); };
     // 11/18 빈 글 안내(동원 버튼 "A 글 칸 아래 한 줄 (권장)" — 시안 기준/브랜드 시안/UX여섯째시안_v1/⑥ · GOV.UK 오류 메시지 꼴): 브라우저 기본 말풍선(브라우저 말 · 회색) 대신
     // 글 칸 바로 아래 그 판의 말 한 줄 · 칸 밑줄 먹 · 초점은 글 칸 · 화면 읽기는 role=alert. 빈칸만 친 글도 막음(required는 빈칸을 글로 봄). 스크립트가 없으면 required 그대로
+    // 11/18 ⌘+Enter(맥 밖은 Ctrl+Enter)로 남기기(동원 버튼 "방명록 ⌘+Enter로 남기기 (권장)" — GitHub · Slack · Gmail 댓글 칸 꼴) · 한글을 짜는 중의 Enter는 건너뜀 · 빈 글이면 아래 안내 한 줄
+    if (gbTa) gbTa.addEventListener("keydown", ev => { if (ev.key === "Enter" && (ev.metaKey || ev.ctrlKey) && !ev.isComposing && !gbSend.disabled) { ev.preventDefault(); gbf.requestSubmit(); } });
     const gbErr = document.createElement("p");
     if (gbTa) {
       gbf.noValidate = true;
@@ -2601,7 +2603,7 @@
   (() => {
     let dlg = null;
     const mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
-    const keys = [[mac ? "⌘" : "Ctrl", "K"], ["Esc"], ["←", "→"], ["?"]];
+    const keys = [[mac ? "⌘" : "Ctrl", "K"], ["Esc"], ["←", "→"], [mac ? "⌘" : "Ctrl", "Enter"], ["?"]];  // 11/18 방명록 ⌘+Enter 한 줄
     const open = () => {
       if (!dlg) {
         dlg = document.createElement("dialog");

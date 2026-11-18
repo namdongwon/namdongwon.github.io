@@ -547,8 +547,18 @@ def art_line(a, lang="ko"):
 GB_MAX = 1000  # 방명록 글 한도(11/6 동원 "쓰는 사람이 진심으로 쓰고 싶은데 막히면 짜증 날 거 같아서" → 다른 곳 실측(다음 댓글 300 · 인스타 댓글 2,200 · 네이버 뉴스는 2006년 제한 없앰) → 버튼 "1,000자 (권장)" · 전엔 200)
 
 
+def ig_dm(url):  # 11/18 인스타그램 프로필 주소 → 메시지 창 짧은 주소(ig.me/m/아이디 — 메타 공식) · 꼴이 다르면 그대로
+    return re.sub(r"^https?://(?:www\.)?instagram\.com/([^/?#]+).*$", r"https://ig.me/m/\1", url)
+
+
+def num_txt(n, lang):  # 11/18 숫자 천 단위를 말마다(동원 버튼 "숫자 표기를 말마다 (권장)") — 한 · 영 · 일 1,117 · 러 1 117(붙임 공백) · 프 1 117(좁은 붙임 공백) · 스 네 자리는 붙여 1117, 다섯 자리부터 12 345(RAE)
+    n = int(n)
+    if lang == "es" and n < 10000: return str(n)
+    return f"{n:,}".replace(",", NB) if lang in ("ru", "es") else f"{n:,}".replace(",", NNB) if lang == "fr" else f"{n:,}"
+
+
 def gb_max_txt(lang):
-    return f"{GB_MAX:,}".replace(",", NB) if lang == "ru" else str(GB_MAX) if lang == "es" else f"{GB_MAX:,}".replace(",", NNB) if lang == "fr" else f"{GB_MAX:,}"  # 러시아어는 천 단위를 붙임 공백으로 · 스페인어는 네 자리를 붙여 씀(RAE — 1000)
+    return num_txt(GB_MAX, lang)  # 러시아어는 천 단위를 붙임 공백으로 · 스페인어는 네 자리를 붙여 씀(RAE — 1000)
 
 
 ORIG_LABEL = {"ko": "원제", "en": "Original title", "ja": "原題", "ru": "Оригинальное название", "es": "Título original", "fr": "Titre original"}  # 영상 사실 줄의 원제 앞 낱말(11/6)
@@ -1424,7 +1434,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 먹색은 쓴 횟수의 로그를 열 단으로(g0 한 번 → g9 가장 많이) — 같은 단은 한 span이라 칸 612개를 요소로 만들지 않음. 사진은 10/28 동원 "일단 팔레트 아래에 내 사진은 빼자"로 뺌(글자 견본만)
     pl = load("palette.json")
     pg, pn = pl["glyphs"], pl["counts"]
-    ptotal = f'{pl["total"]:,}'
+    ptotal = num_txt(pl["total"], lang)
     pal = "".join(f'<span class="g{k}">{"".join(g for g, _ in grp)}</span>'
                   for k, grp in itertools.groupby(zip(pg, (round(9 * math.log(n) / math.log(pn[0])) for n in pn)), key=lambda x: x[1]))
     ptop = (", ".join(f"{g} ({n})" for g, n in zip(pg[:3], pn[:3])) if lat or ru else " · ".join(f"{g} {n}{'回' if tr_ else '번'}" for g, n in zip(pg[:3], pn[:3])))  # 일본어판은 '回'(11/1)
@@ -1517,7 +1527,7 @@ def render(site, poem, videos, photos, lang="ko"):
     yr = build_day().year
     this = lambda r: r.get("year_n") if r.get("year") == yr and r.get("year_n") else 0  # noqa: E731
     rec = "".join(f'<canvas class="dot-n" data-to="{r["n"]}" aria-hidden="true"></canvas>'
-                  f'<p class="rl"><b class="n">{r["n"]:,}</b><span>{keep(L["rec"].format(unit=r["unit"], note=r["note"]) + (L["rec_year"].format(n=this(r), unit=r["unit"]) if this(r) else ""))}</span></p>'
+                  f'<p class="rl"><b class="n">{num_txt(r["n"], lang)}</b><span>{keep(L["rec"].format(unit=r["unit"], note=r["note"]) + (L["rec_year"].format(n=this(r), unit=r["unit"]) if this(r) else ""))}</span></p>'
                   f'<canvas class="grid" data-n="{r["n"]}"' + (f' data-y="{this(r)}"' if this(r) else "") + ' aria-hidden="true"></canvas>' for r in S["records"])
 
     # (소개 첫 화면 문장 · 문장 사이 그림 hb는 11/1 밤 뺌 — TOKA식 첫 화면과 같은 말이라. 동원 "랜딩페이지나, 웹페이지는 했던 말을 또하고 그러면 안되는거야" ·
@@ -1664,7 +1674,7 @@ def render(site, poem, videos, photos, lang="ko"):
         <label class="agree"><input type="checkbox" name="agree" required>{t("agree", privacy=e(c["privacy"]))}</label>
         <button class="send" type="submit">{t("send")}</button>
         <p class="msg" role="status"></p></form>''' if endpoint else
-           f'<p class="ask-off"><a class="buy" href="{e(link_url(site, "instagram"))}" target="_blank" rel="noopener">{t("ask_off")} ↗</a></p>')
+           f'<p class="ask-off"><a class="buy" href="{e(ig_dm(link_url(site, "instagram")))}" target="_blank" rel="noopener">{t("ask_off")} ↗</a></p>')  # 11/18 메시지 창으로 바로(동원 버튼 "인스타 메시지 바로 열기 (권장)" — 메타 공식 짧은 주소 ig.me/m/아이디 · 전엔 프로필로 가 메시지 단추를 한 번 더 눌러야 했음)
     # 메일(10/26 동원 "나의 지메일 도 남기면 좋을 거 같아") — 문의 아래 한 줄 '메일 + 주소'(베껴 쓰기 쉽게 주소를 그대로 보임 · 누르면 메일 앱).
     # 주소를 긁어 가는 프로그램 대비로 공개 저장소의 원고 · 쪽 원본 어디에도 주소를 한 덩어리로 두지 않음: site.json은 아이디 · 도메인을 나눠 두고,
     # 쪽에는 뒤집은 두 조각(data-u · data-d)과 '@'를 따로 감싼 글만 → main.js가 화면에서 주소와 mailto를 이어 붙임. 찾을 거리 · 구조화 데이터에도 주소는 넣지 않음
