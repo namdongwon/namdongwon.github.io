@@ -1129,6 +1129,42 @@
       pen: '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 16l1-4 8-8 3 3-8 8z"/><path d="M11 6l3 3"/></svg>'
     };
     const pgTh = th => th[1] === "i" ? `<span class="th i">${PG_IC[th[0]] || ""}</span>` : `<img class="th${th[1] === "ct" ? " th-ct" : ""}" src="${esc(th[0])}" alt="" width="32" height="32" decoding="async">`;
+    // 11/18 한/영 자판 실수(동원 버튼 "A 바꿔서 찾고 한 줄 (권장)" — 시안 기준/브랜드 시안/UX여섯째시안_v1/⑤ · 네이버 · 구글 한국어 검색 꼴): 영문 자판으로 친 말(xkrqhs)이
+    // 결과가 없고 0.45초 멈추면 두벌식으로 짜 보아(탁본) 결과가 있으면 칸을 그 말로 바꾸고 위에 한 줄 '“탁본”으로 찾았어요 · xkrqhs 그대로 찾기'. 본래 말에 결과가 있으면 바꾸지 않음
+    const KM = { q: "ㅂ", w: "ㅈ", e: "ㄷ", r: "ㄱ", t: "ㅅ", y: "ㅛ", u: "ㅕ", i: "ㅑ", o: "ㅐ", p: "ㅔ", a: "ㅁ", s: "ㄴ", d: "ㅇ", f: "ㄹ", g: "ㅎ", h: "ㅗ", j: "ㅓ", k: "ㅏ", l: "ㅣ", z: "ㅋ", x: "ㅌ", c: "ㅊ", v: "ㅍ", b: "ㅠ", n: "ㅜ", m: "ㅡ", Q: "ㅃ", W: "ㅉ", E: "ㄸ", R: "ㄲ", T: "ㅆ", O: "ㅒ", P: "ㅖ" };
+    const KCH = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ", KJU = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ", KJO = ["", ..."ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ"];
+    const KVV = { "ㅗㅏ": "ㅘ", "ㅗㅐ": "ㅙ", "ㅗㅣ": "ㅚ", "ㅜㅓ": "ㅝ", "ㅜㅔ": "ㅞ", "ㅜㅣ": "ㅟ", "ㅡㅣ": "ㅢ" }, KCC = { "ㄱㅅ": "ㄳ", "ㄴㅈ": "ㄵ", "ㄴㅎ": "ㄶ", "ㄹㄱ": "ㄺ", "ㄹㅁ": "ㄻ", "ㄹㅂ": "ㄼ", "ㄹㅅ": "ㄽ", "ㄹㅌ": "ㄾ", "ㄹㅍ": "ㄿ", "ㄹㅎ": "ㅀ", "ㅂㅅ": "ㅄ" };
+    const kb2ko = str => {
+      let o = "", c = "", v = "", f = "";
+      const fl = () => { o += c && v ? String.fromCharCode(0xAC00 + (KCH.indexOf(c) * 21 + KJU.indexOf(v)) * 28 + KJO.indexOf(f)) : c + v + f; c = v = f = ""; };
+      for (const ch of str) {
+        const j = KM[ch] || KM[ch.toLowerCase()];
+        if (!j) { fl(); o += ch; continue; }
+        if (KJU.includes(j)) {
+          if (f) { let nc = f; const sp = Object.keys(KCC).find(k => KCC[k] === f); if (sp) { f = sp[0]; nc = sp[1]; } else f = ""; fl(); c = nc; v = j; }  // 받침이 다음 글자 첫소리로(탁ㅂㅗ → 탁보)
+          else if (v) { if (c && KVV[v + j]) v = KVV[v + j]; else { fl(); v = j; } }
+          else v = j;
+        } else if (c && v && !f && KJO.includes(j)) f = j;
+        else if (f && KCC[f + j]) f = KCC[f + j];
+        else { fl(); c = j; }
+      }
+      fl();
+      return o;
+    };
+    const roJ = w => { const x = w.charCodeAt(w.length - 1) - 0xAC00, jo = x >= 0 && x < 11172 ? x % 28 : 0; return jo && jo !== 8 ? "으로" : "로"; };  // 받침 있으면 '으로'(ㄹ 받침은 '로')
+    const kbN = document.createElement("p"); kbN.className = "sr-kb"; kbN.hidden = true; cnt.before(kbN);
+    let kbT = 0, kbTo = "", kbFrom = "", kbSkip = "";
+    const kbTry = q => {
+      clearTimeout(kbT);
+      const t = q.trim();
+      if (t === kbSkip || !/^[a-zA-Z ]{2,}$/.test(t)) return;
+      kbT = setTimeout(() => {
+        if (inp.value.trim() !== t) return;
+        const k = kb2ko(t);
+        if (!/[가-힣]/.test(k) || /[a-zA-Z]/.test(k) || !find(k).length) return;
+        kbFrom = t; kbTo = k; inp.value = k; run();
+      }, 450);
+    };
     const run = () => {
       const q = inp.value;
       if (q === lastQ) return;  // 글자가 그대로면(한글 한 글자 마침 등) 다시 그리지 않음 — 고른 줄을 지킴
@@ -1136,6 +1172,14 @@
       const empty = !q.trim(), showSug = empty;
       // 최근에 눌러 간 결과는 맨 위에 시계로(11/16 동원 "ㅁㅇ 를 검색하고 마지막 아침에를 눌러도 최근 검색어는 ㅁㅇ로 나오고 시계 표시도 안나온다" — 구글 예상 검색어 꼴) · 같은 제목이 둘이면 첫 줄만 · 그다음 최대 10개
       const rcs = empty ? [] : recent(), seen = new Set();
+      if (q.trim() !== kbTo) kbTo = kbFrom = "";
+      kbN.hidden = !kbTo;
+      if (kbTo) {
+        kbN.textContent = "";
+        const lk = document.createElement("button"); lk.type = "button"; lk.textContent = uiText("kb_orig", "{q} 그대로 찾기", { q: kbFrom });
+        lk.addEventListener("click", () => { kbSkip = kbFrom; kbTo = ""; inp.value = kbFrom; run(); inp.focus(); });
+        kbN.append(uiText("kb_found", "“{k}”{ro} 찾았어요", { k: kbTo, ro: roJ(kbTo) }) + " · ", lk);
+      }
       const hits = (empty ? [] : find(q)).map((h, k) => { const r = rcs.indexOf(h.it[1]); const on = r >= 0 && !seen.has(h.it[1]); if (on) seen.add(h.it[1]); return { ...h, rc: on ? r : 99, k }; })
         .sort((x, y) => x.rc - y.rc || x.k - y.k).slice(0, 10);
       // 같은 글이 두 곳(시집 카드 제목 = 「탁본」 첫 행 등)이면 둘 다 두고 제목 아래 작은 둘째 줄로 자리를 가름(11/16 동원 "문을 열고 나오면 두개 나오는 거 이상하잖아" → 시안 찾기결과겹침시안_v1 '③ 아래 둘째 줄') — 견줌은 부호 · 대소문자를 뺀 글(영어판 제목 꼴 · 행 꼴도 같게)
@@ -1153,6 +1197,7 @@
           `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}${pd ? `<small class="sr-sub">${ko(esc(pd))}</small>` : dupN.get(dk(h)) > 1 ? `<small class="sr-sub">${ko(esc(where(h.it)))}</small>` : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌 · 왼쪽 갈래(「탁본」 · 차례 · 이달)도 뺌(시안 찾기결과갈래시안_v1 'A 갈래 뺌 (권장)')  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
       }).join("");
       none.hidden = empty || hits.length > 0;
+      if (!empty && !hits.length) kbTry(q); else clearTimeout(kbT);
       // 결과 없음(11/6 섬세한 배려 2차 ① — 동원 'A 친 말 + 길 한 줄' · 알라딘 · Toteme · 예스24): 친 말을 그 판의 따옴표로 되돌려 보이고 아래에 해 볼 길 한 줄 — 친 말은 글자로만(textContent)
       if (!none.hidden) none.firstElementChild.textContent = uiText("search_none_q", "“{q}”에 맞는 것이 없습니다.", { q: q.trim() });
       inp.setAttribute("aria-controls", showSug ? sug.id : res.id);
@@ -1162,7 +1207,7 @@
       // GA4 search(11/7 관리 화면 이벤트 사전 — 동원 '넣기'): 입력이 1.5초 멈추면(엔터면 바로) 검색어 · 결과 수를 한 번 — 같은 창을 연 동안 같은 말은 한 번만 · 보내기는 consent.js(동의한 방문만)
       clearTimeout(gaT);
       if (!empty) gaT = setTimeout(() => gaSearch(q, hits.length), 1500);
-      const msg = empty ? "" : hits.length ? cnt.textContent : none.firstElementChild.textContent;
+      const msg = empty ? "" : (kbTo ? kbN.firstChild.textContent : "") + (hits.length ? cnt.textContent : none.firstElementChild.textContent);
       sayT = setTimeout(() => { if (say) say.textContent = msg; }, 400);  // 치는 동안 글자마다 읽지 않게 잠깐 멈춘 뒤
     };
     let from = null;
@@ -1746,8 +1791,23 @@
       return new Promise(r => setTimeout(r, 320));
     };
     const unfold = () => { if (gbCard) gbCard.classList.remove("fold"); };
+    // 11/18 빈 글 안내(동원 버튼 "A 글 칸 아래 한 줄 (권장)" — 시안 기준/브랜드 시안/UX여섯째시안_v1/⑥ · GOV.UK 오류 메시지 꼴): 브라우저 기본 말풍선(브라우저 말 · 회색) 대신
+    // 글 칸 바로 아래 그 판의 말 한 줄 · 칸 밑줄 먹 · 초점은 글 칸 · 화면 읽기는 role=alert. 빈칸만 친 글도 막음(required는 빈칸을 글로 봄). 스크립트가 없으면 required 그대로
+    const gbErr = document.createElement("p");
+    if (gbTa) {
+      gbf.noValidate = true;
+      gbErr.className = "gb-err"; gbErr.id = "gb-err"; gbErr.setAttribute("role", "alert"); gbErr.hidden = true;
+      gbTa.after(gbErr);
+      gbTa.setAttribute("aria-describedby", [gbTa.getAttribute("aria-describedby"), "gb-err"].filter(Boolean).join(" "));
+      gbTa.addEventListener("input", () => { if (!gbErr.hidden && gbTa.value.trim()) { gbErr.hidden = true; gbTa.removeAttribute("aria-invalid"); } });
+    }
     gbf.addEventListener("submit", async ev => {
       ev.preventDefault();
+      if (gbTa && !gbTa.value.trim()) {
+        gbErr.textContent = uiText("gb_empty_msg", "글을 한 줄 적어 주세요."); gbErr.hidden = false;
+        gbTa.setAttribute("aria-invalid", "true"); gbTa.value = ""; gbTa.dispatchEvent(new Event("input")); gbTa.focus();
+        return;
+      }
       const sentTxt = gbTa ? gbTa.value : "";  // 11/18 '보낸 글' 칸에 쓸 글(reset 전에 잡아 둠)
       // 스테이징(staging.namdongwon.com · *.pages.dev)에서는 보내지 않음(11/6 — 시험 글이 진짜 받은 글에 섞이지 않게) · 이 맥 시험 주소(127.0.0.1)는 시험이 보내기를 흉내 내므로 그대로
       if (/^staging\.|\.pages\.dev$/.test(location.hostname)) { gbMsg.textContent = uiText("gb_staging", "스테이징 서버라 보내지 않았습니다 — 운영 사이트에서만 보내집니다."); return; }

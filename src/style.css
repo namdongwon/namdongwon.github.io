@@ -591,6 +591,7 @@ html.sr-on{overflow:hidden}
 .srch .sug i{flex:none;font:300 11px/1 var(--sans);font-style:normal;color:var(--faint);text-indent:0}
 .srch .sug .hang{text-indent:-.6em}  /* 「탁본」 읽기 — 여는 부호 앞 빈만큼 내어 걸어 다른 줄과 첫머리를 맞춤 */
 .sr-n{margin-top:22px;font:300 11px/1 var(--sans);color:var(--faint)}
+.sr-kb{margin-top:22px;font:400 12.5px/1.5 var(--sans);color:var(--muted)}.sr-kb button{padding:0;border:0;background:none;font:inherit;color:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.sr-kb button:hover{color:var(--ink)}.sr-kb button:active{opacity:.6}  /* 11/18 한/영 자판 실수로 바꿔 찾았을 때 한 줄 */
 .sr-res{list-style:none;margin-top:16px}
 .sr-res a{display:grid;grid-template-columns:15px 1fr;gap:12px;align-items:baseline;padding:8px 0}  /* 줄 사이 선 뺌 · 위아래 8px — 인기 검색어 목록과 같은 간격(11/16 동원 '밑줄 빼는 게 낫나' → 시안 찾기결과선시안_v1 'B 선 빼고 촘촘히 (권장)') */
 .sr-res .tx{font:400 16px/1.5 var(--serif);color:var(--muted);word-break:keep-all}
@@ -781,6 +782,7 @@ html.sr-on{overflow:hidden}
 .gbf label i{font-style:normal;font-weight:300;letter-spacing:0;color:var(--faint)}
 .gbf input[type=text],.gbf textarea{font:300 16px/1.5 var(--sys);color:var(--ink);border:0;border-bottom:1px solid var(--line);padding:6px 0;background:transparent;border-radius:0;outline:none;width:100%;resize:vertical}
 .gbf input[type=text]:focus,.gbf textarea:focus{border-color:var(--ink);box-shadow:0 1px 0 var(--ink)}  /* 초점 선 2px — 1px 색만 바뀌면 거의 안 보였음(11/18 키보드 점검) */
+.gbf textarea[aria-invalid="true"]{border-color:var(--ink);box-shadow:0 1px 0 var(--ink)}.gbf .gb-err{display:flex;align-items:center;gap:6px;margin:8px 0 0;font:400 12.5px/1.5 var(--sans);color:var(--ink)}.gbf .gb-err::before{content:"";flex:none;width:4px;height:4px;border-radius:50%;background:currentColor}  /* 11/18 빈 글 안내 한 줄 */
 /* 안내 한 줄(11/2 밤 B — 동의 체크 둘 대신): 옛 동의 글과 같은 작은 고딕 · 흐린 먹 · 처리방침 링크만 먹 밑줄 */
 .gbf .gbn{margin:0;font:300 11px/1.6 var(--sans);letter-spacing:0;color:var(--muted)}
 .gbf .gbn a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
