@@ -664,9 +664,15 @@
     if (to) { ev.preventDefault(); location.href = swap.getAttribute("href") + to; }
   }));
   // 11/9 언어 고르기 펼침(<details>) — 바깥을 누르거나 Esc면 닫힘(Esc는 닫고 '🌐 KO'로 초점을 돌림 · 스크립트 없는 쪽은 다시 눌러 닫음)
+  // 11/18 Esc로 닫을 때 초점 되돌림은 키보드로 열었을 때만(동원 캡처 'KOR 둘레 네모' → 시안 ⑱ 버튼 "A 마우스면 없음 · 키보드면 네모 (권장)"):
+  // 마우스 · 손가락으로 열고 Esc면 초점을 거둠(네모 없음) · Enter · 스페이스로 열었으면 전처럼 'KOR'로 돌아와 네모(WCAG 2.4.7)
   document.querySelectorAll(".lsw").forEach(lsw => {  // 11/18 맨 위 줄 · 바닥글 둘 — 하나를 열면 다른 하나는 닫힘(바깥 누름과 같음)
+    const sm = lsw.querySelector("summary");
+    let byPtr = false;
+    sm.addEventListener("pointerdown", () => { byPtr = true; });
+    sm.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") byPtr = false; });
     document.addEventListener("click", ev => { if (lsw.open && !lsw.contains(ev.target)) lsw.open = false; });
-    lsw.addEventListener("keydown", ev => { if (ev.key === "Escape" && lsw.open) { lsw.open = false; lsw.querySelector("summary").focus(); } });
+    lsw.addEventListener("keydown", ev => { if (ev.key === "Escape" && lsw.open) { lsw.open = false; if (byPtr) document.activeElement.blur(); else sm.focus(); } });
   });
 
   // 사진 칸의 한 장씩 · 모아 보기 · 3D 고리(10/24–11/1)는 11/3 흐르는 벽으로 바뀌며 뺌(11/4 정리 — git 기록 9cec51b 앞에 있음)
