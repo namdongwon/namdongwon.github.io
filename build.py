@@ -738,6 +738,19 @@ OLD_HASH_JS = ('(function(){var h=location.hash.slice(1),m=location.pathname.mat
                '[/^(contact|fq\\d+)$/,"contact/"],[/^guestbook$/,"guestbook/"],[/^rococo$/,"rococo/"]];'
                'for(var i=0;i<R.length;i++)if(R[i][0].test(h)){location.replace(m[1]+R[i][1]+location.search+"#"+h);return}})();')
 HEAD_JS, HEAD_JS_PLAIN = (x.replace("<script>(function(){var H=", "<script>" + OLD_HASH_JS + "(function(){var H=", 1) for x in (HEAD_JS, HEAD_JS_PLAIN))
+# 프리로더(11/18 밤 동원 "개인 포트폴리오 사이트인데 있는 게 낫지 않을까 좀 있어 보이잖아" → '늦을 때만' → 시안 기준/브랜드 시안/프리로더시안_v1 → 버튼 "A 이름 + 가는 줄 (권장)"):
+# 관리 화면 로딩(admin.css .boot)과 같은 꼴 — 0.4초가 지나도 쪽이 아직 다 안 왔을 때(DOMContentLoaded 전 — readyState는 뒤로 미룬 스크립트를 기다리기 전에 interactive가 되어 못 씀)만 NAMDONGWON · CREATIVE STUDIO + 흐르는 먹 줄 · 다 그려지면(DOMContentLoaded) 0.45초에 걷힘 · 4초 상한
+# 첫 방문 문 장면(html.intro) 때는 띄우지 않음 · 고른 화면(어둡게)과 움직임 줄이기를 따름 · style.css가 아직 안 왔을 수 있어 색 · 꼴은 붙여 씀(CSP style-src 'unsafe-inline') · 읽기 도구엔 숨김
+PL_JS = ('(function(){var H=document.documentElement;if(H.classList.contains("intro"))return;var el,ok=0,t=setTimeout(function(){if(ok)return;'
+         'var th=H.getAttribute("data-theme"),d=th==="dark"||(th==="system"&&matchMedia("(prefers-color-scheme: dark)").matches),bg=d?"#141414":"#fff",ink=d?"#ecebe6":"#111",mu=d?"#8c8b87":"#717171",ln=d?"#2a2a2a":"#e6e6e6",'
+         'rm=H.getAttribute("data-motion")==="reduce"||matchMedia("(prefers-reduced-motion: reduce)").matches;el=document.createElement("div");el.id="pl";el.setAttribute("aria-hidden","true");'
+         'el.style.cssText="position:fixed;inset:0;z-index:2147483000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:"+bg+";transition:opacity .45s ease";'
+         'el.innerHTML="<style>@keyframes plln{from{transform:translateX(-100%)}to{transform:translateX(250%)}}</style><div style=\\"font:400 22px/1 Didot,\'Bodoni 72\',\'Bodoni MT\',serif;letter-spacing:.1em;color:"+ink+";text-align:center\\">NAMDONGWON'
+         '<small style=\\"display:block;margin-top:9px;font:600 9px/1 -apple-system,\'Apple SD Gothic Neo\',sans-serif;letter-spacing:.38em;color:"+mu+"\\">CREATIVE STUDIO</small></div>'
+         '<div style=\\"position:relative;width:120px;height:2px;background:"+ln+";overflow:hidden\\"><i style=\\"position:absolute;left:0;top:0;bottom:0;width:40%;background:"+ink+(rm?";transform:translateX(75%)":";animation:plln 1.2s linear infinite")+"\\"></i></div>";'
+         'H.appendChild(el)},400);function done(){ok=1;clearTimeout(t);if(!el)return;var e=el;el=null;e.style.opacity="0";setTimeout(function(){e.remove()},500)}'
+         'document.addEventListener("DOMContentLoaded",done);setTimeout(done,4000)})();')
+HEAD_JS, HEAD_JS_PLAIN = (x[:x.rindex("</script>")] + PL_JS + "</script>" for x in (HEAD_JS, HEAD_JS_PLAIN))
 # 쪽 넘김 미리 받기(11/4 동원 '넣기 (권장)' — Speculation Rules · 구글 검색 · Shopify가 씀): 같은 사이트 쪽 링크에 마우스를 올리거나 누르기 시작하면 그 쪽 HTML을 미리 받아 둠(moderate).
 # 미리 '그리기'(prerender)가 아니라 '받기'(prefetch) — 그리기는 원형 전환(cto) · 문 장면 · 들어오는 장면이 손님이 보기 전에 끝나 버림. 받기는 스크립트를 돌리지 않아 통계 · 동의에도 닿지 않음.
 # 지원: 크롬 · 엣지 · 안드로이드 크롬 · 사파리는 받기를 만드는 중(2026-05 WebKit 트렁크) — 모르는 브라우저는 이 줄을 그냥 넘김. 파일(점 있는 주소) · 새 탭 · 내려받기는 뺌
