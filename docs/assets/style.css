@@ -208,9 +208,9 @@ html.sr-on .ma-dock,html.mnu-on .ma-dock,html.pv-on .ma-dock{visibility:hidden}
 .mm{display:none;position:fixed;left:0;right:0;top:var(--top);z-index:30;opacity:0;transition:opacity .28s cubic-bezier(.2,0,0,1)}.mm:not([aria-hidden]){opacity:1}.mm::before{content:"";position:absolute;left:-40vw;right:-40vw;top:0;height:calc(100% + 240px);z-index:-1;pointer-events:none;background:radial-gradient(60% 100% at 50% 0%,var(--bg) 59%,color-mix(in srgb,var(--bg) 0%,transparent) 100%)}  
 .mm.vis{display:block}
 .mm-in{max-width:100%;width:max-content;margin:0 auto;padding:30px 64px 44px}  
-.mm-in :is(.mm-d,.mm-c){opacity:0;transform:translateY(-10px);transition:opacity .3s cubic-bezier(.2,0,0,1),transform .3s cubic-bezier(.2,0,0,1)}  
-.mm-in.go :is(.mm-d,.mm-c){opacity:1;transform:none}.mm-in.go .mm-d{transition-delay:.17s}
-.mm-in.go .mm-c:nth-child(1){transition-delay:.05s}.mm-in.go .mm-c:nth-child(2){transition-delay:.08s}.mm-in.go .mm-c:nth-child(3){transition-delay:.11s}.mm-in.go .mm-c:nth-child(4){transition-delay:.14s}.mm-in.go .mm-c:nth-child(5){transition-delay:.17s}  
+.mm-in :is(.mm-k,.mm-ph,.mm-n,.mm-d){opacity:0;transform:translateY(-10px);filter:blur(10px);transition:opacity .16s,transform .16s,filter .16s}  
+.mm-in.go :is(.mm-k,.mm-ph,.mm-n,.mm-d){opacity:1;transform:none;filter:none;transition:opacity .45s ease-in-out,transform .45s ease-in-out,filter .45s ease-in-out}
+.mm-in.go .mm-c:nth-child(1) .mm-k{transition-delay:0.00s}.mm-in.go .mm-c:nth-child(1) .mm-ph{transition-delay:0.06s}.mm-in.go .mm-c:nth-child(1) .mm-n{transition-delay:0.12s}.mm-in.go .mm-c:nth-child(2) .mm-k{transition-delay:0.06s}.mm-in.go .mm-c:nth-child(2) .mm-ph{transition-delay:0.12s}.mm-in.go .mm-c:nth-child(2) .mm-n{transition-delay:0.18s}.mm-in.go .mm-c:nth-child(3) .mm-k{transition-delay:0.12s}.mm-in.go .mm-c:nth-child(3) .mm-ph{transition-delay:0.18s}.mm-in.go .mm-c:nth-child(3) .mm-n{transition-delay:0.24s}.mm-in.go .mm-c:nth-child(4) .mm-k{transition-delay:0.18s}.mm-in.go .mm-c:nth-child(4) .mm-ph{transition-delay:0.24s}.mm-in.go .mm-c:nth-child(4) .mm-n{transition-delay:0.30s}.mm-in.go .mm-c:nth-child(5) .mm-k{transition-delay:0.24s}.mm-in.go .mm-c:nth-child(5) .mm-ph{transition-delay:0.30s}.mm-in.go .mm-c:nth-child(5) .mm-n{transition-delay:0.36s}.mm-in.go .mm-d{transition-delay:.36s}
 .mm-d{margin:20px 0 0;font:400 calc(15px * var(--fs))/1.6 var(--serif);color:var(--muted);word-break:keep-all}  
 .mm-k{display:block;margin:0 0 12px;font:400 calc(14px * var(--fs))/1.3 var(--serif);color:var(--muted);white-space:nowrap}  
 .mm-l{font:400 calc(13px * var(--fs))/1 var(--sans);color:var(--muted);text-decoration:none}
@@ -230,8 +230,8 @@ html.sr-on .ma-dock,html.mnu-on .ma-dock,html.pv-on .ma-dock{visibility:hidden}
 .mmk svg{width:8px;height:8px;transition:transform .2s}.mmk:focus-visible,.mmk.kb{opacity:1;pointer-events:auto}.mmk.kb{color:var(--ink)}.mmk[aria-expanded="true"] svg{transform:rotate(180deg)}
 @media not ((hover:hover) and (pointer:fine) and (min-width:1024px)){.mmk{display:none}}
 @media not ((hover:hover) and (pointer:fine) and (min-width:1024px)){.mm{display:none!important}}
-@media (prefers-reduced-motion:reduce){.mm,.mm-in :is(.mm-d,.mm-c),.mm-ph img{transition:none!important}}:where(:root[data-motion="reduce"]) .mm,:where(:root[data-motion="reduce"]).mm,:where(:root[data-motion="reduce"]) .mm-in :is(.mm-d,.mm-c),:where(:root[data-motion="reduce"]).mm-in :is(.mm-d,.mm-c),:where(:root[data-motion="reduce"]) .mm-ph img,:where(:root[data-motion="reduce"]).mm-ph img{transition:none!important}
-:root[data-motion="reduce"] :is(.mm,.mm-in .mm-d,.mm-in .mm-c,.mm-ph img){transition:none!important}
+@media (prefers-reduced-motion:reduce){.mm,.mm-in :is(.mm-d,.mm-c,.mm-k,.mm-ph,.mm-n),.mm-ph img{transition:none!important}.mm-in :is(.mm-k,.mm-ph,.mm-n,.mm-d){transform:none;filter:none}}:where(:root[data-motion="reduce"]) .mm,:where(:root[data-motion="reduce"]).mm,:where(:root[data-motion="reduce"]) .mm-in :is(.mm-d,.mm-c,.mm-k,.mm-ph,.mm-n),:where(:root[data-motion="reduce"]).mm-in :is(.mm-d,.mm-c,.mm-k,.mm-ph,.mm-n),:where(:root[data-motion="reduce"]) .mm-ph img,:where(:root[data-motion="reduce"]).mm-ph img{transition:none!important}:where(:root[data-motion="reduce"]) .mm-in :is(.mm-k,.mm-ph,.mm-n,.mm-d),:where(:root[data-motion="reduce"]).mm-in :is(.mm-k,.mm-ph,.mm-n,.mm-d){transform:none;filter:none}
+:root[data-motion="reduce"] :is(.mm,.mm-in .mm-d,.mm-in .mm-c,.mm-in .mm-k,.mm-in .mm-ph,.mm-in .mm-n,.mm-ph img){transition:none!important}:root[data-motion="reduce"] .mm-in :is(.mm-k,.mm-ph,.mm-n,.mm-d){transform:none;filter:none}
 
 
 html{scroll-padding-top:calc(var(--top) + 12px)}  
