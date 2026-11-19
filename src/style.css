@@ -1600,3 +1600,16 @@ html[data-fs] .mm-c{display:flex;flex-direction:column}html[data-fs] .mm-k{displ
 .lpop b{display:block;font:400 15px/1.3 var(--serif);color:var(--ink)}.lpop span{display:block;margin-top:6px;font:400 12.5px/1.5 var(--sans);color:var(--muted)}
 @media (prefers-reduced-motion:reduce){.lpop{transition:opacity .18s;transform:none}}
 :root[data-motion="reduce"] .lpop{transition:opacity .18s;transform:none}
+/* 사진 창 캡션 두 층(11/19 UX 7차 — 레이크스 미술관 '전체 정보' 접힘): 작품 사진의 '자세히' — 전시 · 장소 · 사진. 첫 층과 같은 작은 고딕 · 옅은 먹 */
+:is(.cap,.pvf) .cd{margin-top:8px;font:300 11px/1.5 var(--sans);color:var(--faint)}
+:is(.cap,.pvf) .cd summary{display:inline-flex;align-items:center;gap:4px;cursor:pointer;list-style:none;color:var(--muted);border-bottom:1px solid transparent;transition:color var(--fast,.15s),border-color var(--fast,.15s)}
+:is(.cap,.pvf) .cd summary::-webkit-details-marker{display:none}
+:is(.cap,.pvf) .cd summary::after{content:"";width:5px;height:5px;border:solid currentColor;border-width:0 1px 1px 0;transform:translateY(-2px) rotate(45deg);transition:transform var(--fast,.15s)}
+:is(.cap,.pvf) .cd[open] summary::after{transform:translateY(1px) rotate(-135deg)}
+:is(.cap,.pvf) .cd summary:hover{color:var(--ink);border-bottom-color:currentColor}:is(.cap,.pvf) .cd summary:active{opacity:.6}
+:is(.cap,.pvf) .cd dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:6px 0 0}:is(.cap,.pvf) .cd dt{color:var(--faint)}:is(.cap,.pvf) .cd dd{margin:0;color:var(--muted)}
+/* 번역판 각주(11/19 UX 7차 — 시 끝 각주): 행 끝 작은 숫자 · 시 아래 가는 선과 풀이 */
+.poem .fnr{margin-left:2px;font:400 11px/1 var(--sans);vertical-align:super}.poem .fnr a{color:var(--faint);text-decoration:none;padding:0 2px}.poem .fnr a:hover{color:var(--ink)}
+.pnotes{max-width:36em;margin:36px 0 0;padding:12px 0 0;border-top:1px solid var(--rule);list-style:none;counter-reset:pn;font:300 12.5px/1.6 var(--sans);color:var(--faint)}
+.pnotes li{counter-increment:pn;padding-left:1em;text-indent:-1em}.pnotes li::before{content:counter(pn) " ";font-size:11px;vertical-align:super}
+.pnotes a{color:var(--muted);text-decoration:none;margin-left:4px}.pnotes a:hover{color:var(--ink)}.pnotes li:target{color:var(--muted)}

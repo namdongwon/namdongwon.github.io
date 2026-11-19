@@ -5,9 +5,9 @@
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=80188bc6ac") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=527db74260") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=e2643952ce") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=c32ff234c5") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=5da9c6f21b") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=1ab0434f18") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=2855458e54") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=e7a6bb6890") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -39,9 +39,9 @@ html:lang(en) #home dd i,html:lang(es) #home dd i,html:lang(fr) #home dd i,html:
 @font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-light.woff2?v=17f91eb736") format("woff2");font-weight:300;font-display:swap}
 @font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru.woff2?v=fda5bb5a02") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"RMJ";src:url("fonts/ndw-serif-ru-bold.woff2?v=cbfb36ca97") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-light.woff2?v=78198d448a") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-regular.woff2?v=a96c4f948b") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-semibold.woff2?v=67fa69da4b") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-light.woff2?v=bba5586231") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-regular.woff2?v=01bab6e933") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"RGO";src:url("fonts/ndw-sans-ru-semibold.woff2?v=a92dda01ef") format("woff2");font-weight:600;font-display:swap}
 html:lang(ru) #home{--sans:"RGO","PTDF","PTD",-apple-system,sans-serif}
 html:lang(ja) .door .t,html:lang(ja) #home .hs{font-family:"JMJF",var(--serif)}
 html:lang(ja) #home{--sans:"JGOF","JGO","PTDF","PTD",-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}  
@@ -1489,3 +1489,16 @@ html[data-fs] .mm-c{display:flex;flex-direction:column}html[data-fs] .mm-k{displ
 .lpop b{display:block;font:400 calc(15px * var(--fs))/1.3 var(--serif);color:var(--ink)}.lpop span{display:block;margin-top:6px;font:400 calc(12.5px * var(--fs))/1.5 var(--sans);color:var(--muted)}
 @media (prefers-reduced-motion:reduce){.lpop{transition:opacity .18s;transform:none}}:where(:root[data-motion="reduce"]) .lpop,:where(:root[data-motion="reduce"]).lpop{transition:opacity .18s;transform:none}
 :root[data-motion="reduce"] .lpop{transition:opacity .18s;transform:none}
+
+:is(.cap,.pvf) .cd{margin-top:8px;font:300 calc(11px * var(--fs))/1.5 var(--sans);color:var(--faint)}
+:is(.cap,.pvf) .cd summary{display:inline-flex;align-items:center;gap:4px;cursor:pointer;list-style:none;color:var(--muted);border-bottom:1px solid transparent;transition:color var(--fast,.15s),border-color var(--fast,.15s)}
+:is(.cap,.pvf) .cd summary::-webkit-details-marker{display:none}
+:is(.cap,.pvf) .cd summary::after{content:"";width:5px;height:5px;border:solid currentColor;border-width:0 1px 1px 0;transform:translateY(-2px) rotate(45deg);transition:transform var(--fast,.15s)}
+:is(.cap,.pvf) .cd[open] summary::after{transform:translateY(1px) rotate(-135deg)}
+:is(.cap,.pvf) .cd summary:hover{color:var(--ink);border-bottom-color:currentColor}:is(.cap,.pvf) .cd summary:active{opacity:.6}
+:is(.cap,.pvf) .cd dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:6px 0 0}:is(.cap,.pvf) .cd dt{color:var(--faint)}:is(.cap,.pvf) .cd dd{margin:0;color:var(--muted)}
+
+.poem .fnr{margin-left:2px;font:400 calc(11px * var(--fs))/1 var(--sans);vertical-align:super}.poem .fnr a{color:var(--faint);text-decoration:none;padding:0 2px}.poem .fnr a:hover{color:var(--ink)}
+.pnotes{max-width:36em;margin:36px 0 0;padding:12px 0 0;border-top:1px solid var(--rule);list-style:none;counter-reset:pn;font:300 calc(12.5px * var(--fs))/1.6 var(--sans);color:var(--faint)}
+.pnotes li{counter-increment:pn;padding-left:1em;text-indent:-1em}.pnotes li::before{content:counter(pn) " ";font-size:calc(11px * var(--fs));vertical-align:super}
+.pnotes a{color:var(--muted);text-decoration:none;margin-left:4px}.pnotes a:hover{color:var(--ink)}.pnotes li:target{color:var(--muted)}

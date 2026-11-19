@@ -2715,5 +2715,53 @@
     "ru": "Я соглашаюсь на передачу и хранение записи в Google (США) — получатель, срок и как отказаться: {privacy}, раздел 3",
     "es": "Acepto que mi nota se transfiera a Google (Estados Unidos) y se guarde allí — destinatario, plazo y cómo negarse: {privacy}, sección 3",
     "fr": "J’accepte que mon mot soit transféré à Google (États-Unis) et conservé — destinataire, durée et refus : {privacy}, section 3"
+  },
+  "pnote": {
+    "ko": "주",
+    "en": "Note",
+    "ja": "注",
+    "ru": "Примечание",
+    "es": "Nota",
+    "fr": "Note"
+  },
+  "pnote_back": {
+    "ko": "본문으로",
+    "en": "Back to the line",
+    "ja": "本文へ",
+    "ru": "К строке",
+    "es": "Volver al verso",
+    "fr": "Retour au vers"
+  },
+  "cap_more": {
+    "ko": "자세히",
+    "en": "Details",
+    "ja": "詳しく",
+    "ru": "Подробнее",
+    "es": "Detalles",
+    "fr": "Détails"
+  },
+  "cap_show": {
+    "ko": "전시",
+    "en": "Exhibition",
+    "ja": "展覧会",
+    "ru": "Выставка",
+    "es": "Exposición",
+    "fr": "Exposition"
+  },
+  "cap_venue": {
+    "ko": "장소",
+    "en": "Venue",
+    "ja": "会場",
+    "ru": "Место",
+    "es": "Lugar",
+    "fr": "Lieu"
+  },
+  "cap_photo": {
+    "ko": "사진",
+    "en": "Photo",
+    "ja": "写真",
+    "ru": "Фото",
+    "es": "Foto",
+    "fr": "Photo"
   }
 }

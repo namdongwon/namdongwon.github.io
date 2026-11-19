@@ -784,7 +784,7 @@ SPEC_RULES = ('<script type="speculationrules">' + json.dumps({"prefetch": [{"wh
 PAGES = {"": ("me",), "book": ("home", "poem", "palette"), "photo": ("photo",), "video": ("video",), "music": ("music",), "rococo": ("rococo",), "guestbook": ("guestbook",), "contact": ("contact",)}  # 11/2 방명록 쪽(동원 "방명록 사이트를 먼저 추가") — 연락 칸 안에서 떼어 /guestbook/
 NAV_PG = ("", "book", "photo", "video", "music", "rococo", "guestbook")  # 맨 위 메뉴 · 휴대폰 메뉴 차례(11/17 음악 — 유튜브 다음)
 NEXT_PAGE = {"": "book", "book": "photo", "photo": "video", "video": "music", "music": "rococo", "rococo": "guestbook", "guestbook": "", "contact": "guestbook"}  # 11/15 로코코(유튜브 다음)  # 쪽 끝 다음 쪽 카드 — 메뉴 차례대로 한 칸씩 · 방명록 다음은 처음(소개) · 연락 다음은 방명록(11/3)
-PAGE_PRE = {"t": "book", "l": "book", "n": "book", "toc": "book", "bookcard": "book", "mline": "book", "y": "", "p": "photo", "fq": "contact", "mu": "music"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p · 이달의 한 줄 무대 mline 11/4)
+PAGE_PRE = {"t": "book", "l": "book", "n": "book", "pn": "book", "pnr": "book", "toc": "book", "bookcard": "book", "mline": "book", "y": "", "p": "photo", "fq": "contact", "mu": "music"}  # 칸 안 자리 id → 쪽(차례 t · 시 행 l · 소식 n · 연표 y · 사진 p · 이달의 한 줄 무대 mline 11/4)
 
 
 # 보안 덧막이(11/16 관리 화면 세션 보안 점검 '기준/보안 점검_2026-11-16.md' · 동원 "응, 고쳐"): GitHub Pages는 머리줄을 못 보내 <meta> CSP로.
@@ -1526,17 +1526,25 @@ def render(site, poem, videos, photos, lang="ko"):
     pt = S["poem"]["title"]
     og_poem = f'{pt if lat else f"«{pt}»" if ru else f"「{pt}」"} — ' + " / ".join([x for st in tr for x in st][12:15])
     stz, ln_no = [], 0
+    # 번역판 각주(11/19 UX 7차 동원 버튼 '시 낱말 곁주' · 'B 시 끝 각주' — Tufte CSS · 시집 역주 관행): content/poem_notes.json의 줄(line = 몇째 행)마다
+    # 그 판 번역 행 끝에 작은 숫자(누르면 시 아래 풀이로) · 풀이는 시 바로 아래 한 줄씩(되돌아가는 ↩). 그 판 풀이가 없으면 아무것도 안 붙음(한국어 · 일본어판)
+    pn_rows = [r for r in (load("poem_notes.json").get("items", []) if (CONTENT / "poem_notes.json").exists() else []) if pair and r.get(lang)]
+    pn_at = {r["line"]: i + 1 for i, r in enumerate(pn_rows)}
+    pnote = lambda n: f'<sup class="fnr"><a href="#pn{n}" id="pnr{n}" aria-label="{t("pnote")} {n}">{n}</a></sup>'  # noqa: E731
+    pn_txt = lambda x: re.sub(r"&lt;ko&gt;(.*?)&lt;/ko&gt;", r'<span lang="ko">\1</span>', e(x))  # noqa: E731
+    pnotes = ('<ol class="pnotes">' + "".join(f'<li id="pn{i + 1}">{pn_txt(r[lang])} <a href="#pnr{i + 1}" aria-label="{t("pnote_back")}">↩</a></li>' for i, r in enumerate(pn_rows)) + "</ol>") if pn_rows else ""
     # 하7(11/7 동원 'B 말마디 (권장)' — 시안 일본어시줄바꿈_v1): 일본어 번역 행은 말마디(文節)에서만 꺾임 — 끊을 자리에 <wbr> + keep-all(.le.ph).
     # 브라우저의 word-break:auto-phrase는 크롬 155 시험에서 먹지 않아 손으로 표시 · 행 글이 바뀌어 표에 없으면 예전처럼 글자 사이에서 꺾임(넘치지 않음)
-    def le(b):
+    def le(b, n=0):
         ph = JA_PHRASE.get(b) if lang == "ja" else None
-        return f'<span class="le ph">{"<wbr>".join(e(x) for x in ph.split("|"))}</span>' if ph and ph.replace("|", "") == b else f'<span class="le">{e(b)}</span>'
+        fn = pnote(pn_at[n]) if n in pn_at else ""
+        return f'<span class="le ph">{"<wbr>".join(e(x) for x in ph.split("|"))}{fn}</span>' if ph and ph.replace("|", "") == b else f'<span class="le">{e(b)}{fn}</span>'
     for st, tl in zip(ko_st, tr):
         spans = []
         for a, b in zip(st, tl):
             ln_no += 1
             if pair:
-                spans.append(f'<span class="pair" id="l{ln_no}"><span class="ln" lang="ko">{e(a)}</span><br>{le(b)}</span>')  # 11/18 원문 · 번역 사이 <br>도 읽기 모드용
+                spans.append(f'<span class="pair" id="l{ln_no}"><span class="ln" lang="ko">{e(a)}</span><br>{le(b, ln_no)}</span>')  # 11/18 원문 · 번역 사이 <br>도 읽기 모드용
                 ix["poem"] += [(tg["poem"], b, S["poem"]["pages"], f"#l{ln_no}"), (tg["poem"], a, S["poem"]["pages"], f"#l{ln_no}")]  # 어디 칸에 쪽수(10/27 출처 한 줄 — 레퍼런스 제안 ⑥)
             else:
                 spans.append(f'<span class="ln" id="l{ln_no}"{ko_attr}>{e(a)}</span>')
@@ -1600,7 +1608,15 @@ def render(site, poem, videos, photos, lang="ko"):
         # 작품 캡션 두 결 두 줄(10/25 ⑦ A — Mennour식): '작가, 〈작품〉, 해'는 먹 한 줄로 세우고, 전시 · 미술관은 작은 줄로(작가 이름이 가장 옅은 글자가 되지 않게)
         head, tail = art_parts(a, lang) if a else ("", "")
         aw = f'<span class="aw">{head}</span>' if head else ""
-        small = (NB + "· ").join(x for x in (tail, keep(p["credit"]) if p["credit"] else "") if x)
+        # 캡션 두 층(11/19 UX 7차 동원 버튼 '사진 창 캡션 두 층' — 레이크스 미술관 작품 페이지: 제목 아래 한 줄 + 접힌 '전체 정보' · 시안 UX일곱째시안_v1/N2):
+        # 작품 사진에 전시 · 미술관이 있으면 첫 층은 '작가, 〈작품〉, 해' + 날짜 · 게시물 ↗, '자세히'를 펴면 전시 · 장소 · 사진(찍은 이).
+        # 날짜 · 게시물은 첫 층에 이미 있어 펼친 칸에 다시 적지 않음(같은 카피 두 번 금지) · 전시 · 미술관이 없으면 지금 한 층 그대로
+        deep, det = bool(a and (a.get("show") or a.get("venue"))), ""
+        if deep:
+            rows = [(t("cap_show"), marked("전시", a["show"], lang) if a.get("show") else ""), (t("cap_venue"), e(a.get("venue", ""))),
+                    (t("cap_photo"), keep(p["credit"]) if p["credit"] else e(S["name"]))]
+            det = (f'<details class="cd"><summary>{t("cap_more")}</summary><dl>' + "".join(f"<dt>{k}</dt><dd>{v}</dd>" for k, v in rows if v) + "</dl></details>")
+        small = "" if deep else (NB + "· ").join(x for x in (tail, keep(p["credit"]) if p["credit"] else "") if x)
         wtxt = keep(words)
         if p.get("link"):  # 인스타에서 받아 온 사진(10/24 사진 칸 A): 글 첫 줄 아래 작은 줄에 날짜 · 게시물 ↗
             post = f'<a href="{e(p["link"])}" target="_blank" rel="noopener">{t("ig_post")} ↗</a>'
@@ -1608,7 +1624,7 @@ def render(site, poem, videos, photos, lang="ko"):
             if tr_ and re.search("[가-힣]", words):  # 영어판 · 일본어판에도 인스타 글은 쓴 말 그대로
                 wtxt = f'<span lang="ko">{wtxt}</span>'
         cap_art = rich(L["cap_art"]) if lat else keep(L["cap_art"])
-        line = (f'<p>{wtxt}{aw}' + (f'<small>{small}</small>' if small else "") + "</p>"
+        line = (f'<p>{wtxt}{aw}' + (f'<small>{small}</small>' if small else "") + "</p>" + det  # 펼친 칸은 <p> 밖(블록 — <p> 안이면 문단이 끊김)
                 if words or small or aw else f'<p class="ph">{keep(L["cap_where"])}<small>{cap_art}</small></p>')
         caps.append(f'<div class="cap"{"" if i == 0 else " hidden"}>{line}</div>')
     for i, p in enumerate(PH["items"]):  # 찾기: 캡션 첫 줄 · 작가 · 작품 → 그 사진으로(#p번호 — main.js가 띠를 넘김)
@@ -2265,7 +2281,7 @@ def render(site, poem, videos, photos, lang="ko"):
         # 11/18 시 칸은 <article>(따로 읽히는 한 편 — HTML 표준) — 읽기 모드 단추는 '긴 문단 · article' 글자 수로 뜨는데(Readability isProbablyReaderable) 한국어 시 행은 짧아 못 넘음 · 칸 전체로 899자(점수 27.5 > 20)
         "poem": f"""  <article id="poem" aria-labelledby="poem-t">
     <p class="label">{t("label_poem")}</p>
-    <div class="r"><h2 class="h2" id="poem-t">{poem_t if lat else f"«{poem_t}»" if ru else f"「{poem_t}」"}</h2><span class="rt">{t("read_time", n=read_n)}</span><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem" data-cite="{e(cite)}">{poem_html}</div>{rdl}
+    <div class="r"><h2 class="h2" id="poem-t">{poem_t if lat else f"«{poem_t}»" if ru else f"「{poem_t}」"}</h2><span class="rt">{t("read_time", n=read_n)}</span><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem" data-cite="{e(cite)}">{poem_html}</div>{pnotes}{rdl}
       <p class="pgno">{pgno}</p><p class="pbr">{t("sheet_bridge")}</p></div>
     <div class="l pbook" id="bookcard"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
       {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}{plab}</div>

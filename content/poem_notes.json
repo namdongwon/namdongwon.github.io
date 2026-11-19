@@ -1,0 +1,12 @@
+{
+  "_설명": "「탁본」 번역판 각주(11/19 UX 7차 동원 버튼 '시 낱말 곁주' · 'B 시 끝 각주' — Tufte CSS · 시집 역주 관행). line = 시 전체에서 몇째 행(1부터) · 판마다 그 판 번역 행 끝에 작은 숫자, 풀이는 시 아래. 한국어판 · 일본어판(朱肉 — 일본 독자에게 익숙한 낱말)은 달지 않음. 풀이 글 안 <ko>…</ko>는 한국어 낱말(lang=ko).",
+  "items": [
+    {
+      "line": 9,
+      "en": "seal ink — in Korean <ko>인주</ko> (inju): the thick paste a carved name seal is pressed into before stamping; usually red.",
+      "ru": "краска для печатей — по-корейски <ko>인주</ko> (инджу): густая паста, в которую макают именную печать перед оттиском; обычно красная.",
+      "es": "tinta de sello — en coreano <ko>인주</ko> (inju): pasta espesa en la que se presiona el sello con el nombre antes de estampar; suele ser roja.",
+      "fr": "encre — en coréen <ko>인주</ko> (inju) : pâte épaisse où l’on presse le sceau gravé au nom avant d’estamper ; d’ordinaire rouge."
+    }
+  ]
+}
