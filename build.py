@@ -626,7 +626,55 @@ PLAIN_KEYS = {"updated", "date", "month", "year", "kind", "thumb", "stills", "yo
 
 
 def tables(site):
-    return {k: site[k] if k in site else load(f) for k, f in TABLES.items()}
+    t = {k: site[k] if k in site else load(f) for k, f in TABLES.items()}
+    # 연표 차례(11/19 어드민 칸 보강 — 칸 정의 기준/관리 화면 콘텐츠 · 미디어 칸 보강 칸 정의_v1.md 3 · 7절 1): 해 → 같은 해 안에서는 달(month · YYYY-MM)이
+    # 없는 줄 먼저(원고 차례 그대로) → 달 있는 줄은 달 차례 · 관리 화면 저장 때와 같은 셈 · 달은 차례에만(사이트에 안 보임)
+    yi = list((t["years"] or {}).get("items", []))
+    yi = [r for _, r in sorted(enumerate(yi), key=lambda z: (str(z[1].get("year", "")), 1 if z[1].get("month") else 0, z[1].get("month") or "", z[0]))]
+    t["years"] = {**t["years"], "items": yi}
+    return t
+
+
+# 11/19 어드민 칸 보강(칸 정의 v1 2 · 4 · 5 · 7절) — 권리 · 중심점 · 길이를 빌드가 읽는 도움
+LICENSE_URL = {"cc0": "https://creativecommons.org/publicdomain/zero/1.0/", "pd": "https://creativecommons.org/publicdomain/mark/1.0/",
+               "cc-by": "https://creativecommons.org/licenses/by/4.0/", "cc-by-sa": "https://creativecommons.org/licenses/by-sa/4.0/"}
+LICENSE_COND = {"cc-by", "cc-by-sa", "press", "permission", "other"}  # 조건 갈래(출처 주소 · 확인한 날이 있어야 함) — self · cc0 · pd는 자유 갈래
+DST_URL = "http://cv.iptc.org/newscodes/digitalsourcetype/"
+FOCUS_RE = re.compile(r"(?:left|center|right|top|bottom|\d{1,3}(?:\.\d+)?%)(?: (?:left|center|right|top|bottom|\d{1,3}(?:\.\d+)?%))?")
+
+
+def focus_style(v):  # 자를 때 중심점(focus · thumb_focus · cover_focus) → object-position — 관리 화면이 이미 검사한 값(낱말 · %)만 다시 확인해 넣음
+    v = " ".join(str(v or "").split())
+    return f' style="object-position:{v}"' if v and FOCUS_RE.fullmatch(v) else ""
+
+
+def iso_secs(v):  # ISO 8601 길이(PT3M25S) → 초 · 못 읽으면 None
+    m = re.fullmatch(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?", str(v or ""))
+    if not m or not any(m.groups()):
+        return None
+    return int(m.group(1) or 0) * 3600 + int(m.group(2) or 0) * 60 + round(float(m.group(3) or 0))
+
+
+def license_url(r):  # 7절 표 — 자유 갈래는 CC 주소 · 보도 자료 · 허락받음 · 기타는 출처 주소(없으면 넣지 않음) · 본인(self)은 넣지 않음
+    code = (r or {}).get("license") or ""
+    return LICENSE_URL.get(code) or ((r.get("source_url") or "") if code in ("press", "permission", "other") else "")
+
+
+def image_ld(url, r, name=""):  # JSON-LD ImageObject — 출처(credit) · 쓰는 조건(license)이 하나라도 있을 때만(없으면 None)
+    r = r or {}
+    lic, cr = license_url(r), (r.get("credit") or "").strip()
+    if not (lic or cr):
+        return None
+    o = {"@type": "ImageObject", "contentUrl": url}
+    if name:
+        o["name"] = name
+    if cr:
+        o["creditText"] = cr
+    if lic:
+        o["license"] = lic
+    if r.get("license") in LICENSE_COND and r.get("source_url"):
+        o["acquireLicensePage"] = r["source_url"]
+    return o
 
 
 def row_lang(row, lang):
@@ -1496,12 +1544,25 @@ def render(site, poem, videos, photos, lang="ko"):
     # 연표(years.json) — 줄의 note 칸이 각주(10/25 40곳 2차 ④ A, Andrew Trousdale식 경의의 각주): 줄 끝 위첨자 번호 + 연표 바로 아래 각주 목록
     # 줄 글은 rich()로(11/2 동원 '여기에 첫 시집 내 책 제목 들어가면 좋지' · '첫은 빼자' — 『시집 제목』은 표지 줄 나눔 자리에서만 갈리고, 영어판 *제목*은 기울임)
     notes, lis = [], []
+    # 연표 · 소식 줄 링크(11/19 어드민 칸 보강 years.url · news.url — 칸 정의 v1 3 · 7절 2): '#id'는 칸 자리(쪽 주소는 아래 go()가 바꿈) · 'buy'는 교보 · https는 새 창
+    def row_link(v, inner):
+        v = str(v or "").strip()
+        if not v:
+            return inner
+        if v == "buy":
+            return f'<a href="{e(book["buy_url"])}" target="_blank" rel="noopener">{inner}</a>'
+        if v.startswith("#"):
+            return f'<a href="{e(v)}">{inner}</a>'
+        if re.match(r"https?://", v):
+            ext = not v.startswith("https://namdongwon.com")
+            return f'<a href="{e(v)}"' + (' target="_blank" rel="noopener"' if ext else "") + f">{inner}</a>"
+        return inner
     for r in row_lang(tb["years"]["items"], lang):
         if not r["text"]:
             continue
         if r["note"]:
             notes.append(r["note"])
-        lis.append(f'<li id="y{len(lis) + 1}"><b>{e(r["year"])}</b><span>{rich(r["text"])}' + (f'<sup class="fr">{len(notes)}</sup>' if r["note"] else '') + '</span></li>')
+        lis.append(f'<li id="y{len(lis) + 1}"><b>{e(r["year"])}</b><span>{row_link(r.get("url"), rich(r["text"]))}' + (f'<sup class="fr">{len(notes)}</sup>' if r["note"] else '') + '</span></li>')
         ix["me"].append((tg["me"], f'{r["year"]} {plain(r["text"])}', L["search_timeline"], f"#y{len(lis)}"))
     years = "".join(lis)
     fnb = ('<ol class="fn">' + "".join(f'<li><b>{i}</b><span>{note_html(x, lang)}</span></li>' for i, x in enumerate(notes, 1)) + '</ol>') if notes else '<ol class="fn" hidden></ol>'  # 각주가 없을 때도 빈 자리(숨김)는 둠 — 관리 화면 미리 보기가 '.years, .fn' 자리를 찾음(11/3 동원 '이거 없애자'로 각주 글을 비움)
@@ -1703,7 +1764,12 @@ def render(site, poem, videos, photos, lang="ko"):
             first = e(u["title"]) if lat else marked(u["kind"], u["title"], lang)
             # 썸네일에 올리면 보도 자료 스틸이 넘어감(11/1 ⑦ '올리면 재생되는 썸네일' — 영상 · 예고편 대신 스틸만, 마우스 기기만 · main.js) — 스틸은 올릴 때 처음 받음
             ds = f' data-stills="{"|".join(f"{P}assets/img/stills/{i}.jpg" for i in range(1, len(u["stills"]) + 1))}"' if u.get("stills") else ""
-            latest = (f'<div class="nt"{ds}><img src="{P}assets/img/next.jpg" alt="{t("first_alt", title=first)}" width="1280" height="720" fetchpriority="high">'  # 영상 페이지 첫 화면의 가장 큰 그림(LCP) — lazy면 CSS를 다 받은 뒤에야 받기 시작해 느린 휴대폰 망에서 3.5초(11/14 실측) → 바로 · 먼저
+            # 대체 글(11/19 어드민 칸 보강 thumb_alt · stills_alt — 말판마다, 비면 한국어 · 칸 정의 v1 7절 6): 썸네일은 thumb_alt가 먼저 · 스틸은 i번째 줄 = stills[i](main.js가 넘길 때 alt도)
+            s_alt = [x for x in (u.get("stills_alt") or [])] if isinstance(u.get("stills_alt"), list) else str(u.get("stills_alt") or "").split("\n")
+            if any(x.strip() for x in s_alt) and u.get("stills"):
+                ds += f' data-stills-alt="{e("|".join(x.strip().replace("|", "/") for x in s_alt[:len(u["stills"])]))}"'
+            th_alt = u.get("thumb_alt") or t("first_alt", title=first)
+            latest = (f'<div class="nt"{ds}><img src="{P}assets/img/next.jpg" alt="{e(th_alt) if u.get("thumb_alt") else th_alt}" width="1280" height="720" fetchpriority="high"{focus_style((videos.get("upcoming") or {}).get("thumb_focus"))}>'  # 영상 페이지 첫 화면의 가장 큰 그림(LCP) — lazy면 CSS를 다 받은 뒤에야 받기 시작해 느린 휴대폰 망에서 3.5초(11/14 실측) → 바로 · 먼저
                       f'<b><i aria-hidden="true"></i>{t("coming")}</b></div>')
             info = sentence(u, lang, kinds) + (f'<p class="cr">{keep(u["credit"])}</p>' if u.get("credit") else "")
         else:
@@ -1831,6 +1897,14 @@ def render(site, poem, videos, photos, lang="ko"):
     ch_nm = (ch.get(lang, {}).get("name") if lang != "ko" else None) or ch.get("name", "")
     walls = [wsrc(psrc(p_)) for p_ in PH["items"][:8]]
     wall_first = walls[:1]
+    # 자를 때 중심점(11/19 어드민 칸 보강 focus · thumb_focus · cover_focus — 칸 정의 v1 4 · 7절 5): 그림 주소 → object-position(정사각 · 16:9로 잘리는 자리만 — 메뉴 카드 · 찾기 그림 · 썸네일 · 표지)
+    up_raw = videos.get("upcoming") or {}
+    mu_alb = sorted(MU.get("albums", []), key=lambda a_: a_.get("date", ""), reverse=True)
+    img_focus = {w_: p_.get("focus") for w_, p_ in zip(walls, PH["items"][:8]) if p_.get("focus")}
+    if up_raw.get("thumb_focus"):
+        img_focus[f"{P}assets/img/next.jpg"] = up_raw["thumb_focus"]
+    if mu_cover and mu_alb and mu_alb[0].get("cover_focus") and mu_cover.endswith(str(mu_alb[0].get("cover") or "~")):
+        img_focus[mu_cover] = mu_alb[0]["cover_focus"]
     fmt = dict(name=e(S["name"]), ch=e(ch_nm), poem=poem_t)
 
     def mtext(v, where):
@@ -1906,9 +1980,9 @@ def render(site, poem, videos, photos, lang="ko"):
             elif fit == "tc":
                 ph = '<span class="mm-ph mm-tc">' + "".join(f"<i>{e(x)}</i>" for x in mlines(c_.get("lines"))) + "</span>"
             elif img and fit in ("img", "ct"):
-                ph = f'<span class="mm-ph{" mm-ct" if fit == "ct" else ""}"><img data-src="{img}" alt="" width="206" height="206" decoding="async"></span>'
+                ph = f'<span class="mm-ph{" mm-ct" if fit == "ct" else ""}"><img data-src="{img}" alt="" width="206" height="206" decoding="async"{focus_style(img_focus.get(img))}></span>'
             elif img:  # 엽서 꼴이지만 그림이 있으면(음악 첫 표지) 그림으로
-                ph = f'<span class="mm-ph"><img data-src="{img}" alt="" width="206" height="206" decoding="async"></span>'
+                ph = f'<span class="mm-ph"><img data-src="{img}" alt="" width="206" height="206" decoding="async"{focus_style(img_focus.get(img))}></span>'
             else:
                 ph = '<span class="mm-ph mm-pc"></span>'
             tgt = ' target="_blank" rel="noopener"' if href.startswith("http") else ""
@@ -2044,7 +2118,7 @@ def render(site, poem, videos, photos, lang="ko"):
     news = sorted((x for x in row_lang(tb["news"]["items"], lang) if x["text"] and date.fromisoformat(x["date"]) <= day), key=lambda x: x["date"], reverse=True)
 
     def news_li(k, x):  # 소식 줄마다 id(n1 = 가장 최근) — 찾기 결과가 그 줄로 감(10/27 점검: 시집 칸 맨 위로 가서 소식이 1.6–2.3화면 아래였음)
-        return f'<li id="n{k}"><time datetime="{x["date"]}">{dtxt(x["date"])}</time><span>{keep(x["text"])}</span></li>'
+        return f'<li id="n{k}"><time datetime="{x["date"]}">{dtxt(x["date"])}</time><span>{row_link(x.get("url"), keep(x["text"]))}</span></li>'
     more = f'<details><summary>{t("news_more")}</summary><ol>{"".join(news_li(k, x) for k, x in enumerate(news[3:], 4))}</ol></details>' if len(news) > 3 else ""
     bnews = f'<div class="bnews"><h3>{t("news")}</h3><ol>{"".join(news_li(k, x) for k, x in enumerate(news[:3], 1))}</ol>{more}</div>' if news else ""
     ui_js = json.dumps(L["js"], ensure_ascii=False).replace("</", "<\\/")
@@ -2247,18 +2321,18 @@ def render(site, poem, videos, photos, lang="ko"):
                 rows.append(f'<li id="{anchor[x["id"]]}" data-i="{gi}" data-src="{P}assets/music/{e(x["file"])}" data-cover="{img(x.get("cover") or ab.get("cover"))}"{sel if n == 0 else ""}>'
                             f'<span class="ma-n">{n + 1:02d}</span><span class="ma-ti">{ttl(x)}'
                             + (f'<small>{t("mu_from", poem=e(x["from_poem"]))}</small>' if x.get("from_poem") else "")
-                            + f'</span><span class="mu-tm">{fmt(x.get("dur"))}</span>'
+                            + f'</span><span class="mu-tm">{fmt(x.get("dur") or iso_secs(x.get("duration")))}</span>'
                             f'<button type="button" class="mu-pl" aria-label="{play}: {ttl(x)}">{MU_PLAY}</button></li>')
                 if x.get("lyrics") or x.get(f"lyrics_{lang}"):
                     lys.append(f'<div class="ma-ly" data-i="{gi}"{"" if n == 0 else " hidden"}><h3 class="mu-k">{t("mu_lyrics")} · {ttl(x)}</h3>{lyr(x)}</div>')
                 gi += 1
-            mins = max(1, round(sum(x.get("dur") or 0 for x in tr_s) / 60))
+            mins = max(1, round(sum(x.get("dur") or iso_secs(x.get("duration")) or 0 for x in tr_s) / 60))  # 11/19 duration(ISO · m4a 머리에서 어드민이 읽음)도 셈
             meta = " · ".join(y for y in (dtxt(ab["date"]) if ab.get("date") else "", t("mu_meta_1" if len(tr_s) == 1 else "mu_meta", n=len(tr_s), m=mins)) if y)
             kind = t("mu_kind_" + ab.get("kind", "album")) + (f' · {ab["date"][:4]}' if ab.get("date") else "")
             hid = ' id="music-t"' if ai == 0 else ""
             c0 = img(tr_s[0].get("cover") or ab.get("cover"))
             pre = ab.get("status") == "preparing" or ab.get("date", "") > day.isoformat()  # 발매 전(발매일이 빌드한 날보다 뒤 · status preparing) — 표지에 '준비 중'(유튜브 첫 편 썸네일과 같은 배지 · 11/17 동원 "준비중 띄워야지")
-            blocks.append(f'''    <div class="ma"><div class="ma-l"><div class="ma-cv{" soon" if pre else ""}">{f'<img src="{c0}" alt="" loading="lazy" decoding="async">' if c0 else ""}{SOON if pre else ""}</div></div>
+            blocks.append(f'''    <div class="ma"><div class="ma-l"><div class="ma-cv{" soon" if pre else ""}">{f'<img src="{c0}" alt="{e(loc(ab["cover_alt"]) if isinstance(ab.get("cover_alt"), dict) else ab.get("cover_alt") or "")}" loading="lazy" decoding="async"{focus_style(ab.get("cover_focus"))}>' if c0 else ""}{SOON if pre else ""}</div></div>
       <div class="ma-r"><p class="mu-k">{kind}</p><h2 class="mu-t"{hid}>{loc(ab["title"])}</h2><p class="mu-one">{e(S["name"])}</p>
       <ol class="ma-ol" aria-label="{t("mu_list")}">{"".join(rows)}</ol><p class="ma-meta">{meta}</p>{"".join(lys)}</div></div>''')
         if not blocks:
@@ -2355,6 +2429,42 @@ def render(site, poem, videos, photos, lang="ko"):
         kp = f"{k}/" if k else ""
         url = f"{base}{'/' + lang if tr_ else ''}/{kp}"
         # 검색 결과 이동 경로(11/4 동원 '④ 넣기 (권장)' — Schema.org BreadcrumbList · 구글 결과에 'namdongwon.com › 시집'): 첫 화면(이름) › 이 쪽 — 첫 화면은 없음
+        # 쪽마다 덧붙는 구조화 데이터(11/19 어드민 칸 보강 — 칸 정의 v1 7절 7 · 8 · 9): 사진 · 스틸 ImageObject(출처 · 쓰는 조건이 있을 때만) ·
+        # 음악 MusicRecording(길이 · digitalSourceType — 화면 글에는 안 씀) · 영상 VideoObject(published_at이 찼을 때만 — 유튜브 API가 나중에 채움)
+        pld = []
+        if k == "photo":
+            for p_ in PH["items"]:
+                o_ = image_ld(f'{base}/assets/img/photos/{Path(p_["file"]).stem}.{photo_pick(psrc(p_))[0]}', p_, p_.get("alt") or "")
+                if o_:
+                    pld.append(o_)
+        if k == "video":
+            u_raw = videos.get("upcoming") or {}
+            if u_raw.get("thumb"):
+                o_ = image_ld(f"{base}/assets/img/next.jpg", u_raw, u_raw.get("title", ""))
+                pld += [o_] if o_ else []
+                for i_ in range(1, len(u_raw.get("stills", [])) + 1):
+                    o_ = image_ld(f"{base}/assets/img/stills/{i_}.jpg", u_raw)
+                    pld += [o_] if o_ else []
+            for v_ in V["items"]:
+                if v_.get("published_at") and v_.get("youtube_id"):
+                    vo = {"@type": "VideoObject", "name": v_["title"], "uploadDate": v_["published_at"], "description": v_.get("title", ""),
+                          "thumbnailUrl": f'https://i.ytimg.com/vi/{v_["youtube_id"]}/hqdefault.jpg', "embedUrl": f'https://www.youtube.com/embed/{v_["youtube_id"]}',
+                          "url": f'https://www.youtube.com/watch?v={v_["youtube_id"]}'}
+                    if iso_secs(v_.get("duration")):
+                        vo["duration"] = v_["duration"]
+                    pld.append(vo)
+        if k == "music":
+            for x_ in mu_items:
+                d_ = x_.get("duration") or (f'PT{int(x_["dur"]) // 60}M{int(x_["dur"]) % 60}S' if x_.get("dur") else "")
+                mo = {"@type": "MusicRecording", "name": (x_.get(lang) or {}).get("title") or x_.get("title", ""), "byArtist": {"@id": me}}
+                if d_:
+                    mo["duration"] = d_
+                if x_.get("digital_source_type"):
+                    mo["digitalSourceType"] = DST_URL + x_["digital_source_type"]
+                if license_url(x_):
+                    mo["license"] = license_url(x_)
+                pld.append(mo)
+        pg_ld = ('\n<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@graph": pld}, ensure_ascii=False).replace("</", "<\\/") + "</script>") if pld else ""
         crumb = ("" if not k else '\n<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": S["name"], "item": f"{base}{'/' + lang if tr_ else ''}/"},
             {"@type": "ListItem", "position": 2, "name": L["nav"][secs.index(top_of[k])], "item": url}]}, ensure_ascii=False).replace("</", "<\\/") + "</script>")  # '</'는 '<\/'로(11/16 보안 점검 — 원고 값에 '</script>'가 있어도 칸이 끊기지 않게)
@@ -2446,7 +2556,7 @@ def render(site, poem, videos, photos, lang="ko"):
 {HEAD_JS if bpg else HEAD_JS_PLAIN}
 {SPEC_RULES}
 {preload if bpg else logo_pre}<link rel="stylesheet" href="{P}assets/style.css">
-<script type="application/ld+json">{ld_js}</script>{crumb}
+<script type="application/ld+json">{ld_js}</script>{crumb}{pg_ld}
 </head>
 <body>
 {door if bpg else ""}
@@ -2711,9 +2821,19 @@ def feeds(site, base):
         items = sorted(((r, row_lang(r, lang)) for r in rows if r.get("text")), key=lambda z: z[0]["date"], reverse=True)
         items = [(r, x) for r, x in items if x.get("text") and date.fromisoformat(r["date"]) <= day][:20]
         when = lambda d: format_datetime(datetime.fromisoformat(d + "T09:00:00").replace(tzinfo=ZoneInfo("Asia/Seoul")))
-        body = "".join(f'<item><title>{e(x["text"])}</title><link>{e(base)}{pre}/book/</link>'
+        # 11/19 어드민 칸 보강(칸 정의 v1 7절 3): link = news.url(없으면 시집 페이지) · category = news.kind 이름(말판마다 · 없으면 '시집 소식') · guid는 그대로
+        def feed_link(v):
+            v = str(v or "").strip()
+            if v == "buy":
+                return S["book"]["buy_url"]
+            if v.startswith("#"):
+                pg = page_of(v[1:])
+                return f"{base}{pre}/" + (f"{pg}/" if pg else "") + ("" if PAGES.get(pg, [None])[0] == v[1:] else v)
+            return v if re.match(r"https?://", v) else f"{base}{pre}/book/"
+        kinds_ = (ui.get("news_kinds") or {}).get(lang) or {}
+        body = "".join(f'<item><title>{e(x["text"])}</title><link>{e(feed_link(r.get("url")))}</link>'
                        f'<guid isPermaLink="false">{e(urlparse(base).netloc)}/news/{r["date"]}-{hashlib.sha1(ko[id(r)].encode()).hexdigest()[:8]}</guid>'
-                       f'<pubDate>{when(r["date"])}</pubDate><category>{e(ui["news"][lang])}</category></item>' for r, x in items)
+                       f'<pubDate>{when(r["date"])}</pubDate><category>{e(kinds_.get(r.get("kind") or "") or ui["news"][lang])}</category></item>' for r, x in items)
         last = f"<lastBuildDate>{when(items[0][0]['date'])}</lastBuildDate>" if items else ""
         out[lang] = ('<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>'
                      f'<title>{e(S["name"])}</title><link>{e(base)}{pre}/</link><description>{e(S["description"])}</description><language>{lang}</language>'

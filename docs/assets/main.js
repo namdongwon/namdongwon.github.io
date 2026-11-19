@@ -2199,6 +2199,9 @@
 
   // ⑦ 유튜브 썸네일 스틸 넘김(← '올리면 재생되는 썸네일') — 마우스 기기에서 썸네일 위 커서의 가로 자리 = 몇째 장(보도 자료 스틸 · 영상 · 예고편은 쓰지 않음). 스틸은 처음 올릴 때 받음
   const nt = document.querySelector(".nt[data-stills]");
+  // 11/19 스틸마다 대체 글(build.py data-stills-alt — 어드민 stills_alt · 비면 썸네일 글 그대로)
+  const ntAlt0 = nt ? nt.querySelector("img").alt : "", ntAlts = nt && nt.dataset.stillsAlt ? nt.dataset.stillsAlt.split("|") : [];
+  const ntAlt = n => (n >= 0 && ntAlts[n]) || ntAlt0;
   if (nt && fine) {
     const img = nt.querySelector("img"), first = img.getAttribute("src"), list = nt.dataset.stills.split("|");
     const bar = document.createElement("i");
@@ -2209,10 +2212,10 @@
     nt.addEventListener("mouseenter", () => { if (!got) { got = true; list.forEach(u => { new Image().src = u; }); } });
     nt.addEventListener("mousemove", ev => {
       const r = nt.getBoundingClientRect(), n = Math.max(0, Math.min(list.length - 1, Math.floor((ev.clientX - r.left) / r.width * list.length)));
-      if (n !== k) { k = n; img.src = list[n]; bar.style.setProperty("--k", n); }
+      if (n !== k) { k = n; img.src = list[n]; img.alt = ntAlt(n); bar.style.setProperty("--k", n); }
       nt.classList.add("scrub");
     });
-    nt.addEventListener("mouseleave", () => { k = -1; img.src = first; nt.classList.remove("scrub"); });
+    nt.addEventListener("mouseleave", () => { k = -1; img.src = first; img.alt = ntAlt0; nt.classList.remove("scrub"); });
   }
   // 2차 ⑨ 휴대폰 — 손가락으로 가로로 쓸면 그 자리 장으로(컴퓨터의 마우스와 같은 규칙) · 떼면 1.2초 뒤 처음 썸네일로(11/4 동원 'A 떼면 처음으로' — 갤러리UX열_v1 19)
   // 가로로 8px 넘게 움직였을 때부터 — 탭 · 세로 스크롤(touch-action:pan-y는 브라우저에)엔 반응하지 않음
@@ -2226,7 +2229,7 @@
     let x0 = null, on = false, k = -1, back = 0, got = false;
     const pick = ev => {
       const r = nt.getBoundingClientRect(), n = Math.max(0, Math.min(list.length - 1, Math.floor((ev.clientX - r.left) / r.width * list.length)));
-      if (n !== k) { k = n; img.src = list[n]; bar.style.setProperty("--k", n); }
+      if (n !== k) { k = n; img.src = list[n]; img.alt = ntAlt(n); bar.style.setProperty("--k", n); }
       nt.classList.add("scrub");
     };
     nt.addEventListener("pointerdown", ev => {
@@ -2243,7 +2246,7 @@
       x0 = null;
       if (!on) return;
       on = false;
-      back = setTimeout(() => { k = -1; img.src = first; nt.classList.remove("scrub"); }, 1200);
+      back = setTimeout(() => { k = -1; img.src = first; img.alt = ntAlt0; nt.classList.remove("scrub"); }, 1200);
     };
     nt.addEventListener("pointerup", end);
     nt.addEventListener("pointercancel", end);

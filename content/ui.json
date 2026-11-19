@@ -2763,5 +2763,49 @@
     "ru": "Фото",
     "es": "Foto",
     "fr": "Photo"
+  },
+  "news_kinds": {
+    "ko": {
+      "release": "출간",
+      "signed": "서명본",
+      "talk": "북토크",
+      "edition": "새 판",
+      "etc": "기타"
+    },
+    "en": {
+      "release": "Release",
+      "signed": "Signed copies",
+      "talk": "Book talk",
+      "edition": "New edition",
+      "etc": "News"
+    },
+    "ja": {
+      "release": "刊行",
+      "signed": "サイン本",
+      "talk": "ブックトーク",
+      "edition": "新版",
+      "etc": "お知らせ"
+    },
+    "ru": {
+      "release": "Выход книги",
+      "signed": "Книги с автографом",
+      "talk": "Встреча с читателями",
+      "edition": "Новое издание",
+      "etc": "Новости"
+    },
+    "es": {
+      "release": "Publicación",
+      "signed": "Ejemplares firmados",
+      "talk": "Encuentro",
+      "edition": "Nueva edición",
+      "etc": "Noticias"
+    },
+    "fr": {
+      "release": "Parution",
+      "signed": "Exemplaires dédicacés",
+      "talk": "Rencontre",
+      "edition": "Nouvelle édition",
+      "etc": "Actualités"
+    }
   }
 }
