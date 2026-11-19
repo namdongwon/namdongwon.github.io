@@ -2674,7 +2674,7 @@ def page_privacy(site, lang, ver=None):
     lng = [lang] + [x for x in LANGS if x != lang]
     eff = lambda x: g(VU["eff"]).replace("{d}", fday(x)) + (g(VU["cur"]) if x == cur else "")  # noqa: E731
     lang_d = (f'<details class="ppv-d ppv-l"><summary><span class="sr">{g(VU["lang"])}: </span><span lang="{lang}">{LANG_NAME[lang]}</span></summary><ul>'
-              + "".join(f'<li><a href="{lhref(x)}" lang="{x}" hreflang="{x}"' + (' aria-current="page"' if x == lang else "") + f'>{LANG_NAME[x]}</a></li>' for x in lng) + '</ul></details>')
+              + "".join(f'<li><a href="{lhref(x)}" lang="{x}" hreflang="{x}"' + (' aria-current="page"' if x == lang else "") + f'><span class="ln">{FLAG_ICON[x]}{LANG_NAME[x]}</span></a></li>' for x in lng) + '</ul></details>')  # 11/20 동원 "이거 눌렀을 땐 국기 나오는 게 낫지 않겠어?" — 사이트 언어 목록(.lsw)과 같은 국기 · 지금 말 ✓
     ver_d = (f'<details class="ppv-d ppv-v"><summary><span class="sr">{g(VU["ver"])}: </span>{eff(me)}</summary><ul>'
              + "".join(f'<li><a href="{vhref(x)}"' + (' aria-current="page"' if x == me else "") + f'>{eff(x)}</a></li>' for x in dates) + '</ul></details>')
     sels = f'<div class="ppv-sel">{ver_d}{lang_d}</div>' if VU.get("eff") else ""  # 11/20 동원 "토스처럼 … 업데이트 날짜 왼쪽 언어 선택은 오른쪽" — 시행일 넓게 왼쪽 · 언어 좁게 오른쪽(좁은 화면은 언어 위)
