@@ -556,6 +556,7 @@ html.pv-on{overflow:hidden}
 /* 11/18 넓은 창 검색 빈 칸(동원 버튼 "A 빈 칸(1280부터) (권장)" — NN/g: 넓은 창은 돋보기만 말고 보이는 글 칸 · 시안 기준/브랜드 시안/UX여섯째시안_v1/⑯) — 누르면 지금처럼 찾기 창 · 1024~1279는 자리가 빠듯해 돋보기만 */
 .top .sq .sqt{display:none;font:400 12.5px/1 var(--sans);letter-spacing:.04em}
 @media (min-width:1280px) and (hover:hover),(min-width:1280px) and (pointer:fine){.js .top .sq{justify-content:flex-start;gap:8px;width:160px;height:32px;margin:0;padding:0 12px;border:1px solid var(--line);border-radius:var(--btn-r);background:var(--bg)}.js .top .sq .sqt{display:inline}header.top .lsw-top{margin-right:-2px}}  /* 칸일 때는 ▾ → 칸 테두리를 칸 → 연락하기(16)와 같게 */
+@media (min-width:1280px) and (hover:hover),(min-width:1280px) and (pointer:fine){.js .top .act a.cta{height:32px;margin:0;padding-top:0;padding-bottom:0}}  /* 11/19 동원 버튼 "A 둘 다 32 (권장)"(시안 헤더높이시안_v1) — 검색 칸(32)과 연락하기(28.5)의 위 · 아래 선이 1.75px씩 어긋나던 것 · 검색이 칸으로 보이는 폭에서만 · 글자 자리는 그대로 */
 @media (min-width:1280px) and (hover:hover){.js .top .sq:hover{border-color:var(--ink);color:var(--ink)}}
 .js .top .sq{position:relative}
 html.sr-on{overflow:hidden}

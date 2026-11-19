@@ -531,6 +531,7 @@ html.pv-on{overflow:hidden}
 
 .top .sq .sqt{display:none;font:400 12.5px/1 var(--sans);letter-spacing:.04em}
 @media (min-width:1280px) and (hover:hover),(min-width:1280px) and (pointer:fine){.js .top .sq{justify-content:flex-start;gap:8px;width:160px;height:32px;margin:0;padding:0 12px;border:1px solid var(--line);border-radius:var(--btn-r);background:var(--bg)}.js .top .sq .sqt{display:inline}header.top .lsw-top{margin-right:-2px}}  
+@media (min-width:1280px) and (hover:hover),(min-width:1280px) and (pointer:fine){.js .top .act a.cta{height:32px;margin:0;padding-top:0;padding-bottom:0}}  
 @media (min-width:1280px) and (hover:hover){.js .top .sq:hover{border-color:var(--ink);color:var(--ink)}}
 .js .top .sq{position:relative}
 html.sr-on{overflow:hidden}
