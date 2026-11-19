@@ -1256,7 +1256,7 @@
       res.innerHTML = hits.map((h, i) => {
         const ext = /^https?:/.test(h.it[3]), th = Array.isArray(h.it[5]) ? h.it[5] : null, pd = th && (th[2] || h.it[2]);
         return `<li role="none"><a role="option" id="sr${i}" aria-selected="false"${th ? ' class="pg"' : ""} href="${esc(h.it[3])}" data-t="${esc(h.it[1])}"${ext ? ' target="_blank" rel="noopener"' : ""}>${h.rc < 99 ? RC_IC : th ? pgTh(th) : SR_IC}` +
-          `<span class="tx">${ko(h.html)}${ext ? " ↗" : ""}${h.al ? `<small class="sr-sub sr-al">${ko(esc(h.al))}</small>` : pd ? `<small class="sr-sub">${ko(esc(pd))}</small>` : dupN.get(dk(h)) > 1 ? `<small class="sr-sub">${ko(esc(where(h.it)))}</small>` : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌 · 왼쪽 갈래(「탁본」 · 차례 · 이달)도 뺌(시안 찾기결과갈래시안_v1 'A 갈래 뺌 (권장)')  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
+          `<span class="tx">${ko(h.html)}${ext ? ` <span aria-hidden="true">↗</span><span class="sr">${esc(uiText("new_tab", " (새 창)"))}</span>` : ""}${h.al ? `<small class="sr-sub sr-al">${ko(esc(h.al))}</small>` : pd ? `<small class="sr-sub">${ko(esc(pd))}</small>` : dupN.get(dk(h)) > 1 ? `<small class="sr-sub">${ko(esc(where(h.it)))}</small>` : ""}</span></a></li>`;  // 11/16 동원: 앞에 돋보기(구글 예상 검색어 꼴) · 오른쪽 자리(61~62쪽 · 자주 묻는 질문 등)는 뺌 · 왼쪽 갈래(「탁본」 · 차례 · 이달)도 뺌(시안 찾기결과갈래시안_v1 'A 갈래 뺌 (권장)')  // 새 창은 끝에 ↗(10/28 점검 7 — 사이트 링크 규칙)
       }).join("");
       none.hidden = empty || hits.length > 0;
       if (!empty && !hits.length) kbTry(q); else clearTimeout(kbT);
@@ -2415,6 +2415,8 @@
   }
   // ⑤ 밑줄 단추 끝의 화살표(↗ · ↓)만 따로 — 손을 대면 그 방향으로 살짝(11/4 동원 '넣기' — 손반응열_v1 05)
   document.querySelectorAll(".buy").forEach(a => {
+    const hid = [...a.children].find(c => c.getAttribute("aria-hidden") === "true" && /^[↗↓]$/.test(c.textContent));  // 11/19 새 창 링크는 빌드가 ↗를 이미 숨은 칸으로(new_tab_mark) — 그 칸에 꼴만
+    if (hid) { hid.className = "ar " + (hid.textContent === "↗" ? "ne" : "dn"); return; }
     const last = a.lastChild;
     if (!last || last.nodeType !== 3 || !/[↗↓]\s*$/.test(last.textContent)) return;
     const ch = last.textContent.trim().slice(-1);
@@ -2841,5 +2843,48 @@
     } catch (e) { /* 없는 브라우저 */ }
     const h = location.hash.match(/^#mu(\d+)$/);  // 찾기 결과 · 공유 주소(#mu3)로 오면 그 곡을 골라 둠(재생은 누를 때)
     if (h) { const i = rows.findIndex(r => r.id === "mu" + h[1]); if (i >= 0) pick(i); }
+  })();
+  // 링크 쪽지(11/19 UX 7차 동원 버튼 '링크 쪽지' — Gwern 링크 미리보기 · 시안 UX일곱째시안_v1/N1): 컴퓨터(마우스)에서 바닥글 '둘러보기' · '시집' 링크에
+  // 0.35초 올려 두면 그 페이지의 그림 · 한 줄이 작은 쪽지로 뜨고 떠나면 사라짐. 글 · 그림은 메가 메뉴(.mm-in — 페이지마다 한 줄 + 칸 그림)를 그대로 읽음:
+  // 따로 적은 글이 없어 메뉴를 고치면 같이 바뀜 · 링크와 같은 주소의 칸 그림이 먼저, 없으면 그 페이지 첫 그림 · 그림 없는 페이지는 글만 · 화면 읽기에는 숨김
+  if (matchMedia("(hover: hover) and (pointer: fine)").matches) (() => {
+    const panes = [...document.querySelectorAll(".mm-in[data-pg]")];
+    if (!panes.length) return;
+    const tip = document.createElement("div");
+    tip.className = "lpop"; tip.hidden = true; tip.setAttribute("aria-hidden", "true");
+    document.body.append(tip);
+    const abs = h => { try { const u = new URL(h, location.href); return u.pathname + u.hash; } catch (e) { return h; } };
+    const pageOf = a => { const p = new URL(a.href, location.href).pathname.replace(/^\/(en|ja|ru|es|fr)\//, "/"); return p.split("/").filter(Boolean)[0] || ""; };
+    let tm = 0, cur = null;
+    const hide = () => { clearTimeout(tm); cur = null; tip.classList.remove("on"); tm = setTimeout(() => { if (!cur) tip.hidden = true; }, 200); };
+    const show = a => {
+      const pane = panes.find(p => p.dataset.pg === pageOf(a));
+      if (!pane) return;
+      const cards = [...pane.querySelectorAll(".mm-c")], me = abs(a.getAttribute("href"));
+      const pic = (cards.find(c => abs(c.getAttribute("href")) === me && c.querySelector("img")) || cards.find(c => c.querySelector("img")) || {}).querySelector?.("img");
+      const line = (pane.querySelector("p.sr") || {}).textContent || "";
+      tip.textContent = "";
+      if (pic) {
+        const ph = document.createElement("span"), im = document.createElement("img");
+        ph.className = "ph" + (pic.closest(".mm-ct") ? " ct" : ""); im.alt = ""; im.decoding = "async"; im.src = pic.currentSrc || pic.getAttribute("src") || pic.dataset.src;
+        ph.append(im); tip.append(ph);
+      }
+      const tx = document.createElement("span"), b = document.createElement("b"), s = document.createElement("span");
+      b.textContent = a.textContent.replace(/\s*[↗↓→]\s*$/, "").trim(); s.textContent = line.trim();
+      tx.append(b, s); tip.append(tx);
+      tip.hidden = false;
+      const r = a.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+      const top = r.bottom + 8 + h <= innerHeight - 8 ? r.bottom + 8 : Math.max(8, r.top - 8 - h);  // 아래가 모자라면(바닥글) 링크 위로
+      tip.style.left = Math.round(Math.min(Math.max(8, r.left), innerWidth - w - 8)) + "px";
+      tip.style.top = Math.round(top) + "px";
+      requestAnimationFrame(() => { if (cur === a) tip.classList.add("on"); });
+    };
+    document.querySelectorAll(".foot .fcols a:not([target])").forEach(a => {
+      if (!/^(\.\.\/|[a-z]|$)/.test(a.getAttribute("href") || "") || a.getAttribute("href").startsWith("http") || a.getAttribute("href").startsWith("mailto")) return;
+      a.addEventListener("mouseenter", () => { clearTimeout(tm); cur = a; tm = setTimeout(() => cur === a && show(a), 350); });
+      a.addEventListener("mouseleave", hide);
+      a.addEventListener("click", hide);
+    });
+    addEventListener("scroll", hide, { passive: true });
   })();
 })();

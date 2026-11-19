@@ -1817,7 +1817,8 @@
       "gb_cut": "붙여 넣은 글 중 {max}자까지만 담겼습니다. 뒤의 {n}자는 메일로 보내 주세요.",
       "search_none_q": "“{q}”에 맞는 것이 없습니다.",
       "nw_sr": "새 글 있음",
-      "gb_xfer_msg": "보내려면 국외 이전에 동의해 주세요."
+      "gb_xfer_msg": "보내려면 국외 이전에 동의해 주세요.",
+      "new_tab": " (새 창)"
     },
     "en": {
       "play": "Play {title}",
@@ -1875,7 +1876,8 @@
       "gb_cut": "Only the first {max} characters fit. Please send the remaining {n} by email.",
       "search_none_q": "Nothing matches “{q}”.",
       "nw_sr": "new",
-      "gb_xfer_msg": "Please agree to the transfer to send your note."
+      "gb_xfer_msg": "Please agree to the transfer to send your note.",
+      "new_tab": " (new tab)"
     },
     "ja": {
       "play": "{title}を再生",
@@ -1933,7 +1935,8 @@
       "gb_cut": "貼り付けた文のうち{max}字までが入りました。残りの{n}字はメールでお送りください。",
       "search_none_q": "「{q}」に合うものはありません。",
       "nw_sr": "新着あり",
-      "gb_xfer_msg": "送信するには、国外移転への同意が必要です。"
+      "gb_xfer_msg": "送信するには、国外移転への同意が必要です。",
+      "new_tab": "（新しいタブ）"
     },
     "ru": {
       "play": "Воспроизвести: {title}",
@@ -1991,7 +1994,8 @@
       "gb_cut": "Поместились только первые {max} символов. Оставшиеся {n} пришлите, пожалуйста, по почте.",
       "search_none_q": "По запросу «{q}» ничего не найдено.",
       "nw_sr": "новое",
-      "gb_xfer_msg": "Чтобы отправить запись, отметьте согласие на передачу."
+      "gb_xfer_msg": "Чтобы отправить запись, отметьте согласие на передачу.",
+      "new_tab": " (новая вкладка)"
     },
     "es": {
       "play": "Reproducir {title}",
@@ -2049,7 +2053,8 @@
       "gb_cut": "Solo caben los primeros {max} caracteres. Envía los {n} restantes por correo, por favor.",
       "search_none_q": "No hay resultados para «{q}».",
       "nw_sr": "nuevo",
-      "gb_xfer_msg": "Para enviar la nota, acepta la transferencia."
+      "gb_xfer_msg": "Para enviar la nota, acepta la transferencia.",
+      "new_tab": " (nueva pestaña)"
     },
     "fr": {
       "play": "Lire {title}",
@@ -2107,7 +2112,8 @@
       "gb_cut": "Seuls les {max} premiers caractères ont pu être conservés. Envoyez les {n} restants par e-mail, s’il vous plaît.",
       "search_none_q": "Aucun résultat pour « {q} ».",
       "nw_sr": "nouveau",
-      "gb_xfer_msg": "Pour envoyer votre mot, acceptez le transfert."
+      "gb_xfer_msg": "Pour envoyer votre mot, acceptez le transfert.",
+      "new_tab": " (nouvel onglet)"
     }
   },
   "pop_post": {

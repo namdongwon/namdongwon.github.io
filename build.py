@@ -7,6 +7,7 @@
 import base64
 import hashlib
 import html
+import html as html_mod  # 함수 안에서 html 이름을 쪽 글로 쓰는 곳이 있어 새 창 안내(new_tab_mark)는 이 이름으로
 import io
 import itertools
 import json
@@ -706,6 +707,26 @@ def season_of(d):
         return None
     n = [n for x, n in rows if x <= d][-1]
     return n, s["names_en"][n], (s.get("names_ja") or {}).get(n, n)  # 일본어판(11/1) 이름은 二十四節気 한자(names_ja) — 없으면 한국어
+
+
+def new_tab_mark(h, nt):
+    # 새 창 숨은 안내(11/19 UX 7차 ③ 동원 버튼 "새 창 안내 A '새 창'" — WCAG 기법 G201 · 에르메스 'New tab' · 르메르 'Opens in a new window' 실측):
+    # target="_blank" 링크마다 화면 읽기에 ' (새 창)'을 더함 — aria-label이 있으면 이름표 끝에, 없으면 숨은 글(.sr)로 · 눈에 보이는 ↗는 그대로 두되
+    # 화면 읽기는 건너뜀(aria-hidden — 크롬 접근성 트리에서 '교보문고에서 사기 ↗'처럼 기호가 이름에 들어가던 것) · 이미 붙은 링크는 그대로(두 번 돌아도 같음)
+    # nt = {"html의 lang": " (새 창)" …} — content/ui.json js.<말>.new_tab(main.js 찾기 결과의 바깥 링크도 같은 말)
+    lang = (re.search(r'<html[^>]*\blang="([\w-]+)"', h) or [None, "ko"])[1]
+    word = nt.get(lang) or nt.get(lang.split("-")[0]) or nt["ko"]
+    def one(m):
+        attrs, body = m.group(1), m.group(2)
+        if word in attrs or word in body:
+            return m.group(0)
+        if 'aria-label="' in attrs:
+            attrs = re.sub(r'aria-label="([^"]*)"', lambda a: f'aria-label="{a.group(1)}{html_mod.escape(word, quote=True)}"', attrs, count=1)
+        else:
+            body = re.sub(r'(?<!aria-hidden="true">)↗', '<span aria-hidden="true">↗</span>', body) + f'<span class="sr">{html_mod.escape(word, quote=False)}</span>'
+        return f"<a{attrs}>{body}</a>"
+    head, sep, rest = h.partition("<body")
+    return head + sep + re.sub(r'<a\b([^>]*\btarget="_blank"[^>]*)>(.*?)</a>', one, rest, flags=re.S)
 
 
 def stanzas_of(text):
@@ -1499,6 +1520,11 @@ def render(site, poem, videos, photos, lang="ko"):
     tr = stanzas_of((fr_type if fr else str)((CONTENT / pfile).read_text(encoding="utf-8"))) if pair else ko_st  # 프랑스어 시도 조판(11/10)
     if [len(x) for x in tr] != [len(x) for x in ko_st]:
         raise SystemExit(f"번역의 연 · 행 수가 원문과 다름: 원문 {[len(x) for x in ko_st]} · 번역 {[len(x) for x in tr]}")
+    # 시집 페이지 공유 미리보기 설명(og:description)은 「탁본」 가운데 물음 세 행(11/19 UX 7차 ① 동원 버튼 "공유 미리보기 A" — 뉴요커 시 페이지가
+    # 시 행을 슬래시로 이어 설명에 씀 · 시안 UX일곱째시안_v1/1_공유미리보기). 13 ~ 15째 행 = 살아 있는 척할까 / 죽어 있는 척할까 / 손에 묻은 인주를 털어낸다
+    # (연 · 행 수가 원문과 같음을 바로 위에서 확인하므로 판마다 같은 자리) · 제목 부호는 시 제목(h2)과 같은 판별 관행 · 검색 설명 meta는 그대로
+    pt = S["poem"]["title"]
+    og_poem = f'{pt if lat else f"«{pt}»" if ru else f"「{pt}」"} — ' + " / ".join([x for st in tr for x in st][12:15])
     stz, ln_no = [], 0
     # 하7(11/7 동원 'B 말마디 (권장)' — 시안 일본어시줄바꿈_v1): 일본어 번역 행은 말마디(文節)에서만 꺾임 — 끊을 자리에 <wbr> + keep-all(.le.ph).
     # 브라우저의 word-break:auto-phrase는 크롬 155 시험에서 먹지 않아 손으로 표시 · 행 글이 바뀌어 표에 없으면 예전처럼 글자 사이에서 꺾임(넘치지 않음)
@@ -2341,7 +2367,7 @@ def render(site, poem, videos, photos, lang="ko"):
         ptitle = title if not k else f'{L["nav"][secs.index(top_of[k])]} — {S["name"]}'
         tab = S["logo"] if not k else f'{S["logo"]} — {L["nav"][secs.index(top_of[k])]}'  # 탭 제목은 표장 먼저(11/3 동원 "내 지금 웹사이트 이렇게 나오는 것도 바꾸자" → 목업 탭제목시안_v1 'B 표장만') — 링크 미리보기(og) · 읽기 도구용 h1은 이름 · 소개 그대로
         h1 = "" if bpg else f'<h1 class="sr">{e(S["name"] if not k else ptitle)}</h1>\n'  # 시집 쪽은 첫 화면 h1(이름 · 첫 시집) 그대로, 다른 쪽은 읽기 도구용 쪽 제목
-        oimg, otitle, odesc = (og_img, og_title, og_desc) if k in ("", "book") else (f"og-{lang}.jpg" if tr_ else "og.jpg", ptitle, S["description"])
+        oimg, otitle, odesc = (og_img, og_title, og_poem if k == "book" else og_desc) if k in ("", "book") else (f"og-{lang}.jpg" if tr_ else "og.jpg", ptitle, S["description"])
         if k in OG_PAGES:  # 쪽마다 공유 카드(11/4) — 그 쪽 그림 · 그 쪽 한 줄
             oimg, odesc = (f"og-{k}-{lang}.jpg" if tr_ else f"og-{k}.jpg"), og_page_text(site, photos, lang, k)[1]
         so = seo.get(f"/{kp}", {})
@@ -2865,9 +2891,11 @@ def main():
             ogv[name] = fp(f.read_bytes()) if f.exists() else ""
         return ogv[name]
 
+    NEW_TAB = {x: v["new_tab"] for x, v in load("ui.json")["js"].items() if v.get("new_tab")}
     def stamp(h):  # 쪽 안의 assets/style.css · main.js · consent.js · fonts/….woff2 주소 끝에 그 파일의 지문 · 공유 카드 og-….jpg도
         h = re.sub(r'(assets/(style\.css|main\.js|consent\.js|cursor\.js|fonts/[\w.-]+\.woff2))(?=")', lambda m: m.group(1) + (f"?v={ver[m.group(2)]}" if m.group(2) in ver else ""), h)
         h = re.sub(r'(assets/(og[\w.-]*\.(?:jpg|png)))(?=")', lambda m: m.group(1) + (f"?v={og_fp(m.group(2))}" if og_fp(m.group(2)) else ""), h)
+        h = new_tab_mark(h, NEW_TAB)  # 새 창 숨은 안내(11/19 UX 7차 ③)
         return with_csp(h)  # 보안 덧막이 CSP(11/16) — 주소 지문을 붙인 뒤의 마지막 글로 잼
 
     cover = CONTENT / site["book"]["cover"]
