@@ -2672,12 +2672,11 @@ def page_privacy(site, lang, ver=None):
         return root + (f"{ver}/" if ver and x in VS[ver]["title"] else "")
     lng = [lang] + [x for x in LANGS if x != lang]
     eff = lambda x: g(VU["eff"]).replace("{d}", fday(x)) + (g(VU["cur"]) if x == cur else "")  # noqa: E731
-    sels = (f'<div class="ppv-sel">'
-            f'<details class="ppv-d"><summary><span class="sr">{g(VU["lang"])}: </span><span lang="{lang}">{LANG_NAME[lang]}</span></summary><ul>'
-            + "".join(f'<li><a href="{lhref(x)}" lang="{x}" hreflang="{x}"' + (' aria-current="page"' if x == lang else "") + f'>{LANG_NAME[x]}</a></li>' for x in lng)
-            + f'</ul></details><details class="ppv-d"><summary><span class="sr">{g(VU["ver"])}: </span>{eff(me)}</summary><ul>'
-            + "".join(f'<li><a href="{vhref(x)}"' + (' aria-current="page"' if x == me else "") + f'>{eff(x)}</a></li>' for x in dates)
-            + '</ul></details></div>') if VU.get("eff") else ""
+    lang_d = (f'<details class="ppv-d ppv-l"><summary><span class="sr">{g(VU["lang"])}: </span><span lang="{lang}">{LANG_NAME[lang]}</span></summary><ul>'
+              + "".join(f'<li><a href="{lhref(x)}" lang="{x}" hreflang="{x}"' + (' aria-current="page"' if x == lang else "") + f'>{LANG_NAME[x]}</a></li>' for x in lng) + '</ul></details>')
+    ver_d = (f'<details class="ppv-d ppv-v"><summary><span class="sr">{g(VU["ver"])}: </span>{eff(me)}</summary><ul>'
+             + "".join(f'<li><a href="{vhref(x)}"' + (' aria-current="page"' if x == me else "") + f'>{eff(x)}</a></li>' for x in dates) + '</ul></details>')
+    sels = f'<div class="ppv-sel">{ver_d}{lang_d}</div>' if VU.get("eff") else ""  # 11/20 동원 "토스처럼 … 업데이트 날짜 왼쪽 언어 선택은 오른쪽" — 시행일 넓게 왼쪽 · 언어 좁게 오른쪽(좁은 화면은 언어 위)
     oldbar = f'<p class="ppv-old"><a href="{vhref(cur)}">{g(VU["old"])}</a></p>' if ver else ""
     # 다른 판 처리방침 — 11/1 일본어판부터 둘(한국어 · English · 日本語 가운데 지금 판 빼고 같은 차례) · 낱말은 그 말 제 이름(판권면 언어 줄과 같음)
     oth = "".join(f'<a class="oth" href="{R}{"" if x == "ko" else x + "/"}privacy/" lang="{x}" hreflang="{x}">{LANG_NAME[x]}</a>' for x in LANGS if x != lang)
