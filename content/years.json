@@ -174,6 +174,31 @@
         "text": "Site web namdongwon.com",
         "note": ""
       }
+    },
+    {
+      "year": "2026",
+      "text": "앱 ‘로코코’",
+      "note": "",
+      "en": {
+        "text": "App Rococo",
+        "note": ""
+      },
+      "ja": {
+        "text": "アプリ「ロココ」",
+        "note": ""
+      },
+      "ru": {
+        "text": "Приложение «Rococo»",
+        "note": ""
+      },
+      "es": {
+        "text": "Aplicación «Rococo»",
+        "note": ""
+      },
+      "fr": {
+        "text": "Application « Rococo »",
+        "note": ""
+      }
     }
   ]
 }
