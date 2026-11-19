@@ -2282,7 +2282,7 @@ def render(site, poem, videos, photos, lang="ko"):
         "poem": f"""  <article id="poem" aria-labelledby="poem-t">
     <p class="label">{t("label_poem")}</p>
     <div class="r"><h2 class="h2" id="poem-t">{poem_t if lat else f"«{poem_t}»" if ru else f"「{poem_t}」"}</h2><span class="rt">{t("read_time", n=read_n)}</span><button type="button" class="hint" aria-haspopup="dialog">{t("hint")}</button><div class="poem" data-cite="{e(cite)}">{poem_html}</div>{pnotes}{rdl}
-      <p class="pgno">{pgno}</p><p class="pbr">{t("sheet_bridge")}</p></div>
+      <p class="pgno">{pgno}</p></div>
     <div class="l pbook" id="bookcard"><div class="bk on" tabindex="0" role="button" aria-label="{t("turn_label", book=e(book["title"]))}"><div class="b"><img class="cover" src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" draggable="false"><i class="bc"></i><i class="sp"></i><i class="pg"></i><i class="tp"></i><i class="bt"></i></div><i class="sh"></i></div>
       {state}<p class="t">{book_title}<small>{keep(book["spec"])}</small>{credit}</p><a class="buy2" href="{e(book["buy_url"])}" target="_blank" rel="noopener"{gcc("책카드")}>{e(book["store_label"])} ↗</a>{note}{plab}</div>
     {bnews}{bintro}
