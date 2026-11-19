@@ -2658,7 +2658,7 @@ def scale_check():
     print(("알림 — " if bad else "") + f"단 검사: 단 밖 {len(bad)}곳 (허용 {ok}곳)" + (" — " + " · ".join(bad[:6]) if bad else ""))
 
 
-JA_SKIP = {"palette.json", "photo_pick.json", "guestbook.json", "seasons.json"}  # 옮길 칸이 없는 원고(글자 표 · 고른 게시물 · 방문자 글 원문 · 절기 이름은 names_ja)
+JA_SKIP = {"palette.json", "photo_pick.json", "guestbook.json", "seasons.json", "poem_notes.json"}  # 옮길 칸이 없는 원고(글자 표 · 고른 게시물 · 방문자 글 원문 · 절기 이름은 names_ja)  · 11/19 poem_notes.json(번역판 각주 — 일본어판은 朱肉이 익숙한 낱말이라 일부러 없음)
 
 
 def ja_gaps():
