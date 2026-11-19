@@ -246,7 +246,8 @@ def cf_beacon(site):
 def cf_tag(site):
     # 비콘 한 줄 — 공식 꼴(type="module" · 2026-07-13부터) · 닫는 body 바로 앞 · 모든 쪽(본 쪽 · 처리방침 · 404) · 쪽마다 하나
     tok = cf_beacon(site)
-    return f'<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{{"token": "{tok}"}}\'></script>\n' if tok else ""
+    # 11/20 늘 제 줄에(앞에도 줄 바꿈) — 스테이징(Cloudflare Pages) 빌드가 방문 셈을 막으려 비콘이 든 줄을 통째로 지워, 처리방침은 같은 줄의 cursor.js까지 사라져 커서 점이 안 나왔음(동원 "이거 마우스가 동그라미가 아닌데?")
+    return f'\n<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{{"token": "{tok}"}}\'></script>\n' if tok else ""
 
 
 def ga4(site):
