@@ -26,9 +26,14 @@
     ta.remove();
     return ok;
   };
-  const shareOrCopy = async (data, sheet = true) => {  // "sheet"(공유 시트가 맡음) · "shared"(복사함) · "copy_fail"
-    if (sheet && navigator.share) { try { await navigator.share(data); return "sheet"; } catch (x) { if (x && x.name === "AbortError") return "sheet"; } }
-    return (await copyText(data.url)) ? "shared" : "copy_fail";
+  // GA4 권장 이벤트 share(11/19 어드민 세션 전달 · 동원 카드 '표 데이터에서 더 받을 칸' — method · content_type · item_id): 공유가 실제로 된 때만 ndw-ga 신호 →
+  // consent.js가 동의한 방문에서만 GA4로(찾기 search와 같은 길). method: web_share(공유 시트로 보냄) · copy_link(주소 복사) · download(그림 저장) — 시트를 닫은 것(AbortError)은 안 셈
+  const gaShare = (method, type, id) => document.dispatchEvent(new CustomEvent("ndw-ga", { detail: { n: "share", m: method, t: type, id: String(id || "").slice(0, 100) } }));
+  const shareOrCopy = async (data, sheet = true, ga = null) => {  // "sheet"(공유 시트가 맡음) · "shared"(복사함) · "copy_fail" · ga = [content_type, item_id]
+    if (sheet && navigator.share) { try { await navigator.share(data); if (ga) gaShare("web_share", ...ga); return "sheet"; } catch (x) { if (x && x.name === "AbortError") return "sheet"; } }
+    const ok = await copyText(data.url);
+    if (ok && ga) gaShare("copy_link", ...ga);
+    return ok ? "shared" : "copy_fail";
   };
   const ASSET = document.currentScript ? new URL("./", document.currentScript.src).href : "assets/";
   // 화면에 한 번 들어오면 fn을 부르고 그만 봄
@@ -879,7 +884,7 @@
           ev.stopPropagation();
           const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
           const url = ((document.querySelector('link[rel="canonical"]') || {}).href || location.origin + location.pathname).split("#")[0] + `#v-${pid(cur)}-${k + 1}`;
-          const r = await shareOrCopy({ url }, matchMedia("(hover: none)").matches);
+          const r = await shareOrCopy({ url }, matchMedia("(hover: none)").matches, ["photo", `${pid(cur)}-${k + 1}`]);
           if (r === "sheet") return;
           lk.textContent = r === "shared" ? uiText("shared", "링크를 복사했습니다") : uiText("copy_fail", "복사하지 못했습니다");
           setTimeout(() => { lk.textContent = uiText("pv_link", "링크 복사"); }, 2000);
@@ -1619,6 +1624,7 @@
         if (navigator.canShare({ files: [file] })) {
           try {
             await navigator.share({ files: [file], title: uiText("share", "「탁본」 — 남동원") });
+            gaShare("web_share", "image", "takbon");
             kept();
             return;
           } catch (err) {
@@ -1651,6 +1657,7 @@
       document.body.append(a);
       a.click();
       a.remove();
+      gaShare("download", "image", "takbon");
       if (blob) setTimeout(() => URL.revokeObjectURL(url), 10000);
       kept();
     });
@@ -2414,7 +2421,7 @@
     b.addEventListener("click", async () => {
       const title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;
       const url = (document.querySelector('link[rel="canonical"]') || {}).href || location.href;
-      const r = await shareOrCopy({ title, url });
+      const r = await shareOrCopy({ title, url }, true, ["page", location.pathname]);
       if (r === "sheet") return;
       const lab = b.firstChild, was = lab.textContent;
       lab.textContent = r === "shared" ? uiText("shared", "링크를 복사했습니다") : uiText("copy_fail", "복사하지 못했습니다");

@@ -460,7 +460,10 @@ def consent_html(L, gid, site_label, cid=""):  # cid: Clarity 프로젝트 ID(11
     # 11/18 동의 창 문단에 rd-extra — 읽기 모드 단추를 띄울지 셀 때(Readability isProbablyReaderable) 닫힌(hidden) 창 안 문단까지 세어
     # 글이 거의 없는 음악 · 인스타그램 쪽에도 단추가 뜨고, 열면 바닥글만 나왔음(실측). 클래스만 더함 — 모양 · 동작 · 화면 읽기는 그대로
     inner = re.sub(r'<p( class="([^"]*)")?>', lambda m: f'<p class="{(m.group(2) + " ") if m.group(2) else ""}rd-extra">', l1 + l2 + l3)
-    return f'<div class="cz" id="cz" data-ga="{e(gid)}"{ca} hidden>{inner}</div>\n'
+    # 동의 문구 판 번호(11/19 어드민 세션 전달 · 동원 카드 — 문구를 바꾼 뒤 '어느 판을 본 선택인지' 가름): ui.json의 cz_ 문구 여섯 판 + 파트너 목록(G · M)의 지문 8자 —
+    # 문구를 고치면 저절로 바뀜(손으로 올릴 번호 없음). consent.js가 고를 때 localStorage 'consent-ga'의 v에 같이 둠(이 기기 안에만 · 보내지 않음)
+    czv = hashlib.sha256((json.dumps({k: v for k, v in load("ui.json").items() if k.startswith("cz_")}, ensure_ascii=False, sort_keys=True) + ("|G" if gid else "") + ("|M" if cid else "")).encode("utf-8")).hexdigest()[:8]
+    return f'<div class="cz" id="cz" data-ga="{e(gid)}"{ca} data-czv="{czv}" hidden>{inner}</div>\n'
 
 
 def book_card(site):
@@ -3017,9 +3020,30 @@ def main():
             d.mkdir(parents=True, exist_ok=True)
             (d / "index.html").write_text(stamp(ru_bind(html) if lg == "ru" else fr_bind(html) if lg == "fr" else html), encoding="utf-8")
     (DOCS / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n", encoding="utf-8")
+    # 사이트맵 lastmod = 쪽별 실제 수정일(11/19 어드민 세션 전달 · 동원 카드 '표 데이터에서 더 받을 칸' — 구글은 lastmod가 '꾸준히, 검증 가능하게' 정확할 때만 씀
+    # https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap · 전엔 36주소 모두 빌드한 날). 쪽 본문(<main>)의 지문이 바뀐 날만 새 날짜:
+    # 지문은 스크립트 · 스타일 · 주소 끝 ?v= 지문을 뺀 <main> 글 — 꾸밈 파일만 바뀐 날은 그대로. 기록은 lastmod.json(저장소에 둠 — 다른 작업 사본 · 다음 빌드가 이어 받음)
+    # 견본 · 미리 보기 빌드(IG_TOKEN_FILE · IG_CACHE · SITE_TODAY를 준 빌드 — QA 견본 · 관리 화면 미리 보기)는 읽기만 하고 쓰지 않음(진짜 날짜를 견본 글로 덮지 않게)
+    lm_path, today = HERE / "lastmod.json", build_day().isoformat()
+    try:
+        lm_old = json.loads(lm_path.read_text(encoding="utf-8")).get("pages", {})
+    except (OSError, ValueError):
+        lm_old = {}
+    lm_new = {}
+    for lg, pg in pages.items():
+        for k, h in pg.items():
+            m = re.search(r"<main\b.*?</main>", h, re.S)
+            body = re.sub(r"<(script|style)\b.*?</\1>", "", m.group(0) if m else h, flags=re.S)
+            mfp = hashlib.sha256(re.sub(r"\?v=[\w.-]+", "", body).encode("utf-8")).hexdigest()[:16]
+            url = ("" if lg == "ko" else f"/{lg}") + "/" + (f"{k}/" if k else "")
+            was = lm_old.get(url) or {}
+            lm_new[url] = {"fp": mfp, "date": was["date"] if was.get("fp") == mfp and was.get("date") else today}
+    if not any(os.environ.get(x) for x in ("IG_TOKEN_FILE", "IG_CACHE", "SITE_TODAY")) and lm_new != lm_old:
+        lm_path.write_text(json.dumps({"_설명": "사이트맵 lastmod 기록(build.py가 씀 — 쪽 본문 지문이 바뀐 날). 손으로 고치지 않음", "pages": lm_new}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    lm_day = lambda pre, kp: (lm_new.get(f"{pre}/{kp}") or {}).get("date", today)  # noqa: E731
     (DOCS / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
-        + "".join(f'<url><loc>{e(base)}{pre}/{kp}</loc><lastmod>{build_day().isoformat()}</lastmod><xhtml:link rel="alternate" hreflang="ko" href="{e(base)}/{kp}"/>'
+        + "".join(f'<url><loc>{e(base)}{pre}/{kp}</loc><lastmod>{lm_day(pre, kp)}</lastmod><xhtml:link rel="alternate" hreflang="ko" href="{e(base)}/{kp}"/>'
                   f'<xhtml:link rel="alternate" hreflang="en" href="{e(base)}/en/{kp}"/><xhtml:link rel="alternate" hreflang="ja" href="{e(base)}/ja/{kp}"/><xhtml:link rel="alternate" hreflang="ru" href="{e(base)}/ru/{kp}"/><xhtml:link rel="alternate" hreflang="es" href="{e(base)}/es/{kp}"/><xhtml:link rel="alternate" hreflang="fr" href="{e(base)}/fr/{kp}"/>'
                   f'<xhtml:link rel="alternate" hreflang="x-default" href="{e(base)}/{kp}"/></url>'
                   for pre in ("", "/en", "/ja", "/ru", "/es", "/fr") for kp in (f"{k}/" if k else "" for k in PAGES))  # lastmod는 빌드한 날 · x-default는 머리말과 같게(10/27 가5) · 쪽마다(10/31) · 일본어판(11/1)

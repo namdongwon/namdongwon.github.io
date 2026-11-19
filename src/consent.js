@@ -1,6 +1,6 @@
 /* 동의 창(11/1 동원 "고야드 식으로 하긴 하는데 좀 정확히 따라해봐" · 버튼 "안 1 — 고야드 문구 바탕") — GA4는 동의한 방문만 셈.
    세 단계(고야드 · Didomi와 같은 길): 첫 창 .cz-1 → '자세히 알아보기 →' 동의 관리 .cz-2 → '파트너 보기' 파트너 선택 .cz-3(첫 창의 '1개 파트너사'도 여기로)
-   고른 것은 이 기기 localStorage 'consent-ga'에만 {p1 콘텐츠 성과 측정, p2 기기에 정보 저장 및/또는 액세스, g Google Analytics Products, at 고른 때}
+   고른 것은 이 기기 localStorage 'consent-ga'에만 {p1 콘텐츠 성과 측정, p2 기기에 정보 저장 및/또는 액세스, g Google Analytics Products, (c Clarity), at 고른 때, v 동의 문구 판 번호(11/19)}
    GA4는 p1 · p2 · g가 모두 동의일 때, namdongwon.com 주소에서만 받음 — 이 맥 시험(127.0.0.1) · 자동 조종 브라우저 · 관리 화면 미리 보기에선 받지 않음
    창은 고르기 전에만 저절로 뜸(namdongwon.com · 이 맥 시험은 ?consent=show) · 시집 쪽 첫 방문은 문 장면이 끝난 뒤 · 처리방침 쪽은 저절로 뜨지 않음(읽고 고르시게)
    사람에게 보일 글자는 쪽 HTML(ui.json cz_…)에만 — 글꼴 줄이기가 쪽에서 글자를 모음 */
@@ -137,6 +137,7 @@
   };
   const decide = v => {
     v.at = new Date().toISOString();
+    if (w.dataset.czv) v.v = w.dataset.czv;  // 11/19 동의 문구 판 번호(build.py czv — cz_ 문구 · 파트너 지문 8자) · 이 기기 안에만
     saved = v;
     write(v);
     if (ok(v)) load(); else { wipe(); unTag(); }  // 거부면 GA4가 세지 않으니 바로 뺌
@@ -170,6 +171,7 @@
     if (!loaded || !window.gtag) return;
     if (d.n === "search") window.gtag("event", "search", { search_term: d.q, results: d.r });
     else if (d.n === "poem_read") window.gtag("event", "poem_read", { lang: d.lang });
+    else if (d.n === "share") window.gtag("event", "share", { method: d.m, content_type: d.t, item_id: d.id });  // 11/19 GA4 권장 share — page(쪽 공유) · photo(사진 링크) · image(「탁본」 그림)
   });
 
   if (okC(saved)) loadC();
