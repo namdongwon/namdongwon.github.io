@@ -154,6 +154,11 @@
     decide({ p1: draft.p1 === true, p2: draft.p2 === true, g: draft.g !== false, ...(cid ? { c: draft.c !== false } : {}) })));  // 파트너를 고르지 않았으면 목적 고른 대로
   const shut = () => (saved ? close() : show(1));  // × · Esc — 고른 적이 없으면 첫 창으로(고야드와 같음)
   w.querySelectorAll(".cz-c").forEach(b => b.addEventListener("click", shut));
+  // 11/20 동원 "상자가 아니라 다른 곳 마우스 눌러도 나갈 수 있게 … 웹사이트에 이런 비슷한 거 있으면 전부 다": 상자 바깥 바탕을 누르면 ×와 같음
+  // (누르기 시작과 끝이 모두 바탕일 때만 — 상자 안 글을 끌어 고르다 바깥에서 놓아도 닫히지 않게) · 첫 창(동의를 아직 안 고름)은 그대로 — 고를 때까지 남음
+  let downW = false;
+  w.addEventListener("pointerdown", ev => { downW = ev.target === w; });
+  w.addEventListener("click", ev => { if (ev.target === w && downW && box[0].hidden) shut(); downW = false; });
   w.addEventListener("keydown", ev => { if (ev.key === "Escape" && box[0].hidden) { ev.preventDefault(); ev.stopPropagation(); shut(); } });
   const sk = w.querySelector(".cz-sk");
   if (sk) sk.addEventListener("click", ev => { ev.preventDefault(); w.querySelector("#cz-sv3").focus(); });  // "저장"으로 건너뛰기 — 주소에 #를 남기지 않게

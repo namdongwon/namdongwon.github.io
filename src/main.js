@@ -922,11 +922,13 @@
     };
     document.querySelectorAll("#photo .pop").forEach(b => b.addEventListener("click", () => open(+b.dataset.i, b, +(b.dataset.k || 0))));
     x.addEventListener("click", shut);
+    wrap.addEventListener("click", e => { if (e.target === wrap && e.detail && zm.z <= 1) shut(); });  // 11/20 사진 칸 양옆 빈 바탕(넘김 단추 자리 밖)도 누르면 닫힘
     // ① 사진을 누르면 단추 · 글이 0.3초에 숨어 사진만 남고, 다시 누르면 돌아옴(11/4 동원 'A 누르면 숨김' — 갤러리UX열_v1 01 · 아이폰 사진 앱) · 키보드로 단추에 오면 늘 보임
     // 손가락으로 연 창만 두 번 톡을 기다림(0.28초) — 두 번째 톡이 오면 숨기기 대신 확대(아래 ⑫) · 마우스 · 키보드는 지금처럼 바로
     let ptype = "", tapT = 0, tapX = 0, tapY = 0;
     view.addEventListener("pointerdown", e => { ptype = e.pointerType; }, true);
     view.addEventListener("click", e => {
+      if (e.detail && zm.z <= 1 && !e.target.closest("img,video,button,a")) { shut(); return; }  // 11/20 동원 "다른 곳 마우스 눌러도 나갈 수 있게 … 비슷한 거 있으면 전부 다" — 사진 밖 빈 바탕을 누르면 닫힘(사진을 누르면 지금처럼 단추 · 글 숨김)
       if (ptype !== "touch" || !e.detail) { pv.classList.toggle("bare"); return; }
       if (tapT && Math.hypot(e.clientX - tapX, e.clientY - tapY) < 30) { clearTimeout(tapT); tapT = 0; zoomAt(e.clientX, e.clientY); return; }
       tapX = e.clientX; tapY = e.clientY;

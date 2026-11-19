@@ -2008,7 +2008,7 @@ def render(site, poem, videos, photos, lang="ko"):
     # 11/9 네 개 나열 → '🌐 KO ▾' 하나 + 위로 펼침(동원 레퍼런스 그림 · 목업 기준/브랜드 시안/푸터언어고르기시안_v1 → "A 지구본 (권장)") · 펼친 목록엔 국기(11/10 동원 — 위 FLAG_ICON)
     # <details>라 스크립트 없이도 열림(처리방침 · 404처럼 main.js 없는 쪽도 같음) · 바깥 누름 · Esc로 닫기는 main.js · 고른 판의 ✓는 CSS(글자에 섞지 않음)
     langs = (f'<details class="lsw"><summary><span class="sr">{t("lng_pick")}: </span>{GLOBE_ICON}<span lang="{lang}">{LANG3[lang]}</span>{CARET_ICON}</summary>'
-             f'<ul>{"".join(f"<li>{lang_item(x)}</li>" for x in LANGS)}</ul></details>')
+             f'<ul>{"".join(f"<li>{lang_item(x)}</li>" for x in [lang] + [y for y in LANGS if y != lang])}</ul></details>')  # 11/20 동원 "지금 순서는 좋거든? 대신에 … 그 언어를 선택했을때 위치가 맨 위로" — 고른 판을 맨 위로, 나머지는 원래 차례(한 · 영 · 일 · 러 · 스 · 프)
     colo = (f'<div class="colo"><div class="fcols"><div><h2 class="fh">{t("foot_pages")}</h2><ul>{nav_li}</ul></div>'
             f'<div><h2 class="fh">{e(L["nav"][1])}</h2><ul>{book_li}</ul></div>'
             f'<div><h2 class="fh">{t("foot_info")}</h2><ul>{info_li}</ul></div>'
@@ -2630,7 +2630,7 @@ def page_privacy(site, lang):
 <link rel="canonical" href="{e(base)}{"/" + lang if tr_ else ""}/privacy/"><meta name="theme-color" content="#ffffff">
 <link rel="icon" href="{R}favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="{R}assets/style.css">
 <script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
-<body ontouchstart=""><main class="pp">
+<body ontouchstart=""><div class="ppt"><a class="ppl" href="../">{e(site.get("logo") or site["name"])}</a><a class="ppb" href="../">{g(p["back"])}</a></div><main class="pp">
 <h1 class="h2">{g(p["title"])}</h1>
 <p class="lead">{g(lead)}</p>
 {ckp}{secs}
@@ -2737,7 +2737,7 @@ SCALE_ALLOW = {
     ("#poem>.l", "top"): "띠 아래 제목 자리", ("#me>.l", "top"): "띠 아래 제목 자리",
     ("#contact>.l", "top"): "띠 아래 제목 자리", ("#palette>.l", "top"): "띠 아래 제목 자리",
     # 표장(11/3 동원 '이름 표기 여덟' → "2 자간 넓게 가늘게" · 실측 겹침으로 좁은 폭 한 단계 작게)
-    (".top .logo", "font"): "표장 Didot 13px — 고른 꼴(11/18 밤)", (".top .logo", "letter-spacing"): "표장 Didot 자간 0.2em — 11/18 밤 동원 버튼 'T2 .2em'(시안 표장자간13 v3)", (".js .top .logo", "letter-spacing"): "휴대폰 표장 자간 0.16 · 0.12em(11/18 밤 Didot) — 폭 따라 줄임", (".js:lang(ja) .top .logo", "letter-spacing"): "일본어판 표장 자간 0.1em — 430 아래", (".js .top .logo", "font-size"): "휴대폰 표장 10px — 390 아래 찾기 단추와 겹침", (".js:lang(ja) .top .logo", "font-size"): "일본어판 표장 9px — 430 아래 겹침",
+    (".top .logo", "font"): "표장 Didot 13px — 고른 꼴(11/18 밤)", (".ppl", "letter-spacing"): "처리방침 위 띠 표장 — 헤더 표장과 같은 Didot 자간 0.2em · 휴대폰 0.16em(11/20 동원 버튼 'B 얇은 위 띠')", (".top .logo", "letter-spacing"): "표장 Didot 자간 0.2em — 11/18 밤 동원 버튼 'T2 .2em'(시안 표장자간13 v3)", (".js .top .logo", "letter-spacing"): "휴대폰 표장 자간 0.16 · 0.12em(11/18 밤 Didot) — 폭 따라 줄임", (".js:lang(ja) .top .logo", "letter-spacing"): "일본어판 표장 자간 0.1em — 430 아래", (".js .top .logo", "font-size"): "휴대폰 표장 10px — 390 아래 찾기 단추와 겹침", (".js:lang(ja) .top .logo", "font-size"): "일본어판 표장 9px — 430 아래 겹침",
     # 동의 창(.cz…) — 고야드 창에서 잰 값 그대로(11/1 동원 '좀 정확히 따라해봐' · 단 검사 29곳에 버튼 '고야드 값 그대로 (권장)')
     **{(".cz", p): "동의 창 — 고야드에서 잰 값" for p in ("padding", "margin", "margin-top", "gap", "top", "right", "left", "inset", "font", "letter-spacing")},
 }
