@@ -807,7 +807,13 @@ HEAD_JS_PLAIN = """<script>(function(){var H=document.documentElement;H.classLis
 CIN_JS = ('try{var c=JSON.parse(sessionStorage.getItem("cto")||"null");sessionStorage.removeItem("cto");'
           'if(c&&Date.now()-c[2]<5e3&&H.getAttribute("data-motion")!=="reduce"&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!H.classList.contains("intro"))'
           '{H.classList.add("cin");H.style.setProperty("--cx",c[0]+"px");H.style.setProperty("--cy",c[1]+"px")}}catch(x){}')
-HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", ""), HEAD_JS_PLAIN.replace("__CIN__", "")  # 11/19 원형 전환 뺌(동원 버튼 "A 원 빼기") — CIN_JS는 쓰지 않음(남은 sessionStorage cto는 읽지 않음)
+# 11/19 저녁 쪽 열림 C(동원 버튼 "C 토스식 차례로 또렷 (권장)" — 시안 쪽열림시안_v1 · 토스 실측 research_notes/쪽 열림 토스): 쪽 사이로 넘어와 그려지기 직전(pagereveal · View Transition일 때만)
+# 첫 화면에 보이는 글 · 그림을 위에서부터 0.06초 차례로 흐림 8px → 또렷 0.6초(곡선 .333,.667,.667,1) — 많아야 10개(끝까지 약 1.2초) · 문 장면 · 움직임 줄이기면 안 함 · main.js(defer)는 늦어 머리에
+STAG_JS = ('addEventListener("pagereveal",function(e){try{if(!e.viewTransition||H.classList.contains("intro")||H.getAttribute("data-motion")==="reduce"||matchMedia("(prefers-reduced-motion: reduce)").matches)return;'
+           'var vh=innerHeight,seen=[],L=[];document.querySelectorAll("main h1,main h2,main h3,main p,main li,main img,main canvas,main figure,main dt,main dd").forEach(function(el){'
+           'for(var q=el.parentElement;q;q=q.parentElement)if(seen.indexOf(q)>=0)return;var r=el.getBoundingClientRect();if(r.width<2||r.height<2||r.top>vh||r.bottom<0)return;seen.push(el);L.push([r.top,r.left,el])});'
+           'L.sort(function(a,b){return a[0]-b[0]||a[1]-b[1]});L.slice(0,10).forEach(function(x,i){x[2].animate([{opacity:0,filter:"blur(8px)"},{opacity:1,filter:"blur(0)"}],{duration:600,delay:i*60,easing:"cubic-bezier(.333,.667,.667,1)",fill:"backwards"})})}catch(x){}});')
+HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", STAG_JS), HEAD_JS_PLAIN.replace("__CIN__", STAG_JS)  # 11/19 원형 전환 뺌(동원 버튼 "A 원 빼기") — CIN_JS는 쓰지 않음(남은 sessionStorage cto는 읽지 않음)
 # 11/18 옛 주소 이어 주기(동원 버튼 "옛 주소 이어 주기 (권장)"): 10/31 쪽 나누기 전 한 쪽 주소(/#poem · /#toc · /#l7 · /#photo · /#contact …)가 첫 화면 맨 위로 떨어졌음(실측 9곳)
 # → 판 첫 화면에서 옮겨 간 칸 이름이면 그 쪽으로 바로 바꿔 감(location.replace — 뒤로 가기에 옛 주소가 남지 않게 · 그리기 전 머리에서). 첫 화면에 있는 칸(#me · #y3 …)은 그대로
 OLD_HASH_JS = ('(function(){var h=location.hash.slice(1),m=location.pathname.match(/^(\\/(?:en|ja|ru|es|fr)\\/|\\/)(?:index\\.html)?$/);if(!h||!m)return;'

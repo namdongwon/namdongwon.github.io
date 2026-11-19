@@ -419,6 +419,7 @@
       const at = [...nav.querySelectorAll("a[data-pg]")].find(x => new URL(x.href, location.href).pathname === to.pathname);  // 이름(로고)을 눌러도 '소개'로
       const x0 = dt.classList.contains("on") ? (/translate\(([-\d.]+)px, ([-\d.]+)px\)/.exec(dt.style.transform) || []).slice(1).map(Number) : [];
       if (!at) { ul.classList.remove("on"); dt.classList.remove("on"); return; }  // 연락하기(먹 상자가 곧 표시)면 점 · 밑줄이 옅어져 사라짐
+      if ("onpagereveal" in window) return;  // 11/19 저녁 쪽 사이 View Transition이 되는 브라우저는 점 · 밑줄을 그대로 두고 쪽 사이로 이어 옮김(style.css ndw-dot · ndw-ul) — 여기서 먼저 옮기면 옛 쪽 사진에 이미 옮겨 간 자리가 찍혀 안 움직임
       place(at);  // 밑줄은 0.28초 미끄러짐(CSS)
       if (x0.length < 2) return;
       const [x1, y1] = (/translate\(([-\d.]+)px, ([-\d.]+)px\)/.exec(dt.style.transform) || []).slice(1).map(Number), h = Math.min(16, 6 + Math.abs(x1 - x0[0]) * 0.04), ease = t => 1 - Math.pow(1 - t, 3), kf = [];

@@ -1256,8 +1256,16 @@ html.cz-on{overflow:hidden}
 @media (prefers-reduced-motion:reduce){.spin{animation:spin-in 0s .3s forwards}}:where(:root[data-motion="reduce"]) .spin,:where(:root[data-motion="reduce"]).spin{animation:spin-in 0s .3s forwards}:root[data-motion="reduce"] .spin{animation:spin-in 0s .3s forwards}
 .pv.fromt{transform-origin:var(--ox) var(--oy);transform:scale(.4)}.pv.fromt.on{transform:none}  
 @view-transition{navigation:auto}  
-:root.thx::view-transition-old(root),:root.thx::view-transition-new(root){animation-duration:.36s;animation-timing-function:ease}  
-::view-transition-old(root),::view-transition-new(root){animation-duration:.25s;animation-timing-function:var(--e2)}
+
+header.top{view-transition-name:ndw-top}.top nav .dt.on{view-transition-name:ndw-dot}.top nav .ul.on{view-transition-name:ndw-ul}
+:root.thx::view-transition-old(*),:root.thx::view-transition-new(*){animation-duration:.36s;animation-timing-function:ease}  
+:root:not(.thx)::view-transition-old(root){animation:.15s ease-out both ndw-vto}:root:not(.thx)::view-transition-new(root){animation:none}
+@keyframes ndw-vto{to{opacity:0}}
+:root:not(.thx)::view-transition-group(ndw-dot){animation-duration:.45s;animation-timing-function:cubic-bezier(.45,.05,.4,1)}
+:root:not(.thx)::view-transition-image-pair(ndw-dot){animation:ndw-hop .45s both}
+@keyframes ndw-hop{0%{transform:none;animation-timing-function:cubic-bezier(.33,1,.68,1)}50%{transform:translateY(-12px);animation-timing-function:cubic-bezier(.32,0,.67,0)}100%{transform:none}}
+::view-transition-old(ndw-dot),::view-transition-new(ndw-dot){animation:none}::view-transition-old(ndw-dot){opacity:0}
+:root:not(.thx)::view-transition-group(ndw-ul){animation-duration:.3s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
 @media (hover:hover) and (pointer:fine){
   .wall .wt:hover::before,.wall .wt:focus-visible::before,.wall .wt:hover .wcap,.wall .wt:focus-visible .wcap{opacity:1;transform:none}
   .buy{border-bottom-color:var(--line)}  
@@ -1266,8 +1274,8 @@ html.cz-on{overflow:hidden}
   .buy:hover .ar.ne{transform:translate(2px,-2px)}.buy:hover .ar.dn{transform:translateY(3px)}
 }
 :root[data-motion="reduce"] img.fi{transition:none}:root[data-motion="reduce"] .top{transition:none}:root[data-motion="reduce"] .pv.fromt{transform:none}
-:root[data-motion="reduce"]::view-transition-old(root),:root[data-motion="reduce"]::view-transition-new(root){animation:none}
-@media (prefers-reduced-motion:reduce){img.fi{transition:none}.top{transition:none}.pv.fromt{transform:none}::view-transition-old(root),::view-transition-new(root){animation:none}}:where(:root[data-motion="reduce"]) img.fi{transition:none}:where(:root[data-motion="reduce"]) .top,:where(:root[data-motion="reduce"]).top{transition:none}:where(:root[data-motion="reduce"]) .pv.fromt,:where(:root[data-motion="reduce"]).pv.fromt{transform:none}:where(:root[data-motion="reduce"]) ::view-transition-old(root),:where(:root[data-motion="reduce"])::view-transition-old(root),:where(:root[data-motion="reduce"]) ::view-transition-new(root),:where(:root[data-motion="reduce"])::view-transition-new(root){animation:none}
+:root[data-motion="reduce"]::view-transition-old(*),:root[data-motion="reduce"]::view-transition-new(*),:root[data-motion="reduce"]::view-transition-group(*),:root[data-motion="reduce"]::view-transition-image-pair(*){animation:none}
+@media (prefers-reduced-motion:reduce){img.fi{transition:none}.top{transition:none}.pv.fromt{transform:none}::view-transition-old(*),::view-transition-new(*),::view-transition-group(*),::view-transition-image-pair(*){animation:none}}:where(:root[data-motion="reduce"]) img.fi{transition:none}:where(:root[data-motion="reduce"]) .top,:where(:root[data-motion="reduce"]).top{transition:none}:where(:root[data-motion="reduce"]) .pv.fromt,:where(:root[data-motion="reduce"]).pv.fromt{transform:none}:where(:root[data-motion="reduce"]) ::view-transition-old(*),:where(:root[data-motion="reduce"])::view-transition-old(*),:where(:root[data-motion="reduce"]) ::view-transition-new(*),:where(:root[data-motion="reduce"])::view-transition-new(*),:where(:root[data-motion="reduce"]) ::view-transition-group(*),:where(:root[data-motion="reduce"])::view-transition-group(*),:where(:root[data-motion="reduce"]) ::view-transition-image-pair(*),:where(:root[data-motion="reduce"])::view-transition-image-pair(*){animation:none}
 
 
 .ficons a{transition:transform var(--mid) var(--e2),background-color var(--fast) var(--e2)}
