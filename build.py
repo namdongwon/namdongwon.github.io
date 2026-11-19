@@ -2590,14 +2590,41 @@ def render(site, poem, videos, photos, lang="ko"):
     return {k: page(k) for k in PAGES}
 
 
-def page_privacy(site, lang):
+# 처리방침 고르개 닫기(11/20) — 바깥을 누르거나 Esc면 닫힘 · 하나를 열면 다른 하나는 닫힘(동원 "다른 곳 마우스 눌러도 나갈 수 있게 … 전부 다" — 이 쪽은 main.js가 없어 따로 몇 줄)
+PPV_JS = ('<script>(function(){var D=[].slice.call(document.querySelectorAll(".ppv-d"));function shut(x){D.forEach(function(d){if(d!==x)d.open=false})}'
+          'D.forEach(function(d){d.addEventListener("toggle",function(){if(d.open)shut(d)})});'
+          'document.addEventListener("click",function(e){D.forEach(function(d){if(d.open&&!d.contains(e.target))d.open=false})});'
+          'document.addEventListener("keydown",function(e){if(e.key==="Escape")D.forEach(function(d){if(d.open){d.open=false;d.querySelector("summary").focus()}})})})();</script>')
+
+
+def privacy_versions():
+    # 11/20 처리방침 지난 판(동원 "toss.im/privacy-policy?id=… 이런식으로 우리도 좀 깔끔하게 관리" → 시안 처리방침정리시안_v1 → 버튼 "A 토스식"):
+    # content/privacy_versions/<시행일>.json 한 장 = 그 시행일(updated)로 올라간 마지막 원고 — 10/27 · 11/1 · 11/2 · 11/7은 git 기록에서 채움(11/20) · 앞으로는 진짜 빌드가 updated가 바뀌면 그날 판을 남김
+    d = CONTENT / "privacy_versions"
+    out = {}
+    if d.is_dir():
+        for f in sorted(d.glob("*.json")):
+            try:
+                out[f.stem] = json.loads(f.read_text(encoding="utf-8"))
+            except ValueError:
+                pass
+    return out
+
+
+def page_privacy(site, lang, ver=None):
     # 개인정보 처리방침 한 쪽(10/27 — 방명록 · 문의 폼을 켜기 전에, 초안 `기준/개인정보 처리방침 초안_v1.md`). content/privacy.json이 없으면 만들지 않음.
     # 한국어 docs/privacy/ · 영어 docs/en/privacy/ · 일본어 docs/ja/privacy/(11/1) — 검색에는 내지 않음(noindex) · 고른 화면(어두운 모드)은 첫 그림 전에 · 글자는 사이트 글꼴(쓰인 글자 모으기에 함께 넣음)
     if not (CONTENT / "privacy.json").exists():
         return None
-    p, en, tr_ = load("privacy.json"), lang == "en", lang in TR
+    P, en, tr_ = load("privacy.json"), lang == "en", lang in TR
+    VS = privacy_versions()
+    p = VS[ver] if ver else P  # 지난 판이면 그 판 원고 · 화면 말(ver_ui · history · back · title)은 늘 지금 원고에서
+    if ver and lang not in p["title"]:
+        return None  # 그 판에 이 말이 아직 없었음(일본어판 11/1 · 러시아어판 11/2 판부터 …)
     g = lambda d: e(d["en"] if en else d[lang] if lang in TR and d.get(lang) else d["ko"])  # noqa: E731 — 일본어 · 러시아어(11/6)가 아직 없는 줄은 한국어(빈 칸 알림은 ja_gaps)
-    R = "../../" if tr_ else "../"  # 쪽 자리에서 docs/ 맨 위까지
+    R = ("../../" if tr_ else "../") + ("../" if ver else "")  # 쪽 자리에서 docs/ 맨 위까지 — 지난 판은 /privacy/<시행일>/로 한 칸 더 깊음
+    up = "../../" if ver else "../"  # 그 판 첫 화면(한국어 / · 영어 /en/ …)
+    VU = P.get("ver_ui", {})
     base = site["base_url"].rstrip("/")
     d = date.fromisoformat(p["updated"])
     when = f"{MONTHS[d.month - 1]} {d.day}, {d.year}" if en else esday(d) if lang == "es" else frday(d) if lang == "fr" else rday(d) if lang == "ru" else jday(d) if tr_ else f"{d.year}년 {d.month}월 {d.day}일"
@@ -2615,28 +2642,59 @@ def page_privacy(site, lang):
     mref = "".join(f"&#{ord(ch)};" for ch in f'{em.get("user", "")}@{em.get("domain", "")}') if em.get("user") else ""
     mail = f'<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;{mref}">{mref}</a>' if mref else ""
     dotb_m = lambda h: dotb(h).replace("{mail}", mail)  # noqa: E731
-    secs = "".join(f'<h2>{g(x["h"])}</h2><ul>{"".join(f"<li>{dotb_m(g(i))}</li>" for i in (shown(x["items"]) or [x["empty"]] * ("empty" in x)))}</ul>' for x in p["sections"])
+    secs = "".join(f'<h2 id="s{n}">{g(x["h"])}</h2><ul>{"".join(f"<li>{dotb_m(g(i))}</li>" for i in (shown(x["items"]) or [x["empty"]] * ("empty" in x)))}</ul>' for n, x in enumerate(p["sections"], 1))
+    # 11/20 토스식(시안 처리방침정리시안_v1 'A'): 목차(누르면 그 절) · 마지막 절 '시행일 및 변경 이력' · 위에 언어 · 시행일 고르개(지난 판 보기) — 고르개는 <details>(이 쪽은 main.js가 없어 스크립트 없이도 열림)
+    def fday(iso):
+        x = date.fromisoformat(iso)
+        return f"{MONTHS[x.month - 1]} {x.day}, {x.year}" if en else esday(x) if lang == "es" else frday(x) if lang == "fr" else rday(x) if lang == "ru" else jday(x) if tr_ else f"{x.year}. {x.month:02d}. {x.day:02d}"
+    cur = P["updated"]
+    dates = sorted({*VS, cur}, reverse=True)
+    dates = [x for x in dates if x == cur or lang in VS[x]["title"]]  # 이 말이 있던 판만
+    me = ver or cur
+    h9 = f'{len(p["sections"]) + 1}. ' + g(VU["h9"]) if VU.get("h9") else ""  # 번호는 그 판 절 수 + 1(지난 판은 절이 다섯이라 6.)
+    hist = [x for x in P.get("history", []) if x["date"] <= me]
+    log_li = "".join('<li><time datetime="' + x["date"] + '">' + fday(x["date"]) + "</time><span>" + g(x["note"]) + "</span></li>" for x in hist)
+    sec9 = ('<h2 id="s' + str(len(p["sections"]) + 1) + '">' + h9 + '</h2><p class="ppv-now">' + g(VU["this"]).replace("{d}", fday(me)) + '</p><ul class="ppv-log">' + log_li + "</ul>") if h9 else ""
+    if sec9:
+        secs += sec9
+    heads = re.findall(r'<h2 id="(s\d+)">(.*?)</h2>', secs)
+    toc_li = "".join('<li><a href="#' + i + '">' + t_ + "</a></li>" for i, t_ in heads)
+    toc = ('<nav class="ppv-toc" aria-labelledby="ppv-toc-t"><p id="ppv-toc-t">' + g(VU["toc"]) + "</p><ol>" + toc_li + "</ol></nav>") if VU.get("toc") else ""
+    def vhref(x):  # 이 말의 그 판 주소(이 쪽에서 본 상대 주소)
+        return f'{up}privacy/' + ("" if x == cur else f"{x}/")
+    def lhref(x):  # 다른 말의 같은 판(그 말에 그 판이 없으면 그 말의 지금 판)
+        root = R + ("" if x == "ko" else x + "/") + "privacy/"
+        return root + (f"{ver}/" if ver and x in VS[ver]["title"] else "")
+    lng = [lang] + [x for x in LANGS if x != lang]
+    eff = lambda x: g(VU["eff"]).replace("{d}", fday(x)) + (g(VU["cur"]) if x == cur else "")  # noqa: E731
+    sels = (f'<div class="ppv-sel">'
+            f'<details class="ppv-d"><summary><span class="sr">{g(VU["lang"])}: </span><span lang="{lang}">{LANG_NAME[lang]}</span></summary><ul>'
+            + "".join(f'<li><a href="{lhref(x)}" lang="{x}" hreflang="{x}"' + (' aria-current="page"' if x == lang else "") + f'>{LANG_NAME[x]}</a></li>' for x in lng)
+            + f'</ul></details><details class="ppv-d"><summary><span class="sr">{g(VU["ver"])}: </span>{eff(me)}</summary><ul>'
+            + "".join(f'<li><a href="{vhref(x)}"' + (' aria-current="page"' if x == me else "") + f'>{eff(x)}</a></li>' for x in dates)
+            + '</ul></details></div>') if VU.get("eff") else ""
+    oldbar = f'<p class="ppv-old"><a href="{vhref(cur)}">{g(VU["old"])}</a></p>' if ver else ""
     # 다른 판 처리방침 — 11/1 일본어판부터 둘(한국어 · English · 日本語 가운데 지금 판 빼고 같은 차례) · 낱말은 그 말 제 이름(판권면 언어 줄과 같음)
     oth = "".join(f'<a class="oth" href="{R}{"" if x == "ko" else x + "/"}privacy/" lang="{x}" hreflang="{x}">{LANG_NAME[x]}</a>' for x in LANGS if x != lang)
     cz = ckp = ""
     if ga:
         Lp = ui_lang(load("ui.json"), lang)
         # 동의 창 안 '처리방침' 링크(~R~privacy/)는 그 판의 처리방침으로 — 영어 · 일본어판은 '../'(/en/privacy/ · /ja/privacy/) · 한국어판은 R(11/1 영어판이 한국어 처리방침으로 가던 것 고침)
-        cz = consent_html(Lp, ga, urlparse(base).netloc or base, clarity(site)).replace("~R~", "../" if tr_ else R) + f'<script src="{R}assets/consent.js" defer></script>\n'
+        cz = consent_html(Lp, ga, urlparse(base).netloc or base, clarity(site)).replace("~R~", up if tr_ else R) + f'<script src="{R}assets/consent.js" defer></script>\n'
         ckp = f'<p class="ckp"><button type="button" class="cz-open">{e(Lp["cz_open"])}</button></p>\n'
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{e(site["logo"])} — {g(p["title"])}</title><meta name="robots" content="noindex">
+<title>{e(site["logo"])} — {g(P["title"])}{" · " + fday(ver) if ver else ""}</title><meta name="robots" content="noindex">
 <link rel="canonical" href="{e(base)}{"/" + lang if tr_ else ""}/privacy/"><meta name="theme-color" content="#ffffff">
 <link rel="icon" href="{R}favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="{R}assets/style.css">
 <script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
-<body ontouchstart=""><div class="ppt"><a class="ppl" href="../">{e(site.get("logo") or site["name"])}</a><a class="ppb" href="../">{g(p["back"])}</a></div><main class="pp">
-<h1 class="h2">{g(p["title"])}</h1>
-<p class="lead">{g(lead)}</p>
-{ckp}{secs}
-<p class="up">{g(p["updated_label"])} <time datetime="{d.isoformat()}">{when}</time></p>
-<p class="back"><a class="buy" href="../">{g(p["back"])}</a>{oth}</p>
-</main>{cz}<script src="{R}assets/cursor.js" defer></script>{cf_tag(site)}</body></html>
+<body ontouchstart=""><div class="ppt"><a class="ppl" href="{up}">{e(site.get("logo") or site["name"])}</a><a class="ppb" href="{up}">{g(P["back"])}</a></div><main class="pp">
+<h1 class="h2">{g(P["title"])}</h1>
+{oldbar}{sels}<p class="lead">{g(lead)}</p>
+{ckp}{toc}{secs}
+{"" if sec9 else f'<p class="up">{g(p["updated_label"])} <time datetime="{d.isoformat()}">{when}</time></p>'}
+<p class="back"><a class="buy" href="{up}">{g(P["back"])}</a>{"" if sels else oth}</p>
+</main>{PPV_JS if sels else ""}{cz}<script src="{R}assets/cursor.js" defer></script>{cf_tag(site)}</body></html>
 """
 
 
@@ -2884,6 +2942,15 @@ def main():
     pages = {lg: render(site, poem, videos, photos, lg) for lg in LANGS}  # 판마다 쪽 다섯(10/31 쪽 나누기 — PAGES) · 11/1 일본어판
     page404 = page_404(site)
     priv = {lg: page_privacy(site, lg) for lg in LANGS}  # 처리방침 쪽(없으면 None)
+    # 처리방침 지난 판(11/20 'A 토스식') — 진짜 빌드면 먼저 지금 원고를 그 시행일 판으로 남김(견본 · 미리 보기 빌드는 쓰지 않음 · lastmod.json과 같은 가름) → 지금 판을 뺀 판마다 /privacy/<시행일>/
+    if (CONTENT / "privacy.json").exists() and not any(os.environ.get(k) for k in ("IG_TOKEN_FILE", "IG_CACHE", "SITE_TODAY")):
+        _pv = CONTENT / "privacy_versions"; _pv.mkdir(exist_ok=True)
+        _now = (CONTENT / "privacy.json").read_text(encoding="utf-8")
+        _f = _pv / (json.loads(_now)["updated"] + ".json")
+        if not _f.exists() or _f.read_text(encoding="utf-8") != _now:
+            _f.write_text(_now, encoding="utf-8")
+    _pcur = load("privacy.json")["updated"] if (CONTENT / "privacy.json").exists() else None
+    priv_old = {lg: {v: h for v in privacy_versions() if v != _pcur for h in [page_privacy(site, lg, v)] if h} for lg in LANGS} if _pcur else {}
     gaps = ja_gaps()  # 일본어 빈 칸(11/1 칸 정의서 3절 — 올리기 전에 0으로)
     if gaps:
         print(f"알림: 일본어 빈 칸 {len(gaps)}곳 — {' · '.join(gaps[:6])}" + (" …" if len(gaps) > 6 else "") + " — 영어가 빌 때와 같은 규칙으로 그림(이름 칸 · 화면 낱말 · 처리방침은 한국어, 문장 칸은 숨김)")
@@ -2892,7 +2959,7 @@ def main():
     # 404는 일본어 두 줄을 뺀 판으로
     no_ja = lambda h: re.sub(r'<a class="(?:lang|oth)"[^>]*\blang="ja"[^>]*>[^<]*</a>', "", h)  # noqa: E731
     page404_koen = page_404(site, ja=False)
-    text = used_text([*(no_ja(no_pal(h)) for lg in ("ko", "en", "es", "fr") for h in pages[lg].values()), page404_koen, *(no_ja(priv[lg]) for lg in ("ko", "en", "es", "fr") if priv.get(lg))])  # 스페인어 · 프랑스어판(11/10)도 같은 글꼴
+    text = used_text([*(no_ja(no_pal(h)) for lg in ("ko", "en", "es", "fr") for h in pages[lg].values()), page404_koen, *(no_ja(priv[lg]) for lg in ("ko", "en", "es", "fr") if priv.get(lg)), *(no_ja(h) for lg in ("ko", "en", "es", "fr") for h in priv_old.get(lg, {}).values())])  # 스페인어 · 프랑스어판(11/10)도 같은 글꼴
     pal_text = load("palette.json")["glyphs"]
     srcs = {}
     title_text = unicodedata.normalize("NFC", "".join(site["book"]["display"]["big"]) + " " + ALWAYS[95:])  # 굵기 300 판에 담을 글자(큰 제목 + 빈칸 · 부호 — 영문 · 숫자는 빼고 가볍게)
@@ -2939,7 +3006,7 @@ def main():
     # 일본어판 글꼴(11/1 — JA_FONTS): 일본어판 쪽 · 처리방침 · 404 일본어 두 줄의 글자만. 한글은 뺌(Source Han Serif JP에는 한글이 없고, 일본어판의 한국어는 본명조 · Pretendard 판이 그림 —
     # 같은 한국어가 영어판에도 있어 그 판에 이미 담김). 이름은 NDW Serif JP · NDW Sans JP로(rename_font)
     # + '年月日' — 탁본 한 장의 뜬 날(main.js가 기기 날짜로 2026年11月1日을 그림)
-    text_ja = HANGUL.sub("", used_text([*(no_pal(h) for h in pages["ja"].values()), page404, *([priv["ja"]] if priv["ja"] else [])]) + "年月日")
+    text_ja = HANGUL.sub("", used_text([*(no_pal(h) for h in pages["ja"].values()), page404, *([priv["ja"]] if priv["ja"] else []), *priv_old.get("ja", {}).values()]) + "年月日")
     ko_more = sorted(set(HANGUL.findall("".join(no_pal(h) for h in pages["ja"].values()))) - set(text) - set(pal_text))
     if ko_more:  # 일본어판에만 있는 한글 — 본명조 · Pretendard 판에 없어 기기 글꼴로 그려짐
         print(f"알림: 일본어판에만 있는 한글 {len(ko_more)}자({''.join(ko_more[:12])}) — 한국어 · 영어판에 같은 글이 없어 기기 글꼴로 보임")
@@ -2995,7 +3062,7 @@ def main():
             raise SystemExit(f"일본어판 첫 화면 작은 판을 만들 원본을 찾지 못함: {name}")
     print(f"일본어판 글꼴에 남긴 글자 {len(set(text_ja))}자")
     # 러시아어판 글꼴(11/6 — RU_FONTS): 러시아어판 쪽 · 처리방침의 글자만(한글은 뺌 — 러시아어판의 한국어는 본명조 · Pretendard 한국어 판이 그림)
-    text_ru = HANGUL.sub("", used_text([*(no_pal(h) for h in pages["ru"].values()), *([priv["ru"]] if priv.get("ru") else [])]))
+    text_ru = HANGUL.sub("", used_text([*(no_pal(h) for h in pages["ru"].values()), *([priv["ru"]] if priv.get("ru") else []), *priv_old.get("ru", {}).values()]))
     for name, out in RU_FONTS:
         src = srcs.get(name) or find(JA_DIR if name.startswith("Source") else PTD_DIR, name)
         if src:
@@ -3147,6 +3214,11 @@ def main():
     for lg, html in priv.items():
         if html:
             d = DOCS / (f"{lg}/privacy" if lg in TR else "privacy")
+            d.mkdir(parents=True, exist_ok=True)
+            (d / "index.html").write_text(stamp(ru_bind(html) if lg == "ru" else fr_bind(html) if lg == "fr" else html), encoding="utf-8")
+    for lg, olds in priv_old.items():
+        for v, html in olds.items():
+            d = DOCS / (f"{lg}/privacy" if lg in TR else "privacy") / v
             d.mkdir(parents=True, exist_ok=True)
             (d / "index.html").write_text(stamp(ru_bind(html) if lg == "ru" else fr_bind(html) if lg == "fr" else html), encoding="utf-8")
     (DOCS / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n", encoding="utf-8")

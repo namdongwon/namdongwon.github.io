@@ -837,6 +837,28 @@ html.sr-on{overflow:hidden}
 .ppt .ppb{font:500 13px/1 var(--sans);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:767px){.ppl{font-size:11px;letter-spacing:.16em}.ppt .ppb{font-size:12.5px}}
 .pp{max-width:640px;margin:0 auto;padding:56px 20px calc(72px + env(safe-area-inset-bottom))}
+/* 11/20 처리방침 토스식(동원 "toss.im/privacy-policy?id=… 이런식으로 우리도 좀 깔끔하게 관리" → 시안 처리방침정리시안_v1 → 버튼 "A 토스식"): 언어 · 시행일 고르개(지난 판) · 목차 · 9절 시행일 및 변경 이력 */
+.pp h2{scroll-margin-top:80px}
+.ppv-sel{display:grid;gap:8px;margin:22px 0 30px}
+.ppv-d{position:relative}
+.ppv-d>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;height:44px;padding:0 16px;border:1px solid var(--rule);border-radius:var(--btn-r);font:400 14px/1 var(--sans);color:var(--ink);cursor:pointer;transition:border-color .2s}
+.ppv-d>summary::-webkit-details-marker{display:none}
+.ppv-d>summary::after{content:"";flex:none;width:7px;height:7px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+.ppv-d[open]>summary::after{transform:translateY(2px) rotate(-135deg)}
+.ppv-d>summary:hover,.ppv-d[open]>summary{border-color:var(--ink)}.ppv-d>summary:active{opacity:.7}
+.ppv-d ul{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:6;list-style:none;margin:0;padding:6px 0;background:var(--bg);border:1px solid var(--rule);border-radius:var(--btn-r);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.pp .ppv-d li{padding:0;border-top:0;font:400 14px/1 var(--sans)}
+.ppv-d a{display:block;padding:12px 16px;color:var(--ink);text-decoration:none;transition:background-color .2s}.ppv-d a:hover{background:var(--hv)}.ppv-d a[aria-current]{font-weight:600}
+.ppv-toc{margin:30px 0 8px;padding:20px;background:var(--ph)}
+.ppv-toc p{margin:0 0 8px;font:600 11px/1.5 var(--sans);letter-spacing:.04em;color:var(--muted)}
+.ppv-toc ol{list-style:none;margin:0;padding:0;columns:2;column-gap:30px}
+.pp .ppv-toc li{padding:4px 0;border-top:0;font:400 14px/1.5 var(--sans);break-inside:avoid}
+.ppv-toc a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:4px;transition:text-decoration-color .2s}.ppv-toc a:hover{text-decoration-color:var(--ink)}
+.ppv-now{margin:12px 0 0;font:400 13px/1.5 var(--sans);color:var(--muted)}
+.pp .ppv-log li{display:grid;grid-template-columns:max-content 1fr;gap:16px}
+.ppv-log time{color:var(--muted);font-variant-numeric:tabular-nums}
+.ppv-old{margin:16px 0 0;padding:12px 16px;background:var(--ph);font:400 14px/1.5 var(--sans)}.ppv-old a{color:var(--ink)}
+@media (max-width:767px){.ppv-toc ol{columns:1}.pp .ppv-log li{grid-template-columns:1fr;gap:4px}}
 .pp h1{margin-top:0}
 .pp h2{margin-top:36px;font:600 11px/1.5 var(--sans);letter-spacing:.04em;color:var(--muted);text-wrap:balance}  /* 하4 — «…Республики / Корея» */
 .pp ul{list-style:none;margin:12px 0 0;padding:0}

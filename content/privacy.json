@@ -1,5 +1,5 @@
 {
-  "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로 · when \"goatcounter\" 줄과 lead_counted는 방문 셈(site.json analytics.goatcounter)을 켰을 때만 — 10/27 동원 '방문 셈 문구 이대로 처리방침에 넣어'(켜는 날 updated를 그날로) · 10/27 동원 '문의 폼은 B로 하자' — 문의 폼 없이 메일 · 인스타그램, Formspree(미국 등)는 방명록만 · 10/27 동원 '이대로 넣어'(웹사이트 점검 5 · 6번, 초안 기준/처리방침 · 영어 문구 고침 초안_v1.md) — when \"guestbook\" 줄은 방명록 받는 곳(site.json contact.guestbook_gform 구글 폼 — 11/1 동원 버튼 'B 구글 폼 (권장)'로 Formspree에서 바꿈 · 또는 guestbook_formspree_id)이 있을 때만, 칸에 보일 줄이 없으면 empty 한 줄 · 4절 GitHub Pages IP 줄(GitHub Docs 'About GitHub Pages' › Data collection) · 10/27 밤 동원 '이대로 넣어'(초안 기준/출간 전 문구 고침 초안_v1.md 2 — 3인칭 남동원 · 보호책임자 · 인스타그램 메시지 보관 기간 · 화면 낱말 차례 · 3절 받는 정보 줄) · when \"ga4\" 줄 · unless \"ga4\" 줄(켜면 숨김) · lead_ga는 GA4(site.json analytics.ga4)를 켰을 때만 — 11/1 동원 'ga4로 하자'(켜는 날 updated를 그날로 · '14개월'은 GA4 관리 → 데이터 보관 설정과 맞춤 · IP는 기록 · 저장 안 함[출처 support.google.com/analytics/answer/2763052]) · 11/18 어드민 '처리방침 필수 항목 대조'(research_notes/어드민 표준 대조/처리방침_대조.md) → 동원 버튼 '메일 주소 (권장)' · '위탁 표로 적기 (권장)' · '정직하게 알리고 지움 (권장)' — 1절 제3자 제공 없음 · 2절 지우는 방법 · 3절 국가 · 근거 · 받는 자 연락처 · 거부 효과 · 5절 철회 · 법정대리인 · 10일 · 불이익 없음 · 구제기관 · 6절 위탁 · 7절 안전 조치 · 8절 보호책임자(메일은 {mail} — page_privacy가 글자 참조로 바꿔 넣음 · 원문에 주소를 적지 않음) · 근거 호(제28조의8 ①1 · ①3)는 2차 자료 판단 — 법제처 원문 대조 전 · 11/18 밤 방명록 국외 이전 근거 ①3 → ①1 별도 동의(어드민 세션 law.go.kr 원문: ①3은 '계약의 체결 및 이행을 위하여' → 동원 버튼 '별도 동의 체크칸 (권장)') · Cloudflare 받는 자 연락처는 주소(cloudflare.com/privacypolicy — 어드민 데이터 맵 '값에 @ 없음' 규칙)",
+  "_설명": "개인정보 처리방침 한 쪽(10/27 동원 'ㅇㅇ' — 초안 기준/개인정보 처리방침 초안_v1.md, 문의 보관은 답장 뒤 6개월). build.py가 docs/privacy/ · docs/en/privacy/로 그림. 문구를 고치면 updated를 그날로 · when \"goatcounter\" 줄과 lead_counted는 방문 셈(site.json analytics.goatcounter)을 켰을 때만 — 10/27 동원 '방문 셈 문구 이대로 처리방침에 넣어'(켜는 날 updated를 그날로) · 10/27 동원 '문의 폼은 B로 하자' — 문의 폼 없이 메일 · 인스타그램, Formspree(미국 등)는 방명록만 · 10/27 동원 '이대로 넣어'(웹사이트 점검 5 · 6번, 초안 기준/처리방침 · 영어 문구 고침 초안_v1.md) — when \"guestbook\" 줄은 방명록 받는 곳(site.json contact.guestbook_gform 구글 폼 — 11/1 동원 버튼 'B 구글 폼 (권장)'로 Formspree에서 바꿈 · 또는 guestbook_formspree_id)이 있을 때만, 칸에 보일 줄이 없으면 empty 한 줄 · 4절 GitHub Pages IP 줄(GitHub Docs 'About GitHub Pages' › Data collection) · 10/27 밤 동원 '이대로 넣어'(초안 기준/출간 전 문구 고침 초안_v1.md 2 — 3인칭 남동원 · 보호책임자 · 인스타그램 메시지 보관 기간 · 화면 낱말 차례 · 3절 받는 정보 줄) · when \"ga4\" 줄 · unless \"ga4\" 줄(켜면 숨김) · lead_ga는 GA4(site.json analytics.ga4)를 켰을 때만 — 11/1 동원 'ga4로 하자'(켜는 날 updated를 그날로 · '14개월'은 GA4 관리 → 데이터 보관 설정과 맞춤 · IP는 기록 · 저장 안 함[출처 support.google.com/analytics/answer/2763052]) · 11/18 어드민 '처리방침 필수 항목 대조'(research_notes/어드민 표준 대조/처리방침_대조.md) → 동원 버튼 '메일 주소 (권장)' · '위탁 표로 적기 (권장)' · '정직하게 알리고 지움 (권장)' — 1절 제3자 제공 없음 · 2절 지우는 방법 · 3절 국가 · 근거 · 받는 자 연락처 · 거부 효과 · 5절 철회 · 법정대리인 · 10일 · 불이익 없음 · 구제기관 · 6절 위탁 · 7절 안전 조치 · 8절 보호책임자(메일은 {mail} — page_privacy가 글자 참조로 바꿔 넣음 · 원문에 주소를 적지 않음) · 근거 호(제28조의8 ①1 · ①3)는 2차 자료 판단 — 법제처 원문 대조 전 · 11/18 밤 방명록 국외 이전 근거 ①3 → ①1 별도 동의(어드민 세션 law.go.kr 원문: ①3은 '계약의 체결 및 이행을 위하여' → 동원 버튼 '별도 동의 체크칸 (권장)') · Cloudflare 받는 자 연락처는 주소(cloudflare.com/privacypolicy — 어드민 데이터 맵 '값에 @ 없음' 규칙) · 11/20 동원 버튼 'A 토스식' — history(시행일마다 바뀐 것 한 줄 · 여섯 판) · ver_ui(목차 · 9절 · 시행일 고르개 말) · 지난 판은 content/privacy_versions/<시행일>.json(진짜 빌드가 updated가 바뀌면 그날 판을 남김 — 손대지 않음)",
   "updated": "2026-11-18",
   "title": {
     "ko": "개인정보 처리방침",
@@ -587,5 +587,128 @@
     "ru": "Этот сайт — личный сайт, который ведёт лично Нам Донвон. Файлы cookie используются только при вашем согласии на сбор статистики посещений, и Нам Донвон не хранит сведений, позволяющих установить вашу личность (раздел 4). Указанные ниже сведения получаются только в тех случаях, когда вы сами оставляете запись или сообщение.",
     "es": "Este es un sitio personal gestionado directamente por Dongwon Nam. Las cookies solo se utilizan si das tu consentimiento a las estadísticas de visitas, y Dongwon Nam no guarda ningún dato que permita identificarte (sección 4). Los datos que se indican a continuación solo se reciben cuando decides dejar una nota o un mensaje.",
     "fr": "Ce site est un site personnel géré directement par Dongwon Nam. Les cookies ne sont utilisés que si vous consentez aux statistiques de visite, et Dongwon Nam n’enregistre aucune information permettant de vous identifier (section 4). Les informations décrites ci-dessous ne sont reçues que lorsque vous choisissez de laisser un mot ou un message."
+  },
+  "history": [
+    {
+      "date": "2026-11-18",
+      "note": {
+        "ko": "방명록 국외 이전에 따로 동의 받기 · 법이 정한 항목(보호책임자 · 요청하는 법 등) 채움",
+        "en": "Separate consent for the guestbook's transfer abroad · added the items required by law (privacy officer, how to make requests, etc.)",
+        "ja": "芳名録の国外移転に別途同意 · 法で定める項目（保護責任者 · 請求方法など）を追加",
+        "ru": "Отдельное согласие на передачу записей гостевой книги за рубеж · добавлены обязательные по закону пункты (ответственный, порядок обращений и др.)",
+        "es": "Consentimiento aparte para la transferencia internacional del libro de visitas · añadidos los apartados exigidos por la ley (responsable, cómo ejercer derechos, etc.)",
+        "fr": "Consentement distinct pour le transfert à l'étranger du livre d'or · ajout des rubriques exigées par la loi (responsable, modalités des demandes, etc.)"
+      }
+    },
+    {
+      "date": "2026-11-07",
+      "note": {
+        "ko": "방문 통계 이벤트 둘(검색 · 시 끝까지 읽음) · 기기 저장소 세 줄 · 영상 재생 · 스페인어 · 프랑스어판",
+        "en": "Two analytics events (search, poem read to the end) · three device-storage items · video playback · Spanish and French versions",
+        "ja": "アクセス解析イベント二つ（検索 · 詩を最後まで読む）· 端末ストレージ三項目 · 動画再生 · スペイン語 · フランス語版",
+        "ru": "Два события статистики (поиск, стихотворение дочитано) · три записи в хранилище устройства · воспроизведение видео · испанская и французская версии",
+        "es": "Dos eventos de estadísticas (búsqueda, poema leído hasta el final) · tres elementos de almacenamiento del dispositivo · reproducción de vídeo · versiones en español y francés",
+        "fr": "Deux événements de statistiques (recherche, poème lu jusqu'au bout) · trois éléments de stockage de l'appareil · lecture vidéo · versions espagnole et française"
+      }
+    },
+    {
+      "date": "2026-11-02",
+      "note": {
+        "ko": "방명록 페이지와 국외 이전 안내 · Cloudflare 방문 통계 · Microsoft Clarity 자리 · 기기 저장소(글자 크기 · 움직임 줄이기 · 쓰던 방명록 글) · 러시아어판",
+        "en": "Guestbook page and notice of transfer abroad · Cloudflare visit statistics · a place for Microsoft Clarity · device storage (text size, reduced motion, guestbook draft) · Russian version",
+        "ja": "芳名録ページと国外移転の案内 · Cloudflare アクセス統計 · Microsoft Clarity の枠 · 端末ストレージ（文字サイズ · 動きを減らす · 書きかけの芳名録）· ロシア語版",
+        "ru": "Страница гостевой книги и уведомление о передаче за рубеж · статистика Cloudflare · место для Microsoft Clarity · хранилище устройства (размер шрифта, уменьшение движения, черновик записи) · русская версия",
+        "es": "Página del libro de visitas y aviso de transferencia internacional · estadísticas de Cloudflare · espacio para Microsoft Clarity · almacenamiento del dispositivo (tamaño de letra, movimiento reducido, borrador del libro de visitas) · versión rusa",
+        "fr": "Page du livre d'or et avis de transfert à l'étranger · statistiques Cloudflare · emplacement pour Microsoft Clarity · stockage de l'appareil (taille du texte, mouvement réduit, brouillon du livre d'or) · version russe"
+      }
+    },
+    {
+      "date": "2026-11-01",
+      "note": {
+        "ko": "Google 애널리틱스 방문 통계와 동의 창 · 일본어판",
+        "en": "Google Analytics visit statistics and the consent window · Japanese version",
+        "ja": "Google アナリティクスのアクセス統計と同意ウィンドウ · 日本語版",
+        "ru": "Статистика Google Analytics и окно согласия · японская версия",
+        "es": "Estadísticas de Google Analytics y ventana de consentimiento · versión japonesa",
+        "fr": "Statistiques Google Analytics et fenêtre de consentement · version japonaise"
+      }
+    },
+    {
+      "date": "2026-10-27",
+      "note": {
+        "ko": "처음 만듦",
+        "en": "First published",
+        "ja": "初版",
+        "ru": "Первая редакция",
+        "es": "Primera versión",
+        "fr": "Première version"
+      }
+    }
+  ],
+  "ver_ui": {
+    "toc": {
+      "ko": "목차",
+      "en": "Contents",
+      "ja": "目次",
+      "ru": "Содержание",
+      "es": "Índice",
+      "fr": "Sommaire"
+    },
+    "h9": {
+      "ko": "시행일 및 변경 이력",
+      "en": "Effective date and change history",
+      "ja": "施行日と変更履歴",
+      "ru": "Дата вступления в силу и история изменений",
+      "es": "Fecha de entrada en vigor e historial de cambios",
+      "fr": "Date d'entrée en vigueur et historique des modifications"
+    },
+    "eff": {
+      "ko": "{d} 시행",
+      "en": "Effective {d}",
+      "ja": "{d}施行",
+      "ru": "С {d}",
+      "es": "Vigente desde el {d}",
+      "fr": "En vigueur depuis le {d}"
+    },
+    "cur": {
+      "ko": " (지금 판)",
+      "en": " (current)",
+      "ja": "（現行版）",
+      "ru": " (действующая)",
+      "es": " (actual)",
+      "fr": " (actuelle)"
+    },
+    "this": {
+      "ko": "이 판: {d} 시행",
+      "en": "This version: effective {d}",
+      "ja": "この版：{d}施行",
+      "ru": "Эта редакция: с {d}",
+      "es": "Esta versión: vigente desde el {d}",
+      "fr": "Cette version : en vigueur depuis le {d}"
+    },
+    "old": {
+      "ko": "지난 판입니다 — 지금 판 보기",
+      "en": "This is an earlier version — see the current one",
+      "ja": "以前の版です — 現行版を見る",
+      "ru": "Это прежняя редакция — открыть действующую",
+      "es": "Esta es una versión anterior — ver la vigente",
+      "fr": "Ceci est une version antérieure — voir la version en vigueur"
+    },
+    "lang": {
+      "ko": "언어",
+      "en": "Language",
+      "ja": "言語",
+      "ru": "Язык",
+      "es": "Idioma",
+      "fr": "Langue"
+    },
+    "ver": {
+      "ko": "시행일",
+      "en": "Effective date",
+      "ja": "施行日",
+      "ru": "Дата вступления в силу",
+      "es": "Fecha de entrada en vigor",
+      "fr": "Date d'entrée en vigueur"
+    }
   }
 }
