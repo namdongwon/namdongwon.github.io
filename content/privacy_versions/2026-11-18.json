@@ -565,12 +565,12 @@
     "fr": "Dernière mise à jour"
   },
   "back": {
-    "ko": "← 남동원으로",
-    "en": "← Back to Dongwon Nam",
-    "ja": "← ナム・ドンウォンへ戻る",
-    "ru": "← На сайт Нам Донвона",
-    "es": "← Volver a Dongwon Nam",
-    "fr": "← Retour à Dongwon Nam"
+    "ko": "← 돌아가기",
+    "en": "← Back",
+    "ja": "← 戻る",
+    "ru": "← Назад",
+    "es": "← Volver",
+    "fr": "← Retour"
   },
   "other": {
     "ko": "English",

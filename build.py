@@ -2597,6 +2597,11 @@ PPV_JS = ('<script>(function(){var D=[].slice.call(document.querySelectorAll(".p
           'document.addEventListener("keydown",function(e){if(e.key==="Escape")D.forEach(function(d){if(d.open){d.open=false;d.querySelector("summary").focus()}})})})();</script>')
 
 
+# 처리방침 '← 돌아가기'(11/20 동원 "남동원으로 이상한 거 같아 돌아가기나 나가기 아니면 뭐 닫기 이런 거로") — 우리 사이트에서 왔으면 보던 쪽으로(뒤로 가기) · 밖에서 바로 왔으면 링크 그대로 첫 화면으로
+PPB_JS = ('<script>(function(){try{var r=document.referrer&&new URL(document.referrer);if(!r||r.origin!==location.origin||history.length<2)return;'
+          '[].forEach.call(document.querySelectorAll(".ppt .ppb,.pp .back .buy"),function(a){a.addEventListener("click",function(e){if(e.button||e.metaKey||e.ctrlKey||e.shiftKey)return;e.preventDefault();history.back()})})}catch(x){}})();</script>')
+
+
 def privacy_versions():
     # 11/20 처리방침 지난 판(동원 "toss.im/privacy-policy?id=… 이런식으로 우리도 좀 깔끔하게 관리" → 시안 처리방침정리시안_v1 → 버튼 "A 토스식"):
     # content/privacy_versions/<시행일>.json 한 장 = 그 시행일(updated)로 올라간 마지막 원고 — 10/27 · 11/1 · 11/2 · 11/7은 git 기록에서 채움(11/20) · 앞으로는 진짜 빌드가 updated가 바뀌면 그날 판을 남김
@@ -2694,7 +2699,7 @@ def page_privacy(site, lang, ver=None):
 {ckp}{toc}{secs}
 {"" if sec9 else f'<p class="up">{g(p["updated_label"])} <time datetime="{d.isoformat()}">{when}</time></p>'}
 <p class="back"><a class="buy" href="{up}">{g(P["back"])}</a>{"" if sels else oth}</p>
-</main>{PPV_JS if sels else ""}{cz}<script src="{R}assets/cursor.js" defer></script>{cf_tag(site)}</body></html>
+</main>{PPV_JS if sels else ""}{PPB_JS}{cz}<script src="{R}assets/cursor.js" defer></script>{cf_tag(site)}</body></html>
 """
 
 
