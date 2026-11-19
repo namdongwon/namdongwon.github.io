@@ -207,7 +207,7 @@ html.sr-on .ma-dock,html.mnu-on .ma-dock,html.pv-on .ma-dock{visibility:hidden}
 
 .mm{display:none;position:fixed;left:0;right:0;top:var(--top);z-index:30;opacity:0;transition:opacity .28s cubic-bezier(.2,0,0,1)}.mm:not([aria-hidden]){opacity:1}.mm::before{content:"";position:absolute;left:-40vw;right:-40vw;top:0;height:calc(100% + 240px);z-index:-1;pointer-events:none;background:radial-gradient(60% 100% at 50% 0%,var(--bg) 59%,color-mix(in srgb,var(--bg) 0%,transparent) 100%)}  
 .mm.vis{display:block}
-.mm-in{max-width:1312px;margin:0 auto;padding:30px 64px 44px}
+.mm-in{max-width:100%;width:max-content;margin:0 auto;padding:30px 64px 44px}  
 .mm-in :is(.mm-d,.mm-c){opacity:0;transform:translateY(-10px);transition:opacity .3s cubic-bezier(.2,0,0,1),transform .3s cubic-bezier(.2,0,0,1)}  
 .mm-in.go :is(.mm-d,.mm-c){opacity:1;transform:none}.mm-in.go .mm-d{transition-delay:.17s}
 .mm-in.go .mm-c:nth-child(1){transition-delay:.05s}.mm-in.go .mm-c:nth-child(2){transition-delay:.08s}.mm-in.go .mm-c:nth-child(3){transition-delay:.11s}.mm-in.go .mm-c:nth-child(4){transition-delay:.14s}.mm-in.go .mm-c:nth-child(5){transition-delay:.17s}  
