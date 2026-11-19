@@ -832,9 +832,9 @@ html.sr-on{overflow:hidden}
 .colo .pp-l{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}  /* 개인정보 처리방침 쪽(10/27) */
 /* 개인정보 처리방침 쪽(10/27) — 한 단 640px · 칸 제목은 작은 고딕 · 항목은 명조 본문에 가는 줄(시집 소식 · 방명록과 같은 결) */
 .ppt{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px;padding:0 max(20px,min(5vw,64px));background:var(--bg);border-bottom:1px solid var(--rule)}  /* 11/20 처리방침 위 띠(동원 "다른 곳으로 나가는 게 맨 아래에있어서 불편하잖아 위에도 있어야지" → 시안 처리방침위쪽시안_v1 → 버튼 "B 얇은 위 띠"): 왼쪽 표장(처음으로) · 오른쪽 아래 줄과 같은 '← 남동원으로' · 내려도 위에 붙어 있음 */
-.ppt a{color:var(--ink);text-decoration:none;transition:opacity .2s}.ppt a:hover{opacity:.55}.ppt a:active{opacity:.4}
+.ppt a{color:var(--ink);text-decoration:none}  /* 11/20 동원 "표장은 마우스 오버시 색이라던가 아무런 변화가 없어야 … 버튼 눌러도 또 반응하나? 그렇게 하지 말라고 했었잖아" — 표장은 올림 · 누름 모두 변화 없음(헤더 표장 11/16 규칙과 같음) · 전엔 옅어짐 .55 · 누름 .4를 붙였음 */
 .ppl{font:400 13px/1 "NDD",Didot,"Bodoni 72",serif;letter-spacing:.2em;white-space:nowrap}
-.ppt .ppb{font:500 13px/1 var(--sans);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ppt .ppb{font:500 13px/1 var(--sans);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .2s}@media (hover:hover){.ppt .ppb:hover{color:var(--ink)}}  /* '돌아가기'는 헤더 글자 링크처럼 회색 → 먹(커서 원 아래 순흰으로 반전 · 옅어짐 없음) */
 @media (max-width:767px){.ppl{font-size:11px;letter-spacing:.16em}.ppt .ppb{font-size:12.5px}}
 .pp{max-width:1040px;margin:0 auto;padding:56px 20px calc(72px + env(safe-area-inset-bottom))}
 /* 11/20 처리방침 토스식(동원 "toss.im/privacy-policy?id=… 이런식으로 우리도 좀 깔끔하게 관리" → 시안 처리방침정리시안_v1 → 버튼 "A 토스식"): 언어 · 시행일 고르개(지난 판) · 목차 · 9절 시행일 및 변경 이력 */

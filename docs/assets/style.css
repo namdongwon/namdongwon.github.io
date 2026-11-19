@@ -801,9 +801,9 @@ html.sr-on{overflow:hidden}
 .colo .pp-l{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}  
 
 .ppt{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px;padding:0 max(20px,min(5vw,64px));background:var(--bg);border-bottom:1px solid var(--rule)}  
-.ppt a{color:var(--ink);text-decoration:none;transition:opacity .2s}.ppt a:hover{opacity:.55}.ppt a:active{opacity:.4}
+.ppt a{color:var(--ink);text-decoration:none}  
 .ppl{font:400 calc(13px * var(--fs))/1 "NDD",Didot,"Bodoni 72",serif;letter-spacing:.2em;white-space:nowrap}
-.ppt .ppb{font:500 calc(13px * var(--fs))/1 var(--sans);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ppt .ppb{font:500 calc(13px * var(--fs))/1 var(--sans);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .2s}@media (hover:hover){.ppt .ppb:hover{color:var(--ink)}}  
 @media (max-width:767px){.ppl{font-size:calc(11px * var(--fs));letter-spacing:.16em}.ppt .ppb{font-size:calc(12.5px * var(--fs))}}
 .pp{max-width:1040px;margin:0 auto;padding:56px 20px calc(72px + env(safe-area-inset-bottom))}
 
