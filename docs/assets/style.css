@@ -1294,12 +1294,6 @@ html.cz-on{overflow:hidden}
 .ask-off a.buy{align-items:center;padding:12px 16px;border:0;border-radius:var(--btn-r);background:var(--ink);color:var(--bg)}
 @media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .ask-off a.buy,:where(:root:not([data-motion="reduce"])).ask-off a.buy{transition:transform .55s cubic-bezier(.2,.8,.2,1),background-color .12s}:where(:root:not([data-motion="reduce"])) .ask-off a.buy::after,:where(:root:not([data-motion="reduce"])).ask-off a.buy::after{display:none}:where(:root:not([data-motion="reduce"])) .ask-off a.buy.pull,:where(:root:not([data-motion="reduce"])).ask-off a.buy.pull{transition:transform .18s ease-out}}
 
-html.cin,html.cgo{background:#111}
-html.cin body,html.cgo body{background:var(--bg)}
-html.cin body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%))}
-html.cin.copen body{clip-path:circle(150vmax at var(--cx,50%) var(--cy,50%));transition:clip-path .8s cubic-bezier(.65,0,.35,1)}
-html.cgo body{clip-path:circle(150vmax at var(--cx,50%) var(--cy,50%))}
-html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition:clip-path .55s cubic-bezier(.65,0,.35,1)}
 
 
 .tk{position:relative;height:calc(100svh - var(--top));min-height:560px;overflow:hidden;color:var(--ink)}

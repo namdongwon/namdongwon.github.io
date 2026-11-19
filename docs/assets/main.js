@@ -2244,27 +2244,8 @@
 
   // ⑨ 연락 — '인스타그램 메시지로 남기기' 커서 쪽으로 다가옴(마그네틱 버튼)은 11/6 밤 뺌(동원 "이거 따라다니는 거 별로같아") — 올림 · 누름 반응은 사이트 공통 그대로
 
-  // ⑩ 쪽 사이 원형 전환(← '페이지 인트로') — 맨 위 띠의 쪽 링크(이름 · 메뉴 넷 · 연락하기)를 누르면 누른 자리로 원이 닫히고(0.55초) 다음 쪽이 그 자리에서 열림(0.8초 —
-  //   머리 스크립트가 남긴 cin을 여기서 copen으로). 새 탭 · 수정 키 · 같은 쪽 · '동작 줄이기'면 그대로 · 뒤로 가기로 돌아오면(bfcache) 원을 거둠
-  if (H.classList.contains("cin")) requestAnimationFrame(() => requestAnimationFrame(() => {
-    H.classList.add("copen");
-    setTimeout(() => H.classList.remove("cin", "copen"), 900);
-  }));
-  if (!reduce) document.addEventListener("click", ev => {
-    const a = ev.target.closest && ev.target.closest("header.top a[href]");
-    if (!a || ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || a.target === "_blank") return;
-    const to = new URL(a.href, location.href);
-    if (to.origin !== location.origin || to.pathname === location.pathname) return;
-    ev.preventDefault();
-    const r = a.getBoundingClientRect(), x = ev.detail ? ev.clientX : r.left + r.width / 2, y = ev.detail ? ev.clientY : r.top + r.height / 2;  // 키보드(Enter)면 링크 가운데에서
-    try { sessionStorage.setItem("cto", JSON.stringify([Math.round(x), Math.round(y), Date.now()])); } catch (x2) { /* 사생활 모드 — 다음 쪽은 원 없이 */ }
-    H.style.setProperty("--cx", x + "px");
-    H.style.setProperty("--cy", y + scrollY + "px");  // 닫히는 원은 body 기준(내려 둔 만큼 더함)
-    H.classList.add("cgo");
-    void H.offsetWidth;
-    H.classList.add("cout");
-    setTimeout(() => { location.href = to.href; }, 560);
-  });
+  // ⑩ 쪽 사이 원형 전환(11/1)은 11/19 뺌 — 동원 "시집 누르고 페이지 넘길때마다 이렇게 검은색으로 되는 거 … 없애거나 아니면 다른 거로 치환하자" → 시안 기준/브랜드 시안/쪽전환시안_v1(느린 망: 먹 화면을 거쳐 5초 · 뺀 뒤 3.5초) → 버튼 "A 원 빼기"
+  //   쪽 사이는 이미 있는 0.25초 겹쳐 바뀜(@view-transition) + 늦을 때만 프리로더(머리 PL_JS)
   // 소개 첫 화면(11/1 첫 화면 TOKA식 A): 큰 이름의 글꼴이 오면 들어오는 차례를 켬(.go — 글자 → 사람 → 시각 → 한 문장 → 첫 시집 · 단추, style.css).
   // 글꼴은 0.8초까지만 기다림(문 장면과 같은 원칙 — 늦으면 대신 글꼴로 시작하고 온 뒤 바뀜). 구석 시각은 서울 시각을 30초마다 — 세 판 모두 영어(9:58 PM)
   const tk = document.querySelector(".tk");
@@ -2300,7 +2281,6 @@
       setTimeout(() => { tick(); setInterval(tick, 60000); }, 60050 - Date.now() % 60000);
     }
   }
-  addEventListener("pageshow", ev => { if (ev.persisted) H.classList.remove("cgo", "cout", "cin", "copen"); });
 
   // ① 사진이 받아지면 0.5초에 스며듦 · 받는 동안은 옅은 회색 자리(11/4 동원 '넣기' — 손반응열_v1 01 · recent.design) — 이미 받아 둔 사진은 그대로
   document.querySelectorAll(".wall .wt img, #video .nt img, #video img.big").forEach(im => {
@@ -2467,7 +2447,7 @@
     const to = new URL(a.href, location.href);
     if (to.origin !== location.origin || (to.pathname === location.pathname && to.search === location.search)) return;
     clearTimeout(navT);
-    navT = setTimeout(() => { if (!navS) { navS = spinEl("navsp"); document.body.append(navS); } }, 400 + (H.classList.contains("cto") || a.closest("header.top") ? 550 : 0));  // 원 전환(0.55초) 뒤부터 셈
+    navT = setTimeout(() => { if (!navS) { navS = spinEl("navsp"); document.body.append(navS); } }, 400);  // 11/19 원 전환을 빼서 0.4초부터 셈(전엔 맨 위 띠 링크면 원이 닫히는 0.55초를 더함)
   });
   addEventListener("pageshow", () => { clearTimeout(navT); if (navS) { navS.remove(); navS = null; } });
 

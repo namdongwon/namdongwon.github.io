@@ -1382,13 +1382,7 @@ html.cz-on{overflow:hidden}
 /* ⑨ 연락 — 메시지 단추를 먹 단추로(맨 위 '연락하기'와 같은 꼴) · 다가오는 움직임(← '마그네틱 버튼')은 main.js(마우스 기기 · 움직임 허용) */
 .ask-off a.buy{align-items:center;padding:12px 16px;border:0;border-radius:var(--btn-r);background:var(--ink);color:var(--bg)}
 @media (prefers-reduced-motion:no-preference){.ask-off a.buy{transition:transform .55s cubic-bezier(.2,.8,.2,1),background-color .12s}.ask-off a.buy::after{display:none}  /* 먹 단추 아래에 밑줄 단추용 먹 줄이 붙던 것 뺌(11/6 전체 점검) */.ask-off a.buy.pull{transition:transform .18s ease-out}}
-/* ⑩ 쪽 사이 원형 전환(← '페이지 인트로') — 맨 위 띠의 쪽 링크를 누른 자리로 원이 닫히고(cgo → cout) 다음 쪽이 그 자리에서 열림(머리 스크립트 cin → main.js copen) · 바깥은 먹 */
-html.cin,html.cgo{background:#111}
-html.cin body,html.cgo body{background:var(--bg)}
-html.cin body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%))}
-html.cin.copen body{clip-path:circle(150vmax at var(--cx,50%) var(--cy,50%));transition:clip-path .8s cubic-bezier(.65,0,.35,1)}
-html.cgo body{clip-path:circle(150vmax at var(--cx,50%) var(--cy,50%))}
-html.cgo.cout body{clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition:clip-path .55s cubic-bezier(.65,0,.35,1)}
+/* ⑩ 쪽 사이 원형 전환(11/1)은 11/19 뺌 — 동원 버튼 "A 원 빼기"(먹 화면이 다음 쪽이 올 때까지 남던 것) · 쪽 사이는 @view-transition 0.25초 겹쳐 바뀜만 */
 
 /* 소개 첫 화면(11/1 동원 "내 웹사이트 랜딩 페이지 … TOKA 이런 느낌이면 좋겠다" → 버튼 "A 뒷모습 (권장)" — 시안 기준/브랜드 시안/첫화면_TOKA시안_v1_휴대폰_지금·A·B.png):
    띠 아래 한 화면을 꽉 채움 — 화면 폭의 큰 이름(본명조 700 · 옅은 --mark) 앞에 선 사람(흑백 그림 · 아래로 흐려짐) · 오른쪽 한 문장 · 왼쪽 첫 시집 + 각진 먹 단추 · 구석 서울 시각.

@@ -752,7 +752,7 @@ HEAD_JS_PLAIN = """<script>(function(){var H=document.documentElement;H.classLis
 CIN_JS = ('try{var c=JSON.parse(sessionStorage.getItem("cto")||"null");sessionStorage.removeItem("cto");'
           'if(c&&Date.now()-c[2]<5e3&&H.getAttribute("data-motion")!=="reduce"&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!H.classList.contains("intro"))'
           '{H.classList.add("cin");H.style.setProperty("--cx",c[0]+"px");H.style.setProperty("--cy",c[1]+"px")}}catch(x){}')
-HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", CIN_JS), HEAD_JS_PLAIN.replace("__CIN__", CIN_JS)
+HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", ""), HEAD_JS_PLAIN.replace("__CIN__", "")  # 11/19 원형 전환 뺌(동원 버튼 "A 원 빼기") — CIN_JS는 쓰지 않음(남은 sessionStorage cto는 읽지 않음)
 # 11/18 옛 주소 이어 주기(동원 버튼 "옛 주소 이어 주기 (권장)"): 10/31 쪽 나누기 전 한 쪽 주소(/#poem · /#toc · /#l7 · /#photo · /#contact …)가 첫 화면 맨 위로 떨어졌음(실측 9곳)
 # → 판 첫 화면에서 옮겨 간 칸 이름이면 그 쪽으로 바로 바꿔 감(location.replace — 뒤로 가기에 옛 주소가 남지 않게 · 그리기 전 머리에서). 첫 화면에 있는 칸(#me · #y3 …)은 그대로
 OLD_HASH_JS = ('(function(){var h=location.hash.slice(1),m=location.pathname.match(/^(\\/(?:en|ja|ru|es|fr)\\/|\\/)(?:index\\.html)?$/);if(!h||!m)return;'
