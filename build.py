@@ -714,7 +714,7 @@ def season_of(d):
 
 def new_tab_mark(h, nt):
     # 새 창 숨은 안내(11/19 UX 7차 ③ 동원 버튼 "새 창 안내 A '새 창'" — WCAG 기법 G201 · 에르메스 'New tab' · 르메르 'Opens in a new window' 실측):
-    # target="_blank" 링크마다 화면 읽기에 ' (새 창)'을 더함 — aria-label이 있으면 이름표 끝에, 없으면 숨은 글(.sr)로 · 눈에 보이는 ↗는 그대로 두되
+    # target="_blank" 링크마다 화면 읽기에 ' (새 창)'을 더함 — aria-label이 있으면 이름표 끝에, 없으면 보이는 글로 이름표를 만들어(그림만이면 숨은 글 .sr) · 눈에 보이는 ↗는 그대로 두되
     # 화면 읽기는 건너뜀(aria-hidden — 크롬 접근성 트리에서 '교보문고에서 사기 ↗'처럼 기호가 이름에 들어가던 것) · 이미 붙은 링크는 그대로(두 번 돌아도 같음)
     # nt = {"html의 lang": " (새 창)" …} — content/ui.json js.<말>.new_tab(main.js 찾기 결과의 바깥 링크도 같은 말)
     lang = (re.search(r'<html[^>]*\blang="([\w-]+)"', h) or [None, "ko"])[1]
@@ -725,9 +725,13 @@ def new_tab_mark(h, nt):
             return m.group(0)
         if 'aria-label="' in attrs:
             attrs = re.sub(r'aria-label="([^"]*)"', lambda a: f'aria-label="{a.group(1)}{html_mod.escape(word, quote=True)}"', attrs, count=1)
-        else:
-            body = re.sub(r'(?<!aria-hidden="true">)↗', '<span aria-hidden="true">↗</span>', body) + f'<span class="sr">{html_mod.escape(word, quote=False)}</span>'
-        return f"<a{attrs}>{body}</a>"
+            return f"<a{attrs}>{body}</a>"
+        # 이름표가 없으면 보이는 글 + 새 창으로 이름표를 만듦(11/19 QA — 숨은 글 .sr로 붙이면 innerText · 시험이 읽는 링크 글에 ' (새 창)'이 섞였음) · ↗는 화면 읽기에서 뺌
+        body = re.sub(r'(?<!aria-hidden="true">)↗', '<span aria-hidden="true">↗</span>', body)
+        seen = " ".join(html_mod.unescape(re.sub(r"<[^>]+>", " ", re.sub(r'<(\w+)\b[^>]*\baria-hidden="true"[^>]*>.*?</\1>', "", body, flags=re.S))).split())
+        if seen:
+            return f'<a{attrs} aria-label="{html_mod.escape(seen + word, quote=True)}">{body}</a>'
+        return f'<a{attrs}>{body}<span class="sr">{html_mod.escape(word, quote=False)}</span></a>'  # 글 없는 링크(그림만)는 숨은 글로
     head, sep, rest = h.partition("<body")
     return head + sep + re.sub(r'<a\b([^>]*\btarget="_blank"[^>]*)>(.*?)</a>', one, rest, flags=re.S)
 
@@ -1617,7 +1621,7 @@ def render(site, poem, videos, photos, lang="ko"):
         deep, det = bool(a and (a.get("show") or a.get("venue"))), ""
         if deep:
             rows = [(t("cap_show"), marked("전시", a["show"], lang) if a.get("show") else ""), (t("cap_venue"), e(a.get("venue", ""))),
-                    (t("cap_photo"), keep(p["credit"]) if p["credit"] else e(S["name"]))]
+                    (t("cap_photo"), keep(re.sub(r"^\s*(사진|Photo|写真|Фото|Foto)\s*[:：]\s*", "", p["credit"])) if p["credit"] else e(S["name"]))]  # 칸 이름이 이미 '사진'이라 출처 글 앞 '사진:'은 뗌(11/19 QA)
             det = (f'<details class="cd"><summary>{t("cap_more")}</summary><dl>' + "".join(f"<dt>{k}</dt><dd>{v}</dd>" for k, v in rows if v) + "</dl></details>")
         small = "" if deep else (NB + "· ").join(x for x in (tail, keep(p["credit"]) if p["credit"] else "") if x)
         wtxt = keep(words)
