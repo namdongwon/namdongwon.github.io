@@ -90,4 +90,12 @@
   [sysReduce, fine].forEach((m) => m.addEventListener && m.addEventListener("change", sync));
   new MutationObserver(sync).observe(H, { attributes: true, attributeFilter: ["data-motion"] });
   sync();
+  // 11/20 동원 "개인정보 처리 방침 누르고 돌아가기 누르면 마우스 포인트 이상해진다" — 쪽 넘김(View Transition) 동안 화면을 덮는 ::view-transition에는
+  // .cur-on *의 cursor:none이 안 닿아 크롬이 화살표를 띄우고, 덮개가 걷힌 뒤에도 커서 모양을 다시 안 재면 점 + 화살표가 남음(뒤로 가기 bfcache에서 실측)
+  // → 넘김이 끝나거나 bfcache로 되살아나면 cur-on을 한 번 뗐다 붙여 크롬이 커서를 다시 정하게 함
+  const kick = () => { if (!H.classList.contains("cur-on")) return; H.classList.remove("cur-on"); requestAnimationFrame(() => requestAnimationFrame(sync)); };
+  const after = (vt) => { if (vt && vt.finished) vt.finished.then(kick, kick); };
+  after(document.activeViewTransition);  // 이 스크립트(defer)가 돌 때 이미 넘김 중이면
+  addEventListener("pagereveal", (e) => after(e.viewTransition));
+  addEventListener("pageshow", (e) => { if (e.persisted) { if (document.activeViewTransition) after(document.activeViewTransition); else kick(); } });
 })();
