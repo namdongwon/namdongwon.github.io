@@ -42,8 +42,8 @@
     dot.classList.toggle("sl", !!sl && !f);
     const L = !f && !sl && t && !t.closest(".si") ? t.closest(LINK) : null;  // 랜딩 칸 표시(.si) 위에선 점 그대로 — 큰 원이 5px 막대를 덮었음(11/16)
     dot.classList.toggle("lk", !!L);
-    dot.classList.toggle("pl", !!(L && L.closest(".lsw li,.ppv-l li")));  // 언어 목록 줄 위에선 반전 없는 테두리 원 — 국기가 본래 색 그대로(11/10 동원 "국가의 국기들 내가 마우스 오버해도 그 국가의 본연의 색깔 그대로")
-    if (L !== ink) { if (ink) ink.classList.remove("cur-ink"); ink = L && !L.closest(".lsw li,.ppv-l li") && L.getBoundingClientRect().height <= 44 && (faded(L) || faded(t)) ? L : null; if (ink) ink.classList.add("cur-ink"); }  // 원이 덮은 회색 글자는 먹색으로 — 반전되면 순흰(어둡게는 순검정)(11/10 동원 "푸터 글자들 마우스 오버시 회색이지? 흰색으로 해야지 … 전부 흰색으로") · 한 줄짜리 링크만(높이 44px 이하) — 카드 · 큰 링크는 글 색 그대로(11/10 동원 "마우스 오버시 글이 왜 더 진해져?" → 버튼 "카드 · 큰 링크는 빼기 (권장)")  // 링크 · 단추 위 — 점이 32px로 커져 글자를 반전(11/10 동원 "닿았을때 원이 좀 더 커졌으면" → 버튼 "32px (권장)")
+    dot.classList.toggle("pl", !!(L && L.closest(".lsw li")));  // 언어 목록 줄 위에선 반전 없는 테두리 원 — 국기가 본래 색 그대로(11/10 동원 "국가의 국기들 내가 마우스 오버해도 그 국가의 본연의 색깔 그대로")
+    if (L !== ink) { if (ink) ink.classList.remove("cur-ink"); ink = L && !L.closest(".lsw li") && L.getBoundingClientRect().height <= 44 && (faded(L) || faded(t)) ? L : null; if (ink) ink.classList.add("cur-ink"); }  // 원이 덮은 회색 글자는 먹색으로 — 반전되면 순흰(어둡게는 순검정)(11/10 동원 "푸터 글자들 마우스 오버시 회색이지? 흰색으로 해야지 … 전부 흰색으로") · 한 줄짜리 링크만(높이 44px 이하) — 카드 · 큰 링크는 글 색 그대로(11/10 동원 "마우스 오버시 글이 왜 더 진해져?" → 버튼 "카드 · 큰 링크는 빼기 (권장)")  // 링크 · 단추 위 — 점이 32px로 커져 글자를 반전(11/10 동원 "닿았을때 원이 좀 더 커졌으면" → 버튼 "32px (권장)")
     dot.classList.remove("off");
     if (!run) { run = true; requestAnimationFrame(tick); }
   }, { passive: true });
@@ -90,25 +90,4 @@
   [sysReduce, fine].forEach((m) => m.addEventListener && m.addEventListener("change", sync));
   new MutationObserver(sync).observe(H, { attributes: true, attributeFilter: ["data-motion"] });
   sync();
-  // 쪽을 넘어가도 점이 마우스 자리에 바로(11/20) — 떠날 때 자리를 남기고(이 탭 sessionStorage · 8초 안) 새 쪽에서 그 자리에 점을 둠(전엔 움직일 때까지 점이 숨어 있었음)
-  const keep = () => { if (seen) try { sessionStorage.setItem("curxy", JSON.stringify([Math.round(tx), Math.round(ty), Date.now()])); } catch (x) { /* 저장소를 막은 브라우저 */ } };
-  addEventListener("pagehide", keep);
-  addEventListener("pointerdown", keep, { passive: true });
-  try {
-    const k = JSON.parse(sessionStorage.getItem("curxy") || "null");
-    if (k && Date.now() - k[2] < 8000 && dot && !dot.hidden && !seen) {
-      x = tx = k[0]; y = ty = k[1]; seen = true;
-      dot.style.transform = `translate3d(${x}px,${y}px,0) translate(-50%,-50%)`;
-      dot.classList.remove("off");
-    }
-  } catch (x) { /* 없음 */ }
-  // 11/20 동원 "개인정보 처리 방침 누르고 돌아가기 누르면 마우스 포인트 이상해진다" — 쪽 넘김(View Transition) 동안 화면을 덮는 ::view-transition에는
-  // .cur-on *의 cursor:none이 안 닿아 크롬이 화살표를 띄우고, 덮개가 걷힌 뒤에도 커서 모양을 다시 안 재면 점 + 화살표가 남음(뒤로 가기 bfcache에서 실측)
-  // → 넘김이 끝나거나 bfcache로 되살아나면 cur-on을 한 번 뗐다 붙여 크롬이 커서를 다시 정하게 함
-  // 같은 날 고침 — cur-on을 떼면 그 두 프레임 동안 화살표가 번뜩였음 → 똑같이 안 보이는 투명 그림 커서(.cur-k)로 잠깐 바꿨다 돌림(값만 바뀌어 크롬이 커서를 다시 정함 · 화살표는 안 나옴)
-  const kick = () => { if (!H.classList.contains("cur-on")) return; H.classList.add("cur-k"); requestAnimationFrame(() => requestAnimationFrame(() => H.classList.remove("cur-k"))); };
-  const after = (vt) => { if (vt && vt.finished) vt.finished.then(kick, kick); };
-  after(document.activeViewTransition);  // 이 스크립트(defer)가 돌 때 이미 넘김 중이면
-  addEventListener("pagereveal", (e) => after(e.viewTransition));
-  addEventListener("pageshow", (e) => { if (e.persisted) { if (document.activeViewTransition) after(document.activeViewTransition); else kick(); } });
 })();
