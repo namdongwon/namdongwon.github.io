@@ -1374,7 +1374,7 @@ html.cz-on{overflow:hidden}  /* 11/20 동원 "이거를 누르면 … 하단 푸
 .navsp{position:fixed;left:50%;bottom:36px;z-index:1000;translate:-50% 0}  /* 가운데 맞춤은 translate(돌기 transform과 따로) */
 @media (prefers-reduced-motion:reduce){.spin{animation:spin-in 0s .3s forwards}}:root[data-motion="reduce"] .spin{animation:spin-in 0s .3s forwards}
 .pv.fromt{transform-origin:var(--ox) var(--oy);transform:scale(.4)}.pv.fromt.on{transform:none}  /* ⑧ 누른 사진 자리에서 열림 */
-@view-transition{navigation:auto}  /* ⑦ 쪽 사이 View Transition(크롬 · 사파리 18.2 위 — 그 밖엔 그냥 넘어감) */
+@view-transition{navigation:none}  /* !! 11/20 시험 — 스테이징에서만 넘김 효과 끔(커서 화살표 원인 확인 · 동원 "꺼서 확인해") · 운영에 내보내기 전에 결정 후 되돌릴 것 */  /* ⑦ 쪽 사이 View Transition(크롬 · 사파리 18.2 위 — 그 밖엔 그냥 넘어감) */
 /* 11/19 저녁 쪽 열림(동원 "toss.im/company … 부드럽게 페이지가 열리는 느낌" + "점이 통 튀잖아 … 튀는 게 좀 끊겨서" → 시안 쪽열림시안_v1 → 버튼 "C 토스식 차례로 또렷 (권장)"):
    헤더는 그대로(이름을 붙여 쪽 겹침에서 뺌) · 지금 쪽 점 · 밑줄도 이름을 붙여 쪽 사이로 이어 옮김 — 점은 0.45초 동안 12px 떴다 앉음(옆은 .45,.05,.4,1 · 위아래는 오를 때 감속 · 내릴 때 가속)
    전엔 누를 때 JS가 0.45초 튀게 했는데 미리 받은 다음 쪽이 0.13초 만에 떠서 튀는 모습 없이 39px 옆으로 뚝 넘어갔음(실측 v2_dotpath)

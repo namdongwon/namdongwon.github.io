@@ -1285,7 +1285,7 @@ html.cz-on{overflow:hidden}
 .navsp{position:fixed;left:50%;bottom:36px;z-index:1000;translate:-50% 0}  
 @media (prefers-reduced-motion:reduce){.spin{animation:spin-in 0s .3s forwards}}:where(:root[data-motion="reduce"]) .spin,:where(:root[data-motion="reduce"]).spin{animation:spin-in 0s .3s forwards}:root[data-motion="reduce"] .spin{animation:spin-in 0s .3s forwards}
 .pv.fromt{transform-origin:var(--ox) var(--oy);transform:scale(.4)}.pv.fromt.on{transform:none}  
-@view-transition{navigation:auto}  
+@view-transition{navigation:none}    
 
 header.top{view-transition-name:ndw-top}.top nav .dt.on{view-transition-name:ndw-dot}.top nav .ul.on{view-transition-name:ndw-ul}
 :root.thx::view-transition-old(*),:root.thx::view-transition-new(*){animation-duration:.36s;animation-timing-function:ease}  
