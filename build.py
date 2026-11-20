@@ -814,7 +814,11 @@ STAG_JS = ('addEventListener("pagereveal",function(e){try{if(!e.viewTransition||
            'var vh=innerHeight,seen=[],L=[];document.querySelectorAll("main h1,main h2,main h3,main p,main li,main img,main canvas,main figure,main dt,main dd").forEach(function(el){'
            'for(var q=el.parentElement;q;q=q.parentElement)if(seen.indexOf(q)>=0)return;var r=el.getBoundingClientRect();if(r.width<2||r.height<2||r.top>vh||r.bottom<0)return;seen.push(el);L.push([r.top,r.left,el])});'
            'L.sort(function(a,b){return a[0]-b[0]||a[1]-b[1]});L.slice(0,10).forEach(function(x,i){x[2].animate([{opacity:0,filter:"blur(8px)"},{opacity:1,filter:"blur(0)"}],{duration:600,delay:i*60,easing:"cubic-bezier(.333,.667,.667,1)",fill:"backwards"})})}catch(x){}});')
-HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", STAG_JS), HEAD_JS_PLAIN.replace("__CIN__", STAG_JS)  # 11/19 원형 전환 뺌(동원 버튼 "A 원 빼기") — CIN_JS는 쓰지 않음(남은 sessionStorage cto는 읽지 않음)
+# 11/20 동원 "개인정보 처리 방침 누르면 마우스 나오고 움직이면 동그라미 되긴하는데 마우스가 번뜩이면서 가끔 보여" — 커서 점(cur-on · 기본 화살표 숨김)을 cursor.js(defer)가 켜면
+# 첫 그림은 화살표로 그려지고 크롬은 움직일 때까지 그 화살표를 둠 → 머리에서 먼저 켬(마우스 기기 · 움직임 켬일 때만 — cursor.js sync와 같은 조건)
+CUR_EARLY = ('try{var H=document.documentElement;if(matchMedia("(hover: hover) and (pointer: fine)").matches&&H.getAttribute("data-motion")!=="reduce"'
+             '&&!matchMedia("(prefers-reduced-motion: reduce)").matches)H.classList.add("cur-on")}catch(x){}')
+HEAD_JS, HEAD_JS_PLAIN = HEAD_JS.replace("__CIN__", STAG_JS + CUR_EARLY), HEAD_JS_PLAIN.replace("__CIN__", STAG_JS + CUR_EARLY)  # 11/19 원형 전환 뺌(동원 버튼 "A 원 빼기") — CIN_JS는 쓰지 않음(남은 sessionStorage cto는 읽지 않음)
 # 11/18 옛 주소 이어 주기(동원 버튼 "옛 주소 이어 주기 (권장)"): 10/31 쪽 나누기 전 한 쪽 주소(/#poem · /#toc · /#l7 · /#photo · /#contact …)가 첫 화면 맨 위로 떨어졌음(실측 9곳)
 # → 판 첫 화면에서 옮겨 간 칸 이름이면 그 쪽으로 바로 바꿔 감(location.replace — 뒤로 가기에 옛 주소가 남지 않게 · 그리기 전 머리에서). 첫 화면에 있는 칸(#me · #y3 …)은 그대로
 OLD_HASH_JS = ('(function(){var h=location.hash.slice(1),m=location.pathname.match(/^(\\/(?:en|ja|ru|es|fr)\\/|\\/)(?:index\\.html)?$/);if(!h||!m)return;'
@@ -2692,7 +2696,7 @@ def page_privacy(site, lang, ver=None):
 <title>{e(site["logo"])} — {g(P["title"])}{" · " + fday(ver) if ver else ""}</title><meta name="robots" content="noindex">
 <link rel="canonical" href="{e(base)}{"/" + lang if tr_ else ""}/privacy/"><meta name="theme-color" content="#ffffff">
 <link rel="icon" href="{R}favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="{R}assets/style.css">
-<script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
+<script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("motion")==="reduce")document.documentElement.setAttribute("data-motion","reduce")}}catch(x){{}}{CUR_EARLY}</script></head>
 <body ontouchstart=""><div class="ppt"><a class="ppl" href="{up}">{e(site.get("logo") or site["name"])}</a><a class="ppb" href="{up}">{g(P["back"])}</a></div><main class="pp">
 <h1 class="h2">{g(P["title"])}</h1>
 {oldbar}{sels}<p class="lead">{g(lead)}</p>
@@ -2724,7 +2728,7 @@ def page_404(site, ja=True):
     return f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(site["logo"])} — {k("nf_title")}</title><meta name="robots" content="noindex">
-<link rel="icon" href="/favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"><script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t)}}catch(x){{}}</script></head>
+<link rel="icon" href="/favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"><script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("motion")==="reduce")document.documentElement.setAttribute("data-motion","reduce")}}catch(x){{}}{CUR_EARLY}</script></head>
 <body ontouchstart=""><main class="nf" style="min-height:100vh;display:grid;place-content:center;gap:18px;padding:28px;text-align:center">
 <p class="label" style="justify-content:center">404</p>
 <h1 class="h2" style="margin-top:0">{k("nf_title")}</h1>
