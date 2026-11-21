@@ -25,6 +25,17 @@
   // 글자가 바탕보다 먹에 가까운데 먹은 아닌 것(회색 글자) — 검은 단추의 흰 글자처럼 바탕 쪽 색은 그대로
   const faded = (el) => { const b = getComputedStyle(document.body), c = lum(getComputedStyle(el).color), k = lum(b.color), g = lum(b.backgroundColor);
     return Math.abs(c - k) > 0.02 && Math.abs(c - k) < Math.abs(c - g); };
+  // 11/22 동원 "동그라미가 커지니까 잘 안 보이는데 … 먹고리 같은 형태로" → 시안 기준/브랜드 시안/커서먹고리시안_v1 · 버튼 "B 글자 링크 모두 (권장)":
+  // 한 줄 글자 링크(그림 없음 · 높이 44 이하 · 칠한 바탕 없음)는 반전 대신 먹고리(.pl) — 세 글자 넘는 낱말(방명록 · 인스타그램)을 32px 원이 반만 덮어 글자가 흰 · 먹으로 갈라졌음
+  // 단추(연락하기 · 시집 보기 · 보내기 …)와 아이콘은 반전 그대로 — 칠한 바탕 · 그라데이션 · 테두리 그림자(연락하기는 올리면 테두리만) 중 하나라도 있으면 단추 · 링크마다 처음 닿을 때 한 번만 가름
+  const solid = (s) => { if (s.backgroundImage !== "none" || s.boxShadow !== "none") return true;
+    const m = s.backgroundColor.match(/[\d.]+/g) || []; if (m.length < 3 || (m.length > 3 && +m[3] < 0.5)) return false;
+    return Math.abs(lum(s.backgroundColor) - lum(getComputedStyle(document.body).backgroundColor)) > 0.3; };
+  const said = (L) => { const w = document.createTreeWalker(L, NodeFilter.SHOW_TEXT);  // 눈에 보이는 글자가 있나 — 읽기 도구용 숨은 글(.sr) · aria-hidden은 빼고 셈(아이콘만 있는 링크는 아이콘)
+    for (let n; (n = w.nextNode());) if (n.data.trim() && !n.parentElement.closest(".sr,[aria-hidden=true]")) return true; return false; };
+  const plain = (L) => { if (L.closest(".lsw li,.ppv-l li")) return true;  // 작은 기호(KOR ▾ 같은 펼침 표시)가 붙어도 글자가 있으면 글자 링크
+    return L.getBoundingClientRect().height <= 44 && !L.querySelector("img,video,canvas,picture") && said(L) && !solid(getComputedStyle(L)); };
+  let plL = null, plV = false;
   const tick = () => {  // 거의 붙어 따라오되 아주 조금 부드럽게(0.38)
     x += (tx - x) * 0.38; y += (ty - y) * 0.38;
     dot.style.transform = `translate3d(${x}px,${y}px,0) translate(-50%,-50%)`;
@@ -52,7 +63,8 @@
     dot.classList.toggle("sl", !!sl && !f);
     const L = !f && !sl && t && !t.closest(".si") ? t.closest(LINK) : null;  // 랜딩 칸 표시(.si) 위에선 점 그대로 — 큰 원이 5px 막대를 덮었음(11/16)
     dot.classList.toggle("lk", !!L);
-    dot.classList.toggle("pl", !!(L && L.closest(".lsw li,.ppv-l li")));  // 언어 목록 줄 위에선 반전 없는 테두리 원 — 국기가 본래 색 그대로(11/10 동원 "국가의 국기들 내가 마우스 오버해도 그 국가의 본연의 색깔 그대로")
+    if (L !== plL) { plL = L; plV = !!L && plain(L); }
+    dot.classList.toggle("pl", plV);  // 반전 없는 테두리 원(먹고리) — 언어 목록 줄(국기 본래 색 · 11/10 동원 "국가의 국기들 … 본연의 색깔 그대로") · 11/22부터 한 줄 글자 링크도(위 plain)
     if (L !== ink) { if (ink) ink.classList.remove("cur-ink"); ink = L && !L.closest(".lsw li,.ppv-l li") && L.getBoundingClientRect().height <= 44 && (faded(L) || faded(t)) ? L : null; if (ink) ink.classList.add("cur-ink"); }  // 원이 덮은 회색 글자는 먹색으로 — 반전되면 순흰(어둡게는 순검정)(11/10 동원 "푸터 글자들 마우스 오버시 회색이지? 흰색으로 해야지 … 전부 흰색으로") · 한 줄짜리 링크만(높이 44px 이하) — 카드 · 큰 링크는 글 색 그대로(11/10 동원 "마우스 오버시 글이 왜 더 진해져?" → 버튼 "카드 · 큰 링크는 빼기 (권장)")  // 링크 · 단추 위 — 점이 32px로 커져 글자를 반전(11/10 동원 "닿았을때 원이 좀 더 커졌으면" → 버튼 "32px (권장)")
     dot.classList.remove("off");
     if (!run) { run = true; requestAnimationFrame(tick); }
