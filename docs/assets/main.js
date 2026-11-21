@@ -2958,6 +2958,12 @@
     }, false);
   }
   let gen = 0;  // 빠르게 두 번 넘기면 앞 것의 늦은 붙임은 건너뜀
+  // Turbo가 여는 같은 문서 View Transition을 잡아 둠(끝난 뒤 다시 붙이려고) — 테마 바꾸기 등 다른 쓰임은 그대로 지나감
+  let lastVT = null;
+  if (document.startViewTransition) {
+    const sVT = document.startViewTransition.bind(document);
+    document.startViewTransition = (...a) => { const t = sVT(...a); lastVT = t; t.finished.then(() => { if (lastVT === t) lastVT = null; }, () => { if (lastVT === t) lastVT = null; }); return t; };
+  }
   document.addEventListener("turbo:before-render", e => {
     gen++; stop(); stop = () => {};
     // 동의 창은 같은 판끼리만 그대로 남김 — 다른 판(언어 바꾸기)이면 그 판의 새 창을 받음(consent.js가 새 창에 다시 붙음)
@@ -2974,13 +2980,16 @@
   document.addEventListener("turbo:render", () => {
     reveal();
     const g = gen;
-    window.requestAnimationFrame(() => {
-      if (g !== gen) return;
+    // 11/21 동원 "페이지 옮기면 공 튀어오르는 거 지금은 끊기는데?" — 다시 붙이기(main.js 전체)를 넘김 효과(점 0.45초 튐) 도중에 하면 그 사이 화면 그리기가 막혀 점이 끊김
+    // → 넘김 효과가 끝난 뒤에 붙임(효과가 없으면 다음 화면) · 그동안 기능은 잠깐 비지만 손이 닿기 전에 붙음
+    const vt = lastVT;
+    const run = () => { if (g !== gen) return;
       stop = boot(true);
       const m = document.getElementById("main");
       if (m) { if (!m.hasAttribute("tabindex")) m.setAttribute("tabindex", "-1"); m.focus({ preventScroll: true }); }  // 읽기 도구 · 키보드가 새 본문 처음에서 시작
       ann.textContent = document.title;  // 읽기 도구에 '페이지 바뀜' 알림(새 페이지 제목)
-    });
+    };
+    if (vt && vt.finished) vt.finished.then(run, run); else window.requestAnimationFrame(run);
   });
   // 페이지 열림 토스식(11/19 동원 버튼 "C 토스식 차례로 또렷") — 새로 받을 때는 머리 스크립트(pagereveal)가 하던 것을 갈아 끼울 때도 같은 값으로
   const reveal = () => {

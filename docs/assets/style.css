@@ -3,11 +3,11 @@
 
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=02f42b2a52") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=57c6f94a3b") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=08ae5dd68e") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=43934345b4") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=9e2c5a8d6c") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=f213dba13a") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=b8a7ab34fb") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=ed88e114de") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=4e7fda8219") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=3dedc193f2") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -117,8 +117,8 @@ button{font:inherit;color:inherit}
 .top nav .ul.on{opacity:1}
 .top nav .dt{position:absolute;left:0;top:-1px;width:4px;height:4px;border-radius:50%;background:var(--ink);opacity:0;pointer-events:none}.top nav .dt.on{opacity:1}@media (prefers-reduced-motion:no-preference){:where(:root:not([data-motion="reduce"])) .top nav .dt,:where(:root:not([data-motion="reduce"])).top nav .dt{transition:opacity .3s}}  
 
-@media (hover:hover) and (pointer:fine){.top nav:has(> a:hover) > a:not(:hover),.top nav:has(> a.hov):not(:has(> a:hover)) > a:not(.hov){opacity:.5}
-.top nav:has(> a:hover:not(.on)) > :is(.ul,.dt).on,.top nav:has(> a.hov:not(.on)):not(:has(> a:hover)) > :is(.ul,.dt).on{opacity:.5}}
+@media (hover:hover) and (pointer:fine){.top nav:has(> a:hover) > a:not(:hover){opacity:.5}
+.top nav:has(> a:hover:not(.on)) > :is(.ul,.dt).on{opacity:.5}}  
 
 .top .mb{display:none;position:relative;margin-right:auto;padding:6px 0;border:0;background:none;font:600 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--ink);cursor:pointer}
 @media (max-width:767px){.js .top .mb{display:block}.js .top nav{display:none}}

@@ -127,9 +127,9 @@ button{font:inherit;color:inherit}
 .top nav .ul.on{opacity:1}
 .top nav .dt{position:absolute;left:0;top:-1px;width:4px;height:4px;border-radius:50%;background:var(--ink);opacity:0;pointer-events:none}.top nav .dt.on{opacity:1}@media (prefers-reduced-motion:no-preference){.top nav .dt{transition:opacity .3s}}  /* 지금 쪽 이름 위 점(11/4 동원 · recent.design 꼴) — 글자 머리 2px 위 */
 /* GNB 올림 — 그 항목만 또렷 · 나머지 희미하게(11/21 동원 "gnb 마우스 오버시 그 항목만 좀 표시되고 다른 항목들은 희미하게 표현하는 것도 좋다 토스처럼" — 토스 뉴스룸 실측 research_notes/쪽 열림 토스/toss_gnb_dim_1121.md:
-   올린 항목 1 · 나머지 0.5(지금 페이지도) · opacity 0.2초 · 펼친 칸 안으로 내려가도 그대로(main.js가 그 메뉴에 .hov) · 지금 페이지가 아닌 걸 올리면 그 밑줄 · 점도 함께 0.5) — 마우스 기기만 · 움직임 줄이기면 바로 */
-@media (hover:hover) and (pointer:fine){.top nav:has(> a:hover) > a:not(:hover),.top nav:has(> a.hov):not(:has(> a:hover)) > a:not(.hov){opacity:.5}
-.top nav:has(> a:hover:not(.on)) > :is(.ul,.dt).on,.top nav:has(> a.hov:not(.on)):not(:has(> a:hover)) > :is(.ul,.dt).on{opacity:.5}}
+   올린 항목 1 · 나머지 0.5(지금 페이지도) · opacity 0.2초 · 지금 페이지가 아닌 걸 올리면 그 밑줄 · 점도 함께 0.5) — 마우스 기기만 · 움직임 줄이기면 바로 */
+@media (hover:hover) and (pointer:fine){.top nav:has(> a:hover) > a:not(:hover){opacity:.5}
+.top nav:has(> a:hover:not(.on)) > :is(.ul,.dt).on{opacity:.5}}  /* 11/21 동원 "마우스를 뗄 때도 계속 방명록 글자만 진해져 전체 다시 색깔이 돌아와야" — 펼친 칸 · 띠 위에서 남기던 것(.hov — 토스 꼴)은 뺌: 메뉴 이름에서 떼면 바로 전체 원래 색 */
 /* 휴대폰 메뉴 단추(11/1 밤 동원 버튼 "B 메뉴 단추" — 방명록을 더하면 메뉴 다섯이 휴대폰 한 줄에 안 들어가, 명품 사이트 휴대폰 꼴로): 띠 왼쪽 '메뉴' → 띠 아래로 쪽 목록(쪽 이름만 큰 명조 · 가는 줄 — 11/1 동원 "url 은 빼").
    스크립트가 없으면 전처럼 메뉴 넷 · 컴퓨터 · 태블릿(768 위)은 그대로 */
 .top .mb{display:none;position:relative;margin-right:auto;padding:6px 0;border:0;background:none;font:600 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--ink);cursor:pointer}
