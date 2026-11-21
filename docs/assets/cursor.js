@@ -101,18 +101,8 @@
   [sysReduce, fine].forEach((m) => m.addEventListener && m.addEventListener("change", sync));
   new MutationObserver(sync).observe(H, { attributes: true, attributeFilter: ["data-motion"] });
   sync();
-  // 쪽을 넘어가도 점이 마우스 자리에 바로(11/20) — 떠날 때 자리를 남기고(이 탭 sessionStorage · 8초 안) 새 쪽에서 그 자리에 점을 둠(전엔 움직일 때까지 점이 숨어 있었음)
-  const keep = () => { if (seen) try { sessionStorage.setItem("curxy", JSON.stringify([Math.round(tx), Math.round(ty), Date.now()])); } catch (x) { /* 저장소를 막은 브라우저 */ } };
-  addEventListener("pagehide", keep);
-  addEventListener("pointerdown", keep, { passive: true });
-  try {
-    const k = JSON.parse(sessionStorage.getItem("curxy") || "null");
-    if (k && Date.now() - k[2] < 8000 && dot && !dot.hidden && !seen) {
-      x = tx = k[0]; y = ty = k[1]; seen = true;
-      dot.style.transform = `translate3d(${x}px,${y}px,0) translate(-50%,-50%)`;
-      dot.classList.remove("off");
-    }
-  } catch (x) { /* 없음 */ }
+  // 11/20 '쪽을 넘어가도 점이 마우스 자리에(sessionStorage curxy)'는 11/21 뺌 — 사이트 안 이동이 모두 페이지 이어 받기(Turbo)라 점이 그대로 남고,
+  // 새로 받는 경우(주소창 · 다른 사이트에서 옴)엔 움직이기 전 화살표와 점이 겹쳐 보였음(인계 문서 '주의')
   // 11/20 동원 "개인정보 처리 방침 누르고 돌아가기 누르면 마우스 포인트 이상해진다" — 쪽 넘김(View Transition) 동안 화면을 덮는 ::view-transition에는
   // .cur-on *의 cursor:none이 안 닿아 크롬이 화살표를 띄우고, 덮개가 걷힌 뒤에도 커서 모양을 다시 안 재면 점 + 화살표가 남음(뒤로 가기 bfcache에서 실측)
   // → 넘김이 끝나거나 bfcache로 되살아나면 cur-on을 한 번 뗐다 붙여 크롬이 커서를 다시 정하게 함
