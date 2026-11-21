@@ -896,7 +896,8 @@ def csp_meta(h, join=False):
 
 
 def with_csp(h, join=False):  # <meta charset> 바로 뒤에(쪽 안 첫 스크립트보다 앞)
-    return h.replace('<meta charset="utf-8">', '<meta charset="utf-8">' + csp_meta(h, join), 1)
+    # 11/21 CSP는 늘 제 줄에 — 스테이징 빌드가 방문 셈(cloudflareinsights)이 든 줄을 통째로 지우는데 CSP에도 그 주소가 있어, 같은 줄의 <html lang> · charset까지 사라졌음(처리방침 lang 빈칸 실측)
+    return h.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n' + csp_meta(h, join) + "\n", 1)
 
 
 def page_of(aid):
