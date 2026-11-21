@@ -470,6 +470,7 @@ def consent_html(L, gid, site_label, cid=""):  # cid: Clarity 프로젝트 ID(11
 def book_card(site):
     # 출간일 공유 카드(10/27 동원 "공유 카드는 B로 하자"): 나온 날(book.published)부터 book.card_until 전날까지는 링크 미리보기를 책 카드로
     # (그림 og-book.jpg · og-book-en.jpg + og:title을 책 제목으로) — 그 밖엔 이름 카드. 정적 사이트라 그날 뒤 처음 빌드할 때 바뀜
+    # 11/21부터 책 카드는 시집 쪽(/book/)에만 — 첫 화면(/)은 늘 첫 화면 카드(og-home · make_og_home, 동원 "공유시 책 페이지가 아닌 내 랜딩페이지가 나오게" → 시안 공유카드랜딩시안_v1 'B (권장)')
     bk = site["book"]
     return date.fromisoformat(bk["published"]) <= build_day() < date.fromisoformat(bk.get("card_until", "9999-12-31"))
 
@@ -1265,6 +1266,48 @@ def make_og(site, cover, src, lang="ko", words=None):
     im.save(ASSETS / out, "JPEG", quality=86, optimize=True)
 
 
+def make_og_home(src, host, lang="ko"):
+    # 첫 화면(/) 공유 카드(11/21 동원 "공유시 책 페이지가 아닌 내 랜딩페이지가 나오게" → 시안 기준/브랜드 시안/공유카드랜딩시안_v1 → 버튼 "B 첫 화면 닮은 카드 (권장)"):
+    # 첫 화면(.tk)과 같은 짜임 — 옅은 큰 이름 nam dongwon(Newsreader 600 · --mark) 앞에 선 사람(아래로 흐려짐) · 오른쪽 CREATIVE / STUDIO(Newsreader 300) ·
+    # 왼쪽 아래 표장 NAM DONGWON(Bodoni Moda 500) + 주소. 글은 여섯 판 같고(첫 화면도 영어 그대로) 주소 끝만 판마다 — og-home.jpg · og-home-<말>.jpg
+    from PIL import ImageChops
+    W, H = 1200, 630
+    im = Image.new("RGB", (W, H), "white")
+    d = ImageDraw.Draw(im)
+    word = load("ui.json")["tk_word"]["ko"]
+    size = 230
+    while vfont(src["NR"], size, (600, 72)).getlength(word) - 0.035 * size * (len(word) - 1) > W - 80:
+        size -= 2
+    big = vfont(src["NR"], size, (600, 72))
+    x = (W - (big.getlength(word) - 0.035 * size * (len(word) - 1))) / 2  # 글자 사이 -.035em(style.css .tk-w)
+    for c in word:
+        d.text((x, 318), c, font=big, fill="#ebebeb", anchor="ls")
+        x += big.getlength(c) - 0.035 * size
+    if ME_IMG.exists():
+        me = ImageOps.exif_transpose(Image.open(ME_IMG)).convert("LA")
+        ph = 520
+        me = me.resize((round(me.width * ph / me.height), ph), Image.LANCZOS)
+        fade = Image.new("L", me.size, 255)
+        fd = ImageDraw.Draw(fade)
+        for i in range(90):  # 아래 90px 흐려 사라짐(첫 화면 사진 아래처럼)
+            fd.line((0, ph - 90 + i, me.width, ph - 90 + i), fill=round(255 * (1 - i / 90)))
+        g = me.getchannel(0)
+        pic = Image.merge("RGBA", (g, g, g, ImageChops.multiply(me.getchannel(1), fade)))
+        im.paste(pic, (round((W - pic.width) / 2) - 20, H - ph + 8), pic)
+    sf = vfont(src["NR"], 70, (300, 72))
+    words = load("ui.json")["tk_big"]["ko"].split("|")
+    lx = W - 64 - max(sf.getlength(w) for w in words)
+    for i, w in enumerate(words):
+        d.text((lx, 352 + i * 70), w, font=sf, fill="#111111")
+    lf = vfont(src["LOGO"], 26, tuple(LOGO_FONT[3][k] for k in ("wght", "opsz")))
+    x = 64
+    for c in LOGO_FONT[1]:  # 표장 글자 사이 .1em(헤더 .logo와 같은 결)
+        d.text((x, 520), c, font=lf, fill="#111111", anchor="ls")
+        x += lf.getlength(c) + 2.6
+    d.text((64, 566), host + (f"/{lang}" if lang in TR else ""), font=font(src["Pretendard-Light.otf"], 22), fill="#717171", anchor="ls")
+    im.save(ASSETS / (f"og-home-{lang}.jpg" if lang in TR else "og-home.jpg"), "JPEG", quality=86, optimize=True)
+
+
 OG_PAGES = ("photo", "video", "guestbook")  # 쪽마다 공유 카드(11/4 동원 'A 지금 틀 그대로 (권장)' — 목업 공유카드시안_v2): 이 쪽들은 이름 카드 대신 제 그림 · 제 한 줄
 
 
@@ -1489,7 +1532,7 @@ def render(site, poem, videos, photos, lang="ko"):
     gc_tag = f'<script data-goatcounter="https://{gc}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n' if gc else ""
     og_img = (f"og-book-{lang}.jpg" if tr_ else "og-book.jpg") if card else (f"og-{lang}.jpg" if tr_ else "og.jpg")
     og_title = L["og_book_title"].format(title=book["title"], name=S["name"]) if card else title
-    og_desc = L["og_book_desc"] if card else S["description"]  # 책 카드 기간 설명은 그림 · 제목에 없는 사실만(10/27 밤 '이대로 넣어' — 카톡에서 책 제목이 세 번 겹쳤음)
+    # 첫 화면 og 설명(전엔 책 카드 기간 og_book_desc)은 11/21부터 첫 화면 문장 tk_about — 아래 쪽 만들기에서
     # 검색 미리 보기(11/5 동원 백 오피스 'A Yoast 꼴 (권장)'): content/seo.json 쪽마다 제목 · 설명 — 채운 칸만 <title> · meta description · og에, 빈 칸은 지금 값 그대로
     # 한국어는 item.title · desc, 옮긴 판은 item[lang]. 책 카드 기간(card)의 첫 화면 · 시집 og는 책 카드가 먼저
     seo = {x["path"]: (x if not tr_ else x.get(lang, {})) for x in (load("seo.json").get("items", []) if (CONTENT / "seo.json").exists() else []) if x.get("path")}
@@ -2511,7 +2554,9 @@ def render(site, poem, videos, photos, lang="ko"):
         ptitle = title if not k else f'{L["nav"][secs.index(top_of[k])]} — {S["name"]}'
         tab = S["logo"] if not k else f'{S["logo"]} — {L["nav"][secs.index(top_of[k])]}'  # 탭 제목은 표장 먼저(11/3 동원 "내 지금 웹사이트 이렇게 나오는 것도 바꾸자" → 목업 탭제목시안_v1 'B 표장만') — 링크 미리보기(og) · 읽기 도구용 h1은 이름 · 소개 그대로
         h1 = "" if bpg else f'<h1 class="sr">{e(S["name"] if not k else ptitle)}</h1>\n'  # 시집 쪽은 첫 화면 h1(이름 · 첫 시집) 그대로, 다른 쪽은 읽기 도구용 쪽 제목
-        oimg, otitle, odesc = (og_img, og_title, og_poem if k == "book" else og_desc) if k in ("", "book") else (f"og-{lang}.jpg" if tr_ else "og.jpg", ptitle, S["description"])
+        oimg, otitle, odesc = (og_img, og_title, og_poem) if k == "book" else (f"og-{lang}.jpg" if tr_ else "og.jpg", ptitle, S["description"])
+        if not k:  # 첫 화면(11/21 'B 첫 화면 닮은 카드' · '이름 한 줄 + 첫 화면 문장'): 책 카드 기간에도 첫 화면 카드 — 제목은 이름 한 줄, 설명은 첫 화면 CREATIVE STUDIO 아래 문장(tk_about)
+            oimg, odesc = (f"og-home-{lang}.jpg" if tr_ else "og-home.jpg"), L["tk_about"].format(city=L["tk_city"])
         if k in OG_PAGES:  # 쪽마다 공유 카드(11/4) — 그 쪽 그림 · 그 쪽 한 줄
             oimg, odesc = (f"og-{k}-{lang}.jpg" if tr_ else f"og-{k}.jpg"), og_page_text(site, photos, lang, k)[1]
         so = seo.get(f"/{kp}", {})
@@ -2519,7 +2564,7 @@ def render(site, poem, videos, photos, lang="ko"):
         desc = sdesc or S["description"]
         if stitle:
             tab = stitle
-        if not (card and k in ("", "book")):
+        if not (card and k == "book"):
             otitle, odesc = stitle or otitle, sdesc or odesc
         sidx = json.dumps([[*x[:3], go(x[3]), *x[4:]] for x in items], ensure_ascii=False).replace("</", "<\\/")
         body = "".join(sec[s] for s in PAGES[k])
@@ -2939,7 +2984,7 @@ def main():
 
     # docs/를 새로 만든다(옛 결과는 지운다 — docs는 빌드 결과라 원본이 아님). 줄인 글꼴·미리보기 그림은 원본을 못 찾을 때를 위해 먼저 옮겨 둔다
     keep = {}
-    for f in [*(ASSETS / "fonts").glob("*.woff2"), *(ASSETS / f"og{x}.jpg" for x in ("", "-en", "-ja", "-ru", "-book", "-book-en", "-book-ja", "-book-ru")), *ASSETS.glob("og-photo*.jpg"), *ASSETS.glob("og-video*.jpg"), *ASSETS.glob("og-guestbook*.jpg"), ASSETS / "img" / "takbon.jpg"]:
+    for f in [*(ASSETS / "fonts").glob("*.woff2"), *(ASSETS / f"og{x}.jpg" for x in ("", "-en", "-ja", "-ru", "-book", "-book-en", "-book-ja", "-book-ru")), *ASSETS.glob("og-photo*.jpg"), *ASSETS.glob("og-home*.jpg"), *ASSETS.glob("og-video*.jpg"), *ASSETS.glob("og-guestbook*.jpg"), ASSETS / "img" / "takbon.jpg"]:
         if f.exists():
             keep[f.name] = f.read_bytes()
     if DOCS.exists():
@@ -3190,6 +3235,12 @@ def main():
     elif "og-ru.jpg" in keep:
         (ASSETS / "og-ru.jpg").write_bytes(keep["og-ru.jpg"])
     make_og_pages(site, photos, srcs, keep)  # 쪽마다 공유 카드(11/4)
+    for lg in LANGS:  # 첫 화면 공유 카드(11/21 B) — 원본 글꼴이 없으면(시험 사본) 지난 그림
+        out = f"og-home-{lg}.jpg" if lg in TR else "og-home.jpg"
+        if all(k in srcs for k in ("NR", "Pretendard-Light.otf")) and (PTD_DIR / LOGO_FONT[2]).exists():
+            make_og_home({**srcs, "LOGO": PTD_DIR / LOGO_FONT[2]}, site["base_url"].replace("https://", "").rstrip("/"), lg)
+        elif out in keep:
+            (ASSETS / out).write_bytes(keep[out])
     if book_card(site):  # 출간일 책 카드 기간(10/27 B) — 쪽의 og 태그도 이 그림 · 책 제목을 가리킴(render)
         ui = load("ui.json")
         ptd = ("Pretendard-Light.otf", "Pretendard-SemiBold.otf")
