@@ -126,6 +126,10 @@ button{font:inherit;color:inherit}
 .top nav .ul{position:absolute;left:0;bottom:1px;width:0;height:1.5px;background:var(--ink);opacity:0;pointer-events:none}
 .top nav .ul.on{opacity:1}
 .top nav .dt{position:absolute;left:0;top:-1px;width:4px;height:4px;border-radius:50%;background:var(--ink);opacity:0;pointer-events:none}.top nav .dt.on{opacity:1}@media (prefers-reduced-motion:no-preference){.top nav .dt{transition:opacity .3s}}  /* 지금 쪽 이름 위 점(11/4 동원 · recent.design 꼴) — 글자 머리 2px 위 */
+/* GNB 올림 — 그 항목만 또렷 · 나머지 희미하게(11/21 동원 "gnb 마우스 오버시 그 항목만 좀 표시되고 다른 항목들은 희미하게 표현하는 것도 좋다 토스처럼" — 토스 뉴스룸 실측 research_notes/쪽 열림 토스/toss_gnb_dim_1121.md:
+   올린 항목 1 · 나머지 0.5(지금 페이지도) · opacity 0.2초 · 펼친 칸 안으로 내려가도 그대로(main.js가 그 메뉴에 .hov) · 지금 페이지가 아닌 걸 올리면 그 밑줄 · 점도 함께 0.5) — 마우스 기기만 · 움직임 줄이기면 바로 */
+@media (hover:hover) and (pointer:fine){.top nav:has(> a:hover) > a:not(:hover),.top nav:has(> a.hov):not(:has(> a:hover)) > a:not(.hov){opacity:.5}
+.top nav:has(> a:hover:not(.on)) > :is(.ul,.dt).on,.top nav:has(> a.hov:not(.on)):not(:has(> a:hover)) > :is(.ul,.dt).on{opacity:.5}}
 /* 휴대폰 메뉴 단추(11/1 밤 동원 버튼 "B 메뉴 단추" — 방명록을 더하면 메뉴 다섯이 휴대폰 한 줄에 안 들어가, 명품 사이트 휴대폰 꼴로): 띠 왼쪽 '메뉴' → 띠 아래로 쪽 목록(쪽 이름만 큰 명조 · 가는 줄 — 11/1 동원 "url 은 빼").
    스크립트가 없으면 전처럼 메뉴 넷 · 컴퓨터 · 태블릿(768 위)은 그대로 */
 .top .mb{display:none;position:relative;margin-right:auto;padding:6px 0;border:0;background:none;font:600 12.5px/1 var(--sans);letter-spacing:.04em;color:var(--ink);cursor:pointer}
@@ -965,7 +969,7 @@ html.sr-on{overflow:hidden}
 /* 결 — 자바스크립트가 켜져 있고 '동작 줄이기'가 아닐 때만. 흐림은 명조의 가는 획에 맞춰 3px(조사 권고 2~4px) */
 @media (prefers-reduced-motion:no-preference){
   .nt.in b i{animation:nxp 2.4s ease-in-out 3}  /* '준비 중' 점이 화면에 들어오면 세 번 숨 쉬고 멈춤(10/27 숨 재기 1 — 전엔 쪽을 연 때부터 끝없이) · '동작 줄이기'면 멈춘 점 */
-  .top nav a{transition:color var(--fast) var(--e2),opacity var(--fast) var(--e2)}
+  .top nav a{transition:color var(--fast) var(--e2),opacity .2s ease}  /* 옅어짐 0.2초 — 11/21 GNB 올림 나머지 희미하게(토스 실측 opacity .2s) */
   .top nav a::after,.js .top .sq::after{transition:background-color .2s var(--ease)}
   .buy2{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease)}  /* 교보 단추 호버 0.3초(11/2 — CTA와 같게) */  /* 회색 상자가 0.2초에 번짐(11/2) */
   .top .act a.cta{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),opacity .4s}  /* 맨 위 테두리 → 먹 채움 0.3초(10/29 고침 2) */  /* 누르면 옅어졌다 0.4초에 돌아옴(10/28 ⑧ — 옅어지는 것은 손가락 기기만, 컴퓨터는 opacity가 바뀌지 않아 그대로) */

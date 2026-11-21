@@ -393,7 +393,7 @@
     });
     const redraw = () => { cvs.forEach(c => full(c, drawn.get(c) || 0)); dots.forEach(c => dot(c, shown.get(c) || 0)); };
     new MutationObserver(redraw).observe(H, { attributes: true, attributeFilter: ["data-theme"] });
-    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redraw);
+    on(matchMedia("(prefers-color-scheme: dark)"), "change", redraw);  // 11/21 떼기에 묶음(갈아 끼울 때 쌓이지 않게)
   }
 
 
@@ -553,7 +553,7 @@
     }, true);
     head.addEventListener("click", ev => { if (ev.target.closest(".sq")) menu(false); }, true);
     // 휴대폰 메뉴를 쓰는 조건(태블릿 포함 — 11/18 · style.css와 같은 조건): 넓은 창 메뉴 펼침 자리로 바뀌면 닫음
-    matchMedia("(max-width:1023px), (hover:none) and (pointer:coarse)").addEventListener("change", m => { if (!m.matches) menu(false); });
+    on(matchMedia("(max-width:1023px), (hover:none) and (pointer:coarse)"), "change", m => { if (!m.matches) menu(false); });  // 11/21 떼기에 묶음
     addEventListener("pageshow", ev => { if (ev.persisted) menu(false); });  // 뒤로 가기로 돌아온 쪽(bfcache)이 열린 채 남지 않게
     // 휴대폰 메뉴 칸 펼침(11/18 동원 UX 넷 시안 ① 'A 누르면 칸 펼침 (권장)' — 기준/브랜드 시안/UX넷시안_v1): 이름 옆 화살표를 누르면 넓은 창 메뉴 펼침(#mm)과 같은 멘트 · 칸이 그 아래 옆으로 밀리게.
     // 칸은 #mm에서 복제(쪽 무게 그대로) · 그림은 처음 펼칠 때만 부름 · 하나를 열면 다른 것은 닫힘 · 같은 쪽 #자리로 가는 칸을 누르면 메뉴를 닫음
@@ -669,7 +669,7 @@
       H.classList.add("thx");
       document.startViewTransition(apply).finished.finally(() => H.classList.remove("thx"));
     }));
-    sysDark.addEventListener("change", paint);
+    on(sysDark, "change", paint);  // 11/21 떼기에 묶음
     paint();
   }
 
