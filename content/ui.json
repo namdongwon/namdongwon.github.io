@@ -422,6 +422,31 @@
     "es": "Sesenta poemas en coreano · 1 de noviembre de 2026 · Kyobo PubPle",
     "fr": "Soixante poèmes en coréen · 1er novembre 2026 · Kyobo PubPle"
   },
+  "lp_contact": {
+    "_설명": "바닥글 링크 쪽지(11/21 동원 \"연락하기도 마우스 오버시 아무것도 안 나온다\") — 메가 메뉴에 칸이 없는 링크의 한 줄",
+    "ko": "메일 주소와 자주 묻는 질문 — 시 인용 · 출처 · 답장 시기",
+    "en": "Email address and frequent questions — quoting the poems, credits, reply time",
+    "ja": "メールアドレスとよくある質問 — 詩の引用・出典・返信の目安",
+    "ru": "Адрес почты и частые вопросы — цитирование стихов, источник, сроки ответа",
+    "es": "Correo y preguntas frecuentes: citar los poemas, la fuente, cuándo llega la respuesta",
+    "fr": "Adresse e-mail et questions fréquentes : citer les poèmes, la source, le délai de réponse"
+  },
+  "lp_privacy": {
+    "ko": "모으는 것 · 맡기는 곳 · 지우는 방법 · 시행일과 변경 이력",
+    "en": "What is collected, who processes it, how to delete it, and the version history",
+    "ja": "集める情報・委託先・削除の方法・施行日と変更履歴",
+    "ru": "Что собирается, кому поручена обработка, как удалить, даты и история изменений",
+    "es": "Qué se recoge, quién lo trata, cómo borrarlo, y fechas e historial de cambios",
+    "fr": "Ce qui est collecté, qui le traite, comment le supprimer, dates et historique des versions"
+  },
+  "lp_cookie": {
+    "ko": "방문 통계 쿠키 동의를 언제든 바꾸거나 거둘 수 있습니다",
+    "en": "Change or withdraw your consent to analytics cookies at any time",
+    "ja": "アクセス解析クッキーへの同意はいつでも変更・撤回できます",
+    "ru": "Согласие на cookie для статистики посещений можно изменить или отозвать в любой момент",
+    "es": "Cambia o retira en cualquier momento tu consentimiento a las cookies de estadísticas",
+    "fr": "Modifiez ou retirez à tout moment votre consentement aux cookies de statistiques"
+  },
   "news": {
     "ko": "시집 소식",
     "en": "Book news",

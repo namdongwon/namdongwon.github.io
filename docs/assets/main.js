@@ -2850,12 +2850,13 @@
     const pageOf = a => { const p = new URL(a.href, location.href).pathname.replace(/^\/(en|ja|ru|es|fr)\//, "/"); return p.split("/").filter(Boolean)[0] || ""; };
     let tm = 0, cur = null;
     const hide = () => { clearTimeout(tm); cur = null; tip.classList.remove("on"); tm = setTimeout(() => { if (!cur) tip.hidden = true; }, 200); };
+    // 11/21 동원 "교보문고에서 사기에서는 카드가 안나온다" · "개인정보 처리방침이나, 쿠키 설정도" · "연락하기도" — 메뉴 칸이 없는 링크는 빌드가 단 data-lp 한 줄(+ data-lp-pg 그 메뉴 칸 그림)
     const show = a => {
-      const pane = panes.find(p => p.dataset.pg === pageOf(a));
-      if (!pane) return;
-      const cards = [...pane.querySelectorAll(".mm-c")], me = abs(a.getAttribute("href"));
-      const pic = (cards.find(c => abs(c.getAttribute("href")) === me && c.querySelector("img")) || cards.find(c => c.querySelector("img")) || {}).querySelector?.("img");
-      const line = (pane.querySelector("p.sr") || {}).textContent || "";
+      const own = a.dataset.lp, pane = panes.find(p => p.dataset.pg === (own ? a.dataset.lpPg : pageOf(a)));
+      if (!pane && !own) return;
+      const cards = pane ? [...pane.querySelectorAll(".mm-c")] : [], me = a.href ? abs(a.getAttribute("href")) : "";
+      const pic = (cards.find(c => abs(c.getAttribute("href")) === me && c.querySelector("img")) || (own && cards.find(c => c.querySelector(".mm-ct img"))) || cards.find(c => c.querySelector("img")) || {}).querySelector?.("img");
+      const line = own || (pane.querySelector("p.sr") || {}).textContent || "";
       tip.textContent = "";
       if (pic) {
         const ph = document.createElement("span"), im = document.createElement("img");
@@ -2866,14 +2867,20 @@
       b.textContent = a.textContent.replace(/\s*[↗↓→]\s*$/, "").trim(); s.textContent = line.trim();
       tx.append(b, s); tip.append(tx);
       tip.hidden = false;
-      const r = a.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
-      const top = r.bottom + 8 + h <= innerHeight - 8 ? r.bottom + 8 : Math.max(8, r.top - 8 - h);  // 아래가 모자라면(바닥글) 링크 위로
-      tip.style.left = Math.round(Math.min(Math.max(8, r.left), innerWidth - w - 8)) + "px";
+      // 11/21 동원 "둘러보기 항목을 볼 거니까, 팝업창 나오는거 아래보다는 오른쪽에" — 링크 오른쪽 16px · 링크 줄 가운데에 맞춤(아래 이웃 링크를 덮지 않음) ·
+      // 오른쪽이 모자라면(맨 오른쪽 단) 왼쪽 · 둘 다 모자라면 전처럼 아래 · 위
+      const r = a.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight, G = 16;
+      const midTop = Math.min(Math.max(8, r.top + r.height / 2 - h / 2), innerHeight - h - 8);
+      let left, top;
+      if (r.right + G + w <= innerWidth - 8) { left = r.right + G; top = midTop; }
+      else if (r.left - G - w >= 8) { left = r.left - G - w; top = midTop; }
+      else { left = Math.min(Math.max(8, r.left), innerWidth - w - 8); top = r.bottom + 8 + h <= innerHeight - 8 ? r.bottom + 8 : Math.max(8, r.top - 8 - h); }
+      tip.style.left = Math.round(left) + "px";
       tip.style.top = Math.round(top) + "px";
       requestAnimationFrame(() => { if (cur === a) tip.classList.add("on"); });
     };
-    document.querySelectorAll(".foot .fcols a:not([target])").forEach(a => {
-      if (!/^(\.\.\/|[a-z]|$)/.test(a.getAttribute("href") || "") || a.getAttribute("href").startsWith("http") || a.getAttribute("href").startsWith("mailto")) return;
+    document.querySelectorAll(".foot .fcols a:not([target]), .foot .fcols [data-lp]").forEach(a => {
+      if (!a.dataset.lp && (!/^(\.\.\/|[a-z]|$)/.test(a.getAttribute("href") || "") || a.getAttribute("href").startsWith("http") || a.getAttribute("href").startsWith("mailto"))) return;
       a.addEventListener("mouseenter", () => { clearTimeout(tm); cur = a; tm = setTimeout(() => cur === a && show(a), 350); });
       a.addEventListener("mouseleave", hide);
       a.addEventListener("click", hide);

@@ -30,8 +30,18 @@
     dot.style.transform = `translate3d(${x}px,${y}px,0) translate(-50%,-50%)`;
     if (Math.abs(tx - x) + Math.abs(ty - y) > 0.1) requestAnimationFrame(tick); else run = false;
   };
+  // 11/21 동원 "마우스 우클릭을 누르면 점이 멈춤 그리고 마우스가 안 보임" — 우클릭 메뉴가 떠 있는 동안은 브라우저가 마우스 자리를 페이지에 안 알려 줘(모든 브라우저 같음)
+  // 점이 그 자리에 멈추고 화살표는 숨겨져 있었음 → 메뉴가 뜨면 점은 숨기고 기본 화살표를 보임(.cur-ctx) · 메뉴가 닫히고 마우스가 움직이면 다시 점(누른 채 멈춘 '눌림' 모양도 풀음)
+  let ctx = null;
+  addEventListener("contextmenu", (e) => {
+    if (!dot || dot.hidden) return;
+    ctx = [e.clientX, e.clientY]; drag = false;
+    H.classList.add("cur-ctx"); dot.classList.add("off"); dot.classList.remove("dn", "sl", "lk"); unink();
+  });
+  const unctx = () => { ctx = null; H.classList.remove("cur-ctx"); };
   addEventListener("pointermove", (e) => {
     if (e.pointerType !== "mouse" || !dot || dot.hidden) return;
+    if (ctx) { if (Math.abs(e.clientX - ctx[0]) + Math.abs(e.clientY - ctx[1]) < 3) return; unctx(); }
     tx = e.clientX; ty = e.clientY;
     if (!seen) { x = tx; y = ty; seen = true; }
     const t = e.target instanceof Element ? e.target : null;
@@ -48,6 +58,7 @@
     if (!run) { run = true; requestAnimationFrame(tick); }
   }, { passive: true });
   addEventListener("pointerdown", (e) => {
+    if (ctx && e.button !== 2) unctx();
     if (calm()) return;
     const r = document.createElement("span");
     r.className = "rip"; r.setAttribute("aria-hidden", "true");

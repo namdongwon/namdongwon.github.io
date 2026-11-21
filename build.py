@@ -1883,10 +1883,12 @@ def render(site, poem, videos, photos, lang="ko"):
         hg = ' class="hgs"' if label[:1] in "『「" else ""
         return f'<li{hg}><a href="{href}"{extra}>{label}</a></li>'
     nav_li = "".join(fli(f"~R~{p}", e(x)) for p, x in (("", L["nav"][0]), ("book/", L["nav"][1]), ("photo/", L["nav"][2]), ("video/", L["nav"][3]), ("music/", L["nav"][7]), ("rococo/", L["nav"][6]), ("guestbook/", L["nav"][5]), ("contact/", L["nav_cta"])))
+    # 11/21 링크 쪽지 — 메가 메뉴에 칸이 없는 바닥글 링크(연락하기 · 처리방침 · 쿠키 설정 · 교보문고)는 data-lp 한 줄(ui.json lp_…)을 main.js가 읽음 · data-lp-pg면 그 메뉴 칸 그림(교보 → 시집 표지)
+    nav_li = nav_li.replace('<a href="~R~contact/">', f'<a href="~R~contact/" data-lp="{t("lp_contact")}">', 1)
     book_li = (fli("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", "")) + fli("~R~book/#toc", e(book["toc"]["label"]))
-               + fli(e(book["buy_url"]), f'{e(book["store_label"])} ↗', f' target="_blank" rel="noopener"{gcc("판권면")}'))
-    info_li = ((fli("~R~privacy/", t("gb_privacy")) if (CONTENT / "privacy.json").exists() else "")
-               + (f'<li><button type="button" class="cz-open">{t("cz_open")}</button></li>' if ga else "")  # GA4를 켰을 때만 '쿠키 설정'(동의 관리 창 다시 열기 — consent.js)
+               + fli(e(book["buy_url"]), f'{e(book["store_label"])} ↗', f' target="_blank" rel="noopener"{gcc("판권면")} data-lp="{t("og_book_desc")}" data-lp-pg="book"'))
+    info_li = ((fli("~R~privacy/", t("gb_privacy"), f' data-lp="{t("lp_privacy")}"') if (CONTENT / "privacy.json").exists() else "")
+               + (f'<li><button type="button" class="cz-open" data-lp="{t("lp_cookie")}">{t("cz_open")}</button></li>' if ga else "")  # GA4를 켰을 때만 '쿠키 설정'(동의 관리 창 다시 열기 — consent.js)
                )  # 안내 단 작은 글 두 줄('글과 사진을 가져다 쓰려면…' · '광고 · 저절로 재생되는…')은 뺌(11/3 동원 '이거 지우자') — 처리방침 · 쿠키 설정 두 줄만
     # 설정 — 화면 밝게 · 어둡게 · 시스템(10/26 A · 10/28 선 그림) · 움직임 줄이기(11/1 밤 명품 제안 ⑥ 'A 스위치')
     ctl = (f'<dl class="ctl"><dt class="thm">{t("theme")}</dt><dd class="thm"><div role="group" aria-label="{t("theme")}">{thm}</div></dd>'
