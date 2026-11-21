@@ -464,7 +464,7 @@ def consent_html(L, gid, site_label, cid=""):  # cid: Clarity 프로젝트 ID(11
     # 동의 문구 판 번호(11/19 어드민 세션 전달 · 동원 카드 — 문구를 바꾼 뒤 '어느 판을 본 선택인지' 가름): ui.json의 cz_ 문구 여섯 판 + 파트너 목록(G · M)의 지문 8자 —
     # 문구를 고치면 저절로 바뀜(손으로 올릴 번호 없음). consent.js가 고를 때 localStorage 'consent-ga'의 v에 같이 둠(이 기기 안에만 · 보내지 않음)
     czv = hashlib.sha256((json.dumps({k: v for k, v in load("ui.json").items() if k.startswith("cz_")}, ensure_ascii=False, sort_keys=True) + ("|G" if gid else "") + ("|M" if cid else "")).encode("utf-8")).hexdigest()[:8]
-    return f'<div class="cz" id="cz" data-turbo-permanent data-ga="{e(gid)}"{ca} data-czv="{czv}" hidden>{inner}</div>\n'
+    return f'<div class="cz" id="cz" data-ga="{e(gid)}"{ca} data-czv="{czv}" data-turbo-permanent hidden>{inner}</div>\n'
 
 
 def book_card(site):
@@ -1947,7 +1947,7 @@ def render(site, poem, videos, photos, lang="ko"):
     book_li = (fli("~R~book/#poem", t("read", poem=poem_t).replace(" ↓", "")) + fli("~R~book/#toc", e(book["toc"]["label"]))
                + fli(e(book["buy_url"]), f'{e(book["store_label"])} ↗', f' target="_blank" rel="noopener"{gcc("판권면")} data-lp="{t("og_book_desc")}" data-lp-pg="book"'))
     info_li = ((fli("~R~privacy/", t("gb_privacy"), f' data-lp="{t("lp_privacy")}"') if (CONTENT / "privacy.json").exists() else "")
-               + (f'<li><button type="button" class="cz-open" data-lp="{t("lp_cookie")}">{t("cz_open")}</button></li>' if ga else "")  # GA4를 켰을 때만 '쿠키 설정'(동의 관리 창 다시 열기 — consent.js)
+               + (f'<li><button type="button" data-lp="{t("lp_cookie")}" class="cz-open">{t("cz_open")}</button></li>' if ga else "")  # GA4를 켰을 때만 '쿠키 설정'(동의 관리 창 다시 열기 — consent.js)
                )  # 안내 단 작은 글 두 줄('글과 사진을 가져다 쓰려면…' · '광고 · 저절로 재생되는…')은 뺌(11/3 동원 '이거 지우자') — 처리방침 · 쿠키 설정 두 줄만
     # 설정 — 화면 밝게 · 어둡게 · 시스템(10/26 A · 10/28 선 그림) · 움직임 줄이기(11/1 밤 명품 제안 ⑥ 'A 스위치')
     ctl = (f'<dl class="ctl"><dt class="thm">{t("theme")}</dt><dd class="thm"><div role="group" aria-label="{t("theme")}">{thm}</div></dd>'
