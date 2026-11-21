@@ -2913,10 +2913,10 @@
   };
   let stop = boot();
   const H = document.documentElement;
-  // ── Turbo 붙임(turbo.js가 있는 페이지만 — 1단계는 소개 · 시집, 여섯 판)
+  // ── Turbo 붙임(turbo.js가 있는 페이지만 — 메뉴 페이지 여덟, 여섯 판)
   const T = window.Turbo;
   if (!T || !T.session) return;
-  const PG = /^\/(?:(?:en|ja|ru|es|fr)\/)?(?:book\/)?$/;  // 갈아 끼우는 페이지 — 소개(/) · 시집(/book/), 판마다
+  const PG = /^\/(?:(?:en|ja|ru|es|fr)\/)?(?:(?:book|photo|video|music|rococo|guestbook|contact)\/)?$/;  // 갈아 끼우는 페이지 — 메뉴 페이지 모두(11/21 2단계 · 처음엔 소개 · 시집만), 판마다 · 처리방침 · 404는 새로 받음
   const lang = p => (p.match(/^\/(en|ja|ru|es|fr)\//) || [, "ko"])[1];
   const ok = url => {
     let to; try { to = new URL(url, location.href); } catch (x) { return false; }
@@ -2944,18 +2944,23 @@
       hist.onPopState(e);
     }, false);
   }
-  let first = true;
+  let gen = 0;  // 빠르게 두 번 넘기면 앞 것의 늦은 붙임은 건너뜀
   document.addEventListener("turbo:before-render", () => {
-    stop();
+    gen++; stop(); stop = () => {};
     try { if (localStorage.getItem("door")) H.classList.add("seen"); } catch (x) { /* 저장소를 막은 브라우저 */ }  // 머리 시작 줄이 새로 받을 때 붙이던 '다시 온 방문' 표시 — 갈아 끼울 때도 같게
   });
-  document.addEventListener("turbo:render", () => { if (!first) reveal(); });
-  document.addEventListener("turbo:load", () => {
-    if (first) { first = false; return; }
-    stop = boot();
-    const m = document.getElementById("main");
-    if (m) { if (!m.hasAttribute("tabindex")) m.setAttribute("tabindex", "-1"); m.focus({ preventScroll: true }); }  // 읽기 도구 · 키보드가 새 본문 처음에서 시작
-    ann.textContent = document.title;  // 읽기 도구에 '페이지 바뀜' 알림(새 페이지 제목)
+  // 갈아 끼운 바로 다음 화면에서 다시 붙임(turbo:render는 처음 열 때는 안 옴) — turbo:load는 넘김 효과(0.5초)가 끝난 뒤라 그동안 기능이 비었음 ·
+  // 한 화면 늦추는 것은 Turbo가 스크롤 자리(맨 위 · 되살림)를 정한 뒤에 붙이려고
+  document.addEventListener("turbo:render", () => {
+    reveal();
+    const g = gen;
+    window.requestAnimationFrame(() => {
+      if (g !== gen) return;
+      stop = boot();
+      const m = document.getElementById("main");
+      if (m) { if (!m.hasAttribute("tabindex")) m.setAttribute("tabindex", "-1"); m.focus({ preventScroll: true }); }  // 읽기 도구 · 키보드가 새 본문 처음에서 시작
+      ann.textContent = document.title;  // 읽기 도구에 '페이지 바뀜' 알림(새 페이지 제목)
+    });
   });
   // 페이지 열림 토스식(11/19 동원 버튼 "C 토스식 차례로 또렷") — 새로 받을 때는 머리 스크립트(pagereveal)가 하던 것을 갈아 끼울 때도 같은 값으로
   const reveal = () => {

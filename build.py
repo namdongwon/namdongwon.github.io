@@ -830,7 +830,7 @@ HEAD_JS, HEAD_JS_PLAIN = (x.replace("<script>(function(){var H=", "<script>" + O
 # 페이지 이어 받기(11/21 B — Hotwire Turbo · 동원 버튼 "Hotwire Turbo (권장)"): 1단계는 소개 · 시집(여섯 판)만 — 그 사이를 오가면 body만 갈아 끼움(새 페이지를 받으면 크롬이
 # 첫 마우스 움직임 전까지 커서를 다시 안 정해 화살표가 남던 것 — 11/20 가려냄). 머리 시작 줄은 갈아 끼울 때 다시 돌지 않게(data-turbo-eval="false" — 문 · 테마 · 프리로더는 처음 한 번),
 # 머리 표시 셋: 같은 문서 넘김 효과(헤더 · 메뉴 점 · 밑줄 View Transition 이름은 style.css 그대로) · 찍어 둔 화면 쓰지 않음(뒤로 가기도 새로 그림) · 스크립트 지문(다르면 새로 받음 — 배포 뒤 옛 main.js가 새 HTML을 맡지 않게)
-TURBO_PG = ("", "book")
+TURBO_PG = ("", "book", "photo", "video", "music", "rococo", "guestbook", "contact")  # 11/21 2단계(동원 "화살표 안 나와") — 메뉴 페이지 모두 · 처리방침 · 404는 꼴이 달라(main.js 없음) 새로 받음
 HEAD_JS, HEAD_JS_PLAIN = (x.replace("<script>", '<script data-turbo-eval="false">', 1) for x in (HEAD_JS, HEAD_JS_PLAIN))
 TURBO_HEAD = '<meta name="view-transition" content="same-origin">\n<meta name="turbo-cache-control" content="no-cache">\n<meta name="ndw-build" content="~TB~" data-turbo-track="reload">\n'
 # 프리로더(11/18 밤 동원 "개인 포트폴리오 사이트인데 있는 게 낫지 않을까 좀 있어 보이잖아" → '늦을 때만' → 시안 기준/브랜드 시안/프리로더시안_v1 → 버튼 "A 이름 + 가는 줄 (권장)"):
@@ -2647,11 +2647,11 @@ def render(site, poem, videos, photos, lang="ko"):
 <script id="ui" type="application/json">{ui_js}</script>
 {f'<script src="{P}assets/turbo.js" defer data-turbo-eval="false"></script>{chr(10)}' if k in TURBO_PG else ""}<script src="{P}assets/main.js" defer data-turbo-eval="false" onerror="document.documentElement.classList.remove('js','intro')"></script>
 <script src="{P}assets/cursor.js" defer data-turbo-eval="false"></script>
-{consent_html(L, ga, urlparse(base).netloc or base, clarity(site)) + f'<script src="{P}assets/consent.js" defer data-turbo-eval="false"></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
+{consent_html(L, ga, urlparse(base).netloc or base, clarity(site)).replace('href="~R~privacy/"', 'href="/' + (lang + '/' if tr_ else '') + 'privacy/"').replace('href="#cz-sv3"', 'href="~CZSK~"') + f'<script src="{P}assets/consent.js" defer data-turbo-eval="false"></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
 </html>
 """
         html_ = re.sub(r'href="(#[\w-]+)"', lambda m: f'href="{go(m.group(1))}"', html_)  # 칸 사이 링크(첫 화면 '「탁본」 읽기' · 차례 · 찾기 추천 …)를 쪽 주소로
-        html_ = html_.replace("~P~", PP).replace("~R~", R)
+        html_ = html_.replace("~P~", PP).replace("~R~", R).replace("~CZSK~", "#cz-sv3")  # 11/21 동의 창(#cz)은 페이지를 갈아 끼워도 그대로 남아(Turbo permanent) 안 링크가 페이지마다 같아야 함 — 처리방침은 뿌리부터(/privacy/ · /en/privacy/) · '저장으로 건너뛰기'는 #만(위 칸 사이 링크 바꾸기에서 뺌)
         for x, href in lang_href.items():
             html_ = html_.replace(f"~L:{x}~", href)
         return html_
