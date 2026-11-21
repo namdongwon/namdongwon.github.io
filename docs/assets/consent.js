@@ -5,8 +5,11 @@
    창은 고르기 전에만 저절로 뜸(namdongwon.com · 이 맥 시험은 ?consent=show) · 시집 쪽 첫 방문은 문 장면이 끝난 뒤 · 처리방침 쪽은 저절로 뜨지 않음(읽고 고르시게)
    사람에게 보일 글자는 쪽 HTML(ui.json cz_…)에만 — 글꼴 줄이기가 쪽에서 글자를 모음 */
 (() => {
-  const w = document.getElementById("cz");
-  if (!w) return;
+  // 11/21 페이지 이어 받기(Turbo): 이 파일은 처음 한 번만 돌고, 동의 창(#cz)은 같은 판끼리는 그대로 남음(build.py data-turbo-permanent) ·
+  // 다른 판으로 가거나(언어 바꾸기) 창이 없던 페이지(404)에서 오면 새 창이 들어오므로 그때 그 창에 다시 붙임(setup) — GA4를 받았는지(st)는 한 번만 셈
+  const st = window.__ndwCz || (window.__ndwCz = { loaded: false, loadedC: false, first: location.href });
+  let api = null;
+  const setup = w => {
   const H = document.documentElement, KEY = "consent-ga", id = w.dataset.ga, cid = w.dataset.clarity || "";  // cid: Microsoft Clarity(11/3 — 파트너 줄 'M', 비면 파트너 하나 그대로)
   const KEYS = cid ? ["p1", "p2", "g", "c"] : ["p1", "p2", "g"];
   const box = [w.querySelector(".cz-1"), w.querySelector(".cz-2"), w.querySelector(".cz-3")];
@@ -16,11 +19,11 @@
   const write = v => { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (x) { /* 저장소를 막은 브라우저 — 이번 방문에만 */ } };
   const ok = v => !!(v && v.p1 && v.p2 && v.g);
   const okC = v => !!(cid && v && v.p1 && v.p2 && v.c);  // Clarity도 두 목적 + 그 파트너를 인증했을 때만
-  let saved = read(), draft = {}, loaded = false, loadedC = false, back = null;
+  let saved = read(), draft = {}, back = null;
   // 꼬리표 지우기(11/1 관리 화면 세션이 찾음 — GA4로 바뀌며 main.js의 GoatCounter 조건에 묶여 꺼져 있었음): 꼬리표 링크(utm_source · utm_medium · utm_campaign)를 받은 사람이
   // 주소창 주소를 다시 퍼뜨려도 같은 꼬리표로 쌓이지 않게, GA4가 이 방문을 꼬리표와 함께 받은 뒤(config의 page_location에 처음 주소) 또는 세지 않기로 한 때(거부)에 utm_*만 뺌.
   // 고르기 전(창이 떠 있는 동안)은 그대로 둠 · 다른 값 · # · 기록 상태는 그대로. GA4 판에서는 여기 한 곳에서만 뺌(main.js는 동의 창이 있으면 건너뜀)
-  const first = location.href;  // 꼬리표가 붙은 처음 주소
+  const first = st.first;  // 꼬리표가 붙은 처음 주소(갈아 끼운 페이지에서도 처음 연 주소)
   const unTag = () => {
     if (!/[?&]utm_/i.test(location.search)) return;
     const q = new URLSearchParams(location.search);
@@ -30,11 +33,11 @@
   };
 
   const load = () => {  // GA4 — 구글이 알려 준 꼴(gtag.js · 측정 ID)[출처 support.google.com/analytics/answer/9304153]
-    if (loaded || !id) return;
+    if (st.loaded || !id) return;
     const cfg = { page_location: first };  // 꼬리표를 뺀 뒤에도 이 방문은 처음 주소(꼬리표 포함)로 셈[출처 developers.google.com/analytics/devguides/collection/ga4/views — page_location]
     w.dataset.config = JSON.stringify(cfg);  // 시험이 읽는 자리(이 맥 주소는 GA를 받지 않음) — 이 기기 안의 값일 뿐, 보내는 것 없음
     if (!live) { unTag(); return; }
-    loaded = true;
+    st.loaded = true;
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     // 광고 쪽 신호는 늘 거부 — 동의 창은 광고 목적을 묻지 않음(11/1 동원 버튼 '통과하면 올려 (권장)' 때 함께 알림)[출처 developers.google.com/tag-platform/security/guides/consent]
@@ -48,8 +51,8 @@
     document.head.appendChild(s);
   };
   const loadC = () => {  // Clarity — 공식 꼴(clarity.ms/tag/<프로젝트 ID>)[출처 learn.microsoft.com/clarity/setup-and-installation/clarity-setup] · 동의 뒤에만 받고 바로 consentv2(분석 저장 인증 · 광고 저장 거절)
-    if (loadedC || !cid || !live) return;
-    loadedC = true;
+    if (st.loadedC || !cid || !live) return;
+    st.loadedC = true;
     window.clarity = window.clarity || function () { (window.clarity.q = window.clarity.q || []).push(arguments); };
     window.clarity("consentv2", { ad_Storage: "denied", analytics_Storage: "granted" });
     const s = document.createElement("script");
@@ -58,13 +61,13 @@
     document.head.appendChild(s);
   };
   const wipeC = () => {  // 동의를 거두면 Clarity 쿠키(_clck · _clsk)를 지우고 이번 쪽의 Clarity도 거절로[출처 learn.microsoft.com/clarity/setup-and-installation/consent-mode — clarity('consent', false)]
-    if (loadedC && window.clarity) window.clarity("consent", false);
+    if (st.loadedC && window.clarity) window.clarity("consent", false);
     const host = location.hostname.replace(/^www\./, "");
     document.cookie.split(";").map(c => c.split("=")[0].trim()).filter(n => /^_cl(ck|sk)$/.test(n)).forEach(n =>
       ["", ";domain=" + host, ";domain=." + host].forEach(d => { document.cookie = n + "=;max-age=0;path=/" + d; }));
   };
   const wipe = () => {  // 동의를 거두면 GA 쿠키(_ga · _ga_…)를 지움 — 이미 받은 이번 쪽의 GA는 동의 없음으로 돌림
-    if (loaded && window.gtag) window.gtag("consent", "update", { analytics_storage: "denied" });
+    if (st.loaded && window.gtag) window.gtag("consent", "update", { analytics_storage: "denied" });
     const host = location.hostname.replace(/^www\./, "");
     document.cookie.split(";").map(c => c.split("=")[0].trim()).filter(n => /^_ga/.test(n)).forEach(n =>
       ["", ";domain=" + host, ";domain=." + host].forEach(d => { document.cookie = n + "=;max-age=0;path=/" + d; }));
@@ -162,23 +165,6 @@
   w.addEventListener("keydown", ev => { if (ev.key === "Escape" && box[0].hidden) { ev.preventDefault(); ev.stopPropagation(); shut(); } });
   const sk = w.querySelector(".cz-sk");
   if (sk) sk.addEventListener("click", ev => { ev.preventDefault(); w.querySelector("#cz-sv3").focus(); });  // "저장"으로 건너뛰기 — 주소에 #를 남기지 않게
-  // 바닥글 · 처리방침 '쿠키 설정' — 문서에서 받음(11/21 페이지 이어 받기: 바닥글은 페이지마다 새것으로 바뀌고 이 창(#cz)만 그대로 남음 — build.py data-turbo-permanent)
-  document.addEventListener("click", ev => { if (ev.target.closest && ev.target.closest(".cz-open")) open(2); });
-
-  // 교보 링크 누름 — 동의한 방문에서만 kyobo_click(spot: '책장에 꽂기-첫화면' 등, 관리 화면이 읽는 이름과 같음)
-  document.addEventListener("click", ev => {
-    const a = ev.target.closest && ev.target.closest("[data-ga-click]");
-    if (a && loaded && window.gtag) window.gtag("event", "kyobo_click", { spot: a.dataset.gaClick });
-  }, true);
-
-  // 찾기 검색어 · 「탁본」 끝까지 읽음(11/7 관리 화면 이벤트 사전 — 동원 '넣기' 두 번) — main.js가 쏘는 ndw-ga 신호를 동의한 방문에서만 GA4로 · 이름은 GA4 권장 이름(search) · 우리 이름(poem_read)
-  document.addEventListener("ndw-ga", ev => {
-    const d = ev.detail || {};
-    if (!loaded || !window.gtag) return;
-    if (d.n === "search") window.gtag("event", "search", { search_term: d.q, results: d.r });
-    else if (d.n === "poem_read") window.gtag("event", "poem_read", { lang: d.lang });
-    else if (d.n === "share") window.gtag("event", "share", { method: d.m, content_type: d.t, item_id: d.id });  // 11/19 GA4 권장 share — page(쪽 공유) · photo(사진 링크) · image(「탁본」 그림)
-  });
 
   if (okC(saved)) loadC();
   const ask = !saved || (cid && saved.c === undefined);  // 파트너가 늘면(11/3 Clarity) 전에 고른 기기에도 한 번 다시 물음 — 동의 관리 도구(CMP)의 '파트너 목록이 바뀌면 다시 묻기' 관행
@@ -192,4 +178,33 @@
       mo.observe(H, { attributes: true, attributeFilter: ["class"] });
     } else go();
   }
+  return { open, close, w };
+  };
+  const init = () => {
+    const w = document.getElementById("cz");
+    if (!w || w.__ndwCz) return;  // 같은 창(그대로 남은 것)이면 다시 붙이지 않음
+    w.__ndwCz = true;
+    api = setup(w);
+  };
+  init();
+  document.addEventListener("turbo:render", init);
+  // 창을 연 채 페이지가 바뀌면(뒤로 가기 등) 먼저 닫음 — 열림 표시(html.cz-on)와 바깥 inert가 새 페이지에 남지 않게
+  document.addEventListener("turbo:before-render", () => { if (api && !api.w.hidden) api.close(); });
+  // 바닥글 · 처리방침 '쿠키 설정' — 문서에서 받음(바닥글은 페이지마다 새것 · 창은 그대로 남거나 새로 붙음)
+  document.addEventListener("click", ev => { if (api && ev.target.closest && ev.target.closest(".cz-open")) api.open(2); });
+  // 교보 링크 누름 — 동의한 방문에서만 kyobo_click(spot: '책장에 꽂기-첫화면' 등, 관리 화면이 읽는 이름과 같음)
+  document.addEventListener("click", ev => {
+    const a = ev.target.closest && ev.target.closest("[data-ga-click]");
+    if (a && st.loaded && window.gtag) window.gtag("event", "kyobo_click", { spot: a.dataset.gaClick });
+  }, true);
+
+  // 찾기 검색어 · 「탁본」 끝까지 읽음(11/7 관리 화면 이벤트 사전 — 동원 '넣기' 두 번) — main.js가 쏘는 ndw-ga 신호를 동의한 방문에서만 GA4로 · 이름은 GA4 권장 이름(search) · 우리 이름(poem_read)
+  document.addEventListener("ndw-ga", ev => {
+    const d = ev.detail || {};
+    if (!st.loaded || !window.gtag) return;
+    if (d.n === "search") window.gtag("event", "search", { search_term: d.q, results: d.r });
+    else if (d.n === "poem_read") window.gtag("event", "poem_read", { lang: d.lang });
+    else if (d.n === "share") window.gtag("event", "share", { method: d.m, content_type: d.t, item_id: d.id });  // 11/19 GA4 권장 share — page(쪽 공유) · photo(사진 링크) · image(「탁본」 그림)
+  });
+
 })();

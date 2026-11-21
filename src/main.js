@@ -7,7 +7,7 @@
   // 창(window) · 문서(document)에 붙이는 듣기는 모두 signal로 묶어 한 번에 떼고(겹쳐 쌓이지 않게) · 도는 타이머 · 관찰자 · 그리기 고리도 함께 멈춤.
   // 요소에 붙인 듣기는 요소가 body와 함께 버려져 따로 뗄 것이 없음
   const ASSET = document.currentScript ? new URL("./", document.currentScript.src).href : "assets/";
-  const boot = () => {
+  const boot = (via = false) => {  // via: Turbo로 갈아 끼워 연 페이지
   const AC = new AbortController(), SIG = AC.signal, IV = [], OB = [], OFF = [];
   let dead = false;
   const o_ = o => (o === undefined ? { signal: SIG } : typeof o === "boolean" ? { capture: o, signal: SIG } : { ...o, signal: SIG });
@@ -682,7 +682,7 @@
     const hit = [...document.querySelectorAll("main [id]")].filter(el => { const r = el.getBoundingClientRect(); return r.height && r.top <= y && r.bottom > y; })
       .sort((a, b) => a.getBoundingClientRect().height - b.getBoundingClientRect().height)[0];
     const to = hit ? "#" + hit.id : "";  // 같은 쪽의 다른 판으로(10/31 쪽 나누기 — 언어 단추가 그 쪽 주소를 가리킴)
-    if (to) { ev.preventDefault(); location.href = swap.getAttribute("href") + to; }
+    if (to) { ev.preventDefault(); const u = swap.getAttribute("href") + to; if (window.Turbo) window.Turbo.visit(u); else location.href = u; }  // 11/21 언어 바꾸기도 갈아 끼움(막히면 turbo:before-visit이 새로 받음)
   }));
   // 11/9 언어 고르기 펼침(<details>) — 바깥을 누르거나 Esc면 닫힘(Esc는 닫고 '🌐 KO'로 초점을 돌림 · 스크립트 없는 쪽은 다시 눌러 닫음)
   // 11/18 Esc로 닫을 때 초점 되돌림은 키보드로 열었을 때만(동원 캡처 'KOR 둘레 네모' → 시안 ⑱ 버튼 "A 마우스면 없음 · 키보드면 네모 (권장)"):
@@ -2904,6 +2904,20 @@
     addEventListener("scroll", hide, { passive: true });
   })();
 
+  // 처리방침을 갈아 끼워 열었을 때(11/21 4단계) — 쪽 안 짧은 스크립트(build.py PPV_JS · PPB_JS)는 처음 받을 때만 돌므로 같은 일을 여기서:
+  // 시행일 · 언어 고르개는 하나만 열림 · 바깥 누름 · Esc로 닫힘 / '돌아가기'는 우리 사이트에서 왔으니 뒤로 가기(보던 자리까지)
+  if (via) {
+    const D = [...document.querySelectorAll(".ppv-d")];
+    D.forEach(d => d.addEventListener("toggle", () => { if (d.open) D.forEach(x => { if (x !== d) x.open = false; }); }));
+    if (D.length) {
+      docOn("click", ev => D.forEach(d => { if (d.open && !d.contains(ev.target)) d.open = false; }));
+      docOn("keydown", ev => { if (ev.key === "Escape") D.forEach(d => { if (d.open) { d.open = false; d.querySelector("summary").focus(); } }); });
+    }
+    document.querySelectorAll(".ppt .ppb,.pp .back .buy").forEach(a => a.addEventListener("click", ev => {
+      if (ev.button || ev.metaKey || ev.ctrlKey || ev.shiftKey || history.length < 2) return;
+      ev.preventDefault(); history.back();
+    }));
+  }
   return () => {  // 떼기 — Turbo가 다음 페이지 body를 넣기 바로 앞(turbo:before-render)
     dead = true; AC.abort(); IV.forEach(i => clearInterval(i)); OB.forEach(o => o.disconnect());
     OFF.forEach(f => { try { f(); } catch (x) { /* 하나가 못 떼도 나머지는 뗌 */ } });
@@ -2913,15 +2927,14 @@
   };
   let stop = boot();
   const H = document.documentElement;
-  // ── Turbo 붙임(turbo.js가 있는 페이지만 — 메뉴 페이지 여덟, 여섯 판)
+  // ── Turbo 붙임(turbo.js가 있는 페이지만 — 메뉴 페이지 여덟 · 처리방침(지난 판 포함) · 404, 여섯 판 · 11/21 4단계부터 언어 바꾸기도)
   const T = window.Turbo;
   if (!T || !T.session) return;
-  const PG = /^\/(?:(?:en|ja|ru|es|fr)\/)?(?:(?:book|photo|video|music|rococo|guestbook|contact)\/)?$/;  // 갈아 끼우는 페이지 — 메뉴 페이지 모두(11/21 2단계 · 처음엔 소개 · 시집만), 판마다 · 처리방침 · 404는 새로 받음
-  const lang = p => (p.match(/^\/(en|ja|ru|es|fr)\//) || [, "ko"])[1];
+  const PG = /^\/(?:(?:en|ja|ru|es|fr)\/)?(?:(?:book|photo|video|music|rococo|guestbook|contact|privacy(?:\/\d{4}-\d\d-\d\d)?)\/)?$/;  // 갈아 끼우는 곳 — 메뉴 페이지 · 처리방침(지난 판), 여섯 판(11/21 — 1단계 소개 · 시집 → 2단계 메뉴 → 4단계 처리방침 · 언어)
   const ok = url => {
     let to; try { to = new URL(url, location.href); } catch (x) { return false; }
-    if (to.origin !== location.origin || !PG.test(to.pathname) || !PG.test(location.pathname)) return false;
-    if (to.pathname === location.pathname || lang(to.pathname) !== lang(location.pathname)) return false;  // 같은 페이지 안(#) · 다른 판(언어)은 새로 받음
+    if (to.origin !== location.origin || !PG.test(to.pathname) || !document.querySelector('meta[name="ndw-build"]')) return false;  // 지금 페이지도 갈아 끼울 수 있는 꼴(머리 표시 — 404 포함)
+    if (to.pathname === location.pathname) return false;  // 같은 페이지 안(#)은 브라우저대로
     if (history.state && history.state.layer) return false;  // 찾기 · 사진 창이 쌓은 기록 위에서는 새로 받음
     if (/\/book\/$/.test(to.pathname) && !H.classList.contains("seen")) { try { if (!localStorage.getItem("door")) return false; } catch (x) { return false; } }  // 시집 첫 방문의 문 장면은 새로 받아야 나옴
     return true;
@@ -2945,9 +2958,16 @@
     }, false);
   }
   let gen = 0;  // 빠르게 두 번 넘기면 앞 것의 늦은 붙임은 건너뜀
-  document.addEventListener("turbo:before-render", () => {
+  document.addEventListener("turbo:before-render", e => {
     gen++; stop(); stop = () => {};
-    try { if (localStorage.getItem("door")) H.classList.add("seen"); } catch (x) { /* 저장소를 막은 브라우저 */ }  // 머리 시작 줄이 새로 받을 때 붙이던 '다시 온 방문' 표시 — 갈아 끼울 때도 같게
+    // 동의 창은 같은 판끼리만 그대로 남김 — 다른 판(언어 바꾸기)이면 그 판의 새 창을 받음(consent.js가 새 창에 다시 붙음)
+    const cz0 = document.getElementById("cz"), cz1 = e.detail.newBody && e.detail.newBody.querySelector("#cz");
+    if (cz0 && cz1 && cz0.dataset.lang !== cz1.dataset.lang) cz1.removeAttribute("data-turbo-permanent");
+    H.classList.add("js");  // 처리방침 · 404(머리 시작 줄이 짧아 js · 글자 크기 표시가 없음)에서 메뉴 페이지로 올 때도 메뉴 페이지 머리 시작 줄과 같게
+    try {
+      if (localStorage.getItem("door")) H.classList.add("seen");  // 머리 시작 줄이 새로 받을 때 붙이던 '다시 온 방문' 표시 — 갈아 끼울 때도 같게
+      const fs = localStorage.getItem("fs"); if (fs === "l" || fs === "xl") H.setAttribute("data-fs", fs);
+    } catch (x) { /* 저장소를 막은 브라우저 */ }
   });
   // 갈아 끼운 바로 다음 화면에서 다시 붙임(turbo:render는 처음 열 때는 안 옴) — turbo:load는 넘김 효과(0.5초)가 끝난 뒤라 그동안 기능이 비었음 ·
   // 한 화면 늦추는 것은 Turbo가 스크롤 자리(맨 위 · 되살림)를 정한 뒤에 붙이려고
@@ -2956,7 +2976,7 @@
     const g = gen;
     window.requestAnimationFrame(() => {
       if (g !== gen) return;
-      stop = boot();
+      stop = boot(true);
       const m = document.getElementById("main");
       if (m) { if (!m.hasAttribute("tabindex")) m.setAttribute("tabindex", "-1"); m.focus({ preventScroll: true }); }  // 읽기 도구 · 키보드가 새 본문 처음에서 시작
       ann.textContent = document.title;  // 읽기 도구에 '페이지 바뀜' 알림(새 페이지 제목)

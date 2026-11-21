@@ -2647,7 +2647,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <script id="ui" type="application/json">{ui_js}</script>
 {f'<script src="{P}assets/turbo.js" defer data-turbo-eval="false"></script>{chr(10)}' if k in TURBO_PG else ""}<script src="{P}assets/main.js" defer data-turbo-eval="false" onerror="document.documentElement.classList.remove('js','intro')"></script>
 <script src="{P}assets/cursor.js" defer data-turbo-eval="false"></script>
-{consent_html(L, ga, urlparse(base).netloc or base, clarity(site)).replace('href="~R~privacy/"', 'href="/' + (lang + '/' if tr_ else '') + 'privacy/"').replace('href="#cz-sv3"', 'href="~CZSK~"') + f'<script src="{P}assets/consent.js" defer data-turbo-eval="false"></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
+{consent_html(L, ga, urlparse(base).netloc or base, clarity(site)).replace('href="~R~privacy/"', 'href="/' + (lang + '/' if tr_ else '') + 'privacy/"').replace('href="#cz-sv3"', 'href="~CZSK~"').replace('<div class="cz" id="cz"', f'<div class="cz" id="cz" data-lang="{lang}"') + f'<script src="{P}assets/consent.js" defer data-turbo-eval="false"></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
 </html>
 """
         html_ = re.sub(r'href="(#[\w-]+)"', lambda m: f'href="{go(m.group(1))}"', html_)  # 칸 사이 링크(첫 화면 '「탁본」 읽기' · 차례 · 찾기 추천 …)를 쪽 주소로
@@ -2659,14 +2659,14 @@ def render(site, poem, videos, photos, lang="ko"):
 
 
 # 처리방침 고르개 닫기(11/20) — 바깥을 누르거나 Esc면 닫힘 · 하나를 열면 다른 하나는 닫힘(동원 "다른 곳 마우스 눌러도 나갈 수 있게 … 전부 다" — 이 쪽은 main.js가 없어 따로 몇 줄)
-PPV_JS = ('<script>(function(){var D=[].slice.call(document.querySelectorAll(".ppv-d"));function shut(x){D.forEach(function(d){if(d!==x)d.open=false})}'
+PPV_JS = ('<script data-turbo-eval="false">(function(){var D=[].slice.call(document.querySelectorAll(".ppv-d"));function shut(x){D.forEach(function(d){if(d!==x)d.open=false})}'
           'D.forEach(function(d){d.addEventListener("toggle",function(){if(d.open)shut(d)})});'
           'document.addEventListener("click",function(e){D.forEach(function(d){if(d.open&&!d.contains(e.target))d.open=false})});'
           'document.addEventListener("keydown",function(e){if(e.key==="Escape")D.forEach(function(d){if(d.open){d.open=false;d.querySelector("summary").focus()}})})})();</script>')
 
 
 # 처리방침 '← 돌아가기'(11/20 동원 "남동원으로 이상한 거 같아 돌아가기나 나가기 아니면 뭐 닫기 이런 거로") — 우리 사이트에서 왔으면 보던 쪽으로(뒤로 가기) · 밖에서 바로 왔으면 링크 그대로 첫 화면으로
-PPB_JS = ('<script>(function(){try{var r=document.referrer&&new URL(document.referrer);if(!r||r.origin!==location.origin||history.length<2)return;'
+PPB_JS = ('<script data-turbo-eval="false">(function(){try{var r=document.referrer&&new URL(document.referrer);if(!r||r.origin!==location.origin||history.length<2)return;'
           '[].forEach.call(document.querySelectorAll(".ppt .ppb,.pp .back .buy"),function(a){a.addEventListener("click",function(e){if(e.button||e.metaKey||e.ctrlKey||e.shiftKey)return;e.preventDefault();history.back()})})}catch(x){}})();</script>')
 
 
@@ -2752,21 +2752,22 @@ def page_privacy(site, lang, ver=None):
     if ga:
         Lp = ui_lang(load("ui.json"), lang)
         # 동의 창 안 '처리방침' 링크(~R~privacy/)는 그 판의 처리방침으로 — 영어 · 일본어판은 '../'(/en/privacy/ · /ja/privacy/) · 한국어판은 R(11/1 영어판이 한국어 처리방침으로 가던 것 고침)
-        cz = consent_html(Lp, ga, urlparse(base).netloc or base, clarity(site)).replace("~R~", up if tr_ else R) + f'<script src="{R}assets/consent.js" defer></script>\n'
+        cz = (consent_html(Lp, ga, urlparse(base).netloc or base, clarity(site)).replace('href="~R~privacy/"', f'href="/{lang + "/" if tr_ else ""}privacy/"').replace("~R~", up if tr_ else R)
+              .replace('<div class="cz" id="cz"', f'<div class="cz" id="cz" data-lang="{lang}"') + f'<script src="{R}assets/consent.js" defer data-turbo-eval="false"></script>\n')  # 11/21 이어 받기 — 메뉴 페이지와 같은 창(처리방침 링크 뿌리부터 · 판 표시)
         ckp = f'<p class="ckp"><button type="button" class="cz-open">{e(Lp["cz_open"])}</button></p>\n'
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{e(site["logo"])} — {g(P["title"])}{" · " + fday(ver) if ver else ""}</title><meta name="robots" content="noindex">
+{TURBO_HEAD}<title>{e(site["logo"])} — {g(P["title"])}{" · " + fday(ver) if ver else ""}</title><meta name="robots" content="noindex">
 <link rel="canonical" href="{e(base)}{"/" + lang if tr_ else ""}/privacy/"><meta name="theme-color" content="#ffffff">
 <link rel="icon" href="{R}favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="{R}assets/style.css">
-<script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("motion")==="reduce")document.documentElement.setAttribute("data-motion","reduce")}}catch(x){{}}{CUR_EARLY}</script></head>
+<script data-turbo-eval="false">try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("motion")==="reduce")document.documentElement.setAttribute("data-motion","reduce")}}catch(x){{}}{CUR_EARLY}</script></head>
 <body ontouchstart=""><div class="ppt"><a class="ppl" href="{up}">{e(site.get("logo") or site["name"])}</a><a class="ppb" href="{up}">{g(P["back"])}</a></div><main class="pp">
 <h1 class="h2">{g(P["title"])}</h1>
 {oldbar}{sels}<p class="lead">{g(lead)}</p>
 {ckp}{toc}{secs}
 {"" if sec9 else f'<p class="up">{g(p["updated_label"])} <time datetime="{d.isoformat()}">{when}</time></p>'}
 <p class="back"><a class="buy" href="{up}">{g(P["back"])}</a>{"" if sels else oth}</p>
-</main>{PPV_JS if sels else ""}{PPB_JS}{cz}<script src="{R}assets/cursor.js" defer></script>{cf_tag(site)}</body></html>
+</main>{PPV_JS if sels else ""}{PPB_JS}{cz}<script src="{R}assets/turbo.js" defer data-turbo-eval="false"></script><script src="{R}assets/main.js" defer data-turbo-eval="false"></script><script src="{R}assets/cursor.js" defer data-turbo-eval="false"></script>{cf_tag(site)}</body></html>
 """
 
 
@@ -2790,8 +2791,8 @@ def page_404(site, ja=True):
             jp += f'\n<p class="lead" lang="{lx}">{sl("nf_title")}. {sl("nf_lead")}</p>\n<p lang="{lx}"><a class="buy" href="/{lx}/">{sl("nf_back")}</a></p>\n{five(lx, f"/{lx}/")}'
     return f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{e(site["logo"])} — {k("nf_title")}</title><meta name="robots" content="noindex">
-<link rel="icon" href="/favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"><script>try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("motion")==="reduce")document.documentElement.setAttribute("data-motion","reduce")}}catch(x){{}}{CUR_EARLY}</script></head>
+{TURBO_HEAD}<title>{e(site["logo"])} — {k("nf_title")}</title><meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg?v={ICON_V}" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"><script data-turbo-eval="false">try{{var t=localStorage.getItem("theme");if(t==="dark"||t==="system")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("motion")==="reduce")document.documentElement.setAttribute("data-motion","reduce")}}catch(x){{}}{CUR_EARLY}</script></head>
 <body ontouchstart=""><main class="nf" style="min-height:100vh;display:grid;place-content:center;gap:18px;padding:28px;text-align:center">
 <p class="label" style="justify-content:center">404</p>
 <h1 class="h2" style="margin-top:0">{k("nf_title")}</h1>
@@ -2800,7 +2801,7 @@ def page_404(site, ja=True):
 {five("ko", "/")}
 <p class="lead" lang="en">{en("nf_title")}. {en("nf_lead")}</p>
 <p lang="en"><a class="buy" href="/en/">{en("nf_back")}</a></p>
-{five("en", "/en/")}{jp}</main><script src="/assets/cursor.js" defer></script>{cf_tag(site)}</body></html>
+{five("en", "/en/")}{jp}</main><script src="/assets/turbo.js" defer data-turbo-eval="false"></script><script src="/assets/main.js" defer data-turbo-eval="false"></script><script src="/assets/cursor.js" defer data-turbo-eval="false"></script>{'<script src="/assets/consent.js" defer data-turbo-eval="false"></script>' if ga4(site) else ""}{cf_tag(site)}</body></html>
 """
 
 
@@ -3283,17 +3284,18 @@ def main():
     elif "takbon.jpg" in keep:
         (ASSETS / "img" / "takbon.jpg").write_bytes(keep["takbon.jpg"])
     make_icons()
-    for lg, pg in pages.items():  # 갈아 끼우는 페이지(소개 · 시집, 여섯 판)의 쪽 안 스크립트 해시를 먼저 모음 — 그 페이지들은 같은 CSP 한 벌
-        for k, h in pg.items():
-            if k in TURBO_PG:
-                sc_, hd_ = csp_hashes(stamp(ru_bind(h) if lg == "ru" else fr_bind(h) if lg == "fr" else h, raw=True))
-                CSP_JOIN[0].update(sc_); CSP_JOIN[1].update(hd_)
+    bind_ = lambda lg, h: ru_bind(h) if lg == "ru" else fr_bind(h) if lg == "fr" else h  # noqa: E731
+    join_src = [bind_(lg, h) for lg, pg in pages.items() for k, h in pg.items() if k in TURBO_PG] + [page404]  # 갈아 끼우는 곳(메뉴 페이지 · 처리방침 · 404, 여섯 판)의 쪽 안 스크립트 해시를 먼저 모음 — 같은 CSP 한 벌
+    join_src += [bind_(lg, h) for lg, h in priv.items() if h] + [bind_(lg, h) for lg, olds in priv_old.items() for h in olds.values()]
+    for h_ in join_src:
+        sc_, hd_ = csp_hashes(stamp(h_, raw=True))
+        CSP_JOIN[0].update(sc_); CSP_JOIN[1].update(hd_)
     for lg, pg in pages.items():  # docs/index.html · docs/book/index.html … · 영어판은 docs/en/ · 일본어판은 docs/ja/ 아래 같은 꼴
         for k, h in pg.items():
             d = DOCS.joinpath(*(x for x in (lg if lg in TR else "", k) if x))
             d.mkdir(parents=True, exist_ok=True)
             (d / "index.html").write_text(stamp(ru_bind(h) if lg == "ru" else fr_bind(h) if lg == "fr" else h, join=k in TURBO_PG), encoding="utf-8")
-    (DOCS / "404.html").write_text(stamp(page404), encoding="utf-8")
+    (DOCS / "404.html").write_text(stamp(page404, join=True), encoding="utf-8")
     if (CONTENT / "redirects.json").exists():  # 넘겨주는 작은 쪽(11/7) — 쪽들을 다 쓴 뒤라 '우리 쪽과 겹침'을 알 수 있음
         made, skipped = redirect_pages(load("redirects.json").get("items", []), base, DOCS)
         print(f"넘겨주기 {len(made)}쪽" + (f" · 찍지 않음 {len(skipped)}: {', '.join(skipped)}" if skipped else ""))
@@ -3301,12 +3303,12 @@ def main():
         if html:
             d = DOCS / (f"{lg}/privacy" if lg in TR else "privacy")
             d.mkdir(parents=True, exist_ok=True)
-            (d / "index.html").write_text(stamp(ru_bind(html) if lg == "ru" else fr_bind(html) if lg == "fr" else html), encoding="utf-8")
+            (d / "index.html").write_text(stamp(ru_bind(html) if lg == "ru" else fr_bind(html) if lg == "fr" else html, join=True), encoding="utf-8")
     for lg, olds in priv_old.items():
         for v, html in olds.items():
             d = DOCS / (f"{lg}/privacy" if lg in TR else "privacy") / v
             d.mkdir(parents=True, exist_ok=True)
-            (d / "index.html").write_text(stamp(ru_bind(html) if lg == "ru" else fr_bind(html) if lg == "fr" else html), encoding="utf-8")
+            (d / "index.html").write_text(stamp(ru_bind(html) if lg == "ru" else fr_bind(html) if lg == "fr" else html, join=True), encoding="utf-8")
     (DOCS / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n", encoding="utf-8")
     # 사이트맵 lastmod = 쪽별 실제 수정일(11/19 어드민 세션 전달 · 동원 카드 '표 데이터에서 더 받을 칸' — 구글은 lastmod가 '꾸준히, 검증 가능하게' 정확할 때만 씀
     # https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap · 전엔 36주소 모두 빌드한 날). 쪽 본문(<main>)의 지문이 바뀐 날만 새 날짜:
