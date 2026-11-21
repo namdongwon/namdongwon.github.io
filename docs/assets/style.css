@@ -705,7 +705,7 @@ html.sr-on{overflow:hidden}
 
 .top nav a::after,.js .top .sq::after{content:"";position:absolute;z-index:-1;border-radius:var(--btn-r);background:transparent}
 .top nav a::after{inset:-2px -8px}.js .top .sq::after{inset:-2px -4px}
-@media (hover:hover){.top nav a:hover::after,.js .top .sq:hover::after{background:var(--hv)}}
+@media (hover:hover){.js .top .sq:hover::after{background:var(--hv)}}  
 
 
 @media (hover:hover) and (pointer:fine){
