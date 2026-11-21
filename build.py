@@ -2648,7 +2648,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <script id="ui" type="application/json">{ui_js}</script>
 {f'<script src="{P}assets/turbo.js" defer data-turbo-eval="false"></script>{chr(10)}' if k in TURBO_PG else ""}<script src="{P}assets/main.js" defer data-turbo-eval="false" onerror="document.documentElement.classList.remove('js','intro')"></script>
 <script src="{P}assets/cursor.js" defer data-turbo-eval="false"></script>
-{consent_html(L, ga, urlparse(base).netloc or base, clarity(site)).replace('href="~R~privacy/"', 'href="/' + (lang + '/' if tr_ else '') + 'privacy/"').replace('href="#cz-sv3"', 'href="~CZSK~"').replace('<div class="cz" id="cz"', f'<div class="cz" id="cz" data-lang="{lang}"') + f'<script src="{P}assets/consent.js" defer data-turbo-eval="false"></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
+{consent_html(L, ga, urlparse(base).netloc or base, clarity(site)).replace('href="~R~privacy/"', 'href="/' + (lang + '/' if tr_ else '') + 'privacy/"').replace('href="#cz-sv3"', 'href="~CZSK~"').replace(' data-turbo-permanent hidden>', f' data-lang="{lang}" data-turbo-permanent hidden>', 1) + f'<script src="{P}assets/consent.js" defer data-turbo-eval="false"></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
 </html>
 """
         html_ = re.sub(r'href="(#[\w-]+)"', lambda m: f'href="{go(m.group(1))}"', html_)  # 칸 사이 링크(첫 화면 '「탁본」 읽기' · 차례 · 찾기 추천 …)를 쪽 주소로
@@ -2754,7 +2754,7 @@ def page_privacy(site, lang, ver=None):
         Lp = ui_lang(load("ui.json"), lang)
         # 동의 창 안 '처리방침' 링크(~R~privacy/)는 그 판의 처리방침으로 — 영어 · 일본어판은 '../'(/en/privacy/ · /ja/privacy/) · 한국어판은 R(11/1 영어판이 한국어 처리방침으로 가던 것 고침)
         cz = (consent_html(Lp, ga, urlparse(base).netloc or base, clarity(site)).replace('href="~R~privacy/"', f'href="/{lang + "/" if tr_ else ""}privacy/"').replace("~R~", up if tr_ else R)
-              .replace('<div class="cz" id="cz"', f'<div class="cz" id="cz" data-lang="{lang}"') + f'<script src="{R}assets/consent.js" defer data-turbo-eval="false"></script>\n')  # 11/21 이어 받기 — 메뉴 페이지와 같은 창(처리방침 링크 뿌리부터 · 판 표시)
+              .replace(' data-turbo-permanent hidden>', f' data-lang="{lang}" data-turbo-permanent hidden>', 1) + f'<script src="{R}assets/consent.js" defer data-turbo-eval="false"></script>\n')  # 11/21 이어 받기 — 메뉴 페이지와 같은 창(처리방침 링크 뿌리부터 · 판 표시)
         ckp = f'<p class="ckp"><button type="button" class="cz-open">{e(Lp["cz_open"])}</button></p>\n'
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
