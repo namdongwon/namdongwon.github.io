@@ -162,7 +162,8 @@
   w.addEventListener("keydown", ev => { if (ev.key === "Escape" && box[0].hidden) { ev.preventDefault(); ev.stopPropagation(); shut(); } });
   const sk = w.querySelector(".cz-sk");
   if (sk) sk.addEventListener("click", ev => { ev.preventDefault(); w.querySelector("#cz-sv3").focus(); });  // "저장"으로 건너뛰기 — 주소에 #를 남기지 않게
-  document.querySelectorAll(".cz-open").forEach(b => b.addEventListener("click", () => open(2)));  // 바닥글 · 처리방침 '쿠키 설정'
+  // 바닥글 · 처리방침 '쿠키 설정' — 문서에서 받음(11/21 페이지 이어 받기: 바닥글은 페이지마다 새것으로 바뀌고 이 창(#cz)만 그대로 남음 — build.py data-turbo-permanent)
+  document.addEventListener("click", ev => { if (ev.target.closest && ev.target.closest(".cz-open")) open(2); });
 
   // 교보 링크 누름 — 동의한 방문에서만 kyobo_click(spot: '책장에 꽂기-첫화면' 등, 관리 화면이 읽는 이름과 같음)
   document.addEventListener("click", ev => {

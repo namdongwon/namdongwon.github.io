@@ -464,7 +464,7 @@ def consent_html(L, gid, site_label, cid=""):  # cid: Clarity 프로젝트 ID(11
     # 동의 문구 판 번호(11/19 어드민 세션 전달 · 동원 카드 — 문구를 바꾼 뒤 '어느 판을 본 선택인지' 가름): ui.json의 cz_ 문구 여섯 판 + 파트너 목록(G · M)의 지문 8자 —
     # 문구를 고치면 저절로 바뀜(손으로 올릴 번호 없음). consent.js가 고를 때 localStorage 'consent-ga'의 v에 같이 둠(이 기기 안에만 · 보내지 않음)
     czv = hashlib.sha256((json.dumps({k: v for k, v in load("ui.json").items() if k.startswith("cz_")}, ensure_ascii=False, sort_keys=True) + ("|G" if gid else "") + ("|M" if cid else "")).encode("utf-8")).hexdigest()[:8]
-    return f'<div class="cz" id="cz" data-ga="{e(gid)}"{ca} data-czv="{czv}" hidden>{inner}</div>\n'
+    return f'<div class="cz" id="cz" data-turbo-permanent data-ga="{e(gid)}"{ca} data-czv="{czv}" hidden>{inner}</div>\n'
 
 
 def book_card(site):
@@ -826,6 +826,12 @@ OLD_HASH_JS = ('(function(){var h=location.hash.slice(1),m=location.pathname.mat
                '[/^(contact|fq\\d+)$/,"contact/"],[/^guestbook$/,"guestbook/"],[/^rococo$/,"rococo/"]];'
                'for(var i=0;i<R.length;i++)if(R[i][0].test(h)){location.replace(m[1]+R[i][1]+location.search+"#"+h);return}})();')
 HEAD_JS, HEAD_JS_PLAIN = (x.replace("<script>(function(){var H=", "<script>" + OLD_HASH_JS + "(function(){var H=", 1) for x in (HEAD_JS, HEAD_JS_PLAIN))
+# 페이지 이어 받기(11/21 B — Hotwire Turbo · 동원 버튼 "Hotwire Turbo (권장)"): 1단계는 소개 · 시집(여섯 판)만 — 그 사이를 오가면 body만 갈아 끼움(새 페이지를 받으면 크롬이
+# 첫 마우스 움직임 전까지 커서를 다시 안 정해 화살표가 남던 것 — 11/20 가려냄). 머리 시작 줄은 갈아 끼울 때 다시 돌지 않게(data-turbo-eval="false" — 문 · 테마 · 프리로더는 처음 한 번),
+# 머리 표시 셋: 같은 문서 넘김 효과(헤더 · 메뉴 점 · 밑줄 View Transition 이름은 style.css 그대로) · 찍어 둔 화면 쓰지 않음(뒤로 가기도 새로 그림) · 스크립트 지문(다르면 새로 받음 — 배포 뒤 옛 main.js가 새 HTML을 맡지 않게)
+TURBO_PG = ("", "book")
+HEAD_JS, HEAD_JS_PLAIN = (x.replace("<script>", '<script data-turbo-eval="false">', 1) for x in (HEAD_JS, HEAD_JS_PLAIN))
+TURBO_HEAD = '<meta name="view-transition" content="same-origin">\n<meta name="turbo-cache-control" content="no-cache">\n<meta name="ndw-build" content="~TB~" data-turbo-track="reload">\n'
 # 프리로더(11/18 밤 동원 "개인 포트폴리오 사이트인데 있는 게 낫지 않을까 좀 있어 보이잖아" → '늦을 때만' → 시안 기준/브랜드 시안/프리로더시안_v1 → 버튼 "A 이름 + 가는 줄 (권장)"):
 # 관리 화면 로딩(admin.css .boot)과 같은 꼴 — 0.4초가 지나도 쪽이 아직 다 안 왔을 때(DOMContentLoaded 전 — readyState는 뒤로 미룬 스크립트를 기다리기 전에 interactive가 되어 못 씀)만 NAMDONGWON · CREATIVE STUDIO + 흐르는 먹 줄 · 다 그려지면(DOMContentLoaded) 0.45초에 걷힘 · 4초 상한
 # 첫 방문 문 장면(html.intro) 때는 띄우지 않음 · 고른 화면(어둡게)과 움직임 줄이기를 따름 · style.css가 아직 안 왔을 수 있어 색 · 꼴은 붙여 씀(CSP style-src 'unsafe-inline') · 읽기 도구엔 숨김
@@ -865,12 +871,22 @@ CSP_HOSTS = {
 }
 
 
-def csp_meta(h):
+def csp_hashes(h):
     def sha(s):
         return "'sha256-" + base64.b64encode(hashlib.sha256(s.encode("utf-8")).digest()).decode() + "'"
     scripts = {sha(body) for attrs, body in re.findall(r"<script\b([^>]*)>(.*?)</script>", h, re.S)
                if "src=" not in attrs and not re.search(r'type="application/(?:ld\+)?json"', attrs)}
     hands = {sha(html.unescape(v)) for v in re.findall(r'\son[a-z]+="([^"]*)"', h)}
+    return scripts, hands
+
+
+CSP_JOIN = [set(), set()]  # 페이지 이어 받기(11/21) — 갈아 끼우는 페이지끼리는 CSP 한 벌(합친 해시): 머리의 CSP <meta>가 페이지마다 다르면 Turbo가 새 것을 더 넣어 두 정책이 겹쳐 걸림(둘 다 통과해야 함)
+
+
+def csp_meta(h, join=False):
+    scripts, hands = csp_hashes(h)
+    if join:
+        scripts, hands = scripts | CSP_JOIN[0], hands | CSP_JOIN[1]
     s = " ".join(sorted(scripts)) + ((" 'unsafe-hashes' " + " ".join(sorted(hands))) if hands else "")
     pol = (f"default-src 'self'; script-src 'self' {s} {CSP_HOSTS['script']}; style-src 'self' 'unsafe-inline'; "
            f"img-src 'self' data: blob: {CSP_HOSTS['img']}; font-src 'self' data:; connect-src 'self' {CSP_HOSTS['connect']}; "
@@ -878,8 +894,8 @@ def csp_meta(h):
     return f'<meta http-equiv="Content-Security-Policy" content="{pol}">'
 
 
-def with_csp(h):  # <meta charset> 바로 뒤에(쪽 안 첫 스크립트보다 앞)
-    return h.replace('<meta charset="utf-8">', '<meta charset="utf-8">' + csp_meta(h), 1)
+def with_csp(h, join=False):  # <meta charset> 바로 뒤에(쪽 안 첫 스크립트보다 앞)
+    return h.replace('<meta charset="utf-8">', '<meta charset="utf-8">' + csp_meta(h, join), 1)
 
 
 def page_of(aid):
@@ -2566,7 +2582,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <link rel="apple-touch-icon" href="{P}apple-touch-icon.png?v={ICON_V}">
 <link rel="manifest" href="{"/" + lang + "/" if tr_ else "/"}manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="NAM DONGWON">
-{HEAD_JS if bpg else HEAD_JS_PLAIN}
+{TURBO_HEAD if k in TURBO_PG else ""}{HEAD_JS if bpg else HEAD_JS_PLAIN}
 {SPEC_RULES}
 {preload if bpg else logo_pre}<link rel="stylesheet" href="{P}assets/style.css">
 <script type="application/ld+json">{ld_js}</script>{crumb}{pg_ld}
@@ -2584,9 +2600,9 @@ def render(site, poem, videos, photos, lang="ko"):
 {sheet if bpg else ""}
 {pv if k == "photo" else ""}{srch}<script id="sidx" type="application/json">{sidx}</script><script id="nw" type="application/json">{nw_js}</script>
 <script id="ui" type="application/json">{ui_js}</script>
-<script src="{P}assets/main.js" defer onerror="document.documentElement.classList.remove('js','intro')"></script>
-<script src="{P}assets/cursor.js" defer></script>
-{consent_html(L, ga, urlparse(base).netloc or base, clarity(site)) + f'<script src="{P}assets/consent.js" defer></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
+{f'<script src="{P}assets/turbo.js" defer data-turbo-eval="false"></script>{chr(10)}' if k in TURBO_PG else ""}<script src="{P}assets/main.js" defer data-turbo-eval="false" onerror="document.documentElement.classList.remove('js','intro')"></script>
+<script src="{P}assets/cursor.js" defer data-turbo-eval="false"></script>
+{consent_html(L, ga, urlparse(base).netloc or base, clarity(site)) + f'<script src="{P}assets/consent.js" defer data-turbo-eval="false"></script>{chr(10)}' if ga else ""}{gc_tag}{cf_tag(site)}</body>
 </html>
 """
         html_ = re.sub(r'href="(#[\w-]+)"', lambda m: f'href="{go(m.group(1))}"', html_)  # 칸 사이 링크(첫 화면 '「탁본」 읽기' · 차례 · 찾기 추천 …)를 쪽 주소로
@@ -3105,10 +3121,12 @@ def main():
     css = re.sub(r'url\("(fonts/[\w.-]+\.woff2)"\)', lambda m: f'url("{m.group(1)}' + (f'?v={ver[m.group(1)]}' if m.group(1) in ver else "") + '")', css)
     (ASSETS / "style.css").write_text(css, encoding="utf-8")
     shutil.copy2(SRC / "main.js", ASSETS / "main.js")
-    shutil.copy2(SRC / "cursor.js", ASSETS / "cursor.js")  # 커서 점 · 누르면 파동(11/9 'A 점만') — 모든 쪽(처리방침 · 404 포함)
+    shutil.copy2(SRC / "cursor.js", ASSETS / "cursor.js")
+    shutil.copy2(SRC / "turbo.js", ASSETS / "turbo.js")  # Hotwire Turbo 8.0.23(MIT · npm @hotwired/turbo 그대로 — 11/21 페이지 이어 받기 · 라이선스 content/licenses/turbo-LICENSE.txt)  # 커서 점 · 누르면 파동(11/9 'A 점만') — 모든 쪽(처리방침 · 404 포함)
     if ga4(site):
         shutil.copy2(SRC / "consent.js", ASSETS / "consent.js")  # 동의 창 움직임(11/1) — GA4를 켰을 때만(끄면 사이트 파일이 전과 같음)
-    ver.update({x: fp((ASSETS / x).read_bytes()) for x in ("style.css", "main.js", "consent.js", "cursor.js") if (ASSETS / x).exists()})
+    ver.update({x: fp((ASSETS / x).read_bytes()) for x in ("style.css", "main.js", "consent.js", "cursor.js", "turbo.js") if (ASSETS / x).exists()})
+    tb_v = hashlib.sha256("|".join(ver.get(x, "") for x in ("main.js", "consent.js", "cursor.js", "turbo.js")).encode()).hexdigest()[:10]  # 페이지 이어 받기 스크립트 지문(ndw-build)
 
     ogv = {}
 
@@ -3119,11 +3137,12 @@ def main():
         return ogv[name]
 
     NEW_TAB = {x: v["new_tab"] for x, v in load("ui.json")["js"].items() if v.get("new_tab")}
-    def stamp(h):  # 쪽 안의 assets/style.css · main.js · consent.js · fonts/….woff2 주소 끝에 그 파일의 지문 · 공유 카드 og-….jpg도
-        h = re.sub(r'(assets/(style\.css|main\.js|consent\.js|cursor\.js|fonts/[\w.-]+\.woff2))(?=")', lambda m: m.group(1) + (f"?v={ver[m.group(2)]}" if m.group(2) in ver else ""), h)
+    def stamp(h, join=False, raw=False):  # 쪽 안의 assets/style.css · main.js · consent.js · fonts/….woff2 주소 끝에 그 파일의 지문 · 공유 카드 og-….jpg도
+        h = h.replace("~TB~", tb_v, 1)
+        h = re.sub(r'(assets/(style\.css|main\.js|consent\.js|cursor\.js|turbo\.js|fonts/[\w.-]+\.woff2))(?=")', lambda m: m.group(1) + (f"?v={ver[m.group(2)]}" if m.group(2) in ver else ""), h)
         h = re.sub(r'(assets/(og[\w.-]*\.(?:jpg|png)))(?=")', lambda m: m.group(1) + (f"?v={og_fp(m.group(2))}" if og_fp(m.group(2)) else ""), h)
         h = new_tab_mark(h, NEW_TAB)  # 새 창 숨은 안내(11/19 UX 7차 ③)
-        return with_csp(h)  # 보안 덧막이 CSP(11/16) — 주소 지문을 붙인 뒤의 마지막 글로 잼
+        return h if raw else with_csp(h, join)  # 보안 덧막이 CSP(11/16) — 주소 지문을 붙인 뒤의 마지막 글로 잼 · raw: 합친 해시를 먼저 모을 때
 
     cover = CONTENT / site["book"]["cover"]
     save_jpg(cover, ASSETS / "img/cover.jpg", 600, quality=84)
@@ -3213,11 +3232,16 @@ def main():
     elif "takbon.jpg" in keep:
         (ASSETS / "img" / "takbon.jpg").write_bytes(keep["takbon.jpg"])
     make_icons()
+    for lg, pg in pages.items():  # 갈아 끼우는 페이지(소개 · 시집, 여섯 판)의 쪽 안 스크립트 해시를 먼저 모음 — 그 페이지들은 같은 CSP 한 벌
+        for k, h in pg.items():
+            if k in TURBO_PG:
+                sc_, hd_ = csp_hashes(stamp(ru_bind(h) if lg == "ru" else fr_bind(h) if lg == "fr" else h, raw=True))
+                CSP_JOIN[0].update(sc_); CSP_JOIN[1].update(hd_)
     for lg, pg in pages.items():  # docs/index.html · docs/book/index.html … · 영어판은 docs/en/ · 일본어판은 docs/ja/ 아래 같은 꼴
         for k, h in pg.items():
             d = DOCS.joinpath(*(x for x in (lg if lg in TR else "", k) if x))
             d.mkdir(parents=True, exist_ok=True)
-            (d / "index.html").write_text(stamp(ru_bind(h) if lg == "ru" else fr_bind(h) if lg == "fr" else h), encoding="utf-8")
+            (d / "index.html").write_text(stamp(ru_bind(h) if lg == "ru" else fr_bind(h) if lg == "fr" else h, join=k in TURBO_PG), encoding="utf-8")
     (DOCS / "404.html").write_text(stamp(page404), encoding="utf-8")
     if (CONTENT / "redirects.json").exists():  # 넘겨주는 작은 쪽(11/7) — 쪽들을 다 쓴 뒤라 '우리 쪽과 겹침'을 알 수 있음
         made, skipped = redirect_pages(load("redirects.json").get("items", []), base, DOCS)

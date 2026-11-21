@@ -117,6 +117,14 @@
   // .cur-on *의 cursor:none이 안 닿아 크롬이 화살표를 띄우고, 덮개가 걷힌 뒤에도 커서 모양을 다시 안 재면 점 + 화살표가 남음(뒤로 가기 bfcache에서 실측)
   // → 넘김이 끝나거나 bfcache로 되살아나면 cur-on을 한 번 뗐다 붙여 크롬이 커서를 다시 정하게 함
   // 같은 날 고침 — cur-on을 떼면 그 두 프레임 동안 화살표가 번뜩였음 → 똑같이 안 보이는 투명 그림 커서(.cur-k)로 잠깐 바꿨다 돌림(값만 바뀌어 크롬이 커서를 다시 정함 · 화살표는 안 나옴)
+  // 11/21 페이지 이어 받기(Turbo — 소개 ↔ 시집): body가 통째로 바뀌므로 점 · 말풍선을 새 body로 옮겨 둠(점이 끊기지 않고 그 자리에 그대로) — 새 페이지를 받지 않으니 화살표도 안 나옴
+  document.addEventListener("turbo:before-render", (e) => {
+    hideTip(); unink(); fld = null;
+    const nb = e.detail && e.detail.newBody;
+    if (!nb) return;
+    if (dot) nb.appendChild(dot);
+    if (tipEl) nb.appendChild(tipEl);
+  });
   const kick = () => { if (!H.classList.contains("cur-on")) return; H.classList.add("cur-k"); requestAnimationFrame(() => requestAnimationFrame(() => H.classList.remove("cur-k"))); };
   const after = (vt) => { if (vt && vt.finished) vt.finished.then(kick, kick); };
   after(document.activeViewTransition);  // 이 스크립트(defer)가 돌 때 이미 넘김 중이면

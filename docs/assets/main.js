@@ -2,6 +2,22 @@
 // 장면: 문(첫 방문 한 번) · 탁본 · 기록 / 결: 이름을 자모로 쳐 나감 · 칸 요소가 차례로 떠오름 · 맨 위 띠 — 칸 사이 셔터는 10/25 뺌
 // '동작 줄이기'를 켠 사람과 IntersectionObserver가 없는 브라우저는 움직임 없이 다 보이게 둔다
 (() => {
+  // ── 페이지 이어 받기(11/21 B — Hotwire Turbo, 동원 버튼 "Hotwire Turbo (권장)"): 소개 ↔ 시집은 페이지를 새로 받지 않고 body만 갈아 끼움.
+  // 아래 boot()가 지금 페이지의 기능을 붙이고, 돌려주는 함수가 떼어 냄 — 처음 열 때 한 번 · Turbo가 body를 바꿀 때마다 떼고 다시 붙임.
+  // 창(window) · 문서(document)에 붙이는 듣기는 모두 signal로 묶어 한 번에 떼고(겹쳐 쌓이지 않게) · 도는 타이머 · 관찰자 · 그리기 고리도 함께 멈춤.
+  // 요소에 붙인 듣기는 요소가 body와 함께 버려져 따로 뗄 것이 없음
+  const ASSET = document.currentScript ? new URL("./", document.currentScript.src).href : "assets/";
+  const boot = () => {
+  const AC = new AbortController(), SIG = AC.signal, IV = [], OB = [], OFF = [];
+  let dead = false;
+  const o_ = o => (o === undefined ? { signal: SIG } : typeof o === "boolean" ? { capture: o, signal: SIG } : { ...o, signal: SIG });
+  const on = (tg, t, f, o) => tg.addEventListener(t, f, o_(o));
+  const addEventListener = (t, f, o) => window.addEventListener(t, f, o_(o));  // eslint-disable-line no-shadow
+  const docOn = (t, f, o) => document.addEventListener(t, f, o_(o));
+  const setInterval = (f, ms) => { const i = window.setInterval(f, ms); IV.push(i); return i; };  // eslint-disable-line no-shadow
+  const requestAnimationFrame = f => window.requestAnimationFrame(t => { if (!dead) f(t); });  // eslint-disable-line no-shadow
+  const track = C => C && class extends C { constructor(...a) { super(...a); OB.push(this); } };
+  const MutationObserver = track(window.MutationObserver), IntersectionObserver = track(window.IntersectionObserver), ResizeObserver = track(window.ResizeObserver);  // eslint-disable-line no-shadow
   const H = document.documentElement;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches || H.getAttribute("data-motion") === "reduce";  // 판권면 '움직임 줄이기' 스위치(11/1 밤)도 같은 값
   const motion = !reduce && "IntersectionObserver" in window;
@@ -35,7 +51,6 @@
     if (ok && ga) gaShare("copy_link", ...ga);
     return ok ? "shared" : "copy_fail";
   };
-  const ASSET = document.currentScript ? new URL("./", document.currentScript.src).href : "assets/";
   // 화면에 한 번 들어오면 fn을 부르고 그만 봄
   const once = (els, fn, opt) => {
     const io = new IntersectionObserver(es => es.forEach(e => {
@@ -153,7 +168,7 @@
       if (motion) bookIn = t.back;
       if (!motion || revisit) setTimeout(t.back, motion ? 250 : 0);
     }
-    document.addEventListener("click", ev => {  // 시집 페이지에서 그 카드를 누르면(쪽이 새로 열리지 않음) — 첫 화면으로 올라가며 뒤표지로
+    docOn("click", ev => {  // 시집 페이지에서 그 카드를 누르면(쪽이 새로 열리지 않음) — 첫 화면으로 올라가며 뒤표지로
       const a = ev.target.closest('a[href$="#back"]');
       if (!a || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
       const to = new URL(a.href, location.href);
@@ -677,7 +692,7 @@
     let byPtr = false;
     sm.addEventListener("pointerdown", () => { byPtr = true; });
     sm.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") byPtr = false; });
-    document.addEventListener("click", ev => { if (lsw.open && !lsw.contains(ev.target)) lsw.open = false; });
+    docOn("click", ev => { if (lsw.open && !lsw.contains(ev.target)) lsw.open = false; });
     lsw.addEventListener("keydown", ev => { if (ev.key === "Escape" && lsw.open) { lsw.open = false; if (byPtr) document.activeElement.blur(); else sm.focus(); } });
   });
 
@@ -1038,7 +1053,7 @@
     view.addEventListener("touchcancel", zEnd);
     addEventListener("resize", zReset);
     if (prev) { prev.addEventListener("click", () => step(-1)); next.addEventListener("click", () => step(1)); }
-    document.addEventListener("keydown", ev => {  // 창 안 빈자리를 눌러 포커스가 쪽 바탕으로 빠져도 Esc · 좌우 키가 듣게 문서에서 받음(10/28 점검 3 — 「탁본」 한 장과 같게)
+    docOn("keydown", ev => {  // 창 안 빈자리를 눌러 포커스가 쪽 바탕으로 빠져도 Esc · 좌우 키가 듣게 문서에서 받음(10/28 점검 3 — 「탁본」 한 장과 같게)
       if (pv.hidden) return;
       if (ev.key === "Escape") shut();
       else if (ev.key === "ArrowRight" || ev.key === "ArrowLeft") {
@@ -1296,7 +1311,7 @@
     let lockY = 0;
     const bs = document.body.style;
     const kbFit = () => { const v = window.visualViewport; srch.style.setProperty("--kb", v ? Math.max(0, Math.round(innerHeight - v.height - v.offsetTop)) + "px" : "0px"); };
-    if (window.visualViewport) visualViewport.addEventListener("resize", () => { if (!srch.hidden) kbFit(); });
+    if (window.visualViewport) on(visualViewport, "resize", () => { if (!srch.hidden) kbFit(); });
     const unlock = () => {
       Object.assign(bs, { position: "", top: "", left: "", right: "", width: "" });
       H.dataset.srBack = "1";  // 되돌리는 스크롤 한 번은 '아래로 내림'이 아님 — 맨 위 띠를 숨기지 않게(sc가 읽고 지움)
@@ -1408,7 +1423,7 @@
       goTo(href);
     });
     // ⌘K · Ctrl+K로 열기(10/27 동원 "A 조합 키" — 전엔 '/' 한 글자라 음성 입력 · 한 키 탐색에서 뜻하지 않게 열렸음, WCAG 2.1.4). 한글 자판이어도 K 자리(code)로
-    document.addEventListener("keydown", ev => {
+    docOn("keydown", ev => {
       if (ev.key === "Escape" && !srch.hidden) { shut(true); return; }  // Esc는 문서에서 — 창 안 빈자리를 눌러 포커스가 쪽 바탕으로 빠져도 닫힘(10/28 점검 3)
       const other = [...document.querySelectorAll('[aria-modal="true"]')].some(d => d !== srch && !d.hidden);  // 다른 창(게시물 · 「탁본」 한 장)이 열려 있으면 무시
       if ((ev.metaKey || ev.ctrlKey) && !ev.altKey && !ev.shiftKey && (ev.code === "KeyK" || (ev.key || "").toLowerCase() === "k") && srch.hidden && !other) { ev.preventDefault(); open(); }
@@ -1862,7 +1877,7 @@
         const top = vv.offsetTop, d = Math.min(gbSend.getBoundingClientRect().bottom + 12 - (top + vv.height), gbTa.getBoundingClientRect().top - (top + 16));
         if (d > 4) scrollBy({ top: d, behavior: smooth && H.getAttribute("data-motion") !== "reduce" && !matchMedia("(prefers-reduced-motion: reduce)").matches ? "smooth" : "auto" });
       };
-      vv.addEventListener("resize", () => { if (document.activeElement !== gbTa) full = vv.height; clearTimeout(tm); tm = setTimeout(() => fit(true), 80); });
+      on(vv, "resize", () => { if (document.activeElement !== gbTa) full = vv.height; clearTimeout(tm); tm = setTimeout(() => fit(true), 80); });
       gbTa.addEventListener("input", () => fit(false));
     }
     gbSend.addEventListener("touchstart", () => {}, { passive: true });  // 아이폰 누름 모양(문의 단추와 같음)
@@ -2011,7 +2026,7 @@
   });
 
   // 누름 반응 하나로(10/28 ⑧ A) — 아이폰 Safari는 터치를 듣는 곳이 있어야 :active를 그림. 문서에 하나 두면 모든 링크 · 단추가 닿는 동안 옅어짐(style.css hover:none)
-  document.addEventListener("touchstart", () => {}, { passive: true });
+  docOn("touchstart", () => {}, { passive: true });
 
   const form = document.querySelector("form.ask");
   // 아이폰 Safari는 터치 이벤트가 붙은 요소에만 누름(:active) 모양을 보여 줌[MDN 호환성 자료] — '보내기'를 누르는 동안 먹으로(10/24 ⑨ A)
@@ -2056,7 +2071,7 @@
       if (!("visibilityState" in document) || document.visibilityState === "visible") { unTag(); return; }  // count.js와 같은 조건
       // count.js가 먼저 단 visibilitychange가 먼저 돌아 셈이 나간 뒤에 뺌(같은 사건은 단 차례대로 돎)
       const v = () => { if (document.visibilityState === "visible") { document.removeEventListener("visibilitychange", v); setTimeout(unTag, 0); } };
-      document.addEventListener("visibilitychange", v);
+      docOn("visibilitychange", v);
     };
     if (!gcs) unTag();  // 방문 셈이 없는 빌드 — 셀 일이 없으니 바로
     else if (window.goatcounter && typeof window.goatcounter.count === "function") after();
@@ -2072,7 +2087,7 @@
   // 깊은 링크로 들어온 첫 주소(#t23 등)는 그대로 · 뒤로 가기는 전처럼 앞 칸 차례로(기록 칸은 남고 주소만 바뀜)
   addEventListener("hashchange", () => { if (location.hash) history.replaceState(history.state, "", location.pathname + location.search); });
   // 접힌 묶음(영어판 차례의 부 · 지난 소식) 안의 줄로 가는 쪽 안 링크는 먼저 펼침 — 첫 화면 '이달의 한 줄'(#tN) 등(10/29 영어판 차례 접기)
-  document.addEventListener("click", ev => {
+  docOn("click", ev => {
     const a = ev.target.closest && ev.target.closest('a[href^="#"]'), id = a && a.getAttribute("href").slice(1);
     const el = id && document.getElementById(decodeURIComponent(id)), fold = el && el.closest("details");
     if (fold && !fold.open) fold.open = true;
@@ -2401,7 +2416,7 @@
       return cells.findIndex(c => x >= c.x0 && x < c.x1 && y >= c.y0 && y < c.y1);
     };
     addEventListener("resize", () => { cells = null; }, { passive: true });  // 글꼴이 늦게 오거나 폭이 바뀌면 다시 잼
-    if (document.fonts) document.fonts.addEventListener("loadingdone", () => { cells = null; });
+    if (document.fonts) on(document.fonts, "loadingdone", () => { cells = null; });
     pal.addEventListener("pointermove", ev => { if (ev.pointerType === "mouse") show(pick(ev)); });
     pal.addEventListener("pointerleave", ev => { if (ev.pointerType === "mouse") show(-1); });
     pal.addEventListener("click", ev => show(pick(ev)));
@@ -2454,7 +2469,8 @@
 
   // 느린 쪽 이동(11/6 'B') — 사이트 안 다른 쪽으로 가는 링크를 누르고 0.4초가 지나도 새 쪽이 안 오면 화면 아래 가운데에 고리 · 새 탭 · 수정 키 · 같은 쪽 안(#)은 그대로 · 뒤로 오면(bfcache) 걷음
   let navT = 0, navS = null;
-  document.addEventListener("click", ev => {
+  OFF.push(() => { clearTimeout(navT); if (navS) navS.remove(); });  // 갈아 끼울 때 고리를 걷음(새로 받을 때의 pageshow 대신)
+  docOn("click", ev => {
     const a = ev.target.closest && ev.target.closest("a[href]");
     if (!a || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || a.target === "_blank" || a.hasAttribute("download")) return;  // 맨 위 띠 메뉴는 원 전환이 누름을 먼저 가져가도(preventDefault) 결국 넘어가므로 그대로 셈
     const to = new URL(a.href, location.href);
@@ -2887,4 +2903,75 @@
     });
     addEventListener("scroll", hide, { passive: true });
   })();
+
+  return () => {  // 떼기 — Turbo가 다음 페이지 body를 넣기 바로 앞(turbo:before-render)
+    dead = true; AC.abort(); IV.forEach(i => clearInterval(i)); OB.forEach(o => o.disconnect());
+    OFF.forEach(f => { try { f(); } catch (x) { /* 하나가 못 떼도 나머지는 뗌 */ } });
+    H.classList.remove("sr-on", "pv-on", "mnu-on", "mini-used", "thx", "intro", "opened");  // 이 페이지 창 · 장면이 <html>에 남긴 표시(<html>은 페이지가 바뀌어도 그대로라)
+    H.style.overflow = ""; H.style.removeProperty("--rbar-y"); delete H.dataset.srBack;
+  };
+  };
+  let stop = boot();
+  const H = document.documentElement;
+  // ── Turbo 붙임(turbo.js가 있는 페이지만 — 1단계는 소개 · 시집, 여섯 판)
+  const T = window.Turbo;
+  if (!T || !T.session) return;
+  const PG = /^\/(?:(?:en|ja|ru|es|fr)\/)?(?:book\/)?$/;  // 갈아 끼우는 페이지 — 소개(/) · 시집(/book/), 판마다
+  const lang = p => (p.match(/^\/(en|ja|ru|es|fr)\//) || [, "ko"])[1];
+  const ok = url => {
+    let to; try { to = new URL(url, location.href); } catch (x) { return false; }
+    if (to.origin !== location.origin || !PG.test(to.pathname) || !PG.test(location.pathname)) return false;
+    if (to.pathname === location.pathname || lang(to.pathname) !== lang(location.pathname)) return false;  // 같은 페이지 안(#) · 다른 판(언어)은 새로 받음
+    if (history.state && history.state.layer) return false;  // 찾기 · 사진 창이 쌓은 기록 위에서는 새로 받음
+    if (/\/book\/$/.test(to.pathname) && !H.classList.contains("seen")) { try { if (!localStorage.getItem("door")) return false; } catch (x) { return false; } }  // 시집 첫 방문의 문 장면은 새로 받아야 나옴
+    return true;
+  };
+  T.config.forms.mode = "off";  // 폼(방명록 · 찾기)은 지금처럼 — Turbo가 가로채지 않음
+  T.config.drive.progressBarDelay = 1e9;  // 위 파란 줄 대신 우리 '느린 쪽 이동' 고리(0.4초)
+  document.addEventListener("turbo:click", e => { if (!ok(e.detail.url)) e.preventDefault(); });  // 막으면 브라우저가 보통대로 새 페이지를 받음
+  document.addEventListener("turbo:before-visit", e => { if (!ok(e.detail.url)) { e.preventDefault(); location.href = e.detail.url; } });
+  document.addEventListener("turbo:before-prefetch", e => { if (!ok(e.target.href)) e.preventDefault(); });  // 미리 받기도 두 페이지 사이만(나머지는 speculationrules가 맡음)
+  // 뒤로 · 앞으로: 같은 페이지 안 기록(찾기 · 사진 창 · 책 #back이 쌓은 칸)은 Turbo가 손대지 않게 — 손대면 페이지를 다시 그리거나 기록 칸을 바꿔 써서 창 닫기가 안 됨.
+  // 다른 페이지인데 Turbo 표시가 없는 칸(문 · 창이 쌓은 칸)이면 그 주소로 다시 그림
+  const hist = T.session.history;
+  if (hist && hist.onPopState) {
+    window.removeEventListener("popstate", hist.onPopState, false);
+    window.addEventListener("popstate", e => {
+      const was = T.session.view.lastRenderedLocation, now = new URL(location.href);
+      const same = was && was.pathname === now.pathname && was.search === now.search;
+      if (same) return;
+      if (!(e.state && e.state.turbo)) { if (PG.test(now.pathname)) T.visit(now.href, { action: "replace" }); else location.reload(); return; }
+      hist.onPopState(e);
+    }, false);
+  }
+  let first = true;
+  document.addEventListener("turbo:before-render", () => {
+    stop();
+    try { if (localStorage.getItem("door")) H.classList.add("seen"); } catch (x) { /* 저장소를 막은 브라우저 */ }  // 머리 시작 줄이 새로 받을 때 붙이던 '다시 온 방문' 표시 — 갈아 끼울 때도 같게
+  });
+  document.addEventListener("turbo:render", () => { if (!first) reveal(); });
+  document.addEventListener("turbo:load", () => {
+    if (first) { first = false; return; }
+    stop = boot();
+    const m = document.getElementById("main");
+    if (m) { if (!m.hasAttribute("tabindex")) m.setAttribute("tabindex", "-1"); m.focus({ preventScroll: true }); }  // 읽기 도구 · 키보드가 새 본문 처음에서 시작
+    ann.textContent = document.title;  // 읽기 도구에 '페이지 바뀜' 알림(새 페이지 제목)
+  });
+  // 페이지 열림 토스식(11/19 동원 버튼 "C 토스식 차례로 또렷") — 새로 받을 때는 머리 스크립트(pagereveal)가 하던 것을 갈아 끼울 때도 같은 값으로
+  const reveal = () => {
+    if (H.classList.contains("intro") || H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches || !document.startViewTransition) return;
+    const vh = innerHeight, seen = [], L = [];
+    document.querySelectorAll("main h1,main h2,main h3,main p,main li,main img,main canvas,main figure,main dt,main dd").forEach(el => {
+      for (let q = el.parentElement; q; q = q.parentElement) if (seen.indexOf(q) >= 0) return;
+      const r = el.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2 || r.top > vh || r.bottom < 0) return;
+      seen.push(el); L.push([r.top, r.left, el]);
+    });
+    L.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    L.slice(0, 10).forEach((x, i) => x[2].animate([{ opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0)" }], { duration: 600, delay: i * 60, easing: "cubic-bezier(.333,.667,.667,1)", fill: "backwards" }));
+  };
+  const ann = document.createElement("p");
+  ann.className = "sr"; ann.setAttribute("aria-live", "polite"); ann.id = "ndw-ann";
+  document.body.append(ann);
+  document.addEventListener("turbo:before-render", e => { ann.textContent = ""; e.detail.newBody.append(ann); });
 })();
