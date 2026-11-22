@@ -1055,7 +1055,7 @@ def ig_items(feed, overrides):
     for f in feed:
         d = datetime.strptime(f["timestamp"], "%Y-%m-%dT%H:%M:%S%z").astimezone(ZoneInfo("Asia/Seoul"))
         code = f["permalink"].rstrip("/").rsplit("/", 1)[-1]
-        it = {"file": f"ig_{f['id']}.jpg", "src": f["src"], "kids": [k for k in f.get("kids", []) if Path(k).exists()], "where": first_line(f["caption"]), "when": "", "credit": "",
+        it = {"file": f"ig_{f['id']}.jpg", "src": f["src"], "kids": [k for k in f.get("kids", []) if Path(k).exists()], "where": first_line(f["caption"]), "full": f["caption"], "when": "", "credit": "",
               "date": f"{d.year}년 {d.month}월 {d.day}일", "link": f["permalink"], "en": {"date": f"{MONTHS[d.month - 1]} {d.day}, {d.year}"}, "ja": {"date": jday(d)}, "ru": {"date": rday(d)}, "es": {"date": esday(d)}, "fr": {"date": frday(d)}}
         over = overrides.get(code, {})  # photo_art.json의 그 게시물 줄(10/25 원고 옮기기 — 전에는 photos.json instagram.overrides)
         ko = {k: v for k, v in over.items() if k not in (*TR, "post") and v not in ("", None)}
@@ -1736,11 +1736,20 @@ def render(site, poem, videos, photos, lang="ko"):
     posts = [[f'{P}assets/img/photos/{Path(p["file"]).stem}.{photo_pick(psrc(p))[0]}'] + [f'{P}assets/img/photos/post/{Path(k).stem}.{photo_pick(k, keep=True)[0]}' for k in p["kids"]] if p.get("kids") else []
              for p in PH["items"]]
     posts_js = json.dumps(posts).replace("</", "<\\/")
+    # 11/23 동원 버튼 "B 흰 바탕 + 오른쪽 글 칸" · "B로 하는 건 좋은데 디자인 어느정도 맞춰야해"(인스타그램 게시물 창 캡처 — 시안 기준/브랜드 시안/인스타창시안_v1):
+    # 넓은 창(1024~)은 사진 오른쪽에 글 칸 — 머리(프로필 · 아이디) · 인스타그램 원문 그대로(해시태그는 아래 줄로 모음) · 아래 칸(인스타그램에서 보기 · 링크 복사 · 날짜).
+    # 원문 전체 · 해시태그는 게시물마다 여기 · 작품 정보(.aw · 자세히)는 main.js가 띠 캡션에서 옮겨 옴 · 휴대폰 · 좁은 창은 지금 아래 글 줄 그대로
+    def tags_of(c):
+        body = "\n".join(x.rstrip() for x in re.sub(r"(^|\s)#\S+", r"\1", c).splitlines()).strip()
+        return re.sub(r"\n{3,}", "\n\n", body), re.findall(r"#\S+", c)
+    info_js = json.dumps([dict(zip(("t", "g"), tags_of(p.get("full") or p.get("where") or ""))) for p in PH["items"]], ensure_ascii=False).replace("</", "<\\/")
     pv = (f'<div class="pv" role="dialog" aria-modal="true" aria-label="{t("pv_label")}" hidden><div class="pvh"><p class="pvc" aria-live="polite"></p>'
-          f'<button type="button" class="pvx">{t("close")}</button></div><div class="pvw"><div class="pvs" tabindex="0" aria-label="{t("pv_label")}"></div>'
+          f'<button type="button" class="pvx">{t("close")}</button></div><div class="pvb"><div class="pvw"><div class="pvs" tabindex="0" aria-label="{t("pv_label")}"></div>'
           f'<button type="button" class="pva pvp" aria-label="{t("pv_prev")}">←</button><button type="button" class="pva pvn" aria-label="{t("pv_next")}">→</button></div>'  # 넘기기 단추 — 마우스로 보는 컴퓨터에서만(10/26 동원 "컴퓨터에서는 확대해도 안 넘어가는 거 같네")
+          f'<aside class="pvi"><div class="pvi-h"><img class="pvi-av" src="{P}assets/img/me.webp" alt="" width="32" height="32">'
+          f'<a class="pvi-n" href="{e(acc["url"])}" target="_blank" rel="noopener">{e(acc["handle"])}</a></div><div class="pvi-b"></div><div class="pvi-f"></div></aside></div>'
           f'<div class="pvf"></div></div>\n'
-          f'<script id="posts" type="application/json">{posts_js}</script>\n') if any(posts) else ""
+          f'<script id="posts" type="application/json">{posts_js}</script>\n<script id="postinfo" type="application/json">{info_js}</script>\n') if any(posts) else ""
     # 옛 작은 줄 · '모아 보기' 격자는 11/3 흐르는 벽으로 바뀌며 뺌(11/4 정리) — 작은 사진(thumb)은 찾기 · 공유에서 그대로 씀
     # 흐르는 벽(11/3 동원 "https://motionsites.ai/?prompt=atrium-mtl 내 인스타그램 페이지 이거로 하는 건 어때?" → 목업 인스타벽시안_v1 · 예시 영상 → 'A 흐르는 벽 (권장)'):
     # 게시물마다 첫 사진 + 안쪽 사진을 작은 판(photos/wall 480px)으로 세 줄에 차례로(휴대폰은 두 줄) · 줄마다 두 벌을 이어 끝없이 흐름(둘째 벌은 화면 읽기 · Tab에서 뺌) ·

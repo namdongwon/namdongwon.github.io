@@ -694,6 +694,16 @@
     sm.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") byPtr = false; });
     docOn("click", ev => { if (lsw.open && !lsw.contains(ev.target)) lsw.open = false; });
     lsw.addEventListener("keydown", ev => { if (ev.key === "Escape" && lsw.open) { lsw.open = false; if (byPtr) document.activeElement.blur(); else sm.focus(); } });
+    // 11/23 동원 "마우스 오버시 바로 이 6개 나오는 거 … 그래야 이게 번역인지 알 수 있는 거 같아서" — 맨 위 줄 KOR은 마우스를 올리면 바로 펼침(나가면 0.25초 뒤 닫힘).
+    // 올려서 열린 채 KOR을 누르면 닫지 않음(누름이 펼침을 되접던 것) · 키보드 · 손가락은 그대로 누름으로
+    if (lsw.classList.contains("lsw-top")) {
+      let tm = 0, hov = false;
+      const mouse = ev => ev.pointerType === "mouse" && matchMedia("(hover: hover)").matches;
+      lsw.addEventListener("pointerenter", ev => { if (!mouse(ev)) return; clearTimeout(tm); if (!lsw.open) { lsw.open = true; hov = true; } });
+      lsw.addEventListener("pointerleave", ev => { if (!mouse(ev) || !hov) return; clearTimeout(tm); tm = setTimeout(() => { lsw.open = false; hov = false; }, 250); });
+      sm.addEventListener("click", ev => { if (hov && lsw.open) ev.preventDefault(); });
+      lsw.addEventListener("toggle", () => { if (!lsw.open) { hov = false; clearTimeout(tm); } });
+    }
   });
 
   // 사진 칸의 한 장씩 · 모아 보기 · 3D 고리(10/24–11/1)는 11/3 흐르는 벽으로 바뀌며 뺌(11/4 정리 — git 기록 9cec51b 앞에 있음)
@@ -818,6 +828,11 @@
   if (pv && postsEl) {
     const posts = JSON.parse(postsEl.textContent), view = pv.querySelector(".pvs"), cnt = pv.querySelector(".pvc"), foot = pv.querySelector(".pvf"), x = pv.querySelector(".pvx");
     const pcaps = [...document.querySelectorAll("#photo .cap")], prev = pv.querySelector(".pvp"), next = pv.querySelector(".pvn");
+    // 11/23 넓은 창 오른쪽 글 칸(인스타그램 게시물 창 짜임 — build.py의 .pvi) — 칸이 보이는 동안(1024~)은 사진 칸 폭을 칸 몫만큼 줄여 잼
+    const side = pv.querySelector(".pvi"), sideB = side && side.querySelector(".pvi-b"), sideF = side && side.querySelector(".pvi-f"), body = pv.querySelector(".pvb");
+    const infoEl = document.getElementById("postinfo"), info = infoEl ? JSON.parse(infoEl.textContent) : [];
+    const wide = () => !!side && getComputedStyle(side).display !== "none";
+    const room = () => { const bs = getComputedStyle(body); return body.clientWidth - parseFloat(bs.paddingLeft) - parseFloat(bs.paddingRight) - side.offsetWidth; };
     let from = null, n = 0, cur = 0;
     const pid = i => { const a = pcaps[i] && pcaps[i].querySelector('a[href*="instagram.com/p/"]'), m = a && /\/p\/([\w-]+)/.exec(a.href); return m ? m[1] : String(i); };
     const others = on => [...document.body.children].forEach(el => { if (el !== pv && el.tagName !== "SCRIPT") el.inert = on; });
@@ -837,6 +852,7 @@
       wrap.style.setProperty("--ir", `${wr.right - vr.right + fr.right - r.right}px`);
       wrap.style.setProperty("--ib", `${wr.bottom - vr.bottom + fr.bottom - r.bottom}px`);
       wrap.style.setProperty("--im", `${vr.top - wr.top + r.top - fr.top + r.height / 2}px`);
+      pv.style.setProperty("--pvh", `${img.offsetHeight}px`);  // 오른쪽 글 칸 높이 = 사진 높이(확대 손짓의 transform은 빼고)
     };
     // ⑭ 사진 칸 안에서 넘김(11/5 동원 "오른쪽으로 넘길때 너무 크게 된쪽으로 빠진다 딱 사진 칸 안에서 왼쪽으로 넘어가는 느낌으로"):
     // 넘기는 칸(.pvs)의 폭을 지금 장 사진의 폭으로 줄여 가운데에 — 사진은 그 칸 안에서만 옆으로 밀려 들고 나감(넓은 창에서 화면 끝까지 가로지르지 않음).
@@ -845,8 +861,8 @@
       if (pv.hidden || zm.z > 1) return;
       const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth)), f = view.children[k], img = f && f.querySelector("img");
       if (!img || !img.naturalWidth) return;
-      const cs = getComputedStyle(f), padV = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom), side = innerWidth >= 768 ? 64 : 20;
-      const w = Math.max(160, Math.min(wrap.clientWidth - side * 2, Math.round((view.clientHeight - padV) * img.naturalWidth / img.naturalHeight)));
+      const cs = getComputedStyle(f), padV = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom), gap = innerWidth >= 768 ? 64 : 20;
+      const w = Math.max(160, Math.min(wide() ? room() : wrap.clientWidth - gap * 2, Math.round((view.clientHeight - padV) * img.naturalWidth / img.naturalHeight)));
       if (Math.abs(view.offsetWidth - w) > 1) { view.style.width = `${w}px`; view.scrollLeft = k * w; }
     };
     const upd = () => {
@@ -889,22 +905,55 @@
       // ⑬ 사진 한 장 링크(11/5 동원 'B 아래 줄 링크 복사 (권장)' — 목업 사진한장링크시안_v1): '게시물 ↗' 옆 글 단추 · 주소는 photo/#v{게시물}-{장}
       // 휴대폰은 공유 시트, 없으면 복사하고 2초 동안 '링크를 복사했습니다'(쪽 공유 단추와 같은 손) · 받은 사람은 그 사진이 열린 채로 ·
       // 게시물은 차례 번호가 아니라 인스타그램 게시물 주소의 끝 조각(/p/…/)으로 — 새 게시물이 앞에 붙어도 나눈 링크가 같은 사진을 엶(없으면 차례 번호)
-      const fa = [...foot.querySelectorAll("a")].pop();
-      if (fa) {
+      const linkBtn = (cls, lab) => {  // '링크 복사' 단추 — 아래 글 줄 · 오른쪽 글 칸 둘 다(lab: 글자가 들어갈 자리 — 칸은 그림 옆 span)
         const lk = document.createElement("button");
         lk.type = "button";
-        lk.className = "pvl";
-        lk.textContent = uiText("pv_link", "링크 복사");
-        fa.after(document.createTextNode(" · "), lk);
+        lk.className = cls;
+        const say = t => { (lab ? lk.querySelector("span") : lk).textContent = t; };
+        if (lab) lk.innerHTML = lab;
+        say(uiText("pv_link", "링크 복사"));
         lk.addEventListener("click", async ev => {
           ev.stopPropagation();
           const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
           const url = ((document.querySelector('link[rel="canonical"]') || {}).href || location.origin + location.pathname).split("#")[0] + `#v-${pid(cur)}-${k + 1}`;
           const r = await shareOrCopy({ url }, matchMedia("(hover: none)").matches, ["photo", `${pid(cur)}-${k + 1}`]);
           if (r === "sheet") return;
-          lk.textContent = r === "shared" ? uiText("shared", "링크를 복사했습니다") : uiText("copy_fail", "복사하지 못했습니다");
-          setTimeout(() => { lk.textContent = uiText("pv_link", "링크 복사"); }, 2000);
+          say(r === "shared" ? uiText("shared", "링크를 복사했습니다") : uiText("copy_fail", "복사하지 못했습니다"));
+          setTimeout(() => say(uiText("pv_link", "링크 복사")), 2000);
         });
+        return lk;
+      };
+      const fa = [...foot.querySelectorAll("a")].pop();
+      if (fa) fa.after(document.createTextNode(" · "), linkBtn("pvl"));
+      if (side) {  // 오른쪽 글 칸 채우기 — 원문(줄바꿈 그대로) · 해시태그 줄 · 작품 정보 · 아래 칸(인스타그램에서 보기 · 링크 복사 · 날짜)
+        const inf = info[i] || {}, cap = pcaps[i], ko = document.documentElement.lang !== "ko";
+        sideB.textContent = "";
+        sideF.textContent = "";
+        const row = document.createElement("div"), av = side.querySelector(".pvi-av").cloneNode(), tx = document.createElement("div");
+        row.className = "pvi-r";
+        const p = document.createElement("p"), u = document.createElement("b");
+        u.textContent = side.querySelector(".pvi-n").textContent;
+        p.append(u, " ", inf.t || "");
+        if (ko && /[가-힣]/.test(inf.t || "")) p.lang = "ko";  // 옮긴 판에서도 인스타그램 원문은 쓴 말 그대로(띠 캡션과 같은 규칙)
+        tx.append(p);
+        if (inf.g && inf.g.length) { const g = document.createElement("p"); g.className = "pvi-g"; g.textContent = inf.g.join(" "); if (ko) g.lang = "ko"; tx.append(g); }
+        if (cap) cap.querySelectorAll(".aw, details.cd").forEach(el => tx.append(el.cloneNode(true)));
+        row.append(av, tx);
+        sideB.append(row);
+        const ig = cap && cap.querySelector('a[href*="instagram.com"]'), dt = cap && cap.querySelector("small");
+        const acts = document.createElement("div");
+        acts.className = "pvi-x";
+        if (ig) {
+          const a = document.createElement("a");
+          a.href = ig.href; a.target = "_blank"; a.rel = "noopener";
+          a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r=".9" fill="currentColor" stroke="none"/></svg><span></span>';
+          a.querySelector("span").textContent = uiText("pv_ig", "인스타그램에서 보기");
+          acts.append(a);
+        }
+        acts.append(linkBtn("pvi-l", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 10 14"/><path d="M21 3 14.5 21 10 14 3 9.5z"/></svg><span></span>'));
+        sideF.append(acts);
+        const day = dt && (dt.textContent.split("·").map(x => x.trim()).find(x => /\d/.test(x)) || "");
+        if (day) { const d = document.createElement("p"); d.className = "pvi-d"; d.textContent = day; sideF.append(d); }
       }
       dots.textContent = "";
       list.forEach(() => dots.append(document.createElement("i")));
@@ -918,6 +967,7 @@
       pv.classList.add("fit");
       view.style.width = "";  // 앞 게시물의 폭은 버리고 이 게시물 사진으로 다시 잼(⑭)
       pv.hidden = false;
+      if (wide()) view.style.width = `${Math.max(160, room())}px`;  // 넓은 창은 칸 폭부터 잡아 둠(빈 폭이면 사진 칸이 0으로 접혀 열 장 자리를 못 잼) — 사진이 오면 fit이 사진 폭으로
       H.classList.add("pv-on");
       others(true);
       view.scrollLeft = start * view.clientWidth;
@@ -937,6 +987,7 @@
     };
     document.querySelectorAll("#photo .pop").forEach(b => b.addEventListener("click", () => open(+b.dataset.i, b, +(b.dataset.k || 0))));
     x.addEventListener("click", shut);
+    if (body) body.addEventListener("click", e => { if (e.target === body && e.detail && zm.z <= 1) shut(); });  // 넓은 창 사진 · 글 칸 둘레 빈 바탕(11/23)
     wrap.addEventListener("click", e => { if (e.target === wrap && e.detail && zm.z <= 1) shut(); });  // 11/20 사진 칸 양옆 빈 바탕(넘김 단추 자리 밖)도 누르면 닫힘
     // ① 사진을 누르면 단추 · 글이 0.3초에 숨어 사진만 남고, 다시 누르면 돌아옴(11/4 동원 'A 누르면 숨김' — 갤러리UX열_v1 01 · 아이폰 사진 앱) · 키보드로 단추에 오면 늘 보임
     // 손가락으로 연 창만 두 번 톡을 기다림(0.28초) — 두 번째 톡이 오면 숨기기 대신 확대(아래 ⑫) · 마우스 · 키보드는 지금처럼 바로
