@@ -544,16 +544,18 @@ html.pv-on{overflow:hidden}
 /* 넘기기 단추(10/26 동원 "컴퓨터에서는 확대해도 안 넘어가는 거 같네") — 마우스로 보는 컴퓨터에서만(휴대폰 · 패드는 손으로 밀어 넘김) · 사진 양옆 빈자리에 둥근 선 단추 · 끝 장에서는 흐리게 */
 .pvw{flex:1;min-height:0;position:relative;display:flex}
 .pva{display:none}
-@media (hover:hover) and (pointer:fine){.pva{position:absolute;top:var(--im,50%);z-index:1;display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-top:-16px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.6);box-shadow:0 1px 3px rgba(0,0,0,.12);font:400 14px/1 var(--sans);color:rgba(0,0,0,.72);cursor:pointer;transition:background-color .2s ease,opacity .2s ease}.pvp{left:calc(var(--il,12px) + 12px)}.pvn{right:calc(var(--ir,12px) + 12px)}.pva:hover{background:rgba(255,255,255,.85);color:#111}.pva[aria-disabled="true"]{opacity:0;pointer-events:none}}  /* 11/4 동원 "화살표가 너무 먼 거 같아" — 사진 안쪽 가장자리 12px · 흰 원 32px(인스타그램 꼴) · 처음 · 끝 장에서는 숨김 · 11/23 동원 "옆으로 넘길 때 이런식으로 반투명" — 흰 60%(인스타그램 꼴) · 올리면 85% */
+@media (hover:hover) and (pointer:fine){.pva{position:absolute;top:var(--im,50%);z-index:1;display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-top:-16px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.7);box-shadow:none;font:400 14px/1 var(--sans);color:rgba(0,0,0,.78);cursor:pointer;transition:background-color .2s ease,opacity .2s ease}.pvp{left:calc(var(--il,12px) + 12px)}.pvn{right:calc(var(--ir,12px) + 12px)}.pva:hover{background:rgba(255,255,255,.9);color:#111}.pva svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.pva[aria-disabled="true"]{opacity:0;pointer-events:none}}  /* 11/4 동원 "화살표가 너무 먼 거 같아" — 사진 안쪽 가장자리 12px · 흰 원 32px(인스타그램 꼴) · 처음 · 끝 장에서는 숨김 · 11/23 동원 "옆으로 넘길 때 이런식으로 반투명" — 흰 70% · 그림자 없음 · 굵은 꺾쇠(11/23 동원 캡처 "이 화살표랑 색상" — 인스타그램 실측: 어두운 사진 위 원 밝기 190 ≒ 흰 70%) · 올리면 90% */
 .pvd{position:absolute;left:calc(var(--il,0px) + (100% - var(--il,0px) - var(--ir,0px)) / 2);bottom:calc(var(--ib,16px) + 12px);z-index:1;display:flex;gap:4px;transform:translateX(-50%);pointer-events:none}.pvd i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.45);box-shadow:0 0 2px rgba(0,0,0,.3);transition:background-color .2s ease}.pvd i.on{background:#fff}  /* 몇째 장 — 숫자 대신 사진 아래 가운데 점(11/4 동원 "아래에 동그라미로 … 연한 동그라미였다가 해당되는 사진이면 하얀색") */
 /* 11/23 넓은 창 오른쪽 글 칸(동원 버튼 "B 흰 바탕 + 오른쪽 글 칸" · "B로 하는 건 좋은데 디자인 어느정도 맞춰야해" — 인스타그램 게시물 창 짜임 · 시안 기준/브랜드 시안/인스타창시안_v1):
-   흰 바탕 · '닫기' 머리는 그대로, 사진 오른쪽에 사진 높이만큼 붙은 380px 칸 — 머리(프로필 · 아이디 · 아래 줄) · 원문(아바타 옆 아이디 굵게 + 글) · 해시태그 줄 · 아래 칸(인스타그램에서 보기 · 링크 복사 그림 + 날짜).
+   흰 바탕 · '닫기'는 그대로(11/23 비율 맞춤 뒤 줄 없이 구석), 사진 오른쪽에 사진 높이만큼 붙은 380~500px 칸 — 머리(프로필 · 아이디 · 아래 줄) · 원문(아바타 옆 아이디 굵게 + 글) · 해시태그 줄 · 아래 칸(인스타그램에서 보기 · 링크 복사 그림 + 날짜).
    해시태그는 인스타그램의 파랑 대신 회색(공개 사이트 무채색) · 1024 아래(휴대폰 · 태블릿 세로)는 지금 아래 글 줄 그대로 */
 .pvb{display:contents}.pvi{display:none}
 @media (min-width:1024px){
-  .pvb{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:0 40px 8px}
+  .pvb{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:24px 72px}
+  .pv .pvh{position:absolute;top:0;left:0;right:0;z-index:2;height:72px;border-bottom:0;background:none;pointer-events:none}.pv .pvh>*{pointer-events:auto}
+  .pv .pvs figure{padding-top:0;padding-bottom:0}  /* 11/23 동원 "인스타그램이랑 화면 비율좀 맞춰줄래? 우리 화면이 너무 작아보이는" — 실측(같은 창 폭) 인스타그램 판은 위아래 24 · 글 칸 약 500 · 우리는 닫기 줄 64 + 사진 위아래 16 + 글 칸 380으로 판 높이가 85%(인스타그램 94%) → 닫기는 줄 없이 오른쪽 위 구석(인스타그램 ✕ 자리 — 양옆 72 빈 띠 안) · 사진 위아래 띄움 0 · 글 칸 380~500 */
   .pv .pvw{flex:0 1 auto;align-self:stretch;min-width:0}.pv .pvf{display:none}
-  .pvi{flex:none;display:flex;flex-direction:column;width:380px;height:max(var(--pvh,70vh),360px);max-height:calc(100% - 32px);border:1px solid var(--rule);border-left:0;background:var(--bg);transition:opacity .3s ease}
+  .pvi{flex:none;display:flex;flex-direction:column;width:clamp(380px,34vw,500px);height:max(var(--pvh,70vh),360px);max-height:100%;border:1px solid var(--rule);border-left:0;background:var(--bg);transition:opacity .3s ease}
   .pv.bare .pvi,.pv.drag .pvi{opacity:0;pointer-events:none}
   .pvi-h{flex:none;display:flex;align-items:center;gap:12px;height:60px;padding:0 16px;border-bottom:1px solid var(--rule)}
   .pvi-av{flex:none;width:32px;height:32px;border-radius:50%;object-fit:cover;object-position:60% 2%;background:var(--ph);box-shadow:0 0 0 1px var(--rule)}
@@ -1197,7 +1199,7 @@ html.sr-on{overflow:hidden}
    → 메뉴 · 연락하기와 같은 12.5 · 600 · 가운데 32 · 지구본은 돋보기와 같은 16 · 선 1.4 · ▾는 글자 가운데에 · 글자와 6px(반 글자) — 바닥글은 그대로 */
 .top .lsw-top summary{gap:6px;margin:0;padding:6px 0;font-weight:600}  /* 600 · 먹(메뉴 · 연락하기와 같은 굵기) — 11/18 동원 "지구본 사라지니까 괜찮은 거 같아 이대로 하자"(400 시안 뒤 되돌림) */.top .lsw-top{margin-right:-4px}  /* 눈에 보이는 간격(▾ 끝 → 돋보기 선)을 돋보기 선 → 연락하기와 같게 */
 .top .lsw-top .cr{top:-3px}  /* ▾는 바닥글처럼 글자에 붙이고(11/17 동원 "좀 더 붙어") 그림 상자가 3px 내려앉은 것(실측 35)을 글자 가운데(32)로 */
-.top .lsw-top ul{top:calc(100% + 12px);bottom:auto;left:auto;right:-8px}.top .lsw-top ul::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:14px}  /* 11/23 올리면 펼침 — KOR과 판 사이 12px 틈에서 마우스가 빠져 닫히지 않게 다리 */  /* .top을 붙여 바닥글 .lsw ul(뒤에 있음)보다 앞서게 — 같은 우선순위면 bottom이 함께 걸려 판이 납작해졌음 */
+.top .lsw-top ul{top:calc(100% + 12px);bottom:auto;left:auto;right:-8px}.lsw ul::before{content:"";position:absolute;left:0;right:0;top:100%;height:12px}.top .lsw-top ul::before{top:auto;bottom:100%;height:14px}  /* 11/23 올리면 펼침 — KOR과 판 사이 틈(바닥글 10px 아래 · 맨 위 12px 위)에서 마우스가 빠져 닫히지 않게 다리 */  /* .top을 붙여 바닥글 .lsw ul(뒤에 있음)보다 앞서게 — 같은 우선순위면 bottom이 함께 걸려 판이 납작해졌음 */
 .mnu .mlang{display:flex;flex-wrap:wrap;gap:8px 12px;margin:30px 0;padding-top:20px;border-top:1px solid var(--line);font:400 13px/1.5 var(--sans)}
 .mnu .mlang .gl{width:16px;height:16px;align-self:center;color:var(--ink)}  /* 언어 줄 표시 — 맨 위 줄 돋보기와 같은 16 */
 .mnu .mlang a,.mnu .mlang span{display:inline;padding:0;font:inherit;color:var(--ink);text-decoration:none}.mnu .mlang [aria-current]{font-weight:600}

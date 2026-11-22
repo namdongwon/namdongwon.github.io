@@ -1745,7 +1745,7 @@ def render(site, poem, videos, photos, lang="ko"):
     info_js = json.dumps([dict(zip(("t", "g"), tags_of(p.get("full") or p.get("where") or ""))) for p in PH["items"]], ensure_ascii=False).replace("</", "<\\/")
     pv = (f'<div class="pv" role="dialog" aria-modal="true" aria-label="{t("pv_label")}" hidden><div class="pvh"><p class="pvc" aria-live="polite"></p>'
           f'<button type="button" class="pvx">{t("close")}</button></div><div class="pvb"><div class="pvw"><div class="pvs" tabindex="0" aria-label="{t("pv_label")}"></div>'
-          f'<button type="button" class="pva pvp" aria-label="{t("pv_prev")}">←</button><button type="button" class="pva pvn" aria-label="{t("pv_next")}">→</button></div>'  # 넘기기 단추 — 마우스로 보는 컴퓨터에서만(10/26 동원 "컴퓨터에서는 확대해도 안 넘어가는 거 같네")
+          f'<button type="button" class="pva pvp" aria-label="{t("pv_prev")}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9.8 4 5.8 8l4 4"/></svg></button><button type="button" class="pva pvn" aria-label="{t("pv_next")}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6.2 4 4 4-4 4"/></svg></button></div>'  # 11/23 동원 인스타그램 캡처 "이 화살표랑 색상" — 글자 ←→ 대신 굵은 꺾쇠 그림  # 넘기기 단추 — 마우스로 보는 컴퓨터에서만(10/26 동원 "컴퓨터에서는 확대해도 안 넘어가는 거 같네")
           f'<aside class="pvi"><div class="pvi-h"><img class="pvi-av" src="{P}assets/img/me.webp" alt="" width="32" height="32">'
           f'<a class="pvi-n" href="{e(acc["url"])}" target="_blank" rel="noopener">{e(acc["handle"])}</a></div><div class="pvi-b"></div><div class="pvi-f"></div></aside></div>'
           f'<div class="pvf"></div></div>\n'

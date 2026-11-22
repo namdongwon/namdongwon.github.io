@@ -694,9 +694,9 @@
     sm.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") byPtr = false; });
     docOn("click", ev => { if (lsw.open && !lsw.contains(ev.target)) lsw.open = false; });
     lsw.addEventListener("keydown", ev => { if (ev.key === "Escape" && lsw.open) { lsw.open = false; if (byPtr) document.activeElement.blur(); else sm.focus(); } });
-    // 11/23 동원 "마우스 오버시 바로 이 6개 나오는 거 … 그래야 이게 번역인지 알 수 있는 거 같아서" — 맨 위 줄 KOR은 마우스를 올리면 바로 펼침(나가면 0.25초 뒤 닫힘).
-    // 올려서 열린 채 KOR을 누르면 닫지 않음(누름이 펼침을 되접던 것) · 키보드 · 손가락은 그대로 누름으로
-    if (lsw.classList.contains("lsw-top")) {
+    // 11/23 동원 "마우스 오버시 바로 이 6개 나오는 거 … 그래야 이게 번역인지 알 수 있는 거 같아서" — KOR은 마우스를 올리면 바로 펼침(나가면 0.25초 뒤 닫힘) ·
+    // 맨 위 줄 · 바닥글 둘 다(바닥글은 동원 캡처 "이거는 안 됐잖아") · 올려서 열린 채 KOR을 누르면 닫지 않음(누름이 펼침을 되접던 것) · 키보드 · 손가락은 그대로 누름으로
+    {
       let tm = 0, hov = false;
       const mouse = ev => ev.pointerType === "mouse" && matchMedia("(hover: hover)").matches;
       lsw.addEventListener("pointerenter", ev => { if (!mouse(ev)) return; clearTimeout(tm); if (!lsw.open) { lsw.open = true; hov = true; } });
