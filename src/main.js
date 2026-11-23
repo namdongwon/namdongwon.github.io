@@ -940,7 +940,7 @@
         if (inf.g && inf.g.length) { const g = document.createElement("p"); g.className = "pvi-g"; g.textContent = inf.g.join(" "); if (ko) g.lang = "ko"; tx.append(g); }
         if (cap) cap.querySelectorAll(".aw, details.cd").forEach(el => tx.append(el.cloneNode(true)));
         row.append(av, tx);
-        sideB.append(row);
+        if ((inf.t || "").trim() || tx.children.length > 1) sideB.append(row);  // 11/23 동원 "아무것도 말 없는 게시물은 저 아래 nam_dong_won_ 빼도" — 글 · 해시태그 · 작품 정보가 다 없으면 본문 줄을 그리지 않음(머리의 아이디와 같은 말 두 번)
         const ig = cap && cap.querySelector('a[href*="instagram.com"]'), dt = cap && cap.querySelector("small");
         const acts = document.createElement("div");
         acts.className = "pvi-x";
