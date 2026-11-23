@@ -1844,7 +1844,8 @@
       "search_none_q": "“{q}”에 맞는 것이 없습니다.",
       "nw_sr": "새 글 있음",
       "gb_xfer_msg": "보내려면 국외 이전에 동의해 주세요.",
-      "new_tab": " (새 창)"
+      "new_tab": " (새 창)",
+      "si_years": "연표"
     },
     "en": {
       "play": "Play {title}",
@@ -1904,7 +1905,8 @@
       "search_none_q": "Nothing matches “{q}”.",
       "nw_sr": "new",
       "gb_xfer_msg": "Please agree to the transfer to send your note.",
-      "new_tab": " (new tab)"
+      "new_tab": " (new tab)",
+      "si_years": "Timeline"
     },
     "ja": {
       "play": "{title}を再生",
@@ -1964,7 +1966,8 @@
       "search_none_q": "「{q}」に合うものはありません。",
       "nw_sr": "新着あり",
       "gb_xfer_msg": "送信するには、国外移転への同意が必要です。",
-      "new_tab": "（新しいタブ）"
+      "new_tab": "（新しいタブ）",
+      "si_years": "年表"
     },
     "ru": {
       "play": "Воспроизвести: {title}",
@@ -2024,7 +2027,8 @@
       "search_none_q": "По запросу «{q}» ничего не найдено.",
       "nw_sr": "новое",
       "gb_xfer_msg": "Чтобы отправить запись, отметьте согласие на передачу.",
-      "new_tab": " (новая вкладка)"
+      "new_tab": " (новая вкладка)",
+      "si_years": "Хронология"
     },
     "es": {
       "play": "Reproducir {title}",
@@ -2084,7 +2088,8 @@
       "search_none_q": "No hay resultados para «{q}».",
       "nw_sr": "nuevo",
       "gb_xfer_msg": "Para enviar la nota, acepta la transferencia.",
-      "new_tab": " (nueva pestaña)"
+      "new_tab": " (nueva pestaña)",
+      "si_years": "Cronología"
     },
     "fr": {
       "play": "Lire {title}",
@@ -2144,7 +2149,8 @@
       "search_none_q": "Aucun résultat pour « {q} ».",
       "nw_sr": "nouveau",
       "gb_xfer_msg": "Pour envoyer votre mot, acceptez le transfert.",
-      "new_tab": " (nouvel onglet)"
+      "new_tab": " (nouvel onglet)",
+      "si_years": "Chronologie"
     }
   },
   "pop_post": {

@@ -2342,8 +2342,7 @@ def render(site, poem, videos, photos, lang="ko"):
         subs = "".join(f'<p class="yr-s" id="{k}">{x}</p>' for k, x in rows)
         return (f'<article class="yr" data-y="{e(y)}"><h3 class="yr-n" aria-label="{e(y)}"><span class="yw" aria-hidden="true">{digits}</span></h3>{subs}</article>')
     chron = "".join(yrow(i, y, rows) for i, (y, rows) in enumerate(yg))
-    rail = (f'<nav class="rail" aria-label="{t("search_timeline")}"><p class="rk" aria-hidden="true">{t("search_timeline")}</p><div class="odo" aria-hidden="true">' + '<span class="oc"></span>' * 4 + '</div><ol class="ticks">'
-            + "".join(f'<li><button type="button" data-i="{i}"><i></i><span>{e(y)}</span></button></li>' for i, (y, _) in enumerate(yg)) + "</ol></nav>")
+    # 왼쪽 연도 롤(.rail)은 11/24 뺌(동원 "이거 없애고 그냥 기존대로 그 작은 선으로 대체해") — 연혁 구간도 왼쪽 칸 표시(main.js .si)가 맡음
     # 갈래 문 — 원고에서: 시집(site.json book) · 인스타그램(사진 피드 — 동원이 설명을 단 사진 가운데 맨 앞) · 유튜브(videos.json 다음 편 · 공식 스틸) · 방명록(실린 글 수 · 엽서 꼴 글 칸)
     def gate(n, key, side, frame, cap_l, cap_r, mt, title, lines, go_href, go_txt, tcls=""):
         lab = f'<p class="g-lab" style="--i:0"><span class="g-no">{n:02d}</span><span class="g-dash"></span><span>{e(navname[key])}</span>' + (f'<span class="g-mt">{mt}</span>' if mt else "") + "</p>"
@@ -2524,7 +2523,6 @@ def render(site, poem, videos, photos, lang="ko"):
     <div class="hflow"><div class="thread" aria-hidden="true"><i></i></div>
       <div class="years chron">{chron}</div>{fnb}<div class="now" hidden></div>
       <div class="gates">{doors_html}</div></div>
-    {rail}
   </section>
 """,
         "photo": f"""  <section id="photo" class="wallp" aria-labelledby="photo-t">

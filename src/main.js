@@ -270,11 +270,12 @@
     const yrs = [...hub.querySelectorAll(".yr")], rail = hub.querySelector(".rail"), chron = hub.querySelector(".chron"), flow = hub.querySelector(".hflow");
     const thread = hub.querySelector(".thread"), ink = thread && thread.firstElementChild, odo = hub.querySelector(".odo"), ticks = [...hub.querySelectorAll(".ticks button")];
     const g1 = hub.querySelector(".gate.first"), gates = [...hub.querySelectorAll(".gate")];
-    if (!yrs.length || !g1 || !thread || !odo) return;
+    if (!yrs.length || !g1 || !thread) return;  // 연도 롤(.rail · .odo)은 11/24 뺌 — 있으면 쓰고 없으면 건너뜀
     if (motion) hub.classList.add("mo");
     else { yrs.forEach(y => y.classList.add("in")); gates.forEach(g => g.classList.add("in")); }
     let cur = -1;
     const setYear = (str, dir) => {
+      if (!odo) return;
       [...str].forEach((d, i) => {
         const c = odo.children[i];
         if (!c) return;
@@ -2889,7 +2890,7 @@
     // 11/24 동원 "예전에 우리 왼쪽에 선으로 되는 것들 … 왜 사라졌어 지금 있어야지" — 소개 허브의 칸으로 되살림: 처음 · 소개 · 연표 · 갈래 문 여섯(메뉴 이름 그대로)
     // 연혁 구간은 왼쪽 연도 롤(.rail)이 같은 몫이라 롤이 떠 있는 동안만 물러남(아래 hide)
     const items = hub
-      ? [[names[0], null], [names[1], me], [(me.querySelector(".rail .rk") || {}).textContent || "연표", me.querySelector(".chron")],
+      ? [[names[0], null], [names[1], me], [(me.querySelector(".rail .rk") || {}).textContent || uiText("si_years", "연표"), me.querySelector(".chron")],
          ...[...me.querySelectorAll(".gate")].map(g => [(g.querySelector(".g-lab span:nth-child(3)") || {}).textContent || "", g])].filter(([n, el], i) => i === 0 || (n && el))
       : names.map((n, i) => [n, [null, me, me.querySelector(".now"), me.querySelector(".rec"), document.querySelector(".nxp")][i]]).filter(([, el], i) => i === 0 || el);
     if (items.length < 3) return;
@@ -2909,7 +2910,7 @@
       nav.append(a);
       return a;
     });
-    const rail = hub && me.querySelector(".rail");
+    const rail = hub && me.querySelector(".rail");  // 11/24 연도 롤을 뺀 뒤엔 없음 — 칸 표시가 연혁 구간에도 늘 보임
     if (rail) {  // 연도 롤이 뜨면 물러나고 롤이 들어가면 돌아옴
       const hide = () => nav.classList.toggle("off", rail.classList.contains("on") && getComputedStyle(rail).display !== "none");
       new MutationObserver(hide).observe(rail, { attributes: true, attributeFilter: ["class"] });
