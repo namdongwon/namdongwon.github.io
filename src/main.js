@@ -947,9 +947,11 @@
         if (ig) {
           const a = document.createElement("a");
           a.href = ig.href; a.target = "_blank"; a.rel = "noopener"; a.className = "pvi-go";  // 11/23 동원 캡처 '게시물 홍보하기' "이런식으로 느낌" — 오른쪽 둥근 버튼(먹 — 공개 사이트 무채색)
-          a.textContent = uiText("pv_ig", "인스타그램에서 보기");
-          acts.append(linkBtn("pvi-l", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 10 14"/><path d="M21 3 14.5 21 10 14 3 9.5z"/></svg><span></span>'), a);
-        } else acts.append(linkBtn("pvi-l", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 10 14"/><path d="M21 3 14.5 21 10 14 3 9.5z"/></svg><span></span>'));
+          a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r=".9" fill="currentColor" stroke="none"/></svg><span></span>';
+          a.querySelector("span").textContent = uiText("pv_ig", "인스타그램에서 보기");  // 동원 "인스타그램에서 보기가 왼쪽 … 링크 복사는 바로 옆 … 인스타그램 이모지는" — 아이콘 + 글자 버튼을 왼쪽, 링크 복사는 바로 옆
+          acts.append(a);
+        }
+        acts.append(linkBtn("pvi-l", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 10 14"/><path d="M21 3 14.5 21 10 14 3 9.5z"/></svg><span></span>'));
         sideF.append(acts);
         const day = dt && (dt.textContent.split("·").map(x => x.trim()).find(x => /\d/.test(x)) || "");
         if (day) { const d = document.createElement("p"); d.className = "pvi-d"; d.textContent = day; sideF.append(d); }
