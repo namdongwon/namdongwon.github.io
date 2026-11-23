@@ -2709,7 +2709,7 @@
     // 11/15 동원 "한 번 내리면 그 다음에 내릴 때는 작동을 안한다" — 실측: 트랙패드 관성(손 뗀 뒤 1~2초 휠이 이어짐) 중에 다시 밀면 0.2초 쉼이 없어 버려졌고(1초 간격 세 번 → 한 칸),
     // 넘기는 0.8초 동안 들어온 휠도 버려졌음(마우스 딸깍 0.35초 간격 세 번 → 한 칸). → 새 몸짓 알아보기에 '휠 값이 갑자기 커짐(관성은 줄기만 함) · 방향 바뀜'을 더하고,
     // 넘기는 중에 온 새 몸짓도 받음 — 아래 move가 지금 자리에서 이어 감(fullPage.js 가속 알아보기와 같은 생각)
-    let busy = false, armed = true, lastWheel = 0, lastAbs = 0, lastDir = 0, movedAt = -1e9, raf = 0, target = 0, motionDir = 0;
+    let busy = false, armed = true, lastWheel = 0, lastAbs = 0, lastDir = 0, movedAt = -1e9, raf = 0, target = 0, motionDir = 0, pend = 0;  // pend — 미끄러지는 중 받아 둔 다음 한 칸(11/24)
     // 넘기는 중에 새로 밀면(11/15 동원 "다시 올릴 때 버벅이는 느낌" — 실측: 내린 직후 위로 밀면 내려가던 0.8초를 다 마친 뒤 돌아섬 · 연달아 밀면 칸 끝에서 0까지 느려졌다 다시 빨라짐):
     // 지금 자리에서 바로 새 목표로 이어 감 — 같은 방향이면 다음 칸까지 멈추지 않고 · 반대면 그 자리에서 돌아섬 · 이어 갈 땐 처음부터 빠른 꼴(ease-out 0.7초)
     const easeOut = t => 1 - Math.pow(1 - t, 3);
@@ -2717,7 +2717,7 @@
       cancelAnimationFrame(raf);
       busy = true; target = to; motionDir = Math.sign(to - scrollY);
       const from = scrollY, t0 = performance.now();
-      const step = n => { const k = Math.min(1, (n - t0) / D); scrollTo(0, from + (to - from) * fn(k)); if (k < 1) raf = requestAnimationFrame(step); else busy = false; };
+      const step = n => { const k = Math.min(1, (n - t0) / D); scrollTo(0, from + (to - from) * fn(k)); if (k < 1) raf = requestAnimationFrame(step); else { busy = false; if (pend) { const d = pend; pend = 0; movedAt = performance.now(); move(d); } } };  // 받아 둔 한 칸이 있으면 멈추자마자 이어 감
       raf = requestAnimationFrame(step);
     };
     const next = (y, d) => {
@@ -2755,14 +2755,18 @@
       if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || blocked(e.target)) return;
       e.preventDefault();
       const now = performance.now(), gap = now - lastWheel, a = Math.abs(e.deltaY), dir = Math.sign(e.deltaY);
+      if (!dir) return;  // 휠 값 0(트랙패드 쓸기 처음 · 끝에 옴)은 몸짓으로 치지 않음 — 둘째 쓸기의 첫 0이 몸짓을 먹어 한 칸에서 멈추던 것(11/24)
       // 새 몸짓: 휠이 0.2초 넘게 쉼 · 방향 바뀜 · 줄어들던 휠 값이 1.5배 넘게 커짐(넘긴 지 0.3초 안은 같은 몸짓의 키움으로 봄)
       const fresh = gap >= 200 || (dir && dir !== lastDir) || (a >= 16 && a > lastAbs * 2.5 && !busy && now - movedAt > 300);  // 11/24 — 관성 중 다시 밀었다고 보는 건 멈춘 뒤 휠 값이 확 커질 때만(16 넘게 · 2.5배) — 관성 끝자락의 작은 흔들림(2 → 4)을 새 몸짓으로 받아 한 번에 두 칸 가던 것
       lastWheel = now; lastAbs = a; if (dir) lastDir = dir;
       if (fresh) armed = true;
+      // 11/24 동원 "연속으로 하면 잘 안되네" — 휠을 쉬지 않고 돌리면(0.2초 쉼 없음) 모두 한 몸짓이라 한 칸에서 멈췄음 → 멈춘 뒤에도 같은 방향으로 휠 값이 큰(30 이상) 동안은 0.85초마다 한 칸 · 트랙패드 관성 끝자락(작은 값)은 해당 없음
+      if (!armed && !busy && dir === lastDir && a >= 30 && now - movedAt > 850) armed = true;
       if (!armed) return;  // 한 몸짓(트랙패드 관성 포함)엔 한 칸만
       armed = false;
+      if (dir !== motionDir) pend = 0;
       // 11/24 동원 "한 번에 두개 내려가고 그러네" — 미끄러지는 중(0.8초) 같은 방향 새 몸짓은 시작 0.6초 뒤부터만 이어 감(트랙패드 관성 · 연달아 딸깍이 한 몸짓에 두 칸이 되던 것) · 반대 방향은 바로
-      if (busy && dir === motionDir && now - movedAt < 600) return;
+      if (busy && dir === motionDir && now - movedAt < 600) { pend = dir; return; }  // 버리지 않고 하나 받아 둠 — 멈추자마자 다음 칸(연달아 딸깍이 사이사이 먹히던 것)
       movedAt = now; move(e.deltaY);  // 넘기는 중이면 move가 지금 자리에서 새 목표로 이어 감
     }, { passive: false });
     addEventListener("keydown", e => {
