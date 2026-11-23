@@ -297,7 +297,7 @@
     const tick = () => {
       const vh = innerHeight;
       let k = 0;
-      yrs.forEach((y, i) => { if (y.querySelector(".yr-n").getBoundingClientRect().top < vh * .6) k = i; });  // 롤 · 띠 · 실이 같은 선(화면 60%)에서 바뀜(11/23 밤 "롤이 늦거나 빠른")
+      yrs.forEach((y, i) => { if (y.querySelector(".yr-n").getBoundingClientRect().top < vh * .5) k = i; });  // 왼쪽 롤은 화면 가운데에 걸린 연도  // 롤 · 띠 · 실이 같은 선(화면 60%)에서 바뀜(11/23 밤 "롤이 늦거나 빠른")
       if (k !== cur) {
         const dir = k > cur ? 1 : -1;
         cur = k;
@@ -2681,23 +2681,28 @@
     const topH = () => (document.querySelector("header.top") || { offsetHeight: 0 }).offsetHeight;
     // 멈출 자리 = 칸 머리 — 내릴 땐 맨 위 띠가 숨으므로(⑥ 120px 아래 내리면 숨는 띠) 화면 맨 위에, 올릴 땐 띠가 나오므로 띠 바로 아래에(11/15 동원 "멈추는 자리가 어색" —
     // 실측: 내려 멈춘 소개 칸 위에 앞 화면 사람 사진 · SEOUL, KOREA가 띠 높이 64px만큼 남았음)
+    // 11/23 밤 소개 허브(동원 "연표 스크롤이 답답하고 … 연표 끝난 부분의 스크롤 내림도 딱 안 맞춰져"): 멈출 자리 —
+    // 연도 머리(.yr-n 위 끝) · 문 위 가는 선(.gate 위 끝)이 늘 '띠 아래 + 44px'(GAP — 내릴 땐 띠가 숨어 화면 맨 위 + 44) · 연표 안 한 몸짓은 화면 78% 안의 가장 아래 연도 머리까지(next)
+    // 자리는 몸짓마다 그때 화면에서 다시 잼(글꼴 · 그림이 늦게 와 높이가 바뀌어도 맞음)
+    const GAP = 44;
+    let YS = new Set();  // 그중 연도 머리 자리
     const stops = (d = 1) => {
-      const th = d > 0 ? 0 : topH();
-      const s = [0, me.offsetTop - th];
-      // 11/23 밤 소개 허브(동원 "이 스크롤 부드럽게 내려가는 느낌 왜 사라졌어?"): 멈출 자리를 큰 연도 하나하나 · 문 하나하나로 — 휠 한 몸짓마다 다음 연도가
-      // 왼쪽 연도 롤과 같은 높이(화면 가운데 조금 위)로, 다음 문은 사진 위쪽이 화면 머리 22px 아래로 0.8초 미끄러져 들어옴(연도 사이 약 190px라 다음 연도 머리도 함께 보임)
+      const th = d > 0 ? 0 : topH(), at = el => el.getBoundingClientRect().top + scrollY;
+      const s = [[0, ""], [me.offsetTop - th, ""]];
       if (me.classList.contains("hub")) {
-        const at = el => el.getBoundingClientRect().top + scrollY;
-        me.querySelectorAll(".yr-n").forEach(n => s.push(at(n) - (innerHeight / 2 - 60)));
-        me.querySelectorAll(".gate").forEach(g => s.push(at(g) + 44 - 22 - th));
+        me.querySelectorAll(".yr-n").forEach(n => s.push([at(n) - th - GAP, "y"]));
+        me.querySelectorAll(".gate").forEach(g => s.push([at(g) - th - GAP, ""]));
       }
       let n = me.nextElementSibling;
-      for (; n; n = n.nextElementSibling) if (n.offsetHeight > 120) s.push(n.offsetTop - th);
-      const f = document.querySelector("footer.foot, .colo"); if (f) s.push(f.getBoundingClientRect().top + scrollY - th);
+      for (; n; n = n.nextElementSibling) if (n.offsetHeight > 120) s.push([n.offsetTop - th, ""]);
+      const f = document.querySelector("footer.foot, .colo"); if (f) s.push([f.getBoundingClientRect().top + scrollY - th, ""]);
       const max = document.documentElement.scrollHeight - innerHeight;
-      s.push(max);
+      s.push([max, ""]);
       // 페이지 끝보다 아래 자리(바닥글 머리 2009 > 끝 1694 — 11/15 실측)는 끝으로 — 맨 아래에서 한 번 더 내리면 보이지 않는 0.8초 넘김이 돌며 다음 몸짓과 엉키던 것
-      return [...new Set(s.map(v => Math.min(Math.max(0, max), Math.max(0, Math.round(v)))))].sort((a, b) => a - b);
+      const fix = v => Math.min(Math.max(0, max), Math.max(0, Math.round(v))), out = new Map();
+      s.forEach(([v, k]) => { const x = fix(v); if (!out.has(x) || k) out.set(x, k); });
+      YS = new Set([...out].filter(([, k]) => k === "y").map(([x]) => x));
+      return [...out.keys()].sort((a, b) => a - b);
     };
     // 11/15 동원 "한 번 내리면 그 다음에 내릴 때는 작동을 안한다" — 실측: 트랙패드 관성(손 뗀 뒤 1~2초 휠이 이어짐) 중에 다시 밀면 0.2초 쉼이 없어 버려졌고(1초 간격 세 번 → 한 칸),
     // 넘기는 0.8초 동안 들어온 휠도 버려졌음(마우스 딸깍 0.35초 간격 세 번 → 한 칸). → 새 몸짓 알아보기에 '휠 값이 갑자기 커짐(관성은 줄기만 함) · 방향 바뀜'을 더하고,
@@ -2717,19 +2722,30 @@
       const s = stops(d), tol = topH() + 4;  // 띠 높이만큼 차이 나는 두 자리(900 · 836)는 같은 칸 — 띠 높이만큼만 꿈틀 움직이지 않게
       // 페이지 끝은 거리와 상관없이 갈 수 있게(11/15 동원 "맨 아래 까지 안 내려가는 느낌" — 실측: 끝에 닿은 뒤 글꼴 · 그림이 늦게 와 18px 길어지면 띠 높이 안이라 '같은 칸'으로 버려졌음)
       const end = Math.max(0, document.documentElement.scrollHeight - innerHeight);
-      if (d > 0) { const nx = s.find(v => v > y + tol) ?? (end > y + 1 ? end : undefined); return Math.min(nx === undefined ? y : nx, y + innerHeight); }
-      const pv = [...s].reverse().find(v => v < y - tol); return Math.max(pv === undefined ? 0 : pv, y - innerHeight);
+      const span = innerHeight * .78;  // 연표 안 한 몸짓 — 연도 하나씩(약 190px)이면 답답했음 → 화면 78% 안의 가장 먼 연도 머리까지(한 화면에 연도 서넛이 지나감)
+      if (d > 0) {
+        let i = s.findIndex(v => v > y + tol);
+        if (i < 0) return end > y + 1 ? Math.min(end, y + innerHeight) : y;
+        if (YS.has(s[i])) while (i + 1 < s.length && YS.has(s[i + 1]) && s[i + 1] <= y + span) i++;
+        return Math.min(s[i], y + innerHeight);
+      }
+      const up = s.filter(v => v < y - tol);
+      if (!up.length) return Math.max(0, y - innerHeight);
+      let i = up.length - 1;
+      if (YS.has(up[i])) while (i > 0 && YS.has(up[i - 1]) && up[i - 1] >= y - span) i--;
+      return Math.max(up[i], y - innerHeight);
     };
+    const dur = to => Math.round(450 + 350 * Math.min(1, Math.abs(to - scrollY) / innerHeight));  // 넘김 시간은 거리에 비례 — 짧으면 0.45초 · 한 화면이면 0.8초(작은 칸을 0.8초로 끌지 않게)
     const move = dir => {
       const d = Math.sign(dir);
       if (!d) return;
       if (busy) {
         const to = next(d === motionDir ? target : scrollY, d);
-        if (to !== target && Math.abs(to - scrollY) > 1) go(to, easeOut, 700);
+        if (to !== target && Math.abs(to - scrollY) > 1) go(to, easeOut, Math.min(700, dur(to)));
         return;
       }
       const to = next(scrollY, d);
-      if (Math.abs(to - scrollY) > 1) go(to);
+      if (Math.abs(to - scrollY) > 1) go(to, ease, dur(to));
     };
     const blocked = t => still() || H.style.overflow === "hidden" || [...document.querySelectorAll('[aria-modal="true"]')].some(d => !d.hidden && d.offsetParent !== null)
       || (t instanceof Element && t.closest("input, textarea, select, [contenteditable=true], .lsw[open] ul, .srch"));
