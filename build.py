@@ -2306,6 +2306,65 @@ def render(site, poem, videos, photos, lang="ko"):
         lk = ' lang="ko"' if tr_ and re.search(r"[가-힣]", pin["text"]) else ""
         rdl = (f'<figure class="rdl"><figcaption class="k">{t("rdl_k")}</figcaption><blockquote{lk}>“{e(" ".join(pin["text"].split()))}”</blockquote>'
                f'<p class="w">{t("rdl_from", day=pday)}</p><a href="~R~guestbook/">{t("rdl_go")}</a></figure>')
+    # 소개 허브(11/23 동원 "소개는 B랑 C 합치면 좋을 거 같아 연도 연혁 끝나면 C가 차례로 나오는 식으로" → 시안 기준/브랜드 시안/소개허브시안_v2/BC_합침 · "둘 다 넣어"):
+    # 첫 화면 → 약력(가운데 인용 단락) → 연혁(연표 years.json을 해마다 묶어 큰 연도 · 왼쪽 고정 연도 롤 · 가운데 실) → 마지막 해 실 끝에서 갈래 문 넷(시집 · 인스타그램 · 유튜브 · 방명록 —
+    # 큰 그림 + 글 좌우 번갈아). 전의 연표 목록 · '지금' 칸 · 기록 점 그림 · 다음 페이지 카드는 시안대로 뺌(문이 그 몫). 움직임은 main.js(hub)
+    dfmt = lambda d: (f"{MONTHS[d.month - 1]}{NB}{d.day}, {d.year}" if en else esday(d) if es else frday(d) if fr else rday(d) if ru else jday(d) if tr_ else f"{d.year}년{NB}{d.month}월{NB}{d.day}일")  # noqa: E731 — '지금' 고친 날과 같은 꼴
+    yg, yn = [], 0  # 해마다 [해, [(id, 글), …]] — id는 전처럼 줄마다 y1 · y2 …(찾기 결과가 그 줄로)
+    for r in row_lang(tb["years"]["items"], lang):
+        if not r["text"]:
+            continue
+        yn += 1
+        if not yg or yg[-1][0] != r["year"]:
+            yg.append([r["year"], []])
+        yg[-1][1].append((f"y{yn}", rich(r["text"])))
+    def yrow(i, y, rows):
+        digits = "".join(f'<span class="yd"><i>{e(c)}</i></span>' for c in str(y))
+        last = i == len(yg) - 1 and len(rows) > 1  # 마지막 해에 줄이 여럿이면(시집 · 유튜브 · 웹사이트) 큰 연도 아래는 한 마디 — 줄 하나하나는 바로 아래 문이 맡음(같은 말 두 번 금지)
+        subs = (f'<p class="yr-s">{t("y_branch")}</p><ul class="sr">' + "".join(f'<li id="{k}">{x}</li>' for k, x in rows) + "</ul>") if last else "".join(f'<p class="yr-s" id="{k}">{x}</p>' for k, x in rows)
+        return (f'<article class="yr" data-y="{e(y)}"><h3 class="yr-n" aria-label="{e(y)}"><span class="yw" aria-hidden="true">{digits}</span></h3>{subs}</article>')
+    chron = "".join(yrow(i, y, rows) for i, (y, rows) in enumerate(yg))
+    rail = (f'<nav class="rail" aria-label="{t("search_timeline")}"><p class="rk" aria-hidden="true">{t("search_timeline")}</p><div class="odo" aria-hidden="true">' + '<span class="oc"></span>' * 4 + '</div><ol class="ticks">'
+            + "".join(f'<li><button type="button" data-i="{i}"><i></i><span>{e(y)}</span></button></li>' for i, (y, _) in enumerate(yg)) + "</ol></nav>")
+    # 갈래 문 — 원고에서: 시집(site.json book) · 인스타그램(사진 피드 — 동원이 설명을 단 사진 가운데 맨 앞) · 유튜브(videos.json 다음 편 · 공식 스틸) · 방명록(실린 글 수 · 엽서 꼴 글 칸)
+    def gate(n, key, side, frame, cap_l, cap_r, mt, title, lines, go_href, go_txt, tcls=""):
+        lab = f'<p class="g-lab" style="--i:0"><span class="g-no">{n:02d}</span><span class="g-dash"></span><span>{e(navname[key])}</span>' + (f'<span class="g-mt">{mt}</span>' if mt else "") + "</p>"
+        lns = "".join(f'<p class="g-l{" g-st" if j else ""}" style="--i:{j + 2}">{x}</p>' for j, x in enumerate(lines) if x)
+        return (f'<article class="gate{" rt" if side else ""}{" first" if n == 1 else ""}" id="g{n}" aria-labelledby="g{n}-t">' + ('<i class="knot" aria-hidden="true"></i>' if n == 1 else "")
+                + f'<div class="g-ph"><a class="g-fr" href="{go_href}" tabindex="-1" aria-hidden="true"><span class="g-zm">{frame}</span></a>'
+                + (f'<p class="g-cap"><span>{cap_l}</span><span class="g-k">{cap_r}</span></p>' if cap_l or cap_r else "") + "</div>"
+                + f'<div class="g-tx"><div class="g-hd">{lab}<h3 id="g{n}-t" class="{tcls}" style="--i:1">{title}</h3></div><div class="g-bd">{lns}<p style="--i:{len(lines) + 2}"><a class="g-go" href="{go_href}">{go_txt}<i aria-hidden="true">→</i></a></p></div></div></article>')
+    bspec = [x.strip() for x in book.get("spec", "").split("·")]
+    pub = date.fromisoformat(book["published"]) if book.get("published") else None
+    d_book = gate(1, "poem", 0, f'<span class="g-pic g-cover"><img src="{P}assets/img/cover.jpg" alt="" width="600" height="881" loading="lazy" decoding="async"></span>',
+                  e(book.get("credit", "")), keep(" · ".join(e(x) for x in bspec[:2] if x)), e(book.get("store", "")),
+                  tt(e(book["title"]), not lat, q=RQ if ru else None), [t("next_d_book"), (keep(dfmt(pub)) + " · " if pub else "") + (t("book_on") if pub and pub <= day else t("book_soon"))],
+                  "~R~book/", t("tk_cta"), "hang" if not lat and not ru else "")
+    pk = next((p for p in PH["items"] if p.get("alt") and not is_art(p)), PH["items"][0] if PH["items"] else None)
+    d_ig = ""
+    if pk:
+        n_ph = sum(1 + len(p.get("kids") or []) for p in PH["items"])
+        d_ig = gate(2, "photo", 1, f'<span class="g-pic"><img src="{P}assets/img/photos/{e(Path(pk["file"]).stem)}.{photo_pick(psrc(pk))[0]}" alt="" loading="lazy" decoding="async" style="object-position:50% 58%"></span>',
+                    e(pk.get("alt") or ""), keep(e(pk.get("date") or "")), "", f'<span lang="en">@{e(acc["handle"])}</span>',
+                    [t("next_d_photo"), t("door_ig_n", n=num_txt(len(PH["items"]), lang), m=num_txt(n_ph, lang))], "~R~photo/", t("door_photo"), "en")
+    uu = V["upcoming"]
+    if V["items"]:
+        v0 = V["items"][0]
+        vst = (e(v0["title"]) if lat else marked(v0["kind"], v0["title"], lang)) + " · " + keep(e(v0["date"].replace("-", ".")))
+    else:
+        vst = ((e(uu["title"]) if lat else marked(uu.get("kind", ""), uu["title"], lang)) + " · " if uu.get("title") else "") + t("first_soon")
+    vimg = f"{P}assets/img/stills/1.jpg" if uu.get("stills") and not V["items"] else (f"{P}assets/img/next.jpg" if uu.get("thumb") and not V["items"] else (f'https://i.ytimg.com/vi/{e(V["items"][0]["youtube_id"])}/hqdefault.jpg' if V["items"] else ""))
+    yh = ch["url"].rstrip("/").rsplit("/", 1)[-1]
+    d_yt = gate(3, "video", 0, (f'<span class="g-pic"><img src="{vimg}" alt="" loading="lazy" decoding="async" style="object-position:38% 50%"></span>' if vimg else '<span class="g-pic"></span>'),
+                keep(e(uu.get("credit", ""))) if not V["items"] else "", keep(" · ".join(e(x) for x in uu.get("facts", []))) if not V["items"] else "",
+                f'<span lang="en">{e(yh)}</span>' if yh.startswith("@") else "", f'<span{ko_attr if re.search("[가-힣]", ch["name"]) else ""}>{e(ch["name"])}</span>',
+                [t("next_d_video"), vst], "~R~video/", t("door_video"))
+    card_ = (f'<span class="g-pic g-post"><span class="g-card"><span class="g-to">{t("gb_to")}</span><span class="g-fl">{t("gb_text")}<i>{t("gb_text_hint")}</i></span>'
+             f'<span class="g-ruled"><span class="g-caret"></span></span><span class="g-ft"><span class="g-cnt">0 / {gb_max_txt(lang)}</span><span class="g-send">{t("gb_send")}</span></span></span></span>')
+    d_gb = gate(4, "guestbook", 1, card_, t("gb_when"), "", "", t("gb_h"), [t("next_d_guestbook"), t("door_gb_n", n=num_txt(len(gbook), lang)) if gbook else t("gb_empty")],
+                "~R~guestbook/", t("mm_write"))
+    doors_html = d_book + d_ig + d_yt + d_gb
+
     def rococo_sec():  # 로코코 쪽 본문(11/15 'D 큰 한 줄 · 좌우 번갈아' — 목업 기준/브랜드 시안/로코코소개시안_v1_D.png · Day One 꼴)
         # 화면은 11/15 동원 "화면 준비중 뭐 이런거로 대체 … 구조가 더 중요" → 이야기마다 shot(content/img/rococo/ 파일 이름)이 있으면 그 그림, 없으면 '화면 준비 중' 자리
         if not RC:
@@ -2410,10 +2469,13 @@ def render(site, poem, videos, photos, lang="ko"):
   </article>
 """,
         "palette": "  " + palette.rstrip() + "\n",
-        "me": f"""  {tk}  <section id="me" aria-labelledby="me-t">
-    <p class="label">{t("label_me")}</p>
-    <div class="l"><h2 class="h2" id="me-t">{t("me_h")}</h2><p class="bio">{rich(bio_me)}</p></div>
-    <div class="r"><ul class="years">{years}</ul>{fnb}{nowb}<div class="rec">{rec}</div></div>
+        # 소개 허브(11/23) — 약력 → 연혁 → 갈래 문. '지금'(.now)은 시안대로 화면에서 빠짐(편집 중인 편은 유튜브 문 둘째 줄) — 관리 화면 미리 보기가 찾는 자리만 빈 채로 남김(.fn과 같은 까닭)
+        "me": f"""  {tk}  <section id="me" class="hub" aria-labelledby="me-t">
+    <div class="hi"><p class="label">{t("label_me")}</p><h2 class="h2" id="me-t">{t("me_h")}</h2><p class="bio">{rich(bio_me)}</p></div>
+    <div class="hflow"><div class="thread" aria-hidden="true"><i></i></div>
+      <div class="years chron">{chron}</div>{fnb}<div class="now" hidden></div>
+      <div class="gates">{doors_html}</div></div>
+    {rail}
   </section>
 """,
         "photo": f"""  <section id="photo" class="wallp" aria-labelledby="photo-t">
@@ -2557,7 +2619,7 @@ def render(site, poem, videos, photos, lang="ko"):
         # 쪽 끝 다음 쪽 카드(11/3 동원 '다정한 UX 7가지' ② → 목업 쪽끝다음걸음시안_v1 'B 다음 쪽 카드' → "글자 크기를 손봐야" v2 → "크기가 좀 큰 거 같아" v3 'C1 명조 18 (권장)'):
         # 바닥글 '둘러보기'에 쪽 다섯이 있으므로 목록이 아니라 이어질 한 곳 + 그곳으로 가는 까닭 한 줄(머물게 하는 40곳 원리 8 '끝 = 다음 걸음 하나')
         nx = NEXT_PAGE[k]
-        nxp = (f'<nav class="nxp" aria-label="{t("next_k")}"><a href="{link(nx)}"><span class="k">{t("next_k")}</span>'
+        nxp = "" if not k else (f'<nav class="nxp" aria-label="{t("next_k")}"><a href="{link(nx)}"><span class="k">{t("next_k")}</span>'
                f'<span class="n">{e(navname[top_of[nx]])}<i aria-hidden="true">→</i></span><span class="d">{t("next_d_" + (nx or "me"))}</span></a></nav>\n')
         ld_js = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")  # '</'는 '<\/'로(11/16 보안 점검) — 파이썬 3.9는 f-string 안에 \\를 못 씀
         html_ = f"""<!doctype html>
@@ -2833,6 +2895,7 @@ SCALE_ALLOW = {
     (".lsw .cr", "top"): "바닥글 언어 고르개 화살표를 대문자 가운데에 — 토스 실측 맞춤(11/17 동원 \"바로 글자 중간에\")", (".lsw .cr", "margin-left"): "화살표를 글자에 붙임 — 토스 실측(11/17 동원 \"좀 더 붙어있는 거 같지 않아?\")", (".top .lsw-top .cr", "top"): "맨 위 줄 언어 화살표를 글자 가운데(32)에 — 실측(11/18 동원 \"kor 자체가 지금 크기나 위치가 안 맞잖아\")",
     (".vplay .play", "margin"): "58px 동그라미 가운데", (".touch", "margin"): "58px 동그라미 가운데",
     (".vplay .play::after", "left"): "재생 세모 자리", (".vplay .play::after", "top"): "재생 세모 자리",
+    (".yr-n", "letter-spacing"): "소개 허브 큰 연도 자간 .2em — Goyard 역사 페이지 실측(11/23 시안 B · 숫자 4자 폭 233px)",
     ("#poem>.l", "top"): "띠 아래 제목 자리", ("#me>.l", "top"): "띠 아래 제목 자리",
     ("#contact>.l", "top"): "띠 아래 제목 자리", ("#palette>.l", "top"): "띠 아래 제목 자리",
     # 표장(11/3 동원 '이름 표기 여덟' → "2 자간 넓게 가늘게" · 실측 겹침으로 좁은 폭 한 단계 작게)

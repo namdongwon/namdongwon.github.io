@@ -260,6 +260,72 @@
     once([...document.querySelectorAll(".rv, .nt")], el => el.classList.add("in"), { rootMargin: "0px 0px -8% 0px" });  // .nt — '준비 중' 점은 보일 때 세 번만 숨 쉼
   }
 
+  // ④ 소개 허브(11/23 동원 "소개는 B랑 C 합치면" → 시안 기준/브랜드 시안/소개허브시안_v2/BC_합침 · "둘 다 넣어"):
+  // 연도 롤 — 큰 연도가 화면 가운데선을 지나면 왼쪽(휴대폰은 위 띠) 연도의 바뀐 자리만 0.4초 굴러 바뀜(왼쪽 자리부터 45ms) · 눈금을 누르면 그 해로
+  // 가운데 실 — 스크롤만큼 먹색으로 차오름(화면 55%까지) · 실 끝(첫 문 위 선)에 닿으면 매듭 → 선이 가운데서 양옆으로 → 첫 문 그림이 가운데 틈에서 열림
+  // 큰 연도 — 숫자가 마스크 아래에서 60ms씩 · 문 2~4 — 화면에 18% 들어오면 열림. 움직임 줄이기면 다 펼친 채(실 표시만 스크롤 따라)
+  (() => {
+    const hub = document.querySelector("#me.hub");
+    if (!hub) return;
+    const yrs = [...hub.querySelectorAll(".yr")], rail = hub.querySelector(".rail"), chron = hub.querySelector(".chron"), flow = hub.querySelector(".hflow");
+    const thread = hub.querySelector(".thread"), ink = thread && thread.firstElementChild, odo = hub.querySelector(".odo"), ticks = [...hub.querySelectorAll(".ticks button")];
+    const g1 = hub.querySelector(".gate.first"), gates = [...hub.querySelectorAll(".gate")];
+    if (!yrs.length || !g1 || !thread || !odo) return;
+    if (motion) hub.classList.add("mo");
+    else { yrs.forEach(y => y.classList.add("in")); gates.forEach(g => g.classList.add("in")); }
+    let cur = -1;
+    const setYear = (str, dir) => {
+      [...str].forEach((d, i) => {
+        const c = odo.children[i];
+        if (!c) return;
+        const old = c.lastElementChild;
+        if (old && old.textContent === d) return;
+        const n = document.createElement("span");
+        n.textContent = d;
+        if (!old || !motion || !n.animate) { c.textContent = ""; c.append(n); return; }
+        n.className = "nx";
+        c.append(n);
+        const o = { duration: 400, delay: i * 45, easing: "cubic-bezier(.3,.6,.1,1)", fill: "both" };
+        old.animate([{ transform: "translateY(0)" }, { transform: `translateY(${-100 * dir}%)` }], o);
+        n.animate([{ transform: `translateY(${100 * dir}%)` }, { transform: "translateY(0)" }], o).onfinish = () => {
+          if (c.lastElementChild !== n) return;
+          [...c.children].forEach(x => x !== n && x.remove());
+          n.className = "";
+        };
+      });
+    };
+    const tick = () => {
+      const vh = innerHeight;
+      let k = 0;
+      yrs.forEach((y, i) => { if (y.querySelector(".yr-n").getBoundingClientRect().top < vh * .5) k = i; });
+      if (k !== cur) {
+        const dir = k > cur ? 1 : -1;
+        cur = k;
+        setYear(yrs[k].dataset.y, dir);
+        ticks.forEach((b, i) => { b.classList.toggle("yc", i === k); if (i === k) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); });
+      }
+      const cr = chron.getBoundingClientRect(), gt = g1.getBoundingClientRect().top;
+      if (rail) rail.classList.toggle("on", cr.top < vh * .62 && gt > vh * .6);  // 실이 첫 문에 넘겨주기 전에 물러남 — 문 그림(x 64)과 겹치지 않게
+      const tr = thread.getBoundingClientRect(), h = Math.max(0, Math.min(tr.height, vh * .55 - tr.top));
+      ink.style.transform = `scaleY(${tr.height ? (h / tr.height).toFixed(4) : 0})`;
+      if (tr.height && h >= tr.height - .5) g1.classList.add("in");
+    };
+    const layout = () => { thread.style.height = Math.max(0, g1.getBoundingClientRect().top - flow.getBoundingClientRect().top) + "px"; tick(); };
+    addEventListener("scroll", tick, { passive: true });
+    addEventListener("resize", layout);
+    if (window.ResizeObserver) new ResizeObserver(layout).observe(hub);
+    if (document.fonts) document.fonts.ready.then(() => { if (!dead) layout(); });
+    ticks.forEach((b, i) => on(b, "click", () => {
+      const y = yrs[i].getBoundingClientRect().top + scrollY - (innerWidth < 768 ? 48 : 64);
+      scrollTo({ top: y, behavior: motion ? "smooth" : "auto" });
+    }));
+    if (motion) {
+      once(yrs, y => y.classList.add("in"), { rootMargin: "0px 0px -12% 0px" });
+      once(gates.filter(g => g !== g1), g => g.classList.add("in"), { threshold: .18, rootMargin: "0px 0px -6% 0px" });
+    }
+    layout();
+  })();
+
   // ② 탁본 — 시 칸 글자는 움직이지 않음(10/27 숨 재기 4 — 한 줄씩 찍힘은 「탁본」 한 장에만, 아래 길게 누르기)
 
   // ③ 기록 — 캔버스 하나에 칸을 그림(칸을 요소로 만들면 1,559개가 되어 무거움) + 숫자도 같은 네모 점으로(점 숫자).
@@ -2785,7 +2851,7 @@
   // 넓은 창(1024~)에서만 · 첫 화면 사람 사진 위에서도 보이게 색 뒤집기(mix-blend difference) · 누르면 그 칸으로 · 키보드 초점도 올린 것과 같게
   (() => {
     const me = document.getElementById("me");
-    if (!me || !document.querySelector(".tk")) return;
+    if (!me || !document.querySelector(".tk") || me.classList.contains("hub")) return;  // 11/23 소개 허브는 왼쪽 연도 롤(.rail)이 이 자리를 맡음 — 칸(지금 · 기록 · 다음 쪽)도 없어짐
     const names = uiText("si_items", "처음|소개|지금|기록|다음 페이지").split("|");
     const targets = [null, me, me.querySelector(".now"), me.querySelector(".rec"), document.querySelector(".nxp")];
     const items = names.map((n, i) => [n, targets[i]]).filter(([, el], i) => i === 0 || el);
