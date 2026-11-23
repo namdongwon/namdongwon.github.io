@@ -1224,10 +1224,12 @@ html.sr-on{overflow:hidden}
 .lsw li>[aria-current]{font-weight:600}.lsw li>[aria-current]::after{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat;mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat}
 .lsw li>a:active{background:var(--ph)}.lsw summary:active{opacity:.6}
 @media (hover:hover){.lsw li>a:hover{background:var(--hv)}}
-.lsw[open] ul{animation:lsw-in .2s ease both}.top .lsw-top[open] ul{animation-name:lsw-in-top}.lsw.out ul{animation:lsw-out .15s ease both}.top .lsw-top.out ul{animation-name:lsw-out-top}
-@keyframes lsw-in{from{opacity:0;transform:translateY(4px)}}@keyframes lsw-out{to{opacity:0;transform:translateY(4px)}}
-@keyframes lsw-in-top{from{opacity:0;transform:translate(-50%,-4px)}to{transform:translateX(-50%)}}@keyframes lsw-out-top{from{transform:translateX(-50%)}to{opacity:0;transform:translate(-50%,-4px)}}
-@media (prefers-reduced-motion:reduce){.lsw ul{animation:none!important}}:root[data-motion="reduce"] .lsw ul{animation:none!important}  /* 11/23 동원 "이거 나오는 것도 gnb 마우스 오버시 나오는 것처럼 부드럽게" — GNB 옅어짐과 같은 0.2초 ease(토스 실측) · 열 때 4px 미끄러져 나타남(맨 위는 아래로 · 바닥글은 위로) · 닫을 때 0.15초(.out — main.js) *//* 11/23 동원 "굳이 밑줄 필요없을 거 같아 마우스오버시" — KOR 올림 밑줄 뺌(올리면 목록이 열리고 커서가 먹고리라 반응은 그대로) */
+.lsw[open] ul{animation:lsw-in .28s cubic-bezier(.2,0,0,1) both}.lsw.out ul{animation:lsw-out .15s ease both}
+.lsw[open] li{animation:lsw-li .45s ease-in-out both}.top .lsw-top[open] li{animation-name:lsw-li-top}
+.lsw[open] li:nth-child(2){animation-delay:.06s}.lsw[open] li:nth-child(3){animation-delay:.12s}.lsw[open] li:nth-child(4){animation-delay:.18s}.lsw[open] li:nth-child(5){animation-delay:.24s}.lsw[open] li:nth-child(6){animation-delay:.3s}
+@keyframes lsw-in{from{opacity:0}}@keyframes lsw-out{to{opacity:0}}
+@keyframes lsw-li{from{opacity:0;transform:translateY(10px);filter:blur(10px)}}@keyframes lsw-li-top{from{opacity:0;transform:translateY(-10px);filter:blur(10px)}}
+@media (prefers-reduced-motion:reduce){.lsw :is(ul,li){animation:none!important}}:root[data-motion="reduce"] .lsw :is(ul,li){animation:none!important}  /* 11/23 동원 "gnb 마우스 오버시 나오는 것처럼 부드럽게" → 0.2초 판 미끄러짐(13:00) → 동원 캡처 GNB 소개 판 "이렇게 나오는 듯 하게 … 아예 안 부드러워" → GNB 판(.mm · .mm-in) 값 그대로: 판 투명 0.28초 cubic-bezier(.2,0,0,1) · 줄마다 10px 위(바닥글은 아래)에서 흐림 10px → 0.45초 ease-in-out · 0.06초씩 차례(토스 실측) · 닫힘 0.15초 */
 .lsw summary:focus-visible,.lsw li>a:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
 /* 동의 창(11/1 동원 "고야드 식으로 하긴 하는데 좀 정확히 따라해봐" · 안 1 고야드 문구 바탕 · "동의 관리는 고야드 동의 관리를 참고해서 적은거야?") — 고야드(Didomi) 세 단계를 그대로.
    값은 goyard.com/kr_ko 창에서 잰 것(11/1 04:5x 앱 안 브라우저 · 1134px 폭 getComputedStyle): 글은 명조(고야드 Newsreader + 한글 명조 → 우리 --serif) · 제목 · 단추는 고딕(Arial · Goyard → --sans)
