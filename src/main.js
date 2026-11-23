@@ -482,13 +482,12 @@
     const close = () => {
       clearTimeout(tOpen);
       if (!mm.classList.contains("vis") || cur === null) return;  // cur는 쪽 이름 — 소개는 빈 글자("")라 !cur로 보면 안 됨(11/15 소개 칸이 안 닫히던 결함)
-      panes.forEach(x => x.classList.remove("go"));
-      mm.setAttribute("inert", ""); mm.setAttribute("aria-hidden", "true");
+      mm.setAttribute("inert", ""); mm.setAttribute("aria-hidden", "true");  // 11/23 동원 "토스 꺼 본받아보자"(toss.im/company 실측 — 닫을 때 안의 글은 그대로 · 판 전체만 0.3초 ease-in-out으로 사라짐) — 글을 먼저 0.16초에 되돌리던 것(.go 뗌)은 다 사라진 뒤로
       navA.forEach(a => a.classList.remove("hov")); cur = null;
       kBtn.forEach(b => { b.setAttribute("aria-expanded", "false"); b.classList.remove("kb"); });
       const back = byKey; byKey = null;
       if (back && mm.contains(document.activeElement)) back.focus();  // 칸 안에서 Esc로 닫으면 단추로 돌아감
-      tHide = setTimeout(() => { if (cur === null) mm.classList.remove("vis"); }, still() ? 0 : 300);  // 불투명 0.28초로 사라진 뒤
+      tHide = setTimeout(() => { if (cur === null) { mm.classList.remove("vis"); panes.forEach(x => x.classList.remove("go")); } }, still() ? 0 : 320);  // 불투명 0.3초로 사라진 뒤
     };
     const inside = el => el && (mmTop.contains(el) || mm.contains(el));
     navA.forEach(a => {
@@ -700,7 +699,7 @@
       let tm = 0, hov = false;
       const mouse = ev => ev.pointerType === "mouse" && matchMedia("(hover: hover)").matches;
       lsw.addEventListener("pointerenter", ev => { if (!mouse(ev)) return; clearTimeout(tm); if (lsw.classList.contains("out")) { lsw.classList.remove("out"); hov = true; } else if (!lsw.open) { lsw.open = true; hov = true; } });  // 사라지는 0.15초 사이에 돌아오면 그대로 펼침
-      const shut = () => { if (!lsw.open) return; lsw.classList.add("out"); setTimeout(() => { if (!hov && lsw.classList.contains("out")) { lsw.classList.remove("out"); lsw.open = false; } }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 150); };  // 11/23 닫을 때도 0.15초 사라짐(style.css .out)
+      const shut = () => { if (!lsw.open) return; lsw.classList.add("out"); setTimeout(() => { if (!hov && lsw.classList.contains("out")) { lsw.classList.remove("out"); lsw.open = false; } }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 300); };  // 11/23 닫을 때도 0.3초 사라짐(style.css .out — 토스 GNB 닫힘 실측)
       lsw.addEventListener("pointerleave", ev => { if (!mouse(ev) || !hov) return; clearTimeout(tm); tm = setTimeout(() => { hov = false; shut(); }, 250); });
       sm.addEventListener("click", ev => { if (hov && lsw.open) ev.preventDefault(); });
       lsw.addEventListener("toggle", () => { if (!lsw.open) { hov = false; clearTimeout(tm); } });
