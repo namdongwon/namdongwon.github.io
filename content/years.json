@@ -2,8 +2,10 @@
   "items": [
     {
       "year": "1995",
+      "month": "",
       "text": "겨울, 서울에서 태어남",
       "note": "",
+      "url": "",
       "en": {
         "text": "Born in Seoul in winter",
         "note": ""
@@ -27,8 +29,10 @@
     },
     {
       "year": "2013",
+      "month": "",
       "text": "영화 기록 시작",
       "note": "",
+      "url": "",
       "en": {
         "text": "Began keeping a film log",
         "note": ""
@@ -51,9 +55,22 @@
       }
     },
     {
+      "year": "2019",
+      "month": "",
+      "text": "사진 공부 시작",
+      "note": "",
+      "url": "",
+      "en": {
+        "text": "",
+        "note": ""
+      }
+    },
+    {
       "year": "2023",
+      "month": "",
       "text": "전시 기록 시작",
       "note": "",
+      "url": "",
       "en": {
         "text": "Began keeping an exhibition log",
         "note": ""
@@ -77,8 +94,10 @@
     },
     {
       "year": "2024",
+      "month": "",
       "text": "미술 공부 시작",
       "note": "",
+      "url": "",
       "en": {
         "text": "Began studying art",
         "note": ""
@@ -102,8 +121,10 @@
     },
     {
       "year": "2026",
+      "month": "",
       "text": "시집 『문을 열고 나오면 살아 있는 것들로 가득 차 있다』",
       "note": "",
+      "url": "",
       "en": {
         "text": "Poetry collection *Open the Door, Step Out, and It Is Full of Living Things*",
         "note": ""
@@ -127,8 +148,10 @@
     },
     {
       "year": "2026",
+      "month": "",
       "text": "유튜브 ‘아름다울 남’",
       "note": "",
+      "url": "",
       "en": {
         "text": "YouTube channel Beautiful Nam",
         "note": ""
@@ -152,8 +175,10 @@
     },
     {
       "year": "2026",
+      "month": "",
       "text": "웹사이트 ‘namdongwon.com’",
       "note": "",
+      "url": "",
       "en": {
         "text": "Website namdongwon.com",
         "note": ""
@@ -177,8 +202,10 @@
     },
     {
       "year": "2026",
+      "month": "",
       "text": "앱 ‘로코코’",
       "note": "",
+      "url": "",
       "en": {
         "text": "App Rococo",
         "note": ""
