@@ -2839,30 +2839,6 @@
       "etc": "Actualités"
     }
   },
-  "y_branch": {
-    "ko": "네 갈래로 시작",
-    "en": "Four paths begin",
-    "ja": "四つの道が始まる",
-    "ru": "Начало четырёх путей",
-    "es": "Empiezan cuatro caminos",
-    "fr": "Quatre chemins commencent"
-  },
-  "door_photo": {
-    "ko": "사진 보기",
-    "en": "See the photos",
-    "ja": "写真を見る",
-    "ru": "Смотреть фото",
-    "es": "Ver las fotos",
-    "fr": "Voir les photos"
-  },
-  "door_video": {
-    "ko": "영상 보기",
-    "en": "See the videos",
-    "ja": "映像を見る",
-    "ru": "Смотреть видео",
-    "es": "Ver los vídeos",
-    "fr": "Voir les vidéos"
-  },
   "door_ig_n": {
     "ko": "게시물 {n}편 · 사진 {m}장",
     "en": "{n} posts · {m} photos",
@@ -2878,5 +2854,13 @@
     "ru": "Опубликовано: {n}",
     "es": "{n} notas publicadas",
     "fr": "{n} messages publiés"
+  },
+  "door_go": {
+    "ko": "{page} 보기",
+    "en": "Go to {page}",
+    "ja": "{page}を見る",
+    "ru": "Перейти: {page}",
+    "es": "Ir a {page}",
+    "fr": "Aller à {page}"
   }
 }

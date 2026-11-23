@@ -1702,11 +1702,11 @@ main>#me.hub{display:block;padding:0 0 64px}
 .hub .hi .h2{margin-top:22px}
 .hub .hi .bio{max-width:30em;margin:30px auto 0;font-family:var(--serif);font-size:16.5px;line-height:1.9;word-break:keep-all;color:var(--ink)}
 .hflow{position:relative}
-.thread{position:absolute;left:50%;top:0;width:1px;height:0;transform:translateX(-50%);background:var(--rule);pointer-events:none}
+.thread{position:absolute;left:50%;top:0;width:1px;height:0;transform:translateX(-50%);background:var(--line);pointer-events:none}  /* 아직 안 온 실도 또렷이(11/23 밤 동원 "끊기는 타이밍" — #e6e6e6은 화면 가운데서 끊겨 보였음) */
 .thread i{position:absolute;inset:0;background:var(--ink);transform-origin:top;transform:scaleY(0)}
 .chron{position:relative;max-width:1060px;margin:0 auto;padding:64px 16px 0}
 .years.chron{margin-top:0;border-top:0;list-style:none}
-.yr{position:relative;text-align:center;padding:36px 0 44px}
+.yr{position:relative;text-align:center;padding:30px 0 36px}
 .yr-n{margin:0;font:400 54px/1 var(--serif);letter-spacing:.2em;color:var(--ink)}
 .yr-n .yw{display:inline-block;background:var(--bg);padding:12px 2px 2px 12px}
 .yr-n .yd{display:inline-block;overflow:hidden;vertical-align:top}
@@ -1730,7 +1730,7 @@ main>#me.hub{display:block;padding:0 0 64px}
 .ticks button.yc i{width:16px;left:6px;background:var(--ink)}
 .ticks button:active i{background:var(--ink)}
 /* 갈래 문 — 휴대폰 한 열 */
-.gates{position:relative;max-width:1440px;margin:0 auto;padding:calc(64px + 22px) 20px 0}
+.gates{position:relative;max-width:1440px;margin:0 auto;padding:64px 20px 0}
 .gate{position:relative;display:grid;grid-template-columns:minmax(0,1fr);padding:30px 0 64px}
 .gate::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--rule);transform-origin:0 50%}
 .gate.rt::before{transform-origin:100% 50%}
@@ -1764,6 +1764,16 @@ main>#me.hub{display:block;padding:0 0 64px}
 .gate:is(:has(.g-fr:hover),:has(.g-go:hover),:has(.g-go:focus-visible),.hv) .g-go i{transform:translateX(4px)}
 .g-go:active{opacity:.55}
 .g-fr:active .g-zm{transform:scale(1.015)}
+/* 음악 문 — 곡이 없을 때 음악 페이지의 레코드판 꼴(CSS) + 준비 중 · 로코코 문 — 앱 아이콘(메뉴 펼침 판과 같은 그림) */
+.g-disc{display:grid;place-items:center;background:#111}
+.g-vy{position:relative;width:52%;aspect-ratio:1;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,#101010 0 1px,#1d1d1d 1.6px 3.2px);box-shadow:0 0 0 1px #2a2a2a,0 18px 30px -18px rgba(0,0,0,.8)}
+.g-vy::before{content:"";position:absolute;inset:35%;border-radius:50%;background:#3a3a3a}
+.g-vy::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:8px;border-radius:50%;background:#111;transform:translate(-50%,-50%)}
+.g-app{display:grid;place-items:center}
+.g-app>img{width:22%;height:auto;aspect-ratio:1;border-radius:22%;box-shadow:0 1px 2px rgba(0,0,0,.08),0 14px 34px rgba(0,0,0,.11)}
+.g-soon{position:absolute;right:12px;top:12px;display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--chip);font:300 11px/1 var(--sans);color:var(--ink)}
+.g-soon i{display:block;width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.gate:is(:has(.g-fr:hover),:has(.g-go:hover),.hv) .g-disc .g-vy{animation:maspin 1.8s linear infinite}  /* 음악 문에 올리면 판이 돎(음악 페이지 33회전) */
 /* 방명록 문 — 엽서 꼴 글 칸(방명록 카드와 같은 짜임) */
 .g-post{display:grid;place-items:center}
 .g-card{display:block;width:84%;background:var(--bg);border:1px solid var(--line);padding:16px 16px 12px;box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 34px rgba(0,0,0,.07)}
@@ -1779,35 +1789,35 @@ main>#me.hub{display:block;padding:0 0 64px}
 .g-cnt{font:300 11px/1 var(--sans);color:var(--faint);font-variant-numeric:tabular-nums}
 .g-send{font:600 11px/1 var(--sans);color:var(--bg);background:var(--ink);padding:8px 16px}
 /* 움직임 — 자바스크립트 · 움직임이 있을 때만 숨겼다가 보임(main.js hub가 .in) */
-.js .hub.mo .yr-n .yd i{transform:translateY(105%);transition:transform .8s var(--ease)}
+.js .hub.mo .yr-n .yd i{transform:translateY(105%);transition:transform .45s ease-in-out}  /* 박자 — 토스식 0.45초 ease-in-out · 자리마다 0.06초(11/23 밤) */
 .js .hub.mo .yr.in .yr-n .yd i{transform:none}
 .js .hub.mo .yr-n .yd:nth-child(2) i{transition-delay:.06s}.js .hub.mo .yr-n .yd:nth-child(3) i{transition-delay:.12s}.js .hub.mo .yr-n .yd:nth-child(4) i{transition-delay:.18s}
-.js .hub.mo .yr-s{opacity:0;transform:translateY(6px);transition:opacity .6s .3s var(--ease),transform .6s .3s var(--ease)}
+.js .hub.mo .yr-s{opacity:0;transform:translateY(6px);transition:opacity .45s ease-in-out .24s,transform .45s ease-in-out .24s}
 .js .hub.mo .yr.in .yr-s{opacity:1;transform:none}
-.js .hub.mo .gate::before{transform:scaleX(0);transition:transform 1.1s cubic-bezier(.77,0,.18,1)}
+.js .hub.mo .gate::before{transform:scaleX(0);transition:transform .6s ease-in-out}
 .js .hub.mo .gate.in::before{transform:none}
-.js .hub.mo .gate.first::before{background:var(--ink);transition:transform 1.1s cubic-bezier(.77,0,.18,1) .18s,background-color .8s linear 1.3s}
+.js .hub.mo .gate.first::before{background:var(--ink);transition:transform .6s ease-in-out .12s,background-color .45s ease-in-out .9s}
 .js .hub.mo .gate.first.in::before{background:var(--rule)}
-.js .hub.mo .knot{transform:translate(-50%,-50%) scale(0);transition:transform .35s var(--ease)}
+.js .hub.mo .knot{transform:translate(-50%,-50%) scale(0);transition:transform .3s ease-in-out}
 .js .hub.mo .gate.first.in .knot{transform:translate(-50%,-50%)}
-.js .hub.mo .g-fr{clip-path:inset(0 50% 0 50%);transition:clip-path .8s cubic-bezier(.77,0,.18,1)}
+.js .hub.mo .g-fr{clip-path:inset(0 50% 0 50%);transition:clip-path .6s ease-in-out}
 .js .hub.mo .gate.in .g-fr{clip-path:inset(0 0 0 0)}
-.js .hub.mo .gate.first .g-fr{transition-delay:.42s}
-.js .hub.mo .g-pic{transform:scale(1.1);transition:transform 1.3s var(--ease)}
+.js .hub.mo .gate.first .g-fr{transition-delay:.3s}
+.js .hub.mo .g-pic{transform:scale(1.06);transition:transform .9s ease-in-out}
 .js .hub.mo .gate.in .g-pic{transform:none}
-.js .hub.mo .gate.first .g-pic{transition-delay:.42s}
-.js .hub.mo .g-cap{opacity:0;transition:opacity .6s linear .7s}
+.js .hub.mo .gate.first .g-pic{transition-delay:.3s}
+.js .hub.mo .g-cap{opacity:0;transition:opacity .45s ease-in-out .6s}
 .js .hub.mo .gate.in .g-cap{opacity:1}
-.js .hub.mo .gate.first .g-cap{transition-delay:1.1s}
-.js .hub.mo .g-hd>*,.js .hub.mo .g-bd>*{opacity:0;transform:translateY(12px);transition:opacity .6s linear,transform .8s var(--ease)}
-.js .hub.mo .gate.in .g-hd>*,.js .hub.mo .gate.in .g-bd>*{opacity:1;transform:none;transition-delay:calc(.42s + var(--i) * .09s)}
-.js .hub.mo .gate.first.in .g-hd>*,.js .hub.mo .gate.first.in .g-bd>*{transition-delay:calc(.7s + var(--i) * .09s)}
+.js .hub.mo .gate.first .g-cap{transition-delay:.9s}
+.js .hub.mo .g-hd>*,.js .hub.mo .g-bd>*{opacity:0;transform:translateY(12px);transition:opacity .45s ease-in-out,transform .45s ease-in-out}
+.js .hub.mo .gate.in .g-hd>*,.js .hub.mo .gate.in .g-bd>*{opacity:1;transform:none;transition-delay:calc(.3s + var(--i) * .06s)}
+.js .hub.mo .gate.first.in .g-hd>*,.js .hub.mo .gate.first.in .g-bd>*{transition-delay:calc(.45s + var(--i) * .06s)}
 @media (min-width:768px){
-  .hub .hi{padding:calc(64px * 2 + 22px) 64px 0}
+  .hub .hi{padding:calc(64px + 44px) 64px 0}
   .hub .hi .h2{font-size:46px}
   .hub .hi .bio{font-size:19px}
-  .chron{padding:calc(64px + 22px) 0 0}
-  .yr{padding:44px 0 64px}
+  .chron{padding:64px 0 0}
+  .yr{padding:30px 0 44px}  /* 연도 사이 약 190px — 1440×900 한 화면에 연도 서넛(11/23 밤 "연도 하나만 덩그러니")
   .yr-n{font-size:77px}  /* 본명조 숫자 높이 0.74em → 57px(Goyard 실측 57px) */
   .yr-n .yw{padding:12px 4px 6px 22px}  /* 왼 22 = 오른 4 + 자간 .2em 꼬리 보정 */
   .rail{left:48px;right:auto;top:50%;display:block;height:auto;padding:0;background:none;border:0;-webkit-backdrop-filter:none;backdrop-filter:none;transform:translate(-8px,-50%);opacity:0;transition:opacity .45s var(--ease),transform .45s var(--ease),visibility 0s .45s}
@@ -1821,8 +1831,8 @@ main>#me.hub{display:block;padding:0 0 64px}
   .ticks button.yc i{width:32px;left:0}
   .ticks button.yc span{color:var(--ink)}
   .ticks button:focus-visible{outline-offset:2px}
-  .gates{padding:calc(64px * 2) 64px 0}
-  .gate{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:22px;padding:44px 0 calc(64px + 44px)}
+  .gates{padding:calc(64px + 22px) 64px 0}  /* 2026 끝 → 첫 문 위 선 약 130px — 실 끝이 한 화면 안에 걸리게 */
+  .gate{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:22px;padding:44px 0 64px}
   .gate .g-ph{grid-column:1/8;grid-row:1}
   .gate .g-tx{grid-column:9/13;grid-row:1;margin-top:0}
   .gate.rt .g-ph{grid-column:6/13}

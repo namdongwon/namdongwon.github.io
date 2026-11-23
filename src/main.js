@@ -297,7 +297,7 @@
     const tick = () => {
       const vh = innerHeight;
       let k = 0;
-      yrs.forEach((y, i) => { if (y.querySelector(".yr-n").getBoundingClientRect().top < vh * .5) k = i; });
+      yrs.forEach((y, i) => { if (y.querySelector(".yr-n").getBoundingClientRect().top < vh * .6) k = i; });  // 롤 · 띠 · 실이 같은 선(화면 60%)에서 바뀜(11/23 밤 "롤이 늦거나 빠른")
       if (k !== cur) {
         const dir = k > cur ? 1 : -1;
         cur = k;
@@ -305,8 +305,9 @@
         ticks.forEach((b, i) => { b.classList.toggle("yc", i === k); if (i === k) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); });
       }
       const cr = chron.getBoundingClientRect(), gt = g1.getBoundingClientRect().top;
-      if (rail) rail.classList.toggle("on", cr.top < vh * .62 && gt > vh * .6);  // 실이 첫 문에 넘겨주기 전에 물러남 — 문 그림(x 64)과 겹치지 않게
-      const tr = thread.getBoundingClientRect(), h = Math.max(0, Math.min(tr.height, vh * .55 - tr.top));
+      const y0 = yrs[0].querySelector(".yr-n").getBoundingClientRect().top;
+      if (rail) rail.classList.toggle("on", y0 < vh * .6 && gt > vh * .6);  // 실이 첫 문에 넘겨주기 전에 물러남 — 문 그림(x 64)과 겹치지 않게
+      const tr = thread.getBoundingClientRect(), h = Math.max(0, Math.min(tr.height, vh * .6 - tr.top));
       ink.style.transform = `scaleY(${tr.height ? (h / tr.height).toFixed(4) : 0})`;
       if (tr.height && h >= tr.height - .5) g1.classList.add("in");
     };
@@ -320,8 +321,8 @@
       scrollTo({ top: y, behavior: motion ? "smooth" : "auto" });
     }));
     if (motion) {
-      once(yrs, y => y.classList.add("in"), { rootMargin: "0px 0px -12% 0px" });
-      once(gates.filter(g => g !== g1), g => g.classList.add("in"), { threshold: .18, rootMargin: "0px 0px -6% 0px" });
+      once(yrs, y => y.classList.add("in"), { rootMargin: "0px 0px -4% 0px" });  // 큰 연도가 화면 밑에서 반쯤 잘린 채 기다리지 않게 — 들어오자마자 0.45초
+      once(gates.filter(g => g !== g1), g => g.classList.add("in"), { threshold: .12, rootMargin: "0px 0px -4% 0px" });
     }
     layout();
   })();
@@ -2725,8 +2726,11 @@
     };
     const blocked = t => still() || H.style.overflow === "hidden" || [...document.querySelectorAll('[aria-modal="true"]')].some(d => !d.hidden && d.offsetParent !== null)
       || (t instanceof Element && t.closest("input, textarea, select, [contenteditable=true], .lsw[open] ul, .srch"));
+    // 11/23 밤 소개 허브(동원 "끊기는 타이밍도 좀 이상한 거 같고") — 한 화면씩 넘김은 첫 화면 ↔ 소개 머리 사이만. 연혁 · 문은 보통 스크롤로 읽힘
+    // (한 몸짓 = 900px이면 연도가 혼자 남거나 반쯤 잘린 채 멈췄음 · 웨일 실측)
+    const free = dir => me.classList.contains("hub") && ((dir > 0 && scrollY >= me.offsetTop - topH() - 4) || (dir < 0 && scrollY > me.offsetTop + 4));
     addEventListener("wheel", e => {
-      if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || blocked(e.target)) return;
+      if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || blocked(e.target) || free(Math.sign(e.deltaY))) return;
       e.preventDefault();
       const now = performance.now(), gap = now - lastWheel, a = Math.abs(e.deltaY), dir = Math.sign(e.deltaY);
       // 새 몸짓: 휠이 0.2초 넘게 쉼 · 방향 바뀜 · 줄어들던 휠 값이 1.5배 넘게 커짐(넘긴 지 0.3초 안은 같은 몸짓의 키움으로 봄)
@@ -2740,7 +2744,7 @@
     addEventListener("keydown", e => {
       if (e.altKey || e.ctrlKey || e.metaKey || blocked(e.target)) return;
       const dir = e.key === "ArrowDown" || e.key === "PageDown" || (e.key === " " && !e.shiftKey) ? 1 : e.key === "ArrowUp" || e.key === "PageUp" || (e.key === " " && e.shiftKey) ? -1 : 0;
-      if (!dir || (e.target instanceof Element && e.target.closest("button, a, summary") && e.key === " ")) return;
+      if (!dir || free(dir) || (e.target instanceof Element && e.target.closest("button, a, summary") && e.key === " ")) return;
       e.preventDefault(); move(dir);
     });
   })();
