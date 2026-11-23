@@ -699,8 +699,9 @@
     {
       let tm = 0, hov = false;
       const mouse = ev => ev.pointerType === "mouse" && matchMedia("(hover: hover)").matches;
-      lsw.addEventListener("pointerenter", ev => { if (!mouse(ev)) return; clearTimeout(tm); if (!lsw.open) { lsw.open = true; hov = true; } });
-      lsw.addEventListener("pointerleave", ev => { if (!mouse(ev) || !hov) return; clearTimeout(tm); tm = setTimeout(() => { lsw.open = false; hov = false; }, 250); });
+      lsw.addEventListener("pointerenter", ev => { if (!mouse(ev)) return; clearTimeout(tm); if (lsw.classList.contains("out")) { lsw.classList.remove("out"); hov = true; } else if (!lsw.open) { lsw.open = true; hov = true; } });  // 사라지는 0.15초 사이에 돌아오면 그대로 펼침
+      const shut = () => { if (!lsw.open) return; lsw.classList.add("out"); setTimeout(() => { if (!hov && lsw.classList.contains("out")) { lsw.classList.remove("out"); lsw.open = false; } }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 150); };  // 11/23 닫을 때도 0.15초 사라짐(style.css .out)
+      lsw.addEventListener("pointerleave", ev => { if (!mouse(ev) || !hov) return; clearTimeout(tm); tm = setTimeout(() => { hov = false; shut(); }, 250); });
       sm.addEventListener("click", ev => { if (hov && lsw.open) ev.preventDefault(); });
       lsw.addEventListener("toggle", () => { if (!lsw.open) { hov = false; clearTimeout(tm); } });
     }

@@ -1223,7 +1223,11 @@ html.sr-on{overflow:hidden}
 .lsw .ln{display:inline-flex;align-items:center;gap:12px}.lsw .flg{flex:none;width:18px;height:12px;border-radius:2px;box-shadow:0 0 0 1px color-mix(in srgb,currentColor 14%,transparent)}  /* 국기(11/10 동원 '누를 때는 국기') — 흰 국기도 테두리 한 겹으로 바탕과 갈림 */
 .lsw li>[aria-current]{font-weight:600}.lsw li>[aria-current]::after{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat;mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat}
 .lsw li>a:active{background:var(--ph)}.lsw summary:active{opacity:.6}
-@media (hover:hover){.lsw li>a:hover{background:var(--hv)}}/* 11/23 동원 "굳이 밑줄 필요없을 거 같아 마우스오버시" — KOR 올림 밑줄 뺌(올리면 목록이 열리고 커서가 먹고리라 반응은 그대로) */
+@media (hover:hover){.lsw li>a:hover{background:var(--hv)}}
+.lsw[open] ul{animation:lsw-in .2s ease both}.top .lsw-top[open] ul{animation-name:lsw-in-top}.lsw.out ul{animation:lsw-out .15s ease both}.top .lsw-top.out ul{animation-name:lsw-out-top}
+@keyframes lsw-in{from{opacity:0;transform:translateY(4px)}}@keyframes lsw-out{to{opacity:0;transform:translateY(4px)}}
+@keyframes lsw-in-top{from{opacity:0;transform:translate(-50%,-4px)}to{transform:translateX(-50%)}}@keyframes lsw-out-top{from{transform:translateX(-50%)}to{opacity:0;transform:translate(-50%,-4px)}}
+@media (prefers-reduced-motion:reduce){.lsw ul{animation:none!important}}:root[data-motion="reduce"] .lsw ul{animation:none!important}  /* 11/23 동원 "이거 나오는 것도 gnb 마우스 오버시 나오는 것처럼 부드럽게" — GNB 옅어짐과 같은 0.2초 ease(토스 실측) · 열 때 4px 미끄러져 나타남(맨 위는 아래로 · 바닥글은 위로) · 닫을 때 0.15초(.out — main.js) *//* 11/23 동원 "굳이 밑줄 필요없을 거 같아 마우스오버시" — KOR 올림 밑줄 뺌(올리면 목록이 열리고 커서가 먹고리라 반응은 그대로) */
 .lsw summary:focus-visible,.lsw li>a:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
 /* 동의 창(11/1 동원 "고야드 식으로 하긴 하는데 좀 정확히 따라해봐" · 안 1 고야드 문구 바탕 · "동의 관리는 고야드 동의 관리를 참고해서 적은거야?") — 고야드(Didomi) 세 단계를 그대로.
    값은 goyard.com/kr_ko 창에서 잰 것(11/1 04:5x 앱 안 브라우저 · 1134px 폭 getComputedStyle): 글은 명조(고야드 Newsreader + 한글 명조 → 우리 --serif) · 제목 · 단추는 고딕(Arial · Goyard → --sans)
