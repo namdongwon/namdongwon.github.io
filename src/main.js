@@ -323,7 +323,7 @@
     }));
     if (motion) {
       once(yrs, y => y.classList.add("in"), { rootMargin: "0px 0px 0px 0px" });  // 큰 연도가 화면 밑에서 반쯤 잘린 채 기다리지 않게 — 들어오자마자 0.45초
-      once(gates.filter(g => g !== g1), g => g.classList.add("in"), { rootMargin: "0px 0px 12% 0px" });  // 화면에 들어오기 조금 전부터 열림 — 휠을 내린 직후 빈 판이 보이지 않게(11/23 밤 웨일 실측)
+      once(gates.filter(g => g !== g1), g => g.classList.add("in"), { rootMargin: "0px 0px -40% 0px" });  // 11/24 동원 "아래 것들은 이미 펼쳐져 있어서 뭔가 느낌이 안 살아" — 문 하나 = 화면 한 장(이웃 문은 안 보임)이라 미리 열 까닭이 없어져, 휠로 들어설 때 문 머리가 화면 60% 선을 지나면 그때 열림(시집 문처럼)
     }
     layout();
   })();
