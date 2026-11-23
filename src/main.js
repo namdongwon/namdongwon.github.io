@@ -2756,11 +2756,13 @@
       e.preventDefault();
       const now = performance.now(), gap = now - lastWheel, a = Math.abs(e.deltaY), dir = Math.sign(e.deltaY);
       // 새 몸짓: 휠이 0.2초 넘게 쉼 · 방향 바뀜 · 줄어들던 휠 값이 1.5배 넘게 커짐(넘긴 지 0.3초 안은 같은 몸짓의 키움으로 봄)
-      const fresh = gap >= 200 || (dir && dir !== lastDir) || (a >= 4 && a > lastAbs * 1.5 && now - movedAt > 300);
+      const fresh = gap >= 200 || (dir && dir !== lastDir) || (a >= 16 && a > lastAbs * 2.5 && !busy && now - movedAt > 300);  // 11/24 — 관성 중 다시 밀었다고 보는 건 멈춘 뒤 휠 값이 확 커질 때만(16 넘게 · 2.5배) — 관성 끝자락의 작은 흔들림(2 → 4)을 새 몸짓으로 받아 한 번에 두 칸 가던 것
       lastWheel = now; lastAbs = a; if (dir) lastDir = dir;
       if (fresh) armed = true;
       if (!armed) return;  // 한 몸짓(트랙패드 관성 포함)엔 한 칸만
       armed = false;
+      // 11/24 동원 "한 번에 두개 내려가고 그러네" — 미끄러지는 중(0.8초) 같은 방향 새 몸짓은 시작 0.6초 뒤부터만 이어 감(트랙패드 관성 · 연달아 딸깍이 한 몸짓에 두 칸이 되던 것) · 반대 방향은 바로
+      if (busy && dir === motionDir && now - movedAt < 600) return;
       movedAt = now; move(e.deltaY);  // 넘기는 중이면 move가 지금 자리에서 새 목표로 이어 감
     }, { passive: false });
     addEventListener("keydown", e => {
