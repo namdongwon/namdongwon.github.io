@@ -579,6 +579,9 @@ html.pv-on{overflow:hidden}
 .pvf p{font:14px/1.5 var(--body)}
 .pvf .aw{display:block;margin-top:4px}
 .pvf small{display:block;margin-top:4px;font:300 11px/1.5 var(--sans);color:var(--faint)}
+.ok-c{flex:none;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#1f9d55;animation:okpop .2s var(--e2)}.ok-c svg{width:14px!important;height:14px!important;fill:none;stroke:#fff!important;stroke-width:2.2!important;stroke-linecap:round;stroke-linejoin:round}
+.pvi-x .ok-c{width:18px;height:18px}.pvi-x .ok-c svg{width:11px!important;height:11px!important}.pvf .pvl .ok-c{width:13px;height:13px;margin-left:4px;vertical-align:-2px}.pvf .pvl .ok-c svg{width:9px!important;height:9px!important}
+@keyframes okpop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}@media (prefers-reduced-motion:reduce){.ok-c{animation:none}}:root[data-motion="reduce"] .ok-c{animation:none}  /* 11/23 복사 완료 초록 ✓(동원 버튼 "A 초록 ✓ (권장)" — 시안 복사완료시안_v1) · 공개 사이트 무채색의 예외: 성공 표시 한 곳 */
 .pvf small a{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor}.pvf small .pvl{padding:0;border:0;border-bottom:1px solid currentColor;border-radius:0;background:none;font:inherit;color:var(--muted);cursor:pointer}  /* ⑬ 사진 한 장 링크 — 옆 '게시물 ↗'과 같은 글 링크 꼴 */
 
 /* 사이트 안 찾기(10/26 검색 A 전체 화면 창 — 롱블랙식 원리만, 색은 흰 바탕 · 무채색) — 맨 위 막대 돋보기 → 흰 한 장 · 추천 주제 · 결과(갈래 · 한 줄 · 자리).

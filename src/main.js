@@ -913,6 +913,13 @@
         const say = t => { (lab ? lk.querySelector("span") : lk).textContent = t; };
         if (lab) lk.innerHTML = lab;
         say(uiText("pv_link", "링크 복사"));
+        // 11/23 동원 "초록색 동그라미 체크표시도 나오면서 확실하게 복사가 완료됐다는 걸" → 시안 기준/브랜드 시안/복사완료시안_v1 → 버튼 "A 초록 ✓ (권장)":
+        // 복사되면 2초 동안 초록 동그라미 체크(종이비행기는 그대로 · 글자 뒤) — 성공 = 초록(애플 · 구글 · 깃허브 관례) · 채도 낮은 #1F9D55
+        const okEl = () => { const o = document.createElement("span"); o.className = "ok-c"; o.setAttribute("aria-hidden", "true"); o.innerHTML = '<svg viewBox="0 0 16 16"><path d="M3.5 8.4 6.6 11.4 12.5 4.8"/></svg>'; return o; };
+        const done = on => {
+          const cur = lk.querySelector(".ok-c");
+          if (on && !cur) lk.append(okEl()); else if (!on && cur) cur.remove();  // 동원 "종이 비행기는 계속 있는 게 좋지" — 비행기는 그대로, 체크는 글자 뒤
+        };
         lk.addEventListener("click", async ev => {
           ev.stopPropagation();
           const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
@@ -920,7 +927,8 @@
           const r = await shareOrCopy({ url }, matchMedia("(hover: none)").matches, ["photo", `${pid(cur)}-${k + 1}`]);
           if (r === "sheet") return;
           say(r === "shared" ? uiText("shared", "링크를 복사했습니다") : uiText("copy_fail", "복사하지 못했습니다"));
-          setTimeout(() => say(uiText("pv_link", "링크 복사")), 2000);
+          if (r === "shared") done(true);
+          setTimeout(() => { done(false); say(uiText("pv_link", "링크 복사")); }, 2000);
         });
         return lk;
       };
