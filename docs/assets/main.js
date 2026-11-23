@@ -260,6 +260,73 @@
     once([...document.querySelectorAll(".rv, .nt")], el => el.classList.add("in"), { rootMargin: "0px 0px -8% 0px" });  // .nt — '준비 중' 점은 보일 때 세 번만 숨 쉼
   }
 
+  // ④ 소개 허브(11/23 동원 "소개는 B랑 C 합치면" → 시안 기준/브랜드 시안/소개허브시안_v2/BC_합침 · "둘 다 넣어"):
+  // 연도 롤 — 큰 연도가 화면 가운데선을 지나면 왼쪽(휴대폰은 위 띠) 연도의 바뀐 자리만 0.4초 굴러 바뀜(왼쪽 자리부터 45ms) · 눈금을 누르면 그 해로
+  // 가운데 실 — 스크롤만큼 먹색으로 차오름(화면 55%까지) · 실 끝(첫 문 위 선)에 닿으면 매듭 → 선이 가운데서 양옆으로 → 첫 문 그림이 가운데 틈에서 열림
+  // 큰 연도 — 숫자가 마스크 아래에서 60ms씩 · 문 2~4 — 화면에 18% 들어오면 열림. 움직임 줄이기면 다 펼친 채(실 표시만 스크롤 따라)
+  (() => {
+    const hub = document.querySelector("#me.hub");
+    if (!hub) return;
+    const yrs = [...hub.querySelectorAll(".yr")], rail = hub.querySelector(".rail"), chron = hub.querySelector(".chron"), flow = hub.querySelector(".hflow");
+    const thread = hub.querySelector(".thread"), ink = thread && thread.firstElementChild, odo = hub.querySelector(".odo"), ticks = [...hub.querySelectorAll(".ticks button")];
+    const g1 = hub.querySelector(".gate.first"), gates = [...hub.querySelectorAll(".gate")];
+    if (!yrs.length || !g1 || !thread || !odo) return;
+    if (motion) hub.classList.add("mo");
+    else { yrs.forEach(y => y.classList.add("in")); gates.forEach(g => g.classList.add("in")); }
+    let cur = -1;
+    const setYear = (str, dir) => {
+      [...str].forEach((d, i) => {
+        const c = odo.children[i];
+        if (!c) return;
+        const old = c.lastElementChild;
+        if (old && old.textContent === d) return;
+        const n = document.createElement("span");
+        n.textContent = d;
+        if (!old || !motion || !n.animate) { c.textContent = ""; c.append(n); return; }
+        n.className = "nx";
+        c.append(n);
+        const o = { duration: 400, delay: i * 45, easing: "cubic-bezier(.3,.6,.1,1)", fill: "both" };
+        old.animate([{ transform: "translateY(0)" }, { transform: `translateY(${-100 * dir}%)` }], o);
+        n.animate([{ transform: `translateY(${100 * dir}%)` }, { transform: "translateY(0)" }], o).onfinish = () => {
+          if (c.lastElementChild !== n) return;
+          [...c.children].forEach(x => x !== n && x.remove());
+          n.className = "";
+        };
+      });
+    };
+    const tick = () => {
+      const vh = innerHeight;
+      let k = 0;
+      yrs.forEach((y, i) => { if (y.querySelector(".yr-n").getBoundingClientRect().top < vh * .5) k = i; });  // 왼쪽 롤은 화면 가운데에 걸린 연도  // 롤 · 띠 · 실이 같은 선(화면 60%)에서 바뀜(11/23 밤 "롤이 늦거나 빠른")
+      if (k !== cur) {
+        const dir = k > cur ? 1 : -1;
+        cur = k;
+        setYear(yrs[k].dataset.y, dir);
+        ticks.forEach((b, i) => { b.classList.toggle("yc", i === k); if (i === k) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); });
+      }
+      const cr = chron.getBoundingClientRect(), gt = g1.getBoundingClientRect().top;
+      const y0 = yrs[0].querySelector(".yr-n").getBoundingClientRect().top;
+      if (rail) rail.classList.toggle("on", y0 < vh * .6 && gt > vh * .6);  // 실이 첫 문에 넘겨주기 전에 물러남 — 문 그림(x 64)과 겹치지 않게
+      const tr = thread.getBoundingClientRect(), h = Math.max(0, Math.min(tr.height, vh * .8 - tr.top));  // 실은 읽는 선보다 앞서 화면 80%까지 — 첫 문이 화면 아래쪽에서 하얗게 기다리지 않게
+      ink.style.transform = `scaleY(${tr.height ? (h / tr.height).toFixed(4) : 0})`;
+      if (tr.height && h >= tr.height - .5) g1.classList.add("in");
+    };
+    const layout = () => { thread.style.height = Math.max(0, g1.getBoundingClientRect().top - flow.getBoundingClientRect().top) + "px"; tick(); };
+    addEventListener("scroll", tick, { passive: true });
+    addEventListener("resize", layout);
+    if (window.ResizeObserver) new ResizeObserver(layout).observe(hub);
+    if (document.fonts) document.fonts.ready.then(() => { if (!dead) layout(); });
+    ticks.forEach((b, i) => on(b, "click", () => {
+      const y = yrs[i].getBoundingClientRect().top + scrollY - (innerWidth < 768 ? 48 : 64);
+      scrollTo({ top: y, behavior: motion ? "smooth" : "auto" });
+    }));
+    if (motion) {
+      once(yrs, y => y.classList.add("in"), { rootMargin: "0px 0px 0px 0px" });  // 큰 연도가 화면 밑에서 반쯤 잘린 채 기다리지 않게 — 들어오자마자 0.45초
+      once(gates.filter(g => g !== g1), g => g.classList.add("in"), { rootMargin: "0px 0px 12% 0px" });  // 화면에 들어오기 조금 전부터 열림 — 휠을 내린 직후 빈 판이 보이지 않게(11/23 밤 웨일 실측)
+    }
+    layout();
+  })();
+
   // ② 탁본 — 시 칸 글자는 움직이지 않음(10/27 숨 재기 4 — 한 줄씩 찍힘은 「탁본」 한 장에만, 아래 길게 누르기)
 
   // ③ 기록 — 캔버스 하나에 칸을 그림(칸을 요소로 만들면 1,559개가 되어 무거움) + 숫자도 같은 네모 점으로(점 숫자).
@@ -400,11 +467,11 @@
   // 지금 보는 쪽(10/31 쪽 나누기 — 전엔 한 장에서 칸을 따라 밑줄이 미끄러졌음, 10/24 B) — 빌드가 그 쪽 메뉴에 on · aria-current="page"를 붙여 둠 → 그 이름 아래 밑줄만
   const nav = document.querySelector(".top nav");
   if (nav) {
-    const ul = document.createElement("i");
-    ul.className = "ul";
+    const ul = nav.querySelector(":scope > .ul") || document.createElement("i");  // 11/23 갈아 끼울 때 turbo:before-render가 미리 넣어 둔 점 · 밑줄이 있으면 그대로 이어 씀(아래)
+    ul.className = "ul" + (ul.isConnected ? " on" : "");
     ul.setAttribute("aria-hidden", "true");
-    const dt = document.createElement("i");  // 지금 쪽 이름 위 작은 먹 점(11/4 동원 '위에 점도 있으면 좋다' — recent.design 사이드바 점 실측 8px · 우리 메뉴 글자 12.5px라 4px)
-    dt.className = "dt";
+    const dt = nav.querySelector(":scope > .dt") || document.createElement("i");  // 지금 쪽 이름 위 작은 먹 점(11/4 동원 '위에 점도 있으면 좋다' — recent.design 사이드바 점 실측 8px · 우리 메뉴 글자 12.5px라 4px)
+    dt.className = "dt" + (dt.isConnected ? " on" : "");
     dt.setAttribute("aria-hidden", "true");
     nav.append(ul, dt);
     const on = nav.querySelector('a[aria-current="page"]');
@@ -2614,16 +2681,28 @@
     const topH = () => (document.querySelector("header.top") || { offsetHeight: 0 }).offsetHeight;
     // 멈출 자리 = 칸 머리 — 내릴 땐 맨 위 띠가 숨으므로(⑥ 120px 아래 내리면 숨는 띠) 화면 맨 위에, 올릴 땐 띠가 나오므로 띠 바로 아래에(11/15 동원 "멈추는 자리가 어색" —
     // 실측: 내려 멈춘 소개 칸 위에 앞 화면 사람 사진 · SEOUL, KOREA가 띠 높이 64px만큼 남았음)
+    // 11/23 밤 소개 허브(동원 "연표 스크롤이 답답하고 … 연표 끝난 부분의 스크롤 내림도 딱 안 맞춰져"): 멈출 자리 —
+    // 연도 머리(.yr-n 위 끝) · 문 위 가는 선(.gate 위 끝)이 늘 '띠 아래 + 44px'(GAP — 내릴 땐 띠가 숨어 화면 맨 위 + 44) · 연표 안 한 몸짓은 화면 78% 안의 가장 아래 연도 머리까지(next)
+    // 자리는 몸짓마다 그때 화면에서 다시 잼(글꼴 · 그림이 늦게 와 높이가 바뀌어도 맞음)
+    const GAP = 44;
+    let YS = new Set();  // 그중 연도 머리 자리
     const stops = (d = 1) => {
-      const th = d > 0 ? 0 : topH();
-      const s = [0, me.offsetTop - th];
+      const th = d > 0 ? 0 : topH(), at = el => el.getBoundingClientRect().top + scrollY;
+      const s = [[0, ""], [me.offsetTop - th, ""]];
+      if (me.classList.contains("hub")) {
+        me.querySelectorAll(".yr-n").forEach(n => s.push([at(n) - th - GAP, "y"]));
+        me.querySelectorAll(".gate").forEach(g => s.push([at(g) - th - GAP, ""]));
+      }
       let n = me.nextElementSibling;
-      for (; n; n = n.nextElementSibling) if (n.offsetHeight > 120) s.push(n.offsetTop - th);
-      const f = document.querySelector("footer.foot, .colo"); if (f) s.push(f.getBoundingClientRect().top + scrollY - th);
+      for (; n; n = n.nextElementSibling) if (n.offsetHeight > 120) s.push([n.offsetTop - th, ""]);
+      const f = document.querySelector("footer.foot, .colo"); if (f) s.push([f.getBoundingClientRect().top + scrollY - th, ""]);
       const max = document.documentElement.scrollHeight - innerHeight;
-      s.push(max);
+      s.push([max, ""]);
       // 페이지 끝보다 아래 자리(바닥글 머리 2009 > 끝 1694 — 11/15 실측)는 끝으로 — 맨 아래에서 한 번 더 내리면 보이지 않는 0.8초 넘김이 돌며 다음 몸짓과 엉키던 것
-      return [...new Set(s.map(v => Math.min(Math.max(0, max), Math.max(0, Math.round(v)))))].sort((a, b) => a - b);
+      const fix = v => Math.min(Math.max(0, max), Math.max(0, Math.round(v))), out = new Map();
+      s.forEach(([v, k]) => { const x = fix(v); if (!out.has(x) || k) out.set(x, k); });
+      YS = new Set([...out].filter(([, k]) => k === "y").map(([x]) => x));
+      return [...out.keys()].sort((a, b) => a - b);
     };
     // 11/15 동원 "한 번 내리면 그 다음에 내릴 때는 작동을 안한다" — 실측: 트랙패드 관성(손 뗀 뒤 1~2초 휠이 이어짐) 중에 다시 밀면 0.2초 쉼이 없어 버려졌고(1초 간격 세 번 → 한 칸),
     // 넘기는 0.8초 동안 들어온 휠도 버려졌음(마우스 딸깍 0.35초 간격 세 번 → 한 칸). → 새 몸짓 알아보기에 '휠 값이 갑자기 커짐(관성은 줄기만 함) · 방향 바뀜'을 더하고,
@@ -2643,19 +2722,30 @@
       const s = stops(d), tol = topH() + 4;  // 띠 높이만큼 차이 나는 두 자리(900 · 836)는 같은 칸 — 띠 높이만큼만 꿈틀 움직이지 않게
       // 페이지 끝은 거리와 상관없이 갈 수 있게(11/15 동원 "맨 아래 까지 안 내려가는 느낌" — 실측: 끝에 닿은 뒤 글꼴 · 그림이 늦게 와 18px 길어지면 띠 높이 안이라 '같은 칸'으로 버려졌음)
       const end = Math.max(0, document.documentElement.scrollHeight - innerHeight);
-      if (d > 0) { const nx = s.find(v => v > y + tol) ?? (end > y + 1 ? end : undefined); return Math.min(nx === undefined ? y : nx, y + innerHeight); }
-      const pv = [...s].reverse().find(v => v < y - tol); return Math.max(pv === undefined ? 0 : pv, y - innerHeight);
+      const span = innerHeight * .78;  // 연표 안 한 몸짓 — 연도 하나씩(약 190px)이면 답답했음 → 화면 78% 안의 가장 먼 연도 머리까지(한 화면에 연도 서넛이 지나감)
+      if (d > 0) {
+        let i = s.findIndex(v => v > y + tol);
+        if (i < 0) return end > y + 1 ? Math.min(end, y + innerHeight) : y;
+        if (YS.has(s[i])) while (i + 1 < s.length && YS.has(s[i + 1]) && s[i + 1] <= y + span) i++;
+        return Math.min(s[i], y + innerHeight);
+      }
+      const up = s.filter(v => v < y - tol);
+      if (!up.length) return Math.max(0, y - innerHeight);
+      let i = up.length - 1;
+      if (YS.has(up[i])) while (i > 0 && YS.has(up[i - 1]) && up[i - 1] >= y - span) i--;
+      return Math.max(up[i], y - innerHeight);
     };
+    const dur = to => Math.round(450 + 350 * Math.min(1, Math.abs(to - scrollY) / innerHeight));  // 넘김 시간은 거리에 비례 — 짧으면 0.45초 · 한 화면이면 0.8초(작은 칸을 0.8초로 끌지 않게)
     const move = dir => {
       const d = Math.sign(dir);
       if (!d) return;
       if (busy) {
         const to = next(d === motionDir ? target : scrollY, d);
-        if (to !== target && Math.abs(to - scrollY) > 1) go(to, easeOut, 700);
+        if (to !== target && Math.abs(to - scrollY) > 1) go(to, easeOut, Math.min(700, dur(to)));
         return;
       }
       const to = next(scrollY, d);
-      if (Math.abs(to - scrollY) > 1) go(to);
+      if (Math.abs(to - scrollY) > 1) go(to, ease, dur(to));
     };
     const blocked = t => still() || H.style.overflow === "hidden" || [...document.querySelectorAll('[aria-modal="true"]')].some(d => !d.hidden && d.offsetParent !== null)
       || (t instanceof Element && t.closest("input, textarea, select, [contenteditable=true], .lsw[open] ul, .srch"));
@@ -2785,7 +2875,7 @@
   // 넓은 창(1024~)에서만 · 첫 화면 사람 사진 위에서도 보이게 색 뒤집기(mix-blend difference) · 누르면 그 칸으로 · 키보드 초점도 올린 것과 같게
   (() => {
     const me = document.getElementById("me");
-    if (!me || !document.querySelector(".tk")) return;
+    if (!me || !document.querySelector(".tk") || me.classList.contains("hub")) return;  // 11/23 소개 허브는 왼쪽 연도 롤(.rail)이 이 자리를 맡음 — 칸(지금 · 기록 · 다음 쪽)도 없어짐
     const names = uiText("si_items", "처음|소개|지금|기록|다음 페이지").split("|");
     const targets = [null, me, me.querySelector(".now"), me.querySelector(".rec"), document.querySelector(".nxp")];
     const items = names.map((n, i) => [n, targets[i]]).filter(([, el], i) => i === 0 || el);
@@ -2884,11 +2974,34 @@
       rows.forEach((r, i) => { const b = r.querySelector(".mu-pl"), p = on && i === k; b.innerHTML = p ? IC.s : IC.p; b.classList.toggle("on", p); b.setAttribute("aria-label", (p ? LB.s : LB.p) + ": " + name(r)); });
       btn.innerHTML = on ? IC.s : IC.p; btn.classList.toggle("on", on); btn.setAttribute("aria-label", on ? LB.s : LB.p);
     };
+    // 11/23 음악 v3(시안 음악페이지시안_v3/AD_합침): 판 — 재생하면 그 곡이 든 판(.ma)의 레코드판이 표지 뒤에서 나와(.out) 돎(.play) · 멈추면 그 각도에서 섬
+    // 가사 따라가기 — 줄 시간표가 있는 곡(.ma-ly.fol)만: 지금 시각의 줄만 먹(.act) · 그 줄이 창 위 35% 자리로 미끄러짐 · 줄을 누르면 그 자리부터 재생
+    let lk = -1;
+    const lyOf = i => sec.querySelector('.ma-ly.fol[data-i="' + i + '"]');
+    const center = (box, j, act) => {
+      const ls = [...box.querySelectorAll(".ma-ln")], L = ls[Math.max(0, j)], lt = box.querySelector(".ma-lt"), lw = box.querySelector(".ma-lw");
+      if (!L || !lt || !lw) return;
+      lt.style.transform = "translateY(" + (lw.clientHeight * .35 - L.offsetTop - L.offsetHeight / 2) + "px)";
+      ls.forEach((l, n) => l.classList.toggle("act", act && n === j));
+    };
+    const follow = () => {
+      const box = k >= 0 && lyOf(k);
+      if (!box) return;
+      const ls = [...box.querySelectorAll(".ma-ln")];
+      let j = -1;
+      ls.forEach((l, n) => { if (au.currentTime >= +l.dataset.t) j = n; });
+      if (j !== lk) { lk = j; center(box, Math.max(0, j), j >= 0); }
+    };
+    const spin = () => sec.querySelectorAll(".ma").forEach(m => m.classList.toggle("play", !au.paused && k >= 0 && m === rows[k].closest(".ma")));
     const pick = i => {  // 가사 · 표지 · 고른 줄 표시만(소리는 그대로) — 앨범마다 한 판이라 그 곡이 든 판 안에서만 바꿈(11/17 앨범 꼴)
-      const box = rows[i].closest(".ma"), c = rows[i].dataset.cover, cv = box.querySelector(".ma-cv");
+      const box = rows[i].closest(".ma"), c = rows[i].dataset.cover, cv = box.querySelector(".ma-cv"), lb = box.querySelector(".ma-vy b");
       box.querySelectorAll(".ma-ol li").forEach(r => r.classList.toggle("sel", r === rows[i]));
       box.querySelectorAll(".ma-ly").forEach(l => { l.hidden = +l.dataset.i !== i; });
       if (cv) cv.innerHTML = c ? '<img src="' + c + '" alt="" decoding="async">' : "";
+      if (lb) lb.style.backgroundImage = c ? 'url("' + c + '")' : "";
+      lk = -1;
+      const ly = lyOf(i);
+      if (ly) center(ly, 0, false);
     };
     const load = i => {
       k = i; pick(i);
@@ -2904,6 +3017,20 @@
     rows.forEach((r, i) => r.addEventListener("click", e => { if (e.target.closest("a")) return; play(i); }));
     btn.addEventListener("click", () => (k < 0 ? play(0) : au.paused ? play(k) : au.pause()));
     ["play", "pause", "ended"].forEach(v => au.addEventListener(v, paint));
+    ["play", "pause", "ended"].forEach(v => au.addEventListener(v, spin));
+    au.addEventListener("play", () => { if (k >= 0) rows[k].closest(".ma").classList.add("out"); });
+    au.addEventListener("timeupdate", follow);
+    au.addEventListener("seeked", follow);
+    sec.querySelectorAll(".ma-ly.fol").forEach(ly => {
+      const i = +ly.dataset.i;
+      if (!ly.hidden) center(ly, 0, false);
+      ly.querySelectorAll(".ma-ln").forEach(l => l.addEventListener("click", () => {
+        const t = +l.dataset.t, go = () => { au.currentTime = t; follow(); };
+        if (i !== k) { play(i); if (au.readyState >= 1) go(); else au.addEventListener("loadedmetadata", go, { once: true }); }
+        else { go(); if (au.paused) play(k); }
+      }));
+    });
+    addEventListener("resize", () => { const ly = k >= 0 && lyOf(k); if (ly) { const j = lk; lk = -2; if (j >= 0) center(ly, j, true); else center(ly, 0, false); lk = j; } });
     au.addEventListener("loadedmetadata", () => { const d = fmt(Math.round(au.duration)); if (!rows[k].querySelector(".mu-tm").textContent) rows[k].querySelector(".mu-tm").textContent = d; dur.textContent = rows[k].querySelector(".mu-tm").textContent; /* 길이는 목록과 같은 값(빌드는 반올림) */ });
     au.addEventListener("timeupdate", () => { if (dragging || !au.duration) return; cur.textContent = fmt(au.currentTime); seek.value = Math.round(au.currentTime / au.duration * 1000); seek.style.setProperty("--p", seek.value / 10 + "%"); });
     au.addEventListener("ended", () => { if (k + 1 < rows.length) play(k + 1); });
@@ -3032,6 +3159,17 @@
     // 동의 창은 같은 판끼리만 그대로 남김 — 다른 판(언어 바꾸기)이면 그 판의 새 창을 받음(consent.js가 새 창에 다시 붙음)
     const cz0 = document.getElementById("cz"), cz1 = e.detail.newBody && e.detail.newBody.querySelector("#cz");
     if (cz0 && cz1 && cz0.dataset.lang !== cz1.dataset.lang) cz1.removeAttribute("data-turbo-permanent");
+    // 11/23 동원 "gnb 옮길 때 공 안 튀기는데?" — 기능(점 · 밑줄 만들기)은 넘김 효과가 끝난 뒤에 붙여(11/21 c25fcfe9 — 끊김 고침) 효과가 새 페이지를 찍는 순간 점이 없었음
+    // → 점이 옆으로 건너가지 못하고 옛 자리에서 튀고 새 자리에 그냥 나타남(웨일 실측 — group(ndw-dot) 움직임 없음 · new(ndw-ul) 없음) → 새 body의 메뉴에 점 · 밑줄을 미리 그 자리에(메뉴 자리는 페이지마다 같아 지금 화면에서 잼)
+    const nv0 = document.querySelector(".top nav"), nv1 = e.detail.newBody && e.detail.newBody.querySelector(".top nav");
+    const a1 = nv1 && !nv1.querySelector(":scope > .dt") && nv1.querySelector('a[aria-current="page"]:not(.cta)'), a0 = a1 && nv0 && nv0.querySelector(`a[data-pg="${a1.dataset.pg || ""}"]`);
+    if (a0 && a0.offsetWidth) {
+      const w = a0.offsetWidth - (parseFloat(getComputedStyle(a0).letterSpacing) || 0), ul = document.createElement("i"), dt = document.createElement("i");
+      ul.className = "ul on"; dt.className = "dt on"; ul.setAttribute("aria-hidden", "true"); dt.setAttribute("aria-hidden", "true");
+      ul.style.width = w + "px"; ul.style.transform = `translate(${a0.offsetLeft}px, 0px)`;
+      dt.style.transform = `translate(${a0.offsetLeft + w / 2 - 2}px, ${a0.offsetTop}px)`;
+      nv1.append(ul, dt);
+    }
     H.classList.add("js");  // 처리방침 · 404(머리 시작 줄이 짧아 js · 글자 크기 표시가 없음)에서 메뉴 페이지로 올 때도 메뉴 페이지 머리 시작 줄과 같게
     try {
       if (localStorage.getItem("door")) H.classList.add("seen");  // 머리 시작 줄이 새로 받을 때 붙이던 '다시 온 방문' 표시 — 갈아 끼울 때도 같게
