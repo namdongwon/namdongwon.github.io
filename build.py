@@ -2233,7 +2233,12 @@ def render(site, poem, videos, photos, lang="ko"):
     # 인기 검색어 순위(11/15 동원 무인양품 캡처 → 찾기창순위시안_v1 'B 진짜 순위 (권장)'): content/search_rank.json — 관리 화면이 주마다 GA4 search 이벤트(동의한 방문의 찾은 말 · 11/7부터)를
     # 세어 판마다 상위 10을 씀 · 다섯 줄 넘게 있을 때만 순위(번호 · 1~3위 먹 · 지난주와 견준 변화), 없으면 지금 고른 목록을 '바로 가기'로(순위가 아니므로)
     rk = load("search_rank.json") if (CONTENT / "search_rank.json").exists() else {}
-    rk_items = [x for x in ((rk.get("langs") or {}).get(lang) or {}).get("items", []) if (x.get("term") or "").strip()][:10]
+    # 11/24 원고 꼴(어드민 세션 제안 · 관리 화면 표와 같은 꼴): items[] 한 줄 = 한국어 term + 줄 안 판별 term · 옛 꼴(langs.{판}.items)도 읽음(순서가 어긋나도 안전)
+    if rk.get("items") is not None:
+        rk_src = [({**x, "term": x.get("term") or ""} if lang == "ko" else {**x, "term": ((x.get(lang) or {}).get("term") or "")}) for x in rk["items"]]
+    else:
+        rk_src = ((rk.get("langs") or {}).get(lang) or {}).get("items", [])
+    rk_items = [x for x in rk_src if (x.get("term") or "").strip()][:10]
     rk_items = rk_items if len(rk_items) >= 5 and (rk.get("updated") or rk.get("curated")) else []
     rk_cur = bool(rk.get("curated"))  # 동원이 정한 고정 순위(11/15) — 센 것이 아니라 날짜 · 변화 표시 없이 번호만
     rk_when = "" if rk_cur or not rk_items else f'<small>{t("rank_when", date=dtxt(rk.get("updated", "")))}</small>'  # 기준 날짜(집계 순위일 때만)
