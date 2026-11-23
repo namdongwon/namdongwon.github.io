@@ -2950,11 +2950,34 @@
       rows.forEach((r, i) => { const b = r.querySelector(".mu-pl"), p = on && i === k; b.innerHTML = p ? IC.s : IC.p; b.classList.toggle("on", p); b.setAttribute("aria-label", (p ? LB.s : LB.p) + ": " + name(r)); });
       btn.innerHTML = on ? IC.s : IC.p; btn.classList.toggle("on", on); btn.setAttribute("aria-label", on ? LB.s : LB.p);
     };
+    // 11/23 음악 v3(시안 음악페이지시안_v3/AD_합침): 판 — 재생하면 그 곡이 든 판(.ma)의 레코드판이 표지 뒤에서 나와(.out) 돎(.play) · 멈추면 그 각도에서 섬
+    // 가사 따라가기 — 줄 시간표가 있는 곡(.ma-ly.fol)만: 지금 시각의 줄만 먹(.act) · 그 줄이 창 위 35% 자리로 미끄러짐 · 줄을 누르면 그 자리부터 재생
+    let lk = -1;
+    const lyOf = i => sec.querySelector('.ma-ly.fol[data-i="' + i + '"]');
+    const center = (box, j, act) => {
+      const ls = [...box.querySelectorAll(".ma-ln")], L = ls[Math.max(0, j)], lt = box.querySelector(".ma-lt"), lw = box.querySelector(".ma-lw");
+      if (!L || !lt || !lw) return;
+      lt.style.transform = "translateY(" + (lw.clientHeight * .35 - L.offsetTop - L.offsetHeight / 2) + "px)";
+      ls.forEach((l, n) => l.classList.toggle("act", act && n === j));
+    };
+    const follow = () => {
+      const box = k >= 0 && lyOf(k);
+      if (!box) return;
+      const ls = [...box.querySelectorAll(".ma-ln")];
+      let j = -1;
+      ls.forEach((l, n) => { if (au.currentTime >= +l.dataset.t) j = n; });
+      if (j !== lk) { lk = j; center(box, Math.max(0, j), j >= 0); }
+    };
+    const spin = () => sec.querySelectorAll(".ma").forEach(m => m.classList.toggle("play", !au.paused && k >= 0 && m === rows[k].closest(".ma")));
     const pick = i => {  // 가사 · 표지 · 고른 줄 표시만(소리는 그대로) — 앨범마다 한 판이라 그 곡이 든 판 안에서만 바꿈(11/17 앨범 꼴)
-      const box = rows[i].closest(".ma"), c = rows[i].dataset.cover, cv = box.querySelector(".ma-cv");
+      const box = rows[i].closest(".ma"), c = rows[i].dataset.cover, cv = box.querySelector(".ma-cv"), lb = box.querySelector(".ma-vy b");
       box.querySelectorAll(".ma-ol li").forEach(r => r.classList.toggle("sel", r === rows[i]));
       box.querySelectorAll(".ma-ly").forEach(l => { l.hidden = +l.dataset.i !== i; });
       if (cv) cv.innerHTML = c ? '<img src="' + c + '" alt="" decoding="async">' : "";
+      if (lb) lb.style.backgroundImage = c ? 'url("' + c + '")' : "";
+      lk = -1;
+      const ly = lyOf(i);
+      if (ly) center(ly, 0, false);
     };
     const load = i => {
       k = i; pick(i);
@@ -2970,6 +2993,20 @@
     rows.forEach((r, i) => r.addEventListener("click", e => { if (e.target.closest("a")) return; play(i); }));
     btn.addEventListener("click", () => (k < 0 ? play(0) : au.paused ? play(k) : au.pause()));
     ["play", "pause", "ended"].forEach(v => au.addEventListener(v, paint));
+    ["play", "pause", "ended"].forEach(v => au.addEventListener(v, spin));
+    au.addEventListener("play", () => { if (k >= 0) rows[k].closest(".ma").classList.add("out"); });
+    au.addEventListener("timeupdate", follow);
+    au.addEventListener("seeked", follow);
+    sec.querySelectorAll(".ma-ly.fol").forEach(ly => {
+      const i = +ly.dataset.i;
+      if (!ly.hidden) center(ly, 0, false);
+      ly.querySelectorAll(".ma-ln").forEach(l => l.addEventListener("click", () => {
+        const t = +l.dataset.t, go = () => { au.currentTime = t; follow(); };
+        if (i !== k) { play(i); if (au.readyState >= 1) go(); else au.addEventListener("loadedmetadata", go, { once: true }); }
+        else { go(); if (au.paused) play(k); }
+      }));
+    });
+    addEventListener("resize", () => { const ly = k >= 0 && lyOf(k); if (ly) { const j = lk; lk = -2; if (j >= 0) center(ly, j, true); else center(ly, 0, false); lk = j; } });
     au.addEventListener("loadedmetadata", () => { const d = fmt(Math.round(au.duration)); if (!rows[k].querySelector(".mu-tm").textContent) rows[k].querySelector(".mu-tm").textContent = d; dur.textContent = rows[k].querySelector(".mu-tm").textContent; /* 길이는 목록과 같은 값(빌드는 반올림) */ });
     au.addEventListener("timeupdate", () => { if (dragging || !au.duration) return; cur.textContent = fmt(au.currentTime); seek.value = Math.round(au.currentTime / au.duration * 1000); seek.style.setProperty("--p", seek.value / 10 + "%"); });
     au.addEventListener("ended", () => { if (k + 1 < rows.length) play(k + 1); });

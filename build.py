@@ -950,6 +950,20 @@ MU_PLAY = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fo
 MU_PAUSE = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M4 3h2.6v10H4zM9.4 3H12v10H9.4z" fill="currentColor"/></svg>'
 
 
+LRC_T = re.compile(r"\[(\d+):(\d{1,2}(?:\.\d+)?)\]")
+
+
+def parse_lrc(s):  # 11/23 가사 따라가기(음악 v3 'A 레코드판 + D 가사 따라가기') — 곡의 줄 시간표(LRC 글: '[01:23.45]가사 한 줄' · 빈 줄 '[01:30.00]'은 연 사이) → [(초, 줄)] · 없으면 []
+    out = []
+    for line in str(s or "").splitlines():
+        ts = LRC_T.findall(line)
+        if not ts:
+            continue  # [ar:…] 같은 머리 줄 · 시간 없는 줄은 건너뜀
+        txt = LRC_T.sub("", line).strip()
+        out += [(int(m) * 60 + float(sec), txt) for m, sec in ts]
+    return sorted(out, key=lambda x: x[0])
+
+
 def music_items(mu):  # 음악 곡(11/17) — public만 · 새 곡이 위 · 소리 파일이 있는 곡만 · 길이(dur)가 비면 맥 afinfo로 잼(없으면 빈칸 — 재생하면 main.js가 채움)
     out = []
     for x in sorted((x for x in mu.get("items", []) if x.get("status", "public") == "public"), key=lambda x: x.get("date", ""), reverse=True):
@@ -2422,7 +2436,11 @@ def render(site, poem, videos, photos, lang="ko"):
                             + (f'<small>{t("mu_from", poem=e(x["from_poem"]))}</small>' if x.get("from_poem") else "")
                             + f'</span><span class="mu-tm">{fmt(x.get("dur") or iso_secs(x.get("duration")))}</span>'
                             f'<button type="button" class="mu-pl" aria-label="{play}: {ttl(x)}">{MU_PLAY}</button></li>')
-                if x.get("lyrics") or x.get(f"lyrics_{lang}"):
+                lrc = parse_lrc(x.get(f"lrc_{lang}") or x.get("lrc"))  # 줄 시간표가 있는 곡만 따라가기(지금 부르는 줄만 먹 · 그 줄이 창 위 35% 자리로 · 줄을 누르면 그 자리부터 — main.js) · 없으면 전처럼 가사 전문
+                if lrc:
+                    lns = "".join('<span class="ma-gap"></span>' if not l_ else f'<button type="button" class="ma-ln" data-t="{t_:.2f}"><span class="ma-lx" aria-hidden="true">{fmt(t_) or "0:00"}</span>{e(l_)}</button>' for t_, l_ in lrc)
+                    lys.append(f'<div class="ma-ly fol" data-i="{gi}"{"" if n == 0 else " hidden"}><h3 class="mu-k">{t("mu_lyrics")} · {ttl(x)}</h3><div class="ma-lw"><div class="ma-lt">{lns}</div></div></div>')
+                elif x.get("lyrics") or x.get(f"lyrics_{lang}"):
                     lys.append(f'<div class="ma-ly" data-i="{gi}"{"" if n == 0 else " hidden"}><h3 class="mu-k">{t("mu_lyrics")} · {ttl(x)}</h3>{lyr(x)}</div>')
                 gi += 1
             mins = max(1, round(sum(x.get("dur") or iso_secs(x.get("duration")) or 0 for x in tr_s) / 60))  # 11/19 duration(ISO · m4a 머리에서 어드민이 읽음)도 셈
@@ -2431,7 +2449,9 @@ def render(site, poem, videos, photos, lang="ko"):
             hid = ' id="music-t"' if ai == 0 else ""
             c0 = img(tr_s[0].get("cover") or ab.get("cover"))
             pre = ab.get("status") == "preparing" or ab.get("date", "") > day.isoformat()  # 발매 전(발매일이 빌드한 날보다 뒤 · status preparing) — 표지에 '준비 중'(유튜브 첫 편 썸네일과 같은 배지 · 11/17 동원 "준비중 띄워야지")
-            blocks.append(f'''    <div class="ma"><div class="ma-l"><div class="ma-cv{" soon" if pre else ""}">{f'<img src="{c0}" alt="{e(loc(ab["cover_alt"]) if isinstance(ab.get("cover_alt"), dict) else ab.get("cover_alt") or "")}" loading="lazy" decoding="async"{focus_style(ab.get("cover_focus"))}>' if c0 else ""}{SOON if pre else ""}</div></div>
+            vst = f' style="background-image:url({c0})"' if c0 else ""
+            vy = f'<div class="ma-vy" aria-hidden="true"><i><b{vst}></b></i></div>'  # 11/23 표지 뒤 레코드판(Erased Tapes 꼴) — 재생하면 오른쪽으로 나와 33회전(1.8초에 한 바퀴) · main.js
+            blocks.append(f'''    <div class="ma"><div class="ma-l"><div class="ma-st">{vy}<div class="ma-cv{" soon" if pre else ""}">{f'<img src="{c0}" alt="{e(loc(ab["cover_alt"]) if isinstance(ab.get("cover_alt"), dict) else ab.get("cover_alt") or "")}" loading="lazy" decoding="async"{focus_style(ab.get("cover_focus"))}>' if c0 else ""}{SOON if pre else ""}</div></div></div>
       <div class="ma-r"><p class="mu-k">{kind}</p><h2 class="mu-t"{hid}>{loc(ab["title"])}</h2><p class="mu-one">{e(S["name"])}</p>
       <ol class="ma-ol" aria-label="{t("mu_list")}">{"".join(rows)}</ol><p class="ma-meta">{meta}</p>{"".join(lys)}</div></div>''')
         if not blocks:

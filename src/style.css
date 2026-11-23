@@ -1843,3 +1843,37 @@ main>#me.hub{display:block;padding:0 0 64px}
 .g-go:focus-visible{outline:1.5px solid var(--ink);outline-offset:6px}
 @media (min-width:768px) and (max-width:1279px){.rail{display:none}}  /* 연도 롤은 1280부터 — 좁은 넓은 창에선 x 48 띠가 연도 · 문 그림과 가까워짐(시안 메모 위험 ④) */
 @media print{.rail,.thread,.knot{display:none!important}.hub .g-fr{clip-path:none!important}}
+
+/* ── 음악 v3(11/23 동원 "음악은 a랑 d랑 합치면" → 시안 기준/브랜드 시안/음악페이지시안_v3/AD_합침 · "둘 다 넣어"): 곡을 누르면 표지 뒤에서 판이 나와 돌고(A · Erased Tapes)
+   줄 시간표(lrc)가 있는 곡은 가사가 한 줄씩 따라감(D · Apple Music · Lola Wilde) — 지금 줄만 먹 · 나머지 옅게 · 지금 줄이 창 위 35%로 · 줄을 누르면 그 자리부터. 움직임은 main.js */
+.ma-st{position:relative}
+.ma-st .ma-cv{z-index:1}
+.ma-vy{position:absolute;z-index:0;top:3%;left:3%;width:94%;aspect-ratio:1;transition:transform 1s var(--ease)}
+.ma-vy i{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,#101010 0 1px,#1d1d1d 1.6px 3.2px);box-shadow:0 18px 30px -18px rgba(0,0,0,.6);animation:maspin 1.8s linear infinite;animation-play-state:paused}
+.ma-vy b{position:absolute;inset:35%;border-radius:50%;background:#e9e6df 50% 30%/cover no-repeat;box-shadow:0 0 0 2px #0b0b0b}
+.ma-vy b::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:8px;border-radius:50%;background:var(--bg);transform:translate(-50%,-50%)}
+.ma-vy::after{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,transparent 0 6%,rgba(255,255,255,.10) 12%,transparent 20% 52%,rgba(255,255,255,.07) 60%,transparent 68%);pointer-events:none}
+.ma.out .ma-vy{transform:translateX(44%)}
+.ma.play .ma-vy i{animation-play-state:running}
+@keyframes maspin{to{transform:rotate(360deg)}}
+.ma-ly.fol .mu-k{margin-bottom:12px}
+.ma-lw{position:relative;height:240px;overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 16%,#000 80%,transparent);mask-image:linear-gradient(transparent,#000 16%,#000 80%,transparent)}
+.ma-lt{transition:transform .6s var(--ease)}
+.ma-ln{display:block;width:100%;padding:4px 0;border:0;background:none;text-align:left;font:400 17px/1.6 var(--serif);color:var(--ink);opacity:.22;transform-origin:left center;cursor:pointer;word-break:keep-all;transition:opacity .35s,transform .35s var(--ease)}
+.ma-ln.act{opacity:1;transform:scale(1.02)}
+.ma-ln:focus-visible{opacity:.5;outline-offset:2px}
+.ma-ln:active{opacity:.7}
+.ma-lx{display:none}
+.ma-gap{display:block;height:16px}
+#music{overflow-x:clip}  /* 나온 판이 휴대폰 폭을 넘지 않게 */
+@media (hover:hover){.ma-ln:hover{opacity:.5}}
+@media (max-width:767px){.ma-st{max-width:240px}.ma-st .ma-cv{max-width:none}}
+@media (min-width:768px){
+  .ma:has(.ma-vy){grid-template-columns:minmax(0,360px) minmax(0,1fr);column-gap:calc(64px * 3)}  /* 나온 판(표지 44%)이 오른쪽 곡 줄에 닿지 않게 */
+  .ma-lw{height:300px}
+  .ma-ln{font-size:19px}
+  .ma-lx{display:inline-block;width:44px;margin-left:-44px;font:400 11px/1 var(--sans);color:var(--faint);vertical-align:middle;opacity:0;transition:opacity .2s;font-variant-numeric:tabular-nums}
+  .ma-ln:focus-visible .ma-lx{opacity:1}
+}
+@media (min-width:768px) and (hover:hover){.ma-ln:hover .ma-lx{opacity:1}}
+@media (prefers-reduced-motion:reduce){.ma-vy,.ma-lt,.ma-ln{transition:none}.ma-vy i{animation:none}}
