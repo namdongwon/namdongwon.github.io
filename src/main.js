@@ -2691,7 +2691,9 @@
       const s = [[0, ""], [me.offsetTop - th, ""]];
       if (me.classList.contains("hub")) {
         me.querySelectorAll(".yr-n").forEach(n => s.push([at(n) - th - GAP, "y"]));
-        me.querySelectorAll(".gate").forEach(g => s.push([at(g) - th - GAP, ""]));
+        // 넓은 창(1024~)은 문 하나 = 화면 한 장(style.css · 칸 높이 = 화면) — 문 칸 맨 위가 화면 맨 위(내릴 때 띠 숨음) · 띠 바로 아래(올릴 때) → 이웃 문은 안 보임 · 좁은 창은 위 선이 띠 아래 + 44
+        const one = innerWidth >= 1024;
+        me.querySelectorAll(".gate").forEach(g => s.push([at(g) - th - (one ? 0 : GAP), ""]));
       }
       let n = me.nextElementSibling;
       for (; n; n = n.nextElementSibling) if (n.offsetHeight > 120) s.push([n.offsetTop - th, ""]);
@@ -2722,18 +2724,18 @@
       const s = stops(d), tol = topH() + 4;  // 띠 높이만큼 차이 나는 두 자리(900 · 836)는 같은 칸 — 띠 높이만큼만 꿈틀 움직이지 않게
       // 페이지 끝은 거리와 상관없이 갈 수 있게(11/15 동원 "맨 아래 까지 안 내려가는 느낌" — 실측: 끝에 닿은 뒤 글꼴 · 그림이 늦게 와 18px 길어지면 띠 높이 안이라 '같은 칸'으로 버려졌음)
       const end = Math.max(0, document.documentElement.scrollHeight - innerHeight);
-      const span = innerHeight * .78;  // 연표 안 한 몸짓 — 연도 하나씩(약 190px)이면 답답했음 → 화면 78% 안의 가장 먼 연도 머리까지(한 화면에 연도 서넛이 지나감)
+      const span = innerHeight * .78, reach = innerHeight + topH() + 4;  // 한 몸짓 최대 거리 — 화면 + 띠(11/24 문 한 장: 칸 사이가 정확히 화면 높이라 띠 높이만큼 모자라면 낮은 창에서 9px씩 어긋난 채 이어졌음)  // 연표 안 한 몸짓 — 연도 하나씩(약 190px)이면 답답했음 → 화면 78% 안의 가장 먼 연도 머리까지(한 화면에 연도 서넛이 지나감)
       if (d > 0) {
         let i = s.findIndex(v => v > y + tol);
-        if (i < 0) return end > y + 1 ? Math.min(end, y + innerHeight) : y;
+        if (i < 0) return end > y + 1 ? Math.min(end, y + reach) : y;
         if (YS.has(s[i])) while (i + 1 < s.length && YS.has(s[i + 1]) && s[i + 1] <= y + span) i++;
-        return Math.min(s[i], y + innerHeight);
+        return Math.min(s[i], y + reach);
       }
       const up = s.filter(v => v < y - tol);
-      if (!up.length) return Math.max(0, y - innerHeight);
+      if (!up.length) return Math.max(0, y - reach);
       let i = up.length - 1;
       if (YS.has(up[i])) while (i > 0 && YS.has(up[i - 1]) && up[i - 1] >= y - span) i--;
-      return Math.max(up[i], y - innerHeight);
+      return Math.max(up[i], y - reach);
     };
     const dur = to => Math.round(450 + 350 * Math.min(1, Math.abs(to - scrollY) / innerHeight));  // 넘김 시간은 거리에 비례 — 짧으면 0.45초 · 한 화면이면 0.8초(작은 칸을 0.8초로 끌지 않게)
     const move = dir => {

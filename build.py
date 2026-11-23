@@ -2348,7 +2348,7 @@ def render(site, poem, videos, photos, lang="ko"):
     def gate(n, key, side, frame, cap_l, cap_r, mt, title, lines, go_href, go_txt, tcls=""):
         lab = f'<p class="g-lab" style="--i:0"><span class="g-no">{n:02d}</span><span class="g-dash"></span><span>{e(navname[key])}</span>' + (f'<span class="g-mt">{mt}</span>' if mt else "") + "</p>"
         lns = "".join(f'<p class="g-l{" g-st" if j else ""}" style="--i:{j + 2}">{x}</p>' for j, x in enumerate(lines) if x)
-        return (f'<article class="gate{" rt" if side else ""}{" first" if n == 1 else ""}" id="g{n}" aria-labelledby="g{n}-t">' + ('<i class="knot" aria-hidden="true"></i>' if n == 1 else "")
+        return (f'<article class="gate{" g-rt" if side else ""}{" first" if n == 1 else ""}" id="g{n}" aria-labelledby="g{n}-t">' + ('<i class="knot" aria-hidden="true"></i>' if n == 1 else "")
                 + f'<div class="g-ph"><a class="g-fr" href="{go_href}" tabindex="-1" aria-hidden="true"><span class="g-zm">{frame}</span></a>'
                 + (f'<p class="g-cap"><span>{cap_l}</span><span class="g-k">{cap_r}</span></p>' if cap_l or cap_r else "") + "</div>"
                 + f'<div class="g-tx"><div class="g-hd">{lab}<h3 id="g{n}-t" class="{tcls}" style="--i:1">{title}</h3></div><div class="g-bd">{lns}<p style="--i:{len(lines) + 2}"><a class="g-go" href="{go_href}">{go_txt}<i aria-hidden="true">→</i></a></p></div></div></article>')

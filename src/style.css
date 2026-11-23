@@ -1733,7 +1733,7 @@ main>#me.hub{display:block;padding:0 0 64px}
 .gates{position:relative;max-width:1440px;margin:0 auto;padding:64px 20px 0}
 .gate{position:relative;display:grid;grid-template-columns:minmax(0,1fr);padding:30px 0 64px}
 .gate::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--rule);transform-origin:0 50%}
-.gate.rt::before{transform-origin:100% 50%}
+.gate.g-rt::before{transform-origin:100% 50%}
 .gate.first::before{transform-origin:50% 50%}
 .knot{position:absolute;left:50%;top:0;width:7px;height:7px;border-radius:50%;background:var(--bg);border:1px solid var(--ink);transform:translate(-50%,-50%);z-index:1}
 .g-fr{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;background:var(--hv);color:inherit}
@@ -1835,8 +1835,8 @@ main>#me.hub{display:block;padding:0 0 64px}
   .gate{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:22px;padding:44px 0 64px}
   .gate .g-ph{grid-column:1/8;grid-row:1}
   .gate .g-tx{grid-column:9/13;grid-row:1;margin-top:0}
-  .gate.rt .g-ph{grid-column:6/13}
-  .gate.rt .g-tx{grid-column:1/5}
+  .gate.g-rt .g-ph{grid-column:6/13}
+  .gate.g-rt .g-tx{grid-column:1/5}
   .gate h3{margin-top:30px;font-size:30px}
   .gate h3.en{font-size:32px}
   .g-bd{margin-top:30px}
@@ -1851,7 +1851,13 @@ main>#me.hub{display:block;padding:0 0 64px}
 .ticks button:focus-visible i{width:24px;background:var(--muted)}
 .ticks button:focus-visible span{opacity:1;transform:none}
 .g-go:focus-visible{outline:1.5px solid var(--ink);outline-offset:6px}
-@media (min-width:768px) and (max-width:1279px){.rail{display:none}}  /* 연도 롤은 1280부터 — 좁은 넓은 창에선 x 48 띠가 연도 · 문 그림과 가까워짐(시안 메모 위험 ④) */
+@media (min-width:768px) and (max-width:1279px){.rail{display:none}}
+/* 11/24 동원 "한 페이지 나올 때마다 딱 한 페이지가 보여지게 하면 안되나? 아래에 보이니까 거슬리는데" — 넓은 창(1024~)은 갈래 문 하나 = 화면 한 장:
+   사진 · 글은 그 칸 가운데(위아래 같은 여백) · 휠 멈춤은 문 칸 맨 위가 화면 맨 위(내릴 때 — 띠 숨음) · 띠 바로 아래(올릴 때) → 위아래 이웃 문은 안 보임(main.js) · 낮은 창은 사진 높이를 칸 안으로 줄임(4:3을 넘으면 가운데를 잘라 보임) */
+@media (min-width:1024px){
+  .gate{min-height:100svh;padding:64px 0;align-content:center}  /* 내릴 땐 띠가 숨어 문 하나가 화면을 꽉 채움 · 올릴 땐 띠(64)가 위 여백을 덮음 — 사진 · 글은 위아래 64 안쪽이라 어느 쪽에서도 이웃 문이 안 비침 */
+  .gate .g-fr{max-height:calc(100svh - 64px * 2 - 36px)}  /* 36 = 캡션 줄 · 낮은 창(1440×700)은 사진 높이를 줄여 칸 안에 */
+}  /* 연도 롤은 1280부터 — 좁은 넓은 창에선 x 48 띠가 연도 · 문 그림과 가까워짐(시안 메모 위험 ④) */
 @media print{.rail,.thread,.knot{display:none!important}.hub .g-fr{clip-path:none!important}}
 
 /* ── 음악 v3(11/23 동원 "음악은 a랑 d랑 합치면" → 시안 기준/브랜드 시안/음악페이지시안_v3/AD_합침 · "둘 다 넣어"): 곡을 누르면 표지 뒤에서 판이 나와 돌고(A · Erased Tapes)
