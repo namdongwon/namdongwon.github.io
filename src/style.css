@@ -551,7 +551,7 @@ html.pv-on{overflow:hidden}
    해시태그는 인스타그램의 파랑 대신 회색(공개 사이트 무채색) · 1024 아래(휴대폰 · 태블릿 세로)는 지금 아래 글 줄 그대로 */
 .pvb{display:contents}.pvi{display:none}
 @media (min-width:1024px){
-  .pvb{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:24px 72px}
+  .pvb{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:22px 72px}
   .pv .pvh{position:absolute;top:0;left:0;right:0;z-index:2;height:72px;border-bottom:0;background:none;pointer-events:none}.pv .pvh>*{pointer-events:auto}
   .pv .pvs figure{padding-top:0;padding-bottom:0}  /* 11/23 동원 "인스타그램이랑 화면 비율좀 맞춰줄래? 우리 화면이 너무 작아보이는" — 실측(같은 창 폭) 인스타그램 판은 위아래 24 · 글 칸 약 500 · 우리는 닫기 줄 64 + 사진 위아래 16 + 글 칸 380으로 판 높이가 85%(인스타그램 94%) → 닫기는 줄 없이 오른쪽 위 구석(인스타그램 ✕ 자리 — 양옆 72 빈 띠 안) · 사진 위아래 띄움 0 · 글 칸 380~500 */
   .pv .pvw{flex:0 1 auto;align-self:stretch;min-width:0}.pv .pvf{display:none}
@@ -563,17 +563,17 @@ html.pv-on{overflow:hidden}
   .pvi-b{flex:1;min-height:0;overflow:auto;padding:16px;overscroll-behavior:contain}
   .pvi-r{display:flex;gap:12px}.pvi-r>div{min-width:0;padding-top:6px}
   .pvi-r p{margin:0;font:400 14px/1.6 var(--sans);color:var(--ink);white-space:pre-line;overflow-wrap:anywhere}.pvi-r b{font-weight:600}
-  .pvi-r .pvi-g{margin-top:10px;color:var(--muted)}
-  .pvi-r .aw{display:block;margin-top:10px;font:400 13px/1.5 var(--sans);color:var(--ink)}
-  .pvi-f{flex:none;border-top:1px solid var(--rule);padding:12px 16px 14px}  /* 11/23 동원 "이모지와 글자 사이 간격 · 날짜와 위 글자 간격 … 인스타그램에서 보면 가깝잖아" — 아이콘↔글자 8→6 · 버튼↔링크 복사 20→16 · 위 줄↔날짜 12→6 */
+  .pvi-r .pvi-g{margin-top:8px;color:var(--muted)}
+  .pvi-r .aw{display:block;margin-top:8px;font:400 13px/1.5 var(--sans);color:var(--ink)}
+  .pvi-f{flex:none;border-top:1px solid var(--rule);padding:12px 16px 16px}  /* 11/23 동원 "이모지와 글자 사이 간격 · 날짜와 위 글자 간격 … 인스타그램에서 보면 가깝잖아" — 아이콘↔글자 8→6 · 버튼↔링크 복사 20→16 · 위 줄↔날짜 12→6 */
   .pvi-x{display:flex;align-items:center;gap:16px}
   .pvi-x>*{display:inline-flex;align-items:center;gap:6px;margin:0;padding:4px 0;border:0;background:none;font:400 13px/1 var(--sans);color:var(--ink);text-decoration:none;cursor:pointer}
   .pvi-x svg{flex:none;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
   .pvi-x>*:hover span{text-decoration:underline;text-underline-offset:3px}.pvi-x>*:active{opacity:.6}
   .pvi-x>*:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
-  .pvi-x>.pvi-go{height:32px;padding:0 14px 0 10px;border-radius:8px;background:var(--ink);color:var(--bg);font:600 14px/1 var(--sans);transition:opacity .15s var(--e2),transform .15s var(--e2)}  /* 11/23 동원 캡처 인스타그램 '게시물 홍보하기'(높이 32 · 모서리 8 · 600 14px · 파랑) "이런식으로 느낌" → 먹 · 흰 글자 */
+  .pvi-x>.pvi-go{height:32px;padding:0 16px 0 12px;border-radius:8px;background:var(--ink);color:var(--bg);font:600 14px/1 var(--sans);transition:opacity .15s var(--e2),transform .15s var(--e2)}  /* 11/23 동원 캡처 인스타그램 '게시물 홍보하기'(높이 32 · 모서리 8 · 600 14px · 파랑) "이런식으로 느낌" → 먹 · 흰 글자 */
   .pvi-x>.pvi-go svg{width:18px;height:18px}.pvi-x>.pvi-go:hover{opacity:.85}.pvi-x>.pvi-go:hover span{text-decoration:none}.pvi-x>.pvi-go:active{opacity:.7;transform:scale(.98)}
-  .pvi-d{margin:6px 0 0;font:400 12px/1 var(--sans);color:var(--muted)}
+  .pvi-d{margin:6px 0 0;font:400 12.5px/1 var(--sans);color:var(--muted)}
 }
 .pvf{flex:none;padding:14px 20px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--rule)}
 .pvf p{font:14px/1.5 var(--body)}
@@ -1219,7 +1219,7 @@ html.sr-on{overflow:hidden}
 @media (pointer:coarse){.pvx,.pvf small .pvl,.sr-kb button{position:relative}.pvx::before{content:"";position:absolute;inset:-8px -12px}.pvf small .pvl::before{content:"";position:absolute;inset:-12px -4px}.sr-kb button::before{content:"";position:absolute;inset:-12px -4px}}  /* 11/18 누름 영역 점검(402 격자 실측): 사진 창 닫기 22×28 · 링크 복사 42×18 · 찾기 '그대로 찾기' 98×20 → 손가락 기기만 누르는 자리 44 안팎 · 모양 그대로 */
 .lsw .gl{width:15px;height:15px}.lsw .cr{position:relative;top:-3.5px;margin-left:-3px;width:10px;height:10px;color:var(--ink);transition:transform .2s}  /* 펼침 화살표 8px 회색 → 10px 먹(11/17 동원 "화살표 너무 작은 거 같아" — 토스 실측 화살표 폭 = 글자 높이 0.67배 · 글자와 같은 색) · 위로 3.5px — 상자 가운데에 두면 대문자 가운데보다 3.6~4.9px 처져 보여서(동원 "글자 중간에 있잖아 … 아래로 쳐진 느낌", 1440 · 402 실측으로 맞춤) · 왼쪽으로 3px — 글자와 틈이 대문자 높이 1.09배라 떠 보여서 토스 0.67배 가까이(0.74배 · 동원 "토스가 좀 더 붙어있는 거 같지 않아?") */.lsw[open] .cr{transform:rotate(180deg)}
 .lsw ul{position:absolute;left:-8px;bottom:calc(100% + 10px);z-index:5;min-width:0;margin:0;padding:4px;list-style:none;background:var(--bg);border:1px solid var(--line);border-radius:0;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08)}  /* 11/21 동원 "이것 사각형으로" → 버튼 "언어 목록 창 모서리 각지게 (권장)" — 링크 쪽지 · 메뉴 펼침과 같은 각진 판(12 · 8 → 0) */
-.lsw li>*{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px 8px 10px;border-radius:0;font:400 14px/1.2 var(--sans);color:color-mix(in srgb,var(--ink) 45%,var(--bg));text-decoration:none;transition:color .15s}.lsw li>[aria-current],.lsw li>a:hover{color:var(--ink)}.lsw li>[aria-current]::after{content:none!important}@media (pointer:coarse){.lsw li>*{padding:12px 16px 12px 12px}}  /* 11/23 동원 "박스가 큰 거 같은데 차라리 선택된 건 진하게 … 선택되지 않은 건 흐릿 … 체크 표시 없애고" → 견줌 그림 기준/브랜드 시안/언어판가운데_v1/언어판_지금vs새판.png → 버튼 "새 판으로 (권장)": 판 폭 196 → 글자 폭 · 줄 위아래 12 → 8(손가락 기기는 12) · 고른 말 먹 600 · 나머지 회색(올리면 먹) · 체크 뺌 · 국기는 본래 색 · 회색은 토스 대비(동원 캡처 "토스의 흐린 표시야 우리도 이정도로" — grey900 ↔ grey500 · 밝기 약 56%) → 먹 45% 섞음(밝은 화면 #8F8F8F · --muted #555는 너무 진했음) */
+.lsw li>*{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 16px 8px 12px;border-radius:0;font:400 14px/1.2 var(--sans);color:color-mix(in srgb,var(--ink) 45%,var(--bg));text-decoration:none;transition:color .15s}.lsw li>[aria-current],.lsw li>a:hover{color:var(--ink)}.lsw li>[aria-current]::after{content:none!important}@media (pointer:coarse){.lsw li>*{padding:12px 16px 12px 12px}}  /* 11/23 동원 "박스가 큰 거 같은데 차라리 선택된 건 진하게 … 선택되지 않은 건 흐릿 … 체크 표시 없애고" → 견줌 그림 기준/브랜드 시안/언어판가운데_v1/언어판_지금vs새판.png → 버튼 "새 판으로 (권장)": 판 폭 196 → 글자 폭 · 줄 위아래 12 → 8(손가락 기기는 12) · 고른 말 먹 600 · 나머지 회색(올리면 먹) · 체크 뺌 · 국기는 본래 색 · 회색은 토스 대비(동원 캡처 "토스의 흐린 표시야 우리도 이정도로" — grey900 ↔ grey500 · 밝기 약 56%) → 먹 45% 섞음(밝은 화면 #8F8F8F · --muted #555는 너무 진했음) */
 .lsw .ln{display:inline-flex;align-items:center;gap:12px}.lsw .flg{flex:none;width:18px;height:12px;border-radius:2px;box-shadow:0 0 0 1px color-mix(in srgb,currentColor 14%,transparent)}  /* 국기(11/10 동원 '누를 때는 국기') — 흰 국기도 테두리 한 겹으로 바탕과 갈림 */
 .lsw li>[aria-current]{font-weight:600}.lsw li>[aria-current]::after{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat;mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat}
 .lsw li>a:active{background:var(--ph)}.lsw summary:active{opacity:.6}
