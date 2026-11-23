@@ -565,15 +565,15 @@ html.pv-on{overflow:hidden}
   .pvi-r p{margin:0;font:400 14px/1.6 var(--sans);color:var(--ink);white-space:pre-line;overflow-wrap:anywhere}.pvi-r b{font-weight:600}
   .pvi-r .pvi-g{margin-top:10px;color:var(--muted)}
   .pvi-r .aw{display:block;margin-top:10px;font:400 13px/1.5 var(--sans);color:var(--ink)}
-  .pvi-f{flex:none;border-top:1px solid var(--rule);padding:12px 16px 16px}
-  .pvi-x{display:flex;align-items:center;gap:20px}
-  .pvi-x>*{display:inline-flex;align-items:center;gap:8px;margin:0;padding:4px 0;border:0;background:none;font:400 13px/1 var(--sans);color:var(--ink);text-decoration:none;cursor:pointer}
+  .pvi-f{flex:none;border-top:1px solid var(--rule);padding:12px 16px 14px}  /* 11/23 동원 "이모지와 글자 사이 간격 · 날짜와 위 글자 간격 … 인스타그램에서 보면 가깝잖아" — 아이콘↔글자 8→6 · 버튼↔링크 복사 20→16 · 위 줄↔날짜 12→6 */
+  .pvi-x{display:flex;align-items:center;gap:16px}
+  .pvi-x>*{display:inline-flex;align-items:center;gap:6px;margin:0;padding:4px 0;border:0;background:none;font:400 13px/1 var(--sans);color:var(--ink);text-decoration:none;cursor:pointer}
   .pvi-x svg{flex:none;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
   .pvi-x>*:hover span{text-decoration:underline;text-underline-offset:3px}.pvi-x>*:active{opacity:.6}
   .pvi-x>*:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
   .pvi-x>.pvi-go{height:32px;padding:0 14px 0 10px;border-radius:8px;background:var(--ink);color:var(--bg);font:600 14px/1 var(--sans);transition:opacity .15s var(--e2),transform .15s var(--e2)}  /* 11/23 동원 캡처 인스타그램 '게시물 홍보하기'(높이 32 · 모서리 8 · 600 14px · 파랑) "이런식으로 느낌" → 먹 · 흰 글자 */
   .pvi-x>.pvi-go svg{width:18px;height:18px}.pvi-x>.pvi-go:hover{opacity:.85}.pvi-x>.pvi-go:hover span{text-decoration:none}.pvi-x>.pvi-go:active{opacity:.7;transform:scale(.98)}
-  .pvi-d{margin:12px 0 0;font:400 12px/1 var(--sans);color:var(--muted)}
+  .pvi-d{margin:6px 0 0;font:400 12px/1 var(--sans);color:var(--muted)}
 }
 .pvf{flex:none;padding:14px 20px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--rule)}
 .pvf p{font:14px/1.5 var(--body)}
