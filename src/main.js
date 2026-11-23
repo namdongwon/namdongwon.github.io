@@ -400,11 +400,11 @@
   // 지금 보는 쪽(10/31 쪽 나누기 — 전엔 한 장에서 칸을 따라 밑줄이 미끄러졌음, 10/24 B) — 빌드가 그 쪽 메뉴에 on · aria-current="page"를 붙여 둠 → 그 이름 아래 밑줄만
   const nav = document.querySelector(".top nav");
   if (nav) {
-    const ul = document.createElement("i");
-    ul.className = "ul";
+    const ul = nav.querySelector(":scope > .ul") || document.createElement("i");  // 11/23 갈아 끼울 때 turbo:before-render가 미리 넣어 둔 점 · 밑줄이 있으면 그대로 이어 씀(아래)
+    ul.className = "ul" + (ul.isConnected ? " on" : "");
     ul.setAttribute("aria-hidden", "true");
-    const dt = document.createElement("i");  // 지금 쪽 이름 위 작은 먹 점(11/4 동원 '위에 점도 있으면 좋다' — recent.design 사이드바 점 실측 8px · 우리 메뉴 글자 12.5px라 4px)
-    dt.className = "dt";
+    const dt = nav.querySelector(":scope > .dt") || document.createElement("i");  // 지금 쪽 이름 위 작은 먹 점(11/4 동원 '위에 점도 있으면 좋다' — recent.design 사이드바 점 실측 8px · 우리 메뉴 글자 12.5px라 4px)
+    dt.className = "dt" + (dt.isConnected ? " on" : "");
     dt.setAttribute("aria-hidden", "true");
     nav.append(ul, dt);
     const on = nav.querySelector('a[aria-current="page"]');
@@ -3032,6 +3032,17 @@
     // 동의 창은 같은 판끼리만 그대로 남김 — 다른 판(언어 바꾸기)이면 그 판의 새 창을 받음(consent.js가 새 창에 다시 붙음)
     const cz0 = document.getElementById("cz"), cz1 = e.detail.newBody && e.detail.newBody.querySelector("#cz");
     if (cz0 && cz1 && cz0.dataset.lang !== cz1.dataset.lang) cz1.removeAttribute("data-turbo-permanent");
+    // 11/23 동원 "gnb 옮길 때 공 안 튀기는데?" — 기능(점 · 밑줄 만들기)은 넘김 효과가 끝난 뒤에 붙여(11/21 c25fcfe9 — 끊김 고침) 효과가 새 페이지를 찍는 순간 점이 없었음
+    // → 점이 옆으로 건너가지 못하고 옛 자리에서 튀고 새 자리에 그냥 나타남(웨일 실측 — group(ndw-dot) 움직임 없음 · new(ndw-ul) 없음) → 새 body의 메뉴에 점 · 밑줄을 미리 그 자리에(메뉴 자리는 페이지마다 같아 지금 화면에서 잼)
+    const nv0 = document.querySelector(".top nav"), nv1 = e.detail.newBody && e.detail.newBody.querySelector(".top nav");
+    const a1 = nv1 && !nv1.querySelector(":scope > .dt") && nv1.querySelector('a[aria-current="page"]:not(.cta)'), a0 = a1 && nv0 && nv0.querySelector(`a[data-pg="${a1.dataset.pg || ""}"]`);
+    if (a0 && a0.offsetWidth) {
+      const w = a0.offsetWidth - (parseFloat(getComputedStyle(a0).letterSpacing) || 0), ul = document.createElement("i"), dt = document.createElement("i");
+      ul.className = "ul on"; dt.className = "dt on"; ul.setAttribute("aria-hidden", "true"); dt.setAttribute("aria-hidden", "true");
+      ul.style.width = w + "px"; ul.style.transform = `translate(${a0.offsetLeft}px, 0px)`;
+      dt.style.transform = `translate(${a0.offsetLeft + w / 2 - 2}px, ${a0.offsetTop}px)`;
+      nv1.append(ul, dt);
+    }
     H.classList.add("js");  // 처리방침 · 404(머리 시작 줄이 짧아 js · 글자 크기 표시가 없음)에서 메뉴 페이지로 올 때도 메뉴 페이지 머리 시작 줄과 같게
     try {
       if (localStorage.getItem("door")) H.classList.add("seen");  // 머리 시작 줄이 새로 받을 때 붙이던 '다시 온 방문' 표시 — 갈아 끼울 때도 같게
