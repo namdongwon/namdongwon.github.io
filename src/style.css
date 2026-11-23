@@ -1748,7 +1748,7 @@ main>#me.hub{display:block;padding:0 0 64px}
 .g-no{font-variant-numeric:tabular-nums;color:var(--ink)}
 .g-dash{width:18px;height:1px;background:var(--line);align-self:center}
 .g-mt{margin-left:auto;font-weight:300;letter-spacing:0;color:var(--faint)}
-.gate h3{margin:22px 0 0;font:400 25px/1.5 var(--serif);letter-spacing:-.01em;word-break:keep-all;color:var(--ink)}
+.gate h3{margin:22px 0 0;font:400 25px/1.5 var(--serif);letter-spacing:-.01em;word-break:keep-all;color:var(--ink);text-wrap:balance}
 .gate h3.en{font-size:26px}
 :is(html:lang(ko),html:lang(ja)) .gate h3.hang{text-indent:-.6em}
 .gate h3 .tt{text-indent:0}  /* 제목 안 덩어리(.tt — inline-block)는 들여쓰기를 물려받지 않게 — 첫 줄 『만 내어 걺 */  /* 『로 시작하는 시집 제목 — 본명조 『 앞 빈만큼 내어 걺(README) */

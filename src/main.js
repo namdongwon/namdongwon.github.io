@@ -307,7 +307,7 @@
       const cr = chron.getBoundingClientRect(), gt = g1.getBoundingClientRect().top;
       const y0 = yrs[0].querySelector(".yr-n").getBoundingClientRect().top;
       if (rail) rail.classList.toggle("on", y0 < vh * .6 && gt > vh * .6);  // 실이 첫 문에 넘겨주기 전에 물러남 — 문 그림(x 64)과 겹치지 않게
-      const tr = thread.getBoundingClientRect(), h = Math.max(0, Math.min(tr.height, vh * .6 - tr.top));
+      const tr = thread.getBoundingClientRect(), h = Math.max(0, Math.min(tr.height, vh * .8 - tr.top));  // 실은 읽는 선보다 앞서 화면 80%까지 — 첫 문이 화면 아래쪽에서 하얗게 기다리지 않게
       ink.style.transform = `scaleY(${tr.height ? (h / tr.height).toFixed(4) : 0})`;
       if (tr.height && h >= tr.height - .5) g1.classList.add("in");
     };
@@ -321,8 +321,8 @@
       scrollTo({ top: y, behavior: motion ? "smooth" : "auto" });
     }));
     if (motion) {
-      once(yrs, y => y.classList.add("in"), { rootMargin: "0px 0px -4% 0px" });  // 큰 연도가 화면 밑에서 반쯤 잘린 채 기다리지 않게 — 들어오자마자 0.45초
-      once(gates.filter(g => g !== g1), g => g.classList.add("in"), { threshold: .12, rootMargin: "0px 0px -4% 0px" });
+      once(yrs, y => y.classList.add("in"), { rootMargin: "0px 0px 0px 0px" });  // 큰 연도가 화면 밑에서 반쯤 잘린 채 기다리지 않게 — 들어오자마자 0.45초
+      once(gates.filter(g => g !== g1), g => g.classList.add("in"), { rootMargin: "0px 0px 12% 0px" });  // 화면에 들어오기 조금 전부터 열림 — 휠을 내린 직후 빈 판이 보이지 않게(11/23 밤 웨일 실측)
     }
     layout();
   })();
