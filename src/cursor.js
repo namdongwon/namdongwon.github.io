@@ -18,9 +18,6 @@
       dot.className = "cur off";
       dot.setAttribute("aria-hidden", "true");
       document.body.appendChild(dot);
-      // 11/23 평소 점은 시스템 커서 그림(style.css — 오른쪽 클릭 메뉴 중에도 따라감) · 페이지 점이 링크 원 · 먹고리 · 글 칸 막대 모양일 때만 시스템 커서를 숨김(.cur-sh)
-      const sh = () => H.classList.toggle("cur-sh", ["lk", "pl", "tx", "sl"].some((c) => dot.classList.contains(c)));
-      new MutationObserver(sh).observe(dot, { attributes: true, attributeFilter: ["class"] });
     }
     if (dot) dot.hidden = !on;
   };
@@ -58,7 +55,7 @@
   const toctx = (e) => {
     if (!dot || dot.hidden) return;
     ctx = [e.clientX, e.clientY]; drag = false;
-    H.classList.add("cur-ctx"); dot.classList.add("off"); dot.classList.remove("dn", "sl", "lk", "pl", "tx"); fld = null; plL = null; unink();  // 11/23 모양을 다 거둬 시스템 커서 점으로(메뉴가 늦게 떠도 다음 그림에서)
+    H.classList.add("cur-ctx"); dot.classList.add("off"); dot.classList.remove("dn", "sl", "lk"); unink();
   };
   addEventListener("contextmenu", toctx);
   const unctx = () => { ctx = null; H.classList.remove("cur-ctx"); };
