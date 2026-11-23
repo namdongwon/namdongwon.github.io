@@ -693,6 +693,9 @@
     sm.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") byPtr = false; });
     docOn("click", ev => { if (lsw.open && !lsw.contains(ev.target)) lsw.open = false; });
     lsw.addEventListener("keydown", ev => { if (ev.key === "Escape" && lsw.open) { lsw.open = false; if (byPtr) document.activeElement.blur(); else sm.focus(); } });
+    // 11/23 동원 "처음에 페이지 들어오고 나서 마우스 오버했을 때 한 번만 그러네 … 다시 할 때는 그냥 일자로 쭉" — 새 크롬은 닫힌 <details> 안을 content-visibility로만 숨기고
+    // 스타일을 다시 계산하지 않아 첫 열림의 움직임(lsw-li)이 '끝남'으로 남았음 → 열릴 때마다 판 · 줄 움직임을 처음부터 다시 틈
+    lsw.addEventListener("toggle", () => { if (lsw.open) lsw.querySelectorAll("ul, li").forEach(el => el.getAnimations().forEach(a => { a.currentTime = 0; a.play(); })); });
     // 11/23 동원 "마우스 오버시 바로 이 6개 나오는 거 … 그래야 이게 번역인지 알 수 있는 거 같아서" — KOR은 마우스를 올리면 바로 펼침(나가면 0.25초 뒤 닫힘) ·
     // 맨 위 줄 · 바닥글 둘 다(바닥글은 동원 캡처 "이거는 안 됐잖아") · 올려서 열린 채 KOR을 누르면 닫지 않음(누름이 펼침을 되접던 것) · 키보드 · 손가락은 그대로 누름으로
     {
