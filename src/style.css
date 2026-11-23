@@ -1648,7 +1648,7 @@ html.sr-on .bt,html.mnu-on .bt,html.pv-on .bt{visibility:hidden}
   .si-l.on{opacity:1}
   .si-dim{opacity:.1!important;transition:opacity .18s!important}  /* 이름 줄과 겹친 쪽 글 — 올린 동안만(main.js dim) */
   html.sr-on .si,html.mnu-on .si,html.pv-on .si,html.sr-on .si-l{visibility:hidden}  /* 찾기 · 메뉴 · 사진 창이 열리면 숨김 */
-  .si{transition:opacity .15s}html:has(.mm.vis) :is(.si,.si-l){opacity:0!important;pointer-events:none}  /* 맨 위 메뉴 펼침(.mm.vis)이 열려도 숨김 — 칸 표시(z 40)가 메뉴 판(z 30)을 뚫고 보였음(11/18 동원 "gnb 나오면 왼쪽에 저거 5개 있는건 가려져야하지않나?") */
+  .si{transition:opacity .15s}.si.off{opacity:0;pointer-events:none}  /* 11/24 소개 허브 — 연혁 구간은 왼쪽 연도 롤이 칸 표시 몫(main.js) */html:has(.mm.vis) :is(.si,.si-l){opacity:0!important;pointer-events:none}  /* 맨 위 메뉴 펼침(.mm.vis)이 열려도 숨김 — 칸 표시(z 40)가 메뉴 판(z 30)을 뚫고 보였음(11/18 동원 "gnb 나오면 왼쪽에 저거 5개 있는건 가려져야하지않나?") */
 }
 @media (prefers-reduced-motion:reduce){.si .b,.si-l{transition:none}}
 

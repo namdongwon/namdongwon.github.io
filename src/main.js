@@ -2883,10 +2883,15 @@
   // 넓은 창(1024~)에서만 · 첫 화면 사람 사진 위에서도 보이게 색 뒤집기(mix-blend difference) · 누르면 그 칸으로 · 키보드 초점도 올린 것과 같게
   (() => {
     const me = document.getElementById("me");
-    if (!me || !document.querySelector(".tk") || me.classList.contains("hub")) return;  // 11/23 소개 허브는 왼쪽 연도 롤(.rail)이 이 자리를 맡음 — 칸(지금 · 기록 · 다음 쪽)도 없어짐
+    if (!me || !document.querySelector(".tk")) return;
     const names = uiText("si_items", "처음|소개|지금|기록|다음 페이지").split("|");
-    const targets = [null, me, me.querySelector(".now"), me.querySelector(".rec"), document.querySelector(".nxp")];
-    const items = names.map((n, i) => [n, targets[i]]).filter(([, el], i) => i === 0 || el);
+    const hub = me.classList.contains("hub");
+    // 11/24 동원 "예전에 우리 왼쪽에 선으로 되는 것들 … 왜 사라졌어 지금 있어야지" — 소개 허브의 칸으로 되살림: 처음 · 소개 · 연표 · 갈래 문 여섯(메뉴 이름 그대로)
+    // 연혁 구간은 왼쪽 연도 롤(.rail)이 같은 몫이라 롤이 떠 있는 동안만 물러남(아래 hide)
+    const items = hub
+      ? [[names[0], null], [names[1], me], [(me.querySelector(".rail .rk") || {}).textContent || "연표", me.querySelector(".chron")],
+         ...[...me.querySelectorAll(".gate")].map(g => [(g.querySelector(".g-lab span:nth-child(3)") || {}).textContent || "", g])].filter(([n, el], i) => i === 0 || (n && el))
+      : names.map((n, i) => [n, [null, me, me.querySelector(".now"), me.querySelector(".rec"), document.querySelector(".nxp")][i]]).filter(([, el], i) => i === 0 || el);
     if (items.length < 3) return;
     const nav = document.createElement("nav");
     nav.className = "si";
@@ -2904,6 +2909,13 @@
       nav.append(a);
       return a;
     });
+    const rail = hub && me.querySelector(".rail");
+    if (rail) {  // 연도 롤이 뜨면 물러나고 롤이 들어가면 돌아옴
+      const hide = () => nav.classList.toggle("off", rail.classList.contains("on") && getComputedStyle(rail).display !== "none");
+      new MutationObserver(hide).observe(rail, { attributes: true, attributeFilter: ["class"] });
+      addEventListener("resize", hide, { passive: true });
+      requestAnimationFrame(hide);
+    }
     document.body.append(nav, lab);  // 이름은 칸 표시 밖에 — 색 뒤집기(difference) 없이 먹 글자 + 바탕(첫 화면 글 위에 겹쳐도 깨끗하게)
     const topOf = el => (el ? el.getBoundingClientRect().top + scrollY : 0);
     let pend = false;
