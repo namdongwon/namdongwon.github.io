@@ -2684,6 +2684,13 @@
     const stops = (d = 1) => {
       const th = d > 0 ? 0 : topH();
       const s = [0, me.offsetTop - th];
+      // 11/23 밤 소개 허브(동원 "이 스크롤 부드럽게 내려가는 느낌 왜 사라졌어?"): 멈출 자리를 큰 연도 하나하나 · 문 하나하나로 — 휠 한 몸짓마다 다음 연도가
+      // 왼쪽 연도 롤과 같은 높이(화면 가운데 조금 위)로, 다음 문은 사진 위쪽이 화면 머리 22px 아래로 0.8초 미끄러져 들어옴(연도 사이 약 190px라 다음 연도 머리도 함께 보임)
+      if (me.classList.contains("hub")) {
+        const at = el => el.getBoundingClientRect().top + scrollY;
+        me.querySelectorAll(".yr-n").forEach(n => s.push(at(n) - (innerHeight / 2 - 60)));
+        me.querySelectorAll(".gate").forEach(g => s.push(at(g) + 44 - 22 - th));
+      }
       let n = me.nextElementSibling;
       for (; n; n = n.nextElementSibling) if (n.offsetHeight > 120) s.push(n.offsetTop - th);
       const f = document.querySelector("footer.foot, .colo"); if (f) s.push(f.getBoundingClientRect().top + scrollY - th);
@@ -2726,11 +2733,8 @@
     };
     const blocked = t => still() || H.style.overflow === "hidden" || [...document.querySelectorAll('[aria-modal="true"]')].some(d => !d.hidden && d.offsetParent !== null)
       || (t instanceof Element && t.closest("input, textarea, select, [contenteditable=true], .lsw[open] ul, .srch"));
-    // 11/23 밤 소개 허브(동원 "끊기는 타이밍도 좀 이상한 거 같고") — 한 화면씩 넘김은 첫 화면 ↔ 소개 머리 사이만. 연혁 · 문은 보통 스크롤로 읽힘
-    // (한 몸짓 = 900px이면 연도가 혼자 남거나 반쯤 잘린 채 멈췄음 · 웨일 실측)
-    const free = dir => me.classList.contains("hub") && ((dir > 0 && scrollY >= me.offsetTop - topH() - 4) || (dir < 0 && scrollY > me.offsetTop + 4));
     addEventListener("wheel", e => {
-      if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || blocked(e.target) || free(Math.sign(e.deltaY))) return;
+      if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || blocked(e.target)) return;
       e.preventDefault();
       const now = performance.now(), gap = now - lastWheel, a = Math.abs(e.deltaY), dir = Math.sign(e.deltaY);
       // 새 몸짓: 휠이 0.2초 넘게 쉼 · 방향 바뀜 · 줄어들던 휠 값이 1.5배 넘게 커짐(넘긴 지 0.3초 안은 같은 몸짓의 키움으로 봄)
@@ -2744,7 +2748,7 @@
     addEventListener("keydown", e => {
       if (e.altKey || e.ctrlKey || e.metaKey || blocked(e.target)) return;
       const dir = e.key === "ArrowDown" || e.key === "PageDown" || (e.key === " " && !e.shiftKey) ? 1 : e.key === "ArrowUp" || e.key === "PageUp" || (e.key === " " && e.shiftKey) ? -1 : 0;
-      if (!dir || free(dir) || (e.target instanceof Element && e.target.closest("button, a, summary") && e.key === " ")) return;
+      if (!dir || (e.target instanceof Element && e.target.closest("button, a, summary") && e.key === " ")) return;
       e.preventDefault(); move(dir);
     });
   })();
