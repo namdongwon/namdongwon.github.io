@@ -875,6 +875,7 @@
     const step = d => view.scrollBy({ left: d * view.clientWidth, behavior: reduce ? "auto" : "smooth" });
     const pin = () => { fit(); place(); };  // 사진이 온 뒤 · 창이 보인 뒤 · 화면 크기가 바뀐 뒤
     addEventListener("resize", pin);
+    pv.addEventListener("transitionend", e => { if (e.target === pv && e.propertyName === "transform") pin(); });  // 11/23 열림(커지며 0.22초)이 다 끝난 때 한 번 더 — 타이머(360ms)가 늦게 돌면 열리는 중 잰 자리(넘김 단추가 위로 치우침)가 남았음
     view.addEventListener("scroll", upd, { passive: true });
     view.addEventListener("scroll", () => {
       const k = Math.round(view.scrollLeft / Math.max(1, view.clientWidth));
