@@ -270,11 +270,12 @@
     const yrs = [...hub.querySelectorAll(".yr")], rail = hub.querySelector(".rail"), chron = hub.querySelector(".chron"), flow = hub.querySelector(".hflow");
     const thread = hub.querySelector(".thread"), ink = thread && thread.firstElementChild, odo = hub.querySelector(".odo"), ticks = [...hub.querySelectorAll(".ticks button")];
     const g1 = hub.querySelector(".gate.first"), gates = [...hub.querySelectorAll(".gate")];
-    if (!yrs.length || !g1 || !thread || !odo) return;
+    if (!yrs.length || !g1 || !thread) return;  // 연도 롤(.rail · .odo)은 11/24 뺌 — 있으면 쓰고 없으면 건너뜀
     if (motion) hub.classList.add("mo");
     else { yrs.forEach(y => y.classList.add("in")); gates.forEach(g => g.classList.add("in")); }
     let cur = -1;
     const setYear = (str, dir) => {
+      if (!odo) return;
       [...str].forEach((d, i) => {
         const c = odo.children[i];
         if (!c) return;
@@ -322,7 +323,7 @@
     }));
     if (motion) {
       once(yrs, y => y.classList.add("in"), { rootMargin: "0px 0px 0px 0px" });  // 큰 연도가 화면 밑에서 반쯤 잘린 채 기다리지 않게 — 들어오자마자 0.45초
-      once(gates.filter(g => g !== g1), g => g.classList.add("in"), { rootMargin: "0px 0px 12% 0px" });  // 화면에 들어오기 조금 전부터 열림 — 휠을 내린 직후 빈 판이 보이지 않게(11/23 밤 웨일 실측)
+      once(gates.filter(g => g !== g1), g => g.classList.add("in"), { rootMargin: "0px 0px -40% 0px" });  // 11/24 동원 "아래 것들은 이미 펼쳐져 있어서 뭔가 느낌이 안 살아" — 문 하나 = 화면 한 장(이웃 문은 안 보임)이라 미리 열 까닭이 없어져, 휠로 들어설 때 문 머리가 화면 60% 선을 지나면 그때 열림(시집 문처럼)
     }
     layout();
   })();
@@ -2691,7 +2692,9 @@
       const s = [[0, ""], [me.offsetTop - th, ""]];
       if (me.classList.contains("hub")) {
         me.querySelectorAll(".yr-n").forEach(n => s.push([at(n) - th - GAP, "y"]));
-        me.querySelectorAll(".gate").forEach(g => s.push([at(g) - th - GAP, ""]));
+        // 넓은 창(1024~)은 문 하나 = 화면 한 장(style.css · 칸 높이 = 화면) — 문 칸 맨 위가 화면 맨 위(내릴 때 띠 숨음) · 띠 바로 아래(올릴 때) → 이웃 문은 안 보임 · 좁은 창은 위 선이 띠 아래 + 44
+        const one = innerWidth >= 1024;
+        me.querySelectorAll(".gate").forEach(g => s.push([at(g) - th - (one ? 0 : GAP), ""]));
       }
       let n = me.nextElementSibling;
       for (; n; n = n.nextElementSibling) if (n.offsetHeight > 120) s.push([n.offsetTop - th, ""]);
@@ -2707,7 +2710,7 @@
     // 11/15 동원 "한 번 내리면 그 다음에 내릴 때는 작동을 안한다" — 실측: 트랙패드 관성(손 뗀 뒤 1~2초 휠이 이어짐) 중에 다시 밀면 0.2초 쉼이 없어 버려졌고(1초 간격 세 번 → 한 칸),
     // 넘기는 0.8초 동안 들어온 휠도 버려졌음(마우스 딸깍 0.35초 간격 세 번 → 한 칸). → 새 몸짓 알아보기에 '휠 값이 갑자기 커짐(관성은 줄기만 함) · 방향 바뀜'을 더하고,
     // 넘기는 중에 온 새 몸짓도 받음 — 아래 move가 지금 자리에서 이어 감(fullPage.js 가속 알아보기와 같은 생각)
-    let busy = false, armed = true, lastWheel = 0, lastAbs = 0, lastDir = 0, movedAt = -1e9, raf = 0, target = 0, motionDir = 0;
+    let busy = false, armed = true, lastWheel = 0, lastAbs = 0, lastDir = 0, movedAt = -1e9, raf = 0, target = 0, motionDir = 0, pend = 0;  // pend — 미끄러지는 중 받아 둔 다음 한 칸(11/24)
     // 넘기는 중에 새로 밀면(11/15 동원 "다시 올릴 때 버벅이는 느낌" — 실측: 내린 직후 위로 밀면 내려가던 0.8초를 다 마친 뒤 돌아섬 · 연달아 밀면 칸 끝에서 0까지 느려졌다 다시 빨라짐):
     // 지금 자리에서 바로 새 목표로 이어 감 — 같은 방향이면 다음 칸까지 멈추지 않고 · 반대면 그 자리에서 돌아섬 · 이어 갈 땐 처음부터 빠른 꼴(ease-out 0.7초)
     const easeOut = t => 1 - Math.pow(1 - t, 3);
@@ -2715,25 +2718,25 @@
       cancelAnimationFrame(raf);
       busy = true; target = to; motionDir = Math.sign(to - scrollY);
       const from = scrollY, t0 = performance.now();
-      const step = n => { const k = Math.min(1, (n - t0) / D); scrollTo(0, from + (to - from) * fn(k)); if (k < 1) raf = requestAnimationFrame(step); else busy = false; };
+      const step = n => { const k = Math.min(1, (n - t0) / D); scrollTo(0, from + (to - from) * fn(k)); if (k < 1) raf = requestAnimationFrame(step); else { busy = false; if (pend) { const d = pend; pend = 0; movedAt = performance.now(); move(d); } } };  // 받아 둔 한 칸이 있으면 멈추자마자 이어 감
       raf = requestAnimationFrame(step);
     };
     const next = (y, d) => {
       const s = stops(d), tol = topH() + 4;  // 띠 높이만큼 차이 나는 두 자리(900 · 836)는 같은 칸 — 띠 높이만큼만 꿈틀 움직이지 않게
       // 페이지 끝은 거리와 상관없이 갈 수 있게(11/15 동원 "맨 아래 까지 안 내려가는 느낌" — 실측: 끝에 닿은 뒤 글꼴 · 그림이 늦게 와 18px 길어지면 띠 높이 안이라 '같은 칸'으로 버려졌음)
       const end = Math.max(0, document.documentElement.scrollHeight - innerHeight);
-      const span = innerHeight * .78;  // 연표 안 한 몸짓 — 연도 하나씩(약 190px)이면 답답했음 → 화면 78% 안의 가장 먼 연도 머리까지(한 화면에 연도 서넛이 지나감)
+      const span = innerHeight * .78, reach = innerHeight + topH() + 4;  // 한 몸짓 최대 거리 — 화면 + 띠(11/24 문 한 장: 칸 사이가 정확히 화면 높이라 띠 높이만큼 모자라면 낮은 창에서 9px씩 어긋난 채 이어졌음)  // 연표 안 한 몸짓 — 연도 하나씩(약 190px)이면 답답했음 → 화면 78% 안의 가장 먼 연도 머리까지(한 화면에 연도 서넛이 지나감)
       if (d > 0) {
         let i = s.findIndex(v => v > y + tol);
-        if (i < 0) return end > y + 1 ? Math.min(end, y + innerHeight) : y;
+        if (i < 0) return end > y + 1 ? Math.min(end, y + reach) : y;
         if (YS.has(s[i])) while (i + 1 < s.length && YS.has(s[i + 1]) && s[i + 1] <= y + span) i++;
-        return Math.min(s[i], y + innerHeight);
+        return Math.min(s[i], y + reach);
       }
       const up = s.filter(v => v < y - tol);
-      if (!up.length) return Math.max(0, y - innerHeight);
+      if (!up.length) return Math.max(0, y - reach);
       let i = up.length - 1;
       if (YS.has(up[i])) while (i > 0 && YS.has(up[i - 1]) && up[i - 1] >= y - span) i--;
-      return Math.max(up[i], y - innerHeight);
+      return Math.max(up[i], y - reach);
     };
     const dur = to => Math.round(450 + 350 * Math.min(1, Math.abs(to - scrollY) / innerHeight));  // 넘김 시간은 거리에 비례 — 짧으면 0.45초 · 한 화면이면 0.8초(작은 칸을 0.8초로 끌지 않게)
     const move = dir => {
@@ -2753,12 +2756,18 @@
       if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || blocked(e.target)) return;
       e.preventDefault();
       const now = performance.now(), gap = now - lastWheel, a = Math.abs(e.deltaY), dir = Math.sign(e.deltaY);
+      if (!dir) return;  // 휠 값 0(트랙패드 쓸기 처음 · 끝에 옴)은 몸짓으로 치지 않음 — 둘째 쓸기의 첫 0이 몸짓을 먹어 한 칸에서 멈추던 것(11/24)
       // 새 몸짓: 휠이 0.2초 넘게 쉼 · 방향 바뀜 · 줄어들던 휠 값이 1.5배 넘게 커짐(넘긴 지 0.3초 안은 같은 몸짓의 키움으로 봄)
-      const fresh = gap >= 200 || (dir && dir !== lastDir) || (a >= 4 && a > lastAbs * 1.5 && now - movedAt > 300);
+      const fresh = gap >= 200 || (dir && dir !== lastDir) || (a >= 16 && a > lastAbs * 2.5 && !busy && now - movedAt > 300);  // 11/24 — 관성 중 다시 밀었다고 보는 건 멈춘 뒤 휠 값이 확 커질 때만(16 넘게 · 2.5배) — 관성 끝자락의 작은 흔들림(2 → 4)을 새 몸짓으로 받아 한 번에 두 칸 가던 것
       lastWheel = now; lastAbs = a; if (dir) lastDir = dir;
       if (fresh) armed = true;
+      // 11/24 동원 "연속으로 하면 잘 안되네" — 휠을 쉬지 않고 돌리면(0.2초 쉼 없음) 모두 한 몸짓이라 한 칸에서 멈췄음 → 멈춘 뒤에도 같은 방향으로 휠 값이 큰(30 이상) 동안은 0.85초마다 한 칸 · 트랙패드 관성 끝자락(작은 값)은 해당 없음
+      if (!armed && !busy && dir === lastDir && a >= 30 && now - movedAt > 850) armed = true;
       if (!armed) return;  // 한 몸짓(트랙패드 관성 포함)엔 한 칸만
       armed = false;
+      if (dir !== motionDir) pend = 0;
+      // 11/24 동원 "한 번에 두개 내려가고 그러네" — 미끄러지는 중(0.8초) 같은 방향 새 몸짓은 시작 0.6초 뒤부터만 이어 감(트랙패드 관성 · 연달아 딸깍이 한 몸짓에 두 칸이 되던 것) · 반대 방향은 바로
+      if (busy && dir === motionDir && now - movedAt < 600) { pend = dir; return; }  // 버리지 않고 하나 받아 둠 — 멈추자마자 다음 칸(연달아 딸깍이 사이사이 먹히던 것)
       movedAt = now; move(e.deltaY);  // 넘기는 중이면 move가 지금 자리에서 새 목표로 이어 감
     }, { passive: false });
     addEventListener("keydown", e => {
@@ -2875,10 +2884,15 @@
   // 넓은 창(1024~)에서만 · 첫 화면 사람 사진 위에서도 보이게 색 뒤집기(mix-blend difference) · 누르면 그 칸으로 · 키보드 초점도 올린 것과 같게
   (() => {
     const me = document.getElementById("me");
-    if (!me || !document.querySelector(".tk") || me.classList.contains("hub")) return;  // 11/23 소개 허브는 왼쪽 연도 롤(.rail)이 이 자리를 맡음 — 칸(지금 · 기록 · 다음 쪽)도 없어짐
+    if (!me || !document.querySelector(".tk")) return;
     const names = uiText("si_items", "처음|소개|지금|기록|다음 페이지").split("|");
-    const targets = [null, me, me.querySelector(".now"), me.querySelector(".rec"), document.querySelector(".nxp")];
-    const items = names.map((n, i) => [n, targets[i]]).filter(([, el], i) => i === 0 || el);
+    const hub = me.classList.contains("hub");
+    // 11/24 동원 "예전에 우리 왼쪽에 선으로 되는 것들 … 왜 사라졌어 지금 있어야지" — 소개 허브의 칸으로 되살림: 처음 · 소개 · 연표 · 갈래 문 여섯(메뉴 이름 그대로)
+    // 연혁 구간은 왼쪽 연도 롤(.rail)이 같은 몫이라 롤이 떠 있는 동안만 물러남(아래 hide)
+    const items = hub
+      ? [[names[0], null], [names[1], me], [(me.querySelector(".rail .rk") || {}).textContent || uiText("si_years", "연표"), me.querySelector(".chron")],
+         ...[...me.querySelectorAll(".gate")].map(g => [(g.querySelector(".g-lab span:nth-child(3)") || {}).textContent || "", g])].filter(([n, el], i) => i === 0 || (n && el))
+      : names.map((n, i) => [n, [null, me, me.querySelector(".now"), me.querySelector(".rec"), document.querySelector(".nxp")][i]]).filter(([, el], i) => i === 0 || el);
     if (items.length < 3) return;
     const nav = document.createElement("nav");
     nav.className = "si";
@@ -2896,6 +2910,13 @@
       nav.append(a);
       return a;
     });
+    const rail = hub && me.querySelector(".rail");  // 11/24 연도 롤을 뺀 뒤엔 없음 — 칸 표시가 연혁 구간에도 늘 보임
+    if (rail) {  // 연도 롤이 뜨면 물러나고 롤이 들어가면 돌아옴
+      const hide = () => nav.classList.toggle("off", rail.classList.contains("on") && getComputedStyle(rail).display !== "none");
+      new MutationObserver(hide).observe(rail, { attributes: true, attributeFilter: ["class"] });
+      addEventListener("resize", hide, { passive: true });
+      requestAnimationFrame(hide);
+    }
     document.body.append(nav, lab);  // 이름은 칸 표시 밖에 — 색 뒤집기(difference) 없이 먹 글자 + 바탕(첫 화면 글 위에 겹쳐도 깨끗하게)
     const topOf = el => (el ? el.getBoundingClientRect().top + scrollY : 0);
     let pend = false;

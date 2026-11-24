@@ -3,11 +3,11 @@
 
 
 @font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-light.woff2?v=a54e970548") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=bbb0bbec5e") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=6e85f34b99") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=631511b128") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=14d0a7058f") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=ec7b47c573") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo.woff2?v=248de9e415") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BMJ";src:url("fonts/bon-myeongjo-bold.woff2?v=326ffac426") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-light.woff2?v=9db622613a") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-regular.woff2?v=4e58d5c5e9") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"PTD";src:url("fonts/ndw-sans-semibold.woff2?v=313d488b76") format("woff2");font-weight:600;font-display:swap}
 
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-first.woff2?v=85adf8ad3d") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"BMJF";src:url("fonts/bon-myeongjo-bold-first.woff2?v=795c50a95f") format("woff2");font-weight:700;font-display:swap}
@@ -1534,7 +1534,7 @@ html.sr-on .bt,html.mnu-on .bt,html.pv-on .bt{visibility:hidden}
   .si-l.on{opacity:1}
   .si-dim{opacity:.1!important;transition:opacity .18s!important}  
   html.sr-on .si,html.mnu-on .si,html.pv-on .si,html.sr-on .si-l{visibility:hidden}  
-  .si{transition:opacity .15s}html:has(.mm.vis) :is(.si,.si-l){opacity:0!important;pointer-events:none}  
+  .si{transition:opacity .15s}.si.off{opacity:0;pointer-events:none}  html:has(.mm.vis) :is(.si,.si-l){opacity:0!important;pointer-events:none}  
 }
 @media (prefers-reduced-motion:reduce){.si .b,.si-l{transition:none}}:where(:root[data-motion="reduce"]) .si .b,:where(:root[data-motion="reduce"]).si .b,:where(:root[data-motion="reduce"]) .si-l,:where(:root[data-motion="reduce"]).si-l{transition:none}
 
@@ -1615,7 +1615,7 @@ main>#me.hub{display:block;padding:0 0 64px}
 .gates{position:relative;max-width:1440px;margin:0 auto;padding:64px 20px 0}
 .gate{position:relative;display:grid;grid-template-columns:minmax(0,1fr);padding:30px 0 64px}
 .gate::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--rule);transform-origin:0 50%}
-.gate.rt::before{transform-origin:100% 50%}
+.gate.g-rt::before{transform-origin:100% 50%}
 .gate.first::before{transform-origin:50% 50%}
 .knot{position:absolute;left:50%;top:0;width:7px;height:7px;border-radius:50%;background:var(--bg);border:1px solid var(--ink);transform:translate(-50%,-50%);z-index:1}
 .g-fr{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;background:var(--hv);color:inherit}
@@ -1716,8 +1716,8 @@ main>#me.hub{display:block;padding:0 0 64px}
   .gate{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:22px;padding:44px 0 64px}
   .gate .g-ph{grid-column:1/8;grid-row:1}
   .gate .g-tx{grid-column:9/13;grid-row:1;margin-top:0}
-  .gate.rt .g-ph{grid-column:6/13}
-  .gate.rt .g-tx{grid-column:1/5}
+  .gate.g-rt .g-ph{grid-column:6/13}
+  .gate.g-rt .g-tx{grid-column:1/5}
   .gate h3{margin-top:30px;font-size:30px}
   .gate h3.en{font-size:32px}
   .g-bd{margin-top:30px}
@@ -1732,7 +1732,12 @@ main>#me.hub{display:block;padding:0 0 64px}
 .ticks button:focus-visible i{width:24px;background:var(--muted)}
 .ticks button:focus-visible span{opacity:1;transform:none}
 .g-go:focus-visible{outline:1.5px solid var(--ink);outline-offset:6px}
-@media (min-width:768px) and (max-width:1279px){.rail{display:none}}  
+@media (min-width:768px) and (max-width:1279px){.rail{display:none}}
+
+@media (min-width:1024px){
+  .gate{min-height:100svh;padding:64px 0;align-content:center}  
+  .gate .g-fr{max-height:calc(100svh - 64px * 2 - 36px)}  
+}  
 @media print{.rail,.thread,.knot{display:none!important}.hub .g-fr{clip-path:none!important}}
 
 
