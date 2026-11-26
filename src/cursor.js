@@ -97,7 +97,7 @@
   // 먹고리(테두리 선)에 묻혀 안 보였음(운영의 반전 원은 점을 흰색으로 뒤집어 보였음) → 맨 위 메뉴를 누르면 0.6초 동안 고리 대신 작은 점(조금 움직여도) · 그 뒤 움직이면 다시 고리
   addEventListener("click", (e) => {
     if (!dot || !(e.target instanceof Element) || !e.target.closest(".top nav a[href]")) return;
-    dot.classList.remove("lk", "pl"); unink(); plL = null; hold = performance.now() + 600;  // 점 튐 0.45초 + 여유
+    dot.classList.remove("lk", "pl"); unink(); plL = null; plV = false; hold = performance.now() + 600;  // 점 튐 0.45초 + 여유 · 11/27 plV도 비움(동원 "마우스 저거 왜 먹고리돼" — 메뉴를 누른 뒤 빈 곳에서 L · plL이 둘 다 null이라 다시 재지 않아 옛 먹고리 표시가 남았음 · 웨일 재현 cur pl 10px)
   }, { passive: true });
   H.addEventListener("pointerleave", () => { unink(); if (dot) dot.classList.add("off"); });  // 창 밖 · 유튜브 틀(iframe) 안으로 가면 숨김
   addEventListener("blur", () => { drag = false; unink(); if (dot) dot.classList.add("off"); });
