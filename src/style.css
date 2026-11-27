@@ -227,7 +227,7 @@ html.sr-on .ma-dock,html.mnu-on .ma-dock,html.pv-on .ma-dock{visibility:hidden}
 .mm.vis{display:block}.mm[aria-hidden]{transition:opacity .3s ease-in-out}  /* 11/23 닫힘 — 토스 실측(toss.im/company GNB: 판 투명 1 → 0이 0.3초 · 65ms 0.96 · 165ms 0.54 · 264ms 0.07 = ease-in-out · 안의 글은 그대로) — 열림은 위 0.28초 그대로 */
 .mm-in{max-width:100%;width:max-content;margin:0 auto;padding:30px 64px 44px}  /* 11/19 동원 버튼 "B 가운데" — 칸 묶음 가운데 = 맨 위 메뉴 가운데(전엔 1312 틀 안쪽 64라 1440 128 · 1920 368에서 시작 — 표장 · 메뉴 어디에도 안 맞음). 실측 레퍼런스 토스 · 노션 · 스트라이프 · 프레이머 · 아모레 · 시안 기준/브랜드 시안/메뉴칸자리시안_v1 */
 .mm-in :is(.mm-k,.mm-ph,.mm-n,.mm-d){opacity:0;transform:translateY(-10px);filter:blur(10px);transition:opacity .16s,transform .16s,filter .16s}  /* 11/20 동원 "toss.im/newsroom … gnb 마우스 오버시 부드럽게 천천히 내려오거든?" → 시안 메뉴펼침시안_v2 → 버튼 "B 더 천천히": 토스 실측(글마다 10px 위 · 흐림 10px · 투명 → 0.3초 ease-in-out · 줄 · 열마다 0.04초)을 0.45초 · 0.06초로 — 카드 안 멘트 → 그림 → 이름을 줄로, 카드를 열로 (줄 + 열) × 0.06초 · 끝까지 약 0.7초 · 닫힐 땐 늦춤 없이 0.16초(전엔 카드째 10px 위에서 0.3초 · 0.03초 차례 · 흐림 없음) */
-.mm-in.go :is(.mm-k,.mm-ph,.mm-n,.mm-d){opacity:1;transform:none;filter:none;transition:opacity .45s ease-in-out,transform .45s ease-in-out,filter .45s ease-in-out}
+.mm-in.go :is(.mm-k,.mm-ph,.mm-n,.mm-d){opacity:1;transform:none;filter:none;transition:opacity .45s ease-in-out,transform .45s ease-in-out,filter .45s ease-in-out,text-decoration-color .2s ease}
 .mm-in.go .mm-c:nth-child(1) .mm-k{transition-delay:0.00s}.mm-in.go .mm-c:nth-child(1) .mm-ph{transition-delay:0.06s}.mm-in.go .mm-c:nth-child(1) .mm-n{transition-delay:0.12s}.mm-in.go .mm-c:nth-child(2) .mm-k{transition-delay:0.06s}.mm-in.go .mm-c:nth-child(2) .mm-ph{transition-delay:0.12s}.mm-in.go .mm-c:nth-child(2) .mm-n{transition-delay:0.18s}.mm-in.go .mm-c:nth-child(3) .mm-k{transition-delay:0.12s}.mm-in.go .mm-c:nth-child(3) .mm-ph{transition-delay:0.18s}.mm-in.go .mm-c:nth-child(3) .mm-n{transition-delay:0.24s}.mm-in.go .mm-c:nth-child(4) .mm-k{transition-delay:0.18s}.mm-in.go .mm-c:nth-child(4) .mm-ph{transition-delay:0.24s}.mm-in.go .mm-c:nth-child(4) .mm-n{transition-delay:0.30s}.mm-in.go .mm-c:nth-child(5) .mm-k{transition-delay:0.24s}.mm-in.go .mm-c:nth-child(5) .mm-ph{transition-delay:0.30s}.mm-in.go .mm-c:nth-child(5) .mm-n{transition-delay:0.36s}.mm-in.go .mm-d{transition-delay:.36s}
 .mm-d{margin:20px 0 0;font:400 15px/1.6 var(--serif);color:var(--muted);word-break:keep-all}  /* 11/17부터 카드 아래 바깥 링크 줄(교보문고에서 사기) — 설명은 카드 위 멘트(.mm-k)로 옮김 */
 .mm-k{display:block;margin:0 0 12px;font:400 14px/1.3 var(--serif);color:var(--muted);white-space:nowrap}  /* 카드 위 멘트(11/17 토스 짜임) — 이어 읽으면 한 문장 · 한 줄로(카드 높이가 어긋나지 않게) */
@@ -528,7 +528,7 @@ html:lang(ja) .vt cite{display:inline-block}html:lang(ja) .poem .le{font-weight:
 html.pv-on{overflow:hidden}
 .pv{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--bg);opacity:0;transform:scale(.98);filter:blur(4px);transition:opacity .22s var(--e2),transform .22s var(--e2),filter .22s var(--e2)}  /* ④ 창 열림 — 흐림 · 투명 · 98%에서(11/3 recent.design) */
 .pv.on{opacity:1;transform:none;filter:none}
-.pv :is(.pvh,.pva,.pvf,.pvd){transition:opacity .3s ease}.pv.bare :is(.pvh,.pva,.pvf,.pvd){opacity:0;pointer-events:none}  /* ① 사진만 남기기(11/4 — 사진을 누르면 숨김 · 다시 누르면 돌아옴) */
+.pv :is(.pvh,.pva,.pvf,.pvd){transition:opacity .3s ease}.pv .pva{transition:opacity .3s ease,background-color .2s ease,color .2s ease}  /* 11/28 사진 창 넘김 단추 — 올림 색도 0.2초(위 줄이 덮어 툭 바뀌었음) */.pv.bare :is(.pvh,.pva,.pvf,.pvd){opacity:0;pointer-events:none}  /* ① 사진만 남기기(11/4 — 사진을 누르면 숨김 · 다시 누르면 돌아옴) */
 .pv .pvs{touch-action:pan-x}.pv figure{transition:transform .25s var(--e2)}.pv.drag figure{transition:none}.pv.drag{background:color-mix(in srgb,var(--bg) calc(var(--pvbg,1) * 100%),transparent)}.pv.drag :is(.pvh,.pva,.pvf,.pvd){opacity:0}  /* ④ 아래로 끌어 닫기(11/4) — 옆 넘김만 브라우저에, 세로는 스크립트가 */
 .pv .pvs img{transition:transform .25s var(--e2)}.pv.zg .pvs img{transition:none}  /* ⑫ 사진 확대(11/5 'A 손짓만') — 두 번 톡은 0.25초로 커지고 손가락 동안은 바로 따라옴 */
 .pv.zoom .pvs{touch-action:none;overflow:hidden}.pv.zoom .pvs figure{overflow:visible;z-index:1}.pv .pvs img{transform-origin:0 0}  /* 커진 동안은 옆 넘김을 쉼 · 사진은 제 칸 밖으로 나와 보임 */
@@ -646,7 +646,7 @@ html.sr-on{overflow:hidden}
 
 .srch [role="option"].on{background:var(--ph);box-shadow:inset 2px 0 0 var(--ink)}  /* 11/15 동원 '이런 부분 되어있는 거 전부 찾아내서 맞춰' — 호버 · 고른 줄 바탕은 선 폭 안에서(옆으로 넓히던 그림자 · 음수 여백을 모두 뺌 · 글자는 줄 안쪽 12px 그대로) · 고른 줄 먹 선은 선 밖 -16px → 줄 안 왼쪽 2px */  /* 방향키로 고른 줄(10/27) — 찾기로 간 줄(.hit)과 같은 옅은 바탕을 양옆으로 조금 넓혀 · 왼쪽 2px 먹 줄(10/28 동원 'B 왼쪽 먹 줄 더하기' — 옅은 바탕만으로는 어둡게 1.09:1이라 거의 안 보였음) */
 /* 찾기 창 줄 호버(11/9 밤 동원 "마우스 오버시 아무런 일도 없잖아 그 칸이 색이 변해야지 회색으로") — 방향키로 고른 줄(.on)과 같은 옅은 회색을 양옆 14px까지(먹 막대는 방향키에만) · 인기 검색어 · 검색 결과 · 넓은 창 최근 검색어 */
-.srch :is(.sug a,.sug button,.sr-res a),.srh .rc-l li{transition:background-color var(--fast) var(--e2),box-shadow var(--fast) var(--e2)}
+.srch :is(.sug a,.sug button,.sr-res a),.srh .rc-l li{transition:background-color .2s ease,box-shadow .2s ease,transform .12s cubic-bezier(.2,0,0,1)}
 @media (hover:hover){.srch :is(.sug a,.sug button,.sr-res a),.srch .srh :is(.sug a,.sug button){padding-left:12px;padding-right:12px}.srch :is(.sug a,.sug button,.sr-res a):hover{background:var(--hv)}.srch :is(.sug a,.sug button,.sr-res a):hover :is(i,.tg,.ic){color:var(--muted)}}  /* 11/15 동원 '회색박스가 기존에 있던 선을 넘어버려' — 옆으로 14px 넓히던 그림자를 빼고 상자 = 선 폭 · 줄 안쪽 12px은 늘(올려도 글자가 움직이지 않게) · 마우스 기기만 */
 @media (hover:hover) and (min-width:768px){.srh .rc-l li{padding:0 12px}.srh .rc-l li:hover{background:var(--hv)}.srh .rc-q:hover{text-decoration:none}}  /* 넓은 창 최근 검색어는 밑줄 대신 칸 회색(동원 "밑줄이 아니라 칸에서 회색이 나와야해") · 휴대폰 칩은 그대로 */
 /* 찾기 창 두 칸 · 인기 검색어 순위(11/15 동원 무인양품 캡처 → 찾기창순위시안_v1 'B 진짜 순위 (권장)'): 칸 이름은 먹 굵게 + 아래 선 · 두 칸 사이 세로 가는 선 ·
@@ -780,7 +780,7 @@ html.sr-on{overflow:hidden}
   :is(#home dd .go,.pbook .plab .go):hover{border-bottom-color:var(--muted)}  /* 더 센 선택자의 밑줄도 함께 옅게 */
   .ask-off a.buy:hover{background:color-mix(in srgb,var(--ink) 80%,var(--bg))}  /* 차례 부 줄(접힘) — 옅은 글이 먹으로(점검에서 반응 없음) */
   :is(main a:not([class]):not(.nxp a),.pvf small a,#poem a:not([class]),#guestbook a:not([class]):not(.nxp a)):hover{color:var(--muted)}  /* 이미 밑줄이 있는 글 링크(「탁본」 속 · 처리방침)는 한 단 옅게 */
-  :is(.buy,.go,.cp,.colo .thm button,.tk-btn,.ctl label){transition:color .12s,background-color .12s,border-color .12s,text-decoration-color .12s,transform .12s cubic-bezier(.2,0,0,1)}
+  :is(.buy,.go,.cp,.colo .thm button,.tk-btn,.ctl label){transition:color .2s ease,background-color .2s ease,border-color .2s ease,text-decoration-color .2s ease,transform .12s cubic-bezier(.2,0,0,1)}
 }
 .send:not(:disabled):active{background:var(--ink);color:var(--bg)}  /* 누르는 동안 먹으로(10/24 ⑨ A) */
 .msg{min-height:1.4em;font:300 12.5px/1.5 var(--sans);color:var(--muted)}
@@ -795,7 +795,7 @@ html.sr-on{overflow:hidden}
 .fq summary::after{content:"";flex:none;width:8px;height:8px;margin-right:4px;border-right:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);transform:translateY(-3px) rotate(45deg);transition:transform .45s cubic-bezier(.2,0,0,1)}.fq[open]:not(.closing) summary::after{transform:translateY(2px) rotate(-135deg)}.fq.closing summary::after{transition-duration:.3s;transition-timing-function:ease-in-out}  /* 11/28 동원 "플러스가 아니라 이렇게 화살표처럼"(캡처 '제품 ∨') — +/− 대신 가는 꺾쇠 · 펼치면 위로 돌며 0.45초(GNB 판 곡선) · 접을 땐 0.3초 */
 .fq summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .fq p{margin:-4px 0 16px;font:300 15px/1.7 var(--sans);color:var(--muted)}
-.fq summary{border-radius:var(--btn-r);transition:background-color .12s}  /* 줄 전체가 누르는 칸 */
+.fq summary{border-radius:var(--btn-r);transition:background-color .2s ease,transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}  /* 줄 전체가 누르는 칸 */
 @media (hover:hover){.fq summary,.fq p{padding-inline:12px}.fq summary:hover{background:var(--hv)}}  /* 자주 묻는 질문 줄은 밑줄 대신 칸 색(11/6 밤 동원 '이 칸으로 되어있으니까 마우스 오버시 칸색깔이 변하는 게 더 낫지 않을까') */
 /* 바닥글: 판권면(10/24 A) — 시집 마지막 쪽 판권면의 틀. 첫 화면에서 세운 책의 마지막 쪽 */
 /* 방명록(10/26 A 같은 글자 목록 — Shu Ding · Manu · 형당의 원리) — 글은 명조 본문, 아래 '이름 · 받은 날' 회색 한 줄, 답은 들여 쓴 회색 '— 남동원'.
@@ -877,7 +877,7 @@ html.sr-on{overflow:hidden}
 .pp h2{scroll-margin-top:80px}
 .ppv-sel{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:8px;margin:22px 0 30px}
 .ppv-d{position:relative}
-.ppv-d>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;height:48px;padding:0 16px;border:1px solid var(--rule);border-radius:var(--btn-r);font:400 15px/1 var(--sans);color:var(--ink);cursor:pointer;transition:border-color .2s}
+.ppv-d>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;height:48px;padding:0 16px;border:1px solid var(--rule);border-radius:var(--btn-r);font:400 15px/1 var(--sans);color:var(--ink);cursor:pointer;transition:border-color .2s,opacity .12s cubic-bezier(.2,0,0,1)}
 .ppv-d>summary::-webkit-details-marker{display:none}
 .ppv-d>summary::after{content:"";flex:none;width:7px;height:7px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:translateY(-2px) rotate(45deg);transition:transform .2s}
 .ppv-d[open]>summary::after{transform:translateY(2px) rotate(-135deg)}
@@ -885,7 +885,7 @@ html.sr-on{overflow:hidden}
 .ppv-d ul{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:6;list-style:none;margin:0;padding:6px 0;background:var(--bg);border:1px solid var(--rule);border-radius:var(--btn-r);box-shadow:0 8px 24px rgba(0,0,0,.08)}
 .pp .ppv-d li{padding:0;font:400 15px/1 var(--sans)}.pp .ppv-d li::before,.pp .ppv-toc li::before,.pp .ppv-log li::before{content:none}
 .ppv-d a,.ppv-d a:hover{text-decoration:none}.ppv-l a{display:flex!important;align-items:center;justify-content:space-between;gap:12px}.ppv-l .ln{display:inline-flex;align-items:center;gap:12px}.ppv-l .flg{flex:none;width:18px;height:12px;border-radius:2px;box-shadow:0 0 0 1px color-mix(in srgb,currentColor 14%,transparent)}.ppv-l a[aria-current]::after{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat;mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat}  /* 11/20 언어 고르개 국기 · 지금 말 ✓ — 사이트 언어 목록(.lsw)과 같은 꼴 */
-.ppv-d a{display:block;padding:12px 16px;color:var(--ink);text-decoration:none;transition:background-color .2s}.ppv-d a:hover{background:var(--hv)}.ppv-d a[aria-current]{font-weight:600}
+.ppv-d a{display:block;padding:12px 16px;color:var(--ink);text-decoration:none;transition:background-color .2s,transform .12s cubic-bezier(.2,0,0,1)}.ppv-d a:hover{background:var(--hv)}.ppv-d a[aria-current]{font-weight:600}
 .ppv-toc{margin:30px 0 8px;padding:20px;background:var(--ph)}
 .ppv-toc p{margin:0 0 8px;font:600 13px/1.5 var(--sans);letter-spacing:.04em;color:var(--muted)}
 .ppv-toc ol{list-style:none;margin:0;padding:0;columns:2;column-gap:30px}
@@ -942,7 +942,7 @@ html.sr-on{overflow:hidden}
    누르는 동안 97%로 바로 눌리고(전환 없음), 떼면 0.12초 cubic-bezier(.2,0,0,1)로 돌아옴 — recent.design 실측 값. 마우스 · 손가락 모두. 제 전환이 있는 단추는 그 전환대로 돌아옴(:where — 우선순위 0).
    글줄 속 링크(inline)는 transform이 듣지 않아 그대로 · 보내기(먹 반전)는 제 누름 모양 · 움직임 줄이기면 눌림 대신 살짝 옅게 */
 /* 11/6 넓힘(동원 'A 사이트 결' — 점검에서 눌러도 반응 없던 FAQ 질문 줄 · 움직임 스위치 · 남기기까지): 펼침 줄(summary) · 스위치 글(label) · [role=button]도 · 남기기는 먹 반전에 더해 눌림 */
-:where(a,button,summary,label,[role=button]){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
+:where(a,button,summary,label,[role=button]){transition:transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}  /* 11/28 색 · 테두리 전환은 맨 끝 '툭 끊김 전수' 묶음(움직임 줄이기면 꺼짐) */
 .js :where(a,button,summary,label,[role=button]):active{transform:scale(.97);transition:none}
 .js .top .logo:active{transform:none}  /* 표장(로고)은 누름 반응 없음(11/16 동원 "gnb 가장 왼쪽에 있는 거 클릭하면 뭔가 크기 작아졌다가 … 다른 사이트 보니까 없더라고" — 11/6 올림 반응 뺀 데 이어) · 휴대폰은 가운데 맞춤 그대로 */
 :is(.nf,.pp) :where(a,button):active{transform:scale(.97);transition:none}  /* 하11 — 404 · 처리방침 쪽은 main.js가 없어(.js 없음) 누름 모양이 빠졌던 것 · 아이폰은 body ontouchstart(build.py)가 있어야 :active를 그림 · a는 인라인이라 줄어듦이 안 보이는 글 링크도 있어 아래 inline-block */
@@ -1001,10 +1001,10 @@ html.sr-on{overflow:hidden}
 /* 결 — 자바스크립트가 켜져 있고 '동작 줄이기'가 아닐 때만. 흐림은 명조의 가는 획에 맞춰 3px(조사 권고 2~4px) */
 @media (prefers-reduced-motion:no-preference){
   .nt.in b i{animation:nxp 2.4s ease-in-out 3}  /* '준비 중' 점이 화면에 들어오면 세 번 숨 쉬고 멈춤(10/27 숨 재기 1 — 전엔 쪽을 연 때부터 끝없이) · '동작 줄이기'면 멈춘 점 */
-  .top nav a{transition:color var(--fast) var(--e2),opacity .2s ease}  /* 옅어짐 0.2초 — 11/21 GNB 올림 나머지 희미하게(토스 실측 opacity .2s) */
-  .top nav a::after,.js .top .sq::after{transition:background-color .2s var(--ease)}
-  .buy2{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease)}  /* 교보 단추 호버 0.3초(11/2 — CTA와 같게) */  /* 회색 상자가 0.2초에 번짐(11/2) */
-  .top .act a.cta{transition:background-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),opacity .4s}  /* 맨 위 테두리 → 먹 채움 0.3초(10/29 고침 2) */  /* 누르면 옅어졌다 0.4초에 돌아옴(10/28 ⑧ — 옅어지는 것은 손가락 기기만, 컴퓨터는 opacity가 바뀌지 않아 그대로) */
+  .top nav a{transition:color .2s ease,opacity .2s ease}  /* 옅어짐 0.2초 — 11/21 GNB 올림 나머지 희미하게(토스 실측 opacity .2s) */
+  .top nav a::after,.js .top .sq::after{transition:background-color .2s ease}
+  .buy2{transition:background-color .2s ease,color .2s ease,box-shadow .2s ease,transform .12s cubic-bezier(.2,0,0,1)}  /* 교보 단추 호버 0.3초(11/2 — CTA와 같게) */  /* 회색 상자가 0.2초에 번짐(11/2) */
+  .top .act a.cta{transition:background-color .2s ease,color .2s ease,box-shadow .2s ease,opacity .4s,transform .12s cubic-bezier(.2,0,0,1)}  /* 11/28 0.3초 --ease(처음 60ms에 90%가 바뀌어 툭 끊겨 보임) → GNB 값 0.2초 ease */  /* 맨 위 테두리 → 먹 채움 0.3초(10/29 고침 2) */  /* 누르면 옅어졌다 0.4초에 돌아옴(10/28 ⑧ — 옅어지는 것은 손가락 기기만, 컴퓨터는 opacity가 바뀌지 않아 그대로) */
   .top nav .ul{transition:transform .28s var(--e2),width .28s var(--e2),opacity .3s}  /* ⑨ 미끄러짐 0.28초(11/4) */  /* 지금 칸 밑줄이 미끄러짐('동작 줄이기'면 바로 그 자리) */
   .mini{transition:transform .5s var(--ease),visibility 0s .5s}  /* 작은 재생기는 아래에서 올라오고 내려감('동작 줄이기'면 바로) */
   .mini.on{transition:transform .5s var(--ease)}
@@ -1219,7 +1219,7 @@ html.sr-on{overflow:hidden}
 @media (pointer:coarse){.pvx,.pvf small .pvl,.sr-kb button{position:relative}.pvx::before{content:"";position:absolute;inset:-8px -12px}.pvf small .pvl::before{content:"";position:absolute;inset:-12px -4px}.sr-kb button::before{content:"";position:absolute;inset:-12px -4px}}  /* 11/18 누름 영역 점검(402 격자 실측): 사진 창 닫기 22×28 · 링크 복사 42×18 · 찾기 '그대로 찾기' 98×20 → 손가락 기기만 누르는 자리 44 안팎 · 모양 그대로 */
 .lsw .gl{width:15px;height:15px}.lsw .cr{position:relative;top:-3.5px;margin-left:-3px;width:10px;height:10px;color:var(--ink);transition:transform .2s}  /* 펼침 화살표 8px 회색 → 10px 먹(11/17 동원 "화살표 너무 작은 거 같아" — 토스 실측 화살표 폭 = 글자 높이 0.67배 · 글자와 같은 색) · 위로 3.5px — 상자 가운데에 두면 대문자 가운데보다 3.6~4.9px 처져 보여서(동원 "글자 중간에 있잖아 … 아래로 쳐진 느낌", 1440 · 402 실측으로 맞춤) · 왼쪽으로 3px — 글자와 틈이 대문자 높이 1.09배라 떠 보여서 토스 0.67배 가까이(0.74배 · 동원 "토스가 좀 더 붙어있는 거 같지 않아?") */.lsw[open] .cr{transform:rotate(180deg)}
 .lsw ul{position:absolute;left:-8px;bottom:calc(100% + 10px);z-index:5;min-width:0;margin:0;padding:4px;list-style:none;background:var(--bg);border:1px solid var(--line);border-radius:0;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08)}  /* 11/21 동원 "이것 사각형으로" → 버튼 "언어 목록 창 모서리 각지게 (권장)" — 링크 쪽지 · 메뉴 펼침과 같은 각진 판(12 · 8 → 0) */
-.lsw li>*{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 16px 8px 12px;border-radius:0;font:400 14px/1.2 var(--sans);color:color-mix(in srgb,var(--ink) 45%,var(--bg));text-decoration:none;transition:color .15s}.lsw li>[aria-current],.lsw li>a:hover{color:var(--ink)}.lsw li>[aria-current]::after{content:none!important}@media (pointer:coarse){.lsw li>*{padding:12px 16px 12px 12px}}  /* 11/23 동원 "박스가 큰 거 같은데 차라리 선택된 건 진하게 … 선택되지 않은 건 흐릿 … 체크 표시 없애고" → 견줌 그림 기준/브랜드 시안/언어판가운데_v1/언어판_지금vs새판.png → 버튼 "새 판으로 (권장)": 판 폭 196 → 글자 폭 · 줄 위아래 12 → 8(손가락 기기는 12) · 고른 말 먹 600 · 나머지 회색(올리면 먹) · 체크 뺌 · 국기는 본래 색 · 회색은 토스 대비(동원 캡처 "토스의 흐린 표시야 우리도 이정도로" — grey900 ↔ grey500 · 밝기 약 56%) → 먹 45% 섞음(밝은 화면 #8F8F8F · --muted #555는 너무 진했음) */
+.lsw li>*{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 16px 8px 12px;border-radius:0;font:400 14px/1.2 var(--sans);color:color-mix(in srgb,var(--ink) 45%,var(--bg));text-decoration:none;transition:color .2s ease,background-color .2s ease,transform .12s cubic-bezier(.2,0,0,1)}.lsw li>[aria-current],.lsw li>a:hover{color:var(--ink)}.lsw li>[aria-current]::after{content:none!important}@media (pointer:coarse){.lsw li>*{padding:12px 16px 12px 12px}}  /* 11/23 동원 "박스가 큰 거 같은데 차라리 선택된 건 진하게 … 선택되지 않은 건 흐릿 … 체크 표시 없애고" → 견줌 그림 기준/브랜드 시안/언어판가운데_v1/언어판_지금vs새판.png → 버튼 "새 판으로 (권장)": 판 폭 196 → 글자 폭 · 줄 위아래 12 → 8(손가락 기기는 12) · 고른 말 먹 600 · 나머지 회색(올리면 먹) · 체크 뺌 · 국기는 본래 색 · 회색은 토스 대비(동원 캡처 "토스의 흐린 표시야 우리도 이정도로" — grey900 ↔ grey500 · 밝기 약 56%) → 먹 45% 섞음(밝은 화면 #8F8F8F · --muted #555는 너무 진했음) */
 .lsw .ln{display:inline-flex;align-items:center;gap:12px}.lsw .flg{flex:none;width:18px;height:12px;border-radius:2px;box-shadow:0 0 0 1px color-mix(in srgb,currentColor 14%,transparent)}  /* 국기(11/10 동원 '누를 때는 국기') — 흰 국기도 테두리 한 겹으로 바탕과 갈림 */
 .lsw li>[aria-current]{font-weight:600}.lsw li>[aria-current]::after{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat;mask:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4 6.5 12 13 4.5"/></svg>') center/contain no-repeat}
 .lsw li>a:active{background:var(--ph)}.lsw summary:active{opacity:.6}
@@ -1406,7 +1406,7 @@ html.cz-on{overflow:hidden}  /* 11/20 동원 "이거를 누르면 … 하단 푸
 .buy .ar{display:inline-block;margin-left:.3em;transition:transform var(--mid) var(--e2)}  /* ⑤ 화살표 */
 .fog{position:fixed;left:0;right:0;z-index:8;pointer-events:none;opacity:0;transition:opacity .35s ease-out,transform .25s var(--e2)}.fog.t{top:0;height:min(96px,12svh);transform:translateY(var(--toph,56px));background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 100%,transparent) 0%,color-mix(in srgb,var(--bg) 97%,transparent) 10%,color-mix(in srgb,var(--bg) 90%,transparent) 20%,color-mix(in srgb,var(--bg) 78%,transparent) 30%,color-mix(in srgb,var(--bg) 65%,transparent) 40%,color-mix(in srgb,var(--bg) 50%,transparent) 50%,color-mix(in srgb,var(--bg) 35%,transparent) 60%,color-mix(in srgb,var(--bg) 22%,transparent) 70%,color-mix(in srgb,var(--bg) 10%,transparent) 80%,color-mix(in srgb,var(--bg) 3%,transparent) 90%,color-mix(in srgb,var(--bg) 0%,transparent) 100%)}.fog.t.up{transform:none}.fog.b{bottom:0;height:min(91px,12svh);background:linear-gradient(to top,color-mix(in srgb,var(--bg) 100%,transparent) 0%,color-mix(in srgb,var(--bg) 97%,transparent) 10%,color-mix(in srgb,var(--bg) 90%,transparent) 20%,color-mix(in srgb,var(--bg) 78%,transparent) 30%,color-mix(in srgb,var(--bg) 65%,transparent) 40%,color-mix(in srgb,var(--bg) 50%,transparent) 50%,color-mix(in srgb,var(--bg) 35%,transparent) 60%,color-mix(in srgb,var(--bg) 22%,transparent) 70%,color-mix(in srgb,var(--bg) 10%,transparent) 80%,color-mix(in srgb,var(--bg) 3%,transparent) 90%,color-mix(in srgb,var(--bg) 0%,transparent) 100%)}.fog.on{opacity:1}@media print{.fog{display:none}}  /* 가장자리 안개(11/4 동원 'A 위 · 아래 안개' — 갤러리UX열_v1 00 · dmcg.co 실측 11단 곡선 · 아래 91px): 글이 맨 위 띠 밑 · 화면 아래 끝에서 스며듦 · 위는 띠를 따라(숨으면 화면 맨 위) · 맨 위 · 맨 아래에선 0.35초에 사라짐 · 맨 위로 단추(9) · 띠(10) 아래 */
 .totop{border:1.5px solid transparent!important;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box!important}  /* ⑩A 테두리가 곧 진행 줄(원 하나) */
-@media (hover:hover){.totop:hover{background:linear-gradient(var(--ink),var(--ink)) padding-box,conic-gradient(var(--ink) calc(var(--p,0) * 1turn),var(--line) 0) border-box!important}}  /* 올리면 먹으로 채움(11/6 동원 "마우스 올리면 화살표가 사라져" — 위 진행 줄의 !important 바탕이 먹 채움을 덮어 흰 화살표가 흰 바탕에 묻혔음) */
+@media (hover:hover){.totop:hover{box-shadow:inset 0 0 0 12px var(--ink)}}  /* 11/28 툭 끊김 — 바탕 그라데이션을 바꿔 끼우면 전환이 안 돼 툭 채워졌음 → 안쪽 그림자로 0.2초에 먹이 참(진행 테두리는 그대로) */  /* 올리면 먹으로 채움(11/6 동원 "마우스 올리면 화살표가 사라져" — 위 진행 줄의 !important 바탕이 먹 채움을 덮어 흰 화살표가 흰 바탕에 묻혔음) */
 /* 불러오는 중 고리(11/6 'B 둥근 고리' — 위 '맨 위로'와 같은 먹 고리 · 4분의 3 · 0.8초에 한 바퀴): 0.3초 넘게 걸릴 때만 나타남(빨리 오면 깜빡이지 않게) · 움직임 줄이기면 돌지 않음 */
 .spin{display:inline-block;width:22px;height:22px;box-sizing:border-box;border:1.5px solid transparent;border-radius:50%;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(var(--ink) .75turn,var(--line) 0) border-box;vertical-align:middle;opacity:0;animation:spin .8s linear infinite,spin-in 0s .3s forwards;pointer-events:none}
 @keyframes spin{to{transform:rotate(1turn)}}@keyframes spin-in{to{opacity:1}}
@@ -1442,8 +1442,8 @@ header.top{view-transition-name:ndw-top}.top nav .dt.on{view-transition-name:ndw
 @media (prefers-reduced-motion:reduce){img.fi{transition:none}.top{transition:none}.pv.fromt{transform:none}::view-transition-old(*),::view-transition-new(*),::view-transition-group(*),::view-transition-image-pair(*){animation:none}}
 
 /* 손에 닿는 반응 넷(11/3 동원 "recent.design … 누르면 기분이 좋아" → 후보 ② · ⑤ · ⑥ · ③ · ④ → '다섯 한꺼번에 (권장)') — 마우스 기기에서만 · 움직임 줄이기면 떠오름 · 열림 움직임은 끔 */
-.ficons a{transition:transform var(--mid) var(--e2),background-color var(--fast) var(--e2)}
-.fcols a,.fcols .cz-open{transition:opacity var(--fast) var(--e2)}
+.ficons a{transition:transform var(--mid) var(--e2),background-color .2s ease}
+.fcols a,.fcols .cz-open{transition:opacity var(--fast) var(--e2),color .2s ease,text-decoration-color .2s ease}
 .wall .wt{position:relative}
 .wall .wt::after{content:"↗";position:absolute;top:8px;right:8px;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(17,17,17,.72);color:#fff;font:400 14px/1 var(--sans);opacity:0;transform:scale(.9);transition:opacity var(--mid) var(--e2),transform var(--mid) var(--e2);pointer-events:none}
 @media (hover:hover) and (pointer:fine){
@@ -1465,7 +1465,7 @@ header.top{view-transition-name:ndw-top}.top nav .dt.on{view-transition-name:ndw
 .nt.scrub .sbar{opacity:1}
 /* ⑨ 연락 — 메시지 단추를 먹 단추로(맨 위 '연락하기'와 같은 꼴) · 다가오는 움직임(← '마그네틱 버튼')은 main.js(마우스 기기 · 움직임 허용) */
 .ask-off a.buy{align-items:center;padding:12px 16px;border:0;border-radius:var(--btn-r);background:var(--ink);color:var(--bg)}
-@media (prefers-reduced-motion:no-preference){.ask-off a.buy{transition:transform .55s cubic-bezier(.2,.8,.2,1),background-color .12s}.ask-off a.buy::after{display:none}  /* 먹 단추 아래에 밑줄 단추용 먹 줄이 붙던 것 뺌(11/6 전체 점검) */.ask-off a.buy.pull{transition:transform .18s ease-out}}
+@media (prefers-reduced-motion:no-preference){.ask-off a.buy{transition:transform .55s cubic-bezier(.2,.8,.2,1),background-color .2s ease,color .2s ease,border-color .2s ease}.ask-off a.buy::after{display:none}  /* 먹 단추 아래에 밑줄 단추용 먹 줄이 붙던 것 뺌(11/6 전체 점검) */.ask-off a.buy.pull{transition:transform .18s ease-out}}
 /* ⑩ 쪽 사이 원형 전환(11/1)은 11/19 뺌 — 동원 버튼 "A 원 빼기"(먹 화면이 다음 쪽이 올 때까지 남던 것) · 쪽 사이는 @view-transition 0.25초 겹쳐 바뀜만 */
 
 /* 소개 첫 화면(11/1 동원 "내 웹사이트 랜딩 페이지 … TOKA 이런 느낌이면 좋겠다" → 버튼 "A 뒷모습 (권장)" — 시안 기준/브랜드 시안/첫화면_TOKA시안_v1_휴대폰_지금·A·B.png):
@@ -1519,8 +1519,8 @@ header.top{view-transition-name:ndw-top}.top nav .dt.on{view-transition-name:ndw
 /* 맨 위로(11/1 밤 동원 "고야드 홈페이지 처럼 … 스크롤 내리면, 오른쪽에 저거 올라가는 버튼 나와서 누르면 바로 맨 위로"): 고야드 실측(goyard.com/kr_ko · 1440 · 390) —
    22px 동그라미 · 1px 테두리 · 8×6 꺾쇠 · 컴퓨터 오른쪽 · 아래 75px / 휴대폰 40px · 300px까지 숨고 400px에서 보임 · 누르면 부드럽게 위로.
    색은 먹(금색 대신 — 원리만) · 자리는 단에 맞춰 컴퓨터 72 · 휴대폰 오른쪽 20(옆 여백) · 아래 36 · 360px에서 나타남(main.js) · 누르는 자리는 46px(::before) · 숨은 동안은 초점도 받지 않음(visibility) */
-.totop{position:fixed;right:20px;bottom:36px;z-index:9;display:flex;align-items:center;justify-content:center;width:22px;height:22px;padding:0;border:1px solid var(--ink);border-radius:50%;background:var(--bg);color:var(--ink);cursor:pointer;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
-.totop.on{opacity:1;visibility:visible;transition:opacity .3s}
+.totop{position:fixed;right:20px;bottom:36px;z-index:9;display:flex;align-items:center;justify-content:center;width:22px;height:22px;padding:0;border:1px solid var(--ink);border-radius:50%;background:var(--bg);color:var(--ink);cursor:pointer;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s,box-shadow .2s ease,color .2s ease,transform .12s cubic-bezier(.2,0,0,1)}
+.totop.on{opacity:1;visibility:visible;transition:opacity .3s,box-shadow .2s ease,color .2s ease,transform .12s cubic-bezier(.2,0,0,1)}
 .totop::before{content:"";position:absolute;inset:-12px}
 .totop svg{display:block;width:8px;height:6px;fill:none;stroke:currentColor;stroke-width:1}
 @media (hover:hover){.totop:hover{background:var(--ink);color:var(--bg)}}
@@ -1561,7 +1561,7 @@ header.top{view-transition-name:ndw-top}.top nav .dt.on{view-transition-name:ndw
 :root{--fs:1}:root[data-fs="l"]{--fs:1.125}:root[data-fs="xl"]{--fs:1.25}
 .colo .fsz button span{font:400 13px/1 var(--sans)}.colo .fsz button+button span{font-size:16px}.colo .fsz button+button+button span{font-size:19px}
 /* 언어 안내 띠(11/6 '이런 섬세한 ux' → 언어안내시안_v1 'A 헤더 아래 띠') — 헤더 아래 흐름 안(내리면 함께 지나감 · 첫 화면을 덮지 않음) · 옅은 바탕 한 줄 · 좁으면 두 줄 */
-.lsug{position:relative;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 12px;min-height:40px;padding:8px 48px;background:var(--ph);font:400 12.5px/1.5 var(--sans);color:var(--ink);text-align:center;transition:opacity .18s}
+.lsug{position:relative;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 12px;min-height:40px;padding:8px 48px;background:var(--ph);font:400 12.5px/1.5 var(--sans);color:var(--ink);text-align:center;transition:opacity .3s ease-in-out}
 .lsug.out{opacity:0}
 .lsug a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;white-space:nowrap}
 .lsug .lsx{position:absolute;right:8px;top:50%;translate:0 -50%;width:32px;height:32px;border:0;border-radius:var(--btn-r);background:none;color:var(--faint);font:300 18px/1 var(--sans);cursor:pointer}
@@ -1588,7 +1588,7 @@ html:lang(ja) .mail>span,html:lang(ja) .mail .cp{white-space:nowrap}html:lang(ja
   #home .n6 a.go:hover,#home .lab a.go:hover{color:var(--muted);border-bottom-color:var(--muted)}  /* 중6 — 첫 화면 정보표 '한 줄 읽기 ↓' 올림 반응 */
   .pp .oth:hover{color:var(--ink)}  /* 중7 — 처리방침 다른 언어 링크 */
   .gbn a:hover{color:var(--ink)}  /* 중8 — 방명록 안내 속 처리방침 링크 */
-  :is(#home .n6 a.go,#home .lab a.go,.pp .oth,.gbn a){transition:color .12s,border-color .12s}
+  :is(#home .n6 a.go,#home .lab a.go,.pp .oth,.gbn a){transition:color .2s ease,border-color .2s ease,transform .12s cubic-bezier(.2,0,0,1)}
 }
 .wall .wt .wcap{content:normal}  /* 글 칸은 제 글을 그대로(가상 요소 규칙과 묶여 있어 content만 풀어 둠) */
 /* 커서 점 · 누르면 파동(11/9 동원 "A 점만 (권장)" — 시안 기준/브랜드 시안/커서시안_v1 · 움직임은 cursor.js) — 마우스 기기에서만 기본 화살표를 숨김(.cur-on은 cursor.js가 붙임 · 스크립트가 없으면 기본 그대로) · 글 칸은 기본 글 커서
@@ -1893,3 +1893,38 @@ main>#me.hub{display:block;padding:0 0 64px}
 }
 @media (min-width:768px) and (hover:hover){.ma-ln:hover .ma-lx{opacity:1}}
 @media (prefers-reduced-motion:reduce){.ma-vy,.ma-lt,.ma-ln{transition:none}.ma-vy i{animation:none}}
+
+/* 11/28 툭 끊김 전수(동원 "내 페이지에는 툭툭 끊기는 결과물들이 없어야해 모두 그라데이션 처럼 부드럽게" — research_notes/툭 끊김 전수_v1.md):
+   값은 GNB 한 벌 — 올림 · 누름 색 · 테두리 · 그림자 0.2초 ease · 나타남 0.45초 ease-in-out(아래 10px · 흐림 10px에서) · 사라짐 0.3초 ease-in-out · 움직임 줄이기면 모두 바로 */
+.btoc li{transition:color .2s ease}  /* 차례 — 읽는 줄(.on)이 바뀔 때 옅은 글이 먹으로 */
+.gb .card{transition:border-color .2s ease}  /* 방명록 — 칸에 들어가면 테두리가 먹으로 */
+@media (prefers-reduced-motion:no-preference){
+  /* 공용 — 따로 전환을 정하지 않은 링크 · 단추 · 입력 칸(:where — 우선순위 0이라 제 전환이 있는 단추는 그대로): 색 · 바탕 · 테두리 · 그림자 · 밑줄 색 0.2초 ease + 누름 눌림 0.12초(전과 같음) */
+  :where(:root:not([data-motion="reduce"])) :where(a,button,summary,label,[role=button]){transition:color .2s ease,background-color .2s ease,border-color .2s ease,box-shadow .2s ease,text-decoration-color .2s ease,transform .12s cubic-bezier(.2,0,0,1),opacity .12s cubic-bezier(.2,0,0,1)}
+  :where(:root:not([data-motion="reduce"])) :where(input,textarea,select){transition:color .2s ease,background-color .2s ease,border-color .2s ease,box-shadow .2s ease}
+}
+@media (hover:hover){
+  /* 올리면 생기는 밑줄 — 밑줄을 미리 투명하게 그어 두고 올리면 색만 0.2초에 진해짐(전엔 밑줄이 툭 생김) */
+  :is(.mm-n,.mm-l,.srch .x,.pvx,.fcols a,.fcols button){text-decoration-line:underline;text-decoration-color:transparent;text-underline-offset:4px}
+  .pvi-n{text-decoration-line:underline;text-decoration-color:transparent;text-underline-offset:3px}
+  :is(.mail .ml,.pvf small a,.pvl,.ctl label){text-decoration-line:underline;text-decoration-color:transparent;text-decoration-thickness:1px;text-underline-offset:4px}
+}
+/* 나타남 · 사라짐 — hidden을 바로 바꾸던 칸(main.js · consent.js 그대로): 나타날 땐 @starting-style로 아래 10px · 흐림 10px에서 0.45초,
+   사라질 땐 0.3초 옅어진 뒤 display가 바뀜(transition-behavior:allow-discrete — 크롬 · 웨일 · 사파리 17.4+, 못 하는 브라우저는 전처럼 바로) */
+@media (prefers-reduced-motion:no-preference){
+  :root:not([data-motion="reduce"]) :is(.gbback,.gb-err,.gbf .cnt,.sr-none,.sr-kb,.srch .clr,.sheet .keep,.sheet .kb,.ma-ly,.ma-dock){transition:opacity .45s ease-in-out,translate .45s ease-in-out,filter .45s ease-in-out,color .2s ease,background-color .2s ease,border-color .2s ease,transform .12s cubic-bezier(.2,0,0,1)}
+  :root:not([data-motion="reduce"]) :is(.gbback,.gb-err,.gbf .cnt,.sr-none,.sr-kb,.srch .clr)[hidden]{opacity:0;transition:opacity .3s ease-in-out,display .3s allow-discrete}
+  /* 서로 갈아드는 칸(간직하기 ↔ 책장 단추 · 가사 판)은 나타남만 — 사라짐까지 두면 0.3초 동안 둘이 함께 서서 줄이 밀림 */
+  @starting-style{:root:not([data-motion="reduce"]) :is(.gbback,.gb-err,.gbf .cnt,.sr-none,.sr-kb,.srch .clr,.sheet .keep,.sheet .kb,.ma-ly,.ma-dock):not([hidden]){opacity:0;translate:0 10px;filter:blur(10px)}}
+  :root:not([data-motion="reduce"]) .ma-dock{transition:opacity .45s ease-in-out,translate .45s cubic-bezier(.2,0,0,1),filter .45s ease-in-out}  /* 음악 재생 줄 — 처음 틀면 아래에서 올라옴 */
+  @starting-style{:root:not([data-motion="reduce"]) .ma-dock:not([hidden]){opacity:0;translate:0 100%;filter:none}}
+  /* 창(찾기 · 휴대폰 메뉴 · 동의 창) 닫힘 — 열림은 전부터 있던 장면 그대로, 닫을 때 0.3초 옅어짐(토스 GNB 닫힘 실측) · 닫는 순간부터 누름은 안 받음 */
+  :root:not([data-motion="reduce"]) :is(.srch,.mnu,.cz)[hidden]{display:none;opacity:0;pointer-events:none;transition:opacity .3s ease-in-out,display .3s allow-discrete}
+}
+/* 처리방침 고르개(판 · 언어 — <details>, 이 쪽은 main.js가 없음): 목록이 0.28초에 4px 위에서 내려오며 나타나고 닫을 땐 0.3초 옅어짐(::details-content — 크롬 131+ · 못 하면 전처럼 바로) */
+@media (prefers-reduced-motion:no-preference){
+  :root:not([data-motion="reduce"]) .ppv-d::details-content{transition:content-visibility .3s allow-discrete}
+  :root:not([data-motion="reduce"]) .ppv-d ul{transition:opacity .28s cubic-bezier(.2,0,0,1),translate .28s cubic-bezier(.2,0,0,1)}
+  :root:not([data-motion="reduce"]) .ppv-d:not([open]) ul{opacity:0;translate:0 -4px;transition:opacity .3s ease-in-out,translate .3s ease-in-out}
+  @starting-style{:root:not([data-motion="reduce"]) .ppv-d[open] ul{opacity:0;translate:0 -4px}}
+}
