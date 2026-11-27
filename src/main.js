@@ -809,7 +809,12 @@
       }
     });
   };
-  document.querySelectorAll("details.fq").forEach(window.ndwSmooth);
+  document.querySelectorAll("details.fq, .btoc details").forEach(window.ndwSmooth);  // 11/28 툭 끊김 전수 — 차례의 부 접힘(영 · 일 · 러 · 프 · 서판)도 같은 펼침
+  // 11/28 툭 끊김 전수 — 글자가 바뀌는 단추(복사 → 복사됨 · 공유 → 링크를 복사했습니다)는 새 글이 흐림 4px에서 0.28초에 또렷해짐(바로 바뀌던 것) · 움직임 줄이기면 그대로
+  window.ndwFade = el => {
+    if (!el || !el.animate || H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    el.animate([{ opacity: .2, filter: "blur(4px)" }, { opacity: 1, filter: "none" }], { duration: 280, easing: "cubic-bezier(.2,0,0,1)" });
+  };
 
   // 사진 칸의 한 장씩 · 모아 보기 · 3D 고리(10/24–11/1)는 11/3 흐르는 벽으로 바뀌며 뺌(11/4 정리 — git 기록 9cec51b 앞에 있음)
 
@@ -2173,7 +2178,7 @@
     const b = document.createElement("button");
     b.type = "button"; b.className = "cp"; b.textContent = uiText("copy", "복사");
     a.after(b);
-    const say = k => { b.textContent = uiText(k, k); b.classList.add("cpd"); setTimeout(() => { b.textContent = uiText("copy", "복사"); b.classList.remove("cpd"); }, 1200); };
+    const say = k => { b.textContent = uiText(k, k); b.classList.add("cpd"); window.ndwFade(b); setTimeout(() => { b.textContent = uiText("copy", "복사"); b.classList.remove("cpd"); window.ndwFade(b); }, 1200); };
     const old = () => {  // 클립보드 API가 없거나 막힌 곳(오래된 브라우저 · http) — 잠깐 고른 글을 복사
       const ta = Object.assign(document.createElement("textarea"), { value: m });
       ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;opacity:0";
@@ -2611,7 +2616,8 @@
       if (r === "sheet") return;
       const lab = b.firstChild, was = lab.textContent;
       lab.textContent = r === "shared" ? uiText("shared", "링크를 복사했습니다") : uiText("copy_fail", "복사하지 못했습니다");
-      setTimeout(() => { lab.textContent = was; }, 2000);
+      window.ndwFade(b);
+      setTimeout(() => { lab.textContent = was; window.ndwFade(b); }, 2000);
     });
   });
 
