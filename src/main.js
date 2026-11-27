@@ -777,6 +777,40 @@
     }
   });
 
+  // 11/28 동원 "플러스 누를 때 너무 딱 나오니까 별로야 우리 gnb 누르면 나오는 내려오는 것처럼 부드럽게 … 내 페이지에는 툭툭 끊기는 결과물들이 없어야해"
+  // 접고 펴는 칸(<details> — 자주 묻는 질문 .fq) — 펼 때: 높이 0.45초(GNB 판 곡선 .2,0,0,1) + 안 글은 10px 위 · 흐림 10px에서 0.45초 ease-in-out(GNB 판 글과 같은 값)
+  // 접을 때: 안 글이 0.3초 ease-in-out으로 옅어지며 높이도 같이 줄고, 다 줄면 닫힘(토스 GNB 닫힘 실측 0.3초) · 움직임 줄이기면 그냥 열고 닫음
+  window.ndwSmooth = d => {
+    const sm = d.querySelector(":scope > summary");
+    if (!sm || d.dataset.sm) return;
+    d.dataset.sm = "1";
+    let run = null;
+    const kids = () => [...d.children].filter(c => c !== sm);
+    sm.addEventListener("click", ev => {
+      if (H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      ev.preventDefault();
+      const from = d.offsetHeight;
+      if (run) { run.cancel(); run = null; }
+      kids().forEach(k => k.getAnimations().forEach(a => a.cancel()));
+      d.style.overflow = "clip";  // hidden은 BFC라 안 글의 아래 여백을 품어 끝에 16px 툭 줄었음 — clip은 여백 겹침을 그대로 둠
+      const done = () => { d.style.overflow = ""; run = null; };
+      if (!d.open || d.classList.contains("closing")) {
+        d.classList.remove("closing"); d.open = true;
+        const to = d.offsetHeight;
+        run = d.animate({ height: [from + "px", to + "px"] }, { duration: 450, easing: "cubic-bezier(.2,0,0,1)" });
+        kids().forEach(k => k.animate([{ opacity: 0, transform: "translateY(-10px)", filter: "blur(10px)" }, { opacity: 1, transform: "none", filter: "none" }], { duration: 450, easing: "ease-in-out" }));
+        run.onfinish = done;
+      } else {
+        d.open = false; const to = d.offsetHeight; d.open = true;  // 닫힌 높이를 잰 뒤 다시 열어 둔 채 줄임
+        d.classList.add("closing");
+        kids().forEach(k => k.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, easing: "ease-in-out", fill: "forwards" }));
+        run = d.animate({ height: [from + "px", to + "px"] }, { duration: 300, easing: "ease-in-out" });
+        run.onfinish = () => { d.classList.remove("closing"); d.open = false; kids().forEach(k => k.getAnimations().forEach(a => a.cancel())); done(); };
+      }
+    });
+  };
+  document.querySelectorAll("details.fq").forEach(window.ndwSmooth);
+
   // 사진 칸의 한 장씩 · 모아 보기 · 3D 고리(10/24–11/1)는 11/3 흐르는 벽으로 바뀌며 뺌(11/4 정리 — git 기록 9cec51b 앞에 있음)
 
   // 영상 칸: 큰 한 편은 누르면 이 자리에서 재생 — 누르기 전에는 플레이어를 불러오지 않음(썸네일 그림만 · youtube-nocookie · IFrame API는 처음 누를 때 한 번).

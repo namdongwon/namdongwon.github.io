@@ -792,7 +792,7 @@ html.sr-on{overflow:hidden}
 .fq{border-top:1px solid var(--rule)}.fq:last-child{border-bottom:1px solid var(--rule)}
 .fq summary{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;list-style:none;font:400 16px/1.5 var(--serif);color:var(--ink);cursor:pointer}
 .fq summary::-webkit-details-marker{display:none}
-.fq summary::after{content:"+";flex:none;font:300 20px/1 var(--sans);color:var(--ink)}.fq[open] summary::after{content:"−"}
+.fq summary::after{content:"";flex:none;width:8px;height:8px;margin-right:4px;border-right:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);transform:translateY(-3px) rotate(45deg);transition:transform .45s cubic-bezier(.2,0,0,1)}.fq[open]:not(.closing) summary::after{transform:translateY(2px) rotate(-135deg)}.fq.closing summary::after{transition-duration:.3s;transition-timing-function:ease-in-out}  /* 11/28 동원 "플러스가 아니라 이렇게 화살표처럼"(캡처 '제품 ∨') — +/− 대신 가는 꺾쇠 · 펼치면 위로 돌며 0.45초(GNB 판 곡선) · 접을 땐 0.3초 */
 .fq summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .fq p{margin:-4px 0 16px;font:300 15px/1.7 var(--sans);color:var(--muted)}
 .fq summary{border-radius:var(--btn-r);transition:background-color .12s}  /* 줄 전체가 누르는 칸 */
