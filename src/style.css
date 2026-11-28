@@ -1192,7 +1192,8 @@ html.sr-on{overflow:hidden}
 .ficons a{position:relative}.ficons .fnm{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);white-space:nowrap;font:400 11px/1 var(--sans);color:var(--muted)}
 .ficons{margin-bottom:20px}
 @media (hover:hover){.fcols :is(a,button):hover{text-decoration:underline;text-underline-offset:4px}.ficons a:hover{background:var(--hv)}}  /* 호버 — 글은 밑줄, 아이콘은 옅은 회색(11/2 맨 위 띠와 같은 결) */
-.fbar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;margin-top:44px;padding:16px 0 72px;border-top:1px solid var(--rule);font:300 11px/1.6 var(--sans);color:var(--faint);text-align:left}  /* 휴대폰 — 맨 위로 단추(오른쪽 아래 고정) 자리를 비움 */
+.fbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;margin-top:44px;padding:16px 0 72px;border-top:1px solid var(--rule);font:300 11px/1.6 var(--sans);color:var(--faint);text-align:left}  /* 휴대폰 — 맨 위로 단추(오른쪽 아래 고정) 자리를 비움 · 11/28 align-items:center — KOR과 Copyright 글자 가운데가 3px 어긋났음 */
+.fbar .lng,.fbar .lng>.lsw{display:flex;align-items:center}  /* 11/28 KOR(12.5px 줄) 상자가 Copyright 줄(17.6px) 위쪽에 붙어 글자 가운데가 2.6px 위였음 — 가운데로 */
 @font-face{font-family:"JPN";src:url("fonts/ndw-sans-jp-name.woff2") format("woff2");font-weight:300;font-display:swap;unicode-range:U+65E5,U+672C,U+8A9E}
 .lsw a[lang="ja"]{font-family:"JPN",var(--sans)}  /* 한국어 · 영어판 바닥글의 '日本語' — 일본어판과 같은 고딕 가늘게(11/3 목업 'A 일본어판 고딕 (권장)') · 세 글자만 1.1KB · 그 글자가 그려질 때만 받음 */
 @media (max-width:767px){.fcols{grid-template-columns:1fr 1fr;gap:36px 20px}.fcols>div:last-child{grid-column:1/-1}}  /* 휴대폰 두 단 · 설정은 한 줄 통째(정갈 A) */
@@ -1528,7 +1529,7 @@ header.top{view-transition-name:ndw-top}.top nav .dt.on{view-transition-name:ndw
 .totop svg{display:block;width:8px;height:6px;fill:none;stroke:currentColor;stroke-width:1}
 @media (hover:hover){.totop:hover{background:var(--ink);color:var(--bg)}}
 .totop:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-@media (min-width:900px){.totop{right:72px;bottom:72px}}
+@media (min-width:900px){.totop{right:64px;bottom:calc(72px + 22px)}}  /* 11/28 동원 "하단 푸터 가로 세로 라인 다 맞아?" — 오른쪽 끝을 머리 띠 · 맨 아래 줄 끝선(옆 여백 64)에 맞춤(전엔 72로 8px 안쪽) · 아래는 맨 아래 가로선(바닥에서 약 73px)에 걸치던 것 → 72 + 22(선 위로 띄움 · 음악 재생 줄이 있을 때와 같은 값) */
 @media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}
 /* 당겨서 새로 고침(11/5 — 앱 안 브라우저 · 홈 화면 앱만, main.js가 만듦) · 11/14 살 여덟 개(시안 당겨서새로고침시안_v1 A) — 아이폰은 당겨 생긴 위 빈 칸 가운데, 아니면 띠 아래 · 당긴 만큼 살이 하나씩 · 놓으면 돎(0.8초에 한 바퀴 · 살마다 옅어짐) */
 .ptr{position:fixed;left:50%;top:0;z-index:44;width:26px;height:26px;margin-left:-13px;opacity:0;pointer-events:none;transition:opacity .15s}
