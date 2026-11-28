@@ -777,6 +777,57 @@
     }
   });
 
+  // 11/28 동원 "플러스 누를 때 너무 딱 나오니까 별로야 우리 gnb 누르면 나오는 내려오는 것처럼 부드럽게 … 내 페이지에는 툭툭 끊기는 결과물들이 없어야해"
+  // 접고 펴는 칸(<details> — 자주 묻는 질문 .fq) — 펼 때: 높이 0.45초(GNB 판 곡선 .2,0,0,1) + 안 글은 10px 위 · 흐림 10px에서 0.45초 ease-in-out(GNB 판 글과 같은 값)
+  // 접을 때: 안 글이 0.3초 ease-in-out으로 옅어지며 높이도 같이 줄고, 다 줄면 닫힘(토스 GNB 닫힘 실측 0.3초) · 움직임 줄이기면 그냥 열고 닫음
+  window.ndwSmooth = d => {
+    const sm = d.querySelector(":scope > summary");
+    if (!sm || d.dataset.sm) return;
+    d.dataset.sm = "1";
+    let run = null;
+    const kids = () => [...d.children].filter(c => c !== sm);
+    sm.addEventListener("click", ev => {
+      if (H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      ev.preventDefault();
+      const from = d.offsetHeight;
+      if (run) { run.cancel(); run = null; }
+      kids().forEach(k => k.getAnimations().forEach(a => a.cancel()));
+      d.style.overflow = "clip";  // hidden은 BFC라 안 글의 아래 여백을 품어 끝에 16px 툭 줄었음 — clip은 여백 겹침을 그대로 둠
+      const done = () => { d.style.overflow = ""; run = null; };
+      if (!d.open || d.classList.contains("closing")) {
+        d.classList.remove("closing"); d.open = true;
+        const to = d.offsetHeight;
+        run = d.animate({ height: [from + "px", to + "px"] }, { duration: 450, easing: "cubic-bezier(.2,0,0,1)" });
+        kids().forEach(k => k.animate([{ opacity: 0, transform: "translateY(-10px)", filter: "blur(10px)" }, { opacity: 1, transform: "none", filter: "none" }], { duration: 450, easing: "ease-in-out" }));
+        run.onfinish = done;
+      } else {
+        d.open = false; const to = d.offsetHeight; d.open = true;  // 닫힌 높이를 잰 뒤 다시 열어 둔 채 줄임
+        d.classList.add("closing");
+        kids().forEach(k => k.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, easing: "ease-in-out", fill: "forwards" }));
+        run = d.animate({ height: [from + "px", to + "px"] }, { duration: 300, easing: "ease-in-out" });
+        run.onfinish = () => { d.classList.remove("closing"); d.open = false; kids().forEach(k => k.getAnimations().forEach(a => a.cancel())); done(); };
+      }
+    });
+  };
+  document.querySelectorAll("details.fq, .btoc details").forEach(window.ndwSmooth);  // 11/28 툭 끊김 전수 — 차례의 부 접힘(영 · 일 · 러 · 프 · 서판)도 같은 펼침
+  // 11/28 동원 "연락하기 버튼도 토스 앱다운로드처럼 마우스 오버시 저렇게 동작" — 토스 실측(toss.im 머리 '앱 다운로드', 웨일 rAF): 배경 그대로 · 글자가 두 벌(위 · 아래)로 한 글자씩
+  // 0.03초 차례로 위로 굴러(한 글자 0.7초 · 처음 빠르고 끝이 느림) 아래 벌이 올라와 자리를 채움 · 손 떼면 모두 한꺼번에 0.2초로 돌아옴 → 맨 위 '연락하기'(.cta)에 같은 짜임
+  document.querySelectorAll(".top .act a.cta").forEach(a => {
+    if (a.dataset.rl) return;
+    const txt = a.textContent.trim();
+    if (!txt) return;
+    a.dataset.rl = "1";
+    const esc = t => t.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+    // 굴림 글자는 화면에만(::before content: attr(data-c)) — 버튼 글(textContent · innerText · 복사 · 찾기)은 '연락하기' 한 번만(11/28 점심 QA: 세 벌로 읽혀 메뉴 시험 여섯이 깨졌음)
+    const row = cls => `<span class="${cls}" aria-hidden="true">${[...txt].map((ch, i) => `<i style="--i:${i}" data-c="${ch === " " ? "\u00a0" : esc(ch).replace(/"/g, "&quot;")}"></i>`).join("")}</span>`;
+    a.innerHTML = `<span class="sr">${esc(txt)}</span><span class="rl">${row("rl-a")}${row("rl-b")}</span>`;
+  });
+  // 11/28 툭 끊김 전수 — 글자가 바뀌는 단추(복사 → 복사됨 · 공유 → 링크를 복사했습니다)는 새 글이 흐림 4px에서 0.28초에 또렷해짐(바로 바뀌던 것) · 움직임 줄이기면 그대로
+  window.ndwFade = el => {
+    if (!el || !el.animate || H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    el.animate([{ opacity: .2, filter: "blur(4px)" }, { opacity: 1, filter: "none" }], { duration: 280, easing: "cubic-bezier(.2,0,0,1)" });
+  };
+
   // 사진 칸의 한 장씩 · 모아 보기 · 3D 고리(10/24–11/1)는 11/3 흐르는 벽으로 바뀌며 뺌(11/4 정리 — git 기록 9cec51b 앞에 있음)
 
   // 영상 칸: 큰 한 편은 누르면 이 자리에서 재생 — 누르기 전에는 플레이어를 불러오지 않음(썸네일 그림만 · youtube-nocookie · IFrame API는 처음 누를 때 한 번).
@@ -2139,7 +2190,7 @@
     const b = document.createElement("button");
     b.type = "button"; b.className = "cp"; b.textContent = uiText("copy", "복사");
     a.after(b);
-    const say = k => { b.textContent = uiText(k, k); b.classList.add("cpd"); setTimeout(() => { b.textContent = uiText("copy", "복사"); b.classList.remove("cpd"); }, 1200); };
+    const say = k => { b.textContent = uiText(k, k); b.classList.add("cpd"); window.ndwFade(b); setTimeout(() => { b.textContent = uiText("copy", "복사"); b.classList.remove("cpd"); window.ndwFade(b); }, 1200); };
     const old = () => {  // 클립보드 API가 없거나 막힌 곳(오래된 브라우저 · http) — 잠깐 고른 글을 복사
       const ta = Object.assign(document.createElement("textarea"), { value: m });
       ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;opacity:0";
@@ -2577,7 +2628,8 @@
       if (r === "sheet") return;
       const lab = b.firstChild, was = lab.textContent;
       lab.textContent = r === "shared" ? uiText("shared", "링크를 복사했습니다") : uiText("copy_fail", "복사하지 못했습니다");
-      setTimeout(() => { lab.textContent = was; }, 2000);
+      window.ndwFade(b);
+      setTimeout(() => { lab.textContent = was; window.ndwFade(b); }, 2000);
     });
   });
 
