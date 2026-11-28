@@ -1423,7 +1423,7 @@ header.top{view-transition-name:ndw-top}.top nav .dt.on{view-transition-name:ndw
 .totop svg{display:block;width:8px;height:6px;fill:none;stroke:currentColor;stroke-width:1}
 @media (hover:hover){.totop:hover{background:var(--ink);color:var(--bg)}}
 .totop:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-@media (min-width:900px){.totop{right:64px;bottom:calc(72px + 22px)}}  
+@media (min-width:900px){.totop{right:21px;bottom:calc(72px + 22px)}}  
 @media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}:where(:root[data-motion="reduce"]) .totop,:where(:root[data-motion="reduce"]).totop,:where(:root[data-motion="reduce"]) .totop.on,:where(:root[data-motion="reduce"]).totop.on{transition:none}
 .tobot{bottom:36px}.totop:not(.tobot){bottom:calc(36px + 34px)}@media (min-width:900px){.tobot{bottom:calc(72px + 22px)}.totop:not(.tobot){bottom:calc(72px + 22px + 34px)}}html.mu-on .tobot{bottom:calc(72px + 22px)}html.mu-on .totop:not(.tobot){bottom:calc(72px + 22px + 34px)}
 .totop.tobot{border:1px solid var(--line)!important;background:var(--bg)!important}.tobot svg{transform:rotate(180deg)}  
