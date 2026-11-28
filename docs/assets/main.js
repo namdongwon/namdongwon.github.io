@@ -2654,7 +2654,10 @@
   const toBot = document.querySelector(".tobot");
   if (toBot) {
     toBot.hidden = false;
-    const showBot = () => toBot.classList.toggle("on", scrollY > 360 && document.documentElement.scrollHeight - innerHeight - scrollY > 360);
+    const showBot = () => {
+      toBot.classList.toggle("on", scrollY > 360 && document.documentElement.scrollHeight - innerHeight - scrollY > 360);
+      toBot.style.setProperty("--p", (scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight)).toFixed(3));  // 고리는 남은 만큼(CSS 1 - p)
+    };
     addEventListener("scroll", showBot, { passive: true });
     addEventListener("resize", showBot, { passive: true });
     showBot();
