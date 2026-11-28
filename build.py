@@ -2801,7 +2801,8 @@ def page_privacy(site, lang, ver=None):
     dates = sorted({*VS, cur}, reverse=True)
     dates = [x for x in dates if x == cur or lang in VS[x]["title"]]  # 이 말이 있던 판만
     me = ver or cur
-    h9 = f'{len(p["sections"]) + 1}. ' + g(VU["h9"]) if VU.get("h9") else ""  # 번호는 그 판 절 수 + 1(지난 판은 절이 다섯이라 6.)
+    n9 = len(p["sections"]) + 1  # 번호는 그 판 절 수 + 1(지난 판은 절이 다섯이라 6.)
+    h9 = (f"{chr(0x245F + n9)} " if g(p["sections"][0]["h"]).startswith("①") else f"{n9}. ") + g(VU["h9"]) if VU.get("h9") else ""  # 11/28 토스 말투 — 그 판 그 말의 첫 절이 ①~⑧ 꼴이면 ⑨(지금 한국어판), 1. 꼴이면 9.(다른 말 · 지난 판)
     hist = [x for x in P.get("history", []) if x["date"] <= me]
     log_li = "".join('<li><time datetime="' + x["date"] + '">' + fday(x["date"]) + "</time><span>" + g(x["note"]) + "</span></li>" for x in hist)
     sec9 = ('<h2 id="s' + str(len(p["sections"]) + 1) + '">' + h9 + '</h2><p class="ppv-now">' + g(VU["this"]).replace("{d}", fday(me)) + '</p><ul class="ppv-log">' + log_li + "</ul>") if h9 else ""
