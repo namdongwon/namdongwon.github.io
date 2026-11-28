@@ -17,7 +17,7 @@
     "fr": "Aller au contenu"
   },
   "nav_label": {
-    "ko": "쪽 이동",
+    "ko": "페이지 이동",
     "en": "Pages",
     "ja": "ページ移動",
     "ru": "Разделы",
@@ -159,7 +159,7 @@
     "fr": "Recueil de poèmes"
   },
   "ex_tip": {
-    "ko": "눌러서 책등 · 뒤표지 보기",
+    "ko": "눌러서 책등과 뒤표지 보기",
     "en": "Tap to see the spine and back",
     "ja": "押して背表紙 · 裏表紙を見る",
     "ru": "Нажмите, чтобы увидеть корешок и оборот",
@@ -424,7 +424,7 @@
   },
   "lp_contact": {
     "_설명": "바닥글 링크 쪽지(11/21 동원 \"연락하기도 마우스 오버시 아무것도 안 나온다\") — 메가 메뉴에 칸이 없는 링크의 한 줄",
-    "ko": "메일 주소와 자주 묻는 질문 — 시 인용 · 출처 · 답장 시기",
+    "ko": "메일 주소와 자주 묻는 질문(시 인용, 출처, 답장 시기)",
     "en": "Email address and frequent questions — quoting the poems, credits, reply time",
     "ja": "メールアドレスとよくある質問 — 詩の引用・出典・返信の目安",
     "ru": "Адрес почты и частые вопросы — цитирование стихов, источник, сроки ответа",
@@ -432,7 +432,7 @@
     "fr": "Adresse e-mail et questions fréquentes : citer les poèmes, la source, le délai de réponse"
   },
   "lp_privacy": {
-    "ko": "모으는 것 · 맡기는 곳 · 지우는 방법 · 시행일과 변경 이력",
+    "ko": "모으는 정보, 맡기는 곳, 지우는 방법, 시행일과 변경 이력",
     "en": "What is collected, who processes it, how to delete it, and the version history",
     "ja": "集める情報・委託先・削除の方法・施行日と変更履歴",
     "ru": "Что собирается, кому поручена обработка, как удалить, даты и история изменений",
@@ -440,7 +440,7 @@
     "fr": "Ce qui est collecté, qui le traite, comment le supprimer, dates et historique des versions"
   },
   "lp_cookie": {
-    "ko": "방문 통계 쿠키 동의를 언제든 바꾸거나 거둘 수 있습니다",
+    "ko": "방문 통계 쿠키 동의는 언제든 바꾸거나 거둘 수 있어요",
     "en": "Change or withdraw your consent to analytics cookies at any time",
     "ja": "アクセス解析クッキーへの同意はいつでも変更・撤回できます",
     "ru": "Согласие на cookie для статистики посещений можно изменить или отозвать в любой момент",
@@ -536,7 +536,7 @@
     "fr": "{n} photos — faites défiler"
   },
   "wall_label": {
-    "ko": "사진 {n}장 — 누르면 크게",
+    "ko": "사진 {n}장, 누르면 크게 보여요",
     "en": "{n} photos — select one to enlarge",
     "ja": "写真{n}枚 — 押すと大きく",
     "ru": "{n} фото — выберите, чтобы увеличить",
@@ -584,7 +584,7 @@
     "fr": "Pour ce qui ne s’adresse qu’à Dongwon Nam, écrivez-lui sur Instagram ou par e-mail."
   },
   "gb_empty": {
-    "ko": "아직 실린 글이 없습니다. 첫 글을 기다립니다.",
+    "ko": "아직 실린 글이 없어요. 첫 글을 기다리고 있어요.",
     "en": "No notes yet. The first one is still to be written.",
     "ja": "まだ載っているメッセージはありません。最初のメッセージをお待ちしています。",
     "ru": "Записей пока нет. Первая ещё ждёт своего автора.",
@@ -624,7 +624,7 @@
     "fr": "Laisser un mot"
   },
   "gb_when": {
-    "ko": "모든 글을 읽고, 월요일에 일부를 골라 싣습니다.",
+    "ko": "모든 글을 읽고, 월요일에 일부를 골라 실어요.",
     "en": "Every note is read, and a few are chosen on Mondays to appear here.",
     "ja": "すべてのメッセージを読み、月曜日に一部を選んで掲載します。",
     "ru": "Все записи прочитываются; по понедельникам несколько из них выбираются для публикации здесь.",
@@ -656,7 +656,7 @@
     "fr": "Mot"
   },
   "gb_text_hint": {
-    "ko": "1,000자 · 길게 하실 말은 메일로",
+    "ko": "1,000자까지 쓸 수 있어요. 길게 하실 말씀은 메일로 보내 주세요.",
     "en": "Up to 1,000 characters · longer messages by email",
     "ja": "1,000字まで · 長くなるときはメールで",
     "ru": "До 1 000 символов · длинные сообщения — по почте",
@@ -664,7 +664,7 @@
     "fr": "Jusqu’à 1 000 caractères · les messages plus longs, par e-mail"
   },
   "gb_note": {
-    "ko": "남기신 글은 Formspree(미국)를 거쳐 남동원의 메일함으로 옵니다. 실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있습니다. {privacy}",
+    "ko": "남기신 글은 Formspree(미국)를 거쳐 남동원의 메일함으로 와요. 실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있어요. {privacy}",
     "en": "Notes travel through Formspree (United States) to Dongwon Nam’s mailbox. Notes not published are deleted within 30 days, and you keep the copyright. {privacy}",
     "ja": "メッセージはFormspree（米国）を経由して、ナム・ドンウォンのメールボックスに届きます。掲載されなかったメッセージは30日以内に削除し、著作権は書いた方にあります。{privacy}",
     "ru": "Записи передаются через Formspree (США) на почту Нам Донвона. Неопубликованные записи удаляются в течение 30 дней; авторские права остаются за вами. {privacy}",
@@ -688,7 +688,7 @@
     "fr": "De passage"
   },
   "gb_soon": {
-    "ko": "글 남기기는 곧 열립니다.",
+    "ko": "글 남기기는 곧 열려요.",
     "en": "Leaving a note opens soon.",
     "ja": "書き込みは、まもなく始まります。",
     "ru": "Оставить запись можно будет совсем скоро.",
@@ -948,7 +948,7 @@
     "fr": "janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre"
   },
   "first_alt": {
-    "ko": "첫 편 {title} 썸네일 — 준비 중",
+    "ko": "첫 편 {title} 썸네일(준비 중)",
     "en": "First episode, {title} — thumbnail, coming soon",
     "ja": "第1回 {title}のサムネイル — 準備中",
     "ru": "Первый выпуск, {title} — превью, скоро",
@@ -988,7 +988,7 @@
     "fr": "Épisodes précédents"
   },
   "empty": {
-    "ko": "편이 쌓이면 여기에 차례로 남습니다.",
+    "ko": "편이 쌓이면 여기에 차례로 남아요.",
     "en": "Episodes will be listed here as they come.",
     "ja": "回を重ねるごとに、ここに順に残っていきます。",
     "ru": "Выпуски будут появляться здесь по мере выхода.",
@@ -1718,7 +1718,7 @@
     "fr": "Bientôt"
   },
   "nf_title": {
-    "ko": "지금 찾으신 쪽은 없는 쪽입니다",
+    "ko": "찾으시는 페이지가 없어요",
     "en": "The page you have dialed is not in service",
     "ja": "お探しのページは、現在使われておりません",
     "ru": "Страницы, которую вы набрали, не существует",
@@ -1726,7 +1726,7 @@
     "fr": "Il n’y a pas de page à l’adresse que vous avez demandée"
   },
   "nf_lead": {
-    "ko": "주소가 바뀌었거나 지워진 쪽입니다.",
+    "ko": "주소가 바뀌었거나 지워진 페이지예요.",
     "en": "The address may have changed, or the page was removed.",
     "ja": "アドレスが変わったか、削除されたページです。",
     "ru": "Возможно, адрес изменился или страница была удалена.",
@@ -1745,8 +1745,8 @@
     "ko": {
       "title": "연결 없음 — 남동원",
       "kicker": "연결 없음",
-      "head": "지금은 연결이<br>닿지 않습니다",
-      "sub": "연결이 돌아오면 이 쪽이 저절로 다시 열립니다.",
+      "head": "지금은 연결이<br>닿지 않아요",
+      "sub": "연결이 돌아오면 이 페이지가 저절로 다시 열려요.",
       "retry": "다시 시도"
     },
     "en": {
@@ -1795,10 +1795,10 @@
       "share": "「탁본」 — 남동원",
       "kept_on": "{d} 뜸",
       "post_photo": "게시물 사진 {k} / {n}",
-      "form_off": "아직 연결 전입니다. 인스타그램으로 연락해 주세요.",
+      "form_off": "아직 연결 전이에요. 인스타그램으로 연락해 주세요.",
       "sending": "보내는 중…",
-      "sent": "잘 받았습니다. 답장 드리겠습니다.",
-      "failed": "보내지 못했습니다. 적으신 글은 그대로 있으니 잠시 뒤 다시 보내 주세요.",
+      "sent": "잘 받았어요. 답장 드릴게요.",
+      "failed": "보내지 못했어요. 적으신 글은 그대로 남아 있으니 잠시 뒤 다시 보내 주세요.",
       "search_count": "찾은 것 {n}",
       "search_go": "찾기",
       "recent_title": "최근 검색어",
@@ -1809,39 +1809,39 @@
       "kb_title": "단축키",
       "kb_items": "검색 열기|열린 창 닫기|사진 넘기기(사진 창에서)|방명록 남기기(글 칸에서)|이 안내",
       "gb_mine": "내가 남긴 글",
-      "gb_wait_k": "{d}에 보낸 글 · 이 기기에서만 보여요",
+      "gb_wait_k": "{d}에 보낸 글이에요. 이 기기에서만 보여요.",
       "gb_wait_s": "실리면 아래 목록에서 ‘내가 남긴 글’로 보여요.",
       "kb_found": "“{k}”{ro} 찾았어요",
       "kb_orig": "{q} 그대로 찾기",
       "gb_empty_msg": "글을 한 줄 적어 주세요.",
-      "gb_promise_d": "모든 글을 읽고, {d}에 일부를 골라 싣습니다.",
+      "gb_promise_d": "모든 글을 읽고, {d}에 일부를 골라 실어요.",
       "kb_close": "Esc로 닫기",
       "recent_clear": "모두 지우기",
-      "recent_none": "최근 검색어가 없습니다",
+      "recent_none": "최근 검색어가 없어요",
       "recent_del": "{q} 지우기",
       "gb_sent": "보냈습니다. 월요일에 읽겠습니다.",
       "gb_back": "쓰던 글 되돌리기",
       "gb_undo": "지운 글 되돌리기",
-      "gb_staging": "스테이징 서버라 보내지 않았습니다 — 운영 사이트에서만 보내집니다.",
-      "gb_ok": "글을 보냈습니다.",
-      "gb_ok_sub": "모든 글을 읽고, 월요일에 일부를 골라 싣습니다.",
-      "ask_ok": "메시지를 보냈습니다.",
-      "ask_ok_sub": "답장 드리겠습니다.",
+      "gb_staging": "스테이징 서버라 보내지 않았어요. 운영 사이트에서만 보내져요.",
+      "gb_ok": "글을 보냈어요.",
+      "gb_ok_sub": "모든 글을 읽고, 월요일에 일부를 골라 실어요.",
+      "ask_ok": "메시지를 보냈어요.",
+      "ask_ok_sub": "답장 드릴게요.",
       "done_again": "새로 쓰기",
       "done_home": "첫 화면으로",
-      "gb_full": "이번 달 받는 칸이 찼습니다. 다음 달에 다시 부탁드립니다.",
+      "gb_full": "이번 달 받는 칸이 다 찼어요. 다음 달에 다시 남겨 주세요.",
       "keep_hold": "그림을 길게 눌러 사진에 저장하세요",
       "keep_alt": "뜬 「탁본」 한 장",
       "ring_hint": "끌어서 돌리기 · 누르면 크게",
-      "shared": "링크를 복사했습니다",
+      "shared": "링크를 복사했어요",
       "pv_link": "링크 복사",
       "pv_ig": "인스타그램에서 보기",
-      "pal_one": "「{ch}」 {n}번 — {all}가지 가운데 {rank}번째로 많이 쓴 글자",
+      "pal_one": "「{ch}」 {n}번, {all}가지 가운데 {rank}번째로 많이 쓴 글자예요",
       "copy": "복사",
       "copied": "복사됨 ✓",
-      "copy_fail": "복사하지 못했습니다",
-      "gb_cut": "붙여 넣은 글 중 {max}자까지만 담겼습니다. 뒤의 {n}자는 메일로 보내 주세요.",
-      "search_none_q": "“{q}”에 맞는 것이 없습니다.",
+      "copy_fail": "복사하지 못했어요",
+      "gb_cut": "붙여 넣은 글 중 {max}자까지만 담겼어요. 뒤의 {n}자는 메일로 보내 주세요.",
+      "search_none_q": "“{q}”에 맞는 결과가 없어요.",
       "nw_sr": "새 글 있음",
       "gb_xfer_msg": "보내려면 국외 이전에 동의해 주세요.",
       "new_tab": " (새 창)",
@@ -2170,7 +2170,7 @@
     "fr": "— à lire ici"
   },
   "turn_label": {
-    "ko": "시집 『{book}』 — 눌러서 책등 · 뒤표지 보기",
+    "ko": "시집 『{book}』, 눌러서 책등과 뒤표지 보기",
     "en": "“{book}” — press to see the spine and back",
     "ja": "詩集『{book}』 — 押して背表紙 · 裏表紙を見る",
     "ru": "«{book}» — нажмите, чтобы увидеть корешок и оборот",
@@ -2330,7 +2330,7 @@
     "fr": "SEOUL, KOREA"
   },
   "gb_note_g": {
-    "ko": "실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있습니다.",
+    "ko": "실리지 않은 글은 30일 안에 지우고, 글의 저작권은 쓰신 분께 있어요.",
     "en": "Notes not published are deleted within 30 days, and you keep the copyright.",
     "ja": "掲載されなかったメッセージは30日以内に削除し、著作権は書いた方にあります。",
     "ru": "Неопубликованные записи удаляются в течение 30 дней; авторские права остаются за вами.",
@@ -2338,7 +2338,7 @@
     "fr": "Les mots qui ne sont pas publiés sont supprimés sous 30 jours, et vous en gardez les droits d’auteur."
   },
   "next_k": {
-    "ko": "다음 쪽",
+    "ko": "다음 페이지",
     "en": "Next",
     "ja": "次のページ",
     "ru": "Далее",
@@ -2466,7 +2466,7 @@
     "fr": "Laisser un mot →"
   },
   "search_none_hint": {
-    "ko": "시 제목 · 작품 이름의 한 낱말로 찾아 보세요.",
+    "ko": "시 제목이나 작품 이름의 한 낱말로 찾아보세요.",
     "en": "Try a single word from a poem or work title.",
     "ja": "詩や作品の題名の一語で探してみてください。",
     "ru": "Попробуйте одно слово из названия стихотворения или работы.",
@@ -2474,7 +2474,7 @@
     "fr": "Essayez un seul mot tiré du titre d’un poème ou d’une œuvre."
   },
   "mm_label": {
-    "ko": "쪽 미리 보기",
+    "ko": "페이지 미리 보기",
     "en": "Page preview",
     "ja": "ページのプレビュー",
     "ru": "Предпросмотр страницы",
@@ -2746,7 +2746,7 @@
     "fr": "1 titre, {m} min"
   },
   "gb_xfer_agree": {
-    "ko": "남긴 글을 Google(미국)로 옮겨 보관하는 데 동의합니다 — 받는 곳 · 기간 · 거부하는 법은 {privacy} 3절",
+    "ko": "남긴 글을 Google(미국)로 옮겨 보관하는 데 동의합니다. 받는 곳과 기간, 거부하는 방법은 {privacy} ③에 있어요.",
     "en": "I agree that my note is transferred to and stored by Google (United States) — recipient, period and how to refuse: {privacy}, section 3",
     "ja": "残したメッセージがGoogle（米国）へ移転・保存されることに同意します — 移転先・期間・拒否の方法は{privacy}第3項",
     "ru": "Я соглашаюсь на передачу и хранение записи в Google (США) — получатель, срок и как отказаться: {privacy}, раздел 3",
