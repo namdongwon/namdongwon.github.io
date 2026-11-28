@@ -2718,7 +2718,7 @@ def render(site, poem, videos, photos, lang="ko"):
 <main id="main">
 {h1}{body}{nxp}</main>
 <footer class="foot">{colo}</footer>
-<button type="button" class="totop" aria-label="{t("totop")}" hidden><svg viewBox="0 0 8 6" aria-hidden="true" focusable="false"><path d="M.4 4.8 4 1.2l3.6 3.6"/></svg></button>
+<button type="button" class="totop" aria-label="{t("totop")}" hidden><svg viewBox="0 0 8 6" aria-hidden="true" focusable="false"><path d="M.4 4.8 4 1.2l3.6 3.6"/></svg></button><button type="button" class="totop tobot" aria-label="{t("tobot")}" hidden><svg viewBox="0 0 8 6" aria-hidden="true" focusable="false"><path d="M.4 4.8 4 1.2l3.6 3.6"/></svg></button>
 {sheet if bpg else ""}
 {pv if k == "photo" else ""}{srch}<script id="sidx" type="application/json">{sidx}</script><script id="nw" type="application/json">{nw_js}</script>
 <script id="ui" type="application/json">{ui_js}</script>

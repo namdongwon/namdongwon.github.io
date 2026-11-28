@@ -1531,6 +1531,8 @@ header.top{view-transition-name:ndw-top}.top nav .dt.on{view-transition-name:ndw
 .totop:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media (min-width:900px){.totop{right:64px;bottom:calc(72px + 22px)}}  /* 11/28 동원 "하단 푸터 가로 세로 라인 다 맞아?" — 오른쪽 끝을 머리 띠 · 맨 아래 줄 끝선(옆 여백 64)에 맞춤(전엔 72로 8px 안쪽) · 아래는 맨 아래 가로선(바닥에서 약 73px)에 걸치던 것 → 72 + 22(선 위로 띄움 · 음악 재생 줄이 있을 때와 같은 값) */
 @media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}
+.tobot{bottom:36px}.totop:not(.tobot){bottom:calc(36px + 34px)}@media (min-width:900px){.tobot{bottom:calc(72px + 22px)}.totop:not(.tobot){bottom:calc(72px + 22px + 34px)}}html.mu-on .tobot{bottom:calc(72px + 22px)}html.mu-on .totop:not(.tobot){bottom:calc(72px + 22px + 34px)}
+.totop.tobot{border:1px solid var(--line)!important;background:var(--bg)!important}.tobot svg{transform:rotate(180deg)}  /* 11/28 맨 아래로(시안 맨밑으로단추시안_v1 A) — 맨 아래로가 맨 위로의 옛 자리(바닥글 끝선 · 선 위 25px)를 받고 맨 위로는 22 + 12px 위로 · 진행 고리는 맨 위로에만(아래로는 옅은 선 한 겹) · 올림 먹 채움은 맨 위로와 같음 */
 /* 당겨서 새로 고침(11/5 — 앱 안 브라우저 · 홈 화면 앱만, main.js가 만듦) · 11/14 살 여덟 개(시안 당겨서새로고침시안_v1 A) — 아이폰은 당겨 생긴 위 빈 칸 가운데, 아니면 띠 아래 · 당긴 만큼 살이 하나씩 · 놓으면 돎(0.8초에 한 바퀴 · 살마다 옅어짐) */
 .ptr{position:fixed;left:50%;top:0;z-index:44;width:26px;height:26px;margin-left:-13px;opacity:0;pointer-events:none;transition:opacity .15s}
 .ptr.on{opacity:1}

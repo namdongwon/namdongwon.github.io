@@ -2249,6 +2249,14 @@
     "es": "Volver arriba",
     "fr": "Retour en haut"
   },
+  "tobot": {
+    "ko": "맨 아래로",
+    "en": "Go to bottom",
+    "ja": "ページの最後へ",
+    "ru": "Вниз",
+    "es": "Ir abajo",
+    "fr": "Aller en bas"
+  },
   "tk_title": {
     "ko": "『문을 열고 나오면|살아 있는 것들로 가득 차 있다』",
     "en": "Open the Door, Step Out,|and It Is Full of Living Things",

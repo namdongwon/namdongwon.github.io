@@ -2649,6 +2649,20 @@
       if (!ev.detail) { const f = document.querySelector("header.top a"); if (f) f.focus({ preventScroll: true }); }
     });
   }
+  // 맨 아래로(11/28 동원 "오른쪽에 맨 밑으로 내리는 것도" → 시안 맨밑으로단추시안_v1 "A" 두 단추 위아래): 맨 위로 바로 아래 같은 동그라미 · 화살표만 아래로.
+  // 맨 위로와 함께 나타나고(360px 넘게 내림) 바닥까지 360px 안이면 물러남(더 내려갈 데가 없음) · 키보드로 눌렀으면 바닥글 첫 링크로 초점
+  const toBot = document.querySelector(".tobot");
+  if (toBot) {
+    toBot.hidden = false;
+    const showBot = () => toBot.classList.toggle("on", scrollY > 360 && document.documentElement.scrollHeight - innerHeight - scrollY > 360);
+    addEventListener("scroll", showBot, { passive: true });
+    addEventListener("resize", showBot, { passive: true });
+    showBot();
+    toBot.addEventListener("click", ev => {
+      scrollTo({ top: document.documentElement.scrollHeight, behavior: reduce ? "auto" : "smooth" });
+      if (!ev.detail) { const f = document.querySelector(".foot a"); if (f) f.focus({ preventScroll: true }); }
+    });
+  }
 
   // 느린 쪽 이동(11/6 'B') — 사이트 안 다른 쪽으로 가는 링크를 누르고 0.4초가 지나도 새 쪽이 안 오면 화면 아래 가운데에 고리 · 새 탭 · 수정 키 · 같은 쪽 안(#)은 그대로 · 뒤로 오면(bfcache) 걷음
   let navT = 0, navS = null;

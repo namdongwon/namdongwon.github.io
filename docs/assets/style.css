@@ -1425,6 +1425,8 @@ header.top{view-transition-name:ndw-top}.top nav .dt.on{view-transition-name:ndw
 .totop:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media (min-width:900px){.totop{right:64px;bottom:calc(72px + 22px)}}  
 @media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}:where(:root[data-motion="reduce"]) .totop,:where(:root[data-motion="reduce"]).totop,:where(:root[data-motion="reduce"]) .totop.on,:where(:root[data-motion="reduce"]).totop.on{transition:none}
+.tobot{bottom:36px}.totop:not(.tobot){bottom:calc(36px + 34px)}@media (min-width:900px){.tobot{bottom:calc(72px + 22px)}.totop:not(.tobot){bottom:calc(72px + 22px + 34px)}}html.mu-on .tobot{bottom:calc(72px + 22px)}html.mu-on .totop:not(.tobot){bottom:calc(72px + 22px + 34px)}
+.totop.tobot{border:1px solid var(--line)!important;background:var(--bg)!important}.tobot svg{transform:rotate(180deg)}  
 
 .ptr{position:fixed;left:50%;top:0;z-index:44;width:26px;height:26px;margin-left:-13px;opacity:0;pointer-events:none;transition:opacity .15s}
 .ptr.on{opacity:1}
