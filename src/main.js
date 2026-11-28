@@ -810,6 +810,17 @@
     });
   };
   document.querySelectorAll("details.fq, .btoc details").forEach(window.ndwSmooth);  // 11/28 툭 끊김 전수 — 차례의 부 접힘(영 · 일 · 러 · 프 · 서판)도 같은 펼침
+  // 11/28 동원 "연락하기 버튼도 토스 앱다운로드처럼 마우스 오버시 저렇게 동작" — 토스 실측(toss.im 머리 '앱 다운로드', 웨일 rAF): 배경 그대로 · 글자가 두 벌(위 · 아래)로 한 글자씩
+  // 0.03초 차례로 위로 굴러(한 글자 0.7초 · 처음 빠르고 끝이 느림) 아래 벌이 올라와 자리를 채움 · 손 떼면 모두 한꺼번에 0.2초로 돌아옴 → 맨 위 '연락하기'(.cta)에 같은 짜임
+  document.querySelectorAll(".top .act a.cta").forEach(a => {
+    if (a.dataset.rl) return;
+    const txt = a.textContent.trim();
+    if (!txt) return;
+    a.dataset.rl = "1";
+    const esc = t => t.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+    const row = cls => `<span class="${cls}" aria-hidden="true">${[...txt].map((ch, i) => `<i style="--i:${i}">${ch === " " ? "&nbsp;" : esc(ch)}</i>`).join("")}</span>`;
+    a.innerHTML = `<span class="sr">${esc(txt)}</span><span class="rl">${row("rl-a")}${row("rl-b")}</span>`;
+  });
   // 11/28 툭 끊김 전수 — 글자가 바뀌는 단추(복사 → 복사됨 · 공유 → 링크를 복사했습니다)는 새 글이 흐림 4px에서 0.28초에 또렷해짐(바로 바뀌던 것) · 움직임 줄이기면 그대로
   window.ndwFade = el => {
     if (!el || !el.animate || H.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
