@@ -1182,7 +1182,7 @@ html.sr-on{overflow:hidden}
 .fcols li{font:400 13px/1.3 var(--sans);color:var(--muted)}.fcols li+li{margin-top:12px}  /* 정갈 A — 고딕 13px · 줄 사이 29px(애플 12px · 26px · 이솝 14px · 24px 실측 사이 · 11/5 단 맞춤 1.3 · 12px로도 29px) · 옅은 먹(전엔 명조 14px/2 먹) */
 .fcols li.tx{margin-top:4px;font:300 11px/1.6 var(--sans);color:var(--faint)}
 .fcols .cz-open{padding:0;border:0;background:none;font:inherit;color:inherit;cursor:pointer}
-.foot .colo .ctl{display:grid;grid-template-columns:52px auto;column-gap:12px;row-gap:16px;align-items:center;margin-top:0;font:300 12.5px/1.3 var(--sans);text-align:left}.foot .colo .mot small{display:block;margin:6px 0 0;font-size:11px}.foot .colo .ctl .thm button:first-child{margin-left:-6px}  /* 설정 칸 — 이름 52px · 단추 줄을 표처럼 맞춤 · 움직임 풀이는 스위치 아래 줄(정갈 A — 전엔 옆으로 넘쳤음) */
+.foot .colo .ctl{display:grid;grid-template-columns:minmax(52px,max-content) auto;column-gap:12px;row-gap:16px;align-items:center;margin-top:0;font:300 12.5px/1.3 var(--sans);text-align:left}.foot .colo .mot small{display:block;margin:6px 0 0;font-size:11px}.foot .colo .ctl .thm button:first-child{margin-left:-6px}  /* 11/28 이름 열 minmax(52px,max-content) — 서 · 프 · 러 판에서 'Aparienci/a' · 'Movimie/nto'처럼 낱말이 52px에 잘려 두 줄(단추 줄과 8.8px 어긋남) · 한국어 · 일본어 · 영어는 52px 그대로 */ /* 설정 칸 — 이름 52px · 단추 줄을 표처럼 맞춤 · 움직임 풀이는 스위치 아래 줄(정갈 A — 전엔 옆으로 넘쳤음) */
 .fmark{margin-top:64px;text-align:center}  /* 가운데 — 아래 둥근 아이콘 줄과 한 축(11/5 동원 "namdongwon 가운데에 있어야지") */
 .fmark .dm{padding-left:.3em;font:400 11px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--ink)}  /* 표장 한 벌(11/3 UX 점검 ⑤ → 목업 표장두벌시안_v1 'A 바닥글을 위에 (권장)') — 맨 위 띠 NAM DONGWON과 같은 고딕 400 · 자간 0.3em · 먹(전엔 300 · 0.2em · 흐린 먹) */
 .ficons{display:flex;justify-content:center;gap:16px;margin:36px 0 0;padding:0;list-style:none}
@@ -1694,7 +1694,7 @@ html[data-fs] .mm-c{display:flex;flex-direction:column}html[data-fs] .mm-k{displ
 /* 번역판 각주(11/19 UX 7차 — 시 끝 각주): 행 끝 작은 숫자 · 시 아래 가는 선과 풀이 */
 .poem .fnr{margin-left:2px;font:400 11px/1 var(--sans);vertical-align:super}.poem .fnr a{color:var(--faint);text-decoration:none;padding:0 2px}.poem .fnr a:hover{color:var(--ink)}
 .pnotes{max-width:36em;margin:36px 0 0;padding:12px 0 0;border-top:1px solid var(--rule);list-style:none;counter-reset:pn;font:300 12.5px/1.6 var(--sans);color:var(--faint)}
-.pnotes li{counter-increment:pn;padding-left:1em;text-indent:-1em}.pnotes li::before{content:counter(pn) " ";font-size:11px;vertical-align:super}
+.pnotes li{counter-increment:pn;padding-left:1em;text-indent:-1em}.pnotes li::before{content:counter(pn);display:inline-block;width:calc(12.5em / 11);text-indent:0;font-size:11px;vertical-align:super}  /* 11/28 줄 맞춤 전수 — 번호 칸을 li의 1em(12.5px — 번호 글씨는 11px라 12.5/11em)으로 묶어 첫 줄 글 시작 = 둘째 줄 시작(전엔 '1 ' 너비만큼이라 둘째 줄이 약 5px 안쪽) */
 .pnotes a{color:var(--muted);text-decoration:none;margin-left:4px}.pnotes a:hover{color:var(--ink)}.pnotes li:target{color:var(--muted)}
 
 /* ── 소개 허브(11/23 동원 "소개는 B랑 C 합치면" → 시안 기준/브랜드 시안/소개허브시안_v2/BC_합침 · "둘 다 넣어"): 약력 → 연혁(큰 연도 · 왼쪽 연도 롤 · 가운데 실) → 실 끝에서 갈래 문 넷 ──
@@ -1823,7 +1823,7 @@ main>#me.hub{display:block;padding:0 0 64px}
   .chron{padding:64px 0 0}
   .yr{padding:30px 0 44px}  /* 연도 사이 약 190px — 1440×900 한 화면에 연도 서넛(11/23 밤 "연도 하나만 덩그러니")
   .yr-n{font-size:77px}  /* 본명조 숫자 높이 0.74em → 57px(Goyard 실측 57px) */
-  .yr-n .yw{padding:12px 4px 6px 22px}  /* 왼 22 = 오른 4 + 자간 .2em 꼬리 보정 */
+  .yr-n .yw{padding:12px 4px 6px 16px}  /* 왼 16 — 자간 .2em 꼬리 보정(11/28 줄 맞춤 전수: 22이면 숫자 잉크 가운데가 세로선보다 3.3~4.8px 오른쪽 — 1280 · 1440 · 1920 여섯 해 실측 · 본명조 숫자 '1'의 왼쪽 빈자리까지 넣어 22로 잡았던 것) */
   .rail{left:48px;right:auto;top:50%;display:block;height:auto;padding:0;background:none;border:0;-webkit-backdrop-filter:none;backdrop-filter:none;transform:translate(-8px,-50%);opacity:0;transition:opacity .45s var(--ease),transform .45s var(--ease),visibility 0s .45s}
   .rail.on{opacity:1;transform:translate(0,-50%);transition:opacity .45s var(--ease),transform .45s var(--ease),visibility 0s}
   .rk{margin:0 0 12px}
@@ -1932,3 +1932,4 @@ main>#me.hub{display:block;padding:0 0 64px}
   :root:not([data-motion="reduce"]) .ppv-d:not([open]) ul{opacity:0;translate:0 -4px;transition:opacity .3s ease-in-out,translate .3s ease-in-out}
   @starting-style{:root:not([data-motion="reduce"]) .ppv-d[open] ul{opacity:0;translate:0 -4px}}
 }
+.foot .colo .ctl dd>div{display:flex;align-items:center}  /* 11/28 줄 맞춤 전수 — 단추 줄(화면 · 글자)을 줄글 가운데(vertical-align:middle) 대신 상자 가운데로: '글자' 이름과 가 · 가 · 가가 1.2px 어긋났음 */
