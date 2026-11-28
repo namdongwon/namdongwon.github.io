@@ -818,7 +818,8 @@
     if (!txt) return;
     a.dataset.rl = "1";
     const esc = t => t.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
-    const row = cls => `<span class="${cls}" aria-hidden="true">${[...txt].map((ch, i) => `<i style="--i:${i}">${ch === " " ? "&nbsp;" : esc(ch)}</i>`).join("")}</span>`;
+    // 굴림 글자는 화면에만(::before content: attr(data-c)) — 버튼 글(textContent · innerText · 복사 · 찾기)은 '연락하기' 한 번만(11/28 점심 QA: 세 벌로 읽혀 메뉴 시험 여섯이 깨졌음)
+    const row = cls => `<span class="${cls}" aria-hidden="true">${[...txt].map((ch, i) => `<i style="--i:${i}" data-c="${ch === " " ? "\u00a0" : esc(ch).replace(/"/g, "&quot;")}"></i>`).join("")}</span>`;
     a.innerHTML = `<span class="sr">${esc(txt)}</span><span class="rl">${row("rl-a")}${row("rl-b")}</span>`;
   });
   // 11/28 툭 끊김 전수 — 글자가 바뀌는 단추(복사 → 복사됨 · 공유 → 링크를 복사했습니다)는 새 글이 흐림 4px에서 0.28초에 또렷해짐(바로 바뀌던 것) · 움직임 줄이기면 그대로
